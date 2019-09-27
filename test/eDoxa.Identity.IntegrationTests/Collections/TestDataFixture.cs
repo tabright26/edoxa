@@ -1,29 +1,22 @@
-﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-09-16
+﻿// Filename: AssemblyInitializeFixture.cs
+// Date Created: 2019-09-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.IO;
 
+using eDoxa.Identity.Api.Infrastructure.Data.Storage;
+using eDoxa.Storage.Azure.File;
 using eDoxa.Storage.Azure.File.Extensions;
 
 using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-#if DEBUG
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel, Workers = 0)]
-#else
-[assembly: DoNotParallelize]
-#endif
-
-namespace eDoxa.Identity.UnitTests.Properties
+namespace eDoxa.Identity.IntegrationTests.Collections
 {
-    [TestClass]
-    public sealed class AssemblyInitializeTest
+    public class TestDataFixture
     {
-        [AssemblyInitialize]
-        public static void AssemblyInitialize(TestContext _)
+        public TestDataFixture()
         {
             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false, true)
@@ -31,6 +24,10 @@ namespace eDoxa.Identity.UnitTests.Properties
                 .Build();
 
             AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
+
+            TestData = new IdentityTestFileStorage(new AzureFileStorage());
         }
+
+        public IIdentityTestFileStorage TestData { get; }
     }
 }

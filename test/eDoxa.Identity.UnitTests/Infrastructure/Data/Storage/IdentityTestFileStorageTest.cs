@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -22,7 +23,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUserRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = new IdentityTestFileStorage();
+            var storage = new IdentityTestFileStorage(new AzureFileStorage());
 
             // Act
             var userRoles = await storage.GetUserRolesAsync();
@@ -35,7 +36,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUserClaimsAsync_WithTwoRecords_ShouldHaveCountOfTwo()
         {
             // Arrange
-            var storage = new IdentityTestFileStorage();
+            var storage = new IdentityTestFileStorage(new AzureFileStorage());
 
             // Act
             var userClaims = await storage.GetUserClaimsAsync();
@@ -48,7 +49,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var storage = new IdentityTestFileStorage();
+            var storage = new IdentityTestFileStorage(new AzureFileStorage());
 
             // Act
             var users = await storage.GetUsersAsync();
@@ -61,7 +62,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithAdmin_ShouldContainAdminId()
         {
             // Arrange
-            var storage = new IdentityTestFileStorage();
+            var storage = new IdentityTestFileStorage(new AzureFileStorage());
 
             // Act
             var users = await storage.GetUsersAsync();

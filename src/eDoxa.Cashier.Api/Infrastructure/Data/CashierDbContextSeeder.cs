@@ -14,6 +14,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Storage.Azure.File;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -123,7 +124,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             {
                 if (!_context.Challenges.Any())
                 {
-                    var storage = new CashierTestFileStorage();
+                    var storage = new CashierTestFileStorage(new AzureFileStorage());
 
                     var challenges = await storage.GetChallengesAsync();
 

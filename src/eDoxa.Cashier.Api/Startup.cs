@@ -21,6 +21,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
+using eDoxa.Storage.Azure.File.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -74,6 +75,8 @@ namespace eDoxa.Cashier.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAzureFileStorage(Configuration);
+
             services.AddAppSettings<CashierAppSettings>(Configuration);
 
             services.AddHealthChecks(AppSettings);

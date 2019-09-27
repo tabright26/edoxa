@@ -16,10 +16,12 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.IntegrationTests.Collections;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -29,14 +31,17 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
+    [Collection(nameof(TestDataFixture.TestData))]
     public sealed class DoxaTagHistoryControllerPostAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public DoxaTagHistoryControllerPostAsyncTest(IdentityApiFactory identityApiFactory)
+        public DoxaTagHistoryControllerPostAsyncTest(IdentityApiFactory identityApiFactory, TestDataFixture testData)
         {
             _identityApiFactory = identityApiFactory;
+            _testData = testData;
         }
 
         private readonly IdentityApiFactory _identityApiFactory;
+        private readonly TestDataFixture _testData;
 
         private async Task<HttpResponseMessage> ExecuteAsync(DoxaTagPostRequest request)
         {
@@ -48,8 +53,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var identityStorage = new IdentityTestFileStorage();
-            var users = await identityStorage.GetUsersAsync();
+            var users = await _testData.TestData.GetUsersAsync();
             var user = users.First();
 
             user.DoxaTagHistory = new Collection<UserDoxaTag>

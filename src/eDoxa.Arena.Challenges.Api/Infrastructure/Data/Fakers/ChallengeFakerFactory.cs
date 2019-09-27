@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeFakerFactory.cs
-// Date Created: --
+// Date Created: 2019-09-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 {
     public sealed class ChallengeFakerFactory : IChallengeFakerFactory
     {
-        public IChallengeFaker CreateInstance(ChallengeGame? game, ChallengeState? state, int? seed = null)
+        public IChallengeFaker CreateFaker(int? seed, ChallengeGame? game = null, ChallengeState? state = null)
         {
             var faker = new ChallengeFaker(game, state);
 

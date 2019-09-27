@@ -1,5 +1,5 @@
 ﻿// Filename: ArenaChallengeTestFileStorageTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -25,7 +26,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         {
             // Arrange
             var challengeFakerFactory = new ChallengeFakerFactory();
-            var storage = new ArenaChallengeTestFileStorage(challengeFakerFactory);
+            var fileStorage = new AzureFileStorage();
+            var storage = new ArenaChallengeTestFileStorage(fileStorage, challengeFakerFactory);
 
             // Act
             var challenges = await storage.GetChallengesAsync();
@@ -39,7 +41,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         {
             // Arrange
             var challengeFakerFactory = new ChallengeFakerFactory();
-            var storage = new ArenaChallengeTestFileStorage(challengeFakerFactory);
+            var fileStorage = new AzureFileStorage();
+            var storage = new ArenaChallengeTestFileStorage(fileStorage, challengeFakerFactory);
 
             // Act
             var users = await storage.GetUsersAsync();
@@ -53,7 +56,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         {
             // Arrange
             var challengeFakerFactory = new ChallengeFakerFactory();
-            var storage = new ArenaChallengeTestFileStorage(challengeFakerFactory);
+            var fileStorage = new AzureFileStorage();
+            var storage = new ArenaChallengeTestFileStorage(fileStorage, challengeFakerFactory);
 
             // Act
             var users = await storage.GetUsersAsync();

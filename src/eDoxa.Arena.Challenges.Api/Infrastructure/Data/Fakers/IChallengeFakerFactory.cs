@@ -10,6 +10,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 {
     public interface IChallengeFakerFactory
     {
-        IChallengeFaker CreateInstance(ChallengeGame? game, ChallengeState? state, int? seed = null);
+        IChallengeFaker CreateFaker(int? seed, ChallengeGame? game = null, ChallengeState? state = null);
     }
 }

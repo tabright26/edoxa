@@ -17,6 +17,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -45,7 +46,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var identityStorage = new IdentityTestFileStorage();
+            var identityStorage = new IdentityTestFileStorage(new AzureFileStorage());
             var users = await identityStorage.GetUsersAsync();
             var user = users.First();
             var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));

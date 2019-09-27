@@ -16,56 +16,28 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.File;
+using eDoxa.Storage.Azure.File.Abstractions;
+using eDoxa.Storage.Azure.File.Extensions;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 {
     public class CashierTestFileStorage : ICashierTestFileStorage
     {
-        private readonly IPayoutFactory _payoutFactory;
-        private readonly CloudFileShare _share;
+        private readonly IPayoutFactory _payoutFactory = new PayoutFactory();
+        private readonly IAzureFileStorage _fileStorage;
 
-        public CashierTestFileStorage()
+        public CashierTestFileStorage(IAzureFileStorage fileStorage)
         {
-            var storageCredentials = new StorageCredentials(
-                "edoxadev",
-                "KjHiR9rgn7tLkyKl4fK8xsAH6+YAgTqX8EyHdy+mIEFaGQTtVdAnS2jmVkfzynLFnBzjJOSyHu6WR44eqWbUXA=="
-            );
-
-            var storageAccount = new CloudStorageAccount(storageCredentials, false);
-
-            var cloudBlobClient = storageAccount.CreateCloudFileClient();
-
-            _share = cloudBlobClient.GetShareReference("cashier");
-
-            _payoutFactory = new PayoutFactory();
+            _fileStorage = fileStorage;
         }
 
         public async Task<IImmutableSet<User>> GetUsersAsync()
         {
-            if (!await _share.ExistsAsync())
-            {
-                throw new InvalidOperationException("The Azure Storage file share reference does not exist.");
-            }
+            var root = await _fileStorage.GetRootDirectory();
 
-            var rootDirectory = _share.GetRootDirectoryReference();
+            var directory = await root.GetDirectoryAsync("test");
 
-            var test = rootDirectory.GetDirectoryReference("test");
-
-            if (!await test.ExistsAsync())
-            {
-                throw new InvalidOperationException("The Azure Storage folder 'test' does not exist in the 'identity' share'.");
-            }
-
-            var file = test.GetFileReference("Users.csv");
-
-            if (!await file.ExistsAsync())
-            {
-                throw new InvalidOperationException();
-            }
+            var file = await directory.GetFileAsync("Users.csv");
 
             using var csvReader = await file.OpenCsvReaderAsync();
 
@@ -81,26 +53,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 
         public async Task<IImmutableSet<IChallenge>> GetChallengesAsync()
         {
-            if (!await _share.ExistsAsync())
-            {
-                throw new InvalidOperationException("The Azure Storage file share reference does not exist.");
-            }
+            var root = await _fileStorage.GetRootDirectory();
 
-            var rootDirectory = _share.GetRootDirectoryReference();
+            var directory = await root.GetDirectoryAsync("test");
 
-            var test = rootDirectory.GetDirectoryReference("test");
-
-            if (!await test.ExistsAsync())
-            {
-                throw new InvalidOperationException("The Azure Storage folder 'test' does not exist in the 'identity' share'.");
-            }
-
-            var file = test.GetFileReference("Challenges.csv");
-
-            if (!await file.ExistsAsync())
-            {
-                throw new InvalidOperationException();
-            }
+            var file = await directory.GetFileAsync("Challenges.csv");
 
             using var csvReader = await file.OpenCsvReaderAsync();
 

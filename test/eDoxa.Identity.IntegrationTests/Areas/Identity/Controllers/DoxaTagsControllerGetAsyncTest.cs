@@ -15,6 +15,7 @@ using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -62,7 +63,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var identityStorage = new IdentityTestFileStorage();
+                    var identityStorage = new IdentityTestFileStorage(new AzureFileStorage());
                     var testUsers = await identityStorage.GetUsersAsync();
 
                     foreach (var testUser in testUsers.Take(100).ToList())

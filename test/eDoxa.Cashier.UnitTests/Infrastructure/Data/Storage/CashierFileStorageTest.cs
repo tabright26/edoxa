@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -22,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetChallengePayoutStructuresAsync_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
         {
             // Arrange
-            var storage = new CashierFileStorage();
+            var storage = new CashierFileStorage(new AzureFileStorage());
 
             // Act
             var payoutStructures = await storage.GetChallengePayoutStructuresAsync();

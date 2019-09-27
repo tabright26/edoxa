@@ -1,5 +1,5 @@
 ﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 [assembly: DoNotParallelize]
 #endif
 
-namespace eDoxa.Identity.UnitTests.Properties
+namespace eDoxa.Organizations.Clans.UnitTests.Properties
 {
     [TestClass]
     public sealed class AssemblyInitializeTest

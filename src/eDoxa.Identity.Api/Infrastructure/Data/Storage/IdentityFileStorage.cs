@@ -11,47 +11,26 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.File;
+using eDoxa.Storage.Azure.File.Abstractions;
+using eDoxa.Storage.Azure.File.Extensions;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 {
     public sealed class IdentityFileStorage : IIdentityFileStorage
     {
-        private readonly CloudFileShare _share;
+        private readonly IAzureFileStorage _fileStorage;
 
-        public IdentityFileStorage()
+        public IdentityFileStorage(IAzureFileStorage fileStorage)
         {
-            var storageCredentials = new StorageCredentials(
-                "edoxadev",
-                "KjHiR9rgn7tLkyKl4fK8xsAH6+YAgTqX8EyHdy+mIEFaGQTtVdAnS2jmVkfzynLFnBzjJOSyHu6WR44eqWbUXA=="
-            );
-
-            var cloudStorageAccount = new CloudStorageAccount(storageCredentials, false);
-
-            var cloudBlobClient = cloudStorageAccount.CreateCloudFileClient();
-
-            _share = cloudBlobClient.GetShareReference("identity");
+            _fileStorage = fileStorage;
         }
 
         public async Task<IImmutableSet<Role>> GetRolesAsync()
         {
-            if (!await _share.ExistsAsync())
-            {
-                throw new InvalidOperationException("The Azure Storage file share reference does not exist.");
-            }
+            var root = await _fileStorage.GetRootDirectory();
 
-            var rootDirectory = _share.GetRootDirectoryReference();
-
-            var file = rootDirectory.GetFileReference("Roles.csv");
-
-            if (!await file.ExistsAsync())
-            {
-                throw new InvalidOperationException();
-            }
-
+            var file = await root.GetFileAsync("Roles.csv");
+            
             using var csvReader = await file.OpenCsvReaderAsync();
 
             return csvReader.GetRecords(
@@ -75,19 +54,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 
         public async Task<IImmutableSet<RoleClaim>> GetRoleClaimsAsync()
         {
-            if (!await _share.ExistsAsync())
-            {
-                throw new InvalidOperationException("The Azure Storage file share reference does not exist.");
-            }
+            var root = await _fileStorage.GetRootDirectory();
 
-            var rootDirectory = _share.GetRootDirectoryReference();
-
-            var file = rootDirectory.GetFileReference("RoleClaims.csv");
-
-            if (!await file.ExistsAsync())
-            {
-                throw new InvalidOperationException();
-            }
+            var file = await root.GetFileAsync("RoleClaims.csv");
 
             using var csvReader = await file.OpenCsvReaderAsync();
 

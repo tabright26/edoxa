@@ -14,8 +14,8 @@ using AutoMapper;
 
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.IntegrationTests.Collections;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -28,14 +28,17 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
+    [Collection(nameof(TestDataFixture.TestData))]
     public sealed class PersonalInfoControllerGetAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public PersonalInfoControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
+        public PersonalInfoControllerGetAsyncTest(IdentityApiFactory identityApiFactory, TestDataFixture testData)
         {
             _identityApiFactory = identityApiFactory;
+            _testData = testData;
         }
 
         private readonly IdentityApiFactory _identityApiFactory;
+        private readonly TestDataFixture _testData;
 
         private HttpClient _httpClient;
 
@@ -47,8 +50,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
-            var identityStorage = new IdentityTestFileStorage();
-            var users = await identityStorage.GetUsersAsync();
+            var users = await _testData.TestData.GetUsersAsync();
             var user = users.First();
             user.PersonalInfo = null;
             var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
@@ -78,8 +80,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var identityStorage = new IdentityTestFileStorage();
-            var users = await identityStorage.GetUsersAsync();
+            var users = await _testData.TestData.GetUsersAsync();
             var user = users.First();
             var profile = new UserPersonalInfo();
             user.PersonalInfo = profile;

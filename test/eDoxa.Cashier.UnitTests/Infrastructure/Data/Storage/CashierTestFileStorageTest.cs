@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -23,7 +24,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetChallengesAsync_WithFortyRecords_ShouldHaveCountOfForty()
         {
             // Arrange
-            var storage = new CashierTestFileStorage();
+            var storage = new CashierTestFileStorage(new AzureFileStorage());
 
             // Act
             var testChallenges = await storage.GetChallengesAsync();
@@ -36,7 +37,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var storage = new CashierTestFileStorage();
+            var storage = new CashierTestFileStorage(new AzureFileStorage());
 
             // Act
             var users = await storage.GetUsersAsync();
@@ -49,7 +50,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_ShouldContainAdminId()
         {
             // Arrange
-            var storage = new CashierTestFileStorage();
+            var storage = new CashierTestFileStorage(new AzureFileStorage());
 
             // Act
             var users = await storage.GetUsersAsync();

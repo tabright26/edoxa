@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,6 +26,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
+using eDoxa.Storage.Azure.File.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -84,6 +85,8 @@ namespace eDoxa.Arena.Challenges.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAzureFileStorage(Configuration);
+
             services.AddAppSettings<ArenaChallengesAppSettings>(Configuration);
 
             services.AddHealthChecks(AppSettings);

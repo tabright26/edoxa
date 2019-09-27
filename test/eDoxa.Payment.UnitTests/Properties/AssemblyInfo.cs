@@ -1,9 +1,14 @@
 ﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-07-25
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.IO;
+
+using eDoxa.Storage.Azure.File.Extensions;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 #if DEBUG
@@ -11,3 +16,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 #else
 [assembly: DoNotParallelize]
 #endif
+
+namespace eDoxa.Payment.UnitTests.Properties
+{
+    [TestClass]
+    public sealed class AssemblyInitializeTest
+    {
+        [AssemblyInitialize]
+        public static void AssemblyInitialize(TestContext _)
+        {
+            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false, true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
+        }
+    }
+}

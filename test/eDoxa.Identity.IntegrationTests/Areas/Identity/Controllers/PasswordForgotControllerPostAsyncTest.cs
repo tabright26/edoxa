@@ -16,6 +16,7 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -29,7 +30,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
     {
         public PasswordForgotControllerPostAsyncTest(IdentityApiFactory identityApiFactory)
         {
-            var identityStorage = new IdentityTestFileStorage();
+            var identityStorage = new IdentityTestFileStorage(new AzureFileStorage());
             User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
             _httpClient = identityApiFactory.CreateClient();
             _testServer = identityApiFactory.Server;
@@ -49,7 +50,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var identityStorage = new IdentityTestFileStorage();
+            var identityStorage = new IdentityTestFileStorage(new AzureFileStorage());
             var users = await identityStorage.GetUsersAsync();
             var user = users.First();
             user.PersonalInfo = null;

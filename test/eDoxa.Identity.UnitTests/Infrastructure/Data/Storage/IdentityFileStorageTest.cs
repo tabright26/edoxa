@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -21,7 +22,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = new IdentityFileStorage();
+            var storage = new IdentityFileStorage(new AzureFileStorage());
 
             // Act
             var roles = await storage.GetRolesAsync();
@@ -34,7 +35,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetRoleClaimsAsync_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = new IdentityFileStorage();
+            var storage = new IdentityFileStorage(new AzureFileStorage());
 
             // Act
             var roleClaims = await storage.GetRoleClaimsAsync();

@@ -12,8 +12,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
+using eDoxa.Identity.IntegrationTests.Collections;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -23,14 +25,17 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
+    [Collection(nameof(TestDataFixture.TestData))]
     public sealed class EmailConfirmControllerGetAsyncTest : IClassFixture<IdentityApiFactory>
     {
-        public EmailConfirmControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
+        public EmailConfirmControllerGetAsyncTest(IdentityApiFactory identityApiFactory, TestDataFixture testData)
         {
             _identityApiFactory = identityApiFactory;
+            _testData = testData;
         }
 
         private readonly IdentityApiFactory _identityApiFactory;
+        private readonly TestDataFixture _testData;
 
         private HttpClient _httpClient;
 
@@ -42,8 +47,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var identityStorage = new IdentityTestFileStorage();
-            var users = await identityStorage.GetUsersAsync();
+            var users = await _testData.TestData.GetUsersAsync();
             var user = users.First();
 
             var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));

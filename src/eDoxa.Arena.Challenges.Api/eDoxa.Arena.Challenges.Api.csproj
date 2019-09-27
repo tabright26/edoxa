@@ -31,6 +31,7 @@
     <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190901-042717" />
+    <PackageReference Include="eDoxa.Storage.Azure" Version="1.0.0-CI-20190927-143423" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />

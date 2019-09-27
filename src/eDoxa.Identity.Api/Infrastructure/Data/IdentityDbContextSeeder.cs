@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Storage.Azure.File;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -38,9 +39,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
 
         public async Task SeedAsync()
         {
-            var fileStorage = new IdentityFileStorage();
+            var fileStorage = new IdentityFileStorage(new AzureFileStorage());
 
-            var testFileStorage = new IdentityTestFileStorage();
+            var testFileStorage = new IdentityTestFileStorage(new AzureFileStorage());
 
             var roles = await fileStorage.GetRolesAsync();
 

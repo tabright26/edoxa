@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Strategies;
+using eDoxa.Storage.Azure.File;
 
 using IdentityServer4.Extensions;
 
@@ -20,7 +21,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Strategies
     {
         public async Task<IPayout> GetPayoutAsync(PayoutEntries entries, EntryFee entryFee)
         {
-            var storage = new CashierFileStorage();
+            var storage = new CashierFileStorage(new AzureFileStorage());
 
             var payoutLookup = await storage.GetChallengePayoutStructuresAsync();
 
