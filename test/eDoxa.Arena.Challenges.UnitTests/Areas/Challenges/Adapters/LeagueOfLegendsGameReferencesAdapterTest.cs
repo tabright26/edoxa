@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsGameReferencesAdapterTest.cs
-// Date Created: 2019-08-28
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,19 +17,18 @@ using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
 {
-    [TestClass]
     public sealed class LeagueOfLegendsGameReferencesAdapterTest
     {
         private static LeagueOfLegendsMatchReferenceDto[] StubMatchReferences =>
             JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Helpers/Stubs/LeagueOfLegends/MatchReferences.json").ToArray();
 
-        [TestMethod]
+        [Fact]
         public async Task GetGameReferencesAsync_WhenMatchReferenceTimestampIsBetweenRange_ShouldBeLeagueOfLegends()
         {
             // Arrange

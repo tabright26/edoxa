@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 
 using Bogus;
 
@@ -24,6 +25,11 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
         public IChallenge FakeChallenge(string? ruleSets = null)
         {
             return this.Generate(ruleSets);
+        }
+
+        public IReadOnlyCollection<IChallenge> FakeChallenges(int count, string? ruleSets = null)
+        {
+            return this.Generate(count, ruleSets);
         }
 
         public IChallenge FakeChallenge(ChallengeModel model)

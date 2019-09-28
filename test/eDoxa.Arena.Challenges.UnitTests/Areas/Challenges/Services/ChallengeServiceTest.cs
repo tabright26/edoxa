@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeServiceTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,27 +17,22 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.UnitTests.Helpers;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
 {
     //TODO: Maybe split this ?
-    [TestClass]
-    public sealed class ChallengeServiceTest
-    {
-        private Mock<IChallengeRepository> _mockChallengeRepository;
-        private Mock<IGameReferencesFactory> _mockGameReferencesFactory;
-        private Mock<IMatchFactory> _mockMatchFactory;
-        private Mock<IIdentityService> _mockIdentityService;
 
-        [TestInitialize]
-        public void TestInitialize()
+    public sealed class ChallengeServiceTest : UnitTest
+    {
+        public ChallengeServiceTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
         {
             _mockChallengeRepository = new Mock<IChallengeRepository>();
             _mockGameReferencesFactory = new Mock<IGameReferencesFactory>();
@@ -45,7 +40,74 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
             _mockIdentityService = new Mock<IIdentityService>();
         }
 
-        [TestMethod]
+        private readonly Mock<IChallengeRepository> _mockChallengeRepository;
+        private readonly Mock<IGameReferencesFactory> _mockGameReferencesFactory;
+        private readonly Mock<IMatchFactory> _mockMatchFactory;
+        private readonly Mock<IIdentityService> _mockIdentityService;
+
+        [Fact]
+        public void RegisterParticipantAsync_ChallengeNullReference_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
+                .ReturnsAsync((IChallenge) null)
+                .Verifiable();
+
+            var challengeService = new ChallengeService(
+                _mockChallengeRepository.Object,
+                _mockGameReferencesFactory.Object,
+                _mockMatchFactory.Object,
+                _mockIdentityService.Object);
+
+            // Act
+            var action = new Func<Task>(
+                async () => await challengeService.RegisterParticipantAsync(new ChallengeId(), new UserId(), new UtcNowDateTimeProvider()));
+
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
+            _mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+            _mockGameReferencesFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
+            _mockMatchFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
+            _mockIdentityService.Verify(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()), Times.Never);
+        }
+
+        [Fact]
+        public void RegisterParticipantAsync_GameAccountIdNullReference_ShouldThrowInvalidOperationException()
+        {
+            // Arrange
+            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
+            challengeFaker.UseSeed(89892334);
+            var challenge = challengeFaker.Generate();
+
+            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
+                .ReturnsAsync(challenge)
+                .Verifiable();
+
+            _mockIdentityService.Setup(challengeRepository => challengeRepository.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
+                .ReturnsAsync((GameAccountId) null)
+                .Verifiable();
+
+            var challengeService = new ChallengeService(
+                _mockChallengeRepository.Object,
+                _mockGameReferencesFactory.Object,
+                _mockMatchFactory.Object,
+                _mockIdentityService.Object);
+
+            // Act
+            var action = new Func<Task>(async () => await challengeService.RegisterParticipantAsync(challenge.Id, new UserId(), new UtcNowDateTimeProvider()));
+
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
+            _mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+            _mockGameReferencesFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
+            _mockMatchFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
+
+            _mockIdentityService.Verify(
+                challengeRepository => challengeRepository.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()),
+                Times.Once);
+        }
+
+        [Fact]
         public async Task RegisterParticipantAsync_ShouldBeVerified()
         {
             // Arrange
@@ -76,8 +138,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
                 _mockChallengeRepository.Object,
                 _mockGameReferencesFactory.Object,
                 _mockMatchFactory.Object,
-                _mockIdentityService.Object
-            );
+                _mockIdentityService.Object);
 
             // Act
             await challengeService.RegisterParticipantAsync(challenge.Id, new UserId(), new UtcNowDateTimeProvider());
@@ -91,73 +152,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
             _mockIdentityService.Verify(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()), Times.Once);
         }
 
-        [TestMethod]
-        public void RegisterParticipantAsync_GameAccountIdNullReference_ShouldThrowInvalidOperationException()
-        {
-            // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-            challengeFaker.UseSeed(89892334);
-            var challenge = challengeFaker.Generate();
-
-            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync(challenge)
-                .Verifiable();
-
-            _mockIdentityService.Setup(challengeRepository => challengeRepository.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
-                .ReturnsAsync((GameAccountId) null)
-                .Verifiable();
-
-            var challengeService = new ChallengeService(
-                _mockChallengeRepository.Object,
-                _mockGameReferencesFactory.Object,
-                _mockMatchFactory.Object,
-                _mockIdentityService.Object
-            );
-
-            // Act
-            var action = new Func<Task>(async () => await challengeService.RegisterParticipantAsync(challenge.Id, new UserId(), new UtcNowDateTimeProvider()));
-
-            // Assert
-            action.Should().Throw<InvalidOperationException>();
-            _mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
-            _mockGameReferencesFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
-            _mockMatchFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
-
-            _mockIdentityService.Verify(
-                challengeRepository => challengeRepository.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()),
-                Times.Once
-            );
-        }
-
-        [TestMethod]
-        public void RegisterParticipantAsync_ChallengeNullReference_ShouldThrowInvalidOperationException()
-        {
-            // Arrange
-            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
-                .ReturnsAsync((IChallenge) null)
-                .Verifiable();
-
-            var challengeService = new ChallengeService(
-                _mockChallengeRepository.Object,
-                _mockGameReferencesFactory.Object,
-                _mockMatchFactory.Object,
-                _mockIdentityService.Object
-            );
-
-            // Act
-            var action = new Func<Task>(
-                async () => await challengeService.RegisterParticipantAsync(new ChallengeId(), new UserId(), new UtcNowDateTimeProvider())
-            );
-
-            // Assert
-            action.Should().Throw<InvalidOperationException>();
-            _mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
-            _mockGameReferencesFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
-            _mockMatchFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Never);
-            _mockIdentityService.Verify(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()), Times.Never);
-        }
-
-        //[TestMethod]
+        //[Fact]
         //public async Task CloseAsync_ShouldBeVerified()
         //{
         //    // Arrange
@@ -249,7 +244,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
         //    _mockIdentityService.Verify(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()), Times.Never);
         //}
 
-        [TestMethod]
+        [Fact]
         public async Task SynchronizeAsync_ShouldBeVerified()
         {
             // Arrange
@@ -268,33 +263,27 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
 
             mockGameReferencesAdapter
                 .Setup(
-                    gameReferencesAdapter => gameReferencesAdapter.GetGameReferencesAsync(It.IsAny<GameAccountId>(), It.IsAny<DateTime>(), It.IsAny<DateTime>())
-                )
+                    gameReferencesAdapter =>
+                        gameReferencesAdapter.GetGameReferencesAsync(It.IsAny<GameAccountId>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
                 .ReturnsAsync(new List<GameReference>());
 
             var mockMatchAdapter = new Mock<IMatchAdapter>();
 
-            mockMatchAdapter
-                .Setup(
+            mockMatchAdapter.Setup(
                     matchAdapter => matchAdapter.GetMatchAsync(
                         It.IsAny<GameAccountId>(),
                         It.IsAny<GameReference>(),
                         It.IsAny<IScoring>(),
-                        It.IsAny<IDateTimeProvider>()
-                    )
-                )
+                        It.IsAny<IDateTimeProvider>()))
                 .ReturnsAsync(
                     new StatMatch(
                         new Scoring(),
                         new GameStats(
                             new
                             {
-                            }
-                        ),
+                            }),
                         new GameReference(Guid.NewGuid()),
-                        synchronizedAt
-                    )
-                );
+                        synchronizedAt));
 
             _mockGameReferencesFactory.Setup(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()))
                 .Returns(mockGameReferencesAdapter.Object)
@@ -317,8 +306,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
                 _mockChallengeRepository.Object,
                 _mockGameReferencesFactory.Object,
                 _mockMatchFactory.Object,
-                _mockIdentityService.Object
-            );
+                _mockIdentityService.Object);
 
             // Act
             await challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, TimeSpan.Zero, synchronizedAt);
@@ -329,18 +317,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
 
             _mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()),
-                Times.Once
-            );
+                Times.Once);
 
             _mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()),
-                Times.Exactly(challenges.Count)
-            );
+                Times.Exactly(challenges.Count));
 
             _mockGameReferencesFactory.Verify(
                 challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()),
-                Times.Exactly(challenges.Count)
-            );
+                Times.Exactly(challenges.Count));
 
             _mockMatchFactory.Verify(challengeRepository => challengeRepository.CreateInstance(It.IsAny<ChallengeGame>()), Times.Exactly(challenges.Count));
             _mockIdentityService.Verify(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()), Times.Never);

@@ -1,5 +1,5 @@
 ﻿// Filename: MatchFactoryTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,20 +11,24 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.UnitTests.Helpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
 {
-    [TestClass]
-    public sealed class MatchFactoryTest
+    public sealed class MatchFactoryTest : UnitTest
     {
-        [TestMethod]
+        public MatchFactoryTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        {
+        }
+
+        [Fact]
         public void CreateInstance_FromDependencyInjection_ShouldBeLeagueOfLegendsMatchAdapter()
         {
             // Arrange
@@ -46,7 +50,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
             matchAdapter.Should().Be(leagueOfLegendsMatchAdapter);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateInstance_WithoutAdapter_ShouldThrowNotSupportedException()
         {
             // Arrange

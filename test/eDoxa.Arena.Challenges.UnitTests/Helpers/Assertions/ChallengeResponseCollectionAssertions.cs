@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeResponseCollectionAssertions.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

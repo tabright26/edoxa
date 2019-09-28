@@ -1,5 +1,5 @@
 // Filename: ScoringTest.cs
-// Date Created: 2019-07-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,17 +12,16 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    [TestClass]
     public sealed class ScoringTest
     {
-        private static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game});
+        public static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game});
 
-        [DataTestMethod]
-        [DynamicData(nameof(GameDataSets))]
+        [Theory]
+        [MemberData(nameof(GameDataSets))]
         public void Scoring_ShouldBeAssignableToType(ChallengeGame game)
         {
             // Arrange

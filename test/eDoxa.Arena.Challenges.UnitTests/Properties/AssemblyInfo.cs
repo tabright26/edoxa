@@ -4,33 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.IO;
+#if !DEBUG
+using Xunit;
 
-using eDoxa.Storage.Azure.File.Extensions;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-#if DEBUG
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel, Workers = 0)]
-#else
-[assembly: DoNotParallelize]
+[assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly)]
 #endif
-
-namespace eDoxa.Arena.Challenges.UnitTests.Properties
-{
-    [TestClass]
-    public sealed class AssemblyInitializeTest
-    {
-        [AssemblyInitialize]
-        public static void AssemblyInitialize(TestContext _)
-        {
-            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
-        }
-    }
-}

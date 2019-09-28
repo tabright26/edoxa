@@ -1,28 +1,32 @@
 ﻿// Filename: LeagueOfLegendsScoringStrategyTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.UnitTests.Helpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Strategies
 {
-    [TestClass]
-    public sealed class LeagueOfLegendsScoringStrategyTest
+    public sealed class LeagueOfLegendsScoringStrategyTest : UnitTest
     {
-        [DataTestMethod]
-        [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.Kills), 4)]
-        [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.Deaths), -3)]
-        [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.Assists), 3)]
-        [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions), 0.0008F)]
-        [DataRow(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal), 0.0015F)]
+        public LeagueOfLegendsScoringStrategyTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        {
+        }
+
+        [Theory]
+        [InlineData(nameof(LeagueOfLegendsParticipantStatsDto.Kills), 4)]
+        [InlineData(nameof(LeagueOfLegendsParticipantStatsDto.Deaths), -3)]
+        [InlineData(nameof(LeagueOfLegendsParticipantStatsDto.Assists), 3)]
+        [InlineData(nameof(LeagueOfLegendsParticipantStatsDto.TotalDamageDealtToChampions), 0.0008F)]
+        [InlineData(nameof(LeagueOfLegendsParticipantStatsDto.TotalHeal), 0.0015F)]
         public void LeagueOfLegendsScoringStrategy_ShouldContain(string key, float value)
         {
             // Act

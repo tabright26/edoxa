@@ -1,5 +1,5 @@
 // Filename: StatTest.cs
-// Date Created: 2019-07-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,14 +17,13 @@ using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    [TestClass]
     public sealed class StatTest
     {
-        private static IEnumerable<object[]> StatPropsDataSets =>
+        public static IEnumerable<object[]> StatPropsDataSets =>
             ChallengeGame.GetEnumerations()
                 .SelectMany(
                     game =>
@@ -35,16 +34,19 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
                         var strategy = factory.CreateInstance(game);
 
-                        var match = new StatMatch(strategy.Scoring, stats, new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+                        var match = new StatMatch(
+                            strategy.Scoring,
+                            stats,
+                            new GameReference(Guid.NewGuid()),
+                            new UtcNowDateTimeProvider());
 
                         return match.Stats;
-                    }
-                )
+                    })
                 .Select(stat => new object[] {stat.Name, stat.Value, stat.Weighting})
                 .ToList();
 
-        [DataTestMethod]
-        [DynamicData(nameof(StatPropsDataSets))]
+        [Theory]
+        [MemberData(nameof(StatPropsDataSets))]
         public void Contructor_Tests(StatName name, StatValue value, StatWeighting weighting)
         {
             // Act
