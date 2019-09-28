@@ -1,5 +1,5 @@
 ﻿// Filename: BalanceTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,43 +13,12 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
-    [TestClass]
     public sealed class BalanceTest
     {
-        [TestMethod]
-        public void Balance_WithTransactions_ShouldBeFifty()
-        {
-            // Arrange
-            var transactions = CreateTransactions().ToList();
-
-            // Act
-            var balance = new Balance(transactions, Currency.Money);
-
-            // Assert
-            balance.Available.Should().Be(Money.Fifty);
-            balance.Currency.Should().Be(Currency.Money);
-            balance.Pending.Should().Be(Money.Ten);
-        }
-
-        [TestMethod]
-        public void Balance_WithTransactions_ShouldBeFiftyThousands()
-        {
-            // Arrange
-            var transactions = CreateTransactions().ToList();
-
-            // Act
-            var balance = new Balance(transactions, Currency.Token);
-
-            // Assert
-            balance.Available.Should().Be(Token.FiftyThousand);
-            balance.Currency.Should().Be(Currency.Token);
-            balance.Pending.Should().Be(decimal.Zero);
-        }
-
         private static IEnumerable<ITransaction> CreateTransactions()
         {
             yield return new MoneyDepositTransaction(Money.Ten);
@@ -78,6 +47,36 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             transaction.MarkAsFailed();
 
             return transaction;
+        }
+
+        [Fact]
+        public void Balance_WithTransactions_ShouldBeFifty()
+        {
+            // Arrange
+            var transactions = CreateTransactions().ToList();
+
+            // Act
+            var balance = new Balance(transactions, Currency.Money);
+
+            // Assert
+            balance.Available.Should().Be(Money.Fifty);
+            balance.Currency.Should().Be(Currency.Money);
+            balance.Pending.Should().Be(Money.Ten);
+        }
+
+        [Fact]
+        public void Balance_WithTransactions_ShouldBeFiftyThousands()
+        {
+            // Arrange
+            var transactions = CreateTransactions().ToList();
+
+            // Act
+            var balance = new Balance(transactions, Currency.Token);
+
+            // Assert
+            balance.Available.Should().Be(Token.FiftyThousand);
+            balance.Currency.Should().Be(Currency.Token);
+            balance.Pending.Should().Be(decimal.Zero);
         }
     }
 }

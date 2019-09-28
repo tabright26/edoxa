@@ -1,5 +1,5 @@
 // Filename: ClansControllerTest.cs
-// Date Created: 2019-09-15
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,16 +14,16 @@ using eDoxa.Organizations.Clans.Domain.Repositories;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Organizations.Clans.UnitTests.Arena.Clans.Controllers
 {
-    [TestClass]
     public class ClansControllerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task GetAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
@@ -39,7 +39,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Arena.Clans.Controllers
             result.Should().BeOfType<NoContentResult>();
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange

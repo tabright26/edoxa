@@ -1,5 +1,5 @@
-﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
-// Date Created: 2019-06-25
+﻿// Filename: UserRoleRemovedIntegrationEventHandlerTest.cs
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,38 +13,30 @@ using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
-    [TestClass]
     public sealed class UserRoleRemovedIntegrationEventHandlerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task UserRoleRemovedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var mockUserManager = new Mock<IUserManager>();
 
-            mockUserManager
-                .Setup(roleManager => roleManager.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(new User())
-                .Verifiable();
+            mockUserManager.Setup(roleManager => roleManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new User()).Verifiable();
 
-            mockUserManager.Setup(roleManager =>
-                    roleManager.IsInRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(true)
-                .Verifiable();
+            mockUserManager.Setup(roleManager => roleManager.IsInRoleAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(true).Verifiable();
 
-            mockUserManager.Setup(roleManager =>
-                    roleManager.RemoveFromRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
+            mockUserManager.Setup(roleManager => roleManager.RemoveFromRoleAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var handler = new UserRoleRemovedIntegrationEventHandler(
-                mockUserManager.Object);
+            var handler = new UserRoleRemovedIntegrationEventHandler(mockUserManager.Object);
 
             var integrationEvent = new UserRoleRemovedIntegrationEvent(Guid.NewGuid(), "role");
 

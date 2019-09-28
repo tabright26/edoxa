@@ -40,7 +40,5 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             // Assert
             stats.Should().BeAssignableTo(type);
         }
-
- 
     }
 }

@@ -1,9 +1,10 @@
 ﻿// Filename: TransactionFaker.cs
-// Date Created: 2019-07-12
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 
 using Bogus;
@@ -14,7 +15,20 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 {
-    public sealed class TransactionFaker : Faker<Transaction>
+    public sealed partial class TransactionFaker : ITransactionFaker
+    {
+        public IReadOnlyCollection<ITransaction> FakeTransactions(int count)
+        {
+            return this.Generate(count);
+        }
+
+        public ITransaction FakeTransaction()
+        {
+            return this.Generate();
+        }
+    }
+
+    public sealed partial class TransactionFaker : Faker<ITransaction>
     {
         public const string PositiveTransaction = nameof(PositiveTransaction);
         public const string NegativeTransaction = nameof(NegativeTransaction);
@@ -63,8 +77,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                                 currency,
                                 new TransactionDescription(faker.Lorem.Sentence()),
                                 faker.PickRandom(types),
-                                new DateTimeProvider(faker.Date.Recent())
-                            );
+                                new DateTimeProvider(faker.Date.Recent()));
 
                             transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
 
@@ -85,10 +98,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                             }
 
                             return transaction;
-                        }
-                    );
-                }
-            );
+                        });
+                });
 
             this.RuleSet(
                 NegativeTransaction,
@@ -116,8 +127,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                                 currency,
                                 new TransactionDescription(faker.Lorem.Sentence()),
                                 faker.PickRandom(types),
-                                new DateTimeProvider(faker.Date.Recent())
-                            );
+                                new DateTimeProvider(faker.Date.Recent()));
 
                             transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
 
@@ -138,10 +148,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                             }
 
                             return transaction;
-                        }
-                    );
-                }
-            );
+                        });
+                });
         }
     }
 }

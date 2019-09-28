@@ -1,5 +1,5 @@
 ﻿// Filename: MockStripeService.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -31,12 +31,15 @@ namespace eDoxa.Payment.UnitTests.Helpers.Mocks
                         It.IsAny<int>(),
                         It.IsAny<int>(),
                         It.IsAny<int>(),
-                        It.IsAny<CancellationToken>()
-                    )
-                )
+                        It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_accountFaker.FakeAccount().Id);
 
-            this.Setup(mock => mock.CreateCustomerAsync(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            this.Setup(
+                    mock => mock.CreateCustomerAsync(
+                        It.IsAny<Guid>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<CancellationToken>()))
                 .ReturnsAsync(_customerFaker.FakeCustomer().Id);
 
             this.Setup(
@@ -45,9 +48,7 @@ namespace eDoxa.Payment.UnitTests.Helpers.Mocks
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<long>(),
-                        It.IsAny<CancellationToken>()
-                    )
-                )
+                        It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
 
             this.Setup(
@@ -56,9 +57,7 @@ namespace eDoxa.Payment.UnitTests.Helpers.Mocks
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<long>(),
-                        It.IsAny<CancellationToken>()
-                    )
-                )
+                        It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask);
         }
     }

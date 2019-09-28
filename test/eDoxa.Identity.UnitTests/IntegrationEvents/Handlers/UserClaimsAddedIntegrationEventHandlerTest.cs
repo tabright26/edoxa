@@ -1,5 +1,5 @@
 ﻿// Filename: UserClaimsAddedIntegrationEventHandlerTest.cs
-// Date Created: 2019-08-23
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,16 +15,16 @@ using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
-    [TestClass]
     public sealed class UserClaimsAddedIntegrationEventHandlerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task UserClaimsAddedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
@@ -32,11 +32,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             mockUserManager.Setup(roleManager => roleManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new User()).Verifiable();
 
-            mockUserManager.Setup(roleManager => roleManager.GetClaimsAsync(It.IsAny<User>()))
-                .ReturnsAsync(
-                    new List<Claim>()
-                )
-                .Verifiable();
+            mockUserManager.Setup(roleManager => roleManager.GetClaimsAsync(It.IsAny<User>())).ReturnsAsync(new List<Claim>()).Verifiable();
 
             mockUserManager.Setup(roleManager => roleManager.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()))
                 .ReturnsAsync(IdentityResult.Success)
@@ -49,8 +45,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
                 new Dictionary<string, string>
                 {
                     ["role"] = "admin"
-                }
-            );
+                });
 
             // Act
             await handler.HandleAsync(integrationEvent);

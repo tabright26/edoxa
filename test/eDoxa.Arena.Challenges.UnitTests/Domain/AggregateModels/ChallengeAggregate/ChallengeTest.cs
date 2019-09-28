@@ -26,10 +26,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         {
         }
 
-        private static IEnumerable<object[]> ChallengeStateDataSets =>
+        public static IEnumerable<object[]> ChallengeStateDataSets =>
             ChallengeState.GetEnumerations().Where(state => state != ChallengeState.Inscription).Select(state => new object[] {state}).ToList();
 
-   [MemberData(nameof(ChallengeStateDataSets))]
+        [MemberData(nameof(ChallengeStateDataSets))]
         public void Register_WhenStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
         {
             // Arrange

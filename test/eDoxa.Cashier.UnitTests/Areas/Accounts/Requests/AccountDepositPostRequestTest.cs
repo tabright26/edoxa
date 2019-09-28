@@ -1,5 +1,5 @@
 ﻿// Filename: AccountDepositPostRequestTest.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,16 +8,15 @@ using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Newtonsoft.Json;
+
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Requests
 {
-    [TestClass]
     public sealed class AccountDepositPostRequestTest
     {
-        [TestMethod]
+        [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             //Arrange

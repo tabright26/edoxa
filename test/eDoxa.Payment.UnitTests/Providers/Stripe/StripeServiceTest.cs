@@ -1,5 +1,5 @@
 ﻿// Filename: StripeServiceTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,25 +13,24 @@ using eDoxa.Payment.Api.Providers.Stripe;
 using eDoxa.Payment.Api.Providers.Stripe.Fakers;
 
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
 using Stripe;
 
+using Xunit;
+
 namespace eDoxa.Payment.UnitTests.Providers.Stripe
 {
-    [TestClass]
     public sealed class StripeServiceTest
     {
-        private Mock<AccountService> _mockAccountService;
-        private Mock<CustomerService> _mockCustomerService;
-        private Mock<InvoiceItemService> _mockInvoiceItemService;
-        private Mock<InvoiceService> _mockInvoiceService;
-        private Mock<TransferService> _mockTransferService;
+        private readonly Mock<AccountService> _mockAccountService;
+        private readonly Mock<CustomerService> _mockCustomerService;
+        private readonly Mock<InvoiceItemService> _mockInvoiceItemService;
+        private readonly Mock<InvoiceService> _mockInvoiceService;
+        private readonly Mock<TransferService> _mockTransferService;
 
-        [TestInitialize]
-        public void TestInitialize()
+        public StripeServiceTest()
         {
             _mockAccountService = new Mock<AccountService>();
             _mockCustomerService = new Mock<CustomerService>();
@@ -40,7 +39,28 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
             _mockTransferService = new Mock<TransferService>();
         }
 
-        [TestMethod]
+        private StripeService CreateStripeService()
+        {
+            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<StripeOptions>>();
+
+            mockOptionsSnapshot.Setup(snapshot => snapshot.Value)
+                .Returns(
+                    new StripeOptions
+                    {
+                        Currency = "cad",
+                        TaxRateIds = Array.Empty<string>().ToList()
+                    });
+
+            return new StripeService(
+                mockOptionsSnapshot.Object,
+                _mockAccountService.Object,
+                _mockCustomerService.Object,
+                _mockInvoiceService.Object,
+                _mockInvoiceItemService.Object,
+                _mockTransferService.Object);
+        }
+
+        [Fact]
         public async Task CreateAccountAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -62,17 +82,15 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
                 account.Individual.LastName,
                 1,
                 1,
-                2000
-            );
+                2000);
 
             // Assert
             _mockAccountService.Verify(
                 mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+                Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateCustomerAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -96,11 +114,10 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
             // Assert
             _mockCustomerService.Verify(
                 mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+                Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateInvoiceAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -124,21 +141,23 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
             var service = this.CreateStripeService();
 
             // Act
-            await service.CreateInvoiceAsync(Guid.NewGuid(), string.Empty, customer.Id, 1000);
+            await service.CreateInvoiceAsync(
+                Guid.NewGuid(),
+                string.Empty,
+                customer.Id,
+                1000);
 
             // Assert
             _mockInvoiceItemService.Verify(
                 mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+                Times.Once);
 
             _mockInvoiceService.Verify(
                 mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
+                Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task CreateTransferAsync_WhenValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -155,36 +174,16 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
             var service = this.CreateStripeService();
 
             // Act
-            await service.CreateTransferAsync(Guid.NewGuid(), string.Empty, account.Id, 1000);
+            await service.CreateTransferAsync(
+                Guid.NewGuid(),
+                string.Empty,
+                account.Id,
+                1000);
 
             // Assert
             _mockTransferService.Verify(
                 mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once
-            );
-        }
-
-        private StripeService CreateStripeService()
-        {
-            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<StripeOptions>>();
-
-            mockOptionsSnapshot.Setup(snapshot => snapshot.Value)
-                .Returns(
-                    new StripeOptions
-                    {
-                        Currency = "cad",
-                        TaxRateIds = Array.Empty<string>().ToList()
-                    }
-                );
-
-            return new StripeService(
-                mockOptionsSnapshot.Object,
-                _mockAccountService.Object,
-                _mockCustomerService.Object,
-                _mockInvoiceService.Object,
-                _mockInvoiceItemService.Object,
-                _mockTransferService.Object
-            );
+                Times.Once);
         }
     }
 }

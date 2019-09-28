@@ -11,7 +11,15 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 {
-    public sealed class AccountFaker : Faker<IAccount>
+    public sealed partial class AccountFaker : IAccountFaker
+    {
+        public IAccount FakeAccount(string? ruleSets = null)
+        {
+            return this.Generate(ruleSets);
+        }
+    }
+
+    public sealed partial class AccountFaker : Faker<IAccount>
     {
         public const string AdminAccount = nameof(AdminAccount);
 

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
@@ -42,6 +41,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
             var challenge = challengeFaker.FakeChallenge();
 
             using var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>();
+
             using (var context = factory.CreateContext())
             {
                 var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
@@ -73,6 +73,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
             var challenge = challengeFaker.FakeChallenge();
 
             using var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>();
+
             using (var context = factory.CreateContext())
             {
                 var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);

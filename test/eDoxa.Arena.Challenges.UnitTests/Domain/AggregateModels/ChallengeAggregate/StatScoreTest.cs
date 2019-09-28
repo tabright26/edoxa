@@ -45,7 +45,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             }
         }
 
- 
         [Theory]
         [MemberData(nameof(StatScoreDataSets))]
         public void Constructor_Tests(

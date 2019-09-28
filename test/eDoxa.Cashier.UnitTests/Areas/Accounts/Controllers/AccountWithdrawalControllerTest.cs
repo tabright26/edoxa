@@ -1,5 +1,5 @@
 ﻿// Filename: AccountWithdrawalControllerTest.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,24 +18,22 @@ using FluentAssertions;
 using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 {
-    [TestClass]
     public sealed class AccountWithdrawalControllerTest
     {
-        [TestMethod]
-        public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
+        [Fact]
+        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
             var mockAccountService = new Mock<IAccountService>();
 
-            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(new Account(new UserId()))
-                .Verifiable();
+            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
 
             mockAccountService.Setup(
                     accountService => accountService.WithdrawalAsync(
@@ -43,7 +41,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
             var controller = new AccountWithdrawalController(mockAccountService.Object);
@@ -52,15 +49,17 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
+            controller.ControllerContext.ModelState.AddModelError("error", "error");
+
             // Act
             var result = await controller.PostAsync(Currency.Money, Money.Fifty);
 
             // Assert
-            result.Should().BeOfType<OkObjectResult>();
+            result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Never);
 
-            mockHttpContextAccessor.VerifyGet(Times.Exactly(2));
+            mockHttpContextAccessor.VerifyGet(Times.Never());
 
             mockAccountService.Verify(
                 accountService => accountService.WithdrawalAsync(
@@ -68,10 +67,10 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                     It.IsAny<Money>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Never);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
@@ -113,13 +112,15 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                 Times.Never);
         }
 
-        [TestMethod]
-        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
+        [Fact]
+        public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var mockAccountService = new Mock<IAccountService>();
 
-            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
+            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()))
+                .ReturnsAsync(new Account(new UserId()))
+                .Verifiable();
 
             mockAccountService.Setup(
                     accountService => accountService.WithdrawalAsync(
@@ -127,6 +128,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
             var controller = new AccountWithdrawalController(mockAccountService.Object);
@@ -135,17 +137,15 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
-
             // Act
             var result = await controller.PostAsync(Currency.Money, Money.Fifty);
 
             // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+            result.Should().BeOfType<OkObjectResult>();
 
-            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Never);
+            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
 
-            mockHttpContextAccessor.VerifyGet(Times.Never());
+            mockHttpContextAccessor.VerifyGet(Times.Exactly(2));
 
             mockAccountService.Verify(
                 accountService => accountService.WithdrawalAsync(
@@ -153,7 +153,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                     It.IsAny<Money>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
-                Times.Never);
+                Times.Once);
         }
     }
 }

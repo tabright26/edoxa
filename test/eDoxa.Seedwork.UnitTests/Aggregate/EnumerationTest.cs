@@ -1,211 +1,34 @@
 ﻿// Filename: EnumerationTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Seedwork.UnitTests.Aggregate
 {
-    [TestClass]
     public sealed class EnumerationTest
     {
-        [TestMethod]
-        public void Enumeration_GetTypes_ShouldContainAssembliesEnumerationTypes()
-        {
-            // Arrange
-            var expectedEnumerationTypes = new[] {typeof(MockEnumeration)};
-
-            // Act
-            var enumerationTypes = Enumeration.GetTypes();
-
-            // Assert
-            enumerationTypes.Should().Contain(expectedEnumerationTypes);
-        }
-
-        [TestMethod]
-        public void Enumeration_GetAll_ShouldHaveCountOfFive()
-        {
-            // Arrange
-            const int expectedCount = 5;
-
-            // Act
-            var enumerations = Enumeration.GetEnumerations(typeof(MockEnumeration));
-
-            // Assert
-            enumerations.Should().HaveCount(expectedCount);
-        }
-
-        [TestMethod]
-        public void Public_Constructor_ShouldBeNone()
-        {
-            // Arrange
-            var enumeration = new MockEnumeration();
-
-            // Assert
-            enumeration.Value.Should().Be(default);
-            enumeration.Name.Should().Be("None");
-        }
-
-        [TestMethod]
-        public void CompareTo_Enumeration2WithEnumeration1_ShouldBeOne()
-        {
-            // Arrange
-            var enumeration = MockEnumeration.Enumeration2;
-
-            // Act
-            var condition = enumeration.CompareTo(MockEnumeration.Enumeration1);
-
-            // Assert
-            condition.As<int>().Should().Be(1);
-        }
-
-        [TestMethod]
-        public void Equals_NullReference_ShouldBeFalse()
-        {
-            // Arrange
-            var enumeration = new MockEnumeration();
-
-            // Act
-            var condition = enumeration.Equals(null);
-
-            // Assert
-            condition.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void FromValue_ValidValue_ShouldBeNone()
-        {
-            var expectedEnumeration = MockEnumeration.Enumeration1;
-
-            var enumeration = MockEnumeration.FromValue(expectedEnumeration.Value);
-
-            enumeration.Should().Be(expectedEnumeration);
-        }
-
-        [TestMethod]
-        public void FromValue_InvalidValue_ShouldBeNone()
-        {
-            var expectedEnumeration = new MockEnumeration();
-
-            var enumeration = MockEnumeration.FromValue(default);
-
-            enumeration.Should().Be(expectedEnumeration);
-        }
-
-        [TestMethod]
-        public void FromName_ValidName_ShouldBeNone()
-        {
-            var expectedEnumeration = MockEnumeration.Enumeration1;
-
-            var enumeration = MockEnumeration.FromName(expectedEnumeration.Name);
-
-            enumeration.Should().Be(expectedEnumeration);
-        }
-
-        [TestMethod]
-        public void FromName_InvalidName_ShouldBeNone()
-        {
-            var expectedEnumeration = new MockEnumeration();
-
-            var enumeration = MockEnumeration.FromName("None");
-
-            enumeration.Should().Be(expectedEnumeration);
-        }
-
-        [TestMethod]
-        public void HasEnumeration_ValidEnumeration_ShouldBeTrue()
-        {
-            var expectedEnumeration = MockEnumeration.Enumeration1;
-
-            var condition = MockEnumeration.HasEnumeration(expectedEnumeration);
-
-            condition.Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void HasEnumeration_NoneEnumeration_ShouldBeFalse()
-        {
-            var expectedEnumeration = new MockEnumeration();
-
-            var condition = MockEnumeration.HasEnumeration(expectedEnumeration);
-
-            condition.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void HasEnumeration_AllEnumeration_ShouldBeFalse()
-        {
-            var expectedEnumeration = MockEnumeration.All;
-
-            var condition = MockEnumeration.HasEnumeration(expectedEnumeration);
-
-            condition.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void HasFilter_ValidEnumeration_ShouldBeTrue()
-        {
-            var expectedEnumeration = MockEnumeration.Enumeration1;
-
-            var condition = expectedEnumeration.HasFilter(expectedEnumeration);
-
-            condition.Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void HasFilter_InvalidEnumeration_ShouldBeFalse()
-        {
-            var enumeration = MockEnumeration.Enumeration1;
-
-            var condition = enumeration.HasFilter(MockEnumeration.Enumeration2);
-
-            condition.Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void HasFilter_AllEnumeration_ShouldBeTrue()
-        {
-            var enumeration = MockEnumeration.Enumeration1;
-
-            var condition = enumeration.HasFilter(MockEnumeration.All);
-
-            condition.Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void HasFilter_NoneEnumeration_ShouldBeFalse()
-        {
-            var enumeration = MockEnumeration.Enumeration1;
-
-            var condition = enumeration.HasFilter(new MockEnumeration());
-
-            condition.Should().BeFalse();
-        }
-
-        [DataRow(1)]
-        [DataRow(2)]
-        [DataRow(4)]
-        [DataRow(8)]
-        [DataRow(16)]
-        [DataRow("Enumeration1")]
-        [DataRow("Enumeration2")]
-        [DataRow("Enumeration4")]
-        [DataRow("Enumeration8")]
-        [DataRow("Enumeration16")]
-        [DataTestMethod]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(4)]
+        [InlineData(8)]
+        [InlineData(16)]
+        [InlineData("Enumeration1")]
+        [InlineData("Enumeration2")]
+        [InlineData("Enumeration4")]
+        [InlineData("Enumeration8")]
+        [InlineData("Enumeration16")]
+        [Theory]
         public void ConvertFrom_ValidEnumeration_ShouldBeEnumeration(object obj)
         {
             // Arrange
@@ -219,11 +42,11 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             enumeration.As<MockEnumeration>().Should().NotBe(MockEnumeration.All);
         }
 
-        [DataRow(0)]
-        [DataRow(-1)]
-        [DataRow("None")]
-        [DataRow("All")]
-        [DataTestMethod]
+        [InlineData(0)]
+        [InlineData(-1)]
+        [InlineData("None")]
+        [InlineData("All")]
+        [Theory]
         public void ConvertFrom_AllOrNoneEnumeration_ShouldBeNone(object obj)
         {
             // Arrange
@@ -236,36 +59,10 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             enumeration.As<MockEnumeration>().Should().Be(new MockEnumeration());
         }
 
-        [TestMethod]
-        public void ConvertFrom_InvalidEnumeration_ShouldBeValue()
-        {
-            // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
-
-            // Act
-            var enumeration = converter.ConvertFrom("InvalidEnumeration");
-
-            // Assert
-            enumeration.As<MockEnumeration>().Should().Be(new MockEnumeration());
-        }
-
-        [TestMethod]
-        public void ConvertFrom_NullReference_ShouldBeNull()
-        {
-            // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
-
-            // Act
-            var enumeration = converter.ConvertFrom(null);
-
-            // Assert
-            enumeration.As<MockEnumeration>().Should().BeNull();
-        }
-
-        [DataRow(typeof(double))]
-        [DataRow(typeof(decimal))]
-        [DataRow(typeof(long))]
-        [DataTestMethod]
+        [InlineData(typeof(double))]
+        [InlineData(typeof(decimal))]
+        [InlineData(typeof(long))]
+        [Theory]
         public void ConvertFrom_InvalidType_ShouldThrowNotSupportedException(Type type)
         {
             // Arrange
@@ -278,10 +75,10 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             action.Should().Throw<NotSupportedException>();
         }
 
-        [DataRow(typeof(double))]
-        [DataRow(typeof(decimal))]
-        [DataRow(typeof(long))]
-        [DataTestMethod]
+        [InlineData(typeof(double))]
+        [InlineData(typeof(decimal))]
+        [InlineData(typeof(long))]
+        [Theory]
         public void CanConvertFrom_ValidType_ShouldBeFalse(Type type)
         {
             // Arrange
@@ -294,10 +91,10 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             isValid.Should().BeFalse();
         }
 
-        [DataRow(typeof(double))]
-        [DataRow(typeof(decimal))]
-        [DataRow(typeof(long))]
-        [DataTestMethod]
+        [InlineData(typeof(double))]
+        [InlineData(typeof(decimal))]
+        [InlineData(typeof(long))]
+        [Theory]
         public void CanConvertTo_ValidType_ShouldBeFalse(Type type)
         {
             // Arrange
@@ -310,40 +107,10 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             isValid.Should().BeFalse();
         }
 
-        [TestMethod]
-        public void ConvertTo_EnumerationValue_ShouldBeEnumeration()
-        {
-            // Arrange
-            var mockEnumeration = MockEnumeration.Enumeration1;
-
-            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
-
-            // Act
-            var enumeration = converter.ConvertTo(mockEnumeration, typeof(int));
-
-            // Assert
-            enumeration.As<int>().Should().Be(mockEnumeration.Value);
-        }
-
-        [TestMethod]
-        public void ConvertTo_EnumerationName_ShouldBeEnumeration()
-        {
-            // Arrange
-            var mockEnumeration = MockEnumeration.Enumeration1;
-
-            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
-
-            // Act
-            var enumeration = converter.ConvertTo(mockEnumeration, typeof(string));
-
-            // Assert
-            enumeration.As<string>().Should().Be(mockEnumeration.Name);
-        }
-
-        [DataRow(typeof(double))]
-        [DataRow(typeof(decimal))]
-        [DataRow(typeof(long))]
-        [DataTestMethod]
+        [InlineData(typeof(double))]
+        [InlineData(typeof(decimal))]
+        [InlineData(typeof(long))]
+        [Theory]
         public void ConvertTo_InvalidType_ShouldThrowNotSupportedException(Type type)
         {
             // Arrange
@@ -372,6 +139,235 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
             private MockEnumeration(int value, string name) : base(value, name)
             {
             }
+        }
+
+        [Fact]
+        public void CompareTo_Enumeration2WithEnumeration1_ShouldBeOne()
+        {
+            // Arrange
+            var enumeration = MockEnumeration.Enumeration2;
+
+            // Act
+            var condition = enumeration.CompareTo(MockEnumeration.Enumeration1);
+
+            // Assert
+            condition.As<int>().Should().Be(1);
+        }
+
+        [Fact]
+        public void ConvertFrom_InvalidEnumeration_ShouldBeValue()
+        {
+            // Arrange
+            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
+
+            // Act
+            var enumeration = converter.ConvertFrom("InvalidEnumeration");
+
+            // Assert
+            enumeration.As<MockEnumeration>().Should().Be(new MockEnumeration());
+        }
+
+        [Fact]
+        public void ConvertFrom_NullReference_ShouldBeNull()
+        {
+            // Arrange
+            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
+
+            // Act
+            var enumeration = converter.ConvertFrom(null);
+
+            // Assert
+            enumeration.As<MockEnumeration>().Should().BeNull();
+        }
+
+        [Fact]
+        public void ConvertTo_EnumerationName_ShouldBeEnumeration()
+        {
+            // Arrange
+            var mockEnumeration = MockEnumeration.Enumeration1;
+
+            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
+
+            // Act
+            var enumeration = converter.ConvertTo(mockEnumeration, typeof(string));
+
+            // Assert
+            enumeration.As<string>().Should().Be(mockEnumeration.Name);
+        }
+
+        [Fact]
+        public void ConvertTo_EnumerationValue_ShouldBeEnumeration()
+        {
+            // Arrange
+            var mockEnumeration = MockEnumeration.Enumeration1;
+
+            var converter = TypeDescriptor.GetConverter(typeof(MockEnumeration));
+
+            // Act
+            var enumeration = converter.ConvertTo(mockEnumeration, typeof(int));
+
+            // Assert
+            enumeration.As<int>().Should().Be(mockEnumeration.Value);
+        }
+
+        [Fact]
+        public void Enumeration_GetAll_ShouldHaveCountOfFive()
+        {
+            // Arrange
+            const int expectedCount = 5;
+
+            // Act
+            var enumerations = Enumeration.GetEnumerations(typeof(MockEnumeration));
+
+            // Assert
+            enumerations.Should().HaveCount(expectedCount);
+        }
+
+        [Fact]
+        public void Enumeration_GetTypes_ShouldContainAssembliesEnumerationTypes()
+        {
+            // Arrange
+            var expectedEnumerationTypes = new[] {typeof(MockEnumeration)};
+
+            // Act
+            var enumerationTypes = Enumeration.GetTypes();
+
+            // Assert
+            enumerationTypes.Should().Contain(expectedEnumerationTypes);
+        }
+
+        [Fact]
+        public void Equals_NullReference_ShouldBeFalse()
+        {
+            // Arrange
+            var enumeration = new MockEnumeration();
+
+            // Act
+            var condition = enumeration.Equals(null);
+
+            // Assert
+            condition.Should().BeFalse();
+        }
+
+        [Fact]
+        public void FromName_InvalidName_ShouldBeNone()
+        {
+            var expectedEnumeration = new MockEnumeration();
+
+            var enumeration = MockEnumeration.FromName("None");
+
+            enumeration.Should().Be(expectedEnumeration);
+        }
+
+        [Fact]
+        public void FromName_ValidName_ShouldBeNone()
+        {
+            var expectedEnumeration = MockEnumeration.Enumeration1;
+
+            var enumeration = MockEnumeration.FromName(expectedEnumeration.Name);
+
+            enumeration.Should().Be(expectedEnumeration);
+        }
+
+        [Fact]
+        public void FromValue_InvalidValue_ShouldBeNone()
+        {
+            var expectedEnumeration = new MockEnumeration();
+
+            var enumeration = MockEnumeration.FromValue(default);
+
+            enumeration.Should().Be(expectedEnumeration);
+        }
+
+        [Fact]
+        public void FromValue_ValidValue_ShouldBeNone()
+        {
+            var expectedEnumeration = MockEnumeration.Enumeration1;
+
+            var enumeration = MockEnumeration.FromValue(expectedEnumeration.Value);
+
+            enumeration.Should().Be(expectedEnumeration);
+        }
+
+        [Fact]
+        public void HasEnumeration_AllEnumeration_ShouldBeFalse()
+        {
+            var expectedEnumeration = MockEnumeration.All;
+
+            var condition = MockEnumeration.HasEnumeration(expectedEnumeration);
+
+            condition.Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasEnumeration_NoneEnumeration_ShouldBeFalse()
+        {
+            var expectedEnumeration = new MockEnumeration();
+
+            var condition = MockEnumeration.HasEnumeration(expectedEnumeration);
+
+            condition.Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasEnumeration_ValidEnumeration_ShouldBeTrue()
+        {
+            var expectedEnumeration = MockEnumeration.Enumeration1;
+
+            var condition = MockEnumeration.HasEnumeration(expectedEnumeration);
+
+            condition.Should().BeTrue();
+        }
+
+        [Fact]
+        public void HasFilter_AllEnumeration_ShouldBeTrue()
+        {
+            var enumeration = MockEnumeration.Enumeration1;
+
+            var condition = enumeration.HasFilter(MockEnumeration.All);
+
+            condition.Should().BeTrue();
+        }
+
+        [Fact]
+        public void HasFilter_InvalidEnumeration_ShouldBeFalse()
+        {
+            var enumeration = MockEnumeration.Enumeration1;
+
+            var condition = enumeration.HasFilter(MockEnumeration.Enumeration2);
+
+            condition.Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasFilter_NoneEnumeration_ShouldBeFalse()
+        {
+            var enumeration = MockEnumeration.Enumeration1;
+
+            var condition = enumeration.HasFilter(new MockEnumeration());
+
+            condition.Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasFilter_ValidEnumeration_ShouldBeTrue()
+        {
+            var expectedEnumeration = MockEnumeration.Enumeration1;
+
+            var condition = expectedEnumeration.HasFilter(expectedEnumeration);
+
+            condition.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Public_Constructor_ShouldBeNone()
+        {
+            // Arrange
+            var enumeration = new MockEnumeration();
+
+            // Assert
+            enumeration.Value.Should().Be(default);
+            enumeration.Name.Should().Be("None");
         }
     }
 }

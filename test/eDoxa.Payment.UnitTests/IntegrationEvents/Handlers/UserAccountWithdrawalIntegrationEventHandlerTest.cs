@@ -1,5 +1,5 @@
 // Filename: UserAccountWithdrawalIntegrationEventHandlerTest.cs
-// Date Created: 2019-08-25
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,16 +14,15 @@ using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    [TestClass]
     public sealed class UserAccountWithdrawalIntegrationEventHandlerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task HandleAsync_WhenUserAccountDepositIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -35,22 +34,23 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            mockStripeService
-                .Setup(
+            mockStripeService.Setup(
                     stripeService => stripeService.CreateTransferAsync(
                         It.IsAny<Guid>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<long>(),
-                        It.IsAny<CancellationToken>()
-                    )
-                )
+                        It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
             var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object);
 
-            var integrationEvent = new UserAccountWithdrawalIntegrationEvent(Guid.NewGuid(), "test", "user", 100);
+            var integrationEvent = new UserAccountWithdrawalIntegrationEvent(
+                Guid.NewGuid(),
+                "test",
+                "user",
+                100);
 
             // Act
             await handler.HandleAsync(integrationEvent);
@@ -66,10 +66,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<long>(),
-                    It.IsAny<CancellationToken>()
-                ),
-                Times.Once
-            );
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
         }
     }
 }

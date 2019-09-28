@@ -1,5 +1,5 @@
 ﻿// Filename: EmailConfirmControllerTest.cs
-// Date Created: 2019-08-30
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,44 +15,16 @@ using FluentAssertions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    [TestClass]
     public sealed class EmailConfirmControllerTest
     {
-        [TestMethod]
-        public async Task GetAsync_ShouldBeOkResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                Id = Guid.NewGuid()
-            };
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success).Verifiable();
-
-            var controller = new EmailConfirmController(mockUserManager.Object);
-
-            // Act
-            var result = await controller.GetAsync(Guid.NewGuid().ToString(), "code");
-
-            // Assert
-            result.Should().BeOfType<OkResult>();
-
-            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task GetAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
@@ -75,7 +47,37 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
         }
 
-        [TestMethod]
+        [Fact]
+        public async Task GetAsync_ShouldBeOkResult()
+        {
+            // Arrange
+            var user = new User
+            {
+                Id = Guid.NewGuid()
+            };
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success)
+                .Verifiable();
+
+            var controller = new EmailConfirmController(mockUserManager.Object);
+
+            // Act
+            var result = await controller.GetAsync(Guid.NewGuid().ToString(), "code");
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
+
+            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+
+            mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
         public void GetAsync_ShouldThrowInvalidOperationException()
         {
             // Arrange
@@ -88,7 +90,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Failed()).Verifiable();
+            mockUserManager.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed())
+                .Verifiable();
 
             var controller = new EmailConfirmController(mockUserManager.Object);
 

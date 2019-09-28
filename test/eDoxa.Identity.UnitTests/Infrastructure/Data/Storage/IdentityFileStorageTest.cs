@@ -1,47 +1,49 @@
 ﻿// Filename: IdentityFileStorageTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Storage.Azure.File;
+using eDoxa.Identity.UnitTests.Helpers;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
-    [TestClass]
-    public sealed class IdentityFileStorageTest
+    public sealed class IdentityFileStorageTest : UnitTest
     {
-        [TestMethod]
-        public async Task GetRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
+        public IdentityFileStorageTest(IdentityFakerFixture faker) : base(faker)
         {
-            // Arrange
-            var storage = new IdentityFileStorage(new AzureFileStorage());
-
-            // Act
-            var roles = await storage.GetRolesAsync();
-
-            // Assert
-            roles.Should().HaveCount(1);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task GetRoleClaimsAsync_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = new IdentityFileStorage(new AzureFileStorage());
+            var storage = Faker.FileStorage;
 
             // Act
             var roleClaims = await storage.GetRoleClaimsAsync();
 
             // Assert
             roleClaims.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task GetRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
+        {
+            // Arrange
+            var storage = Faker.FileStorage;
+
+            // Act
+            var roles = await storage.GetRolesAsync();
+
+            // Assert
+            roles.Should().HaveCount(1);
         }
     }
 }

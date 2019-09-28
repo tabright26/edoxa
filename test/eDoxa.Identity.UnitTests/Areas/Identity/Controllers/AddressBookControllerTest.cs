@@ -1,5 +1,5 @@
 ﻿// Filename: AddressBookControllerTest.cs
-// Date Created: 2019-08-09
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,395 +21,18 @@ using FluentAssertions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
+
+using Xunit;
 
 using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    [TestClass]
     public sealed class AddressBookControllerTest
     {
-        [TestMethod]
-        public async Task GetAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = "Test",
-                        Line1 = "Test"
-                    }
-                }
-            };
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(user.AddressBook).Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<ICollection<UserAddressResponse>>(user.AddressBook));
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.GetAddressBookAsync(It.IsAny<User>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task GetAsync_ShouldBeNoContentResult()
-        {
-            // Arrange
-            var user = new User();
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(new Collection<UserAddress>()).Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<NoContentResult>();
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.GetAddressBookAsync(It.IsAny<User>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task PostAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {   Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = "Test",
-                        Line1 = "Test"
-                    }
-                }
-            };
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(
-                    userManager => userManager.AddAddressAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>()
-                    )
-                )
-                .ReturnsAsync(IdentityResult.Success)
-                .Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            var request = new AddressPostRequest(
-                "New",
-                "New",
-                "New",
-                "New",
-                "New",
-                "New"
-            );
-
-            // Act
-            var result = await controller.PostAsync(request);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(
-                userManager => userManager.AddAddressAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()
-                ),
-                Times.Once
-            );
-        }
-
-        [TestMethod]
-        public async Task PostAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {   Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = "Test",
-                        Line1 = "Test"
-                    }
-                }
-            };
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(
-                    userManager => userManager.AddAddressAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>()
-                    )
-                )
-                .ReturnsAsync(IdentityResult.Failed())
-                .Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            var request = new AddressPostRequest(
-                "New",
-                "New",
-                "New",
-                "New",
-                "New",
-                "New"
-            );
-
-            // Act
-            var result = await controller.PostAsync(request);
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-
-            result.As<BadRequestObjectResult>().Should().BeEquivalentTo(new BadRequestObjectResult(controller.ModelState));
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(
-                userManager => userManager.AddAddressAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()
-                ),
-                Times.Once
-            );
-        }
-
-        [TestMethod]
-        public async Task PutAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {   Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = "Test",
-                        Line1 = "Test"
-                    }
-                }
-            };
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(
-                    userManager => userManager.UpdateAddressAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<Guid>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>()
-                    )
-                )
-                .ReturnsAsync(IdentityResult.Success)
-                .Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            var request = new AddressPutRequest(
-                "New",
-                "New",
-                "New",
-                "New",
-                "New"
-            );
-
-            // Act
-            var result = await controller.PutAsync(user.AddressBook.First().Id, request);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(
-                userManager => userManager.UpdateAddressAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<Guid>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()
-                ),
-                Times.Once
-            );
-        }
-
-        [TestMethod]
-        public async Task PutAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var user = new User();
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(
-                    userManager => userManager.UpdateAddressAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<Guid>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>()
-                    )
-                )
-                .ReturnsAsync(IdentityResult.Failed())
-                .Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            var request = new AddressPutRequest(
-                "New",
-                "New",
-                "New",
-                "New",
-                "New"
-            );
-
-            // Act
-            var result = await controller.PutAsync(Guid.NewGuid(), request);
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-
-            result.As<BadRequestObjectResult>().Should().BeEquivalentTo(new BadRequestObjectResult(controller.ModelState));
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(
-                userManager => userManager.UpdateAddressAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<Guid>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>()
-                ),
-                Times.Once
-            );
-        }
-
-        [TestMethod]
-        public async Task DeleteAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = new User
-            {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {   Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = "Test",
-                        Line1 = "Test"
-                    }
-                }
-            };
-
-            var address = user.AddressBook.First();
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()))
-                .ReturnsAsync(IdentityResult.Success)
-                .Verifiable();
-
-            var controller = new AddressBookController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.DeleteAsync(address.Id);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().Be(address.Id);
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()), Times.Once);
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task DeleteAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
@@ -449,6 +72,367 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteAsync_ShouldBeOkObjectResult()
+        {
+            // Arrange
+            var user = new User
+            {
+                AddressBook = new Collection<UserAddress>
+                {
+                    new UserAddress
+                    {
+                        Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
+            };
+
+            var address = user.AddressBook.First();
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()))
+                .ReturnsAsync(IdentityResult.Success)
+                .Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
+
+            // Act
+            var result = await controller.DeleteAsync(address.Id);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            result.As<OkObjectResult>().Value.Should().Be(address.Id);
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAsync_ShouldBeNoContentResult()
+        {
+            // Arrange
+            var user = new User();
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(new Collection<UserAddress>()).Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
+
+            // Act
+            var result = await controller.GetAsync();
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(userManager => userManager.GetAddressBookAsync(It.IsAny<User>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAsync_ShouldBeOkObjectResult()
+        {
+            // Arrange
+            var user = new User
+            {
+                AddressBook = new Collection<UserAddress>
+                {
+                    new UserAddress
+                    {
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
+            };
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(user.AddressBook).Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
+
+            // Act
+            var result = await controller.GetAsync();
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<ICollection<UserAddressResponse>>(user.AddressBook));
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(userManager => userManager.GetAddressBookAsync(It.IsAny<User>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task PostAsync_ShouldBeBadRequestObjectResult()
+        {
+            // Arrange
+            var user = new User
+            {
+                AddressBook = new Collection<UserAddress>
+                {
+                    new UserAddress
+                    {
+                        Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
+            };
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(
+                    userManager => userManager.AddAddressAsync(
+                        It.IsAny<User>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed())
+                .Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
+
+            var request = new AddressPostRequest(
+                "New",
+                "New",
+                "New",
+                "New",
+                "New",
+                "New");
+
+            // Act
+            var result = await controller.PostAsync(request);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            result.As<BadRequestObjectResult>().Should().BeEquivalentTo(new BadRequestObjectResult(controller.ModelState));
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(
+                userManager => userManager.AddAddressAsync(
+                    It.IsAny<User>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task PostAsync_ShouldBeOkObjectResult()
+        {
+            // Arrange
+            var user = new User
+            {
+                AddressBook = new Collection<UserAddress>
+                {
+                    new UserAddress
+                    {
+                        Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
+            };
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(
+                    userManager => userManager.AddAddressAsync(
+                        It.IsAny<User>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success)
+                .Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
+
+            var request = new AddressPostRequest(
+                "New",
+                "New",
+                "New",
+                "New",
+                "New",
+                "New");
+
+            // Act
+            var result = await controller.PostAsync(request);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(
+                userManager => userManager.AddAddressAsync(
+                    It.IsAny<User>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task PutAsync_ShouldBeBadRequestObjectResult()
+        {
+            // Arrange
+            var user = new User();
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(
+                    userManager => userManager.UpdateAddressAsync(
+                        It.IsAny<User>(),
+                        It.IsAny<Guid>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Failed())
+                .Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
+
+            var request = new AddressPutRequest(
+                "New",
+                "New",
+                "New",
+                "New",
+                "New");
+
+            // Act
+            var result = await controller.PutAsync(Guid.NewGuid(), request);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            result.As<BadRequestObjectResult>().Should().BeEquivalentTo(new BadRequestObjectResult(controller.ModelState));
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(
+                userManager => userManager.UpdateAddressAsync(
+                    It.IsAny<User>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task PutAsync_ShouldBeOkObjectResult()
+        {
+            // Arrange
+            var user = new User
+            {
+                AddressBook = new Collection<UserAddress>
+                {
+                    new UserAddress
+                    {
+                        Id = Guid.NewGuid(),
+                        City = "Test",
+                        PostalCode = "Test",
+                        Country = "Test",
+                        Line1 = "Test"
+                    }
+                }
+            };
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(
+                    userManager => userManager.UpdateAddressAsync(
+                        It.IsAny<User>(),
+                        It.IsAny<Guid>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
+                .ReturnsAsync(IdentityResult.Success)
+                .Verifiable();
+
+            var controller = new AddressBookController(mockUserManager.Object, Mapper);
+
+            var request = new AddressPutRequest(
+                "New",
+                "New",
+                "New",
+                "New",
+                "New");
+
+            // Act
+            var result = await controller.PutAsync(user.AddressBook.First().Id, request);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(
+                userManager => userManager.UpdateAddressAsync(
+                    It.IsAny<User>(),
+                    It.IsAny<Guid>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
         }
     }
 }

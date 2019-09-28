@@ -23,6 +23,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 {
     public sealed class MatchTest : UnitTest
     {
+        public MatchTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        {
+        }
+
         public static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game}).ToList();
 
         [Theory]
@@ -43,10 +47,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
             // Assert
             match.Stats.Should().HaveCount(scoring.Count);
-        }
-
-        public MatchTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
-        {
         }
     }
 }

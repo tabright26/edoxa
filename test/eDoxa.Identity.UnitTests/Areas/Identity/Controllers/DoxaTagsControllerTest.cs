@@ -1,5 +1,5 @@
 ﻿// Filename: DoxaTagsControllerTest.cs
-// Date Created: 2019-08-30
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,18 +17,37 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
+
+using Xunit;
 
 using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    [TestClass]
     public sealed class DoxaTagsControllerTest
     {
-        [TestMethod]
+        [Fact]
+        public async Task GetAsync_ShouldBeNoContentResult()
+        {
+            // Arrange
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.FetchDoxaTagsAsync()).ReturnsAsync(Array.Empty<UserDoxaTag>()).Verifiable();
+
+            var controller = new DoxaTagsController(mockUserManager.Object, Mapper);
+
+            // Act
+            var result = await controller.GetAsync();
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+
+            mockUserManager.Verify(userManager => userManager.FetchDoxaTagsAsync(), Times.Once);
+        }
+
+        [Fact]
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
@@ -62,25 +81,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             result.Should().BeOfType<OkObjectResult>();
 
             result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<IEnumerable<UserDoxaTagResponse>>(user.DoxaTagHistory));
-
-            mockUserManager.Verify(userManager => userManager.FetchDoxaTagsAsync(), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task GetAsync_ShouldBeNoContentResult()
-        {
-            // Arrange
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.FetchDoxaTagsAsync()).ReturnsAsync(Array.Empty<UserDoxaTag>()).Verifiable();
-
-            var controller = new DoxaTagsController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<NoContentResult>();
 
             mockUserManager.Verify(userManager => userManager.FetchDoxaTagsAsync(), Times.Once);
         }
