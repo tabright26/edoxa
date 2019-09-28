@@ -9,10 +9,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Arena.Challenges.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -41,8 +40,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Closed);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = TestData.ChallengeFactory.CreateFaker(null, null, ChallengeState.Closed);
+
+            var challenge = challengeFaker.FakeChallenge();
 
             var factory = ApiFactory.WithClaims();
             _httpClient = factory.CreateClient();

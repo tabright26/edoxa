@@ -12,12 +12,11 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Arena.Challenges.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -51,9 +50,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
-            challengeFaker.UseSeed(1);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = TestData.ChallengeFactory.CreateFaker(1, ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
+
+            var challenge = challengeFaker.FakeChallenge();
 
             var userId = new UserId();
             var gameAccountId = new GameAccountId(Guid.NewGuid().ToString());

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.IntegrationTests.Helpers;
+using eDoxa.Identity.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;

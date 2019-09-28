@@ -10,12 +10,11 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Transactions.Responses;
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.IntegrationTests.Helpers;
+using eDoxa.Cashier.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -73,9 +72,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var accountFaker = new AccountFaker();
-            accountFaker.UseSeed(1);
-            var account = accountFaker.Generate();
+            var accountFaker = TestData.AccountFactory.CreateFaker(1);
+            var account = accountFaker.FakeAccount();
 
             var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();

@@ -5,15 +5,12 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Arena.Challenges.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -36,9 +33,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         public async Task ShouldHaveCountFive()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
-            challengeFaker.UseSeed(1);
-            var challenges = challengeFaker.Generate(5) as IEnumerable<IChallenge>;
+            var challengeFaker = TestData.ChallengeFactory.CreateFaker(1, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+
+            var challenges = challengeFaker.FakeChallenges(5);
 
             ApiFactory.CreateClient();
             var testServer = ApiFactory.Server;

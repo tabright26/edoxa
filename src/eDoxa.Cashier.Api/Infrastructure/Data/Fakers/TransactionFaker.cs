@@ -17,14 +17,14 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 {
     public sealed partial class TransactionFaker : ITransactionFaker
     {
-        public IReadOnlyCollection<ITransaction> FakeTransactions(int count)
+        public IReadOnlyCollection<ITransaction> FakeTransactions(int count, string? ruleSets = null)
         {
-            return this.Generate(count);
+            return this.Generate(count, ruleSets);
         }
 
-        public ITransaction FakeTransaction()
+        public ITransaction FakeTransaction(string? ruleSets = null)
         {
-            return this.Generate();
+            return this.Generate(ruleSets);
         }
     }
 

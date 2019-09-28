@@ -7,11 +7,10 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Challenges.Controllers;
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.UnitTests.Helpers;
-using eDoxa.Cashier.UnitTests.Helpers.Extensions;
+using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -25,17 +24,19 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 {
     public sealed class ChallengesControllerTest : UnitTest
     {
+        public ChallengesControllerTest(CashierFakerFixture faker) : base(faker)
+        {
+        }
+
         [Fact]
         public async Task GetByIdAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker();
-
-            challengeFaker.UseSeed(1000);
+            var challenge = Faker.ChallengeFactory.CreateFaker(1000).FakeChallenge();
 
             var mockAccountQuery = new Mock<IChallengeQuery>();
 
-            mockAccountQuery.Setup(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
+            mockAccountQuery.Setup(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Verifiable();
 
@@ -58,10 +59,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
         public async Task GetByIdAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker();
-
-            challengeFaker.UseSeed(1000);
-
             var mockAccountQuery = new Mock<IChallengeQuery>();
 
             mockAccountQuery.Setup(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
@@ -104,10 +101,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
             mockAccountQuery.Verify(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
-        }
-
-        public ChallengesControllerTest(CashierFakerFixture faker) : base(faker)
-        {
         }
     }
 }

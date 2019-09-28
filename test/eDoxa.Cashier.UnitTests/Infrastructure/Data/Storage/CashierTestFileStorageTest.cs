@@ -7,10 +7,8 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.UnitTests.Helpers;
-using eDoxa.Storage.Azure.File;
+using eDoxa.Cashier.UnitTests.TestHelpers;
 
 using FluentAssertions;
 
@@ -20,6 +18,10 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class CashierTestFileStorageTest : UnitTest
     {
+        public CashierTestFileStorageTest(CashierFakerFixture faker) : base(faker)
+        {
+        }
+
         [Fact]
         public async Task GetChallengesAsync_WithFortyRecords_ShouldHaveCountOfForty()
         {
@@ -57,10 +59,6 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             users.Should().HaveCount(1000);
-        }
-
-        public CashierTestFileStorageTest(CashierFakerFixture faker) : base(faker)
-        {
         }
     }
 }

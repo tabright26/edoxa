@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
@@ -42,7 +42,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
         public async Task GetMatchAsync_FromJson_ShouldBeEquivalentToMatch(long gameId)
         {
             // Arrange
-            var matches = JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Helpers/Stubs/LeagueOfLegends/Matches.json");
+            var matches = JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"TestHelpers/Stubs/LeagueOfLegends/Matches.json");
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 
@@ -75,7 +75,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
         {
             // Arrange
             var matchReferencesDTO =
-                JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Helpers/Stubs/LeagueOfLegends/MatchReferences.json");
+                JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"TestHelpers/Stubs/LeagueOfLegends/MatchReferences.json");
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 

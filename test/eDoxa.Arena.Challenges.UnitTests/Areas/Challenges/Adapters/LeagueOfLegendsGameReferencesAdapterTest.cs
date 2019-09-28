@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
     public sealed class LeagueOfLegendsGameReferencesAdapterTest
     {
         private static LeagueOfLegendsMatchReferenceDto[] StubMatchReferences =>
-            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Helpers/Stubs/LeagueOfLegends/MatchReferences.json").ToArray();
+            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"TestHelpers/Stubs/LeagueOfLegends/MatchReferences.json").ToArray();
 
         [Fact]
         public async Task GetGameReferencesAsync_WhenMatchReferenceTimestampIsBetweenRange_ShouldBeLeagueOfLegends()

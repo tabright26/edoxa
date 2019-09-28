@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.UnitTests.Helpers;
+using eDoxa.Cashier.UnitTests.TestHelpers;
 
 using FluentAssertions;
 
@@ -15,17 +15,8 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
     public sealed class AccountFakerTest : UnitTest
     {
-        [Fact]
-        public void Generate_FakeAdminAccount_ShouldNotBeNull()
+        public AccountFakerTest(CashierFakerFixture faker) : base(faker)
         {
-            // Arrange
-            var accountFaker = Faker.AccountFactory.CreateFaker(null);
-
-            // Act
-            var account = accountFaker.FakeAccount(AccountFaker.AdminAccount);
-
-            // Assert
-            account.Should().NotBeNull();
         }
 
         [Fact]
@@ -41,8 +32,17 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
             account.Should().NotBeNull();
         }
 
-        public AccountFakerTest(CashierFakerFixture faker) : base(faker)
+        [Fact]
+        public void Generate_FakeAdminAccount_ShouldNotBeNull()
         {
+            // Arrange
+            var accountFaker = Faker.AccountFactory.CreateFaker(null);
+
+            // Act
+            var account = accountFaker.FakeAccount(AccountFaker.AdminAccount);
+
+            // Assert
+            account.Should().NotBeNull();
         }
     }
 }

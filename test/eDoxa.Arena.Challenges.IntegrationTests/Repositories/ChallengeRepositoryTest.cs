@@ -10,12 +10,11 @@ using System.Threading.Tasks;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Arena.Challenges.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -43,9 +42,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
         {
             // Arrange
             var faker = new Faker();
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-            challengeFaker.UseSeed(seed);
-            var fakeChallenge = challengeFaker.Generate();
+            var challengeFaker = TestData.ChallengeFactory.CreateFaker(seed, null, ChallengeState.Inscription);
+            var fakeChallenge = challengeFaker.FakeChallenge();
 
             ApiFactory.CreateClient();
             var testServer = ApiFactory.Server;

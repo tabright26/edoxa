@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.UnitTests.Helpers;
-using eDoxa.Cashier.UnitTests.Helpers.Extensions;
+using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -24,6 +24,10 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 {
     public sealed class AccountBalanceControllerTest : UnitTest
     {
+        public AccountBalanceControllerTest(CashierFakerFixture faker) : base(faker)
+        {
+        }
+
         [Fact]
         public async Task GetByCurrencyAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
@@ -97,10 +101,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
             mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
 
             mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
-        }
-
-        public AccountBalanceControllerTest(CashierFakerFixture faker) : base(faker)
-        {
         }
     }
 }

@@ -12,7 +12,8 @@ using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.UnitTests.Helpers.Extensions;
+using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -24,8 +25,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 {
-    public sealed class TransactionsControllerTest
+    public sealed class TransactionsControllerTest : UnitTest
     {
+        public TransactionsControllerTest(CashierFakerFixture faker) : base(faker)
+        {
+        }
+
         [Fact]
         public async Task GetAsync_ShouldBeOfTypeNoContentResult()
         {
@@ -63,7 +68,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
         public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var transactionFaker = new TransactionFaker();
+            var faker = Faker.TransactionFactory.CreateFaker(null);
 
             var mockTransactionQuery = new Mock<ITransactionQuery>();
 
@@ -73,7 +78,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                         It.IsAny<Currency>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()))
-                .ReturnsAsync(transactionFaker.Generate(5, TransactionFaker.PositiveTransaction))
+                .ReturnsAsync(faker.FakeTransactions(5, TransactionFaker.PositiveTransaction))
                 .Verifiable();
 
             mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(MapperExtensions.Mapper);
@@ -98,10 +103,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
         public async Task GetByIdAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker();
-
-            challengeFaker.UseSeed(1000);
-
             var mockTransactionQuery = new Mock<ITransactionQuery>();
 
             mockTransactionQuery.Setup(

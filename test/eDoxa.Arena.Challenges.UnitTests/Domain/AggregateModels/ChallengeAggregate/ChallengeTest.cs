@@ -8,10 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
@@ -49,9 +48,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenInscriptionFulfilled_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-            challengeFaker.UseSeed(43897896);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(43897896, null, ChallengeState.Inscription);
+
+            var challenge = challengeFaker.FakeChallenge();
+
             var participantCount = challenge.Entries - challenge.Participants.Count;
 
             for (var index = 0; index < participantCount; index++)
@@ -71,9 +71,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenParticipantIsRegistered_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-            challengeFaker.UseSeed(48536956);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(48536956, null, ChallengeState.Inscription);
+
+            var challenge = challengeFaker.FakeChallenge();
 
             // Act
             var action = new Action(
@@ -88,9 +88,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenStateInscription_ShouldHaveOneMore()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-            challengeFaker.UseSeed(85256956);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(85256956, null, ChallengeState.Inscription);
+
+            var challenge = challengeFaker.FakeChallenge();
+
             var participantCount = challenge.Participants.Count;
 
             // Act

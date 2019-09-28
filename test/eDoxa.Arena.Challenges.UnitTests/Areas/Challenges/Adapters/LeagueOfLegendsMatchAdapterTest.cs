@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 using eDoxa.Seedwork.Domain;
@@ -35,7 +35,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
         }
 
         private static LeagueOfLegendsMatchDto StubMatch =>
-            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Helpers/Stubs/LeagueOfLegends/Matches.json").First();
+            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"TestHelpers/Stubs/LeagueOfLegends/Matches.json").First();
 
         private readonly Mock<ILeagueOfLegendsProxy> _mockLeagueOfLegendsProxy;
 

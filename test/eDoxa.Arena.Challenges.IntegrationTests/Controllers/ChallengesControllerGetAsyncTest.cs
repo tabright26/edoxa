@@ -9,9 +9,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
+using eDoxa.Arena.Challenges.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -57,9 +56,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         {
             // Arrange
             const int count = 5;
-            var challengeFaker = new ChallengeFaker();
-            challengeFaker.UseSeed(1000);
-            var challenges = challengeFaker.Generate(count);
+
+            var challengeFaker = TestData.ChallengeFactory.CreateFaker(1000);
+
+            var challenges = challengeFaker.FakeChallenges(count);
 
             _httpClient = ApiFactory.CreateClient();
             var testServer = ApiFactory.Server;

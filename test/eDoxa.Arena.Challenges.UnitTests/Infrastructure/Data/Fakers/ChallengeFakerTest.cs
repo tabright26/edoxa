@@ -10,8 +10,8 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Assertions.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Assertions.Extensions;
 
 using FluentAssertions;
 

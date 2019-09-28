@@ -11,7 +11,7 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 
 using FluentAssertions;

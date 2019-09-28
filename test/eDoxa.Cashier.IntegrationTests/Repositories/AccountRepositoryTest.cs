@@ -7,11 +7,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.IntegrationTests.Helpers;
+using eDoxa.Cashier.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -37,9 +36,9 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
         [InlineData(1000)]
         public async Task AccountScenario(int seed)
         {
-            var accountFaker = new AccountFaker();
-            accountFaker.UseSeed(seed);
-            var fakeAccount = accountFaker.Generate();
+            var accountFaker = TestData.AccountFactory.CreateFaker(seed);
+
+            var fakeAccount = accountFaker.FakeAccount();
 
             ApiFactory.CreateClient();
             var testServer = ApiFactory.Server;

@@ -7,9 +7,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
-using eDoxa.Cashier.UnitTests.Helpers;
-using eDoxa.Storage.Azure.File;
+using eDoxa.Cashier.UnitTests.TestHelpers;
 
 using FluentAssertions;
 
@@ -19,6 +17,10 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class CashierFileStorageTest : UnitTest
     {
+        public CashierFileStorageTest(CashierFakerFixture faker) : base(faker)
+        {
+        }
+
         [Fact]
         public async Task GetChallengePayoutStructuresAsync_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
         {
@@ -30,10 +32,6 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(56);
-        }
-
-        public CashierFileStorageTest(CashierFakerFixture faker) : base(faker)
-        {
         }
     }
 }

@@ -8,12 +8,11 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -85,11 +84,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(27852992);
 
-            challengeFaker.UseSeed(27852992);
-
-            var challenges = challengeFaker.Generate(2);
+            var challenges = challengeFaker.FakeChallenges(2);
 
             var mockChallengeQuery = new Mock<IChallengeQuery>();
 
@@ -158,11 +155,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            var challengeFaker = new ChallengeFaker();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(27852992);
 
-            challengeFaker.UseSeed(27852992);
-
-            var challenge = challengeFaker.Generate();
+            var challenge = challengeFaker.FakeChallenge();
 
             var mockChallengeQuery = new Mock<IChallengeQuery>();
 

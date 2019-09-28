@@ -22,7 +22,7 @@ using Moq;
 
 using Xunit;
 
-using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
+using static eDoxa.Identity.UnitTests.TestHelpers.Extensions.MapperExtensions;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {

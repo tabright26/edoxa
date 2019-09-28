@@ -6,12 +6,11 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Assertions.Extensions;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Assertions.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 using eDoxa.Seedwork.Testing;
 
 using Xunit;
@@ -28,11 +27,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         public async Task FetchChallengesAsync_FromRepository_ShouldNotBeNull()
         {
             //Arrange
-            var challengeFaker = new ChallengeFaker();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(1);
 
-            challengeFaker.UseSeed(1);
-
-            var fakeChallenges = challengeFaker.Generate(5);
+            var fakeChallenges = challengeFaker.FakeChallenges(5);
 
             using var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>();
 
@@ -61,11 +58,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         public async Task FindChallengeAsync_FromRepository_ShouldNotBeNull()
         {
             //Arrange
-            var challengeFaker = new ChallengeFaker();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(1);
 
-            challengeFaker.UseSeed(1);
-
-            var fakeChallenge = challengeFaker.Generate();
+            var fakeChallenge = challengeFaker.FakeChallenge();
 
             using var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>();
 

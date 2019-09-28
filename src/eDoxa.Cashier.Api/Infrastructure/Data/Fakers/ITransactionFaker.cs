@@ -12,8 +12,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 {
     public interface ITransactionFaker
     {
-        IReadOnlyCollection<ITransaction> FakeTransactions(int count);
+        IReadOnlyCollection<ITransaction> FakeTransactions(int count, string? ruleSets = null);
 
-        ITransaction FakeTransaction();
+        ITransaction FakeTransaction(string? ruleSets = null);
     }
 }

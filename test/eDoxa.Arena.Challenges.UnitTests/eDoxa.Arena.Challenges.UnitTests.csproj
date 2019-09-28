@@ -10,10 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Helpers\Stubs\LeagueOfLegends\Matches.json">
+    <Content Include="TestHelpers\Stubs\LeagueOfLegends\Matches.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Helpers\Stubs\LeagueOfLegends\MatchReferences.json">
+    <Content Include="TestHelpers\Stubs\LeagueOfLegends\MatchReferences.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

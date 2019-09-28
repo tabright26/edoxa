@@ -50,9 +50,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             {
                 if (!_context.Accounts.Any())
                 {
-                    var accountFaker = new AccountFaker();
+                    IAccountFaker accountFaker = new AccountFaker();
 
-                    var adminAccount = accountFaker.Generate(AccountFaker.AdminAccount);
+                    var adminAccount = accountFaker.FakeAccount(AccountFaker.AdminAccount);
 
                     var moneyAccount = new MoneyAccount(adminAccount);
 

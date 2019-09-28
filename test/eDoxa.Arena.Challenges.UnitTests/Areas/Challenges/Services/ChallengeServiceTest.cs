@@ -10,14 +10,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
@@ -75,9 +74,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
         public void RegisterParticipantAsync_GameAccountIdNullReference_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-            challengeFaker.UseSeed(89892334);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(89892334, null, ChallengeState.Inscription);
+
+            var challenge = challengeFaker.FakeChallenge();
 
             _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(challenge)
@@ -111,9 +110,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
         public async Task RegisterParticipantAsync_ShouldBeVerified()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.Inscription);
-            challengeFaker.UseSeed(39042334);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(39042334, null, ChallengeState.Inscription);
+            var challenge = challengeFaker.FakeChallenge();
             var participantCount = challenge.Entries - challenge.Participants.Count;
             participantCount -= 1;
 
@@ -248,9 +246,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
         public async Task SynchronizeAsync_ShouldBeVerified()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
-            challengeFaker.UseSeed(86597858);
-            var challenges = challengeFaker.Generate(5);
+            var challengeFaker = ChallengeFaker.Factory.CreateFaker(86597858, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+
+            var challenges = challengeFaker.FakeChallenges(5);
 
             var synchronizedAt = new UtcNowDateTimeProvider();
 

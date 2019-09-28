@@ -13,7 +13,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.IntegrationTests.Helpers;
+using eDoxa.Cashier.IntegrationTests.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;

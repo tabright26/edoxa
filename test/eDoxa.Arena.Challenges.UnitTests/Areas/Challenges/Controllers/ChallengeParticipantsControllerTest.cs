@@ -13,9 +13,9 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Mocks;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Mocks;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;

@@ -6,7 +6,7 @@
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
