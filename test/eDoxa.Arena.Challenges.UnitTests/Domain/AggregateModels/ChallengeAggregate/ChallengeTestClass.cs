@@ -19,9 +19,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ChallengeTest : UnitTest
+    public sealed class ChallengeTestClass : UnitTestClass
     {
-        public ChallengeTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ChallengeTestClass(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -32,7 +32,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(78536956, state: state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(78536956, state: state);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -48,7 +48,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenInscriptionFulfilled_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(43897896, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(43897896, null, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenParticipantIsRegistered_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(48536956, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(48536956, null, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -88,7 +88,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenStateInscription_ShouldHaveOneMore()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(85256956, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(85256956, null, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 

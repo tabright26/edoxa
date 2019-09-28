@@ -25,9 +25,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 {
-    public sealed class ParticipantMatchesControllerTest : UnitTest
+    public sealed class ParticipantMatchesControllerTestClass : UnitTestClass
     {
-        public ParticipantMatchesControllerTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ParticipantMatchesControllerTestClass(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -87,7 +87,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(95632852, null, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(95632852, null, ChallengeState.InProgress);
 
             var challenge = challengeFaker.FakeChallenge();
 

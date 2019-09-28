@@ -8,8 +8,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 {
-    public interface IChallengeFakerFactory
+    public interface IFakerFactory
     {
-        IChallengeFaker CreateFaker(int? seed, ChallengeGame? game = null, ChallengeState? state = null);
+        IChallengeFaker CreateChallengeFaker(int? seed, ChallengeGame? game = null, ChallengeState? state = null);
     }
 }

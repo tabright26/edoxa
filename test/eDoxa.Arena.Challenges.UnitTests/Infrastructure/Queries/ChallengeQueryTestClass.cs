@@ -28,11 +28,11 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 {
-    public sealed class ChallengeQueryTest : UnitTest
+    public sealed class ChallengeQueryTestClass : UnitTestClass
     {
         private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
 
-        public ChallengeQueryTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ChallengeQueryTestClass(TestDataFixture testData) : base(testData)
         {
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         }
@@ -45,7 +45,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
         public async Task FetchUserChallengeHistoryAsync_WhenChallengeQuery_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(84566374, game, state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(84566374, game, state);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -80,7 +80,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
         public async Task FetchChallengesAsync_ShouldHaveCount(ChallengeGame game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(84936374);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(84936374);
 
             var fakeChallenges = challengeFaker.FakeChallenges(4);
 
@@ -112,7 +112,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
         public async Task FindChallengeAsync_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(84568994, game, state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(84568994, game, state);
 
             var challenge = challengeFaker.FakeChallenge();
 

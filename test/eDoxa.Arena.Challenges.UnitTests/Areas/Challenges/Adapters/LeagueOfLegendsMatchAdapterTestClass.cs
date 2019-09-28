@@ -23,9 +23,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
 {
-    public sealed class LeagueOfLegendsMatchAdapterTest : UnitTest
+    public sealed class LeagueOfLegendsMatchAdapterTestClass : UnitTestClass
     {
-        public LeagueOfLegendsMatchAdapterTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public LeagueOfLegendsMatchAdapterTestClass(TestDataFixture testData) : base(testData)
         {
             _mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsProxy>();
 
@@ -43,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
         public async Task GetMatchAsync_WhenGameAccountIdIsParticipant_ShouldBeLeagueOfLegends()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(24788394, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(24788394, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
 
             var challenge = challengeFaker.FakeChallenge();
 

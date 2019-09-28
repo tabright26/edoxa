@@ -19,9 +19,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class ArenaChallengeTestFileStorageTest : UnitTest
+    public sealed class ArenaChallengeTestClassFileStorageTestClass : UnitTestClass
     {
-        public ArenaChallengeTestFileStorageTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ArenaChallengeTestClassFileStorageTestClass(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         public async Task GetChallengesAsync_WithFortyRecords_ShouldHaveCountOfForty()
         {
             // Arrange
-            var challengeFakerFactory = new ChallengeFakerFactory();
+            var challengeFakerFactory = new FakerFactory();
             var fileStorage = new AzureFileStorage();
             var storage = new ArenaChallengeTestFileStorage(fileStorage, challengeFakerFactory);
 
@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithAdmin_ShouldContainAdminId()
         {
             // Arrange
-            var challengeFakerFactory = new ChallengeFakerFactory();
+            var challengeFakerFactory = new FakerFactory();
             var fileStorage = new AzureFileStorage();
             var storage = new ArenaChallengeTestFileStorage(fileStorage, challengeFakerFactory);
 
@@ -59,7 +59,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var challengeFakerFactory = new ChallengeFakerFactory();
+            var challengeFakerFactory = new FakerFactory();
             var fileStorage = new AzureFileStorage();
             var storage = new ArenaChallengeTestFileStorage(fileStorage, challengeFakerFactory);
 

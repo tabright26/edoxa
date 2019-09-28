@@ -15,9 +15,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Strategies
 {
-    public sealed class LeagueOfLegendsScoringStrategyTest : UnitTest
+    public sealed class LeagueOfLegendsScoringStrategyTestClass : UnitTestClass
     {
-        public LeagueOfLegendsScoringStrategyTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public LeagueOfLegendsScoringStrategyTestClass(TestDataFixture testData) : base(testData)
         {
         }
 

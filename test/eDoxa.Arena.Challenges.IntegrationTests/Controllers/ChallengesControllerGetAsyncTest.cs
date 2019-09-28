@@ -21,8 +21,7 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class ChallengesControllerGetAsyncTest : ControllerTest
+    public sealed class ChallengesControllerGetAsyncTest : IntegrationTestClass
     {
         public ChallengesControllerGetAsyncTest(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
@@ -57,7 +56,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             // Arrange
             const int count = 5;
 
-            var challengeFaker = TestData.ChallengeFactory.CreateFaker(1000);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000);
 
             var challenges = challengeFaker.FakeChallenges(count);
 

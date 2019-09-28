@@ -21,7 +21,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
     public sealed class UserDataSet
     {
         private static readonly IImmutableSet<User> TestUsers =
-            new ArenaChallengeTestFileStorage(new AzureFileStorage(), new ChallengeFakerFactory()).GetUsersAsync().Result;
+            new ArenaChallengeTestFileStorage(new AzureFileStorage(), new FakerFactory()).GetUsersAsync().Result;
 
         private static ICollection<User> _testUsers = new HashSet<User>(TestUsers);
 

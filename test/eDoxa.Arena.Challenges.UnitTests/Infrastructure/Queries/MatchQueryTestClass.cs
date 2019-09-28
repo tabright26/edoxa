@@ -22,9 +22,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 {
-    public sealed class MatchQueryTest : UnitTest
+    public sealed class MatchQueryTestClass : UnitTestClass
     {
-        public MatchQueryTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public MatchQueryTestClass(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -36,7 +36,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
         public async Task FindParticipantMatchesAsync_ShouldBeEquivalentToParticipantMatchList(ChallengeGame game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(89568322, game, state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(89568322, game, state);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
         public async Task FindMatchAsync_ShouldBeEquivalentToMatch(ChallengeGame game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(83459632, game, state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(83459632, game, state);
 
             var challenge = challengeFaker.FakeChallenge();
 

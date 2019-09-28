@@ -21,10 +21,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
-    [Collection(nameof(ServiceCollection))]
-    public sealed class ChallengeServiceSynchronizeAsyncTest : ServiceTest
+    public sealed class ChallengeIntegrationSynchronizeAsyncTestClass : IntegrationTestClass
     {
-        public ChallengeServiceSynchronizeAsyncTest(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public ChallengeIntegrationSynchronizeAsyncTestClass(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
         }
 
@@ -33,7 +32,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         public async Task ShouldHaveCountFive()
         {
             // Arrange
-            var challengeFaker = TestData.ChallengeFactory.CreateFaker(1, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
 
             var challenges = challengeFaker.FakeChallenges(5);
 

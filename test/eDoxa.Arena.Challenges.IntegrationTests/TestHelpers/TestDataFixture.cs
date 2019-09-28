@@ -26,13 +26,12 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.TestHelpers
 
             AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
 
-            FileStorage = new ArenaChallengeTestFileStorage(new AzureFileStorage(), new ChallengeFakerFactory());
-
-            ChallengeFactory = new ChallengeFakerFactory();
+            FileStorage = new ArenaChallengeTestFileStorage(new AzureFileStorage(), new FakerFactory());
+            FakerFactory = new FakerFactory();
         }
 
-        public ArenaChallengeTestFileStorage FileStorage { get; }
+        public IFakerFactory FakerFactory { get; }
 
-        public IChallengeFakerFactory ChallengeFactory { get; }
+        public IArenaChallengeTestFileStorage FileStorage { get; }
     }
 }

@@ -23,8 +23,7 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class MatchesControllerGetByIdAsyncTest : ControllerTest
+    public sealed class MatchesControllerGetByIdAsyncTest : IntegrationTestClass
     {
         public MatchesControllerGetByIdAsyncTest(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
@@ -41,7 +40,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var challengeFaker = TestData.ChallengeFactory.CreateFaker(1, null, ChallengeState.Ended);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, null, ChallengeState.Ended);
 
             var challenge = challengeFaker.FakeChallenge();
 

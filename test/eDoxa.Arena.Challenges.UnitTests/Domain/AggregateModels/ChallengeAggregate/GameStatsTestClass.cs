@@ -19,9 +19,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class GameStatsTest : UnitTest
+    public sealed class GameStatsTestClass : UnitTestClass
     {
-        public GameStatsTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public GameStatsTestClass(TestDataFixture testData) : base(testData)
         {
         }
 

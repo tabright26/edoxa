@@ -17,9 +17,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 {
-    public sealed class ChallengeRepositoryTest : UnitTest
+    public sealed class ChallengeRepositoryTestClass : UnitTestClass
     {
-        public ChallengeRepositoryTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ChallengeRepositoryTestClass(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         public async Task FetchChallengesAsync_FromRepository_ShouldNotBeNull()
         {
             //Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(1);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1);
 
             var fakeChallenges = challengeFaker.FakeChallenges(5);
 
@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         public async Task FindChallengeAsync_FromRepository_ShouldNotBeNull()
         {
             //Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(1);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1);
 
             var fakeChallenge = challengeFaker.FakeChallenge();
 

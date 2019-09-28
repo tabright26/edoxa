@@ -20,9 +20,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ParticipantTest : UnitTest
+    public sealed class ParticipantTestClass : UnitTestClass
     {
-        public ParticipantTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ParticipantTestClass(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -35,7 +35,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void SnapshotMatch_ParticipantMatches_ShouldNotBeEmpty(ChallengeGame game)
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(null, game);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, game);
             var challenge = challengeFaker.FakeChallenge();
             var participant = challenge.Participants.First();
             var gameReference = Faker.Game().Reference(game);
@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Matches_ShouldHaveCountOf()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(null, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
             var challenge = challengeFaker.FakeChallenge();
 
             // Act

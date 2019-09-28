@@ -29,9 +29,9 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
 {
     //TODO: Maybe split this ?
 
-    public sealed class ChallengeServiceTest : UnitTest
+    public sealed class ChallengeServiceTestClass : UnitTestClass
     {
-        public ChallengeServiceTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ChallengeServiceTestClass(TestDataFixture testData) : base(testData)
         {
             _mockChallengeRepository = new Mock<IChallengeRepository>();
             _mockGameReferencesFactory = new Mock<IGameReferencesFactory>();
@@ -74,7 +74,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
         public void RegisterParticipantAsync_GameAccountIdNullReference_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(89892334, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(89892334, null, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -110,7 +110,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
         public async Task RegisterParticipantAsync_ShouldBeVerified()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(39042334, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, null, ChallengeState.Inscription);
             var challenge = challengeFaker.FakeChallenge();
             var participantCount = challenge.Entries - challenge.Participants.Count;
             participantCount -= 1;
@@ -246,7 +246,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
         public async Task SynchronizeAsync_ShouldBeVerified()
         {
             // Arrange
-            var challengeFaker = ChallengeFaker.Factory.CreateFaker(86597858, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(86597858, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
 
             var challenges = challengeFaker.FakeChallenges(5);
 

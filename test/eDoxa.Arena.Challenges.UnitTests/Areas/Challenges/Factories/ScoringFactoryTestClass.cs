@@ -21,9 +21,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
 {
-    public sealed class ScoringFactoryTest : UnitTest
+    public sealed class ScoringFactoryTestClass : UnitTestClass
     {
-        public ScoringFactoryTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public ScoringFactoryTestClass(TestDataFixture testData) : base(testData)
         {
         }
 

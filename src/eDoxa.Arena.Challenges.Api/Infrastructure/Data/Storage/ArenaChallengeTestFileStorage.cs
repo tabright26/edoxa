@@ -24,10 +24,10 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
         private readonly IAzureFileStorage _fileStorage;
         private readonly IChallengeFaker _challengeFaker;
 
-        public ArenaChallengeTestFileStorage(IAzureFileStorage fileStorage, IChallengeFakerFactory factory)
+        public ArenaChallengeTestFileStorage(IAzureFileStorage fileStorage, IFakerFactory factory)
         {
             _fileStorage = fileStorage;
-            _challengeFaker = factory.CreateFaker(null);
+            _challengeFaker = factory.CreateChallengeFaker(null);
         }
 
         public async Task<IImmutableSet<User>> GetUsersAsync()

@@ -27,9 +27,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
 {
-    public sealed class LeagueOfLegendsMatchService : UnitTest
+    public sealed class LeagueOfLegendsMatchService : UnitTestClass
     {
-        public LeagueOfLegendsMatchService(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public LeagueOfLegendsMatchService(TestDataFixture testData) : base(testData)
         {
         }
 

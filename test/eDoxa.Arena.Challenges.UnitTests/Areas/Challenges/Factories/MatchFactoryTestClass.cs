@@ -22,9 +22,9 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
 {
-    public sealed class MatchFactoryTest : UnitTest
+    public sealed class MatchFactoryTestClass : UnitTestClass
     {
-        public MatchFactoryTest(ChallengeFakerFixture challengeFaker) : base(challengeFaker)
+        public MatchFactoryTestClass(TestDataFixture testData) : base(testData)
         {
         }
 

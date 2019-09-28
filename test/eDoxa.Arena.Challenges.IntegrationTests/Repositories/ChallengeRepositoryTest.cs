@@ -27,8 +27,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 {
     // TODO: These methods must be refactored into smaller tests.
     // TODO: Avoid using Theory in integration tests.
-    [Collection(nameof(RepositoryCollection))]
-    public sealed class ChallengeRepositoryTest : RepositoryTest
+    public sealed class ChallengeRepositoryTest : IntegrationTestClass
     {
         public ChallengeRepositoryTest(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
@@ -42,7 +41,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
         {
             // Arrange
             var faker = new Faker();
-            var challengeFaker = TestData.ChallengeFactory.CreateFaker(seed, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, null, ChallengeState.Inscription);
             var fakeChallenge = challengeFaker.FakeChallenge();
 
             ApiFactory.CreateClient();

@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
             builder.RegisterType<LeagueOfLegendsMatchAdapter>().As<IMatchAdapter>().SingleInstance();
 
             // Factories
-            builder.RegisterType<ChallengeFakerFactory>().As<IChallengeFakerFactory>().SingleInstance();
+            builder.RegisterType<FakerFactory>().As<IFakerFactory>().SingleInstance();
             builder.RegisterType<ScoringFactory>().As<IScoringFactory>().SingleInstance();
             builder.RegisterType<GameReferencesFactory>().As<IGameReferencesFactory>().SingleInstance();
             builder.RegisterType<MatchFactory>().As<IMatchFactory>().SingleInstance();
