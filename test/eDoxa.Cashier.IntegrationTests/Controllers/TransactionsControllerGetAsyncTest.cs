@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,6 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -27,14 +28,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class TransactionsControllerGetAsyncTest : ControllerTest
     {
-        public TransactionsControllerGetAsyncTest(CashierApiFactory factory)
+        public TransactionsControllerGetAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            _factory = factory;
         }
-
-        private readonly CashierApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -49,7 +48,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -60,8 +59,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
@@ -79,7 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             accountFaker.UseSeed(1);
             var account = accountFaker.Generate();
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -90,8 +88,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();

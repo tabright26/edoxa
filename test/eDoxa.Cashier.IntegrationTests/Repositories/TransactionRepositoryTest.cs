@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionRepositoryTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,12 +10,11 @@ using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
-
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
@@ -23,15 +22,11 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
 {
     // TODO: These methods must be refactored into smaller tests.
     // TODO: Avoid using Theory in integration tests.
-    public sealed class TransactionRepositoryTest : IClassFixture<CashierApiFactory>
+    [Collection(nameof(RepositoryCollection))]
+    public sealed class TransactionRepositoryTest : RepositoryTest
     {
-        private readonly TestServer _testServer;
-
-        public TransactionRepositoryTest(CashierApiFactory cashierApiFactory)
+        public TransactionRepositoryTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            cashierApiFactory.CreateClient();
-            _testServer = cashierApiFactory.Server;
-            _testServer.CleanupDbContext();
         }
 
         [Theory]
@@ -47,16 +42,19 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 
-            await _testServer.UsingScopeAsync(
+            ApiFactory.CreateClient();
+            var testServer = ApiFactory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(fakeAccount);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<ITransactionRepository>();
@@ -64,10 +62,9 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
                     transaction?.Status.Should().Be(TransactionStatus.Pending);
-                }
-            );
+                });
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<ITransactionRepository>();
@@ -76,10 +73,9 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction.Should().Be(moneyDepositTransaction);
                     transaction?.MarkAsSucceded();
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<ITransactionRepository>();
@@ -87,8 +83,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
                     transaction?.Status.Should().Be(TransactionStatus.Succeded);
-                }
-            );
+                });
         }
 
         [Theory]
@@ -104,16 +99,19 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 
-            await _testServer.UsingScopeAsync(
+            ApiFactory.CreateClient();
+            var testServer = ApiFactory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(fakeAccount);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<ITransactionRepository>();
@@ -121,10 +119,9 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
                     transaction?.Status.Should().Be(TransactionStatus.Pending);
-                }
-            );
+                });
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<ITransactionRepository>();
@@ -133,10 +130,9 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction.Should().Be(moneyDepositTransaction);
                     transaction?.MarkAsFailed();
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
-            await _testServer.UsingScopeAsync(
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<ITransactionRepository>();
@@ -144,8 +140,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     transaction.Should().NotBeNull();
                     transaction.Should().Be(moneyDepositTransaction);
                     transaction?.Status.Should().Be(TransactionStatus.Failed);
-                }
-            );
+                });
         }
     }
 }

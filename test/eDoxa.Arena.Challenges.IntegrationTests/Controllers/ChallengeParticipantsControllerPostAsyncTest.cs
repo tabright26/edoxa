@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeParticipantsControllerPostAsyncTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,6 +17,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -32,13 +33,11 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengeParticipantsControllerPostAsyncTest : IClassFixture<ArenaChallengeApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class ChallengeParticipantsControllerPostAsyncTest : ControllerTest
     {
-        private readonly ArenaChallengeApiFactory _factory;
-
-        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengeApiFactory factory)
+        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            _factory = factory;
         }
 
         private HttpClient _httpClient;
@@ -59,21 +58,21 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             var userId = new UserId();
             var gameAccountId = new GameAccountId(Guid.NewGuid().ToString());
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString())).WithWebHostBuilder(
-                builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                    container =>
-                    {
-                        var mock = new Mock<IIdentityService>();
+            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+                .WithWebHostBuilder(
+                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            var mock = new Mock<IIdentityService>();
 
-                        mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>())).ReturnsAsync(true);
+                            mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
+                                .ReturnsAsync(true);
 
-                        mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
-                            .ReturnsAsync(gameAccountId);
+                            mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
+                                .ReturnsAsync(gameAccountId);
 
-                        container.RegisterInstance(mock.Object).As<IIdentityService>();
-                    }
-                )
-            );
+                            container.RegisterInstance(mock.Object).As<IIdentityService>();
+                        }));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -85,8 +84,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(challenge);
                     await challengeRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));

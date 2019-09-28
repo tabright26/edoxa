@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
@@ -27,14 +28,12 @@ using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class AccountDepositControllerPostAsyncTest : ControllerTest
     {
-        public AccountDepositControllerPostAsyncTest(CashierApiFactory factory)
+        public AccountDepositControllerPostAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            _factory = factory;
         }
-
-        private readonly CashierApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -49,7 +48,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+            var factory =
+                ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -76,7 +76,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+            var factory =
+                ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

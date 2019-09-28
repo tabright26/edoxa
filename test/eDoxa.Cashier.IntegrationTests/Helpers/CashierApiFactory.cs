@@ -1,5 +1,5 @@
-﻿// Filename: CashierWebApplicationFactory.cs
-// Date Created: 2019-07-27
+﻿// Filename: CashierApiFactory.cs
+// Date Created: 2019-09-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,7 +19,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Cashier.IntegrationTests
+namespace eDoxa.Cashier.IntegrationTests.Helpers
 {
     public sealed class CashierApiFactory : WebApiFactory<Startup>
     {
@@ -33,8 +33,7 @@ namespace eDoxa.Cashier.IntegrationTests
                 container =>
                 {
                     container.RegisterModule<MockServiceBusModule>();
-                }
-            );
+                });
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

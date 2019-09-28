@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengesControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,29 +11,25 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengesControllerGetAsyncTest : IClassFixture<ArenaChallengeApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class ChallengesControllerGetAsyncTest : ControllerTest
     {
-        public ChallengesControllerGetAsyncTest(ArenaChallengeApiFactory arenaChallengeApiFactory)
+        public ChallengesControllerGetAsyncTest(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            _httpClient = arenaChallengeApiFactory.CreateClient();
-            _testServer = arenaChallengeApiFactory.Server;
-            _testServer.CleanupDbContext();
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -43,6 +39,11 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
+            // Arrange
+            _httpClient = ApiFactory.CreateClient();
+            var testServer = ApiFactory.Server;
+            testServer.CleanupDbContext();
+
             // Act
             using var response = await this.ExecuteAsync();
 
@@ -60,14 +61,17 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             challengeFaker.UseSeed(1000);
             var challenges = challengeFaker.Generate(count);
 
-            await _testServer.UsingScopeAsync(
+            _httpClient = ApiFactory.CreateClient();
+            var testServer = ApiFactory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(challenges);
                     await challengeRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();

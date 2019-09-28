@@ -1,5 +1,5 @@
-﻿// Filename: ArenaChallengesWebApplicationFactory.cs
-// Date Created: 2019-07-27
+﻿// Filename: ArenaChallengeApiFactory.cs
+// Date Created: 2019-09-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -24,7 +24,7 @@ using Microsoft.Extensions.Configuration;
 
 using Moq;
 
-namespace eDoxa.Arena.Challenges.IntegrationTests
+namespace eDoxa.Arena.Challenges.IntegrationTests.Helpers
 {
     public sealed class ArenaChallengeApiFactory : WebApiFactory<Startup>
     {
@@ -44,9 +44,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests
                             leagueOfLegendsService => leagueOfLegendsService.GetMatchReferencesAsync(
                                 It.IsAny<string>(),
                                 It.IsAny<DateTime>(),
-                                It.IsAny<DateTime>()
-                            )
-                        )
+                                It.IsAny<DateTime>()))
                         .ReturnsAsync(Array.Empty<LeagueOfLegendsMatchReferenceDto>());
 
                     mockLeagueOfLegendsService.Setup(leagueOfLegendsService => leagueOfLegendsService.GetMatchAsync(It.IsAny<string>()))
@@ -55,8 +53,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests
                     container.RegisterInstance(mockLeagueOfLegendsService.Object).As<ILeagueOfLegendsService>().SingleInstance();
 
                     container.RegisterModule<MockServiceBusModule>();
-                }
-            );
+                });
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

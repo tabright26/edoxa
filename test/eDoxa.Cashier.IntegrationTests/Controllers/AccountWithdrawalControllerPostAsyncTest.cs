@@ -13,6 +13,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
@@ -28,14 +29,12 @@ using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountWithdrawalControllerPostAsyncTest : IClassFixture<CashierApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class AccountWithdrawalControllerPostAsyncTest : ControllerTest
     {
-        public AccountWithdrawalControllerPostAsyncTest(CashierApiFactory factory)
+        public AccountWithdrawalControllerPostAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            _factory = factory;
         }
-
-        private readonly CashierApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -50,7 +49,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(
+            var factory = ApiFactory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
@@ -76,7 +75,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
-            var factory = _factory.WithClaims(
+            var factory = ApiFactory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, new UserId().ToString()),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
@@ -101,7 +100,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             account.CreateTransaction(transaction);
 
-            var factory = _factory.WithClaims(
+            var factory = ApiFactory.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
