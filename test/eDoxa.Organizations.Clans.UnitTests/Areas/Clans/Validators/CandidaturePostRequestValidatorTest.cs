@@ -52,8 +52,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
 
         private static IEnumerable<object[]> InvalidClanIds()
         {
-            yield return new object[] {ClanId.Empty, CandidatureErrorDescriber.ClanIdRequired() };
-            yield return new object[] {1, CandidatureErrorDescriber.ClanIdRequired() };
+            yield return new object[] {null, CandidatureErrorDescriber.ClanIdRequired() };
         }
     }
 }

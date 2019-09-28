@@ -23,12 +23,10 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
     public sealed class ClanService : IClanService
     {
         private readonly IClanRepository _clanRepository;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public ClanService(IClanRepository clanRepository, IServiceBusPublisher serviceBusPublisher)
+        public ClanService(IClanRepository clanRepository)
         {
             _clanRepository = clanRepository;
-            _serviceBusPublisher = serviceBusPublisher;
         }
 
         public async Task<IReadOnlyCollection<Clan>> FetchClansAsync()
@@ -44,6 +42,13 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
         public async Task<ValidationResult> CreateClanAsync(UserId userId, string name)
         {
             var clans = await _clanRepository.FetchClansAsync();
+
+            if (await this.HasMember(userId))
+            {
+                var failure = new ValidationFailure(string.Empty, "User already in a clan.");
+
+                return failure.ToResult();
+            }
 
             if (clans.Any(clan => clan.Name == name))
             {
@@ -78,31 +83,22 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
             return await _clanRepository.FindMemberAsync(clan.Id, memberId);
         }
 
-        public async Task<ValidationResult> AddMemberToClanAsync(Clan clan, IMemberInfo memberInfo)
+        public async Task<ValidationResult> KickMemberFromClanAsync(UserId userId, Clan clan, MemberId memberId)
         {
-            if (clan.Members.Any(member => member.UserId == memberInfo.UserId && member.ClanId == memberInfo.ClanId))
+            if (!clan.IsOwner(userId)) //Is the admin of the clan.
             {
-                var failure = new ValidationFailure(string.Empty, "Member already in the clan.");
+                var failure = new ValidationFailure(string.Empty, "Permission required.");
+
                 return failure.ToResult();
             }
 
-            clan.AddMember(memberInfo);
-            await _clanRepository.CommitAsync();
-            return new ValidationResult();
-        }
-
-
-        public async Task<ValidationResult> KickMemberFromClanAsync(Clan clan, MemberId memberId)
-        {
-            if (clan.Members.All(member => member.Id != memberId))
+            if (!clan.RemoveNonOwnerMember(memberId)) //Clan specific rules
             {
-                var failure = new ValidationFailure(string.Empty, "Member not in the clan.");
+                var failure = new ValidationFailure(string.Empty, "Member not in the clan or is owner.");
+
                 return failure.ToResult();
             }
 
-            var memberToKick = clan.Members.SingleOrDefault(member => member.Id == memberId);
-
-            clan.Members.Remove(memberToKick);
             await _clanRepository.CommitAsync();
             return new ValidationResult();
         }
@@ -110,32 +106,20 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
         public async Task<ValidationResult> LeaveClanAsync(Clan clan, UserId userId)
         {
-            var memberToRemove = clan.Members.SingleOrDefault(member => member.UserId == userId);
+            clan.RemoveUser(userId);
 
-            if (memberToRemove != null) //Member leaves the clan
+            if (clan.IsEmpty())
             {
-                clan.Members.Remove(memberToRemove);
+                _clanRepository.Delete(clan);
             }
-            else
-            {
-                if (clan.Members.Any() && clan.OwnerId == userId) //Owner leaves the clan with member left
-                {
-                    var nextOwner = clan.Members.First();
-                    clan.ChangeOwner(nextOwner);
-                    clan.Members.Remove(nextOwner);
-                }
-                else if (clan.OwnerId == userId)//Owner leaves the clan without member left
-                {
-                    _clanRepository.Delete(clan);
-                }
-                else
-                {
-                    var failure = new ValidationFailure(string.Empty, "User not in the clan.");
-                    return failure.ToResult();
-                }
-            }
+
             await _clanRepository.CommitAsync();
             return new ValidationResult();
+        }
+
+        public async Task<bool> HasMember(UserId userId)
+        {
+            return await _clanRepository.HasMember(userId);
         }
     }
 }

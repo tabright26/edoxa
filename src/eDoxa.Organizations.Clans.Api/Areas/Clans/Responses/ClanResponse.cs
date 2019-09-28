@@ -31,6 +31,6 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Responses
         public Guid OwnerId { get; set; }
 
         [JsonProperty("members")]
-        public ICollection<Member> Members { get; set; }
+        public ICollection<MemberResponse> Members { get; set; }
     }
 }

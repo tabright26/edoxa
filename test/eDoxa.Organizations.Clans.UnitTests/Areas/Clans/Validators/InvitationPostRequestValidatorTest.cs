@@ -52,8 +52,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
 
         private static IEnumerable<object[]> InvalidUserIds()
         {
-            yield return new object[] {UserId.Empty, InvitationErrorDescriber.UserIdRequired() };
-            yield return new object[] {1, InvitationErrorDescriber.UserIdRequired() };
+            yield return new object[] {null, InvitationErrorDescriber.UserIdRequired() };
         }
 
         [DataTestMethod]
@@ -86,8 +85,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
 
         private static IEnumerable<object[]> InvalidClanIds()
         {
-            yield return new object[] {ClanId.Empty, InvitationErrorDescriber.ClanIdRequired() };
-            yield return new object[] {1, InvitationErrorDescriber.ClanIdRequired() };
+            yield return new object[] {null, InvitationErrorDescriber.ClanIdRequired() };
         }
     }
 }

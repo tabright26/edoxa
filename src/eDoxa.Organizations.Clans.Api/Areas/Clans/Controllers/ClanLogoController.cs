@@ -31,6 +31,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             _clanService = clanService;
         }
 
+        /// <summary>
+        /// Get the logo of a specific clan.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
@@ -43,6 +46,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             return this.Ok(image);
         }
 
+        /// <summary>
+        /// Change or update the logo of a specific clan.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> PostAsync(ClanId clanId, [FromBody] FileStream logo)
         {

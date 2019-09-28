@@ -10,12 +10,14 @@ namespace eDoxa.Organizations.Clans.Domain.Models
 {
     public class Member : Entity<MemberId>
     {
-        public Member(IMemberInfo memberInfo) : this()
+        public Member(IMemberInfo memberInfo) : this(memberInfo.ClanId, memberInfo.UserId)
         {
-            UserId = memberInfo.UserId;
+        }
 
-            //Todo: Seriously, I dont think we need this ClanId, Member are already contained inside a clan and already has a clan foreing key.
-            ClanId = memberInfo.ClanId;
+        public Member(ClanId clanId, UserId userId) : this()
+        {
+            ClanId = clanId;
+            UserId = userId;
         }
 
         private Member()

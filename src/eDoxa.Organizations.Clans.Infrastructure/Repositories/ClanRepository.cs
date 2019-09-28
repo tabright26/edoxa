@@ -38,7 +38,7 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 
         public async Task<IReadOnlyCollection<Clan>> FetchClansAsync()
         {
-            return await _dbContext.Clans.ToListAsync();
+            return await _dbContext.Clans.Include(clan => clan.Members).ToListAsync();
         }
 
         public async Task<Clan?> FindClanAsync(ClanId clanId)
@@ -63,6 +63,11 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
         public async Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId)
         {
             return await _dbContext.Members.SingleOrDefaultAsync(member => member.Id == memberId && member.ClanId == clanId );
+        }
+
+        public async Task<bool> HasMember(UserId userId)
+        {
+            return await _dbContext.Members.AnyAsync(member => member.UserId == userId );
         }
 
         public async Task CommitAsync()

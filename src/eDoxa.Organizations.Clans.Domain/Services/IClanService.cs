@@ -35,10 +35,10 @@ namespace eDoxa.Organizations.Clans.Domain.Services
 
         Task<Member?> FindMemberAsync(Clan clan, MemberId memberId);
 
-        Task<ValidationResult> AddMemberToClanAsync(Clan clan, IMemberInfo memberInfo);
-
-        Task<ValidationResult> KickMemberFromClanAsync(Clan clan, MemberId memberId);
+        Task<ValidationResult> KickMemberFromClanAsync(UserId userId, Clan clan, MemberId memberId);
 
         Task<ValidationResult> LeaveClanAsync (Clan clan, UserId userId);
+
+        Task<bool> HasMember(UserId userId);
     }
 }

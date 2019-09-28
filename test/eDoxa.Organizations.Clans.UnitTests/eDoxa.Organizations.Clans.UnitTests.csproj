@@ -2,12 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Organizations.Clans.UnitTests</AssemblyName>
+    <RootNamespace>eDoxa.Organizations.Clans.UnitTests</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
     <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />

@@ -31,24 +31,5 @@ namespace eDoxa.Organizations.Clans.Api.Extensions
             return UserId.Parse(httpContext.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
         }
 
-        public static ClanId GetClanId(this IHttpContextAccessor accessor)
-        {
-            return ClanId.Parse(accessor.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
-        }
-
-        public static ClanId GetClanId(this HttpContext httpContext)
-        {
-            return ClanId.Parse(httpContext.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
-        }
-
-        //public static MemberId GetMemberId(this IHttpContextAccessor accessor)
-        //{
-        //    return MemberId.Parse(accessor.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
-        //}
-
-        //public static MemberId GetMemberId(this HttpContext httpContext)
-        //{
-        //    return MemberId.Parse(httpContext.GetClaimOrDefault(Subject) ?? throw new ArgumentNullException(Subject));
-        //}
     }
 }

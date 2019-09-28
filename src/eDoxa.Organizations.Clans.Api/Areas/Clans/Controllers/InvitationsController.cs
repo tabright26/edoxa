@@ -38,30 +38,40 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all invitations from a ClanId.
+        /// </summary>
         [HttpGet("byClanId")]
-        public async Task<IActionResult> GetAsync([FromQuery] ClanId clanId)
+        public async Task<IActionResult> GetByClanIdAsync([FromQuery] ClanId clanId)
         {
             var invitations = await _invitationService.FetchInvitationsAsync(clanId);
 
-            if (invitations == null)
+            if (!invitations.Any())
             {
                 return this.NoContent();
             }
+
             return this.Ok(_mapper.Map<IEnumerable<InvitationResponse>>(invitations));
         }
 
+        /// <summary>
+        /// Get all invitations from a UserId.
+        /// </summary>
         [HttpGet("byUserId")]
-        public async Task<IActionResult> GetAsync([FromQuery] UserId userId)
+        public async Task<IActionResult> GetByUserIdAsync([FromQuery] UserId userId)
         {
             var invitations = await _invitationService.FetchInvitationsAsync(userId);
 
-            if (invitations == null)
+            if (!invitations.Any())
             {
                 return this.NoContent();
             }
             return this.Ok(_mapper.Map<IEnumerable<InvitationResponse>>(invitations));
         }
 
+        /// <summary>
+        /// Get a specific invitation from the Id.
+        /// </summary>
         [HttpGet("{invitationId}")]
         public async Task<IActionResult> GetByIdAsync(InvitationId invitationId)
         {
@@ -69,29 +79,35 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 
             if (invitation == null)
             {
-                return this.NoContent();
+                return this.NotFound();
             }
             return this.Ok(_mapper.Map<InvitationResponse>(invitation));
         }
 
+        /// <summary>
+        /// Create invitation from a clan to a user.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> PostAsync(InvitationPostRequest invitationRequest)
         {
             if (ModelState.IsValid)
             {
-                var invitations = await _invitationService.FetchInvitationsAsync(invitationRequest.ClanId);
+                var userId = HttpContext.GetUserId();
 
-                if (invitations.Any(invitation => invitation.UserId == invitationRequest.UserId))
+                var clan = await _invitationService.FindClanAsync(invitationRequest.ClanId);
+
+                if (clan == null)
                 {
-                    return this.NotFound("Invitation already exist.");
+                    return this.NotFound("Clan does not exist.");
                 }
 
-                var result = await _invitationService.SendInvitationAsync(invitationRequest.ClanId, invitationRequest.UserId);
+                var result = await _invitationService.SendInvitationAsync(userId, invitationRequest.ClanId, invitationRequest.UserId);
 
                 if (result.IsValid)
                 {
                     return this.Ok("Invitation sent to user.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
             return this.BadRequest(ModelState);
@@ -101,30 +117,32 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         /// Accept invitation from a clan.
         /// </summary>
         [HttpPost("{invitationId}")]
-        public async Task<IActionResult> PostAsync(InvitationId invitationId)
+        public async Task<IActionResult> PostByIdAsync(InvitationId invitationId)
         {
             if (ModelState.IsValid)
             {
+                var userId = HttpContext.GetUserId();
                 var invitation = await _invitationService.FindInvitationAsync(invitationId);
 
                 if (invitation == null)
                 {
                     return this.NotFound("Invitation does not exist.");
                 }
-                else
-                {
-                    var result = await _invitationService.AcceptInvitationAsync(invitation);
 
-                    if (result.IsValid)
-                    {
-                        return this.Ok("Invitation accepted.");
-                    }
-                    result.AddToModelState(ModelState, null);
+                var result = await _invitationService.AcceptInvitationAsync(userId, invitation);
+
+                if (result.IsValid)
+                {
+                    return this.Ok("Invitation accepted.");
                 }
+                result.AddToModelState(ModelState, null);
             }
             return this.BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Decline invitation from a clan.
+        /// </summary>
         [HttpDelete("{invitationId}")]
         public async Task<IActionResult> DeleteByIdAsync(InvitationId invitationId)
         {
@@ -141,7 +159,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 
                 if (result.IsValid)
                 {
-                    this.Ok("The invitation has been declined.");
+                    return this.Ok("The invitation has been declined.");
                 }
                 result.AddToModelState(ModelState, null);
             }

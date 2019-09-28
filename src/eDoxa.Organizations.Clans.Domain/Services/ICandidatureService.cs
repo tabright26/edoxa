@@ -25,10 +25,12 @@ namespace eDoxa.Organizations.Clans.Domain.Services
 
         Task<Candidature?> FindCandidatureAsync(CandidatureId candidatureId);
 
-        Task<ValidationResult> SendCandidatureAsync(ClanId clanId, UserId userId);
+        Task<ValidationResult> SendCandidatureAsync(UserId candidateId, ClanId recruiterClanId); //We could do something funky, and send the candidateClanId, to enable clan switching.
 
-        Task<ValidationResult> AcceptCandidatureAsync(Candidature candidature);
+        Task<ValidationResult> AcceptCandidatureAsync(UserId userId, Candidature candidature);
 
         Task<ValidationResult> DeclineCandidatureAsync(Candidature candidature);
+
+        Task<Clan?> FindClanAsync(ClanId clanId);
     }
 }

@@ -38,6 +38,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all clans.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
@@ -51,20 +54,17 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<IEnumerable<ClanResponse>>(clans));
         }
 
+        /// <summary>
+        /// Create a clan.
+        /// </summary>
         [HttpPost]
         public async Task<IActionResult> PostAsync(ClanPostRequest request)
         {
             if (ModelState.IsValid)
             {
                 var userId = HttpContext.GetUserId();
-                var clanId = HttpContext.GetClanId();
 
-                var clan = await _clanService.FindClanAsync(clanId);
-
-                if (clan != null)
-                {
-                    return this.NotFound("User's already has a clan.");
-                }
+                //Todo: Frank, est-ce que c<est correct pas de return not found ?
 
                 var result = await _clanService.CreateClanAsync(userId, request.Name);
 
@@ -78,6 +78,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             return this.BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Get a specific clan.
+        /// </summary>
         [HttpGet("{clanId}")]
         public async Task<IActionResult> GetByIdAsync(ClanId clanId)
         {
@@ -85,7 +88,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 
             if (clan == null)
             {
-                return this.NoContent();
+                return this.NotFound();
             }
 
             return this.Ok(_mapper.Map<ClanResponse>(clan));

@@ -15,6 +15,10 @@ namespace eDoxa.Organizations.Clans.Domain.Repositories
 
         Task<Invitation?> FindAsync(InvitationId invitationId);
 
+        Task<bool> ExistsAsync(UserId userId, ClanId clanId);
+
+        Task DeleteAllWith(UserId userId);
+
         Task CommitAsync();
     }
 }

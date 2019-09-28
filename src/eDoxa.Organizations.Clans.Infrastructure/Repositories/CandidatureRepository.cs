@@ -4,8 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
@@ -42,6 +42,17 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
         public async Task<Candidature?> FindAsync(CandidatureId candidatureId)
         {
             return await _dbContext.Candidatures.SingleOrDefaultAsync(candidature => candidature.Id == candidatureId);
+        }
+
+        public async Task<bool> ExistsAsync(UserId userId, ClanId clanId)
+        {
+            return await _dbContext.Candidatures.AnyAsync(candidature => candidature.UserId == userId && candidature.ClanId == clanId);
+        }
+
+        public async Task DeleteAllWith(UserId userId)
+        {
+            var candidatures = await _dbContext.Candidatures.Where(candidature => candidature.UserId == userId).ToListAsync();
+            candidatures.Clear();
         }
 
         public async Task CommitAsync()

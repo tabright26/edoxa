@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,13 +21,13 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
     public sealed class InvitationService : IInvitationService
     {
         private readonly IInvitationRepository _invitationRepository;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
+        private readonly ICandidatureRepository _candidatureRepository;
         private readonly IClanService _clanService;
 
-        public InvitationService(IInvitationRepository invitationRepository, IServiceBusPublisher serviceBusPublisher, IClanService clanService)
+        public InvitationService(IInvitationRepository invitationRepository, ICandidatureRepository candidatureRepository, IClanService clanService)
         {
             _invitationRepository = invitationRepository;
-            _serviceBusPublisher = serviceBusPublisher;
+            _candidatureRepository = candidatureRepository;
             _clanService = clanService;
         }
 
@@ -49,23 +48,45 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
             return await _invitationRepository.FindAsync(invitationId);
         }
 
-        public async Task<ValidationResult> SendInvitationAsync(ClanId clanId, UserId userId)
+        public async Task<ValidationResult> SendInvitationAsync(UserId recruiterId, ClanId recruiterClan, UserId inviteId)
         {
-            var invitations = await _invitationRepository.FetchAsync();
+            var exists = await _invitationRepository.ExistsAsync(recruiterId, recruiterClan);
 
-            if (invitations.Any(clan => clan.UserId == userId && clan.ClanId == clanId))
+            if (exists)
             {
-                var failure = new ValidationFailure(string.Empty, "The invitation from this clan to this member already exist.");
+                var failure = new ValidationFailure(string.Empty, "The invitation from this clan to that member already exist.");
                 return failure.ToResult();
             }
-            _invitationRepository.Create(new Invitation(userId, clanId));
+
+            if (await _clanService.HasMember(inviteId))
+            {
+                var failure = new ValidationFailure(string.Empty, "Target already in a clan.");
+
+                return failure.ToResult();
+            }
+
+            var clan = await _clanService.FindClanAsync(recruiterClan);
+
+            if (clan == null) // Make sure the specified clan still exist.
+            {
+                var failure = new ValidationFailure(string.Empty, "Clan does not exist.");
+                return failure.ToResult();
+            }
+
+            if (!clan.IsOwner(recruiterId)) //Is the admin of said clan.
+            {
+                var failure = new ValidationFailure(string.Empty, "Permission required.");
+
+                return failure.ToResult();
+            }
+
+            _invitationRepository.Create(new Invitation(inviteId, recruiterClan));
             await _invitationRepository.CommitAsync();
             return new ValidationResult();
         }
 
-        public async Task<ValidationResult> AcceptInvitationAsync(Invitation invitation)
+        public async Task<ValidationResult> AcceptInvitationAsync(UserId userId, Invitation invitation)
         {
-            //Todo check if ok
             var clan = await _clanService.FindClanAsync(invitation.ClanId);
 
             if (clan == null)
@@ -74,9 +95,14 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
                 return failure.ToResult();
             }
 
-            await _clanService.AddMemberToClanAsync(clan, invitation);
-            _invitationRepository.Delete(invitation);
+            clan.AddMember(invitation);
+
+            await _candidatureRepository.DeleteAllWith(userId);
+            await _invitationRepository.DeleteAllWith(userId);
+
+            await _candidatureRepository.CommitAsync();
             await _invitationRepository.CommitAsync();
+
             return new ValidationResult();
         }
 
@@ -87,5 +113,12 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
             return new ValidationResult();
         }
 
+        //-----------------------------------------------------------------------------------------------------
+        //Clan Service
+        public async Task<Clan?> FindClanAsync(ClanId clanId)
+        {
+            return await _clanService.FindClanAsync(clanId);
+        }
     }
+
 }

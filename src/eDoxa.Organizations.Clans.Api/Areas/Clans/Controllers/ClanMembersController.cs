@@ -37,6 +37,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get all members of a specific clan.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
@@ -50,12 +53,16 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<IEnumerable<MemberResponse>>(members));
         }
 
+        /// <summary>
+        /// User leave the clan.
+        /// </summary>
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(ClanId clanId)
         {
             if (ModelState.IsValid)
             {
                 var userId = HttpContext.GetUserId();
+
                 var clan = await _clanService.FindClanAsync(clanId);
 
                 if (clan == null)
@@ -75,23 +82,27 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             return this.BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Kick a specific member from the clan.
+        /// </summary>
         [HttpDelete("{memberId}")]
         public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, MemberId memberId)
         {
             if (ModelState.IsValid)
             {
+                var userId = HttpContext.GetUserId();
                 var clan = await _clanService.FindClanAsync(clanId);
 
                 if (clan == null)
                 {
-                    return this.NotFound("User's does not have a clan.");
+                    return this.NotFound("Clan does not exist.");
                 }
 
-                var result = await _clanService.KickMemberFromClanAsync(clan, memberId);
+                var result = await _clanService.KickMemberFromClanAsync(userId, clan, memberId);
 
                 if (result.IsValid)
                 {
-                    this.Ok("The user has been kicked from this clan.");
+                    return this.Ok("The user has been kicked from this clan.");
                 }
                 result.AddToModelState(ModelState, null);
             }

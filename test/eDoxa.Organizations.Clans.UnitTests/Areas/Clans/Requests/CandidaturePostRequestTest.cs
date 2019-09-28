@@ -22,7 +22,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Requests
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             //Arrange
-            var request = new CandidaturePostRequest(new ClanId());
+            var request = new CandidaturePostRequest(new UserId(), new ClanId());
 
             var requestSerialized = JsonConvert.SerializeObject(request);
 

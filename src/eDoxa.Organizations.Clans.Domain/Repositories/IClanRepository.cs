@@ -30,6 +30,8 @@ namespace eDoxa.Organizations.Clans.Domain.Repositories
 
         Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId);
 
+        Task<bool> HasMember(UserId userId);
+
         Task CommitAsync();
     }
 }
