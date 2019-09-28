@@ -1,5 +1,5 @@
 ﻿// Filename: DoxaTagHistoryControllerPostAsyncTest.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,14 +14,12 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Identity.IntegrationTests.Collections;
+using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
-using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
 
@@ -31,17 +29,12 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    [Collection(nameof(TestDataFixture.TestData))]
-    public sealed class DoxaTagHistoryControllerPostAsyncTest : IClassFixture<IdentityApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class DoxaTagHistoryControllerPostAsyncTest : ControllerTest
     {
-        public DoxaTagHistoryControllerPostAsyncTest(IdentityApiFactory identityApiFactory, TestDataFixture testData)
+        public DoxaTagHistoryControllerPostAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            _identityApiFactory = identityApiFactory;
-            _testData = testData;
         }
-
-        private readonly IdentityApiFactory _identityApiFactory;
-        private readonly TestDataFixture _testData;
 
         private async Task<HttpResponseMessage> ExecuteAsync(DoxaTagPostRequest request)
         {
@@ -53,7 +46,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var users = await _testData.TestData.GetUsersAsync();
+            var users = await TestData.FileStorage.GetUsersAsync();
             var user = users.First();
 
             user.DoxaTagHistory = new Collection<UserDoxaTag>
@@ -68,7 +61,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 }
             };
 
-            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

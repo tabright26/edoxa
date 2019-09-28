@@ -11,7 +11,7 @@ using Autofac;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.Identity.IntegrationTests.Mocks;
+using eDoxa.Identity.IntegrationTests.Helpers.Mocks;
 using eDoxa.Seedwork.Testing;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Moq;
@@ -21,7 +21,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Identity.IntegrationTests
+namespace eDoxa.Identity.IntegrationTests.Helpers
 {
     public sealed class IdentityApiFactory : IdentityApiFactory<Startup>
     {

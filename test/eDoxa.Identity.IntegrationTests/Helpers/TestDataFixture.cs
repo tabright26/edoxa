@@ -12,9 +12,9 @@ using eDoxa.Storage.Azure.File.Extensions;
 
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Identity.IntegrationTests.Collections
+namespace eDoxa.Identity.IntegrationTests.Helpers
 {
-    public class TestDataFixture
+    public sealed class TestDataFixture
     {
         public TestDataFixture()
         {
@@ -25,9 +25,9 @@ namespace eDoxa.Identity.IntegrationTests.Collections
 
             AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
 
-            TestData = new IdentityTestFileStorage(new AzureFileStorage());
+            FileStorage = new IdentityTestFileStorage(new AzureFileStorage());
         }
 
-        public IIdentityTestFileStorage TestData { get; }
+        public IIdentityTestFileStorage FileStorage { get; }
     }
 }

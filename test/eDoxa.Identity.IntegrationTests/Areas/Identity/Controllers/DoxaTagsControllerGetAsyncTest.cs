@@ -1,5 +1,5 @@
 ﻿// Filename: DoxaTagsControllerGetAsyncTest.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,31 +11,25 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
+using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
-using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
-
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagsControllerGetAsyncTest : IClassFixture<IdentityApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class DoxaTagsControllerGetAsyncTest : ControllerTest
     {
-        public DoxaTagsControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
+        public DoxaTagsControllerGetAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            _httpClient = identityApiFactory.CreateClient();
-            _testServer = identityApiFactory.Server;
-            _testServer.CleanupDbContext();
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -45,6 +39,11 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
+            // Arrange
+            _httpClient = ApiFactory.CreateClient();
+            var testServer = ApiFactory.Server;
+            testServer.CleanupDbContext();
+
             // Act
             using var response = await this.ExecuteAsync();
 
@@ -58,13 +57,16 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            await _testServer.UsingScopeAsync(
+            _httpClient = ApiFactory.CreateClient();
+            var testServer = ApiFactory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var identityStorage = new IdentityTestFileStorage(new AzureFileStorage());
-                    var testUsers = await identityStorage.GetUsersAsync();
+                    var testUsers = await TestData.FileStorage.GetUsersAsync();
 
                     foreach (var testUser in testUsers.Take(100).ToList())
                     {

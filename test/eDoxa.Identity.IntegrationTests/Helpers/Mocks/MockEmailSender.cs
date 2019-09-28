@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 
 using Moq;
 
-namespace eDoxa.Identity.IntegrationTests.Mocks
+namespace eDoxa.Identity.IntegrationTests.Helpers.Mocks
 {
     internal sealed class MockEmailSender : Mock<IEmailSender>
     {

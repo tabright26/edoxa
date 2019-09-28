@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordForgotControllerPostAsyncTest.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,30 +11,22 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.IntegrationTests.Helpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Storage.Azure.File;
 
 using FluentAssertions;
-
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class PasswordForgotControllerPostAsyncTest : IClassFixture<IdentityApiFactory>
+    [Collection(nameof(ControllerCollection))]
+    public sealed class PasswordForgotControllerPostAsyncTest : ControllerTest
     {
-        public PasswordForgotControllerPostAsyncTest(IdentityApiFactory identityApiFactory)
+        public PasswordForgotControllerPostAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
-            var identityStorage = new IdentityTestFileStorage(new AzureFileStorage());
-            User = identityStorage.GetUsersAsync().GetAwaiter().GetResult().First();
-            _httpClient = identityApiFactory.CreateClient();
-            _testServer = identityApiFactory.Server;
-            _testServer.CleanupDbContext();
         }
 
         private async Task<HttpResponseMessage> ExecuteAsync(PasswordForgotPostRequest request)
@@ -42,25 +34,25 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             return await _httpClient.PostAsync("api/password/forgot", new JsonContent(request));
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
-
-        private User User { get; }
+        private HttpClient _httpClient;
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var identityStorage = new IdentityTestFileStorage(new AzureFileStorage());
-            var users = await identityStorage.GetUsersAsync();
+            var users = await TestData.FileStorage.GetUsersAsync();
             var user = users.First();
             user.PersonalInfo = null;
 
-            await _testServer.UsingScopeAsync(
+            _httpClient = ApiFactory.CreateClient();
+            var testServer = ApiFactory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
                 });
