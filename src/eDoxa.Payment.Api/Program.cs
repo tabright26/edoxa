@@ -11,6 +11,7 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
@@ -50,7 +51,12 @@ namespace eDoxa.Payment.Api
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
-                .ConfigureServices(services => services.AddAutofac())
+                .ConfigureServices(
+                    services =>
+                    {
+                        services.AddApplicationInsightsTelemetry();
+                        services.AddAutofac();
+                    })
                 .ConfigureAppConfiguration(
                     config =>
                     {
@@ -65,7 +71,6 @@ namespace eDoxa.Payment.Api
 
                         config.AddConfiguration(builder.Build());
                     })
-                .UseApplicationInsights()
                 .UseSerilog(
                     (context, config) =>
                     {
