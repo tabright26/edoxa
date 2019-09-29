@@ -11,6 +11,8 @@ using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -23,7 +25,7 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    public sealed class PasswordResetControllerTest
+    public sealed class PasswordResetControllerTest: UnitTest
     {
         [Fact]
         public async Task PostAsync_ShouldBeBadRequestObjectResult()
@@ -120,6 +122,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+        }
+
+        public PasswordResetControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
         }
     }
 }

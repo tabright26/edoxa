@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
@@ -28,7 +29,7 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
 {
-    public sealed class LeagueOfLegendsMatchService : UnitTestClass
+    public sealed class LeagueOfLegendsMatchService : UnitTest
     {
         public LeagueOfLegendsMatchService(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {

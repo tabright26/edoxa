@@ -7,6 +7,8 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
@@ -15,8 +17,12 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class StatScoreTest
+    public sealed class StatScoreTest : UnitTest
     {
+        public StatScoreTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         public static IEnumerable<object[]> StatScoreDataSets
         {
             get

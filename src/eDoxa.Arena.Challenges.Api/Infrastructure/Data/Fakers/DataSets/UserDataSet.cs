@@ -1,5 +1,5 @@
 ﻿// Filename: UserDataSet.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,8 +20,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
     // TODO: Should be refactored.
     public sealed class UserDataSet
     {
-        private static readonly IImmutableSet<User> TestUsers =
-            new ArenaChallengeTestFileStorage(new AzureFileStorage(), new FakerFactory()).GetUsersAsync().Result;
+        private static readonly IImmutableSet<User> TestUsers = new ArenaChallengeTestFileStorage(new AzureFileStorage()).GetUsersAsync().Result;
 
         private static ICollection<User> _testUsers = new HashSet<User>(TestUsers);
 

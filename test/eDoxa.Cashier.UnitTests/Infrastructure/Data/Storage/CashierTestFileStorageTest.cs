@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -16,7 +17,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class CashierTestFileStorageTest : UnitTestClass
+    public sealed class CashierTestFileStorageTest : UnitTest
     {
         public CashierTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {

@@ -10,6 +10,8 @@ using System.Linq;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -17,8 +19,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
-    public sealed class BalanceTest
+    public sealed class BalanceTest : UnitTest
     {
+        public BalanceTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         private static IEnumerable<ITransaction> CreateTransactions()
         {
             yield return new MoneyDepositTransaction(Money.Ten);

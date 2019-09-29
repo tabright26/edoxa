@@ -13,6 +13,8 @@ using Bogus;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
@@ -21,8 +23,12 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class StatTest
+    public sealed class StatTest : UnitTest
     {
+        public StatTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         public static IEnumerable<object[]> StatPropsDataSets =>
             ChallengeGame.GetEnumerations()
                 .SelectMany(

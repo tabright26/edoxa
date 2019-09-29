@@ -5,6 +5,8 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -12,8 +14,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
-    public sealed class TokenTest
+    public sealed class TokenTest : UnitTest
     {
+        public TokenTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [InlineData(50000, 100000, 150000)]
         [InlineData(100000, 50000, 150000)]
         [InlineData(100000, 500000, 600000)]

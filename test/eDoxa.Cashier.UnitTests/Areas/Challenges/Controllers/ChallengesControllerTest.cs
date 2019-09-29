@@ -10,6 +10,7 @@ using eDoxa.Cashier.Api.Areas.Challenges.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -21,7 +22,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 {
-    public sealed class ChallengesControllerTest : UnitTestClass
+    public sealed class ChallengesControllerTest : UnitTest
     {
         public ChallengesControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {

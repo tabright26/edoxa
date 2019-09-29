@@ -9,6 +9,8 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -16,8 +18,12 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class ScoringTest
+    public sealed class ScoringTest : UnitTest
     {
+        public ScoringTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         public static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game});
 
         [Theory]

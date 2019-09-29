@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
@@ -23,8 +25,12 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
 {
-    public sealed class LeagueOfLegendsGameReferencesAdapterTest
+    public sealed class LeagueOfLegendsGameReferencesAdapterTest : UnitTest
     {
+        public LeagueOfLegendsGameReferencesAdapterTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         private static LeagueOfLegendsMatchReferenceDto[] StubMatchReferences =>
             JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"TestHelpers/Stubs/LeagueOfLegends/MatchReferences.json")
                 .ToArray();

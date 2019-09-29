@@ -6,6 +6,8 @@
 
 using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Domain.Strategies;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -15,8 +17,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Factories
 {
-    public sealed class PayoutFactoryTest
+    public sealed class PayoutFactoryTest : UnitTest
     {
+        public PayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public void CreateInstance_WithoutPayoutStrategy_ShouldNotBeNull()
         {

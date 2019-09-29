@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -16,11 +16,11 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Pages
 {
-    public sealed class AccountControllerLoginTest : IClassFixture<TestApiFactory>
+    public sealed class AccountControllerLoginTest : IClassFixture<TestApiFixture>
     {
-        public AccountControllerLoginTest(TestApiFactory testApiFactory)
+        public AccountControllerLoginTest(TestApiFixture testApiFixture)
         {
-            _httpClient = testApiFactory.CreateClient();
+            _httpClient = testApiFixture.CreateClient();
         }
 
         private readonly HttpClient _httpClient;

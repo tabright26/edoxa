@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Providers.Stripe;
 using eDoxa.Payment.Api.Providers.Stripe.Fakers;
+using eDoxa.Payment.TestHelpers;
+using eDoxa.Payment.TestHelpers.Fixtures;
 
 using Microsoft.Extensions.Options;
 
@@ -22,15 +24,9 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.Providers.Stripe
 {
-    public sealed class StripeServiceTest
+    public sealed class StripeServiceTest : UnitTest
     {
-        private readonly Mock<AccountService> _mockAccountService;
-        private readonly Mock<CustomerService> _mockCustomerService;
-        private readonly Mock<InvoiceItemService> _mockInvoiceItemService;
-        private readonly Mock<InvoiceService> _mockInvoiceService;
-        private readonly Mock<TransferService> _mockTransferService;
-
-        public StripeServiceTest()
+        public StripeServiceTest(TestDataFixture testData) : base(testData)
         {
             _mockAccountService = new Mock<AccountService>();
             _mockCustomerService = new Mock<CustomerService>();
@@ -38,6 +34,12 @@ namespace eDoxa.Payment.UnitTests.Providers.Stripe
             _mockInvoiceItemService = new Mock<InvoiceItemService>();
             _mockTransferService = new Mock<TransferService>();
         }
+
+        private readonly Mock<AccountService> _mockAccountService;
+        private readonly Mock<CustomerService> _mockCustomerService;
+        private readonly Mock<InvoiceItemService> _mockInvoiceItemService;
+        private readonly Mock<InvoiceService> _mockInvoiceService;
+        private readonly Mock<TransferService> _mockTransferService;
 
         private StripeService CreateStripeService()
         {

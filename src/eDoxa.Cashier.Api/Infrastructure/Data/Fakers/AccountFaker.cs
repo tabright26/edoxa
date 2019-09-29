@@ -6,6 +6,7 @@
 
 using Bogus;
 
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 

@@ -8,6 +8,8 @@ using System;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
@@ -16,8 +18,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
 {
-    public sealed class TransactionTest
+    public sealed class TransactionTest : UnitTest
     {
+        public TransactionTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public void MarkAsFailed_StatusPending_ShouldBeStatusFailed()
         {

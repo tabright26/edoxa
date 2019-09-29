@@ -10,6 +10,8 @@ using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -17,8 +19,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
-    public sealed class AccountTest
+    public sealed class AccountTest : UnitTest
     {
+        public AccountTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency});
 
         public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {new Currency()}, new object[] {Currency.All}};

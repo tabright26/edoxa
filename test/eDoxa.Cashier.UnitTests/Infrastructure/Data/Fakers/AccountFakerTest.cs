@@ -6,6 +6,7 @@
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -13,7 +14,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
-    public sealed class AccountFakerTest : UnitTestClass
+    public sealed class AccountFakerTest : UnitTest
     {
         public AccountFakerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {

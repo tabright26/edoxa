@@ -10,6 +10,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 
@@ -21,9 +22,9 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
 {
     // TODO: These methods must be refactored into smaller tests.
     // TODO: Avoid using Theory in integration tests.
-    public sealed class TransactionRepositoryTest : IntegrationTestClass
+    public sealed class TransactionRepositoryTest : IntegrationTest
     {
-        public TransactionRepositoryTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
+        public TransactionRepositoryTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
         {
         }
 

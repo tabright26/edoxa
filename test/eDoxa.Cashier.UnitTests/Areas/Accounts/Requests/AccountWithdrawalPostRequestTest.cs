@@ -6,6 +6,8 @@
 
 using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -15,8 +17,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Requests
 {
-    public sealed class AccountWithdrawalPostRequestTest
+    public sealed class AccountWithdrawalPostRequestTest : UnitTest
     {
+        public AccountWithdrawalPostRequestTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {

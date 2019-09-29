@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -15,7 +16,7 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class IdentityTestFileStorageTest : UnitTestClass
+    public sealed class IdentityTestFileStorageTest : UnitTest
     {
         public IdentityTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;

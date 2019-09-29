@@ -11,6 +11,8 @@ using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 using eDoxa.Cashier.TestHelpers.Mocks;
 
 using FluentAssertions;
@@ -25,8 +27,12 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 {
-    public sealed class AccountDepositControllerTest
+    public sealed class AccountDepositControllerTest : UnitTest
     {
+        public AccountDepositControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
         {

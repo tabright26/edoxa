@@ -16,6 +16,7 @@ using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -28,7 +29,7 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagHistoryControllerTest : UnitTestClass
+    public sealed class DoxaTagHistoryControllerTest : UnitTest
     {
         public DoxaTagHistoryControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {

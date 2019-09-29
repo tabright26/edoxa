@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeFaker.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;

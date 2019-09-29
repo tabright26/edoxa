@@ -15,6 +15,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -27,9 +28,9 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 {
     // TODO: These methods must be refactored into smaller tests.
     // TODO: Avoid using Theory in integration tests.
-    public sealed class ChallengeRepositoryTest : IntegrationTestClass
+    public sealed class ChallengeRepositoryTest : IntegrationTest
     {
-        public ChallengeRepositoryTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
+        public ChallengeRepositoryTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
         {
         }
 

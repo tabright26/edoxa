@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -22,7 +24,7 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    public sealed class EmailConfirmControllerTest
+    public sealed class EmailConfirmControllerTest: UnitTest
     {
         [Fact]
         public async Task GetAsync_ShouldBeNotFoundObjectResult()
@@ -105,6 +107,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
+        }
+
+        public EmailConfirmControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
         }
     }
 }

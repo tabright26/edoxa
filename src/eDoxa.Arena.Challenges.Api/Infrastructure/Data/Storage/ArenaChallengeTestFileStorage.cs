@@ -22,12 +22,10 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
     public sealed class ArenaChallengeTestFileStorage : IArenaChallengeTestFileStorage
     {
         private readonly IAzureFileStorage _fileStorage;
-        private readonly IChallengeFaker _challengeFaker;
 
-        public ArenaChallengeTestFileStorage(IAzureFileStorage fileStorage, IFakerFactory factory)
+        public ArenaChallengeTestFileStorage(IAzureFileStorage fileStorage)
         {
             _fileStorage = fileStorage;
-            _challengeFaker = factory.CreateChallengeFaker(null);
         }
 
         public async Task<IImmutableSet<User>> GetUsersAsync()
@@ -59,6 +57,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
 
             using var csvReader = await file.OpenCsvReaderAsync();
 
+            var challengeFaker = new ChallengeFaker();
+
             return csvReader.GetRecords(
                     new
                     {
@@ -71,7 +71,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage
                         State = default(int)
                     })
                 .Select(
-                    record => _challengeFaker.FakeChallenge(
+                    record => challengeFaker.FakeChallenge(
                         new ChallengeModel
                         {
                             Name = record.Name,
