@@ -18,7 +18,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class CashierTestFileStorageTest : UnitTestClass
     {
-        public CashierTestFileStorageTest(TestDataFixture testData) : base(testData)
+        public CashierTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

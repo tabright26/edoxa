@@ -13,7 +13,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.TestHelpers;
-using eDoxa.Cashier.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -27,7 +26,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 {
     public sealed class TransactionsControllerTest : UnitTestClass
     {
-        public TransactionsControllerTest(TestDataFixture testData) : base(testData)
+        public TransactionsControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -46,7 +45,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                 .ReturnsAsync(new Collection<ITransaction>())
                 .Verifiable();
 
-            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(MapperExtensions.Mapper);
+            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
 
             var controller = new TransactionsController(mockTransactionQuery.Object);
 
@@ -81,7 +80,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                 .ReturnsAsync(faker.FakeTransactions(5, TransactionFaker.PositiveTransaction))
                 .Verifiable();
 
-            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(MapperExtensions.Mapper);
+            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
 
             var controller = new TransactionsController(mockTransactionQuery.Object);
 

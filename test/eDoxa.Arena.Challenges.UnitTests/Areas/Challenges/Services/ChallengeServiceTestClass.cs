@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeServiceTest.cs
+﻿// Filename: ChallengeServiceTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Services
 
     public sealed class ChallengeServiceTestClass : UnitTestClass
     {
-        public ChallengeServiceTestClass(TestDataFixture testData) : base(testData)
+        public ChallengeServiceTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
             _mockChallengeRepository = new Mock<IChallengeRepository>();
             _mockGameReferencesFactory = new Mock<IGameReferencesFactory>();

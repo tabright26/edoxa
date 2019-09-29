@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
 {
     public sealed class LeagueOfLegendsMatchService : UnitTestClass
     {
-        public LeagueOfLegendsMatchService(TestDataFixture testData) : base(testData)
+        public LeagueOfLegendsMatchService(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

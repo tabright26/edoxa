@@ -1,4 +1,4 @@
-﻿// Filename: MatchQueryTest.cs
+﻿// Filename: MatchQueryTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -13,7 +13,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 using eDoxa.Seedwork.Testing;
 
 using FluentAssertions;
@@ -24,7 +23,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 {
     public sealed class MatchQueryTestClass : UnitTestClass
     {
-        public MatchQueryTestClass(TestDataFixture testData) : base(testData)
+        public MatchQueryTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -44,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var challengeRepository = new ChallengeRepository(context, TestMapper);
 
                 challengeRepository.Create(challenge);
 
@@ -53,7 +52,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var matchQuery = new MatchQuery(context, MapperExtensions.Mapper);
+                var matchQuery = new MatchQuery(context, TestMapper);
 
                 foreach (var participant in challenge.Participants)
                 {
@@ -79,7 +78,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var challengeRepository = new ChallengeRepository(context, TestMapper);
 
                 challengeRepository.Create(challenge);
 
@@ -88,7 +87,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var matchQuery = new MatchQuery(context, MapperExtensions.Mapper);
+                var matchQuery = new MatchQuery(context, TestMapper);
 
                 foreach (var match in challenge.Participants.SelectMany(participant => participant.Matches).ToList())
                 {

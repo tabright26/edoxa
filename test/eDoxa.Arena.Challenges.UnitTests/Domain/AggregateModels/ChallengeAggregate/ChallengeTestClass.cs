@@ -1,4 +1,4 @@
-// Filename: ChallengeTest.cs
+// Filename: ChallengeTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -21,7 +21,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 {
     public sealed class ChallengeTestClass : UnitTestClass
     {
-        public ChallengeTestClass(TestDataFixture testData) : base(testData)
+        public ChallengeTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
     public sealed class AccountFakerTest : UnitTestClass
     {
-        public AccountFakerTest(TestDataFixture testData) : base(testData)
+        public AccountFakerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

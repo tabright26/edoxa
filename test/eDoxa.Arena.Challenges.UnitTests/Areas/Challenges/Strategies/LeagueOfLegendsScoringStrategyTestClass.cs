@@ -1,4 +1,4 @@
-﻿// Filename: LeagueOfLegendsScoringStrategyTest.cs
+﻿// Filename: LeagueOfLegendsScoringStrategyTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -17,7 +17,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Strategies
 {
     public sealed class LeagueOfLegendsScoringStrategyTestClass : UnitTestClass
     {
-        public LeagueOfLegendsScoringStrategyTestClass(TestDataFixture testData) : base(testData)
+        public LeagueOfLegendsScoringStrategyTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

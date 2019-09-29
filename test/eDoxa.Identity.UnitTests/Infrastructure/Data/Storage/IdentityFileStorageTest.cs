@@ -16,7 +16,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class IdentityFileStorageTest : UnitTestClass
     {
-        public IdentityFileStorageTest(TestDataFixture testData) : base(testData)
+        public IdentityFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

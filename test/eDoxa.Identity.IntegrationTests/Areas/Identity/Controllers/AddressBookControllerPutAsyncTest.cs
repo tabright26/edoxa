@@ -27,10 +27,12 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-
     public sealed class AddressBookControllerPutAsyncTest : IntegrationTestClass
     {
-        public AddressBookControllerPutAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public AddressBookControllerPutAsyncTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -46,7 +48,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = await TestData.FileStorage.GetUsersAsync();
             var user = users.First();
-            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

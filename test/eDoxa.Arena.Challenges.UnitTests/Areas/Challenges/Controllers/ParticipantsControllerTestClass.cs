@@ -1,4 +1,4 @@
-﻿// Filename: ParticipantsControllerTest.cs
+﻿// Filename: ParticipantsControllerTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -11,7 +11,6 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -25,7 +24,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 {
     public sealed class ParticipantsControllerTestClass : UnitTestClass
     {
-        public ParticipantsControllerTestClass(TestDataFixture testData) : base(testData)
+        public ParticipantsControllerTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -37,7 +36,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
 
-            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new ParticipantsController(mockParticipantQuery.Object);
 
@@ -62,7 +61,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
 
-            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new ParticipantsController(mockParticipantQuery.Object);
 
@@ -93,7 +92,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
                 .ReturnsAsync(participants.First())
                 .Verifiable();
 
-            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new ParticipantsController(mockParticipantQuery.Object);
 

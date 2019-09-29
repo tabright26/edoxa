@@ -1,4 +1,4 @@
-﻿// Filename: GameReferencesFactoryTest.cs
+﻿// Filename: GameReferencesFactoryTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
 {
     public sealed class GameReferencesFactoryTestClass : UnitTestClass
     {
-        public GameReferencesFactoryTestClass(TestDataFixture testData) : base(testData)
+        public GameReferencesFactoryTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

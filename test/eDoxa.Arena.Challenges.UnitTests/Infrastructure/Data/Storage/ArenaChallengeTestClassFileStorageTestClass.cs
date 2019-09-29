@@ -1,4 +1,4 @@
-﻿// Filename: ArenaChallengeTestFileStorageTest.cs
+﻿// Filename: ArenaChallengeTestClassFileStorageTestClass.cs
 // Date Created: 2019-09-26
 // 
 // ================================================
@@ -21,7 +21,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class ArenaChallengeTestClassFileStorageTestClass : UnitTestClass
     {
-        public ArenaChallengeTestClassFileStorageTestClass(TestDataFixture testData) : base(testData)
+        public ArenaChallengeTestClassFileStorageTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

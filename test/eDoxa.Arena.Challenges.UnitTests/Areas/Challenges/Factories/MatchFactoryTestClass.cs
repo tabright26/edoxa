@@ -1,4 +1,4 @@
-﻿// Filename: MatchFactoryTest.cs
+﻿// Filename: MatchFactoryTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -24,7 +24,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
 {
     public sealed class MatchFactoryTestClass : UnitTestClass
     {
-        public MatchFactoryTestClass(TestDataFixture testData) : base(testData)
+        public MatchFactoryTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

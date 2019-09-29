@@ -30,7 +30,10 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountDepositControllerPostAsyncTest : IntegrationTestClass
     {
-        public AccountDepositControllerPostAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public AccountDepositControllerPostAsyncTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -47,8 +50,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory =
-                ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -75,8 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory =
-                ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

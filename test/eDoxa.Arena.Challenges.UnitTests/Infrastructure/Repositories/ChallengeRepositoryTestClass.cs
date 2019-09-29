@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeRepositoryTest.cs
+﻿// Filename: ChallengeRepositoryTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -10,7 +10,6 @@ using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Assertions.Extensions;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 using eDoxa.Seedwork.Testing;
 
 using Xunit;
@@ -19,7 +18,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 {
     public sealed class ChallengeRepositoryTestClass : UnitTestClass
     {
-        public ChallengeRepositoryTestClass(TestDataFixture testData) : base(testData)
+        public ChallengeRepositoryTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -35,7 +34,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var repository = new ChallengeRepository(context, TestMapper);
 
                 repository.Create(fakeChallenges);
 
@@ -44,7 +43,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var repository = new ChallengeRepository(context, TestMapper);
 
                 //Act
                 var challenges = await repository.FetchChallengesAsync();
@@ -66,7 +65,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var repository = new ChallengeRepository(context, TestMapper);
 
                 repository.Create(fakeChallenge);
 
@@ -75,7 +74,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var repository = new ChallengeRepository(context, TestMapper);
 
                 //Act
                 var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);

@@ -15,6 +15,7 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.UnitTests.TestHelpers;
 
 using FluentAssertions;
 
@@ -25,12 +26,14 @@ using Moq;
 
 using Xunit;
 
-using static eDoxa.Identity.UnitTests.TestHelpers.Extensions.MapperExtensions;
-
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagHistoryControllerTest
+    public sealed class DoxaTagHistoryControllerTest : UnitTestClass
     {
+        public DoxaTagHistoryControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public async Task GetAsync_ShouldBeNoContentResult()
         {
@@ -43,7 +46,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetDoxaTagHistoryAsync(It.IsAny<User>())).ReturnsAsync(new Collection<UserDoxaTag>()).Verifiable();
 
-            var controller = new DoxaTagHistoryController(mockUserManager.Object, Mapper);
+            var controller = new DoxaTagHistoryController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -83,7 +86,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetDoxaTagHistoryAsync(It.IsAny<User>())).ReturnsAsync(user.DoxaTagHistory).Verifiable();
 
-            var controller = new DoxaTagHistoryController(mockUserManager.Object, Mapper);
+            var controller = new DoxaTagHistoryController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -91,7 +94,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<IEnumerable<UserDoxaTagResponse>>(user.DoxaTagHistory));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<UserDoxaTagResponse>>(user.DoxaTagHistory));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -112,7 +115,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new DoxaTagHistoryController(mockUserManager.Object, Mapper);
+            var controller = new DoxaTagHistoryController(mockUserManager.Object, TestMapper);
 
             var request = new DoxaTagPostRequest("Doxatag");
 
@@ -155,7 +158,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new DoxaTagHistoryController(mockUserManager.Object, Mapper);
+            var controller = new DoxaTagHistoryController(mockUserManager.Object, TestMapper);
 
             var request = new DoxaTagPostRequest("DoxaTag");
 

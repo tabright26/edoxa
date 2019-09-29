@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeServiceSynchronizeAsyncTest.cs
+﻿// Filename: ChallengeIntegrationSynchronizeAsyncTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -23,7 +23,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 {
     public sealed class ChallengeIntegrationSynchronizeAsyncTestClass : IntegrationTestClass
     {
-        public ChallengeIntegrationSynchronizeAsyncTestClass(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public ChallengeIntegrationSynchronizeAsyncTestClass(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -36,8 +39,8 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
 
             var challenges = challengeFaker.FakeChallenges(5);
 
-            ApiFactory.CreateClient();
-            var testServer = ApiFactory.Server;
+            TestApi.CreateClient();
+            var testServer = TestApi.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

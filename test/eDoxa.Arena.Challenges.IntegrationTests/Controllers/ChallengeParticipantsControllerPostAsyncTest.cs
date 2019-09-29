@@ -34,7 +34,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengeParticipantsControllerPostAsyncTest : IntegrationTestClass
     {
-        public ChallengeParticipantsControllerPostAsyncTest(ArenaChallengeApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public ChallengeParticipantsControllerPostAsyncTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -56,7 +59,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             var userId = new UserId();
             var gameAccountId = new GameAccountId(Guid.NewGuid().ToString());
 
-            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>

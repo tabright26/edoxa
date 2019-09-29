@@ -1,4 +1,4 @@
-﻿// Filename: ArenaChallengeApiFactory.cs
+﻿// Filename: TestApiFactory.cs
 // Date Created: 2019-09-27
 // 
 // ================================================
@@ -26,11 +26,11 @@ using Moq;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.TestHelpers
 {
-    public sealed class ArenaChallengeApiFactory : WebApiFactory<Startup>
+    public sealed class TestApiFactory : WebApiFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengeApiFactory)).Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFactory)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 

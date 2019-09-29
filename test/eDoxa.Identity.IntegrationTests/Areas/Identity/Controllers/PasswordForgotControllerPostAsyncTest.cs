@@ -22,10 +22,12 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-
     public sealed class PasswordForgotControllerPostAsyncTest : IntegrationTestClass
     {
-        public PasswordForgotControllerPostAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public PasswordForgotControllerPostAsyncTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -43,8 +45,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var user = users.First();
             user.PersonalInfo = null;
 
-            _httpClient = ApiFactory.CreateClient();
-            var testServer = ApiFactory.Server;
+            _httpClient = TestApi.CreateClient();
+            var testServer = TestApi.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

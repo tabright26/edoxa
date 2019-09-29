@@ -4,20 +4,25 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using AutoMapper;
+
 using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.TestHelpers
 {
-    public abstract class IntegrationTestClass : IClassFixture<CashierApiFactory>, IClassFixture<TestDataFixture>
+    public abstract class IntegrationTestClass : IClassFixture<TestApiFactory>, IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>
     {
-        protected IntegrationTestClass(CashierApiFactory apiFactory, TestDataFixture testData)
+        protected IntegrationTestClass(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper)
         {
-            ApiFactory = apiFactory;
+            TestApi = testApi;
             TestData = testData;
+            TestMapper = testMapper.Instance;
         }
 
-        protected CashierApiFactory ApiFactory { get; }
+        protected TestApiFactory TestApi { get; }
 
         protected TestDataFixture TestData { get; }
+
+        protected IMapper TestMapper { get; }
     }
 }

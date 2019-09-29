@@ -24,7 +24,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
     // TODO: Avoid using Theory in integration tests.
     public sealed class AccountRepositoryTest : IntegrationTestClass
     {
-        public AccountRepositoryTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public AccountRepositoryTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
         {
         }
 
@@ -39,8 +39,8 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
 
             var fakeAccount = accountFaker.FakeAccount();
 
-            ApiFactory.CreateClient();
-            var testServer = ApiFactory.Server;
+            TestApi.CreateClient();
+            var testServer = TestApi.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

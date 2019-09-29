@@ -31,7 +31,10 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountWithdrawalControllerPostAsyncTest : IntegrationTestClass
     {
-        public AccountWithdrawalControllerPostAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public AccountWithdrawalControllerPostAsyncTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -48,7 +51,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = ApiFactory.WithClaims(
+            var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
@@ -74,7 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
-            var factory = ApiFactory.WithClaims(
+            var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, new UserId().ToString()),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
@@ -99,7 +102,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             account.CreateTransaction(transaction);
 
-            var factory = ApiFactory.WithClaims(
+            var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 

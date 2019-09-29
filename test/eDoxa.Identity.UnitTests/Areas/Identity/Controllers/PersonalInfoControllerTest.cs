@@ -13,6 +13,7 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.UnitTests.TestHelpers;
 
 using FluentAssertions;
 
@@ -23,12 +24,14 @@ using Moq;
 
 using Xunit;
 
-using static eDoxa.Identity.UnitTests.TestHelpers.Extensions.MapperExtensions;
-
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    public sealed class PersonalInfoControllerTest
+    public sealed class PersonalInfoControllerTest : UnitTestClass
     {
+        public PersonalInfoControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public async Task GetAsync_ShouldBeNoContentResult()
         {
@@ -39,7 +42,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -73,7 +76,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -81,7 +84,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<UserPersonalInfoResponse>(user.PersonalInfo));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<UserPersonalInfoResponse>(user.PersonalInfo));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -110,7 +113,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.PostAsync(
@@ -161,7 +164,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.PostAsync(
@@ -221,7 +224,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.PutAsync(new PersonalInfoPutRequest("Bob"));
@@ -276,7 +279,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.PutAsync(new PersonalInfoPutRequest("Bob"));

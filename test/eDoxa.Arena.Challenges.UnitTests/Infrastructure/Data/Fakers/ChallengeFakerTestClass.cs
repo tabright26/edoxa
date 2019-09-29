@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeFakerTest.cs
+﻿// Filename: ChallengeFakerTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
     {
         private static readonly Faker Faker = new Faker();
 
-        public ChallengeFakerTestClass(TestDataFixture testData) : base(testData)
+        public ChallengeFakerTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

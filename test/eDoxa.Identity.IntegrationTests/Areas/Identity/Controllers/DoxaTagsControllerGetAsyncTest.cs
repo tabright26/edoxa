@@ -22,10 +22,12 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-
     public sealed class DoxaTagsControllerGetAsyncTest : IntegrationTestClass
     {
-        public DoxaTagsControllerGetAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public DoxaTagsControllerGetAsyncTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -40,8 +42,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            _httpClient = ApiFactory.CreateClient();
-            var testServer = ApiFactory.Server;
+            _httpClient = TestApi.CreateClient();
+            var testServer = TestApi.Server;
             testServer.CleanupDbContext();
 
             // Act
@@ -57,8 +59,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            _httpClient = ApiFactory.CreateClient();
-            var testServer = ApiFactory.Server;
+            _httpClient = TestApi.CreateClient();
+            var testServer = TestApi.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

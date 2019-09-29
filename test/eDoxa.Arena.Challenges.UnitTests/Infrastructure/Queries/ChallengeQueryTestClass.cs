@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeQueryTest.cs
+﻿// Filename: ChallengeQueryTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -15,7 +15,6 @@ using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Assertions.Extensions;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 using eDoxa.Seedwork.Testing;
 
 using IdentityModel;
@@ -32,7 +31,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
     {
         private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
 
-        public ChallengeQueryTestClass(TestDataFixture testData) : base(testData)
+        public ChallengeQueryTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         }
@@ -56,7 +55,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var challengeRepository = new ChallengeRepository(context, TestMapper);
 
                 challengeRepository.Create(challenge);
 
@@ -65,7 +64,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
+                var challengeQuery = new ChallengeQuery(context, TestMapper, _mockHttpContextAccessor.Object);
 
                 //Act
                 var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(game, state);
@@ -88,7 +87,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var challengeRepository = new ChallengeRepository(context, TestMapper);
 
                 challengeRepository.Create(fakeChallenges);
 
@@ -97,7 +96,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
+                var challengeQuery = new ChallengeQuery(context, TestMapper, _mockHttpContextAccessor.Object);
 
                 //Act
                 var challenges = await challengeQuery.FetchChallengesAsync(game, state);
@@ -120,7 +119,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var challengeRepository = new ChallengeRepository(context, TestMapper);
 
                 challengeRepository.Create(challenge);
 
@@ -129,7 +128,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeQuery = new ChallengeQuery(context, MapperExtensions.Mapper, _mockHttpContextAccessor.Object);
+                var challengeQuery = new ChallengeQuery(context, TestMapper, _mockHttpContextAccessor.Object);
 
                 //Act
                 var challengeAsync = await challengeQuery.FindChallengeAsync(challenge.Id);

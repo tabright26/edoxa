@@ -27,7 +27,10 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IntegrationTestClass
     {
-        public AccountBalanceControllerGetByCurrencyAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public AccountBalanceControllerGetByCurrencyAsyncTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
         }
 
@@ -45,7 +48,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var account = accountFaker.FakeAccount();
 
-            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -74,7 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
             var account = accountFaker.FakeAccount();
             var balance = account.GetBalanceFor(currency);
-            var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();

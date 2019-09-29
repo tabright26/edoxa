@@ -10,7 +10,6 @@ using eDoxa.Cashier.Api.Areas.Challenges.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.TestHelpers;
-using eDoxa.Cashier.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -24,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 {
     public sealed class ChallengesControllerTest : UnitTestClass
     {
-        public ChallengesControllerTest(TestDataFixture testData) : base(testData)
+        public ChallengesControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -63,7 +62,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 
             mockAccountQuery.Setup(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new ChallengesController(mockAccountQuery.Object);
 
@@ -88,7 +87,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 
             mockAccountQuery.Setup(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new ChallengesController(mockAccountQuery.Object);
 

@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
     // TODO: Avoid using Theory in integration tests.
     public sealed class TransactionRepositoryTest : IntegrationTestClass
     {
-        public TransactionRepositoryTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
+        public TransactionRepositoryTest(TestApiFactory testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
         {
         }
 
@@ -39,8 +39,8 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 
-            ApiFactory.CreateClient();
-            var testServer = ApiFactory.Server;
+            TestApi.CreateClient();
+            var testServer = TestApi.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(
@@ -98,8 +98,8 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
 
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 
-            ApiFactory.CreateClient();
-            var testServer = ApiFactory.Server;
+            TestApi.CreateClient();
+            var testServer = TestApi.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

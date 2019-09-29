@@ -1,4 +1,4 @@
-﻿// Filename: ScoringFactoryTest.cs
+﻿// Filename: ScoringFactoryTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
 {
     public sealed class ScoringFactoryTestClass : UnitTestClass
     {
-        public ScoringFactoryTestClass(TestDataFixture testData) : base(testData)
+        public ScoringFactoryTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

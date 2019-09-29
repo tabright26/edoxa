@@ -1,5 +1,5 @@
 ﻿// Filename: AccountControllerLoginTest.cs
-// Date Created: 2019-08-10
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,11 +16,11 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Pages
 {
-    public sealed class AccountControllerLoginTest : IClassFixture<IdentityApiFactory>
+    public sealed class AccountControllerLoginTest : IClassFixture<TestApiFactory>
     {
-        public AccountControllerLoginTest(IdentityApiFactory identityApiFactory)
+        public AccountControllerLoginTest(TestApiFactory testApiFactory)
         {
-            _httpClient = identityApiFactory.CreateClient();
+            _httpClient = testApiFactory.CreateClient();
         }
 
         private readonly HttpClient _httpClient;

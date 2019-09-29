@@ -1,4 +1,4 @@
-﻿// Filename: LeagueOfLegendsMatchAdapterTest.cs
+﻿// Filename: LeagueOfLegendsMatchAdapterTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
 {
     public sealed class LeagueOfLegendsMatchAdapterTestClass : UnitTestClass
     {
-        public LeagueOfLegendsMatchAdapterTestClass(TestDataFixture testData) : base(testData)
+        public LeagueOfLegendsMatchAdapterTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
             _mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsProxy>();
 

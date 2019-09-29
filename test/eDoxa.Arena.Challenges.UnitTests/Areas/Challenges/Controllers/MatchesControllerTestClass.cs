@@ -1,4 +1,4 @@
-﻿// Filename: MatchesControllerTest.cs
+﻿// Filename: MatchesControllerTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -11,7 +11,6 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -25,7 +24,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 {
     public sealed class MatchesControllerTestClass : UnitTestClass
     {
-        public MatchesControllerTestClass(TestDataFixture testData) : base(testData)
+        public MatchesControllerTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -37,7 +36,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockMatchQuery.Setup(matchQuery => matchQuery.FindMatchAsync(It.IsAny<MatchId>())).Verifiable();
 
-            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new MatchesController(mockMatchQuery.Object);
 
@@ -60,7 +59,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockMatchQuery.Setup(matchQuery => matchQuery.FindMatchAsync(It.IsAny<MatchId>())).Verifiable();
 
-            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new MatchesController(mockMatchQuery.Object);
 
@@ -91,7 +90,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockMatchQuery.Setup(matchQuery => matchQuery.FindMatchAsync(It.IsAny<MatchId>())).ReturnsAsync(matches.First()).Verifiable();
 
-            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new MatchesController(mockMatchQuery.Object);
 

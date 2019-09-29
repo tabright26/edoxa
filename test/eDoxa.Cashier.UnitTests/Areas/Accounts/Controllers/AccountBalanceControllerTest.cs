@@ -10,7 +10,6 @@ using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.UnitTests.TestHelpers;
-using eDoxa.Cashier.UnitTests.TestHelpers.Extensions;
 
 using FluentAssertions;
 
@@ -24,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 {
     public sealed class AccountBalanceControllerTest : UnitTestClass
     {
-        public AccountBalanceControllerTest(TestDataFixture testData) : base(testData)
+        public AccountBalanceControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -36,7 +35,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new AccountBalanceController(mockAccountQuery.Object);
 
@@ -61,7 +60,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new AccountBalanceController(mockAccountQuery.Object);
 
@@ -88,7 +87,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                 .ReturnsAsync(account.GetBalanceFor(Currency.Money))
                 .Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper);
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper);
 
             var controller = new AccountBalanceController(mockAccountQuery.Object);
 

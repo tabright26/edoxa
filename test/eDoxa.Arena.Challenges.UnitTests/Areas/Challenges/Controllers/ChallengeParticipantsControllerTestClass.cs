@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeParticipantsControllerTest.cs
+﻿// Filename: ChallengeParticipantsControllerTestClass.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -14,7 +14,6 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Mocks;
 using eDoxa.Seedwork.Domain;
 
@@ -30,7 +29,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 {
     public sealed class ChallengeParticipantsControllerTestClass : UnitTestClass
     {
-        public ChallengeParticipantsControllerTestClass(TestDataFixture testData) : base(testData)
+        public ChallengeParticipantsControllerTestClass(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -48,7 +47,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
                 .ReturnsAsync(Array.Empty<Participant>())
                 .Verifiable();
 
-            mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
 
@@ -79,7 +78,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
                 .ReturnsAsync(Array.Empty<Participant>())
                 .Verifiable();
 
-            mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
 
@@ -112,7 +111,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
                 .ReturnsAsync(challenge.Participants)
                 .Verifiable();
 
-            mockParticipantQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(MapperExtensions.Mapper);
+            mockParticipantQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper);
 
             var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
 
