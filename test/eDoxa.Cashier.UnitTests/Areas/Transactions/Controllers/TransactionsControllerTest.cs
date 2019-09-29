@@ -25,9 +25,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 {
-    public sealed class TransactionsControllerTest : UnitTest
+    public sealed class TransactionsControllerTest : UnitTestClass
     {
-        public TransactionsControllerTest(CashierFakerFixture faker) : base(faker)
+        public TransactionsControllerTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
         public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var faker = Faker.TransactionFactory.CreateFaker(null);
+            var faker = TestData.FakerFactory.CreateTransactionFaker(null);
 
             var mockTransactionQuery = new Mock<ITransactionQuery>();
 

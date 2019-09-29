@@ -25,8 +25,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : ControllerTest
+    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IntegrationTestClass
     {
         public AccountBalanceControllerGetByCurrencyAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
@@ -42,7 +41,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeInternalServerError()
         {
-            var accountFaker = TestData.AccountFactory.CreateFaker(1);
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
 
             var account = accountFaker.FakeAccount();
 
@@ -72,7 +71,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         {
             // Arrange
             var currency = Currency.Money;
-            var accountFaker = TestData.AccountFactory.CreateFaker(1);
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
             var account = accountFaker.FakeAccount();
             var balance = account.GetBalanceFor(currency);
             var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));

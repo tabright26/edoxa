@@ -6,8 +6,12 @@
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 {
-    public interface IAccountFakerFactory
+    public interface IFakerFactory
     {
-        IAccountFaker CreateFaker(int? seed);
+        IAccountFaker CreateAccountFaker(int? seed);
+
+        IChallengeFaker CreateChallengeFaker(int? seed);
+
+        ITransactionFaker CreateTransactionFaker(int? seed);
     }
 }

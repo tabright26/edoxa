@@ -28,8 +28,8 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class PersonalInfoControllerGetAsyncTest : ControllerTest
+
+    public sealed class PersonalInfoControllerGetAsyncTest : IntegrationTestClass
     {
         public PersonalInfoControllerGetAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {

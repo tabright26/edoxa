@@ -22,8 +22,8 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class PasswordForgotControllerPostAsyncTest : ControllerTest
+
+    public sealed class PasswordForgotControllerPostAsyncTest : IntegrationTestClass
     {
         public PasswordForgotControllerPostAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {

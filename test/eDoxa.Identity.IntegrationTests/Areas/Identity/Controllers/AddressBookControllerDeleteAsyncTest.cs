@@ -25,8 +25,8 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class AddressBookControllerDeleteAsyncTest : ControllerTest
+
+    public sealed class AddressBookControllerDeleteAsyncTest : IntegrationTestClass
     {
         public AddressBookControllerDeleteAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {

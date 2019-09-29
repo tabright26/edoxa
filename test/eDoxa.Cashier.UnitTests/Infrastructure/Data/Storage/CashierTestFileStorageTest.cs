@@ -16,9 +16,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class CashierTestFileStorageTest : UnitTest
+    public sealed class CashierTestFileStorageTest : UnitTestClass
     {
-        public CashierTestFileStorageTest(CashierFakerFixture faker) : base(faker)
+        public CashierTestFileStorageTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetChallengesAsync_WithFortyRecords_ShouldHaveCountOfForty()
         {
             // Arrange
-            var storage = Faker.TestFileStorage;
+            var storage = TestData.TestFileStorage;
 
             // Act
             var testChallenges = await storage.GetChallengesAsync();
@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_ShouldContainAdminId()
         {
             // Arrange
-            var storage = Faker.TestFileStorage;
+            var storage = TestData.TestFileStorage;
 
             // Act
             var users = await storage.GetUsersAsync();
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var storage = Faker.TestFileStorage;
+            var storage = TestData.TestFileStorage;
 
             // Act
             var users = await storage.GetUsersAsync();

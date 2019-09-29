@@ -29,8 +29,7 @@ using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class AccountWithdrawalControllerPostAsyncTest : ControllerTest
+    public sealed class AccountWithdrawalControllerPostAsyncTest : IntegrationTestClass
     {
         public AccountWithdrawalControllerPostAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {

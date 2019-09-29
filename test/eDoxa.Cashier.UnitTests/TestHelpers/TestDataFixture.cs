@@ -1,4 +1,4 @@
-﻿// Filename: CashierFakerFixture.cs
+﻿// Filename: TestDataFixture.cs
 // Date Created: 2019-09-28
 // 
 // ================================================
@@ -15,9 +15,9 @@ using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Cashier.UnitTests.TestHelpers
 {
-    public sealed class CashierFakerFixture
+    public sealed class TestDataFixture
     {
-        public CashierFakerFixture()
+        public TestDataFixture()
         {
             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false, true)
@@ -26,21 +26,15 @@ namespace eDoxa.Cashier.UnitTests.TestHelpers
 
             AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
 
-            ChallengeFactory = new ChallengeFakerFactory();
-            TransactionFactory = new TransactionFakerFactory();
-            AccountFactory = new AccountFakerFactory();
+            FakerFactory = new FakerFactory();
             FileStorage = new CashierFileStorage(new AzureFileStorage());
             TestFileStorage = new CashierTestFileStorage(new AzureFileStorage());
         }
 
-        public IChallengeFakerFactory ChallengeFactory { get; }
+        public IFakerFactory FakerFactory { get; }
 
-        public ITransactionFakerFactory TransactionFactory { get; }
+        public ICashierFileStorage FileStorage { get; }
 
-        public IAccountFakerFactory AccountFactory { get; }
-
-        public CashierFileStorage FileStorage { get; }
-
-        public CashierTestFileStorage TestFileStorage { get; }
+        public ICashierTestFileStorage TestFileStorage { get; }
     }
 }

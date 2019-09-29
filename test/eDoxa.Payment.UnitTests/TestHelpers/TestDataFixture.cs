@@ -6,17 +6,15 @@
 
 using System.IO;
 
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Storage.Azure.File;
 using eDoxa.Storage.Azure.File.Extensions;
 
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Identity.UnitTests.TestHelpers
+namespace eDoxa.Payment.UnitTests.TestHelpers
 {
-    public sealed class IdentityFakerFixture
+    public sealed class TestDataFixture
     {
-        public IdentityFakerFixture()
+        public TestDataFixture()
         {
             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", false, true)
@@ -24,13 +22,6 @@ namespace eDoxa.Identity.UnitTests.TestHelpers
                 .Build();
 
             AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
-
-            FileStorage = new IdentityFileStorage(new AzureFileStorage());
-            TestFileStorage = new IdentityTestFileStorage(new AzureFileStorage());
         }
-
-        public IdentityFileStorage FileStorage { get; }
-
-        public IdentityTestFileStorage TestFileStorage { get; }
     }
 }

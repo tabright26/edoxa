@@ -14,9 +14,9 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class IdentityFileStorageTest : UnitTest
+    public sealed class IdentityFileStorageTest : UnitTestClass
     {
-        public IdentityFileStorageTest(IdentityFakerFixture faker) : base(faker)
+        public IdentityFileStorageTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -24,7 +24,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetRoleClaimsAsync_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = Faker.FileStorage;
+            var storage = TestData.FileStorage;
 
             // Act
             var roleClaims = await storage.GetRoleClaimsAsync();
@@ -37,7 +37,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = Faker.FileStorage;
+            var storage = TestData.FileStorage;
 
             // Act
             var roles = await storage.GetRolesAsync();

@@ -22,8 +22,8 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class DoxaTagsControllerGetAsyncTest : ControllerTest
+
+    public sealed class DoxaTagsControllerGetAsyncTest : IntegrationTestClass
     {
         public DoxaTagsControllerGetAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {

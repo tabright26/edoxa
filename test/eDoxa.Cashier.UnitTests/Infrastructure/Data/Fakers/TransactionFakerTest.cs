@@ -13,9 +13,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
-    public sealed class TransactionFakerTest : UnitTest
+    public sealed class TransactionFakerTest : UnitTestClass
     {
-        public TransactionFakerTest(CashierFakerFixture faker) : base(faker)
+        public TransactionFakerTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
         public void Generate_SingleNegativeTransaction_ShouldNotBeNull()
         {
             // Arrange
-            var transactionFaker = Faker.TransactionFactory.CreateFaker(null);
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
 
             // Act
             var transaction = transactionFaker.FakeTransaction(TransactionFaker.NegativeTransaction);
@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
         public void Generate_SinglePositiveTransaction_ShouldNotBeNull()
         {
             // Arrange
-            var transactionFaker = Faker.TransactionFactory.CreateFaker(null);
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
 
             // Act
             var transaction = transactionFaker.FakeTransaction(TransactionFaker.PositiveTransaction);
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
         public void Generate_TenNegativeTransactions_ShouldHaveCountTen()
         {
             // Arrange
-            var transactionFaker = Faker.TransactionFactory.CreateFaker(null);
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
 
             // Act
             var transactions = transactionFaker.FakeTransactions(10, TransactionFaker.NegativeTransaction);
@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
         public void Generate_TenPositiveTransactions_ShouldHaveCountTen()
         {
             // Arrange
-            var transactionFaker = Faker.TransactionFactory.CreateFaker(null);
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
 
             // Act
             var transactions = transactionFaker.FakeTransactions(10, TransactionFaker.PositiveTransaction);

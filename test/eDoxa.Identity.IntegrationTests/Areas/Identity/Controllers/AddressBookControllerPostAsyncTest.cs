@@ -26,8 +26,8 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class AddressBookControllerPostAsyncTest : ControllerTest
+
+    public sealed class AddressBookControllerPostAsyncTest : IntegrationTestClass
     {
         public AddressBookControllerPostAsyncTest(IdentityApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {

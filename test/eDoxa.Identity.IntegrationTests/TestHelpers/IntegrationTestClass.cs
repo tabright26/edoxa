@@ -4,11 +4,13 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using Xunit;
+
 namespace eDoxa.Identity.IntegrationTests.TestHelpers
 {
-    public abstract class ControllerTest
+    public abstract class IntegrationTestClass : IClassFixture<IdentityApiFactory>, IClassFixture<TestDataFixture>
     {
-        protected ControllerTest(IdentityApiFactory apiFactory, TestDataFixture testData)
+        protected IntegrationTestClass(IdentityApiFactory apiFactory, TestDataFixture testData)
         {
             ApiFactory = apiFactory;
             TestData = testData;

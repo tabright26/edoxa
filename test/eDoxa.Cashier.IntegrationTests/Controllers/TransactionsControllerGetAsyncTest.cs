@@ -27,8 +27,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    [Collection(nameof(ControllerCollection))]
-    public sealed class TransactionsControllerGetAsyncTest : ControllerTest
+    public sealed class TransactionsControllerGetAsyncTest : IntegrationTestClass
     {
         public TransactionsControllerGetAsyncTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
@@ -72,7 +71,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var accountFaker = TestData.AccountFactory.CreateFaker(1);
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
             var account = accountFaker.FakeAccount();
 
             var factory = ApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));

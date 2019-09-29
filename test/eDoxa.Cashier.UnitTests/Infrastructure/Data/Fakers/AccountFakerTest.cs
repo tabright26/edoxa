@@ -13,9 +13,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
-    public sealed class AccountFakerTest : UnitTest
+    public sealed class AccountFakerTest : UnitTestClass
     {
-        public AccountFakerTest(CashierFakerFixture faker) : base(faker)
+        public AccountFakerTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
         public void FakeAccount_FakeNewAccount_ShouldNotBeNull()
         {
             // Arrange
-            var accountFaker = Faker.AccountFactory.CreateFaker(null);
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(null);
 
             // Act
             var account = accountFaker.FakeAccount();
@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
         public void Generate_FakeAdminAccount_ShouldNotBeNull()
         {
             // Arrange
-            var accountFaker = Faker.AccountFactory.CreateFaker(null);
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(null);
 
             // Act
             var account = accountFaker.FakeAccount(AccountFaker.AdminAccount);

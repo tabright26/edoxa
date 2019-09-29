@@ -22,9 +22,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 {
-    public sealed class AccountBalanceControllerTest : UnitTest
+    public sealed class AccountBalanceControllerTest : UnitTestClass
     {
-        public AccountBalanceControllerTest(CashierFakerFixture faker) : base(faker)
+        public AccountBalanceControllerTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -82,7 +82,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
             // Arrange
             var mockAccountQuery = new Mock<IAccountQuery>();
 
-            var account = Faker.AccountFactory.CreateFaker(null).FakeAccount();
+            var account = TestData.FakerFactory.CreateAccountFaker(null).FakeAccount();
 
             mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>()))
                 .ReturnsAsync(account.GetBalanceFor(Currency.Money))

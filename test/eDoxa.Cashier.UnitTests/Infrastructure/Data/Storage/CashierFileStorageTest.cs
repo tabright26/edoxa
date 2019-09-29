@@ -15,9 +15,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class CashierFileStorageTest : UnitTest
+    public sealed class CashierFileStorageTest : UnitTestClass
     {
-        public CashierFileStorageTest(CashierFakerFixture faker) : base(faker)
+        public CashierFileStorageTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         public async Task GetChallengePayoutStructuresAsync_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
         {
             // Arrange
-            var storage = Faker.FileStorage;
+            var storage = TestData.FileStorage;
 
             // Act
             var payoutStructures = await storage.GetChallengePayoutStructuresAsync();

@@ -15,9 +15,9 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class IdentityTestFileStorageTest : UnitTest
+    public sealed class IdentityTestFileStorageTest : UnitTestClass
     {
-        public IdentityTestFileStorageTest(IdentityFakerFixture faker) : base(faker)
+        public IdentityTestFileStorageTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -25,7 +25,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUserClaimsAsync_WithTwoRecords_ShouldHaveCountOfTwo()
         {
             // Arrange
-            var storage = Faker.TestFileStorage;
+            var storage = TestData.TestFileStorage;
 
             // Act
             var userClaims = await storage.GetUserClaimsAsync();
@@ -38,7 +38,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUserRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = Faker.TestFileStorage;
+            var storage = TestData.TestFileStorage;
 
             // Act
             var userRoles = await storage.GetUserRolesAsync();
@@ -51,7 +51,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithAdmin_ShouldContainAdminId()
         {
             // Arrange
-            var storage = Faker.TestFileStorage;
+            var storage = TestData.TestFileStorage;
 
             // Act
             var users = await storage.GetUsersAsync();
@@ -64,7 +64,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var storage = Faker.TestFileStorage;
+            var storage = TestData.TestFileStorage;
 
             // Act
             var users = await storage.GetUsersAsync();

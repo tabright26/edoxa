@@ -22,9 +22,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 {
-    public sealed class ChallengesControllerTest : UnitTest
+    public sealed class ChallengesControllerTest : UnitTestClass
     {
-        public ChallengesControllerTest(CashierFakerFixture faker) : base(faker)
+        public ChallengesControllerTest(TestDataFixture testData) : base(testData)
         {
         }
 
@@ -32,7 +32,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
         public async Task GetByIdAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
-            var challenge = Faker.ChallengeFactory.CreateFaker(1000).FakeChallenge();
+            var challenge = TestData.FakerFactory.CreateChallengeFaker(1000).FakeChallenge();
 
             var mockAccountQuery = new Mock<IChallengeQuery>();
 
@@ -82,7 +82,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
         public async Task GetByIdAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var challenge = Faker.ChallengeFactory.CreateFaker(1000).FakeChallenge();
+            var challenge = TestData.FakerFactory.CreateChallengeFaker(1000).FakeChallenge();
 
             var mockAccountQuery = new Mock<IChallengeQuery>();
 

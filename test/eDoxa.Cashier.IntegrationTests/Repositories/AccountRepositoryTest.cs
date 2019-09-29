@@ -22,8 +22,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
 {
     // TODO: These methods must be refactored into smaller tests.
     // TODO: Avoid using Theory in integration tests.
-    [Collection(nameof(RepositoryCollection))]
-    public sealed class AccountRepositoryTest : RepositoryTest
+    public sealed class AccountRepositoryTest : IntegrationTestClass
     {
         public AccountRepositoryTest(CashierApiFactory apiFactory, TestDataFixture testData) : base(apiFactory, testData)
         {
@@ -36,7 +35,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
         [InlineData(1000)]
         public async Task AccountScenario(int seed)
         {
-            var accountFaker = TestData.AccountFactory.CreateFaker(seed);
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(seed);
 
             var fakeAccount = accountFaker.FakeAccount();
 

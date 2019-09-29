@@ -8,13 +8,13 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.TestHelpers
 {
-    public abstract class UnitTest : IClassFixture<IdentityFakerFixture>
+    public abstract class UnitTestClass : IClassFixture<TestDataFixture>
     {
-        protected UnitTest(IdentityFakerFixture faker)
+        protected UnitTestClass(TestDataFixture testData)
         {
-            Faker = faker;
+            TestData = testData;
         }
 
-        protected IdentityFakerFixture Faker { get; }
+        protected TestDataFixture TestData { get; }
     }
 }

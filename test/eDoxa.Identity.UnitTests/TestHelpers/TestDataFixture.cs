@@ -1,19 +1,18 @@
-﻿// Filename: TestDataFixture.cs
-// Date Created: 2019-09-27
+﻿// Filename: IdentityFakerFixture.cs
+// Date Created: 2019-09-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.IO;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
+using eDoxa.Identity.Api.Infrastructure.Data.Storage;
 using eDoxa.Storage.Azure.File;
 using eDoxa.Storage.Azure.File.Extensions;
 
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Cashier.IntegrationTests.TestHelpers
+namespace eDoxa.Identity.UnitTests.TestHelpers
 {
     public sealed class TestDataFixture
     {
@@ -26,12 +25,12 @@ namespace eDoxa.Cashier.IntegrationTests.TestHelpers
 
             AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
 
-            FileStorage = new CashierTestFileStorage(new AzureFileStorage());
-            FakerFactory = new FakerFactory();
+            FileStorage = new IdentityFileStorage(new AzureFileStorage());
+            TestFileStorage = new IdentityTestFileStorage(new AzureFileStorage());
         }
 
-        public IFakerFactory FakerFactory { get; }
+        public IIdentityFileStorage FileStorage { get; }
 
-        public ICashierTestFileStorage FileStorage { get; }
+        public IIdentityTestFileStorage TestFileStorage { get; }
     }
 }
