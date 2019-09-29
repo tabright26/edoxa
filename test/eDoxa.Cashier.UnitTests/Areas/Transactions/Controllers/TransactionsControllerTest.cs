@@ -12,7 +12,7 @@ using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.TestHelpers;
 
 using FluentAssertions;
 

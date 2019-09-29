@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.TestHelpers;
 
 using FluentAssertions;
 

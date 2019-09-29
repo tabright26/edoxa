@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Storage.Azure.File;
 

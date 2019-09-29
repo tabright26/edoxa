@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.TestHelpers;
 
 using FluentAssertions;
 

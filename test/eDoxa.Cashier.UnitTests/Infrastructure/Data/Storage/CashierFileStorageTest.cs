@@ -7,7 +7,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.TestHelpers;
 
 using FluentAssertions;
 

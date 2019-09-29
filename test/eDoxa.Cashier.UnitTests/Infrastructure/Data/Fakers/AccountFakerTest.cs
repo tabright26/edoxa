@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.UnitTests.TestHelpers;
+using eDoxa.Cashier.TestHelpers;
 
 using FluentAssertions;
 

@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;

@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.UnitTests.TestHelpers;
+using eDoxa.Identity.TestHelpers;
 
 using FluentAssertions;
 

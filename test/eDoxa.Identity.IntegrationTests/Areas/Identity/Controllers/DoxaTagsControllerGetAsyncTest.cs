@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.IntegrationTests.TestHelpers;
+using eDoxa.Identity.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -68,7 +68,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var testUsers = await TestData.FileStorage.GetUsersAsync();
+                    var testUsers = await TestData.TestFileStorage.GetUsersAsync();
 
                     foreach (var testUser in testUsers.Take(100).ToList())
                     {

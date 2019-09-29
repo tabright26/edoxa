@@ -30,13 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Api\eDoxa.Arena.Challenges.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Arena.Games\eDoxa.Arena.Games.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.json" CopyToOutputDirectory="Always" />
+    <ProjectReference Include="..\eDoxa.Arena.Challenges.TestHelpers\eDoxa.Arena.Challenges.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

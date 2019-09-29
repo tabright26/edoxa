@@ -13,6 +13,7 @@ using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
+using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 
 using FluentAssertions;

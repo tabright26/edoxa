@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.IntegrationTests.TestHelpers;
+using eDoxa.Identity.TestHelpers;
 
 using FluentAssertions;
 

@@ -13,7 +13,7 @@ using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Identity.UnitTests.TestHelpers;
+using eDoxa.Identity.TestHelpers;
 
 using FluentAssertions;
 

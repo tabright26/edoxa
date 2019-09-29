@@ -21,12 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.json" CopyToOutputDirectory="Always" />
+    <ProjectReference Include="..\eDoxa.Identity.TestHelpers\eDoxa.Identity.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

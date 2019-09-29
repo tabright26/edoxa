@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Assertions.Extensions;
 using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers.Assertions.Extensions;
 using eDoxa.Seedwork.Testing;
 
 using Xunit;

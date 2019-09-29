@@ -15,7 +15,7 @@ using AutoMapper;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Identity.IntegrationTests.TestHelpers;
+using eDoxa.Identity.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -47,7 +47,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
-            var users = await TestData.FileStorage.GetUsersAsync();
+            var users = await TestData.TestFileStorage.GetUsersAsync();
             var user = users.First();
             user.PersonalInfo = null;
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
@@ -77,7 +77,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var users = await TestData.FileStorage.GetUsersAsync();
+            var users = await TestData.TestFileStorage.GetUsersAsync();
             var user = users.First();
             var profile = new UserPersonalInfo();
             user.PersonalInfo = profile;

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.IntegrationTests.TestHelpers;
+using eDoxa.Identity.TestHelpers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
@@ -46,7 +46,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var users = await TestData.FileStorage.GetUsersAsync();
+            var users = await TestData.TestFileStorage.GetUsersAsync();
             var user = users.First();
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
