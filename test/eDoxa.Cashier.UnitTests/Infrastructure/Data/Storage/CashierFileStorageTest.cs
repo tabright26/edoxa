@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Linq;
-using System.Threading.Tasks;
 
 using eDoxa.Cashier.TestHelpers;
 using eDoxa.Cashier.TestHelpers.Fixtures;
@@ -23,13 +22,13 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
         }
 
         [Fact]
-        public async Task GetChallengePayoutStructuresAsync_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
+        public void GetChallengePayouts_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
         {
             // Arrange
             var storage = TestData.FileStorage;
 
             // Act
-            var payoutStructures = await storage.GetChallengePayoutStructuresAsync();
+            var payoutStructures = storage.GetChallengePayouts();
 
             // Assert
             payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(56);

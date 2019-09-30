@@ -4,13 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.IO;
-
 using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Storage.Azure.File;
-using eDoxa.Storage.Azure.File.Extensions;
-
-using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Identity.TestHelpers.Fixtures
 {
@@ -18,19 +12,9 @@ namespace eDoxa.Identity.TestHelpers.Fixtures
     {
         public TestDataFixture()
         {
-            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
-
-            FileStorage = new IdentityFileStorage(new AzureFileStorage());
-            TestFileStorage = new IdentityTestFileStorage(new AzureFileStorage());
+            FileStorage = new FileStorage();
         }
 
-        public IIdentityFileStorage FileStorage { get; }
-
-        public IIdentityTestFileStorage TestFileStorage { get; }
+        public FileStorage FileStorage { get; }
     }
 }

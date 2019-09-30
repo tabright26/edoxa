@@ -21,14 +21,12 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
         private readonly ArenaChallengesDbContext _context;
         private readonly IHostingEnvironment _environment;
         private readonly IChallengeRepository _challengeRepository;
-        private readonly IArenaChallengeTestFileStorage _testFileStorage;
 
-        public ArenaChallengesDbContextSeeder(ArenaChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository, IArenaChallengeTestFileStorage testFileStorage)
+        public ArenaChallengesDbContextSeeder(ArenaChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository)
         {
             _context = context;
             _environment = environment;
             _challengeRepository = challengeRepository;
-            _testFileStorage = testFileStorage;
         }
 
         public async Task SeedAsync()
@@ -37,7 +35,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
             {
                 if (!_context.Challenges.Any())
                 {
-                    var challenges = await _testFileStorage.GetChallengesAsync();
+                    var challenges = FileStorage.Challenges;
 
                     _challengeRepository.Create(challenges);
 

@@ -4,14 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.IO;
-
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Factories;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
-using eDoxa.Storage.Azure.File;
-using eDoxa.Storage.Azure.File.Extensions;
-
-using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Arena.Challenges.TestHelpers.Fixtures
 {
@@ -19,19 +13,12 @@ namespace eDoxa.Arena.Challenges.TestHelpers.Fixtures
     {
         public TestDataFixture()
         {
-            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
-
-            FileStorage = new ArenaChallengeTestFileStorage(new AzureFileStorage());
+            FileStorage = new FileStorage();
             FakerFactory = new FakerFactory();
         }
 
         public FakerFactory FakerFactory { get; }
 
-        public IArenaChallengeTestFileStorage FileStorage { get; }
+        public FileStorage FileStorage { get; }
     }
 }

@@ -10,7 +10,6 @@ using eDoxa.Cashier.Api.Areas.Accounts.Services;
 using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
 using eDoxa.Cashier.Api.Infrastructure.Data;
-using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
@@ -30,10 +29,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
-
-            // Storage
-            builder.RegisterType<CashierFileStorage>().As<ICashierFileStorage>().InstancePerDependency();
-            builder.RegisterType<CashierTestFileStorage>().As<ICashierTestFileStorage>().InstancePerDependency();
 
             // Seeder
             builder.RegisterType<CashierDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();

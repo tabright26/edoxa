@@ -5,20 +5,15 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.IO;
-using System.Threading.Tasks;
 
 using CsvHelper;
 
-using Microsoft.WindowsAzure.Storage.File;
-
 namespace eDoxa.Seedwork.Infrastructure.Extensions
 {
-    public static class CloudFileExtensions
+    public static class StreamExtensions
     {
-        public static async Task<CsvReader> OpenCsvReaderAsync(this CloudFile cloudFile)
+        public static CsvReader OpenCsvReader(this Stream stream)
         {
-            var stream = await cloudFile.OpenReadAsync();
-
             var streamReader = new StreamReader(stream);
 
             var csvReader = new CsvReader(streamReader);

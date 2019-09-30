@@ -4,14 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.IO;
-
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Factories;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
-using eDoxa.Storage.Azure.File;
-using eDoxa.Storage.Azure.File.Extensions;
-
-using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Cashier.TestHelpers.Fixtures
 {
@@ -19,22 +13,12 @@ namespace eDoxa.Cashier.TestHelpers.Fixtures
     {
         public TestDataFixture()
         {
-            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true)
-                .AddEnvironmentVariables()
-                .Build();
-
-            AzureFileStorageExtensions.ConfigureAzureStorageCredentials(configuration.GetSection("AzureFileStorage"));
-
             FakerFactory = new FakerFactory();
-            FileStorage = new CashierFileStorage(new AzureFileStorage());
-            TestFileStorage = new CashierTestFileStorage(new AzureFileStorage());
+            FileStorage = new FileStorage();
         }
 
         public FakerFactory FakerFactory { get; }
 
-        public ICashierFileStorage FileStorage { get; }
-
-        public ICashierTestFileStorage TestFileStorage { get; }
+        public FileStorage FileStorage { get; }
     }
 }

@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 using Bogus;
@@ -13,16 +12,13 @@ using Bogus;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.UserAggregate;
-using eDoxa.Storage.Azure.File;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
     // TODO: Should be refactored.
     public sealed class UserDataSet
     {
-        private static readonly IImmutableSet<User> TestUsers = new ArenaChallengeTestFileStorage(new AzureFileStorage()).GetUsersAsync().Result;
-
-        private static ICollection<User> _testUsers = new HashSet<User>(TestUsers);
+        private static ICollection<User> _testUsers = new HashSet<User>(FileStorage.Users);
 
         public UserDataSet(Faker faker)
         {
@@ -47,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 
         public void Reset()
         {
-            _testUsers = new HashSet<User>(TestUsers);
+            _testUsers = new HashSet<User>(FileStorage.Users);
         }
     }
 }

@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <PackageReference Include="eDoxa.Mediator" Version="1.0.0-CI-20190901-220828" />
-    <PackageReference Include="eDoxa.Storage.Azure" Version="1.0.0-CI-20190927-143423" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0" />
@@ -47,6 +46,12 @@
     <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\data\challenges.csv" Link="Setup/challenges.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\challenges.payouts.csv" Link="Setup/challenges.payouts.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>

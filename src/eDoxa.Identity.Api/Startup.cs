@@ -26,7 +26,6 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Modules;
-using eDoxa.Storage.Azure.File.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -84,8 +83,6 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAzureFileStorage(Configuration);
-
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
             services.AddHealthChecks(AppSettings);

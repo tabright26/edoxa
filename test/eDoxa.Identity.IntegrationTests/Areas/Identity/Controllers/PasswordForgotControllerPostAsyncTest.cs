@@ -42,7 +42,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var users = await TestData.TestFileStorage.GetUsersAsync();
+            var users = TestData.FileStorage.GetUsers();
             var user = users.First();
             user.PersonalInfo = null;
 

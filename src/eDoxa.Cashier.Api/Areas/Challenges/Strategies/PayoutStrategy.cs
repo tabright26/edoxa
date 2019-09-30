@@ -1,17 +1,15 @@
 ﻿// Filename: PayoutStrategy.cs
-// Date Created: 2019-08-28
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Strategies;
-using eDoxa.Storage.Azure.File;
 
 using IdentityServer4.Extensions;
 
@@ -19,11 +17,9 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Strategies
 {
     public sealed class PayoutStrategy : IPayoutStrategy
     {
-        public async Task<IPayout> GetPayoutAsync(PayoutEntries entries, EntryFee entryFee)
+        public IPayout GetPayout(PayoutEntries entries, EntryFee entryFee)
         {
-            var storage = new CashierFileStorage(new AzureFileStorage());
-
-            var payoutLookup = await storage.GetChallengePayoutStructuresAsync();
+            var payoutLookup = FileStorage.ChallengePayouts;
 
             var payoutLevels = payoutLookup[entries].ToList();
 

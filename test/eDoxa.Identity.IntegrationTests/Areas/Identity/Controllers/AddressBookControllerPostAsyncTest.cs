@@ -46,7 +46,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var users = await TestData.TestFileStorage.GetUsersAsync();
+            var users = TestData.FileStorage.GetUsers();
             var user = users.First();
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();

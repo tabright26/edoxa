@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 using Bogus;
@@ -13,15 +12,12 @@ using Bogus;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Storage.Azure.File;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
 {
     public class UserDataSet
     {
-        private static readonly IImmutableSet<User> TestUsers = new CashierTestFileStorage(new AzureFileStorage()).GetUsersAsync().Result;
-
-        private static ICollection<User> _testUsers = new HashSet<User>(TestUsers);
+        private static ICollection<User> _testUsers = new HashSet<User>(FileStorage.Users);
 
         public UserDataSet(Faker faker)
         {
@@ -46,7 +42,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
 
         public void Reset()
         {
-            _testUsers = new HashSet<User>(TestUsers);
+            _testUsers = new HashSet<User>(FileStorage.Users);
         }
     }
 }

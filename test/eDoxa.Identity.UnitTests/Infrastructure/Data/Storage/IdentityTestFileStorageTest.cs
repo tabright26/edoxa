@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Threading.Tasks;
 
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
@@ -23,52 +22,52 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         }
 
         [Fact]
-        public async Task GetUserClaimsAsync_WithTwoRecords_ShouldHaveCountOfTwo()
+        public void GetUserClaims_WithTwoRecords_ShouldHaveCountOfTwo()
         {
             // Arrange
-            var storage = TestData.TestFileStorage;
+            var storage = TestData.FileStorage;
 
             // Act
-            var userClaims = await storage.GetUserClaimsAsync();
+            var userClaims = storage.GetUserClaims();
 
             // Assert
             userClaims.Should().HaveCount(2);
         }
 
         [Fact]
-        public async Task GetUserRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
+        public void GetUserRoles_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = TestData.TestFileStorage;
+            var storage = TestData.FileStorage;
 
             // Act
-            var userRoles = await storage.GetUserRolesAsync();
+            var userRoles = storage.GetUserRoles();
 
             // Assert
             userRoles.Should().HaveCount(1);
         }
 
         [Fact]
-        public async Task GetUsersAsync_WithAdmin_ShouldContainAdminId()
+        public void GetUsers_WithAdmin_ShouldContainAdminId()
         {
             // Arrange
-            var storage = TestData.TestFileStorage;
+            var storage = TestData.FileStorage;
 
             // Act
-            var users = await storage.GetUsersAsync();
+            var users = storage.GetUsers();
 
             // Assert
             users.Should().Contain(user => user.Id == Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"));
         }
 
         [Fact]
-        public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
+        public void GetUsers_WithThousandRecords_ShouldHaveCountOfThousand()
         {
             // Arrange
-            var storage = TestData.TestFileStorage;
+            var storage = TestData.FileStorage;
 
             // Act
-            var users = await storage.GetUsersAsync();
+            var users = storage.GetUsers();
 
             // Assert
             users.Should().HaveCount(1000);

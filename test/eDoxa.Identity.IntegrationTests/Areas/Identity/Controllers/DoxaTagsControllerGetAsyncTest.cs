@@ -69,7 +69,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var testUsers = await TestData.TestFileStorage.GetUsersAsync();
+                    var testUsers = TestData.FileStorage.GetUsers();
 
                     foreach (var testUser in testUsers.Take(100).ToList())
                     {

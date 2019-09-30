@@ -11,7 +11,6 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.Factories;
@@ -30,9 +29,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
         {
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
-
-            // Storage
-            builder.RegisterType<ArenaChallengeTestFileStorage>().As<IArenaChallengeTestFileStorage>().InstancePerDependency();
 
             // Seeder
             builder.RegisterType<ArenaChallengesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();

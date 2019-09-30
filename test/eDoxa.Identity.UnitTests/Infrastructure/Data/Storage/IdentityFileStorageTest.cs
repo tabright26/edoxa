@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
 
@@ -22,26 +20,26 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
         }
 
         [Fact]
-        public async Task GetRoleClaimsAsync_WithOneRecord_ShouldHaveCountOfOne()
+        public void GetRoleClaims_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
             var storage = TestData.FileStorage;
 
             // Act
-            var roleClaims = await storage.GetRoleClaimsAsync();
+            var roleClaims = storage.GetRoleClaims();
 
             // Assert
             roleClaims.Should().HaveCount(1);
         }
 
         [Fact]
-        public async Task GetRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
+        public void GetRoles_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
             var storage = TestData.FileStorage;
 
             // Act
-            var roles = await storage.GetRolesAsync();
+            var roles = storage.GetRoles();
 
             // Assert
             roles.Should().HaveCount(1);
