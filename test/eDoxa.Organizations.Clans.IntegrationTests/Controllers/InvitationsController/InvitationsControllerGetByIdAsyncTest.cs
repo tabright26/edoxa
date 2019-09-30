@@ -1,6 +1,6 @@
-﻿// Filename: ChallengesControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
-//
+﻿// Filename: InvitationsControllerGetByIdAsyncTest.cs
+// Date Created: 2019-09-29
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -20,7 +20,6 @@ using eDoxa.Seedwork.Testing.Http.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Xunit;
 
@@ -28,15 +27,15 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
 {
     public sealed class InvitationsControllerGetByIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
-
         public InvitationsControllerGetByIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
         {
             _httpClient = organizationsClansApiFactory.CreateClient();
             _testServer = organizationsClansApiFactory.Server;
             _testServer.CleanupDbContext();
         }
+
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
 
         private async Task<HttpResponseMessage> ExecuteAsync(InvitationId invitationId)
         {
@@ -70,12 +69,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
 
                     var invitations = await invitationRepository.FetchAsync();
                     invitation = invitation.ToList();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(
-                invitation.FirstOrDefault() != null ? invitation.First().Id : new InvitationId());
+            using var response = await this.ExecuteAsync(invitation.FirstOrDefault() != null ? invitation.First().Id : new InvitationId());
 
             // Assert
             response.EnsureSuccessStatusCode();

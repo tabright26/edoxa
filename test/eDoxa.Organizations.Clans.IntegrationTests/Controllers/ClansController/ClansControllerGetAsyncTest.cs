@@ -1,5 +1,5 @@
-﻿// Filename: CandidaturesControllerGetByUserIdAsyncTest.cs
-// Date Created: 2019-09-27
+﻿// Filename: ClansControllerGetAsyncTest.cs
+// Date Created: 2019-09-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,11 +21,11 @@ using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
-namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesController
+namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
 {
-    public sealed class CandidaturesControllerGetByUserIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
+    public sealed class ClanControllerGetAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        public CandidaturesControllerGetByUserIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
+        public ClanControllerGetAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
         {
             _httpClient = organizationsClansApiFactory.CreateClient();
             _testServer = organizationsClansApiFactory.Server;
@@ -35,16 +35,16 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         private readonly HttpClient _httpClient;
         private readonly TestServer _testServer;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId)
+        private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync($"api/candidatures/byUserId?userId={userId}");
+            return await _httpClient.GetAsync("api/clans");
         }
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Act
-            using var response = await this.ExecuteAsync(new UserId());
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -55,23 +55,21 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-            var userId = new UserId();
-
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
-                    candidatureRepository.Create(new Candidature(userId, new ClanId()));
-                    await candidatureRepository.CommitAsync();
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(new Clan("TestClan", new UserId()));
+                    await clanRepository.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(userId);
+            using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<CandidatureResponse[]>();
+            var challengeResponses = await response.DeserializeAsync<InvitationResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

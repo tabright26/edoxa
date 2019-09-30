@@ -1,27 +1,23 @@
-﻿// Filename: ChallengesControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
-//
+﻿// Filename: CandidaturesControllerPostByIdAsyncTest.cs
+// Date Created: 2019-09-29
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Xunit;
 
@@ -29,9 +25,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 {
     public sealed class CandidaturesControllerPostByIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
-
         public CandidaturesControllerPostByIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
         {
             _httpClient = organizationsClansApiFactory.CreateClient();
@@ -39,9 +32,44 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             _testServer.CleanupDbContext();
         }
 
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
+
         private async Task<HttpResponseMessage> ExecuteAsync(CandidatureId candidatureId)
         {
             return await _httpClient.PostAsync($"api/candidatures/{candidatureId}", new JsonContent(""));
+        }
+
+        // Do I need to test out all single bad request possible ?
+
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeBadRequest() //Clan does not exist bad request.
+        {
+            // Arrange
+            var candidatureId = new CandidatureId();
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
+                    candidatureRepository.Create(new Candidature(new UserId(), new ClanId()));
+                    await candidatureRepository.CommitAsync();
+
+                    var candidatures = await candidatureRepository.FetchAsync();
+                    var candidature = candidatures.SingleOrDefault();
+
+                    if (candidature != null)
+                    {
+                        candidatureId = candidature.Id;
+                    }
+                });
+
+            // Act
+            using var response = await this.ExecuteAsync(candidatureId != null ? candidatureId : new CandidatureId());
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
@@ -84,8 +112,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
                     {
                         candidatureId = candidature.Id;
                     }
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(candidatureId != null ? candidatureId : new CandidatureId());
@@ -93,39 +120,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        // Do I need to test out all single bad request possible ?
-
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeBadRequest() //Clan does not exist bad request.
-        {
-            // Arrange
-            var candidatureId = new CandidatureId();
-
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
-                    candidatureRepository.Create(new Candidature(new UserId(), new ClanId()));
-                    await candidatureRepository.CommitAsync();
-
-                    var candidatures = await candidatureRepository.FetchAsync();
-                    var candidature = candidatures.SingleOrDefault();
-
-                    if (candidature != null)
-                    {
-                        candidatureId = candidature.Id;
-                    }
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync(candidatureId != null ? candidatureId : new CandidatureId());
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
     }
 }

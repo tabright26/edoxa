@@ -1,6 +1,6 @@
-﻿// Filename: ChallengesControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
-//
+﻿// Filename: CandidaturesControllerGetByClanIdAsyncTest.cs
+// Date Created: 2019-09-27
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -25,15 +25,15 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 {
     public sealed class CandidaturesControllerGetByClanIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
-
         public CandidaturesControllerGetByClanIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
         {
             _httpClient = organizationsClansApiFactory.CreateClient();
             _testServer = organizationsClansApiFactory.Server;
             _testServer.CleanupDbContext();
         }
+
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId)
         {
@@ -63,8 +63,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
                     candidatureRepository.Create(new Candidature(new UserId(), clanId));
                     await candidatureRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(clanId);

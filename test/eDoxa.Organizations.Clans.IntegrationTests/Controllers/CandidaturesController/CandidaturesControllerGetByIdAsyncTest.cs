@@ -1,6 +1,6 @@
-﻿// Filename: ChallengesControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
-//
+﻿// Filename: CandidaturesControllerGetByIdAsyncTest.cs
+// Date Created: 2019-09-29
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -20,7 +20,6 @@ using eDoxa.Seedwork.Testing.Http.Extensions;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using Xunit;
 
@@ -28,15 +27,15 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 {
     public sealed class CandidaturesControllerGetByIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
-
         public CandidaturesControllerGetByIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
         {
             _httpClient = organizationsClansApiFactory.CreateClient();
             _testServer = organizationsClansApiFactory.Server;
             _testServer.CleanupDbContext();
         }
+
+        private readonly HttpClient _httpClient;
+        private readonly TestServer _testServer;
 
         private async Task<HttpResponseMessage> ExecuteAsync(CandidatureId candidatureId)
         {
@@ -70,12 +69,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 
                     var candidatures = await candidatureRepository.FetchAsync();
                     candidature = candidature.ToList();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(
-                candidature.FirstOrDefault() != null ? candidature.First().Id : new CandidatureId());
+            using var response = await this.ExecuteAsync(candidature.FirstOrDefault() != null ? candidature.First().Id : new CandidatureId());
 
             // Assert
             response.EnsureSuccessStatusCode();
