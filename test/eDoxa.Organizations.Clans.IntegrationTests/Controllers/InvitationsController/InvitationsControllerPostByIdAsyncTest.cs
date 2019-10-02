@@ -9,17 +9,17 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
+using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
 using IdentityModel;
-
-using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
@@ -38,7 +38,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
 
         private async Task<HttpResponseMessage> ExecuteAsync(InvitationId invitationId)
         {
-            return await _httpClient.PostAsync($"api/invitations/{invitationId}", new JsonContent(""));
+            return await _httpClient.PostAsync($"api/invitations/{invitationId}", JsonContent.EmptyBody);
         }
 
         // Do I need to test out all single bad request possible ?
@@ -89,8 +89,8 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-            var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
+            var userId = new UserId();
             var invitation = new Invitation(userId, clan.Id);
 
             var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
@@ -115,6 +115,8 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             using var response = await this.ExecuteAsync(invitation.Id);
 
             // Assert
+            var test = await response.DeserializeAsync<dynamic>();
+            
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }

@@ -1,9 +1,10 @@
 ﻿// Filename: ClanService.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -93,12 +94,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
         public async Task AddMemberToClanAsync(ClanId clanId, IMemberInfo memberInfo)
         {
-            var clan = await _clanRepository.FindClanAsync(clanId);
+            var clan = await _clanRepository.FindClanAsync(clanId) ?? throw new InvalidOperationException(nameof(this.AddMemberToClanAsync));
 
-            if (clan != null)
-            {
-                clan.AddMember(memberInfo);
-            }
+            clan.AddMember(memberInfo);
 
             await _clanRepository.UnitOfWork.CommitAsync();
         }
@@ -119,9 +117,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
             clan.Kick(member);
 
-            //TODO: I had to remove this bit of code on every domain event call otherwise every domain event is called multiple time.
-            // I REMOVED THE OTHERS, BUT I KEPT THIS ONE FOR TESTING PURPOSE.
-            //await _clanRepository.UnitOfWork.CommitAsync();
+            await _clanRepository.UnitOfWork.CommitAsync();
 
             return new ValidationResult();
         }
@@ -147,16 +143,16 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
             return new ValidationResult();
         }
 
+        public async Task<bool> IsMemberAsync(UserId userId)
+        {
+            return await _clanRepository.IsMemberAsync(userId);
+        }
+
         private async Task DeleteClanAsync(Clan clan)
         {
             _clanRepository.Delete(clan);
 
             await _clanRepository.UnitOfWork.CommitAsync();
-        }
-
-        public async Task<bool> IsMemberAsync(UserId userId)
-        {
-            return await _clanRepository.IsMemberAsync(userId);
         }
     }
 }

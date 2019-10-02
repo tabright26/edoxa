@@ -20,8 +20,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController

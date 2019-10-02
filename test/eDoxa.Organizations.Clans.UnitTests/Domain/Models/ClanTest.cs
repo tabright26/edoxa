@@ -4,12 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 

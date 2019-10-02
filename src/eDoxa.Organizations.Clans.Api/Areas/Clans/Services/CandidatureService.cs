@@ -72,6 +72,8 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
             candidature.Accept();
 
+            await _candidatureRepository.UnitOfWork.CommitAsync();
+
             return new ValidationResult();
         }
 

@@ -144,7 +144,7 @@ namespace eDoxa.Organizations.Clans.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule<Startup>>();
+            //builder.RegisterModule<DomainEventModule<Startup>>();
 
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 

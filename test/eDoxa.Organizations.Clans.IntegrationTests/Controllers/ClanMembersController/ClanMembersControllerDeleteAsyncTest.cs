@@ -18,8 +18,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersController
@@ -73,7 +71,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
         {
             // Arrange
             var userId = new UserId();
-            var clan = new Clan("ClanName", new UserId());
 
             var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();

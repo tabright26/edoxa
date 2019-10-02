@@ -19,8 +19,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersController
@@ -111,7 +109,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(clan.Id, memberId ?? new MemberId());
+            using var response = await this.ExecuteAsync(clan.Id, memberId ?? new MemberId()); // TODO: (VERY BAD) no condition in a test.
 
             // Assert
             response.EnsureSuccessStatusCode();

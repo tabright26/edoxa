@@ -74,6 +74,8 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             // Arrange
             var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
 
             // Act
             using var response = await this.ExecuteAsync(new CandidatureId());

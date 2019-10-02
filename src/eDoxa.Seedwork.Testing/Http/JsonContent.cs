@@ -1,5 +1,5 @@
 ﻿// Filename: JsonContent.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,6 +13,8 @@ namespace eDoxa.Seedwork.Testing.Http
 {
     public sealed class JsonContent : StringContent
     {
+        public static JsonContent EmptyBody = new JsonContent("{}");
+
         public JsonContent(object content) : base(JsonConvert.SerializeObject(content), Encoding.UTF8, "application/json")
         {
         }

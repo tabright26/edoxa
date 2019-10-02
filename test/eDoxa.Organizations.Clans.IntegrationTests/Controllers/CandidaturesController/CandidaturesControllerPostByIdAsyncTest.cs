@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
@@ -20,10 +18,6 @@ using eDoxa.Seedwork.Testing.Http;
 using FluentAssertions;
 
 using IdentityModel;
-
-using Microsoft.AspNetCore.TestHost;
-
-using Serilog;
 
 using Xunit;
 
@@ -79,6 +73,8 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             // Arrange
             var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
 
             // Act
             using var response = await this.ExecuteAsync(new CandidatureId());
