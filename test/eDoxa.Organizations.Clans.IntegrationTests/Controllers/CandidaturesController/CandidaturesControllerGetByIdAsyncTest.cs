@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
+using eDoxa.Organizations.Clans.TestHelpers;
 using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -25,14 +26,8 @@ using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesController
 {
-    public sealed class CandidaturesControllerGetByIdAsyncTest : IClassFixture<TestApiFixture>
+    public sealed class CandidaturesControllerGetByIdAsyncTest : IntegrationTest
     {
-        private readonly TestApiFixture _apiFixture;
-        public CandidaturesControllerGetByIdAsyncTest(TestApiFixture apiFixture)
-        {
-            _apiFixture = apiFixture;
-            _httpClient = new HttpClient();
-        }
         private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(CandidatureId candidatureId)
@@ -44,7 +39,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -64,7 +59,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             var clan = new Clan("ClanName", new UserId());
             var candidature = new Candidature(userId, clan.Id);
 
-            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -85,6 +80,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeResponse = await response.DeserializeAsync<CandidatureResponse>();
             challengeResponse!.Id.Should().Be(candidature.Id);
+        }
+
+        public CandidaturesControllerGetByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
         }
     }
 }

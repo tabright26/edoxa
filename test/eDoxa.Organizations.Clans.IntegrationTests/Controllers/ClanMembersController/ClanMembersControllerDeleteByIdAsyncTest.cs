@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
+using eDoxa.Organizations.Clans.TestHelpers;
 using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
@@ -24,16 +25,8 @@ using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersController
 {
-    public sealed class ClanMembersControllerDeleteByIdAsyncTest : IClassFixture<TestApiFixture>
+    public sealed class ClanMembersControllerDeleteByIdAsyncTest : IntegrationTest
     {
-        private readonly TestApiFixture _apiFixture;
-
-        public ClanMembersControllerDeleteByIdAsyncTest(TestApiFixture apiFixture)
-        {
-            _apiFixture = apiFixture;
-            _httpClient = new HttpClient();
-        }
-
         private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId, MemberId memberId)
@@ -48,7 +41,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -72,7 +65,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -96,7 +89,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
 
             var memberId = clan.Members.SingleOrDefault(member => member.UserId != userId)?.Id;
 
-            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -115,6 +108,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+        }
+
+        public ClanMembersControllerDeleteByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
         }
     }
 }
