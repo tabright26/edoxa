@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,16 +12,15 @@ using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
-    [TestClass]
     public sealed class UserCreatedIntegrationEventHandlerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task HandleAsync_WhenUserCreatedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange

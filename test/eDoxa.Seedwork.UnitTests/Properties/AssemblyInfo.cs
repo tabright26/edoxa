@@ -1,15 +1,11 @@
 ﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-07-23
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-// TODO: This test set does not comply with the eDoxa test conventions.
+#if !DEBUG
+using Xunit;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-#if DEBUG
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel, Workers = 0)]
-#else
-[assembly: DoNotParallelize]
+[assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly)]
 #endif

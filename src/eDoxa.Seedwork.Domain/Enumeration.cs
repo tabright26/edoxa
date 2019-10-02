@@ -11,6 +11,8 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
+using Autofac.Util;
+
 namespace eDoxa.Seedwork.Domain
 {
     public static class Enumeration
@@ -18,7 +20,7 @@ namespace eDoxa.Seedwork.Domain
         public static IEnumerable<Type> GetTypes()
         {
             return AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(assembly => assembly.GetTypes())
+                .SelectMany(assembly => assembly.GetLoadableTypes())
                 .Where(type => type.IsClass && !type.IsAbstract && typeof(IEnumeration).IsAssignableFrom(type))
                 .ToList();
         }

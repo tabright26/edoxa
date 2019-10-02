@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserClaimsPrincipalFactory.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -104,11 +104,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                             new JsonSerializerSettings
                             {
                                 ContractResolver = new CamelCasePropertyNamesContractResolver()
-                            }
-                        ),
-                        IdentityServerConstants.ClaimValueTypes.Json
-                    )
-                );
+                            }),
+                        IdentityServerConstants.ClaimValueTypes.Json));
             }
         }
 
@@ -238,8 +235,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             if (userGames.Any())
             {
                 Identity!.AddClaim(
-                    new Claim(ClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json)
-                );
+                    new Claim(ClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json));
             }
         }
     }

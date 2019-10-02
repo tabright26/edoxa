@@ -2,23 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>eDoxa.Organizations.Clans.UnitTests</AssemblyName>
-    <RootNamespace>eDoxa.Organizations.Clans.UnitTests</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190901-042717" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
-    <PackageReference Include="MSTest.TestAdapter" Version="1.4.0" />
-    <PackageReference Include="MSTest.TestFramework" Version="1.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
+    <PackageReference Include="xunit.core" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Organizations.Clans.Api\eDoxa.Organizations.Clans.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
+    <ProjectReference Include="..\eDoxa.Organizations.Clans.TestHelpers\eDoxa.Organizations.Clans.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

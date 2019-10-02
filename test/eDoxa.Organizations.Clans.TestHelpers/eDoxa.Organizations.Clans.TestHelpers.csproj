@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.core" Version="2.4.1" />
+    <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190901-042717" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Organizations.Clans.Api\eDoxa.Organizations.Clans.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,6 +14,7 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
@@ -57,7 +58,12 @@ namespace eDoxa.Cashier.Api
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
-                .ConfigureServices(services => services.AddAutofac())
+                .ConfigureServices(
+                    services =>
+                    {
+                        services.AddApplicationInsightsTelemetry();
+                        services.AddAutofac();
+                    })
                 .ConfigureAppConfiguration(
                     config =>
                     {
@@ -72,7 +78,6 @@ namespace eDoxa.Cashier.Api
 
                         config.AddConfiguration(builder.Build());
                     })
-                .UseApplicationInsights()
                 .UseSerilog(
                     (context, config) =>
                     {

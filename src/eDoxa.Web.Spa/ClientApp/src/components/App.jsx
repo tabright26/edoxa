@@ -3,6 +3,7 @@ import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/history";
+import UserAccountModal from "modals/User/Account";
 import ArenaChallengeParticipantMatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
 import Loading from "./Shared/Loading";
 
@@ -22,6 +23,8 @@ const PasswordReset = React.lazy(() => import("views/User/Password/Reset"));
 
 const App = () => (
   <>
+    <UserAccountModal.Deposit />
+    <UserAccountModal.Withdrawal />
     <ArenaChallengeParticipantMatchScoreModal.Details />
     <Router history={history}>
       <Suspense fallback={<Loading.Default />}>

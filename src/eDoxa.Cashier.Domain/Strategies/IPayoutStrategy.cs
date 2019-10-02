@@ -8,14 +8,12 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Threading.Tasks;
-
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Cashier.Domain.Strategies
 {
     public interface IPayoutStrategy
     {
-        Task<IPayout> GetPayoutAsync(PayoutEntries entries, EntryFee entryFee);
+        IPayout GetPayout(PayoutEntries entries, EntryFee entryFee);
     }
 }

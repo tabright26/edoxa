@@ -1,13 +1,11 @@
 ﻿// Filename: AssemblyInfo.cs
-// Date Created: 2019-07-25
+// Date Created: 2019-09-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+#if !DEBUG
+using Xunit;
 
-#if DEBUG
-[assembly: Parallelize(Scope = ExecutionScope.MethodLevel, Workers = 0)]
-#else
-[assembly: DoNotParallelize]
+[assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly)]
 #endif

@@ -1,5 +1,5 @@
-﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
-// Date Created: 2019-06-25
+﻿// Filename: RoleClaimAddedIntegrationEventHandlerTest.cs
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,38 +13,30 @@ using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
-    [TestClass]
     public sealed class RoleClaimAddedIntegrationEventHandlerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task RoleClaimAddedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var mockRoleManager = new Mock<IRoleManager>();
 
-            mockRoleManager
-                .Setup(roleManager => roleManager.RoleExistsAsync(It.IsAny<string>()))
-                .ReturnsAsync(true)
-                .Verifiable();
+            mockRoleManager.Setup(roleManager => roleManager.RoleExistsAsync(It.IsAny<string>())).ReturnsAsync(true).Verifiable();
 
-            mockRoleManager.Setup(roleManager =>
-                    roleManager.FindByNameAsync(It.IsAny<string>()))
-                .ReturnsAsync(new Role{})
-                .Verifiable();
+            mockRoleManager.Setup(roleManager => roleManager.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(new Role()).Verifiable();
 
-            mockRoleManager.Setup(roleManager =>
-                    roleManager.AddClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()))
+            mockRoleManager.Setup(roleManager => roleManager.AddClaimAsync(It.IsAny<Role>(), It.IsAny<Claim>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var handler = new RoleClaimAddedIntegrationEventHandler(
-                mockRoleManager.Object);
+            var handler = new RoleClaimAddedIntegrationEventHandler(mockRoleManager.Object);
 
             var integrationEvent = new RoleClaimAddedIntegrationEvent("role", "admin", "allow");
 

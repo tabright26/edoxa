@@ -1,5 +1,5 @@
 ﻿// Filename: UserTransactionFailedIntegrationEventTest.cs
-// Date Created: 2019-08-25
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,16 +10,15 @@ using eDoxa.Payment.Api.IntegrationEvents;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Newtonsoft.Json;
+
+using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents
 {
-    [TestClass]
     public sealed class UserTransactionFailedIntegrationEventTest
     {
-        [TestMethod]
+        [Fact]
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange

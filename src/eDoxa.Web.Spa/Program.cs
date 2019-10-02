@@ -1,5 +1,5 @@
 // Filename: Program.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
@@ -26,6 +27,7 @@ namespace eDoxa.Web.Spa
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
+                .ConfigureServices(services => services.AddApplicationInsightsTelemetry())
                 .ConfigureAppConfiguration(
                     config =>
                     {
@@ -40,7 +42,6 @@ namespace eDoxa.Web.Spa
 
                         config.AddConfiguration(builder.Build());
                     })
-                .UseApplicationInsights()
                 .UseSerilog(
                     (context, config) =>
                     {

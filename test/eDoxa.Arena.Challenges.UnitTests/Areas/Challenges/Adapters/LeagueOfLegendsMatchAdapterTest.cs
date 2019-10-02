@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsMatchAdapterTest.cs
-// Date Created: 2019-08-28
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,31 +9,25 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
 {
-    [TestClass]
-    public sealed class LeagueOfLegendsMatchAdapterTest
+    public sealed class LeagueOfLegendsMatchAdapterTest : UnitTest
     {
-        private Mock<ILeagueOfLegendsProxy> _mockLeagueOfLegendsProxy;
-
-        private static LeagueOfLegendsMatchDto StubMatch =>
-            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"Helpers/Stubs/LeagueOfLegends/Matches.json").First();
-
-        [TestInitialize]
-        public void TestInitialize()
+        public LeagueOfLegendsMatchAdapterTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
             _mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsProxy>();
 
@@ -42,13 +36,18 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
                 .Verifiable();
         }
 
-        [TestMethod]
+        private static LeagueOfLegendsMatchDto StubMatch =>
+            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"TestHelpers/Stubs/LeagueOfLegends/Matches.json").First();
+
+        private readonly Mock<ILeagueOfLegendsProxy> _mockLeagueOfLegendsProxy;
+
+        [Fact]
         public async Task GetMatchAsync_WhenGameAccountIdIsParticipant_ShouldBeLeagueOfLegends()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
-            challengeFaker.UseSeed(24788394);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(24788394, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+
+            var challenge = challengeFaker.FakeChallenge();
 
             var synchronizedAt = new UtcNowDateTimeProvider();
 

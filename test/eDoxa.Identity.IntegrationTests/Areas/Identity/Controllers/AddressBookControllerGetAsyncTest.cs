@@ -1,5 +1,5 @@
 ﻿// Filename: AddressBookControllerGetAsyncTest.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,8 @@ using AutoMapper;
 
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -28,14 +29,14 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressBookControllerGetAsyncTest : IClassFixture<IdentityApiFactory>
+    public sealed class AddressBookControllerGetAsyncTest : IntegrationTest
     {
-        public AddressBookControllerGetAsyncTest(IdentityApiFactory identityApiFactory)
+        public AddressBookControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            _identityApiFactory = identityApiFactory;
         }
-
-        private readonly IdentityApiFactory _identityApiFactory;
 
         private HttpClient _httpClient;
 
@@ -47,10 +48,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
-            var identityStorage = new IdentityTestFileStorage();
-            var users = await identityStorage.GetUsersAsync();
+            var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -77,10 +77,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
-            var identityStorage = new IdentityTestFileStorage();
-            var users = await identityStorage.GetUsersAsync();
+            var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            var factory = _identityApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

@@ -1,5 +1,5 @@
 ﻿// Filename: AccountBalanceControllerTest.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,76 +7,28 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.UnitTests.Helpers.Extensions;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 {
-    [TestClass]
-    public sealed class AccountBalanceControllerTest
+    public sealed class AccountBalanceControllerTest : UnitTest
     {
-        [TestMethod]
-        public async Task GetByCurrencyAsync_ShouldBeOfTypeOkObjectResult()
+        public AccountBalanceControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
-            // Arrange
-            var mockAccountQuery = new Mock<IAccountQuery>();
-
-            var accountFaker = new AccountFaker();
-
-            var account = accountFaker.Generate();
-
-            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>()))
-                .ReturnsAsync(account.GetBalanceFor(Currency.Money))
-                .Verifiable();
-
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper);
-
-            var controller = new AccountBalanceController(mockAccountQuery.Object);
-
-            // Act
-            var result = await controller.GetByCurrencyAsync(Currency.Money);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
-
-            mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
         }
 
-        [TestMethod]
-        public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var mockAccountQuery = new Mock<IAccountQuery>();
-
-            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
-
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
-
-            var controller = new AccountBalanceController(mockAccountQuery.Object);
-
-            // Act
-            var result = await controller.GetByCurrencyAsync(Currency.Money);
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
-
-            mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task GetByCurrencyAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
@@ -84,7 +36,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(MapperExtensions.Mapper).Verifiable();
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
             var controller = new AccountBalanceController(mockAccountQuery.Object);
 
@@ -99,6 +51,56 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
             mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Never);
 
             mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Never);
+        }
+
+        [Fact]
+        public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()
+        {
+            // Arrange
+            var mockAccountQuery = new Mock<IAccountQuery>();
+
+            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
+
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
+
+            var controller = new AccountBalanceController(mockAccountQuery.Object);
+
+            // Act
+            var result = await controller.GetByCurrencyAsync(Currency.Money);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+
+            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
+
+            mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByCurrencyAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var mockAccountQuery = new Mock<IAccountQuery>();
+
+            var account = TestData.FakerFactory.CreateAccountFaker(null).FakeAccount();
+
+            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>()))
+                .ReturnsAsync(account.GetBalanceFor(Currency.Money))
+                .Verifiable();
+
+            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper);
+
+            var controller = new AccountBalanceController(mockAccountQuery.Object);
+
+            // Act
+            var result = await controller.GetByCurrencyAsync(Currency.Money);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
+
+            mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
         }
     }
 }

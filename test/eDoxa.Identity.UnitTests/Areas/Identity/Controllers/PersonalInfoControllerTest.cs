@@ -1,5 +1,5 @@
 ﻿// Filename: PersonalInfoControllerTest.cs
-// Date Created: 2019-08-09
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,23 +13,50 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
-using static eDoxa.Identity.UnitTests.Helpers.Extensions.MapperExtensions;
+using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    [TestClass]
-    public sealed class PersonalInfoControllerTest
+    public sealed class PersonalInfoControllerTest : UnitTest
     {
-        [TestMethod]
+        public PersonalInfoControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
+        [Fact]
+        public async Task GetAsync_ShouldBeNoContentResult()
+        {
+            // Arrange
+            var user = new User();
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
+
+            // Act
+            var result = await controller.GetAsync();
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
+        }
+
+        [Fact]
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
@@ -50,7 +77,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -58,87 +85,14 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(Mapper.Map<UserPersonalInfoResponse>(user.PersonalInfo));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<UserPersonalInfoResponse>(user.PersonalInfo));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
         }
 
-        [TestMethod]
-        public async Task GetAsync_ShouldBeNoContentResult()
-        {
-            // Arrange
-            var user = new User();
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<NoContentResult>();
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task PostAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var user = new User();
-
-            var mockUserManager = new Mock<IUserManager>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).Verifiable();
-
-            mockUserManager.Setup(
-                    userManager => userManager.SetPersonalInfoAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<Gender>(),
-                        It.IsAny<DateTime?>()
-                    )
-                )
-                .ReturnsAsync(IdentityResult.Success)
-                .Verifiable();
-
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
-
-            // Act
-            var result = await controller.PostAsync(new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1)));
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
-
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
-
-            mockUserManager.Verify(
-                userManager => userManager.SetPersonalInfoAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<Gender>(),
-                    It.IsAny<DateTime?>()
-                ),
-                Times.Once
-            );
-        }
-
-        [TestMethod]
+        [Fact]
         public async Task PostAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
@@ -156,16 +110,19 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<Gender>(),
-                        It.IsAny<DateTime?>()
-                    )
-                )
+                        It.IsAny<DateTime?>()))
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
-            var result = await controller.PostAsync(new PersonalInfoPostRequest("Bob", "Bob", Gender.Male, new DateTime(2000, 1, 1)));
+            var result = await controller.PostAsync(
+                new PersonalInfoPostRequest(
+                    "Bob",
+                    "Bob",
+                    Gender.Male,
+                    new DateTime(2000, 1, 1)));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -182,32 +139,21 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Gender>(),
-                    It.IsAny<DateTime?>()
-                ),
-                Times.Once
-            );
+                    It.IsAny<DateTime?>()),
+                Times.Once);
         }
 
-        [TestMethod]
-        public async Task PutAsync_ShouldBeOkObjectResult()
+        [Fact]
+        public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var user = new User
-            {
-                PersonalInfo = new UserPersonalInfo
-                {
-                    FirstName = "FirstName",
-                    LastName = "LastName",
-                    Gender = Gender.Male,
-                    BirthDate = DateTime.UtcNow.AddDays(-20)
-                }
-            };
+            var user = new User();
 
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).Verifiable();
 
             mockUserManager.Setup(
                     userManager => userManager.SetPersonalInfoAsync(
@@ -215,16 +161,19 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<Gender>(),
-                        It.IsAny<DateTime?>()
-                    )
-                )
+                        It.IsAny<DateTime?>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
-            var result = await controller.PutAsync(new PersonalInfoPutRequest("Bob"));
+            var result = await controller.PostAsync(
+                new PersonalInfoPostRequest(
+                    "Bob",
+                    "Bob",
+                    Gender.Male,
+                    new DateTime(2000, 1, 1)));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -241,13 +190,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Gender>(),
-                    It.IsAny<DateTime?>()
-                ),
-                Times.Once
-            );
+                    It.IsAny<DateTime?>()),
+                Times.Once);
         }
 
-        [TestMethod]
+        [Fact]
         public async Task PutAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
@@ -274,13 +221,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<Gender>(),
-                        It.IsAny<DateTime?>()
-                    )
-                )
+                        It.IsAny<DateTime?>()))
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new PersonalInfoController(mockUserManager.Object, Mapper);
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.PutAsync(new PersonalInfoPutRequest("Bob"));
@@ -300,10 +245,63 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Gender>(),
-                    It.IsAny<DateTime?>()
-                ),
-                Times.Once
-            );
+                    It.IsAny<DateTime?>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task PutAsync_ShouldBeOkObjectResult()
+        {
+            // Arrange
+            var user = new User
+            {
+                PersonalInfo = new UserPersonalInfo
+                {
+                    FirstName = "FirstName",
+                    LastName = "LastName",
+                    Gender = Gender.Male,
+                    BirthDate = DateTime.UtcNow.AddDays(-20)
+                }
+            };
+
+            var mockUserManager = new Mock<IUserManager>();
+
+            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+
+            mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
+
+            mockUserManager.Setup(
+                    userManager => userManager.SetPersonalInfoAsync(
+                        It.IsAny<User>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<Gender>(),
+                        It.IsAny<DateTime?>()))
+                .ReturnsAsync(IdentityResult.Success)
+                .Verifiable();
+
+            var controller = new PersonalInfoController(mockUserManager.Object, TestMapper);
+
+            // Act
+            var result = await controller.PutAsync(new PersonalInfoPutRequest("Bob"));
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
+
+            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
+
+            mockUserManager.Verify(
+                userManager => userManager.SetPersonalInfoAsync(
+                    It.IsAny<User>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<Gender>(),
+                    It.IsAny<DateTime?>()),
+                Times.Once);
         }
     }
 }

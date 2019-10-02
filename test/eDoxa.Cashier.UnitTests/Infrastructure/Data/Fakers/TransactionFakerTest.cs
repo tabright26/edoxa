@@ -1,70 +1,75 @@
 ﻿// Filename: TransactionFakerTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
-    [TestClass]
-    public sealed class TransactionFakerTest
+    public sealed class TransactionFakerTest : UnitTest
     {
-        [TestMethod]
-        public void Generate_TenPositiveTransactions_ShouldHaveCountTen()
+        public TransactionFakerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
-            // Arrange
-            var transactionFaker = new TransactionFaker();
-
-            // Act
-            var transactions = transactionFaker.Generate(10, TransactionFaker.PositiveTransaction);
-
-            // Assert
-            transactions.Should().HaveCount(10);
         }
 
-        [TestMethod]
-        public void Generate_SinglePositiveTransaction_ShouldNotBeNull()
-        {
-            // Arrange
-            var transactionFaker = new TransactionFaker();
-
-            // Act
-            var transaction = transactionFaker.Generate(TransactionFaker.PositiveTransaction);
-
-            // Assert
-            transaction.Should().NotBeNull();
-        }
-
-        [TestMethod]
-        public void Generate_TenNegativeTransactions_ShouldHaveCountTen()
-        {
-            // Arrange
-            var transactionFaker = new TransactionFaker();
-
-            // Act
-            var transactions = transactionFaker.Generate(10, TransactionFaker.NegativeTransaction);
-
-            // Assert
-            transactions.Should().HaveCount(10);
-        }
-
-        [TestMethod]
+        [Fact]
         public void Generate_SingleNegativeTransaction_ShouldNotBeNull()
         {
             // Arrange
-            var transactionFaker = new TransactionFaker();
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
 
             // Act
-            var transaction = transactionFaker.Generate(TransactionFaker.NegativeTransaction);
+            var transaction = transactionFaker.FakeTransaction(TransactionFaker.NegativeTransaction);
 
             // Assert
             transaction.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Generate_SinglePositiveTransaction_ShouldNotBeNull()
+        {
+            // Arrange
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
+
+            // Act
+            var transaction = transactionFaker.FakeTransaction(TransactionFaker.PositiveTransaction);
+
+            // Assert
+            transaction.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Generate_TenNegativeTransactions_ShouldHaveCountTen()
+        {
+            // Arrange
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
+
+            // Act
+            var transactions = transactionFaker.FakeTransactions(10, TransactionFaker.NegativeTransaction);
+
+            // Assert
+            transactions.Should().HaveCount(10);
+        }
+
+        [Fact]
+        public void Generate_TenPositiveTransactions_ShouldHaveCountTen()
+        {
+            // Arrange
+            var transactionFaker = TestData.FakerFactory.CreateTransactionFaker(null);
+
+            // Act
+            var transactions = transactionFaker.FakeTransactions(10, TransactionFaker.PositiveTransaction);
+
+            // Assert
+            transactions.Should().HaveCount(10);
         }
     }
 }

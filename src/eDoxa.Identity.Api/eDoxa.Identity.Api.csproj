@@ -31,7 +31,7 @@
     <PackageReference Include="AspNet.Security.OAuth.Twitch" Version="2.1.0" />
     <PackageReference Include="AspNet.Security.OpenId.Steam" Version="2.1.0" />
     <PackageReference Include="eDoxa.Mediator" Version="1.0.0-CI-20190901-220828" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.7.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OAuth" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection" Version="2.2.0" />
@@ -46,7 +46,7 @@
     <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190901-042717" />
-    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.0.4" />
@@ -57,6 +57,14 @@
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\data\roles.csv" Link="Setup/roles.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\roles.claims.csv" Link="Setup/roles.claims.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\users.roles.csv" Link="Setup/users.roles.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\users.claims.csv" Link="Setup/users.claims.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>

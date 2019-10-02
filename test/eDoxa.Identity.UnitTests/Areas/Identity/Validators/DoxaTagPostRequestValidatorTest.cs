@@ -1,10 +1,8 @@
 ﻿// Filename: DoxaTagPostRequestValidatorTest.cs
-// Date Created: 2019-08-22
-//
+// Date Created: 2019-09-16
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Collections.Generic;
 
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
@@ -13,15 +11,35 @@ using FluentAssertions;
 
 using FluentValidation.TestHelper;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 {
-    [TestClass]
     public sealed class DoxaTagPostRequestValidatorTest
     {
-        [DataTestMethod]
-        [DynamicData(nameof(ValidDoxaTags), DynamicDataSourceType.Method)]
+        public static TheoryData<string> ValidDoxaTags =>
+            new TheoryData<string>
+            {
+                "DoxaTagName",
+                "Doxa_Tag_Name",
+                "aaaaaaaaaaaaaaaa"
+            };
+
+        public static TheoryData<string, string> InvalidDoxaTags =>
+            new TheoryData<string, string>
+            {
+                {null, DoxaTagErrorDescriber.Required()},
+                {"", DoxaTagErrorDescriber.Required()},
+                {"D", DoxaTagErrorDescriber.Length()},
+                {"aaaaaaaaaaaaaaaaa", DoxaTagErrorDescriber.Length()},
+                {"@DoxaTagName", DoxaTagErrorDescriber.Invalid()},
+                {"DoxaTagName1", DoxaTagErrorDescriber.Invalid()},
+                {"_DoxaTagName", DoxaTagErrorDescriber.InvalidUnderscore()},
+                {"DoxaTagName_", DoxaTagErrorDescriber.InvalidUnderscore()}
+            };
+
+        [Theory]
+        [MemberData(nameof(ValidDoxaTags))]
         public void Validate_WhenNameIsValid_ShouldNotHaveValidationErrorFor(string name)
         {
             // Arrange
@@ -31,15 +49,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Name, name);
         }
 
-        private static IEnumerable<object[]> ValidDoxaTags()
-        {
-            yield return new object[] { "DoxaTagName" };
-            yield return new object[] { "Doxa_Tag_Name" };
-            yield return new object[] { "aaaaaaaaaaaaaaaa" };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidDoxaTags), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidDoxaTags))]
         public void Validate_WhenNameIsInvalid_ShouldHaveValidationErrorFor(string name, string errorMessage)
         {
             // Arrange
@@ -49,18 +60,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Name, name);
 
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }
-
-        private static IEnumerable<object[]> InvalidDoxaTags()
-        {
-            yield return new object[] { null, DoxaTagErrorDescriber.Required() };
-            yield return new object[] { "", DoxaTagErrorDescriber.Required() };
-            yield return new object[] { "D", DoxaTagErrorDescriber.Length() };
-            yield return new object[] { "aaaaaaaaaaaaaaaaa", DoxaTagErrorDescriber.Length() };
-            yield return new object[] { "@DoxaTagName", DoxaTagErrorDescriber.Invalid() };
-            yield return new object[] { "DoxaTagName1", DoxaTagErrorDescriber.Invalid() };
-            yield return new object[] { "_DoxaTagName", DoxaTagErrorDescriber.InvalidUnderscore() };
-            yield return new object[] { "DoxaTagName_", DoxaTagErrorDescriber.InvalidUnderscore() };
         }
     }
 }

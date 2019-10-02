@@ -27,7 +27,7 @@ kubectl apply -f istio-$ISTIO_VERSION/install/kubernetes/helm/helm-service-accou
 
 Write-Host "Install Tiller with the service account..." -ForegroundColor Green
 
-helm init --service-account tiller
+helm init --service-account tiller --upgrade
 
 Start-Sleep -Seconds 30
 
@@ -111,3 +111,6 @@ Start-Sleep -Seconds 30
 Write-Host "The external IP address of the istio-ingressgateway service:" -ForegroundColor Green
 
 kubectl -n istio-system get service istio-ingressgateway
+
+Remove-Item istio-$ISTIO_VERSION -Recurse -ErrorAction Ignore
+Remove-Item istio-$ISTIO_VERSION.zip -Recurse -ErrorAction Ignore

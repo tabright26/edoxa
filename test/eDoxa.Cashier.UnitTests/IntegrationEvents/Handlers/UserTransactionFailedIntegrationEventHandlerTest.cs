@@ -1,5 +1,5 @@
-﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
-// Date Created: 2019-06-25
+﻿// Filename: UserTransactionFailedIntegrationEventHandlerTest.cs
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,28 +15,30 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
-    [TestClass]
     public sealed class UserTransactionFailedIntegrationEventHandlerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task HandleAsync_WhenUserTransactionFailedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var mockTransactionRepository = new Mock<ITransactionRepository>();
 
-            mockTransactionRepository
-                .Setup(transcationRepository => transcationRepository.FindTransactionAsync(It.IsAny<TransactionId>()))
-                .ReturnsAsync(new Transaction(Money.Ten, new TransactionDescription("Description"), TransactionType.Deposit, new UtcNowDateTimeProvider()))
+            mockTransactionRepository.Setup(transcationRepository => transcationRepository.FindTransactionAsync(It.IsAny<TransactionId>()))
+                .ReturnsAsync(
+                    new Transaction(
+                        Money.Ten,
+                        new TransactionDescription("Description"),
+                        TransactionType.Deposit,
+                        new UtcNowDateTimeProvider()))
                 .Verifiable();
 
-            mockTransactionRepository.Setup(transactionRepository =>
-                transactionRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockTransactionRepository.Setup(transactionRepository => transactionRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 

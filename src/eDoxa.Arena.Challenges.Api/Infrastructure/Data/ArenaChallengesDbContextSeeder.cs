@@ -35,9 +35,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
             {
                 if (!_context.Challenges.Any())
                 {
-                    var storage = new ArenaChallengeTestFileStorage();
-
-                    var challenges = await storage.GetChallengesAsync();
+                    var challenges = FileStorage.Challenges;
 
                     _challengeRepository.Create(challenges);
 

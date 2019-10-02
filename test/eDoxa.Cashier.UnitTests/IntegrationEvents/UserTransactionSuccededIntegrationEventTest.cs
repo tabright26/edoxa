@@ -1,19 +1,24 @@
-﻿using System;
+﻿// Filename: UserTransactionSuccededIntegrationEventTest.cs
+// Date Created: 2019-09-16
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
 
 using eDoxa.Cashier.Api.IntegrationEvents;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Newtonsoft.Json;
+
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents
 {
-    [TestClass]
     public sealed class UserTransactionSuccededIntegrationEventTest
     {
-        [TestMethod]
+        [Fact]
         public void UserTransactionSuccededIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToTransactionSuccededEvent()
         {
             //Arrange

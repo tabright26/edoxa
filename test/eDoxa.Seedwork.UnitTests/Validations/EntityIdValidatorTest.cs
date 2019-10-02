@@ -1,12 +1,8 @@
 ﻿// Filename: EntityIdValidatorTest.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
@@ -17,69 +13,12 @@ using FluentAssertions;
 
 using FluentValidation;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Seedwork.UnitTests.Validations
 {
-    [TestClass]
     public sealed class EntityIdValidatorTest
     {
-        [TestMethod]
-        public void Validate_EntityId_ShouldBeTrue()
-        {
-            // Arrange
-            var model = new MockResponse
-            {
-                EntityId = new MockEntityId()
-            };
-
-            var validator = new MockValidator();
-
-            // Act
-            var result = validator.Validate(model);
-
-            // Assert
-            result.IsValid.Should().BeTrue();
-        }
-
-        [TestMethod]
-        public void Validate_NullEntityId_ShouldBeFalse()
-        {
-            // Arrange
-            var response = new MockResponse
-            {
-                EntityId = null
-            };
-
-            var validator = new MockValidator();
-
-            // Act
-            var result = validator.Validate(response);
-
-            // Assert
-            result.IsValid.Should().BeFalse();
-            result.Errors.Should().HaveCount(1);
-        }
-
-        [TestMethod]
-        public void Validate_EmptyEntityId_ShouldBeFalse()
-        {
-            // Arrange
-            var response = new MockResponse
-            {
-                EntityId = new MockEmptyEntityId()
-            };
-
-            var validator = new MockValidator();
-
-            // Act
-            var result = validator.Validate(response);
-
-            // Assert
-            result.IsValid.Should().BeFalse();
-            result.Errors.Should().HaveCount(1);
-        }
-
         private class MockValidator : AbstractValidator<MockResponse>
         {
             public MockValidator()
@@ -103,6 +42,62 @@ namespace eDoxa.Seedwork.UnitTests.Validations
             {
                 Value = Guid.Empty;
             }
+        }
+
+        [Fact]
+        public void Validate_EmptyEntityId_ShouldBeFalse()
+        {
+            // Arrange
+            var response = new MockResponse
+            {
+                EntityId = new MockEmptyEntityId()
+            };
+
+            var validator = new MockValidator();
+
+            // Act
+            var result = validator.Validate(response);
+
+            // Assert
+            result.IsValid.Should().BeFalse();
+            result.Errors.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public void Validate_EntityId_ShouldBeTrue()
+        {
+            // Arrange
+            var model = new MockResponse
+            {
+                EntityId = new MockEntityId()
+            };
+
+            var validator = new MockValidator();
+
+            // Act
+            var result = validator.Validate(model);
+
+            // Assert
+            result.IsValid.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Validate_NullEntityId_ShouldBeFalse()
+        {
+            // Arrange
+            var response = new MockResponse
+            {
+                EntityId = null
+            };
+
+            var validator = new MockValidator();
+
+            // Act
+            var result = validator.Validate(response);
+
+            // Assert
+            result.IsValid.Should().BeFalse();
+            result.Errors.Should().HaveCount(1);
         }
     }
 }

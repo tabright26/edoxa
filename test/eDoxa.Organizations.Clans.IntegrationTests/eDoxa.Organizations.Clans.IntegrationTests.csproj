@@ -3,42 +3,22 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
-
+    <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget></PlatformTarget>
-  </PropertyGroup>
-
   <ItemGroup>
-    <Compile Remove="Controllers\ClanLogoController\**" />
-    <EmbeddedResource Remove="Controllers\ClanLogoController\**" />
-    <None Remove="Controllers\ClanLogoController\**" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190901-042717" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.0.1" />
-    <PackageReference Include="xunit" Version="2.4.0" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Organizations.Clans.Api\eDoxa.Organizations.Clans.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.json" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\ClanMembersController\" />
-    <Folder Include="Controllers\ClansController\" />
+    <ProjectReference Include="..\eDoxa.Organizations.Clans.TestHelpers\eDoxa.Organizations.Clans.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

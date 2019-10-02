@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantQueryTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,95 +8,92 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Challenges.UnitTests.Helpers.Extensions;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Testing;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 {
-    [TestClass]
-    public sealed class ParticipantQueryTest
+    public sealed class ParticipantQueryTest : UnitTest
     {
-        private static IEnumerable<object[]> DataQueryParameters =>
+        public ParticipantQueryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
+        public static IEnumerable<object[]> DataQueryParameters =>
             ChallengeGame.GetEnumerations().SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] {game, state})).ToList();
 
-        [DataTestMethod]
-        [DynamicData(nameof(DataQueryParameters))]
+        [Theory]
+        [MemberData(nameof(DataQueryParameters))]
         public async Task FindChallengeParticipantsAsync_ShouldBeEquivalentToParticipantList(ChallengeGame game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = new ChallengeFaker(game, state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(68545632, game, state);
 
-            challengeFaker.UseSeed(68545632);
+            var challenge = challengeFaker.FakeChallenge();
 
-            var challenge = challengeFaker.Generate();
+            using var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>();
 
-            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
+            using (var context = factory.CreateContext())
             {
-                using (var context = factory.CreateContext())
-                {
-                    var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                var challengeRepository = new ChallengeRepository(context, TestMapper);
 
-                    challengeRepository.Create(challenge);
+                challengeRepository.Create(challenge);
 
-                    await challengeRepository.CommitAsync();
-                }
+                await challengeRepository.CommitAsync();
+            }
 
-                using (var context = factory.CreateContext())
-                {
-                    var participantQuery = new ParticipantQuery(context, MapperExtensions.Mapper);
+            using (var context = factory.CreateContext())
+            {
+                var participantQuery = new ParticipantQuery(context, TestMapper);
 
-                    //Act
-                    var participants = await participantQuery.FetchChallengeParticipantsAsync(challenge.Id);
+                //Act
+                var participants = await participantQuery.FetchChallengeParticipantsAsync(challenge.Id);
 
-                    //Assert
-                    participants.Should().BeEquivalentTo(challenge.Participants.ToList());
-                }
+                //Assert
+                participants.Should().BeEquivalentTo(challenge.Participants.ToList());
             }
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(DataQueryParameters))]
+        [Theory]
+        [MemberData(nameof(DataQueryParameters))]
         public async Task FindParticipantAsync_EquivalentToParticipant(ChallengeGame game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = new ChallengeFaker(game, state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(48956632, game, state);
 
-            challengeFaker.UseSeed(48956632);
+            var challenge = challengeFaker.FakeChallenge();
 
-            var challenge = challengeFaker.Generate();
+            using var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>();
 
-            using (var factory = new InMemoryDbContextFactory<ArenaChallengesDbContext>())
+            using (var context = factory.CreateContext())
             {
-                using (var context = factory.CreateContext())
+                var challengeRepository = new ChallengeRepository(context, TestMapper);
+
+                challengeRepository.Create(challenge);
+
+                await challengeRepository.CommitAsync();
+            }
+
+            using (var context = factory.CreateContext())
+            {
+                var participantQuery = new ParticipantQuery(context, TestMapper);
+
+                foreach (var participant in challenge.Participants)
                 {
-                    var challengeRepository = new ChallengeRepository(context, MapperExtensions.Mapper);
+                    //Act
+                    var participantAsync = await participantQuery.FindParticipantAsync(ParticipantId.FromGuid(participant.Id));
 
-                    challengeRepository.Create(challenge);
-
-                    await challengeRepository.CommitAsync();
-                }
-
-                using (var context = factory.CreateContext())
-                {
-                    var participantQuery = new ParticipantQuery(context, MapperExtensions.Mapper);
-
-                    foreach (var participant in challenge.Participants)
-                    {
-                        //Act
-                        var participantAsync = await participantQuery.FindParticipantAsync(ParticipantId.FromGuid(participant.Id));
-
-                        //Assert
-                        participantAsync.Should().BeEquivalentTo(participant);
-                    }
+                    //Assert
+                    participantAsync.Should().BeEquivalentTo(participant);
                 }
             }
         }

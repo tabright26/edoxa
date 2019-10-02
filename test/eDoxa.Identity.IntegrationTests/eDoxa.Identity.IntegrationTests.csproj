@@ -12,19 +12,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
-    <PackageReference Include="xunit.core" Version="2.3.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
+    <PackageReference Include="xunit.core" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
     <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190901-042717" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="appsettings.json" CopyToOutputDirectory="Always" />
+    <ProjectReference Include="..\eDoxa.Identity.TestHelpers\eDoxa.Identity.TestHelpers.csproj" />
   </ItemGroup>
 
 </Project>

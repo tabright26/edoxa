@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsGameReferencesAdapterTest.cs
-// Date Created: 2019-08-28
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,25 +11,31 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.UnitTests.Helpers;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
 {
-    [TestClass]
-    public sealed class LeagueOfLegendsGameReferencesAdapterTest
+    public sealed class LeagueOfLegendsGameReferencesAdapterTest : UnitTest
     {
-        private static LeagueOfLegendsMatchReferenceDto[] StubMatchReferences =>
-            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Helpers/Stubs/LeagueOfLegends/MatchReferences.json").ToArray();
+        public LeagueOfLegendsGameReferencesAdapterTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
 
-        [TestMethod]
+        private static LeagueOfLegendsMatchReferenceDto[] StubMatchReferences =>
+            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"TestHelpers/Stubs/LeagueOfLegends/MatchReferences.json")
+                .ToArray();
+
+        [Fact]
         public async Task GetGameReferencesAsync_WhenMatchReferenceTimestampIsBetweenRange_ShouldBeLeagueOfLegends()
         {
             // Arrange

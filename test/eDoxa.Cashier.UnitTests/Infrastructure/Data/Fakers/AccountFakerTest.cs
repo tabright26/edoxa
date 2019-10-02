@@ -1,41 +1,46 @@
 ﻿// Filename: AccountFakerTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
-    [TestClass]
-    public sealed class AccountFakerTest
+    public sealed class AccountFakerTest : UnitTest
     {
-        [TestMethod]
-        public void Generate_FakeNewAccount_ShouldNotBeNull()
+        public AccountFakerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
+        [Fact]
+        public void FakeAccount_FakeNewAccount_ShouldNotBeNull()
         {
             // Arrange
-            var accountFaker = new AccountFaker();
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(null);
 
             // Act
-            var account = accountFaker.Generate();
+            var account = accountFaker.FakeAccount();
 
             // Assert
             account.Should().NotBeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public void Generate_FakeAdminAccount_ShouldNotBeNull()
         {
             // Arrange
-            var accountFaker = new AccountFaker();
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(null);
 
             // Act
-            var account = accountFaker.Generate(AccountFaker.AdminAccount);
+            var account = accountFaker.FakeAccount(AccountFaker.AdminAccount);
 
             // Assert
             account.Should().NotBeNull();
