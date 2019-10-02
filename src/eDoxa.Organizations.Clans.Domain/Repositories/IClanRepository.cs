@@ -1,25 +1,46 @@
 ﻿// Filename: IClanRepository.cs
 // Date Created: 2019-09-15
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Organizations.Clans.Domain.Repositories
 {
     public interface IClanRepository
     {
-        void Create(ClanModel clanModel);
+        IUnitOfWork UnitOfWork { get; }
 
-        Task<IReadOnlyCollection<ClanModel>> FetchClansAsync();
+        void Create(Clan clan);
 
-        Task<ClanModel> FindClanAsync(Guid clanId);
+        void Delete(Clan clan);
 
-        Task SaveChangesAsync();
+        Task<IReadOnlyCollection<Clan>> FetchClansAsync();
+
+        Task<Clan?> FindClanAsync(ClanId clanId);
+
+        Task<bool> ExistsAsync(string name);
+
+        Task<Stream> DownloadLogoAsync(ClanId clanId);
+
+        Task UploadLogoAsync(ClanId clanId, IFormFile logo);
+
+        Task DeleteLogoAsync(ClanId clanId);
+
+        Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId);
+
+        Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId);
+
+        Task<bool> IsMemberAsync(UserId userId);
+
+        Task<bool> IsOwnerAsync(ClanId clanId, UserId ownerId);
     }
 }

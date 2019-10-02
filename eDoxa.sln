@@ -104,19 +104,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.Domain", "src\eDoxa.Organizations.Clans.Domain\eDoxa.Organizations.Clans.Domain.csproj", "{D371B7DD-38C3-42B5-896C-F317A68CD25E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.UnitTests", "test\eDoxa.Organizations.Clans.UnitTests\eDoxa.Organizations.Clans.UnitTests.csproj", "{5C41DCC4-104B-4FDB-9951-5E15E761E33C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Challenges.TestHelpers", "test\eDoxa.Arena.Challenges.TestHelpers\eDoxa.Arena.Challenges.TestHelpers.csproj", "{1AA35E01-D18C-441F-932B-FB5B87067186}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.IntegrationTests", "test\eDoxa.Organizations.Clans.IntegrationTests\eDoxa.Organizations.Clans.IntegrationTests.csproj", "{F7595CDD-4676-4AB9-A6F6-B821B9AF7C2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Cashier.TestHelpers", "test\eDoxa.Cashier.TestHelpers\eDoxa.Cashier.TestHelpers.csproj", "{01077A2B-7219-47FA-99B9-D6F126DDEEAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Challenges.TestHelpers", "test\eDoxa.Arena.Challenges.TestHelpers\eDoxa.Arena.Challenges.TestHelpers.csproj", "{1AA35E01-D18C-441F-932B-FB5B87067186}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Identity.TestHelpers", "test\eDoxa.Identity.TestHelpers\eDoxa.Identity.TestHelpers.csproj", "{4582ADDF-DF59-40C8-8AAF-30CA98ABB52E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Cashier.TestHelpers", "test\eDoxa.Cashier.TestHelpers\eDoxa.Cashier.TestHelpers.csproj", "{01077A2B-7219-47FA-99B9-D6F126DDEEAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.TestHelpers", "test\eDoxa.Organizations.Clans.TestHelpers\eDoxa.Organizations.Clans.TestHelpers.csproj", "{68932BAA-B680-43E3-BEA7-461A185FA632}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Identity.TestHelpers", "test\eDoxa.Identity.TestHelpers\eDoxa.Identity.TestHelpers.csproj", "{4582ADDF-DF59-40C8-8AAF-30CA98ABB52E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Payment.TestHelpers", "test\eDoxa.Payment.TestHelpers\eDoxa.Payment.TestHelpers.csproj", "{0AE93E8B-B8F4-492C-86A3-CF4371E43943}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Organizations.Clans.TestHelpers", "test\eDoxa.Organizations.Clans.TestHelpers\eDoxa.Organizations.Clans.TestHelpers.csproj", "{68932BAA-B680-43E3-BEA7-461A185FA632}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.UnitTests", "test\eDoxa.Organizations.Clans.UnitTests\eDoxa.Organizations.Clans.UnitTests.csproj", "{E88CBFB1-9133-429F-8E68-F69724C34277}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Payment.TestHelpers", "test\eDoxa.Payment.TestHelpers\eDoxa.Payment.TestHelpers.csproj", "{0AE93E8B-B8F4-492C-86A3-CF4371E43943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.IntegrationTests", "test\eDoxa.Organizations.Clans.IntegrationTests\eDoxa.Organizations.Clans.IntegrationTests.csproj", "{3BEE276D-6B31-4572-93E1-28F21E69C29C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -248,14 +248,6 @@ Global
 		{D371B7DD-38C3-42B5-896C-F317A68CD25E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D371B7DD-38C3-42B5-896C-F317A68CD25E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D371B7DD-38C3-42B5-896C-F317A68CD25E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C41DCC4-104B-4FDB-9951-5E15E761E33C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C41DCC4-104B-4FDB-9951-5E15E761E33C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C41DCC4-104B-4FDB-9951-5E15E761E33C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C41DCC4-104B-4FDB-9951-5E15E761E33C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7595CDD-4676-4AB9-A6F6-B821B9AF7C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7595CDD-4676-4AB9-A6F6-B821B9AF7C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7595CDD-4676-4AB9-A6F6-B821B9AF7C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7595CDD-4676-4AB9-A6F6-B821B9AF7C2C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1AA35E01-D18C-441F-932B-FB5B87067186}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1AA35E01-D18C-441F-932B-FB5B87067186}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AA35E01-D18C-441F-932B-FB5B87067186}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -276,6 +268,14 @@ Global
 		{0AE93E8B-B8F4-492C-86A3-CF4371E43943}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AE93E8B-B8F4-492C-86A3-CF4371E43943}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AE93E8B-B8F4-492C-86A3-CF4371E43943}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E88CBFB1-9133-429F-8E68-F69724C34277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E88CBFB1-9133-429F-8E68-F69724C34277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E88CBFB1-9133-429F-8E68-F69724C34277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E88CBFB1-9133-429F-8E68-F69724C34277}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BEE276D-6B31-4572-93E1-28F21E69C29C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BEE276D-6B31-4572-93E1-28F21E69C29C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BEE276D-6B31-4572-93E1-28F21E69C29C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BEE276D-6B31-4572-93E1-28F21E69C29C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -322,13 +322,13 @@ Global
 		{BDD3D11D-3594-4F6E-9F8F-BC4121B1A021} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 		{E1407D29-9957-4E0E-B98D-379A1EB7463C} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 		{D371B7DD-38C3-42B5-896C-F317A68CD25E} = {77BF035E-3B62-4A95-A525-90E94E48038B}
-		{5C41DCC4-104B-4FDB-9951-5E15E761E33C} = {77BF035E-3B62-4A95-A525-90E94E48038B}
-		{F7595CDD-4676-4AB9-A6F6-B821B9AF7C2C} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 		{1AA35E01-D18C-441F-932B-FB5B87067186} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 		{01077A2B-7219-47FA-99B9-D6F126DDEEAF} = {9F1CD6C1-8419-4262-B7AE-F66C530B9EC7}
 		{4582ADDF-DF59-40C8-8AAF-30CA98ABB52E} = {3799662A-7D24-4FE0-B23F-38281CA1D84E}
 		{68932BAA-B680-43E3-BEA7-461A185FA632} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 		{0AE93E8B-B8F4-492C-86A3-CF4371E43943} = {9050415E-2E9D-4737-8D81-A938CD4D1D80}
+		{E88CBFB1-9133-429F-8E68-F69724C34277} = {77BF035E-3B62-4A95-A525-90E94E48038B}
+		{3BEE276D-6B31-4572-93E1-28F21E69C29C} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

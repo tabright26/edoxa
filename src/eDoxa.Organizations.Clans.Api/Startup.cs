@@ -13,7 +13,6 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Mediator;
 using eDoxa.Organizations.Clans.Api.Extensions;
 using eDoxa.Organizations.Clans.Api.Infrastructure;
 using eDoxa.Organizations.Clans.Api.Infrastructure.Data;
@@ -23,6 +22,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
+using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -30,7 +30,7 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 
 using IdentityServer4.AccessTokenValidation;
-
+using MediatR;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -89,6 +89,8 @@ namespace eDoxa.Organizations.Clans.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
+            services.AddAzureStorage(Configuration.GetConnectionString("AzureStorage"));
+
             services.AddCors(
                 options =>
                 {
@@ -121,6 +123,8 @@ namespace eDoxa.Organizations.Clans.Api
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(ClansDbContext)));
 
+            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
+
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
                     options =>
@@ -141,7 +145,7 @@ namespace eDoxa.Organizations.Clans.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule<Startup>>();
+            //builder.RegisterModule<DomainEventModule<Startup>>();
 
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 

@@ -1,72 +1,96 @@
 ﻿// Filename: ClansController.cs
-// Date Created: 2019-09-15
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Organizations.Clans.Domain.Repositories;
+using AutoMapper;
 
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
+using eDoxa.Organizations.Clans.Api.Extensions;
+using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Organizations.Clans.Domain.Services;
+
+using FluentValidation.AspNetCore;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 {
+    [Authorize]
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/clans")]
+    [ApiExplorerSettings(GroupName = "Clans")]
     public class ClansController : ControllerBase
     {
-        private readonly IClanRepository _clanRepository;
+        private readonly IClanService _clanService;
+        private readonly IMapper _mapper;
 
-        public ClansController(IClanRepository clanRepository)
+        public ClansController(IClanService clanService, IMapper mapper)
         {
-            _clanRepository = clanRepository;
+            _clanService = clanService;
+            _mapper = mapper;
         }
 
+        /// <summary>
+        ///     Get all clans.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync()
         {
-            var clans = await _clanRepository.FetchClansAsync();
+            var clans = await _clanService.FetchClansAsync();
 
             if (!clans.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(clans);
+            return this.Ok(_mapper.Map<IEnumerable<ClanResponse>>(clans));
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(Guid id)
+        /// <summary>
+        ///     Create a clan.
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> PostAsync(ClanPostRequest request)
         {
-            var clanModel = await _clanRepository.FindClanAsync(id);
+            if (ModelState.IsValid)
+            {
+                var userId = HttpContext.GetUserId();
 
-            if (clanModel == null)
+                var result = await _clanService.CreateClanAsync(userId, request.Name);
+
+                if (result.IsValid)
+                {
+                    return this.Ok("The clan has been created.");
+                }
+
+                result.AddToModelState(ModelState, null);
+            }
+
+            return this.BadRequest(ModelState);
+        }
+
+        /// <summary>
+        ///     Get a specific clan.
+        /// </summary>
+        [HttpGet("{clanId}")]
+        public async Task<IActionResult> GetByIdAsync(ClanId clanId)
+        {
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
             {
                 return this.NotFound();
             }
 
-            return this.Ok(clanModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] string name)
-        {
-            var clanModel = new ClanModel
-            {
-                Name = name,
-                Id = Guid.NewGuid(),
-                Members = new Collection<MemberModel>()
-            };
-
-            _clanRepository.Create(clanModel);
-            await _clanRepository.SaveChangesAsync();
-
-            return this.Ok("Clan added");
+            return this.Ok(_mapper.Map<ClanResponse>(clan));
         }
     }
 }
