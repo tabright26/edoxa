@@ -1,18 +1,21 @@
 ﻿// Filename: DevToolsController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.DevTools.Attributes;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eDoxa.Identity.Api.Controllers
+using Swashbuckle.AspNetCore.Annotations;
+
+namespace eDoxa.Seedwork.Application.DevTools.Controllers
 {
     [Authorize]
     [DevTools]
@@ -32,6 +35,7 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpPost("database/reset")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> DatabaseResetAsync()
         {
             await _cleaner.CleanupAsync();
@@ -42,6 +46,7 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpPost("database/cleanup")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         public async Task<IActionResult> DatabaseCleanupAsync()
         {
             await _cleaner.CleanupAsync();
