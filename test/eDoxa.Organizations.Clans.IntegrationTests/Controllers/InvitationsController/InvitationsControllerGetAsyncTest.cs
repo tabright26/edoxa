@@ -1,6 +1,6 @@
 ﻿// Filename: InvitationsControllerGetAsyncTest.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -28,6 +28,9 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
 {
     public sealed class InvitationsControllerGetAsyncTest : IntegrationTest
     {
+        public InvitationsControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
+        }
 
         private HttpClient _httpClient;
 
@@ -39,23 +42,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId)
         {
             return await _httpClient.GetAsync($"api/invitations?clanId={clanId}");
-        }
-
-        [Fact]
-        public async Task WithUserId_ShouldBeHttpStatusCodeNoContent()
-        {
-            // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
-            _httpClient = factory.CreateClient();
-            var testServer = factory.Server;
-            testServer.CleanupDbContext();
-
-            // Act
-            using var response = await this.ExecuteAsync(new UserId());
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Fact]
@@ -107,6 +93,23 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         }
 
         [Fact]
+        public async Task WithUserId_ShouldBeHttpStatusCodeNoContent()
+        {
+            // Arrange
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            // Act
+            using var response = await this.ExecuteAsync(new UserId());
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
         public async Task WithUserId_ShouldBeHttpStatusCodeOk()
         {
             // Arrange
@@ -135,10 +138,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeResponses = await response.DeserializeAsync<InvitationResponse[]>();
             challengeResponses.Should().HaveCount(1);
-        }
-
-        public InvitationsControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
-        {
         }
     }
 }

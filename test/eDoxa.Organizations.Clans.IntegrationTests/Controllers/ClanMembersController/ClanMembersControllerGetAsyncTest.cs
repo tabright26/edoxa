@@ -1,6 +1,6 @@
 ﻿// Filename: ClanMembersControllerGetAsyncTest.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -28,6 +28,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
 {
     public sealed class ClanMembersControllerGetAsyncTest : IntegrationTest
     {
+        public ClanMembersControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
+        }
+
         private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId)
@@ -79,10 +83,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeResponses = await response.DeserializeAsync<InvitationResponse[]>();
             challengeResponses.Should().HaveCount(1);
-        }
-
-        public ClanMembersControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
-        {
         }
     }
 }

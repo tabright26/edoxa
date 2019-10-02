@@ -1,6 +1,6 @@
 ﻿// Filename: InvitationsControllerPostAsyncTest.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -28,6 +28,9 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
 {
     public sealed class InvitationsControllerPostAsyncTest : IntegrationTest
     {
+        public InvitationsControllerPostAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
+        }
 
         private HttpClient _httpClient;
 
@@ -63,7 +66,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-
         [Fact]
         public async Task ShouldBeHttpStatusCodeOk()
         {
@@ -90,10 +92,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        public InvitationsControllerPostAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
-        {
         }
     }
 }

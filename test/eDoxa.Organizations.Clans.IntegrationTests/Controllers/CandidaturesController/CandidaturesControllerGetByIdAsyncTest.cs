@@ -1,6 +1,6 @@
 ﻿// Filename: CandidaturesControllerGetByIdAsyncTest.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -28,6 +28,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 {
     public sealed class CandidaturesControllerGetByIdAsyncTest : IntegrationTest
     {
+        public CandidaturesControllerGetByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
+        }
+
         private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(CandidatureId candidatureId)
@@ -80,10 +84,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeResponse = await response.DeserializeAsync<CandidatureResponse>();
             challengeResponse!.Id.Should().Be(candidature.Id);
-        }
-
-        public CandidaturesControllerGetByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
-        {
         }
     }
 }

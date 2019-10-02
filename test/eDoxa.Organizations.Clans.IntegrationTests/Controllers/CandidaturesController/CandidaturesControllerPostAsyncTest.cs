@@ -1,6 +1,6 @@
 ﻿// Filename: CandidaturesControllerPostAsyncTest.cs
-// Date Created: 2019-09-29
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -28,6 +28,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 {
     public sealed class CandidaturesControllerPostAsyncTest : IntegrationTest
     {
+        public CandidaturesControllerPostAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
+        }
+
         private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(CandidaturePostRequest candidaturePostRequest)
@@ -88,10 +92,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        public CandidaturesControllerPostAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
-        {
         }
     }
 }

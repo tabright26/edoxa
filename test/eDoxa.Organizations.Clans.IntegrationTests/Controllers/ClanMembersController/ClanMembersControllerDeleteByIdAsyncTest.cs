@@ -1,6 +1,6 @@
 ﻿// Filename: ClanMembersControllerDeleteByIdAsyncTest.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -27,6 +27,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
 {
     public sealed class ClanMembersControllerDeleteByIdAsyncTest : IntegrationTest
     {
+        public ClanMembersControllerDeleteByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
+        }
+
         private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId, MemberId memberId)
@@ -108,10 +112,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        public ClanMembersControllerDeleteByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
-        {
         }
     }
 }

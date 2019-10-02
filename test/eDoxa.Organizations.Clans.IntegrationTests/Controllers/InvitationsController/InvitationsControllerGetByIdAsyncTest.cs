@@ -1,6 +1,6 @@
 ﻿// Filename: InvitationsControllerGetByIdAsyncTest.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -28,6 +28,9 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
 {
     public sealed class InvitationsControllerGetByIdAsyncTest : IntegrationTest
     {
+        public InvitationsControllerGetByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        {
+        }
 
         private HttpClient _httpClient;
 
@@ -81,10 +84,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var invitationResponse = await response.DeserializeAsync<InvitationResponse>();
             invitationResponse!.Id.Should().Be(invitation.Id);
-        }
-
-        public InvitationsControllerGetByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
-        {
         }
     }
 }
