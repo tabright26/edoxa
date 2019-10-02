@@ -1,11 +1,9 @@
 ﻿// Filename: CandidaturesControllerGetByIdAsyncTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-09-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -57,28 +55,24 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-
-            var candidature = new List<Candidature>();
+            var candidature = new Candidature(new UserId(), new ClanId());
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
-                    candidatureRepository.Create(new Candidature(new UserId(), new ClanId()));
-                    await candidatureRepository.CommitAsync();
-
-                    var candidatures = await candidatureRepository.FetchAsync();
-                    candidature = candidature.ToList();
+                    candidatureRepository.Create(candidature);
+                    await candidatureRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(candidature.FirstOrDefault() != null ? candidature.First().Id : new CandidatureId());
+            using var response = await this.ExecuteAsync(candidature.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<CandidatureResponse[]>();
-            challengeResponses.Should().HaveCount(1);
+            var challengeResponse = await response.DeserializeAsync<CandidatureResponse>();
+            challengeResponse!.Id.Should().Be(candidature.Id);
         }
     }
 }

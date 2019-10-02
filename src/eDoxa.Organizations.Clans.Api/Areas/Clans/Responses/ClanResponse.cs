@@ -9,8 +9,6 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Organizations.Clans.Domain.Models;
-
 using Newtonsoft.Json;
 
 namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Responses

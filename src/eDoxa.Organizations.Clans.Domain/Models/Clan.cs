@@ -1,6 +1,6 @@
-﻿// Filename: ClanModel.cs
-// Date Created: 2019-09-15
-//
+﻿// Filename: Clan.cs
+// Date Created: 2019-09-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -8,25 +8,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Organizations.Clans.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Organizations.Clans.Domain.Models
 {
-    public class Clan : Entity<ClanId>
+    public sealed class Clan : Entity<ClanId>
     {
         public Clan(string name, UserId ownerId) : this()
         {
             Name = name;
             Summary = null;
             OwnerId = ownerId;
-            Members = new List<Member>{ new Member(Id, ownerId) };
-
-            //Todo : Resharper tells us to make class sealed ???
+            Members = new HashSet<Member>();
+            this.AddMember(new Member(Id, ownerId));
         }
 
         private Clan()
         {
-            //Requied by EF Core
+            // Required by EF Core.
         }
 
         public string Name { get; private set; }
@@ -37,68 +37,90 @@ namespace eDoxa.Organizations.Clans.Domain.Models
 
         public ICollection<Member> Members { get; private set; }
 
-        public bool AddMember(IMemberInfo memberInfo) //Not garantee to do something
+        public void AddMember(IMemberInfo memberInfo)
         {
-            if (Members.Any(member => member.UserId == memberInfo.UserId))
+            if (this.HasMember(memberInfo.UserId))
             {
-                return false;
+                throw new InvalidOperationException();
             }
 
-            Members.Add(new Member(memberInfo));
-            return true;
+            var member = new Member(memberInfo);
+
+            Members.Add(member);
+
+            this.AddDomainEvent(new ClanMemberAddedDomainEvent(member.UserId));
         }
 
-        /// <summary>
-        /// Remove a non owner member from the clan.
-        /// </summary>
-        /// <param name="memberId"></param>
-        /// <returns>True if a member was removed, false if not</returns>
-        public bool RemoveNonOwnerMember(MemberId memberId) //Not garantee to do something
+        public void Leave(Member member)
         {
-            var memberToRemove = Members.SingleOrDefault(member => member.Id == memberId);
+            this.Remove(member);
 
-            if (memberToRemove == null || memberToRemove.UserId == OwnerId)
+            if (this.MemberIsOwner(member))
             {
-                return false;
+                if (this.CanDelegateOwnership())
+                {
+                    this.DelegateOwnership(Members.First());
+                }
+                else
+                {
+                    this.AddDomainEvent(new ClanDeletedDomainEvent(Id));    
+                }
+            }
+        }
+
+        public void Kick(Member member)
+        {
+            if (this.MemberIsOwner(member))
+            {
+                throw new InvalidOperationException();
             }
 
-            Members.Remove(memberToRemove);
-            return true;
-
+            this.Remove(member);
         }
 
-        public void RemoveUser(UserId userId) //Garantee to do something
+        private void Remove(Member member)
         {
-            var memberToRemove = Members.SingleOrDefault(member => member.UserId == userId);
-
-            if (memberToRemove == null)
-            {
-                return;
-            }
-
-            Members.Remove(memberToRemove);
-
-            if (memberToRemove.UserId == OwnerId && Members.Any()) //If the owner left and there is members left
-            {
-                this.DelegateOwnership(Members.First());
-            }
-
+            Members.Remove(member);
         }
 
-        public void Update(string name, string summary)
+        private bool MemberIsOwner(Member member)
         {
-            Name = name;
-            Summary = summary;
+            return this.MemberIsOwner(member.UserId);
         }
 
-        public bool IsOwner(UserId userId)
+        public bool MemberIsOwner(UserId userId)
         {
-            return userId == OwnerId;
+            return OwnerId == userId;
         }
 
-        public bool IsEmpty()
+        public bool CanDelegateOwnership()
         {
-            return !Members.Any();
+            return Members.Count > 1;
+        }
+
+        public bool IsDelete()
+        {
+            return DomainEvents.Any(domainEvent => domainEvent is ClanDeletedDomainEvent);
+        }
+
+        public bool HasMember(UserId userId)
+        {
+            return Members.Any(member => member.UserId == userId);
+        }
+
+        public bool HasMember(MemberId memberId)
+        {
+            return Members.Any(member => member.Id == memberId);
+        }
+
+        public Member FindMember(UserId userId)
+        {
+            return Members.Single(member => member.UserId == userId);
+        }
+
+        public Member FindMember(MemberId memberId)
+        {
+            return Members.Single(member => member.Id == memberId);
         }
 
         private void DelegateOwnership(Member member)

@@ -1,22 +1,25 @@
-﻿// Filename: ClanLogoController.cs
-// Date Created: 2019-09-15
-//
+﻿// Filename: CandidaturesController.cs
+// Date Created: 2019-09-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using AutoMapper;
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
-using eDoxa.Organizations.Clans.Api.Extensions;
-using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Organizations.Clans.Domain.Services;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
+using eDoxa.Organizations.Clans.Api.Extensions;
+using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Organizations.Clans.Domain.Services;
+
+using FluentValidation.AspNetCore;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 {
@@ -36,37 +39,43 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        /// Get all candidatures from a ClanId.
+        ///     Get candidatures.
         /// </summary>
-        [HttpGet("byClanId")]
-        public async Task<IActionResult> GetByClanIdAsync([FromQuery] ClanId clanId)
+        [HttpGet]
+        public async Task<IActionResult> GetAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
         {
-            var candidatures = await _candidatureService.FetchCandidaturesAsync(clanId);
+            if (clanId == null && userId == null)
+            {
+                return this.BadRequest("No query parameter as been provided.");
+            }
+
+            if (clanId != null && userId != null)
+            {
+                return this.BadRequest("Only one query parameter must be provided.");
+            }
+
+            var candidatures = new List<Candidature>();
+
+            if (clanId != null)
+            {
+                candidatures.AddRange(await _candidatureService.FetchCandidaturesAsync(clanId));
+            }
+
+            if (userId != null)
+            {
+                candidatures.AddRange(await _candidatureService.FetchCandidaturesAsync(userId));
+            }
 
             if (!candidatures.Any())
             {
                 return this.NoContent();
             }
+
             return this.Ok(_mapper.Map<IEnumerable<CandidatureResponse>>(candidatures));
         }
 
         /// <summary>
-        /// Get all candidatures from a UserId.
-        /// </summary>
-        [HttpGet("byUserId")]
-        public async Task<IActionResult> GetByUserIdAsync([FromQuery] UserId userId)
-        {
-            var candidatures = await _candidatureService.FetchCandidaturesAsync(userId);
-
-            if (!candidatures.Any())
-            {
-                return this.NoContent();
-            }
-            return this.Ok(_mapper.Map<IEnumerable<CandidatureResponse>>(candidatures));
-        }
-
-        /// <summary>
-        /// Get a specific candidature from the Id.
+        ///     Get a specific candidature from the Id.
         /// </summary>
         [HttpGet("{candidatureId}")]
         public async Task<IActionResult> GetByIdAsync(CandidatureId candidatureId)
@@ -77,90 +86,91 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             {
                 return this.NotFound();
             }
+
             return this.Ok(_mapper.Map<CandidatureResponse>(candidature));
         }
 
         /// <summary>
-        /// Create candidature from a user to a clan.
+        ///     Create candidature from a user to a clan.
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> PostAsync(CandidaturePostRequest candidatureRequest)
+        public async Task<IActionResult> PostAsync(CandidaturePostRequest request)
         {
             if (ModelState.IsValid)
             {
                 var userId = HttpContext.GetUserId();
 
-                var clan = await _candidatureService.FindClanAsync(candidatureRequest.ClanId);
-
-                if (clan == null)
-                {
-                    return this.NotFound("Clan does not exist.");
-                }
-
-                var result = await _candidatureService.SendCandidatureAsync(userId, candidatureRequest.ClanId);
+                var result = await _candidatureService.SendCandidatureAsync(userId, request.ClanId);
 
                 if (result.IsValid)
                 {
-                    return this.Ok("Candidature sent to clan.");
+                    return this.Ok("The candidature as been sent.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
+
             return this.BadRequest(ModelState);
         }
 
         /// <summary>
-        /// Accept candidature from a user.
+        ///     Accept candidature from a user.
         /// </summary>
         [HttpPost("{candidatureId}")]
         public async Task<IActionResult> PostByIdAsync(CandidatureId candidatureId)
         {
             if (ModelState.IsValid)
             {
-                var userId = HttpContext.GetUserId();
+                var ownerId = HttpContext.GetUserId();
+
                 var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
 
                 if (candidature == null)
                 {
-                    return this.NotFound("Candidature does not exist.");
+                    return this.NotFound("The candidature was not found.");
                 }
 
-                var result = await _candidatureService.AcceptCandidatureAsync(userId, candidature);
+                var result = await _candidatureService.AcceptCandidatureAsync(candidature, ownerId);
 
                 if (result.IsValid)
                 {
-                    return this.Ok("Candidature accepted.");
+                    return this.Ok("The candidature has been accepted.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
+
             return this.BadRequest(ModelState);
         }
 
         /// <summary>
-        /// Decline candidature from a user.
+        ///     Decline candidature from a user.
         /// </summary>
         [HttpDelete("{candidatureId}")]
         public async Task<IActionResult> DeleteByIdAsync(CandidatureId candidatureId)
         {
             if (ModelState.IsValid)
             {
+                var ownerId = HttpContext.GetUserId();
+
                 var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
 
                 if (candidature == null)
                 {
-                    return this.NotFound("Candidature does not exist.");
+                    return this.NotFound("The candidature was not found.");
                 }
 
-                var result = await _candidatureService.DeclineCandidatureAsync(candidature);
+                var result = await _candidatureService.DeclineCandidatureAsync(candidature, ownerId);
 
                 if (result.IsValid)
                 {
                     return this.Ok("The candidature has been declined.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
 
             return this.BadRequest(ModelState);
-
         }
     }
 }

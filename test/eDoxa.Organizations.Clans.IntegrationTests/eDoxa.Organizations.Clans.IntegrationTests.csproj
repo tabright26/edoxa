@@ -13,6 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\ClanLogoController\**" />
+    <EmbeddedResource Remove="Controllers\ClanLogoController\**" />
+    <None Remove="Controllers\ClanLogoController\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="2.2.0" />
@@ -31,11 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\ClanLogoController\" />
     <Folder Include="Controllers\ClanMembersController\" />
     <Folder Include="Controllers\ClansController\" />
-    <Folder Include="Controllers\InvitationsController\" />
-    <Folder Include="Controllers\CandidaturesController\" />
   </ItemGroup>
 
 </Project>

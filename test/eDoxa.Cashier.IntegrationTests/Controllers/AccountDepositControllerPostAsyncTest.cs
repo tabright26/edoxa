@@ -14,7 +14,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;

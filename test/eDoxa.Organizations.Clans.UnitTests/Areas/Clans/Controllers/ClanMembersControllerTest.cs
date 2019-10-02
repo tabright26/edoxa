@@ -35,7 +35,10 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Arrange
             var mockClanService = new Mock<IClanService>();
 
-            mockClanService.Setup(clanService => clanService.FetchMembersAsync(It.IsAny<ClanId>()))
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
+                .ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
+
+            mockClanService.Setup(clanService => clanService.FetchMembersAsync(It.IsAny<Clan>()))
                 .ReturnsAsync(new List<Member>()).Verifiable();
 
             var clanMemberController = new ClanMembersController(mockClanService.Object, Mapper);
@@ -46,7 +49,9 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            mockClanService.Verify(clanService => clanService.FetchMembersAsync(It.IsAny<ClanId>()), Times.Once);
+            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
+
+            mockClanService.Verify(clanService => clanService.FetchMembersAsync(It.IsAny<Clan>()), Times.Once);
         }
 
         [TestMethod]
@@ -57,8 +62,11 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             var mockClanService = new Mock<IClanService>();
 
-            mockClanService.Setup(clanService => clanService.FetchMembersAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new List<Member>()
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
+                .ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
+
+            mockClanService.Setup(clanService => clanService.FetchMembersAsync(It.IsAny<Clan>()))
+                .ReturnsAsync(new List<Member>
                 {
                     member,
                     member,
@@ -73,7 +81,9 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockClanService.Verify(clanService => clanService.FetchMembersAsync(It.IsAny<ClanId>()), Times.Once);
+            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
+
+            mockClanService.Verify(clanService => clanService.FetchMembersAsync(It.IsAny<Clan>()), Times.Once);
         }
 
         [TestMethod]

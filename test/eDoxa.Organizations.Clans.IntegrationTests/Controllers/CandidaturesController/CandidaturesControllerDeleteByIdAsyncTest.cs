@@ -4,9 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
@@ -16,7 +16,7 @@ using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.TestHost;
+using IdentityModel;
 
 using Xunit;
 
@@ -24,48 +24,43 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 {
     public sealed class CandidaturesControllerDeleteByIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        public CandidaturesControllerDeleteByIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
+        private readonly OrganizationsClansApiFactory _apiFactory;
+
+        public CandidaturesControllerDeleteByIdAsyncTest(OrganizationsClansApiFactory apiFactory)
         {
-            _httpClient = organizationsClansApiFactory.CreateClient();
-            _testServer = organizationsClansApiFactory.Server;
-            _testServer.CleanupDbContext();
+            _apiFactory = apiFactory;
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(CandidatureId candidatureId)
         {
             return await _httpClient.DeleteAsync($"api/candidatures/{candidatureId}");
         }
 
-        // HOW TO TEST BAD REQUEST ?? MAYBE MAKE IT SO THAT ONLY OWNER CAN DECLINE CANDIDATURE ?
-        // OTHERWISE, I THINK WE CAN REMOVE BAD REQUEST FROM THE CONTROLLER. CAUSE NO VALIDATION FAILURE IN SERVICE.
-
         [Fact]
         public async Task ShouldBeHttpStatusCodeBadRequest()
         {
             // Arrange
-            var candidatureId = new CandidatureId();
+            var ownerId = new UserId();
+            var clan = new Clan("ClanName", ownerId);
+            var candidature = new Candidature(new UserId(), clan.Id);
 
-            await _testServer.UsingScopeAsync(
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, ownerId.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
-                    candidatureRepository.Create(new Candidature(new UserId(), new ClanId()));
-                    await candidatureRepository.CommitAsync();
-
-                    var candidatures = await candidatureRepository.FetchAsync();
-                    var candidature = candidatures.SingleOrDefault();
-
-                    if (candidature != null)
-                    {
-                        candidatureId = candidature.Id;
-                    }
+                    candidatureRepository.Create(candidature);
+                    await candidatureRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(candidatureId != null ? candidatureId : new CandidatureId());
+            using var response = await this.ExecuteAsync(candidature.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -87,27 +82,25 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-            var candidatureId = new CandidatureId();
+            var ownerId = new UserId();
+            var clan = new Clan("ClanName", ownerId);
+            var candidature = new Candidature(new UserId(), clan.Id);
 
-            await _testServer.UsingScopeAsync(
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, ownerId.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
-                    candidatureRepository.Create(new Candidature(new UserId(), new ClanId()));
-
-                    await candidatureRepository.CommitAsync();
-
-                    var candidatures = await candidatureRepository.FetchAsync();
-                    var candidature = candidatures.SingleOrDefault();
-
-                    if (candidature != null)
-                    {
-                        candidatureId = candidature.Id;
-                    }
+                    candidatureRepository.Create(candidature);
+                    await candidatureRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(candidatureId != null ? candidatureId : new CandidatureId());
+            using var response = await this.ExecuteAsync(candidature.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();

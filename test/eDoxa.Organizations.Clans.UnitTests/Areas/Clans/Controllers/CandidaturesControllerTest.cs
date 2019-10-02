@@ -42,7 +42,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
 
             // Act
-            var result = await candidatureController.GetByClanIdAsync(new ClanId());
+            var result = await candidatureController.GetAsync(new ClanId());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -69,7 +69,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
 
             // Act
-            var result = await candidatureController.GetByClanIdAsync(new ClanId());
+            var result = await candidatureController.GetAsync(new ClanId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -88,7 +88,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
 
             // Act
-            var result = await candidatureController.GetByUserIdAsync(new UserId());
+            var result = await candidatureController.GetAsync(null, new UserId());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -114,7 +114,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
 
             // Act
-            var result = await candidatureController.GetByUserIdAsync(new UserId());
+            var result = await candidatureController.GetAsync(null,new UserId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -168,7 +168,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockCandidatureService.Setup(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()))
                 .ReturnsAsync(new Candidature(new UserId(), new ClanId())).Verifiable();
 
-            mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<UserId>(), It.IsAny<Candidature>()))
+            mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
@@ -185,7 +185,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockCandidatureService.Verify(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()), Times.Once);
 
-            mockCandidatureService.Verify(clanService => clanService.AcceptCandidatureAsync(It.IsAny<UserId>(), It.IsAny<Candidature>()), Times.Once);
+            mockCandidatureService.Verify(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
@@ -197,7 +197,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockCandidatureService.Setup(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()))
                 .ReturnsAsync((Candidature) null).Verifiable();
 
-            mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<UserId>(), It.IsAny<Candidature>()))
+            mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
@@ -214,7 +214,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockCandidatureService.Verify(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()), Times.Once);
 
-            mockCandidatureService.Verify(clanService => clanService.AcceptCandidatureAsync(It.IsAny<UserId>(), It.IsAny<Candidature>()), Times.Never);
+            mockCandidatureService.Verify(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()), Times.Never);
         }
 
         [TestMethod]
@@ -226,7 +226,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockCandidatureService.Setup(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()))
                 .ReturnsAsync(new Candidature(new UserId(), new ClanId())).Verifiable();
 
-            mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<UserId>(), It.IsAny<Candidature>()))
+            mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationFailure(string.Empty, "Error").ToResult()).Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
@@ -243,7 +243,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockCandidatureService.Verify(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()), Times.Once);
 
-            mockCandidatureService.Verify(clanService => clanService.AcceptCandidatureAsync(It.IsAny<UserId>(), It.IsAny<Candidature>()), Times.Once);
+            mockCandidatureService.Verify(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
@@ -251,9 +251,6 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
         {
             // Arrange
             var mockCandidatureService = new Mock<ICandidatureService>();
-
-            mockCandidatureService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
 
             mockCandidatureService.Setup(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
@@ -270,42 +267,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockCandidatureService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
             mockCandidatureService.Verify(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var clanId = new ClanId();
-
-            var candidature = new Candidature(new UserId(), clanId);
-
-            var mockCandidatureService = new Mock<ICandidatureService>();
-
-            mockCandidatureService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync((Clan) null).Verifiable();
-
-            mockCandidatureService.Setup(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()))
-                .ReturnsAsync(new ValidationResult()).Verifiable();
-
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await candidatureController.PostAsync(new CandidaturePostRequest(new UserId(), new ClanId()));
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            mockCandidatureService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
-            mockCandidatureService.Verify(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Never);
         }
 
         [TestMethod]
@@ -313,10 +275,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
         {
             // Arrange
             var mockCandidatureService = new Mock<ICandidatureService>();
-
-            mockCandidatureService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
-
+            
             mockCandidatureService.Setup(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()))
                 .ReturnsAsync(new ValidationFailure(string.Empty, "Error").ToResult()).Verifiable();
 
@@ -331,9 +290,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-
-            mockCandidatureService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
+            
             mockCandidatureService.Verify(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
         }
 
@@ -346,7 +303,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockCandidatureService.Setup(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()))
                 .ReturnsAsync(new Candidature(new UserId(), new ClanId())).Verifiable();
 
-            mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>()))
+            mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
@@ -363,7 +320,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockCandidatureService.Verify(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()), Times.Once);
 
-            mockCandidatureService.Verify(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>()), Times.Once);
+            mockCandidatureService.Verify(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
@@ -375,7 +332,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockCandidatureService.Setup(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()))
                 .ReturnsAsync((Candidature) null).Verifiable();
 
-            mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>()))
+            mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
@@ -392,7 +349,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockCandidatureService.Verify(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()), Times.Once);
 
-            mockCandidatureService.Verify(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>()), Times.Never);
+            mockCandidatureService.Verify(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()), Times.Never);
         }
 
         [TestMethod]
@@ -404,7 +361,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockCandidatureService.Setup(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()))
                 .ReturnsAsync(new Candidature(new UserId(), new ClanId())).Verifiable();
 
-            mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>()))
+            mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationFailure(string.Empty, "Error").ToResult()).Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, Mapper);
@@ -421,7 +378,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockCandidatureService.Verify(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()), Times.Once);
 
-            mockCandidatureService.Verify(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>()), Times.Once);
+            mockCandidatureService.Verify(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()), Times.Once);
         }
     }
 }

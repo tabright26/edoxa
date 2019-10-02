@@ -1,6 +1,6 @@
-﻿// Filename: ClanMemberController.cs
-// Date Created: 2019-09-15
-//
+﻿// Filename: ClanMembersController.cs
+// Date Created: 2019-09-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -25,7 +25,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
     [Authorize]
     [ApiController]
     [Route("api/clans/{clanId}/members")]
-    [ApiExplorerSettings(GroupName = "ClanMembers")]
+    [ApiExplorerSettings(GroupName = "Clans")]
     public class ClanMembersController : ControllerBase
     {
         private readonly IClanService _clanService;
@@ -38,12 +38,19 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        /// Get all members of a specific clan.
+        ///     Get all members of a specific clan.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
-            var members = await _clanService.FetchMembersAsync(clanId);
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
+            {
+                return this.NotFound("Clan not found.");
+            }
+
+            var members = await _clanService.FetchMembersAsync(clan);
 
             if (!members.Any())
             {
@@ -54,7 +61,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        /// User leave the clan.
+        ///     User leave the clan.
         /// </summary>
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(ClanId clanId)
@@ -76,6 +83,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                 {
                     return this.Ok("The user has left his clan.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
 
@@ -83,7 +91,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        /// Kick a specific member from the clan.
+        ///     Kick a specific member from the clan.
         /// </summary>
         [HttpDelete("{memberId}")]
         public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, MemberId memberId)
@@ -104,13 +112,11 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                 {
                     return this.Ok("The user has been kicked from this clan.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
 
             return this.BadRequest(ModelState);
-
         }
-
-
     }
 }

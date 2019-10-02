@@ -1,6 +1,6 @@
 ﻿// Filename: ClanRepository.cs
-// Date Created: 2019-09-16
-//
+// Date Created: 2019-09-29
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -12,67 +12,112 @@ using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Storage.Azure.Extensions;
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 {
     public class ClanRepository : IClanRepository
     {
-        private readonly ClansDbContext _dbContext;
+        private readonly ClansDbContext _context;
+        private readonly CloudStorageAccount _storageAccount;
 
-        public ClanRepository(ClansDbContext dbContext)
+        public ClanRepository(ClansDbContext context, CloudStorageAccount storageAccount)
         {
-            _dbContext = dbContext;
+            _context = context;
+            _storageAccount = storageAccount;
         }
+
+        public IUnitOfWork UnitOfWork => _context;
 
         public void Create(Clan clan)
         {
-            _dbContext.Clans.Add(clan);
+            _context.Clans.Add(clan);
         }
 
         public void Delete(Clan clan)
         {
-            _dbContext.Clans.Remove(clan);
+            _context.Clans.Remove(clan);
         }
 
         public async Task<IReadOnlyCollection<Clan>> FetchClansAsync()
         {
-            return await _dbContext.Clans.Include(clan => clan.Members).ToListAsync();
+            return await _context.Clans.Include(clan => clan.Members).ToListAsync();
         }
 
         public async Task<Clan?> FindClanAsync(ClanId clanId)
         {
-            return await _dbContext.Clans.Include(clan => clan.Members).SingleOrDefaultAsync(clan => clan.Id == clanId);
+            return await _context.Clans.Include(clan => clan.Members).SingleOrDefaultAsync(clan => clan.Id == clanId);
         }
 
-        public async Task<FileStream?> GetLogoAsync(ClanId clanId)
+        public async Task<bool> ExistsAsync(string name)
         {
-            throw new NotImplementedException();
+            return await _context.Clans.AnyAsync(clan => clan.Name == name);
         }
 
-        public async Task CreateOrUpdateLogoAsync(FileStream logo)
+        public async Task<Stream> DownloadLogoAsync(ClanId clanId)
         {
-            throw new NotImplementedException();
+            var container = _storageAccount.GetBlobContainer();
+
+            var directory = container.GetDirectoryReference($"organizations/clans/{clanId}/logo");
+
+            var blobItem = directory.ListBlobs().OrderByDescending(item => long.Parse(Path.GetFileNameWithoutExtension(item.Uri.ToString()))).First();
+
+            var blockBlob = directory.GetBlockBlobReference(Path.GetFileName(blobItem.Uri.ToString()));
+
+            var memoryStream = new MemoryStream();
+
+            await blockBlob.DownloadToStreamAsync(memoryStream);
+
+            return memoryStream;
+        }
+
+        public async Task UploadLogoAsync(ClanId clanId, IFormFile logo)
+        {
+            var container = _storageAccount.GetBlobContainer();
+
+            var directory = container.GetDirectoryReference($"organizations/clans/{clanId}/logo");
+
+            var blockBlob = directory.GetBlockBlobReference($"{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}{Path.GetExtension(logo.FileName)}");
+
+            await blockBlob.UploadFromStreamAsync(logo.OpenReadStream());
+        }
+
+        public async Task DeleteLogoAsync(ClanId clanId)
+        {
+            var container = _storageAccount.GetBlobContainer();
+
+            var directory = container.GetDirectoryReference($"organizations/clans/{clanId}/logo");
+
+            foreach (var blockBlob in directory.ListBlobs().Cast<CloudBlockBlob>().ToList())
+            {
+                await blockBlob.DeleteIfExistsAsync();
+            }
         }
 
         public async Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId)
         {
-            return await _dbContext.Members.AsNoTracking().Where(member => member.ClanId == clanId).ToListAsync();
+            return await _context.Members.AsNoTracking().Where(member => member.ClanId == clanId).ToListAsync();
         }
+
         public async Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId)
         {
-            return await _dbContext.Members.SingleOrDefaultAsync(member => member.Id == memberId && member.ClanId == clanId );
+            return await _context.Members.SingleOrDefaultAsync(member => member.ClanId == clanId && member.Id == memberId);
         }
 
-        public async Task<bool> HasMember(UserId userId)
+        public async Task<bool> IsMemberAsync(UserId userId)
         {
-            return await _dbContext.Members.AnyAsync(member => member.UserId == userId );
+            return await _context.Members.AnyAsync(member => member.UserId == userId);
         }
 
-        public async Task CommitAsync()
+        public async Task<bool> IsOwnerAsync(ClanId clanId, UserId ownerId)
         {
-            await _dbContext.SaveChangesAsync();
+            return await _context.Clans.AnyAsync(clan => clan.Id == clanId && clan.OwnerId == ownerId);
         }
     }
 }

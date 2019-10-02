@@ -1,11 +1,9 @@
 ﻿// Filename: InvitationsControllerGetByIdAsyncTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-09-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -57,28 +55,24 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-
-            var invitation = new List<Invitation>();
+            var invitation = new Invitation(new UserId(), new ClanId());
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
-                    invitationRepository.Create(new Invitation(new UserId(), new ClanId()));
-                    await invitationRepository.CommitAsync();
-
-                    var invitations = await invitationRepository.FetchAsync();
-                    invitation = invitation.ToList();
+                    invitationRepository.Create(invitation);
+                    await invitationRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(invitation.FirstOrDefault() != null ? invitation.First().Id : new InvitationId());
+            using var response = await this.ExecuteAsync(invitation.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<InvitationResponse[]>();
-            challengeResponses.Should().HaveCount(1);
+            var invitationResponse = await response.DeserializeAsync<InvitationResponse>();
+            invitationResponse.Id.Should().Be(invitation.Id);
         }
     }
 }

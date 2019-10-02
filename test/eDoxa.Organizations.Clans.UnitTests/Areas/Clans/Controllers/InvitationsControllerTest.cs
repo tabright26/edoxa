@@ -42,7 +42,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
 
             // Act
-            var result = await invitationController.GetByClanIdAsync(new ClanId());
+            var result = await invitationController.GetAsync(new ClanId());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -67,7 +67,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
 
             // Act
-            var result = await invitationController.GetByClanIdAsync(new ClanId());
+            var result = await invitationController.GetAsync(new ClanId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -86,7 +86,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
 
             // Act
-            var result = await invitationController.GetByUserIdAsync(new UserId());
+            var result = await invitationController.GetAsync(null, new UserId());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -111,7 +111,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
 
             // Act
-            var result = await invitationController.GetByUserIdAsync(new UserId());
+            var result = await invitationController.GetAsync(null, new UserId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -166,7 +166,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockInvitationService.Setup(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()))
                 .ReturnsAsync(new Invitation(new UserId(), new ClanId())).Verifiable();
 
-            mockInvitationService.Setup(clanService => clanService.AcceptInvitationAsync(It.IsAny<UserId>(), It.IsAny<Invitation>()))
+            mockInvitationService.Setup(clanService => clanService.AcceptInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -184,7 +184,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockInvitationService.Verify(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()), Times.Once);
 
-            mockInvitationService.Verify(clanService => clanService.AcceptInvitationAsync(It.IsAny<UserId>(), It.IsAny<Invitation>()), Times.Once);
+            mockInvitationService.Verify(clanService => clanService.AcceptInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
@@ -196,7 +196,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockInvitationService.Setup(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()))
                 .ReturnsAsync((Invitation) null).Verifiable();
 
-            mockInvitationService.Setup(clanService => clanService.AcceptInvitationAsync(It.IsAny<UserId>(), It.IsAny<Invitation>()))
+            mockInvitationService.Setup(clanService => clanService.AcceptInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -213,7 +213,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockInvitationService.Verify(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()), Times.Once);
 
-            mockInvitationService.Verify(clanService => clanService.AcceptInvitationAsync(It.IsAny<UserId>(), It.IsAny<Invitation>()), Times.Never);
+            mockInvitationService.Verify(clanService => clanService.AcceptInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()), Times.Never);
         }
 
         [TestMethod]
@@ -225,7 +225,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockInvitationService.Setup(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()))
                 .ReturnsAsync(new Invitation(new UserId(), new ClanId())).Verifiable();
 
-            mockInvitationService.Setup(clanService => clanService.AcceptInvitationAsync(It.IsAny<UserId>(), It.IsAny<Invitation>()))
+            mockInvitationService.Setup(clanService => clanService.AcceptInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationFailure("", "Error").ToResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -242,7 +242,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockInvitationService.Verify(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()), Times.Once);
 
-            mockInvitationService.Verify(clanService => clanService.AcceptInvitationAsync(It.IsAny<UserId>(), It.IsAny<Invitation>()), Times.Once);
+            mockInvitationService.Verify(clanService => clanService.AcceptInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
@@ -251,10 +251,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Arrange
             var mockInvitationService = new Mock<IInvitationService>();
 
-            mockInvitationService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
-
-            mockInvitationService.Setup(clanService => clanService.SendInvitationAsync(It.IsAny<UserId>(), It.IsAny<ClanId>(), It.IsAny<UserId>()))
+            mockInvitationService.Setup(clanService => clanService.SendInvitationAsync(It.IsAny<ClanId>(), It.IsAny<UserId>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -269,58 +266,16 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockInvitationService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
-            mockInvitationService.Verify(clanService => clanService.SendInvitationAsync(It.IsAny<UserId>(), It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
-        }
-
-        [TestMethod]
-        public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var clanId = new ClanId();
-            var userId = new UserId();
-
-            var invitation = new Invitation(userId, clanId);
-
-            var mockInvitationService = new Mock<IInvitationService>();
-
-            mockInvitationService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync((Clan) null)
-                .Verifiable();
-
-            mockInvitationService.Setup(clanService => clanService.SendInvitationAsync(It.IsAny<UserId>(), It.IsAny<ClanId>(), It.IsAny<UserId>()))
-                .ReturnsAsync(new ValidationResult())
-                .Verifiable();
-
-            var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await invitationController.PostAsync(new InvitationPostRequest(userId, clanId));
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            mockInvitationService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
-            mockInvitationService.Verify(clanService => clanService.SendInvitationAsync(It.IsAny<UserId>(), It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Never);
+            mockInvitationService.Verify(clanService => clanService.SendInvitationAsync(It.IsAny<ClanId>(), It.IsAny<UserId>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
         public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
-
             var mockInvitationService = new Mock<IInvitationService>();
 
-            mockInvitationService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
-
-            mockInvitationService.Setup(clanService => clanService.SendInvitationAsync(It.IsAny<UserId>(), It.IsAny<ClanId>(), It.IsAny<UserId>()))
+            mockInvitationService.Setup(clanService => clanService.SendInvitationAsync(It.IsAny<ClanId>(), It.IsAny<UserId>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationFailure(string.Empty, "Error").ToResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -335,9 +290,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockInvitationService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
-            mockInvitationService.Verify(clanService => clanService.SendInvitationAsync(It.IsAny<UserId>(), It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+            mockInvitationService.Verify(clanService => clanService.SendInvitationAsync(It.IsAny<ClanId>(), It.IsAny<UserId>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
@@ -349,7 +302,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockInvitationService.Setup(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()))
                 .ReturnsAsync(new Invitation(new UserId(), new ClanId())).Verifiable();
 
-            mockInvitationService.Setup(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>()))
+            mockInvitationService.Setup(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -366,7 +319,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockInvitationService.Verify(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()), Times.Once);
 
-            mockInvitationService.Verify(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>()), Times.Once);
+            mockInvitationService.Verify(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()), Times.Once);
         }
 
         [TestMethod]
@@ -378,7 +331,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockInvitationService.Setup(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()))
                 .ReturnsAsync((Invitation) null).Verifiable();
 
-            mockInvitationService.Setup(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>()))
+            mockInvitationService.Setup(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -395,7 +348,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockInvitationService.Verify(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()), Times.Once);
 
-            mockInvitationService.Verify(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>()), Times.Never);
+            mockInvitationService.Verify(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()), Times.Never);
         }
 
         [TestMethod]
@@ -407,7 +360,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             mockInvitationService.Setup(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()))
                 .ReturnsAsync(new Invitation(new UserId(), new ClanId())).Verifiable();
 
-            mockInvitationService.Setup(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>()))
+            mockInvitationService.Setup(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()))
                 .ReturnsAsync(new ValidationFailure(string.Empty, "Test error").ToResult()).Verifiable();
 
             var invitationController = new InvitationsController(mockInvitationService.Object, Mapper);
@@ -424,7 +377,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockInvitationService.Verify(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()), Times.Once);
 
-            mockInvitationService.Verify(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>()), Times.Once);
+            mockInvitationService.Verify(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()), Times.Once);
         }
     }
 }

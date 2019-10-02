@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -43,27 +42,18 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
         public async Task ShouldBeHttpStatusCodeBadRequest() // Is not owner bad request
         {
             // Arrange
-            var clanId = new ClanId();
+            var clan = new Clan("TestClan", new UserId());
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-                    clanRepository.Create(new Clan("TestClan", new UserId()));
-
-                    await clanRepository.CommitAsync();
-
-                    var clans = await clanRepository.FetchClansAsync();
-                    var clan = clans.SingleOrDefault();
-
-                    if (clan != null)
-                    {
-                        clanId = clan.Id;
-                    }
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(clanId != null ? clanId : new ClanId(), new MemberId());
+            using var response = await this.ExecuteAsync(clan.Id, new MemberId());
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -85,41 +75,21 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
         public async Task ShouldBeHttpStatusCodeOk() // How can I use the same http context user id, otherwise not owner.
         {
             // Arrange
-            var clanId = new ClanId();
-            var memberId = new MemberId();
+            var userId = new UserId();
+            var clan = new Clan("TestClan", new UserId());
+            clan.AddMember(new Invitation(userId, clan.Id));
+            var member = clan.FindMember(userId);
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-                    clanRepository.Create(new Clan("TestClan", new UserId()));
-
-                    await clanRepository.CommitAsync();
-
-                    var clans = await clanRepository.FetchClansAsync();
-                    var clan = clans.SingleOrDefault();
-
-                    var userId = new UserId();
-
-                    if (clan != null)
-                    {
-                        clanId = clan.Id;
-                        clan.AddMember(new Invitation(userId, clanId));
-                    }
-
-                    await clanRepository.CommitAsync();
-
-                    var members = await clanRepository.FetchMembersAsync(clanId);
-                    var target = members.SingleOrDefault(member => member.UserId == userId);
-
-                    if (target != null)
-                    {
-                        memberId = target.Id;
-                    }
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(clanId != null ? clanId : new ClanId(), memberId);
+            using var response = await this.ExecuteAsync(clan.Id, member.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();

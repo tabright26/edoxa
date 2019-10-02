@@ -23,9 +23,9 @@ using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesController
 {
-    public sealed class CandidaturesControllerGetByUserIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
+    public sealed class CandidaturesControllerGetAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        public CandidaturesControllerGetByUserIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
+        public CandidaturesControllerGetAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
         {
             _httpClient = organizationsClansApiFactory.CreateClient();
             _testServer = organizationsClansApiFactory.Server;
@@ -35,9 +35,14 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         private readonly HttpClient _httpClient;
         private readonly TestServer _testServer;
 
+        private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId)
+        {
+            return await _httpClient.GetAsync($"api/candidatures?clanId={clanId}");
+        }
+
         private async Task<HttpResponseMessage> ExecuteAsync(UserId userId)
         {
-            return await _httpClient.GetAsync($"api/candidatures/byUserId?userId={userId}");
+            return await _httpClient.GetAsync($"api/candidatures?userId={userId}");
         }
 
         [Fact]
@@ -52,7 +57,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeOk()
+        public async Task WithUserId_ShouldBeHttpStatusCodeOk()
         {
             // Arrange
             var userId = new UserId();
@@ -62,11 +67,35 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
                 {
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
                     candidatureRepository.Create(new Candidature(userId, new ClanId()));
-                    await candidatureRepository.CommitAsync();
+                    await candidatureRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
             using var response = await this.ExecuteAsync(userId);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var challengeResponses = await response.DeserializeAsync<CandidatureResponse[]>();
+            challengeResponses.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task WithClanId_ShouldBeHttpStatusCodeOk()
+        {
+            // Arrange
+            var clanId = new ClanId();
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
+                    candidatureRepository.Create(new Candidature(new UserId(), clanId));
+                    await candidatureRepository.UnitOfWork.CommitAsync();
+                });
+
+            // Act
+            using var response = await this.ExecuteAsync(clanId);
 
             // Assert
             response.EnsureSuccessStatusCode();

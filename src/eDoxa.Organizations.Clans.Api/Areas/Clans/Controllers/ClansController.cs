@@ -1,6 +1,6 @@
 ﻿// Filename: ClansController.cs
-// Date Created: 2019-09-15
-//
+// Date Created: 2019-09-29
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -39,7 +39,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        /// Get all clans.
+        ///     Get all clans.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync()
@@ -55,7 +55,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        /// Create a clan.
+        ///     Create a clan.
         /// </summary>
         [HttpPost]
         public async Task<IActionResult> PostAsync(ClanPostRequest request)
@@ -63,8 +63,6 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
             if (ModelState.IsValid)
             {
                 var userId = HttpContext.GetUserId();
-
-                //Todo: Frank, est-ce que c<est correct pas de return not found ?
 
                 var result = await _clanService.CreateClanAsync(userId, request.Name);
 
@@ -75,11 +73,12 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 
                 result.AddToModelState(ModelState, null);
             }
+
             return this.BadRequest(ModelState);
         }
 
         /// <summary>
-        /// Get a specific clan.
+        ///     Get a specific clan.
         /// </summary>
         [HttpGet("{clanId}")]
         public async Task<IActionResult> GetByIdAsync(ClanId clanId)

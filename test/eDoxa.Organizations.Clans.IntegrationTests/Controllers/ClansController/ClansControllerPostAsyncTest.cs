@@ -44,17 +44,18 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
         public async Task ShouldBeHttpStatusCodeBadRequest() // Already a clan named like that bad request
         {
             // Arrange
+            const string clanName = "TestClan";
+
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-
-                    clanRepository.Create(new Clan("TestClan", new UserId()));
-                    await clanRepository.CommitAsync();
+                    clanRepository.Create(new Clan(clanName, new UserId()));
+                    await clanRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new ClanPostRequest("TestClan", "This is a summary"));
+            using var response = await this.ExecuteAsync(new ClanPostRequest(clanName, "This is a summary"));
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -1,12 +1,12 @@
 ﻿// Filename: ClanLogoController.cs
-// Date Created: 2019-09-15
-//
+// Date Created: 2019-09-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.IO;
 using System.Threading.Tasks;
 
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Organizations.Clans.Api.Extensions;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Services;
@@ -21,7 +21,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
     [Authorize]
     [ApiController]
     [Route("api/clans/{clanId}/logo")]
-    [ApiExplorerSettings(GroupName = "ClanLogo")]
+    [ApiExplorerSettings(GroupName = "Clans")]
     public class ClanLogoController : ControllerBase
     {
         private readonly IClanService _clanService;
@@ -32,29 +32,38 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        /// Get the logo of a specific clan.
+        ///     Download clan logo.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
-            var image = await _clanService.GetClanLogoAsync(clanId);
+            var clan = await _clanService.FindClanAsync(clanId);
 
-            if (image == null)
+            if (clan == null)
             {
-                return this.NoContent();
+                return this.NotFound("Clan doesn't exist.");
             }
-            return this.Ok(image);
+
+            var logo = await _clanService.DownloadLogoAsync(clan);
+
+            if (logo == null)
+            {
+                return this.NotFound("Clan logo not found.");
+            }
+
+            return this.File(logo, "application/octet-stream");
         }
 
         /// <summary>
-        /// Change or update the logo of a specific clan.
+        ///     Upload clan logo.
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> PostAsync(ClanId clanId, [FromBody] FileStream logo)
+        public async Task<IActionResult> PostAsync(ClanId clanId, [FromBody] ClanLogoPostRequest request)
         {
             if (ModelState.IsValid)
             {
                 var userId = HttpContext.GetUserId();
+
                 var clan = await _clanService.FindClanAsync(clanId);
 
                 if (clan == null)
@@ -62,14 +71,16 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                     return this.NotFound("Clan does not exist.");
                 }
 
-                var result = await _clanService.CreateOrUpdateClanLogoAsync(clan, logo, userId);
+                var result = await _clanService.UploadLogoAsync(clan, userId, request.Logo);
 
                 if (result.IsValid)
                 {
-                    return this.Ok("The logo has been updated.");
+                    return this.Ok("The logo has been uploaded.");
                 }
+
                 result.AddToModelState(ModelState, null);
             }
+
             return this.BadRequest(ModelState);
         }
     }

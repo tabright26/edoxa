@@ -1,18 +1,16 @@
-﻿// Filename: AccountService.cs
-// Date Created: 2019-08-28
-//
+﻿// Filename: InvitationService.cs
+// Date Created: 2019-09-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.ServiceBus.Abstractions;
 
 using FluentValidation.Results;
 
@@ -21,26 +19,22 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
     public sealed class InvitationService : IInvitationService
     {
         private readonly IInvitationRepository _invitationRepository;
-        private readonly ICandidatureRepository _candidatureRepository;
-        private readonly IClanService _clanService;
+        private readonly IClanRepository _clanRepository;
 
-        public InvitationService(IInvitationRepository invitationRepository, ICandidatureRepository candidatureRepository, IClanService clanService)
+        public InvitationService(IInvitationRepository invitationRepository, IClanRepository clanRepository)
         {
             _invitationRepository = invitationRepository;
-            _candidatureRepository = candidatureRepository;
-            _clanService = clanService;
+            _clanRepository = clanRepository;
         }
 
         public async Task<IReadOnlyCollection<Invitation>> FetchInvitationsAsync(ClanId clanId)
         {
-            var invitations = await _invitationRepository.FetchAsync();
-            return invitations.Where(invitation => invitation.ClanId == clanId).ToList();
+            return await _invitationRepository.FetchAsync(clanId);
         }
 
         public async Task<IReadOnlyCollection<Invitation>> FetchInvitationsAsync(UserId userId)
         {
-            var invitations = await _invitationRepository.FetchAsync();
-            return invitations.Where(invitation => invitation.UserId == userId).ToList();
+            return await _invitationRepository.FetchAsync(userId);
         }
 
         public async Task<Invitation?> FindInvitationAsync(InvitationId invitationId)
@@ -48,77 +42,78 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
             return await _invitationRepository.FindAsync(invitationId);
         }
 
-        public async Task<ValidationResult> SendInvitationAsync(UserId recruiterId, ClanId recruiterClan, UserId inviteId)
+        public async Task<ValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
         {
-            var exists = await _invitationRepository.ExistsAsync(recruiterId, recruiterClan);
-
-            if (exists)
+            if (!await _clanRepository.IsOwnerAsync(clanId, ownerId))
             {
-                var failure = new ValidationFailure(string.Empty, "The invitation from this clan to that member already exist.");
-                return failure.ToResult();
+                return new ValidationFailure(string.Empty, "Permission required.").ToResult();
             }
 
-            if (await _clanService.HasMember(inviteId))
+            if (await _clanRepository.IsMemberAsync(userId))
             {
-                var failure = new ValidationFailure(string.Empty, "Target already in a clan.");
-
-                return failure.ToResult();
+                return new ValidationFailure(string.Empty, "Target already in a clan.").ToResult();
             }
 
-            var clan = await _clanService.FindClanAsync(recruiterClan);
-
-            if (clan == null) // Make sure the specified clan still exist.
+            if (await _invitationRepository.ExistsAsync(ownerId, clanId))
             {
-                var failure = new ValidationFailure(string.Empty, "Clan does not exist.");
-                return failure.ToResult();
+                return new ValidationFailure(string.Empty, "The invitation from this clan to that member already exist.").ToResult();
             }
 
-            if (!clan.IsOwner(recruiterId)) //Is the admin of said clan.
-            {
-                var failure = new ValidationFailure(string.Empty, "Permission required.");
+            var invitation = new Invitation(userId, clanId);
 
-                return failure.ToResult();
-            }
+            _invitationRepository.Create(invitation);
 
-            _invitationRepository.Create(new Invitation(inviteId, recruiterClan));
-            await _invitationRepository.CommitAsync();
-            return new ValidationResult();
-        }
-
-        public async Task<ValidationResult> AcceptInvitationAsync(UserId userId, Invitation invitation)
-        {
-            var clan = await _clanService.FindClanAsync(invitation.ClanId);
-
-            if (clan == null)
-            {
-                var failure = new ValidationFailure(string.Empty, "Clan does not exist.");
-                return failure.ToResult();
-            }
-
-            clan.AddMember(invitation);
-
-            await _candidatureRepository.DeleteAllWith(userId);
-            await _invitationRepository.DeleteAllWith(userId);
-
-            await _candidatureRepository.CommitAsync();
-            await _invitationRepository.CommitAsync();
+            await _invitationRepository.UnitOfWork.CommitAsync();
 
             return new ValidationResult();
         }
 
-        public async Task<ValidationResult> DeclineInvitationAsync(Invitation invitation)
+        public async Task<ValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId)
         {
+            if (invitation.UserId != userId)
+            {
+                return new ValidationFailure(string.Empty, $"The user {userId} can not accept someone else invitation.").ToResult();
+            }
+
+            invitation.Accept();
+
+            await _invitationRepository.UnitOfWork.CommitAsync();
+
+            return new ValidationResult();
+        }
+
+        public async Task<ValidationResult> DeclineInvitationAsync(Invitation invitation, UserId userId)
+        {
+            if (invitation.UserId != userId)
+            {
+                return new ValidationFailure(string.Empty, $"The user {userId} can not decline someone else invitation.").ToResult();
+            }
+
             _invitationRepository.Delete(invitation);
-            await _invitationRepository.CommitAsync();
+
+            await _invitationRepository.UnitOfWork.CommitAsync();
+
             return new ValidationResult();
         }
 
-        //-----------------------------------------------------------------------------------------------------
-        //Clan Service
-        public async Task<Clan?> FindClanAsync(ClanId clanId)
+        public async Task DeleteInvitationsAsync(ClanId clanId)
         {
-            return await _clanService.FindClanAsync(clanId);
+            foreach (var invitation in await this.FetchInvitationsAsync(clanId))
+            {
+                _invitationRepository.Delete(invitation);
+            }
+
+            await _invitationRepository.UnitOfWork.CommitAsync();
+        }
+
+        public async Task DeleteInvitationsAsync(UserId userId)
+        {
+            foreach (var invitation in await this.FetchInvitationsAsync(userId))
+            {
+                _invitationRepository.Delete(invitation);
+            }
+
+            await _invitationRepository.UnitOfWork.CommitAsync();
         }
     }
-
 }

@@ -1,10 +1,9 @@
 ﻿// Filename: InvitationsControllerPostByIdAsyncTest.cs
-// Date Created: 2019-09-29
-//
+// Date Created: 2019-09-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -46,26 +45,18 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         public async Task ShouldBeHttpStatusCodeBadRequest() //Clan does not exist bad request.
         {
             // Arrange
-            var invitationId = new InvitationId();
+            var invitation = new Invitation(new UserId(), new ClanId());
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
-                    invitationRepository.Create(new Invitation(new UserId(), new ClanId()));
-                    await invitationRepository.CommitAsync();
-
-                    var invitations = await invitationRepository.FetchAsync();
-                    var invitation = invitations.SingleOrDefault();
-
-                    if (invitation != null)
-                    {
-                        invitationId = invitation.Id;
-                    }
+                    invitationRepository.Create(invitation);
+                    await invitationRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(invitationId != null ? invitationId : new InvitationId());
+            using var response = await this.ExecuteAsync(invitation.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -88,34 +79,22 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         {
             // Arrange
             var ownerId = new UserId();
-            var invitationId = new InvitationId();
+            var clan = new Clan("TestClan", ownerId);
+            var invitation = new Invitation(new UserId(), clan.Id);
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-
-                    clanRepository.Create(new Clan("TestClan", ownerId));
-                    await clanRepository.CommitAsync();
-
-                    var clans = await clanRepository.FetchClansAsync();
-                    var clan = clans.SingleOrDefault();
-
-                    invitationRepository.Create(new Invitation(new UserId(), clan != null ? clan.Id : new ClanId()));
-                    await invitationRepository.CommitAsync();
-
-                    var invitations = await invitationRepository.FetchAsync();
-                    var invitation = invitations.SingleOrDefault();
-
-                    if (invitation != null)
-                    {
-                        invitationId = invitation.Id;
-                    }
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+                    invitationRepository.Create(invitation);
+                    await invitationRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(invitationId != null ? invitationId : new InvitationId());
+            using var response = await this.ExecuteAsync(invitation.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -1,5 +1,5 @@
-﻿// Filename: InvitationsControllerGetByClanIdAsyncTest.cs
-// Date Created: 2019-09-29
+﻿// Filename: InvitationsControllerGetAsyncTest.cs
+// Date Created: 2019-09-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,9 +23,9 @@ using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsController
 {
-    public sealed class InvitationsControllerGetByClanIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
+    public sealed class InvitationsControllerGetAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        public InvitationsControllerGetByClanIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
+        public InvitationsControllerGetAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
         {
             _httpClient = organizationsClansApiFactory.CreateClient();
             _testServer = organizationsClansApiFactory.Server;
@@ -35,9 +35,14 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         private readonly HttpClient _httpClient;
         private readonly TestServer _testServer;
 
+        private async Task<HttpResponseMessage> ExecuteAsync(UserId userId)
+        {
+            return await _httpClient.GetAsync($"api/invitations?userId={userId}");
+        }
+
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId)
         {
-            return await _httpClient.GetAsync($"api/invitations/byClanId?clanId={clanId}");
+            return await _httpClient.GetAsync($"api/invitations?clanId={clanId}");
         }
 
         [Fact]
@@ -52,7 +57,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeOk()
+        public async Task WithClanId_ShouldBeHttpStatusCodeOk()
         {
             // Arrange
             var clanId = new ClanId();
@@ -62,11 +67,35 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
                 {
                     var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
                     invitationRepository.Create(new Invitation(new UserId(), clanId));
-                    await invitationRepository.CommitAsync();
+                    await invitationRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
             using var response = await this.ExecuteAsync(clanId);
+
+            // Assert
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var challengeResponses = await response.DeserializeAsync<InvitationResponse[]>();
+            challengeResponses.Should().HaveCount(1);
+        }
+
+        [Fact]
+        public async Task WithUserId_ShouldBeHttpStatusCodeOk()
+        {
+            // Arrange
+            var userId = new UserId();
+
+            await _testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
+                    invitationRepository.Create(new Invitation(userId, new ClanId()));
+                    await invitationRepository.UnitOfWork.CommitAsync();
+                });
+
+            // Act
+            using var response = await this.ExecuteAsync(userId);
 
             // Assert
             response.EnsureSuccessStatusCode();

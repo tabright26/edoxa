@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -56,27 +55,18 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-            var clanId = new ClanId();
+            var clan = new Clan("TestClan", new UserId());
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-
-                    clanRepository.Create(new Clan("TestClan", new UserId()));
-                    await clanRepository.CommitAsync();
-
-                    var clans = await clanRepository.FetchClansAsync();
-                    var clan = clans.SingleOrDefault();
-
-                    if (clan != null)
-                    {
-                        clanId = clan.Id;
-                    }
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(clanId != null ? clanId : new ClanId());
+            using var response = await this.ExecuteAsync(clan.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();

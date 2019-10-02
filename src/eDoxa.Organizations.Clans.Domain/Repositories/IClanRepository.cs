@@ -9,11 +9,16 @@ using System.IO;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Organizations.Clans.Domain.Repositories
 {
     public interface IClanRepository
     {
+        IUnitOfWork UnitOfWork { get; }
+
         void Create(Clan clan);
 
         void Delete(Clan clan);
@@ -22,16 +27,20 @@ namespace eDoxa.Organizations.Clans.Domain.Repositories
 
         Task<Clan?> FindClanAsync(ClanId clanId);
 
-        Task<FileStream?> GetLogoAsync(ClanId clanId);
+        Task<bool> ExistsAsync(string name);
 
-        Task CreateOrUpdateLogoAsync(FileStream logo);
+        Task<Stream> DownloadLogoAsync(ClanId clanId);
+
+        Task UploadLogoAsync(ClanId clanId, IFormFile logo);
+
+        Task DeleteLogoAsync(ClanId clanId);
 
         Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId);
 
         Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId);
 
-        Task<bool> HasMember(UserId userId);
+        Task<bool> IsMemberAsync(UserId userId);
 
-        Task CommitAsync();
+        Task<bool> IsOwnerAsync(ClanId clanId, UserId ownerId);
     }
 }

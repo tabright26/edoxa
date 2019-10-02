@@ -8,7 +8,7 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Organizations.Clans.Domain.Models
 {
-    public class Member : Entity<MemberId>
+    public class Member : Entity<MemberId>, IMemberInfo
     {
         public Member(IMemberInfo memberInfo) : this(memberInfo.ClanId, memberInfo.UserId)
         {

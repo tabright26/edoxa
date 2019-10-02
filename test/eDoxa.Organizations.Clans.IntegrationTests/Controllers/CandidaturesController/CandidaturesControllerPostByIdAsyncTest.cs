@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -46,26 +45,18 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         public async Task ShouldBeHttpStatusCodeBadRequest() //Clan does not exist bad request.
         {
             // Arrange
-            var candidatureId = new CandidatureId();
+            var candidature = new Candidature(new UserId(), new ClanId());
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
-                    candidatureRepository.Create(new Candidature(new UserId(), new ClanId()));
-                    await candidatureRepository.CommitAsync();
-
-                    var candidatures = await candidatureRepository.FetchAsync();
-                    var candidature = candidatures.SingleOrDefault();
-
-                    if (candidature != null)
-                    {
-                        candidatureId = candidature.Id;
-                    }
+                    candidatureRepository.Create(candidature);
+                    await candidatureRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(candidatureId != null ? candidatureId : new CandidatureId());
+            using var response = await this.ExecuteAsync(candidature.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -88,34 +79,22 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         {
             // Arrange
             var ownerId = new UserId();
-            var candidatureId = new CandidatureId();
+            var clan = new Clan("TestClan", ownerId);
+            var candidature = new Candidature(new UserId(), clan.Id);
 
             await _testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-
-                    clanRepository.Create(new Clan("TestClan", ownerId));
-                    await clanRepository.CommitAsync();
-
-                    var clans = await clanRepository.FetchClansAsync();
-                    var clan = clans.SingleOrDefault();
-
-                    candidatureRepository.Create(new Candidature(new UserId(), clan != null ? clan.Id : new ClanId()));
-                    await candidatureRepository.CommitAsync();
-
-                    var candidatures = await candidatureRepository.FetchAsync();
-                    var candidature = candidatures.SingleOrDefault();
-
-                    if (candidature != null)
-                    {
-                        candidatureId = candidature.Id;
-                    }
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+                    candidatureRepository.Create(candidature);
+                    await candidatureRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(candidatureId != null ? candidatureId : new CandidatureId());
+            using var response = await this.ExecuteAsync(candidature.Id);
 
             // Assert
             response.EnsureSuccessStatusCode();

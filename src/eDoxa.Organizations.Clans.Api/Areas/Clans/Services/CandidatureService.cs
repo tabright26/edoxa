@@ -1,18 +1,16 @@
 ﻿// Filename: CandidatureService.cs
-// Date Created: 2019-09-25
-//
+// Date Created: 2019-09-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.ServiceBus.Abstractions;
 
 using FluentValidation.Results;
 
@@ -21,28 +19,22 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
     public sealed class CandidatureService : ICandidatureService
     {
         private readonly ICandidatureRepository _candidatureRepository;
-        private readonly IInvitationRepository _invitationRepository;
-        private readonly IClanService _clanService;
+        private readonly IClanRepository _clanRepository;
 
-        public CandidatureService(ICandidatureRepository candidatureRepository, IInvitationRepository invitationRepository, IClanService clanService)
+        public CandidatureService(ICandidatureRepository candidatureRepository, IClanRepository clanRepository)
         {
             _candidatureRepository = candidatureRepository;
-            _invitationRepository = invitationRepository;
-            _clanService = clanService;
+            _clanRepository = clanRepository;
         }
 
         public async Task<IReadOnlyCollection<Candidature>> FetchCandidaturesAsync(ClanId clanId)
         {
-            var candidatures = await _candidatureRepository.FetchAsync();
-
-            return candidatures.Where(candidature => candidature.ClanId == clanId).ToList();
+            return await _candidatureRepository.FetchAsync(clanId);
         }
 
         public async Task<IReadOnlyCollection<Candidature>> FetchCandidaturesAsync(UserId userId)
         {
-            var candidatures = await _candidatureRepository.FetchAsync();
-
-            return candidatures.Where(candidature => candidature.UserId == userId).ToList();
+            return await _candidatureRepository.FetchAsync(userId);
         }
 
         public async Task<Candidature?> FindCandidatureAsync(CandidatureId candidatureId)
@@ -52,70 +44,66 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
         public async Task<ValidationResult> SendCandidatureAsync(UserId userId, ClanId clanId)
         {
-            if ( await _candidatureRepository.ExistsAsync(userId, clanId))
+            if (await _clanRepository.IsMemberAsync(userId))
             {
-                var failure = new ValidationFailure(string.Empty, "The candidature of this member for that clan already exist.");
-
-                return failure.ToResult();
+                return new ValidationFailure(string.Empty, "User already in a clan.").ToResult();
             }
 
-            if (await _clanService.HasMember(userId))
+            if (await _candidatureRepository.ExistsAsync(userId, clanId))
             {
-                var failure = new ValidationFailure(string.Empty, "User already in a clan.");
-
-                return failure.ToResult();
+                return new ValidationFailure(string.Empty, "The candidature of this member for that clan already exist.").ToResult();
             }
 
-            _candidatureRepository.Create(new Candidature(userId, clanId));
-            await _candidatureRepository.CommitAsync();
+            var candidature = new Candidature(userId, clanId);
+
+            _candidatureRepository.Create(candidature);
+
+            await _candidatureRepository.UnitOfWork.CommitAsync();
 
             return new ValidationResult();
         }
 
-        public async Task<ValidationResult> AcceptCandidatureAsync(UserId recruiterId, Candidature candidature)
+        public async Task<ValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId)
         {
-            var clan = await _clanService.FindClanAsync(candidature.ClanId);
-
-            if (clan == null) // Make sure the specified clan still exist.
+            if (!await _clanRepository.IsOwnerAsync(candidature.ClanId, ownerId))
             {
-                var failure = new ValidationFailure(string.Empty, "Clan does not exist.");
-
-                return failure.ToResult();
+                return new ValidationFailure(string.Empty, "Permission required.").ToResult();
             }
 
-            if (!clan.IsOwner(recruiterId)) //Is the admin of said clan.
-            {
-                var failure = new ValidationFailure(string.Empty, "Permission required.");
+            candidature.Accept();
 
-                return failure.ToResult();
-            }
-
-            clan.AddMember(candidature);
-
-            await _candidatureRepository.DeleteAllWith(candidature.UserId);
-            await _invitationRepository.DeleteAllWith(candidature.UserId);
-
-            await _candidatureRepository.CommitAsync();
-            await _invitationRepository.CommitAsync();
+            await _candidatureRepository.UnitOfWork.CommitAsync();
 
             return new ValidationResult();
         }
 
-        public async Task<ValidationResult> DeclineCandidatureAsync(Candidature candidature)
+        public async Task<ValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId ownerId)
         {
             _candidatureRepository.Delete(candidature);
-            await _candidatureRepository.CommitAsync();
+
+            await _candidatureRepository.UnitOfWork.CommitAsync();
 
             return new ValidationResult();
         }
 
-        //-----------------------------------------------------------------------------------------------------
-
-        //Clan Service
-
-        public async Task<Clan?> FindClanAsync(ClanId clanId)
+        public async Task DeleteCandidaturesAsync(ClanId clanId)
         {
-            return await _clanService.FindClanAsync(clanId);
+            foreach (var candidature in await this.FetchCandidaturesAsync(clanId))
+            {
+                _candidatureRepository.Delete(candidature);
+            }
+
+            await _candidatureRepository.UnitOfWork.CommitAsync();
+        }
+
+        public async Task DeleteCandidaturesAsync(UserId userId)
+        {
+            foreach (var candidature in await this.FetchCandidaturesAsync(userId))
+            {
+                _candidatureRepository.Delete(candidature);
+            }
+
+            await _candidatureRepository.UnitOfWork.CommitAsync();
         }
     }
 }

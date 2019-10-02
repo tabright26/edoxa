@@ -8,7 +8,6 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -16,6 +15,8 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Domain.Models;
 
 using FluentValidation.Results;
+
+using Microsoft.AspNetCore.Http;
 
 namespace eDoxa.Organizations.Clans.Domain.Services
 {
@@ -27,11 +28,15 @@ namespace eDoxa.Organizations.Clans.Domain.Services
 
         Task<ValidationResult> CreateClanAsync(UserId userId, string name);
 
-        Task<FileStream?> GetClanLogoAsync(ClanId clanId);
+        Task<Stream> DownloadLogoAsync(Clan clan);
 
-        Task<ValidationResult> CreateOrUpdateClanLogoAsync(Clan clan, FileStream logo, Guid userId);
+        Task<ValidationResult> UploadLogoAsync(Clan clan, UserId userId, IFormFile logo);
 
-        Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId);
+        Task DeleteLogoAsync(ClanId clanId);
+
+        Task AddMemberToClanAsync(ClanId clanId, IMemberInfo memberInfo);
+
+        Task<IReadOnlyCollection<Member>> FetchMembersAsync(Clan clan);
 
         Task<Member?> FindMemberAsync(Clan clan, MemberId memberId);
 
@@ -39,6 +44,6 @@ namespace eDoxa.Organizations.Clans.Domain.Services
 
         Task<ValidationResult> LeaveClanAsync (Clan clan, UserId userId);
 
-        Task<bool> HasMember(UserId userId);
+        Task<bool> IsMemberAsync(UserId userId);
     }
 }

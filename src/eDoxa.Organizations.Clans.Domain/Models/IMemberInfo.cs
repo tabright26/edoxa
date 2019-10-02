@@ -9,6 +9,7 @@ namespace eDoxa.Organizations.Clans.Domain.Models
     public interface IMemberInfo
     {
         UserId UserId { get; }
+
         ClanId ClanId { get; }
     }
 }

@@ -4,22 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.IO;
-using System.Threading.Tasks;
-
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers;
-using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Organizations.Clans.Domain.Services;
-using eDoxa.Organizations.Clans.UnitTests.Helpers.Mocks;
-
-using FluentAssertions;
-
-using FluentValidation.Results;
-
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using Moq;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 {

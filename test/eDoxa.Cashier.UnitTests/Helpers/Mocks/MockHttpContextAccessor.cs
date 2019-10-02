@@ -7,8 +7,6 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-using eDoxa.Seedwork.Security;
-
 using IdentityModel;
 
 using Microsoft.AspNetCore.Http;

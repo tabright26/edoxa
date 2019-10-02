@@ -60,7 +60,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     clanRepository.Create(new Clan("TestClan", new UserId()));
-                    await clanRepository.CommitAsync();
+                    await clanRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act
