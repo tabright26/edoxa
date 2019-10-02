@@ -1,21 +1,26 @@
-// Filename: ChallengeTest.cs
-// Date Created: 2019-07-01
-//
+// Filename: MemberTest.cs
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Organizations.Clans.TestHelpers;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Domain.Models
 {
-    [TestClass]
-    public sealed class MemberTest
+    public sealed class MemberTest : UnitTest
     {
-        [TestMethod]
+        public MemberTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
+        [Fact]
         public void Contructor_WithCandidature_Tests()
         {
             // Arrange
@@ -35,7 +40,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Domain.Models
             member.ClanId.Should().NotBeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public void Contructor_WithInvitation_Tests()
         {
             // Arrange

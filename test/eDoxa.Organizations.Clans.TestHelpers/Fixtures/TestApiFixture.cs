@@ -19,13 +19,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
-namespace eDoxa.Organizations.Clans.IntegrationTests
+namespace eDoxa.Organizations.Clans.TestHelpers.Fixtures
 {
-    public sealed class OrganizationsClansApiFactory : WebApiFactory<Startup>
+    public sealed class TestApiFixture : WebApiFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(OrganizationsClansApiFactory)).Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFixture)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 

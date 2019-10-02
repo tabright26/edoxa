@@ -1,28 +1,55 @@
-﻿// Filename: AccountDepositPostRequestValidatorTest.cs
-// Date Created: 2019-08-28
-//
+﻿// Filename: InvitationPostRequestValidatorTest.cs
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Collections.Generic;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.ErrorDescribers;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Validators;
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Organizations.Clans.TestHelpers;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
 using FluentValidation.TestHelper;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
 {
-    [TestClass]
-    public sealed class InvitationPostRequestValidatorTest
+    public sealed class InvitationPostRequestValidatorTest : UnitTest
     {
-        [DataTestMethod]
-        [DynamicData(nameof(ValidUserId), DynamicDataSourceType.Method)]
+        public InvitationPostRequestValidatorTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
+        public static TheoryData<UserId> ValidUserId =>
+            new TheoryData<UserId>
+            {
+                new UserId()
+            };
+
+        public static TheoryData<UserId, string> InvalidUserIds =>
+            new TheoryData<UserId, string>
+            {
+                {null, InvitationErrorDescriber.UserIdRequired()}
+            };
+
+        public static TheoryData<ClanId> ValidClanId =>
+            new TheoryData<ClanId>
+            {
+                new ClanId()
+            };
+
+        public static TheoryData<ClanId, string> InvalidClanIds =>
+            new TheoryData<ClanId, string>
+            {
+                {null, InvitationErrorDescriber.ClanIdRequired()}
+            };
+
+        [Theory]
+        [MemberData(nameof(ValidUserId))]
         public void Validate_WhenUserIdIsValid_ShouldNotHaveValidationErrorFor(UserId userId)
         {
             // Arrange
@@ -32,13 +59,8 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.UserId, userId);
         }
 
-        private static IEnumerable<object[]> ValidUserId()
-        {
-            yield return new object[] {new UserId()};
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidUserIds), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidUserIds))]
         public void Validate_WhenUserIdIsInvalid_ShouldHaveValidationErrorFor(UserId userId, string errorMessage)
         {
             // Arrange
@@ -50,13 +72,8 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
-        private static IEnumerable<object[]> InvalidUserIds()
-        {
-            yield return new object[] {null, InvitationErrorDescriber.UserIdRequired() };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(ValidClanId), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(ValidClanId))]
         public void Validate_WhenClanIdIsValid_ShouldNotHaveValidationErrorFor(ClanId clanId)
         {
             // Arrange
@@ -66,13 +83,8 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.ClanId, clanId);
         }
 
-        private static IEnumerable<object[]> ValidClanId()
-        {
-            yield return new object[] {new ClanId()};
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidClanIds), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidClanIds))]
         public void Validate_WhenClanIdIsInvalid_ShouldHaveValidationErrorFor(ClanId clanId, string errorMessage)
         {
             // Arrange
@@ -81,11 +93,6 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.ClanId, clanId);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }
-
-        private static IEnumerable<object[]> InvalidClanIds()
-        {
-            yield return new object[] {null, InvitationErrorDescriber.ClanIdRequired() };
         }
     }
 }

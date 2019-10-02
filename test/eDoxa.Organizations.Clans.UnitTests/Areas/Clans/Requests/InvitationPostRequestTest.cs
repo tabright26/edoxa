@@ -1,24 +1,29 @@
-﻿// Filename: AccountDepositPostRequestTest.cs
-// Date Created: 2019-08-27
-//
+﻿// Filename: InvitationPostRequestTest.cs
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Organizations.Clans.TestHelpers;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Newtonsoft.Json;
+
+using Xunit;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Requests
 {
-    [TestClass]
-    public sealed class InvitationPostRequestTest
+    public sealed class InvitationPostRequestTest : UnitTest
     {
-        [TestMethod]
+        public InvitationPostRequestTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
+        [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             //Arrange

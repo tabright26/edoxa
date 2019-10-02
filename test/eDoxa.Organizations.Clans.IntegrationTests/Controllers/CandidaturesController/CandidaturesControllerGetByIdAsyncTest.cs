@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -24,12 +25,12 @@ using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesController
 {
-    public sealed class CandidaturesControllerGetByIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
+    public sealed class CandidaturesControllerGetByIdAsyncTest : IClassFixture<TestApiFixture>
     {
-        private readonly OrganizationsClansApiFactory _apiFactory;
-        public CandidaturesControllerGetByIdAsyncTest(OrganizationsClansApiFactory apiFactory)
+        private readonly TestApiFixture _apiFixture;
+        public CandidaturesControllerGetByIdAsyncTest(TestApiFixture apiFixture)
         {
-            _apiFactory = apiFactory;
+            _apiFixture = apiFixture;
             _httpClient = new HttpClient();
         }
         private HttpClient _httpClient;
@@ -43,7 +44,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -63,7 +64,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             var clan = new Clan("ClanName", new UserId());
             var candidature = new Candidature(userId, clan.Id);
 
-            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

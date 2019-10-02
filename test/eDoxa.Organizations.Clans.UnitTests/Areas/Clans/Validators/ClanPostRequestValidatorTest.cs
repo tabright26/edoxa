@@ -1,26 +1,60 @@
-﻿// Filename: AccountDepositPostRequestValidatorTest.cs
-// Date Created: 2019-08-28
-//
+﻿// Filename: ClanPostRequestValidatorTest.cs
+// Date Created: 2019-10-02
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.using System.Collections.Generic;
-using System.Collections.Generic;
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.ErrorDescribers;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Validators;
+using eDoxa.Organizations.Clans.TestHelpers;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
 using FluentValidation.TestHelper;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
 {
-    [TestClass]
-    public sealed class ClanPostRequestValidatorTest
+    public sealed class ClanPostRequestValidatorTest : UnitTest
     {
-        [DataTestMethod]
-        [DynamicData(nameof(ValidNames), DynamicDataSourceType.Method)]
+        public ClanPostRequestValidatorTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
+        public static TheoryData<string> ValidNames =>
+            new TheoryData<string>
+            {
+                "MagicPotato",
+                "PrettyLasagna"
+            };
+
+        public static TheoryData<string, string> InvalidNames =>
+            new TheoryData<string, string>
+            {
+                {null, ClanErrorDescriber.NameRequired()},
+                {"", ClanErrorDescriber.NameRequired()},
+                {"Ba", ClanErrorDescriber.NameLength()},
+                {"Ba!", ClanErrorDescriber.NameInvalid()}
+            };
+
+        public static TheoryData<string> ValidSummaries =>
+            new TheoryData<string>
+            {
+                "Pretty good clan.",
+                "This-is-a,clan."
+            };
+
+        public static TheoryData<string, string> InvalidSummaries =>
+            new TheoryData<string, string>
+            {
+                {"Pretty", ClanErrorDescriber.SummaryInvalid()},
+                {"This-is-not a ! Clan", ClanErrorDescriber.SummaryInvalid()}
+            };
+
+        [Theory]
+        [MemberData(nameof(ValidNames))]
         public void Validate_WhenNameIsValid_ShouldNotHaveValidationErrorFor(string name)
         {
             // Arrange
@@ -30,14 +64,8 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Name, name);
         }
 
-        private static IEnumerable<object[]> ValidNames()
-        {
-            yield return new object[] { "MagicPotato" };
-            yield return new object[] { "PrettyLasagna" };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidNames), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidNames))]
         public void Validate_WhenNameIsInvalid_ShouldHaveValidationErrorFor(string name, string errorMessage)
         {
             // Arrange
@@ -49,16 +77,8 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
-        private static IEnumerable<object[]> InvalidNames()
-        {
-            yield return new object[] { null, ClanErrorDescriber.NameRequired() };
-            yield return new object[] {"", ClanErrorDescriber.NameRequired()};
-            yield return new object[] {"Ba", ClanErrorDescriber.NameLength()};
-            yield return new object[] {"Ba!", ClanErrorDescriber.NameInvalid()};
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(ValidSummaries), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(ValidSummaries))]
         public void Validate_WhenSummaryIsValid_ShouldNotHaveValidationErrorFor(string summary)
         {
             // Arrange
@@ -68,14 +88,8 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Summary, summary);
         }
 
-        private static IEnumerable<object[]> ValidSummaries()
-        {
-            yield return new object[] { "Pretty good clan." };
-            yield return new object[] { "This-is-a,clan." };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidSummaries), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidSummaries))]
         public void Validate_WhenSummaryIsInvalid_ShouldHaveValidationErrorFor(string summary, string errorMessage)
         {
             // Arrange
@@ -85,12 +99,6 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Validators
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Summary, summary);
 
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }
-
-        private static IEnumerable<object[]> InvalidSummaries()
-        {
-            yield return new object[] { "Pretty", ClanErrorDescriber.SummaryInvalid()};
-            yield return new object[] { "This-is-not a ! Clan", ClanErrorDescriber.SummaryInvalid() };
         }
     }
 }

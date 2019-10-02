@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -24,13 +25,13 @@ using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
 {
-    public sealed class ClansControllerGetAsyncTest : IClassFixture<OrganizationsClansApiFactory>
+    public sealed class ClansControllerGetAsyncTest : IClassFixture<TestApiFixture>
     {
-        private readonly OrganizationsClansApiFactory _apiFactory;
+        private readonly TestApiFixture _apiFixture;
 
-        public ClansControllerGetAsyncTest(OrganizationsClansApiFactory apiFactory)
+        public ClansControllerGetAsyncTest(TestApiFixture apiFixture)
         {
-            _apiFactory = apiFactory;
+            _apiFixture = apiFixture;
             _httpClient = new HttpClient();
         }
 
@@ -45,7 +46,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -65,7 +66,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
 
-            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = _apiFixture.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

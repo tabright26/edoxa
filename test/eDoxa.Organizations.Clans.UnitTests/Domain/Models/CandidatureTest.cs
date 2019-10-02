@@ -1,21 +1,26 @@
-// Filename: ChallengeTest.cs
-// Date Created: 2019-07-01
-//
+// Filename: CandidatureTest.cs
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Organizations.Clans.TestHelpers;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Domain.Models
 {
-    [TestClass]
-    public sealed class CandidatureTest
+    public sealed class CandidatureTest : UnitTest
     {
-        [TestMethod]
+        public CandidatureTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
+        [Fact]
         public void Contructor_Tests()
         {
             // Arrange

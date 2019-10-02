@@ -1,29 +1,30 @@
-﻿// Filename: MapperExtensions.cs
-// Date Created: 2019-07-05
-//
+﻿// Filename: TestMapperFixture.cs
+// Date Created: 2019-09-28
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Reflection;
 
 using AutoMapper;
 
 using eDoxa.Organizations.Clans.Api;
 
-namespace eDoxa.Organizations.Clans.UnitTests.Helpers.Extensions
+namespace eDoxa.Organizations.Clans.TestHelpers.Fixtures
 {
-    public static class MapperExtensions
+    public sealed class TestMapperFixture
     {
-        public static IMapper Mapper
-        {
-            get
+        private static Lazy<IMapper> Lazy = new Lazy<IMapper>(
+            () =>
             {
                 var configuration = new MapperConfiguration(config => config.AddMaps(Assembly.GetAssembly(typeof(Startup))));
 
                 configuration.AssertConfigurationIsValid();
 
                 return new Mapper(configuration);
-            }
-        }
+            });
+
+        public IMapper Instance => Lazy.Value;
     }
 }

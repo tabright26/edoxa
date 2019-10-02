@@ -1,17 +1,17 @@
-// Filename: ClansControllerTest.cs
-// Date Created: 2019-09-15
-//
+// Filename: ClanLogoControllerTest.cs
+// Date Created: 2019-10-02
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using eDoxa.Organizations.Clans.TestHelpers;
+using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 {
-    [TestClass]
-    public class ClanLogoControllerTest
+    public class ClanLogoControllerTest : UnitTest
     {
-        //[TestMethod]
+        //[Fact]
         //public async Task GetByIdAsync_ShouldBeOfTypeNoContentResult()
         //{
         //    // Arrange
@@ -29,7 +29,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
         //    mockClanService.Verify(clanService => clanService.GetClanLogoAsync(It.IsAny<ClanId>()), Times.Once);
         //}
 
-        //[TestMethod]
+        //[Fact]
         //public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         //{
         //    // Arrange
@@ -48,7 +48,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
         //    mockClanService.Verify(clanService => clanService.GetClanLogoAsync(It.IsAny<ClanId>()), Times.Once);
         //}
 
-        //[TestMethod]
+        //[Fact]
         //public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         //{
         //    // Arrange
@@ -78,7 +78,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
         //    mockClanService.Verify(clanService => clanService.CreateOrUpdateClanLogoAsync(It.IsAny<Clan>(), It.IsAny<FileStream>(), It.IsAny<UserId>()), Times.Once);
         //}
 
-        //[TestMethod]
+        //[Fact]
         //public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
         //{
         //    // Arrange
@@ -108,7 +108,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
         //    mockClanService.Verify(clanService => clanService.CreateOrUpdateClanLogoAsync(It.IsAny<Clan>(), It.IsAny<FileStream>(), It.IsAny<UserId>()), Times.Never);
         //}
 
-        //[TestMethod]
+        //[Fact]
         //public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
         //{
         //    // Arrange
@@ -137,6 +137,8 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
         //    mockClanService.Verify(clanService => clanService.CreateOrUpdateClanLogoAsync(It.IsAny<Clan>(), It.IsAny<FileStream>(), It.IsAny<UserId>()), Times.Once);
         //}
-
+        public ClanLogoControllerTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
     }
 }
