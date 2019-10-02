@@ -18,10 +18,12 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.DelegatingHandlers;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Games.Extensions;
 using eDoxa.Mediator;
+using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -117,7 +119,7 @@ namespace eDoxa.Arena.Challenges.Api
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-                .AddControllersAsServices()
+                .AddDevTools<ArenaChallengesDbContextSeeder, ArenaChallengesDbContextCleaner>()
                 .AddFluentValidation(
                     config =>
                     {

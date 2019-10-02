@@ -10,7 +10,6 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.Factories;
@@ -19,7 +18,6 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Domain.Strategies;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
@@ -29,12 +27,6 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
         {
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
-
-            // Seeder
-            builder.RegisterType<ArenaChallengesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
-
-            // Cleaner
-            builder.RegisterType<ArenaChallengesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();

@@ -18,9 +18,11 @@ using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Mediator;
+using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -175,7 +177,7 @@ namespace eDoxa.Identity.Api
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-                .AddControllersAsServices()
+                .AddDevTools<IdentityDbContextSeeder, IdentityDbContextCleaner>()
                 .AddRazorPagesOptions(
                     options =>
                     {

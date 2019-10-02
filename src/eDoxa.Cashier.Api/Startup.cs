@@ -15,8 +15,10 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
+using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Mediator;
+using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -100,7 +102,7 @@ namespace eDoxa.Cashier.Api
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-                .AddControllersAsServices()
+                .AddDevTools<CashierDbContextSeeder, CashierDbContextCleaner>()
                 .AddFluentValidation(
                     config =>
                     {

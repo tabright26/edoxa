@@ -9,7 +9,6 @@ using Autofac;
 using eDoxa.Cashier.Api.Areas.Accounts.Services;
 using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
-using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
@@ -17,7 +16,6 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure.Repositories;
-using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
@@ -29,12 +27,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
             builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
-
-            // Seeder
-            builder.RegisterType<CashierDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
-
-            // Cleaner
-            builder.RegisterType<CashierDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
