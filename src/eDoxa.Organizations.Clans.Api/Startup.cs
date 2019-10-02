@@ -16,7 +16,9 @@ using AutoMapper;
 using eDoxa.Mediator;
 using eDoxa.Organizations.Clans.Api.Extensions;
 using eDoxa.Organizations.Clans.Api.Infrastructure;
+using eDoxa.Organizations.Clans.Api.Infrastructure.Data;
 using eDoxa.Organizations.Clans.Infrastructure;
+using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -100,7 +102,7 @@ namespace eDoxa.Organizations.Clans.Api
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-                .AddControllersAsServices()
+                .AddDevTools<ClansDbContextSeeder, ClansDbContextCleaner>()
                 .AddFluentValidation(
                     config =>
                     {

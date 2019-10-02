@@ -1,12 +1,8 @@
-﻿// Filename: DevelopmentOnlyAttribute.cs
-// Date Created: 2019-06-13
+﻿// Filename: DevToolsAttribute.cs
+// Date Created: 2019-10-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
@@ -16,12 +12,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Application
+namespace eDoxa.Seedwork.Application.DevTools.Attributes
 {
     // TODO: This attribute must be replaced by UseEnpoints in .Net Core 3.0.
-    public sealed class DevToolsAttribute : Attribute, IResourceFilter
+    internal sealed class DevToolsAttribute : Attribute, IResourceFilter
     {
-        public void OnResourceExecuting( ResourceExecutingContext context)
+        public void OnResourceExecuting(ResourceExecutingContext context)
         {
             var environment = context.HttpContext.RequestServices.GetService<IHostingEnvironment>();
 
@@ -36,7 +32,7 @@ namespace eDoxa.Seedwork.Application
             }
         }
 
-        public void OnResourceExecuted( ResourceExecutedContext context)
+        public void OnResourceExecuted(ResourceExecutedContext context)
         {
         }
     }
