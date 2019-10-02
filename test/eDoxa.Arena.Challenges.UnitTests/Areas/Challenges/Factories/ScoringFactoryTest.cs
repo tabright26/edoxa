@@ -1,5 +1,5 @@
 ﻿// Filename: ScoringFactoryTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,32 +13,37 @@ using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
 {
-    [TestClass]
-    public sealed class ScoringFactoryTest
+    public sealed class ScoringFactoryTest : UnitTest
     {
-        private static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] { game }).ToList();
+        public ScoringFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
 
-        private static IEnumerable<object[]> ScoringStrategyDataSets =>
+        public static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game}).ToList();
+
+        public static IEnumerable<object[]> ScoringStrategyDataSets =>
             Assembly.GetAssembly(typeof(Startup))
                 .GetTypes()
                 .Where(type => typeof(IScoringStrategy).IsAssignableFrom(type) && type.IsInterface == false)
                 .Select(type => Activator.CreateInstance(type) as IScoringStrategy)
-                .Select(strategy => new object[] { strategy })
+                .Select(strategy => new object[] {strategy})
                 .ToList();
 
-        [DataTestMethod]
-        [DynamicData(nameof(ScoringStrategyDataSets))]
+        [Theory]
+        [MemberData(nameof(ScoringStrategyDataSets))]
         public void CreateInstance_FromDependencyInjection_ShouldBeStrategy(IScoringStrategy strategy)
         {
             // Arrange
-            var scoringFactory = new ScoringFactory(new[] { strategy });
+            var scoringFactory = new ScoringFactory(new[] {strategy});
 
             // Act
             var scoringStrategy = scoringFactory.CreateInstance(strategy.Game);
@@ -47,8 +52,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
             scoringStrategy.Should().Be(strategy);
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(GameDataSets))]
+        [Theory]
+        [MemberData(nameof(GameDataSets))]
         public void CreateInstance_FromReflection_ShouldBeGame(ChallengeGame game)
         {
             // Arrange
@@ -61,7 +66,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
             scoringStrategy.Game.Should().Be(game);
         }
 
-        [TestMethod]
+        [Fact]
         public void CreateInstance_WithoutStrategy_ShouldThrowNotSupportedException()
         {
             // Arrange

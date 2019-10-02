@@ -1,5 +1,5 @@
 ﻿// Filename: AccountDepositControllerPostAsyncTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,12 +9,12 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -29,14 +29,14 @@ using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierApiFactory>
+    public sealed class AccountDepositControllerPostAsyncTest : IntegrationTest
     {
-        public AccountDepositControllerPostAsyncTest(CashierApiFactory factory)
+        public AccountDepositControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            _factory = factory;
         }
-
-        private readonly CashierApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -51,10 +51,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(ClaimTypes.StripeCustomerId, "cus_test")
-            );
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -66,8 +63,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(Currency.Token, 2500M);
@@ -82,10 +78,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(ClaimTypes.StripeCustomerId, "cus_test")
-            );
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -97,8 +90,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);

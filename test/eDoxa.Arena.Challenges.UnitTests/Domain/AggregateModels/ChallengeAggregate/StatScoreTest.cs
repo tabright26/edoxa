@@ -1,5 +1,5 @@
 // Filename: StatScoreTest.cs
-// Date Created: 2019-07-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,18 +7,23 @@
 using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
-    [TestClass]
-    public sealed class StatScoreTest
+    public sealed class StatScoreTest : UnitTest
     {
-        private static IEnumerable<object[]> StatScoreDataSets
+        public StatScoreTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
+        public static IEnumerable<object[]> StatScoreDataSets
         {
             get
             {
@@ -46,8 +51,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             }
         }
 
-        [DynamicData(nameof(StatScoreDataSets))]
-        [DataTestMethod]
+        [Theory]
+        [MemberData(nameof(StatScoreDataSets))]
         public void Constructor_Tests(
             StatName name,
             StatValue value,

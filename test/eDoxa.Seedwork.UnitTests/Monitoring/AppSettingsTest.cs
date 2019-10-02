@@ -1,5 +1,5 @@
 ﻿// Filename: AppSettingsTest.cs
-// Date Created: 2019-07-26
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,16 +18,27 @@ using IdentityServer4.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using Xunit;
 
 namespace eDoxa.Seedwork.UnitTests.Monitoring
 {
-    [TestClass]
     public sealed class AppSettingsTest
     {
         public IConfiguration Configuration => new ConfigurationBuilder().AddJsonFile(Path.Combine("Monitoring", "appsettings.json")).Build();
 
-        [TestMethod]
+        private sealed class MockAppSettings : IHasApiResourceAppSettings, IHasAzureKubernetesServiceAppSettings
+        {
+            [Required]
+            public AuthorityOptions Authority { get; set; }
+
+            [Required]
+            public ApiResource ApiResource { get; set; }
+
+            public bool AzureKubernetesServiceEnabled { get; set; }
+        }
+
+        [Fact]
         public void AddAppSettings_GetService_ShouldNotBeNull()
         {
             // Arrange
@@ -42,7 +53,7 @@ namespace eDoxa.Seedwork.UnitTests.Monitoring
             appSettings.Should().NotBeNull();
         }
 
-        [TestMethod]
+        [Fact]
         public void AppSettings_IsValid_ShouldBeFalse()
         {
             // Arrange
@@ -53,17 +64,6 @@ namespace eDoxa.Seedwork.UnitTests.Monitoring
 
             // Assert
             isValid.Should().BeFalse();
-        }
-
-        private sealed class MockAppSettings : IHasApiResourceAppSettings, IHasAzureKubernetesServiceAppSettings
-        {
-            [Required]
-            public AuthorityOptions Authority { get; set; }
-
-            [Required]
-            public ApiResource ApiResource { get; set; }
-
-            public bool AzureKubernetesServiceEnabled { get; set; }
         }
     }
 }

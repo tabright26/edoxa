@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -28,9 +28,13 @@ namespace eDoxa.Web.Gateway
         {
             var builder = WebHost.CreateDefaultBuilder<Startup>(args);
 
-            builder.ConfigureServices(services => services.AddSingleton(builder))
+            builder.ConfigureServices(
+                    services =>
+                    {
+                        services.AddApplicationInsightsTelemetry();
+                        services.AddSingleton(builder);
+                    })
                 .ConfigureAppConfiguration(config => config.AddJsonFile("ocelot.json", false, true))
-                .UseApplicationInsights()
                 .UseSerilog(
                     (context, config) =>
                     {

@@ -1,5 +1,5 @@
 ﻿// Filename: CashierDbContextSeeder.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -49,9 +50,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             {
                 if (!_context.Accounts.Any())
                 {
-                    var accountFaker = new AccountFaker();
+                    IAccountFaker accountFaker = new AccountFaker();
 
-                    var adminAccount = accountFaker.Generate(AccountFaker.AdminAccount);
+                    var adminAccount = accountFaker.FakeAccount(AccountFaker.AdminAccount);
 
                     var moneyAccount = new MoneyAccount(adminAccount);
 
@@ -123,11 +124,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             {
                 if (!_context.Challenges.Any())
                 {
-                    var storage = new CashierTestFileStorage();
-
-                    var challenges = await storage.GetChallengesAsync();
-
-                    _challengeRepository.Create(challenges);
+                    _challengeRepository.Create(FileStorage.Challenges);
 
                     await _challengeRepository.CommitAsync();
 

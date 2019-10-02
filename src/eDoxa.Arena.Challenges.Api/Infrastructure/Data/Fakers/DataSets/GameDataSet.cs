@@ -1,5 +1,5 @@
 ﻿// Filename: GameDataSet.cs
-// Date Created: 2019-07-12
+// Date Created: 2019-09-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -44,8 +44,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
                         Assists = Faker.Random.Int(0, 50),
                         TotalDamageDealtToChampions = Faker.Random.Int(10000, 500000),
                         TotalHeal = Faker.Random.Int(10000, 350000)
-                    }
-                );
+                    });
             }
 
             throw new ArgumentException(nameof(game));

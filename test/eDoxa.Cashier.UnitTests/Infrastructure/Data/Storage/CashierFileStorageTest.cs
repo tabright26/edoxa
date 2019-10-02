@@ -1,31 +1,34 @@
 ﻿// Filename: CashierFileStorageTest.cs
-// Date Created: 2019-08-20
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Linq;
-using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
-    [TestClass]
-    public sealed class CashierFileStorageTest
+    public sealed class CashierFileStorageTest : UnitTest
     {
-        [TestMethod]
-        public async Task GetChallengePayoutStructuresAsync_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
+        public CashierFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
+        [Fact]
+        public void GetChallengePayouts_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
         {
             // Arrange
-            var storage = new CashierFileStorage();
+            var storage = TestData.FileStorage;
 
             // Act
-            var payoutStructures = await storage.GetChallengePayoutStructuresAsync();
+            var payoutStructures = storage.GetChallengePayouts();
 
             // Assert
             payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(56);

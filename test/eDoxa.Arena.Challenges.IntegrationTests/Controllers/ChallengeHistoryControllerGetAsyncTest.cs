@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryControllerGetAsyncTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
+using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -26,14 +27,14 @@ using Xunit;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
-    public sealed class ChallengeHistoryControllerGetAsyncTest : IClassFixture<ArenaChallengeApiFactory>
+    public sealed class ChallengeHistoryControllerGetAsyncTest : IntegrationTest
     {
-        public ChallengeHistoryControllerGetAsyncTest(ArenaChallengeApiFactory factory)
+        public ChallengeHistoryControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            _factory = factory;
         }
-
-        private readonly ArenaChallengeApiFactory _factory;
 
         private HttpClient _httpClient;
 
@@ -46,13 +47,13 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var challengeFaker = new ChallengeFaker(state: ChallengeState.InProgress);
-            challengeFaker.UseSeed(1);
-            var challenge = challengeFaker.Generate();
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, state: ChallengeState.InProgress);
+
+            var challenge = challengeFaker.FakeChallenge();
 
             var participant = challenge.Participants.First();
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -64,8 +65,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(challenge);
                     await challengeRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();

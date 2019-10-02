@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,7 @@ using System;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
@@ -47,7 +48,7 @@ namespace eDoxa.Web.Status
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
-                .UseApplicationInsights()
+                .ConfigureServices(services => services.AddApplicationInsightsTelemetry())
                 .UseSerilog(
                     (context, config) =>
                     {

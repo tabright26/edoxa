@@ -1,11 +1,10 @@
 ﻿// Filename: UserDataSet.cs
-// Date Created: 2019-07-12
+// Date Created: 2019-09-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 using Bogus;
@@ -16,12 +15,10 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.UserAggregate;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
-    public class UserDataSet
+    // TODO: Should be refactored.
+    public sealed class UserDataSet
     {
-        // TODO: Should be refactored.
-        private static readonly IImmutableSet<User> TestUsers = new ArenaChallengeTestFileStorage().GetUsersAsync().Result;
-
-        private static ICollection<User> _testUsers = new HashSet<User>(TestUsers);
+        private static ICollection<User> _testUsers = new HashSet<User>(FileStorage.Users);
 
         public UserDataSet(Faker faker)
         {
@@ -46,7 +43,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 
         public void Reset()
         {
-            _testUsers = new HashSet<User>(TestUsers);
+            _testUsers = new HashSet<User>(FileStorage.Users);
         }
     }
 }

@@ -1,26 +1,31 @@
 ﻿// Filename: MoneyTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
-    [TestClass]
-    public sealed class MoneyTest
+    public sealed class MoneyTest : UnitTest
     {
-        [DataRow(10, 10, 20)]
-        [DataRow(10, 20, 30)]
-        [DataRow(20, 50, 70)]
-        [DataRow(100, 10, 110)]
-        [DataRow(100, 50, 150)]
-        [DataTestMethod]
+        public MoneyTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
+        [InlineData(10, 10, 20)]
+        [InlineData(10, 20, 30)]
+        [InlineData(20, 50, 70)]
+        [InlineData(100, 10, 110)]
+        [InlineData(100, 50, 150)]
+        [Theory]
         public void Add_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange
@@ -34,12 +39,12 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
             money.As<decimal>().Should().Be(result);
         }
 
-        [DataRow(10, 10, 0)]
-        [DataRow(20, 10, 10)]
-        [DataRow(50, 20, 30)]
-        [DataRow(100, 10, 90)]
-        [DataRow(100, 50, 50)]
-        [DataTestMethod]
+        [InlineData(10, 10, 0)]
+        [InlineData(20, 10, 10)]
+        [InlineData(50, 20, 30)]
+        [InlineData(100, 10, 90)]
+        [InlineData(100, 50, 50)]
+        [Theory]
         public void Subtract_ShouldBeResult(int amount1, int amount2, int result)
         {
             // Arrange

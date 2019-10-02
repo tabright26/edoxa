@@ -14,6 +14,7 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
@@ -57,7 +58,12 @@ namespace eDoxa.Arena.Challenges.Api
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
-                .ConfigureServices(services => services.AddAutofac())
+                .ConfigureServices(
+                    services =>
+                    {
+                        services.AddApplicationInsightsTelemetry();
+                        services.AddAutofac();
+                    })
                 .ConfigureAppConfiguration(
                     config =>
                     {
@@ -72,7 +78,6 @@ namespace eDoxa.Arena.Challenges.Api
 
                         config.AddConfiguration(builder.Build());
                     })
-                .UseApplicationInsights()
                 .UseSerilog(
                     (context, config) =>
                     {

@@ -1,5 +1,5 @@
-﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
-// Date Created: 2019-06-25
+﻿// Filename: UserClaimsRemovedIntegrationEventHandlerTest.cs
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,40 +15,35 @@ using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
 
+using Xunit;
+
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
-    [TestClass]
     public sealed class UserClaimsRemovedIntegrationEventHandlerTest
     {
-        [TestMethod]
+        [Fact]
         public async Task UserClaimsRemovedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
             var mockUserManager = new Mock<IUserManager>();
 
-            mockUserManager
-                .Setup(roleManager => roleManager.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(new User())
-                .Verifiable();
+            mockUserManager.Setup(roleManager => roleManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new User()).Verifiable();
 
-            mockUserManager.Setup(roleManager =>
-                    roleManager.RemoveClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()))
+            mockUserManager.Setup(roleManager => roleManager.RemoveClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var handler = new UserClaimsRemovedIntegrationEventHandler(
-                mockUserManager.Object);
+            var handler = new UserClaimsRemovedIntegrationEventHandler(mockUserManager.Object);
 
-            var integrationEvent = new UserClaimsRemovedIntegrationEvent(Guid.NewGuid(), 
+            var integrationEvent = new UserClaimsRemovedIntegrationEvent(
+                Guid.NewGuid(),
                 new Dictionary<string, string>
                 {
                     ["role"] = "admin"
-                }
-            );
+                });
 
             // Act
             await handler.HandleAsync(integrationEvent);

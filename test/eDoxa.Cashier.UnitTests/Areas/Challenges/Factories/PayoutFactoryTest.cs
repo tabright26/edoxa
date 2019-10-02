@@ -1,30 +1,33 @@
 ﻿// Filename: PayoutFactoryTest.cs
-// Date Created: 2019-08-28
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Domain.Strategies;
+using eDoxa.Cashier.TestHelpers;
+using eDoxa.Cashier.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Moq;
+
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Factories
 {
-    [TestClass]
-    public sealed class PayoutFactoryTest
+    public sealed class PayoutFactoryTest : UnitTest
     {
-        [TestMethod]
-        public void CreateInstance_WithPayoutStrategy_ShouldNotBeNull()
+        public PayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
+        [Fact]
+        public void CreateInstance_WithoutPayoutStrategy_ShouldNotBeNull()
         {
             // Arrange
-            var mockPayoutStrategy = new Mock<IPayoutStrategy>();
-
-            var payoutFactory = new PayoutFactory(mockPayoutStrategy.Object);
+            var payoutFactory = new PayoutFactory();
 
             // Act
             var payoutStrategy = payoutFactory.CreateInstance();
@@ -33,11 +36,13 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Factories
             payoutStrategy.Should().NotBeNull();
         }
 
-        [TestMethod]
-        public void CreateInstance_WithoutPayoutStrategy_ShouldNotBeNull()
+        [Fact]
+        public void CreateInstance_WithPayoutStrategy_ShouldNotBeNull()
         {
             // Arrange
-            var payoutFactory = new PayoutFactory();
+            var mockPayoutStrategy = new Mock<IPayoutStrategy>();
+
+            var payoutFactory = new PayoutFactory(mockPayoutStrategy.Object);
 
             // Act
             var payoutStrategy = payoutFactory.CreateInstance();

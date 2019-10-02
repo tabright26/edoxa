@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
@@ -104,11 +104,9 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
             using (paymentWebApplicationFactory.CreateClient())
             {
-                var accountFaker = new AccountFaker();
-                accountFaker.UseSeed(78589854);
-                var account = accountFaker.Generate();
+                var account = new eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account(new UserId());
                 var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                account?.CreateTransaction(moneyDepositTransaction);
+                account.CreateTransaction(moneyDepositTransaction);
 
                 await _testServer.UsingScopeAsync(
                     async scope =>
@@ -167,11 +165,9 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
             using (paymentWebApplicationFactory.CreateClient())
             {
-                var accountFaker = new AccountFaker();
-                accountFaker.UseSeed(23569854);
-                var account = accountFaker.Generate();
+                var account = new eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account(new UserId());
                 var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                account?.CreateTransaction(moneyDepositTransaction);
+                account.CreateTransaction(moneyDepositTransaction);
 
                 await _testServer.UsingScopeAsync(
                     async scope =>

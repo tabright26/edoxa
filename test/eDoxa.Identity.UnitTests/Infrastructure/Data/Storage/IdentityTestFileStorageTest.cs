@@ -1,73 +1,76 @@
 ﻿// Filename: IdentityTestFileStorageTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
-    [TestClass]
-    public sealed class IdentityTestFileStorageTest
+    public sealed class IdentityTestFileStorageTest : UnitTest
     {
-        [TestMethod]
-        public async Task GetUserRolesAsync_WithOneRecord_ShouldHaveCountOfOne()
+        public IdentityTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
-            // Arrange
-            var storage = new IdentityTestFileStorage();
-
-            // Act
-            var userRoles = await storage.GetUserRolesAsync();
-
-            // Assert
-            userRoles.Should().HaveCount(1);
         }
 
-        [TestMethod]
-        public async Task GetUserClaimsAsync_WithTwoRecords_ShouldHaveCountOfTwo()
+        [Fact]
+        public void GetUserClaims_WithTwoRecords_ShouldHaveCountOfTwo()
         {
             // Arrange
-            var storage = new IdentityTestFileStorage();
+            var storage = TestData.FileStorage;
 
             // Act
-            var userClaims = await storage.GetUserClaimsAsync();
+            var userClaims = storage.GetUserClaims();
 
             // Assert
             userClaims.Should().HaveCount(2);
         }
 
-        [TestMethod]
-        public async Task GetUsersAsync_WithThousandRecords_ShouldHaveCountOfThousand()
+        [Fact]
+        public void GetUserRoles_WithOneRecord_ShouldHaveCountOfOne()
         {
             // Arrange
-            var storage = new IdentityTestFileStorage();
+            var storage = TestData.FileStorage;
 
             // Act
-            var users = await storage.GetUsersAsync();
+            var userRoles = storage.GetUserRoles();
 
             // Assert
-            users.Should().HaveCount(1000);
+            userRoles.Should().HaveCount(1);
         }
 
-        [TestMethod]
-        public async Task GetUsersAsync_WithAdmin_ShouldContainAdminId()
+        [Fact]
+        public void GetUsers_WithAdmin_ShouldContainAdminId()
         {
             // Arrange
-            var storage = new IdentityTestFileStorage();
+            var storage = TestData.FileStorage;
 
             // Act
-            var users = await storage.GetUsersAsync();
+            var users = storage.GetUsers();
 
             // Assert
             users.Should().Contain(user => user.Id == Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091"));
+        }
+
+        [Fact]
+        public void GetUsers_WithThousandRecords_ShouldHaveCountOfThousand()
+        {
+            // Arrange
+            var storage = TestData.FileStorage;
+
+            // Act
+            var users = storage.GetUsers();
+
+            // Assert
+            users.Should().HaveCount(1000);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: AccountControllerLoginTest.cs
-// Date Created: 2019-08-10
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,17 +8,19 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.TestHelpers.Fixtures;
+
 using FluentAssertions;
 
 using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Pages
 {
-    public sealed class AccountControllerLoginTest : IClassFixture<IdentityApiFactory>
+    public sealed class AccountControllerLoginTest : IClassFixture<TestApiFixture>
     {
-        public AccountControllerLoginTest(IdentityApiFactory identityApiFactory)
+        public AccountControllerLoginTest(TestApiFixture testApiFixture)
         {
-            _httpClient = identityApiFactory.CreateClient();
+            _httpClient = testApiFixture.CreateClient();
         }
 
         private readonly HttpClient _httpClient;

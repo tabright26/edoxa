@@ -1,5 +1,5 @@
-﻿// Filename: DoxaTagPostRequestTest.cs
-// Date Created: 2019-08-22
+﻿// Filename: GamePostRequestTest.cs
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,16 +8,15 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 using Newtonsoft.Json;
+
+using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
 {
-    [TestClass]
     public sealed class GamePostRequestTest
     {
-        [TestMethod]
+        [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange

@@ -1,6 +1,6 @@
 ﻿// Filename: AddressPutRequestValidatorTest.cs
-// Date Created: 2019-08-23
-//
+// Date Created: 2019-09-16
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -13,15 +13,76 @@ using FluentAssertions;
 
 using FluentValidation.TestHelper;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 {
-    [TestClass]
     public sealed class AddressPutRequestValidatorTest
     {
-        [DataTestMethod]
-        [DynamicData(nameof(ValidLine1Address), DynamicDataSourceType.Method)]
+        public static TheoryData<string, string> InvalidLine1Address =>
+            new TheoryData<string, string>
+            {
+                {null, AddressBookErrorDescriber.Line1Required()},
+                {"", AddressBookErrorDescriber.Line1Required()},
+                {"This_is_an_adress", AddressBookErrorDescriber.Line1Invalid()}
+            };
+
+        public static TheoryData<string, string> InvalidCities =>
+            new TheoryData<string, string>
+            {
+                {null, AddressBookErrorDescriber.CityRequired()},
+                {"", AddressBookErrorDescriber.CityRequired()},
+                {"123City", AddressBookErrorDescriber.CityInvalid()},
+                {"OK_Test", AddressBookErrorDescriber.CityInvalid()}
+            };
+
+        public static TheoryData<string, string> InvalidStates =>
+            new TheoryData<string, string>
+            {
+                {null, AddressBookErrorDescriber.StateRequired()},
+                {"", AddressBookErrorDescriber.StateRequired()},
+                {"123City", AddressBookErrorDescriber.StateInvalid()},
+                {"OK_Test", AddressBookErrorDescriber.StateInvalid()}
+            };
+
+        public static TheoryData<string, string> InvalidPostalCodes =>
+            new TheoryData<string, string>
+            {
+                {null, AddressBookErrorDescriber.PostalCodeRequired()},
+                {"", AddressBookErrorDescriber.PostalCodeRequired()},
+                {"1234", AddressBookErrorDescriber.PostalCodeLength()},
+                {"1234.5", AddressBookErrorDescriber.PostalCodeInvalidError()}
+            };
+
+        public static TheoryData<string> ValidLine2Address =>
+            new TheoryData<string>
+            {
+                "4140 Av. Kindersley, ap 13"
+            };
+
+        public static TheoryData<string> ValidCities =>
+            new TheoryData<string>
+            {
+                "City",
+                "City-of Testing"
+            };
+
+        public static TheoryData<string> ValidStates =>
+            new TheoryData<string>
+            {
+                "State",
+                "State-of Testing"
+            };
+
+        public static TheoryData<string> ValidPostalCodes =>
+            new TheoryData<string>
+            {
+                "12345",
+                "H4P1K8"
+            };
+
+        [Theory]
+        [MemberData(nameof(ValidLine1Address))]
         public void Validate_WhenLine1IsValid_ShouldNotHaveValidationErrorFor(string line1)
         {
             // Arrange
@@ -31,13 +92,13 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Line1, line1);
         }
 
-        private static IEnumerable<object[]> ValidLine1Address()
+        public static IEnumerable<object[]> ValidLine1Address()
         {
-            yield return new object[] { "4140 Av. Kindersley, ap 13" };
+            yield return new object[] {"4140 Av. Kindersley, ap 13"};
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidLine1Address), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidLine1Address))]
         public void Validate_WhenLine1IsInvalid_ShouldHaveValidationErrorFor(string line1, string errorMessage)
         {
             // Arrange
@@ -48,15 +109,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
-        private static IEnumerable<object[]> InvalidLine1Address()
-        {
-            yield return new object[] { null, AddressBookErrorDescriber.Line1Required() };
-            yield return new object[] { "", AddressBookErrorDescriber.Line1Required() };
-            yield return new object[] { "This_is_an_adress", AddressBookErrorDescriber.Line1Invalid() };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(ValidLine2Address), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(ValidLine2Address))]
         public void Validate_WhenLine2IsValid_ShouldNotHaveValidationErrorFor(string line2)
         {
             // Arrange
@@ -66,13 +120,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Line2, line2);
         }
 
-        private static IEnumerable<object[]> ValidLine2Address()
-        {
-            yield return new object[] { "4140 Av. Kindersley, ap 13" };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidLine2Address), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidLine2Address))]
         public void Validate_WhenLine2IsInvalid_ShouldHaveValidationErrorFor(string line2, string errorMessage)
         {
             // Arrange
@@ -83,13 +132,13 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
-        private static IEnumerable<object[]> InvalidLine2Address()
+        public static IEnumerable<object[]> InvalidLine2Address()
         {
-            yield return new object[] { "This_is_an_adress", AddressBookErrorDescriber.Line2Invalid() };
+            yield return new object[] {"This_is_an_adress", AddressBookErrorDescriber.Line2Invalid()};
         }
 
-        [DataTestMethod]
-        [DynamicData(nameof(ValidCities), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(ValidCities))]
         public void Validate_WhenCityIsValid_ShouldNotHaveValidationErrorFor(string city)
         {
             // Arrange
@@ -99,14 +148,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.City, city);
         }
 
-        private static IEnumerable<object[]> ValidCities()
-        {
-            yield return new object[] { "City" };
-            yield return new object[] { "City-of Testing" };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidCities), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidCities))]
         public void Validate_WhenCityIsInvalid_ShouldHaveValidationErrorFor(string city, string errorMessage)
         {
             // Arrange
@@ -117,16 +160,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
-        private static IEnumerable<object[]> InvalidCities()
-        {
-            yield return new object[] { null, AddressBookErrorDescriber.CityRequired() };
-            yield return new object[] { "", AddressBookErrorDescriber.CityRequired() };
-            yield return new object[] { "123City", AddressBookErrorDescriber.CityInvalid() };
-            yield return new object[] { "OK_Test", AddressBookErrorDescriber.CityInvalid() };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(ValidStates), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(ValidStates))]
         public void Validate_WhenStateIsValid_ShouldNotHaveValidationErrorFor(string state)
         {
             // Arrange
@@ -136,14 +171,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.State, state);
         }
 
-        private static IEnumerable<object[]> ValidStates()
-        {
-            yield return new object[] { "State" };
-            yield return new object[] { "State-of Testing" };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidStates), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidStates))]
         public void Validate_WhenStateIsInvalid_ShouldHaveValidationErrorFor(string state, string errorMessage)
         {
             // Arrange
@@ -154,16 +183,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
-        private static IEnumerable<object[]> InvalidStates()
-        {
-            yield return new object[] { null, AddressBookErrorDescriber.StateRequired() };
-            yield return new object[] { "", AddressBookErrorDescriber.StateRequired() };
-            yield return new object[] { "123State", AddressBookErrorDescriber.StateInvalid() };
-            yield return new object[] { "OK_Test", AddressBookErrorDescriber.StateInvalid() };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(ValidPostalCodes), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(ValidPostalCodes))]
         public void Validate_WhenPostalCodeIsValid_ShouldNotHaveValidationErrorFor(string postalCode)
         {
             // Arrange
@@ -173,14 +194,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.PostalCode, postalCode);
         }
 
-        private static IEnumerable<object[]> ValidPostalCodes()
-        {
-            yield return new object[] { "12345" };
-            yield return new object[] { "H4P1K8" };
-        }
-
-        [DataTestMethod]
-        [DynamicData(nameof(InvalidPostalCodes), DynamicDataSourceType.Method)]
+        [Theory]
+        [MemberData(nameof(InvalidPostalCodes))]
         public void Validate_WhenPostalCodeIsInvalid_ShouldHaveValidationErrorFor(string postalCode, string errorMessage)
         {
             // Arrange
@@ -189,14 +204,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.PostalCode, postalCode);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }
-
-        private static IEnumerable<object[]> InvalidPostalCodes()
-        {
-            yield return new object[] { null, AddressBookErrorDescriber.PostalCodeRequired() };
-            yield return new object[] { "", AddressBookErrorDescriber.PostalCodeRequired() };
-            yield return new object[] { "1234", AddressBookErrorDescriber.PostalCodeLength() };
-            yield return new object[] { "1234.5", AddressBookErrorDescriber.PostalCodeInvalidError() };
         }
     }
 }
