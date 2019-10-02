@@ -14,19 +14,19 @@ const ArenaTournamentHistory = React.lazy(() => import("./views/Arena/Tournament
 const Marketplace = React.lazy(() => import("./views/Marketplace/Marketplace"));
 const NewsFeeds = React.lazy(() => import("./views/NewsFeeds/NewsFeeds"));
 const Profile = React.lazy(() => import("./views/User/Profile"));
-const Structures = React.lazy(() => import("./views/Structures/Structures"));
-const StructureClans = React.lazy(() => import("./views/Structures/Clans/Clans"));
-const StructureClanDashboard = React.lazy(() => import("./views/Structures/Clans/Dashboard/Dashboard"));
-const StructureClanDetails = React.lazy(() => import("./views/Structures/Clans/Details/Details"));
-const StructureClanMarketplace = React.lazy(() => import("./views/Structures/Clans/Makertplace/Marketplace"));
-const StructureLeagues = React.lazy(() => import("./views/Structures/Leagues/Leagues"));
-const StructureLeagueDashboard = React.lazy(() => import("./views/Structures/Leagues/Dashboard/Dashboard"));
-const StructureLeagueDetails = React.lazy(() => import("./views/Structures/Leagues/Details/Details"));
-const StructureLeagueMarketplace = React.lazy(() => import("./views/Structures/Leagues/Makertplace/Marketplace"));
-const StructureTeams = React.lazy(() => import("./views/Structures/Teams/Teams"));
-const StructureTeamDashboard = React.lazy(() => import("./views/Structures/Teams/Dashboard/Dashboard"));
-const StructureTeamDetails = React.lazy(() => import("./views/Structures/Teams/Details/Details"));
-const StructureTeamMarketplace = React.lazy(() => import("./views/Structures/Teams/Makertplace/Marketplace"));
+const Structures = React.lazy(() => import("./Structures"));
+const StructureClans = React.lazy(() => import("./views/Organizations/Clans/Clans"));
+const StructureClanDashboard = React.lazy(() => import("./views/Organizations/Clans/Dashboard/Dashboard"));
+const StructureClanDetails = React.lazy(() => import("./views/Organizations/Clans/Details/Details"));
+const StructureClanMarketplace = React.lazy(() => import("./views/Organizations/Clans/Marketplace/Marketplace"));
+const StructureLeagues = React.lazy(() => import("./views/Organizations/Leagues/Leagues"));
+const StructureLeagueDashboard = React.lazy(() => import("./views/Organizations/Leagues/Dashboard/Dashboard"));
+const StructureLeagueDetails = React.lazy(() => import("./views/Organizations/Leagues/Details/Details"));
+const StructureLeagueMarketplace = React.lazy(() => import("./views/Organizations/Leagues/Makertplace/Marketplace"));
+const StructureTeams = React.lazy(() => import("./views/Organizations/Teams/Teams"));
+const StructureTeamDashboard = React.lazy(() => import("./views/Organizations/Teams/Dashboard/Dashboard"));
+const StructureTeamDetails = React.lazy(() => import("./views/Organizations/Teams/Details/Details"));
+const StructureTeamMarketplace = React.lazy(() => import("./views/Organizations/Teams/Makertplace/Marketplace"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
