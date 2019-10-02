@@ -1,11 +1,12 @@
 ﻿// Filename: ClansControllerGetAsyncTest.cs
 // Date Created: 2019-09-30
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
@@ -17,23 +18,25 @@ using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
+using IdentityModel;
+
 using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
 {
-    public sealed class ClanControllerGetAsyncTest : IClassFixture<OrganizationsClansApiFactory>
+    public sealed class ClansControllerGetAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        public ClanControllerGetAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
+        private readonly OrganizationsClansApiFactory _apiFactory;
+
+        public ClansControllerGetAsyncTest(OrganizationsClansApiFactory apiFactory)
         {
-            _httpClient = organizationsClansApiFactory.CreateClient();
-            _testServer = organizationsClansApiFactory.Server;
-            _testServer.CleanupDbContext();
+            _apiFactory = apiFactory;
+            _httpClient = new HttpClient();
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -43,6 +46,12 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
         [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
+            // Arrange
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
             // Act
             using var response = await this.ExecuteAsync();
 
@@ -55,11 +64,19 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-            await _testServer.UsingScopeAsync(
+            var userId = new UserId();
+            var clan = new Clan("ClanName", new UserId());
+
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-                    clanRepository.Create(new Clan("TestClan", new UserId()));
+                    clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
                 });
 
@@ -69,7 +86,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClansController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<InvitationResponse[]>();
+            var challengeResponses = await response.DeserializeAsync<ClanResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

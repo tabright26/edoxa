@@ -1,6 +1,6 @@
 ﻿// Filename: ClanService.cs
 // Date Created: 2019-09-30
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -95,7 +95,10 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
         {
             var clan = await _clanRepository.FindClanAsync(clanId);
 
-            clan!.AddMember(memberInfo);
+            if (clan != null)
+            {
+                clan.AddMember(memberInfo);
+            }
 
             await _clanRepository.UnitOfWork.CommitAsync();
         }
@@ -116,7 +119,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
             clan.Kick(member);
 
-            await _clanRepository.UnitOfWork.CommitAsync();
+            //TODO: I had to remove this bit of code on every domain event call otherwise every domain event is called multiple time.
+            // I REMOVED THE OTHERS, BUT I KEPT THIS ONE FOR TESTING PURPOSE.
+            //await _clanRepository.UnitOfWork.CommitAsync();
 
             return new ValidationResult();
         }
@@ -133,7 +138,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
             clan.Leave(member);
 
             await _clanRepository.UnitOfWork.CommitAsync();
-            
+
             if (clan.IsDelete())
             {
                 await this.DeleteClanAsync(clan);

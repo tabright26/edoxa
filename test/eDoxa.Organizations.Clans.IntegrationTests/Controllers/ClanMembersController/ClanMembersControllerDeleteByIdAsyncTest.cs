@@ -1,11 +1,13 @@
 ﻿// Filename: ClanMembersControllerDeleteByIdAsyncTest.cs
 // Date Created: 2019-09-30
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
@@ -15,6 +17,8 @@ using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
 
+using IdentityModel;
+
 using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
@@ -23,15 +27,15 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
 {
     public sealed class ClanMembersControllerDeleteByIdAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        public ClanMembersControllerDeleteByIdAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
+        private readonly OrganizationsClansApiFactory _apiFactory;
+
+        public ClanMembersControllerDeleteByIdAsyncTest(OrganizationsClansApiFactory apiFactory)
         {
-            _httpClient = organizationsClansApiFactory.CreateClient();
-            _testServer = organizationsClansApiFactory.Server;
-            _testServer.CleanupDbContext();
+            _apiFactory = apiFactory;
+            _httpClient = new HttpClient();
         }
 
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId, MemberId memberId)
         {
@@ -42,9 +46,15 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
         public async Task ShouldBeHttpStatusCodeBadRequest() // Is not owner bad request
         {
             // Arrange
-            var clan = new Clan("TestClan", new UserId());
+            var userId = new UserId();
+            var clan = new Clan("ClanName", userId);
 
-            await _testServer.UsingScopeAsync(
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
@@ -56,31 +66,43 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
             using var response = await this.ExecuteAsync(clan.Id, new MemberId());
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
+            // Arrange
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
             // Act
             using var response = await this.ExecuteAsync(new ClanId(), new MemberId());
 
             // Assert
-            response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeOk() // How can I use the same http context user id, otherwise not owner.
+        public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
             var userId = new UserId();
-            var clan = new Clan("TestClan", new UserId());
-            clan.AddMember(new Invitation(userId, clan.Id));
-            var member = clan.FindMember(userId);
+            var clan = new Clan("ClanName", userId);
 
-            await _testServer.UsingScopeAsync(
+            //Todo: Would it be better to use the method instead ? Cuase the method calls a domain events.
+            clan.Members.Add(new Member(clan.Id, new UserId()));
+
+            var memberId = clan.Members.SingleOrDefault(member => member.UserId != userId)?.Id;
+
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
@@ -89,7 +111,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanMembersCont
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(clan.Id, member.Id);
+            using var response = await this.ExecuteAsync(clan.Id, memberId ?? new MemberId());
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -1,11 +1,12 @@
 ﻿// Filename: CandidaturesControllerPostAsyncTest.cs
 // Date Created: 2019-09-29
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
@@ -17,6 +18,8 @@ using eDoxa.Seedwork.Testing.Http;
 
 using FluentAssertions;
 
+using IdentityModel;
+
 using Microsoft.AspNetCore.TestHost;
 
 using Xunit;
@@ -25,15 +28,13 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
 {
     public sealed class CandidaturesControllerPostAsyncTest : IClassFixture<OrganizationsClansApiFactory>
     {
-        public CandidaturesControllerPostAsyncTest(OrganizationsClansApiFactory organizationsClansApiFactory)
+        private readonly OrganizationsClansApiFactory _apiFactory;
+        public CandidaturesControllerPostAsyncTest(OrganizationsClansApiFactory apiFactory)
         {
-            _httpClient = organizationsClansApiFactory.CreateClient();
-            _testServer = organizationsClansApiFactory.Server;
-            _testServer.CleanupDbContext();
+            _apiFactory = apiFactory;
+            _httpClient = new HttpClient();
         }
-
-        private readonly HttpClient _httpClient;
-        private readonly TestServer _testServer;
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(CandidaturePostRequest candidaturePostRequest)
         {
@@ -41,13 +42,18 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeBadRequest() // Is the owner bad request
+        public async Task ShouldBeHttpStatusCodeBadRequest() //Bad request cause user already in the clan.
         {
             // Arrange
-            var ownerId = new UserId();
-            var clan = new Clan("TestClan", ownerId);
+            var userId = new UserId();
+            var clan = new Clan("ClanName", userId);
 
-            await _testServer.UsingScopeAsync(
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
@@ -56,31 +62,25 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new CandidaturePostRequest(ownerId, clan.Id));
+            using var response = await this.ExecuteAsync(new CandidaturePostRequest(userId, clan.Id));
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeNotFound()
-        {
-            // Act
-            using var response = await this.ExecuteAsync(new CandidaturePostRequest(new UserId(), new ClanId()));
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
-            var clan = new Clan("TestClan", new UserId());
+            var userId = new UserId();
+            var clan = new Clan("ClanName", new UserId());
 
-            await _testServer.UsingScopeAsync(
+            var factory = _apiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
@@ -89,7 +89,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new CandidaturePostRequest(new UserId(), clan.Id));
+            using var response = await this.ExecuteAsync(new CandidaturePostRequest(userId, clan.Id));
 
             // Assert
             response.EnsureSuccessStatusCode();

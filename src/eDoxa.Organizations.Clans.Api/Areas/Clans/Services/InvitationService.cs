@@ -1,6 +1,6 @@
 ﻿// Filename: InvitationService.cs
 // Date Created: 2019-09-30
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -76,8 +76,6 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
             }
 
             invitation.Accept();
-
-            await _invitationRepository.UnitOfWork.CommitAsync();
 
             return new ValidationResult();
         }
