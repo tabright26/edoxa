@@ -76,3 +76,21 @@ services:
       - mssql.test
       - redis.test
       - rabbitmq.test
+
+  organizations.clans.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/organizations.clans.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Organizations.Clans.Api/Dockerfile
+      target: unit-tests
+
+  organizations.clans.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/organizations.clans.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Organizations.Clans.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test

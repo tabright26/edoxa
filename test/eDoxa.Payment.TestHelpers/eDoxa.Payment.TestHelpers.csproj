@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit.core" Version="2.4.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="eDoxa.ServiceBus.Moq" Version="1.0.0-CI-20190901-042717" />
   </ItemGroup>
 
