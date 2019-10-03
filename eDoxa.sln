@@ -131,6 +131,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compose", "compose", "{5A5D
 		cli\docker\compose\docker-compose-up.ps1 = cli\docker\compose\docker-compose-up.ps1
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{24E16D8E-A0C5-4B26-BF36-EBBE730FF234}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Notifications.Api", "src\eDoxa.Notifications.Api\eDoxa.Notifications.Api.csproj", "{093F7F63-BC13-4892-978A-3142887B3AA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Notifications.Domain", "src\eDoxa.Notifications.Domain\eDoxa.Notifications.Domain.csproj", "{B015B2B4-C5D1-4EE8-B7BB-661D3073C1FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Notifications.Infrastructure", "src\eDoxa.Notifications.Infrastructure\eDoxa.Notifications.Infrastructure.csproj", "{F460E421-8AD3-4D57-BAD5-D52DBB98A7A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Notifications.IntegrationTests", "test\eDoxa.Notifications.IntegrationTests\eDoxa.Notifications.IntegrationTests.csproj", "{0B08531E-88E0-4D0E-908C-B1331E0616E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Notifications.UnitTests", "test\eDoxa.Notifications.UnitTests\eDoxa.Notifications.UnitTests.csproj", "{F8738E79-4602-4DD2-8D3E-9C2214E01AED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Notifications.TestHelpers", "test\eDoxa.Notifications.TestHelpers\eDoxa.Notifications.TestHelpers.csproj", "{6764225F-06F1-4409-B1E5-5100B4B18523}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -289,6 +303,30 @@ Global
 		{3BEE276D-6B31-4572-93E1-28F21E69C29C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BEE276D-6B31-4572-93E1-28F21E69C29C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BEE276D-6B31-4572-93E1-28F21E69C29C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{093F7F63-BC13-4892-978A-3142887B3AA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{093F7F63-BC13-4892-978A-3142887B3AA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{093F7F63-BC13-4892-978A-3142887B3AA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{093F7F63-BC13-4892-978A-3142887B3AA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B015B2B4-C5D1-4EE8-B7BB-661D3073C1FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B015B2B4-C5D1-4EE8-B7BB-661D3073C1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B015B2B4-C5D1-4EE8-B7BB-661D3073C1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B015B2B4-C5D1-4EE8-B7BB-661D3073C1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F460E421-8AD3-4D57-BAD5-D52DBB98A7A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F460E421-8AD3-4D57-BAD5-D52DBB98A7A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F460E421-8AD3-4D57-BAD5-D52DBB98A7A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F460E421-8AD3-4D57-BAD5-D52DBB98A7A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B08531E-88E0-4D0E-908C-B1331E0616E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B08531E-88E0-4D0E-908C-B1331E0616E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B08531E-88E0-4D0E-908C-B1331E0616E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B08531E-88E0-4D0E-908C-B1331E0616E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8738E79-4602-4DD2-8D3E-9C2214E01AED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8738E79-4602-4DD2-8D3E-9C2214E01AED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8738E79-4602-4DD2-8D3E-9C2214E01AED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8738E79-4602-4DD2-8D3E-9C2214E01AED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6764225F-06F1-4409-B1E5-5100B4B18523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6764225F-06F1-4409-B1E5-5100B4B18523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6764225F-06F1-4409-B1E5-5100B4B18523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6764225F-06F1-4409-B1E5-5100B4B18523}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -345,6 +383,13 @@ Global
 		{16C384AF-AC4B-4A3E-BE4D-81F7D27AFBD7} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
 		{C90B3D4F-F4F6-4769-99DD-21DE11589792} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
 		{5A5DFE02-CDBD-4B57-AB44-5F8E0489C9D9} = {C90B3D4F-F4F6-4769-99DD-21DE11589792}
+		{24E16D8E-A0C5-4B26-BF36-EBBE730FF234} = {7942CE31-3804-446A-845B-0451884BB6B7}
+		{093F7F63-BC13-4892-978A-3142887B3AA5} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
+		{B015B2B4-C5D1-4EE8-B7BB-661D3073C1FE} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
+		{F460E421-8AD3-4D57-BAD5-D52DBB98A7A5} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
+		{0B08531E-88E0-4D0E-908C-B1331E0616E6} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
+		{F8738E79-4602-4DD2-8D3E-9C2214E01AED} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
+		{6764225F-06F1-4409-B1E5-5100B4B18523} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

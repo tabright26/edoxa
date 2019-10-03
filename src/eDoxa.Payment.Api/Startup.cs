@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,9 @@ using System.IdentityModel.Tokens.Jwt;
 
 using Autofac;
 
+using eDoxa.Payment.Api.Areas.Stripe.Extensions;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
-using eDoxa.Payment.Api.Providers.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Modules;
 
@@ -52,7 +52,7 @@ namespace eDoxa.Payment.Api
 
             services.AddHealthChecks(AppSettings);
 
-            services.AddProviders(Configuration);
+            services.AddStripe(Configuration);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -64,10 +64,10 @@ namespace eDoxa.Payment.Api
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseProviders(Configuration);
+            application.UseStripe(Configuration);
 
             application.UseServiceBusSubscriber();
-            
+
             if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
@@ -88,8 +88,7 @@ namespace eDoxa.Payment.Api
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            );
+                });
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: PaymentAppSettings.cs
-// Date Created: 2019-07-24
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

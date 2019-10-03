@@ -1,17 +1,13 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandler.cs
-// Date Created: 2019-07-02
+﻿// Filename: UserAccountWithdrawalIntegrationEventHandler.cs
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -47,8 +43,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     integrationEvent.TransactionId,
                     integrationEvent.TransactionDescription,
                     integrationEvent.ConnectAccountId,
-                    integrationEvent.Amount
-                );
+                    integrationEvent.Amount);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
