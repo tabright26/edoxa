@@ -18,14 +18,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6320F9AE-AC74-456A-869F-5A570C3467AB}"
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
-		cli\azure\az-acr-login.ps1 = cli\azure\az-acr-login.ps1
-		cli\azure\az-login.ps1 = cli\azure\az-login.ps1
-		cli\docker\compose\docker-compose-pull.ps1 = cli\docker\compose\docker-compose-pull.ps1
-		cli\docker\compose\docker-compose-testing.ps1 = cli\docker\compose\docker-compose-testing.ps1
-		cli\docker\compose\docker-compose-up.ps1 = cli\docker\compose\docker-compose-up.ps1
-		cli\docker\docker-firewall-rule.ps1 = cli\docker\docker-firewall-rule.ps1
-		cli\docker\docker-remove-containers.ps1 = cli\docker\docker-remove-containers.ps1
 		global.json = global.json
+		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cashier", "Cashier", "{9F1CD6C1-8419-4262-B7AE-F66C530B9EC7}"
@@ -117,6 +111,25 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.UnitTests", "test\eDoxa.Organizations.Clans.UnitTests\eDoxa.Organizations.Clans.UnitTests.csproj", "{E88CBFB1-9133-429F-8E68-F69724C34277}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.IntegrationTests", "test\eDoxa.Organizations.Clans.IntegrationTests\eDoxa.Organizations.Clans.IntegrationTests.csproj", "{3BEE276D-6B31-4572-93E1-28F21E69C29C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "azure", "azure", "{16C384AF-AC4B-4A3E-BE4D-81F7D27AFBD7}"
+	ProjectSection(SolutionItems) = preProject
+		cli\azure\az-acr-login.ps1 = cli\azure\az-acr-login.ps1
+		cli\azure\az-login.ps1 = cli\azure\az-login.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{C90B3D4F-F4F6-4769-99DD-21DE11589792}"
+	ProjectSection(SolutionItems) = preProject
+		cli\docker\docker-firewall-rule.ps1 = cli\docker\docker-firewall-rule.ps1
+		cli\docker\docker-remove-containers.ps1 = cli\docker\docker-remove-containers.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compose", "compose", "{5A5DFE02-CDBD-4B57-AB44-5F8E0489C9D9}"
+	ProjectSection(SolutionItems) = preProject
+		cli\docker\compose\docker-compose-pull.ps1 = cli\docker\compose\docker-compose-pull.ps1
+		cli\docker\compose\docker-compose-testing.ps1 = cli\docker\compose\docker-compose-testing.ps1
+		cli\docker\compose\docker-compose-up.ps1 = cli\docker\compose\docker-compose-up.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -329,6 +342,9 @@ Global
 		{0AE93E8B-B8F4-492C-86A3-CF4371E43943} = {9050415E-2E9D-4737-8D81-A938CD4D1D80}
 		{E88CBFB1-9133-429F-8E68-F69724C34277} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 		{3BEE276D-6B31-4572-93E1-28F21E69C29C} = {77BF035E-3B62-4A95-A525-90E94E48038B}
+		{16C384AF-AC4B-4A3E-BE4D-81F7D27AFBD7} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
+		{C90B3D4F-F4F6-4769-99DD-21DE11589792} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
+		{5A5DFE02-CDBD-4B57-AB44-5F8E0489C9D9} = {C90B3D4F-F4F6-4769-99DD-21DE11589792}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}
