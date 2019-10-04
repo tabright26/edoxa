@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordForgotController.cs
-// Date Created: 2019-08-30
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,9 +9,11 @@ using System.Web;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
@@ -25,13 +27,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     public sealed class PasswordForgotController : ControllerBase
     {
         private readonly IUserManager _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IRedirectService _redirectService;
 
-        public PasswordForgotController(IUserManager userManager, IEmailSender emailSender, IRedirectService redirectService)
+        public PasswordForgotController(IUserManager userManager, IServiceBusPublisher serviceBusPublisher, IRedirectService redirectService)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _serviceBusPublisher = serviceBusPublisher;
             _redirectService = redirectService;
         }
 
@@ -54,7 +56,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
                     var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
 
-                    await _emailSender.SendEmailAsync(
+                    await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                        UserId.FromGuid(user.Id),
                         request.Email,
                         "Reset Password",
                         $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");

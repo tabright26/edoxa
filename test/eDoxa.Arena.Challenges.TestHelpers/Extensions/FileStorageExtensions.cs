@@ -1,5 +1,5 @@
-﻿// Filename: JsonFileConvert.cs
-// Date Created: 2019-09-16
+﻿// Filename: FileStorageExtensions.cs
+// Date Created: 2019-10-04
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,13 +7,15 @@
 using System;
 using System.IO;
 
+using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
+
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.UnitTests.TestHelpers
+namespace eDoxa.Arena.Challenges.TestHelpers.Extensions
 {
-    public static class JsonFileConvert
+    public static class FileStorageExtensions
     {
-        public static T DeserializeObject<T>(string path)
+        public static T DeserializeJsonFile<T>(this FileStorage _, string path)
         {
             path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 

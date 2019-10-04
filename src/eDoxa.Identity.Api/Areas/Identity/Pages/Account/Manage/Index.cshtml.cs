@@ -12,8 +12,10 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.ServiceBus.Abstractions;
 
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,13 +25,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager _userManager;
         private readonly SignInManager _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public IndexModel(UserManager userManager, SignInManager signInManager, IEmailSender emailSender)
+        public IndexModel(UserManager userManager, SignInManager signInManager, IServiceBusPublisher serviceBusPublisher)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
+            _serviceBusPublisher = serviceBusPublisher;
         }
 
         public string Username { get; set; }
@@ -145,7 +147,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
                 Request.Scheme
             );
 
-            await _emailSender.SendEmailAsync(
+            await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                UserId.FromGuid(user.Id),
                 email,
                 "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."

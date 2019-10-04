@@ -17,12 +17,14 @@ using eDoxa.Payment.Api.Areas.Stripe.Extensions;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Infrastructure.Data;
+using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
+using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Modules;
 
 using FluentValidation;
@@ -153,11 +155,11 @@ namespace eDoxa.Payment.Api
             builder.RegisterModule<PaymentApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            application.UseStripe(Configuration);
+            subscriber.UseIntegrationEventSubscriptions();
 
-            application.UseServiceBusSubscriber();
+            application.UseStripe(Configuration);
 
             application.UseCustomExceptionHandler();
 
@@ -185,9 +187,9 @@ namespace eDoxa.Payment.Api
                 });
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
-            this.Configure(application);
+            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

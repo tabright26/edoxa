@@ -16,11 +16,13 @@ using AutoMapper;
 using eDoxa.Notifications.Api.Extensions;
 using eDoxa.Notifications.Api.Infrastructure;
 using eDoxa.Notifications.Api.Infrastructure.Data;
+using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
@@ -147,16 +149,14 @@ namespace eDoxa.Notifications.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            //builder.RegisterModule<DomainEventModule<Startup>>();
-
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 
             builder.RegisterModule<NotificationsApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            application.UseServiceBusSubscriber();
+            subscriber.UseIntegrationEventSubscriptions();
 
             application.UseCustomExceptionHandler();
 
@@ -184,9 +184,9 @@ namespace eDoxa.Notifications.Api
                 });
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
-            this.Configure(application);
+            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

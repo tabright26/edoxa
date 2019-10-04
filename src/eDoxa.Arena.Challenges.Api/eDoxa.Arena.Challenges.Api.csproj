@@ -27,7 +27,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="eDoxa.Mediator" Version="1.0.0-CI-20190901-220828" />
     <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190901-042717" />
     <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190901-042717" />

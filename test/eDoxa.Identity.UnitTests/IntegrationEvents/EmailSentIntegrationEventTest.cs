@@ -1,9 +1,10 @@
 ﻿// Filename: EmailSentIntegrationEventTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
 
 using FluentAssertions;
@@ -20,7 +21,11 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var integrationEvent = new EmailSentIntegrationEvent("gabriel@edoxa.gg", "mange Dla Baloney", "Mah man");
+            var integrationEvent = new EmailSentIntegrationEvent(
+                new UserId(),
+                "gabriel@edoxa.gg",
+                "mange Dla Baloney",
+                "Mah man");
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 

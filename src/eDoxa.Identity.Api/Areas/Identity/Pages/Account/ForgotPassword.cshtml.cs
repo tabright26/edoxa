@@ -11,9 +11,11 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -23,12 +25,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public ForgotPasswordModel(UserManager userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager userManager, IServiceBusPublisher serviceBusPublisher)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _serviceBusPublisher = serviceBusPublisher;
         }
 
         [BindProperty]
@@ -60,7 +62,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                     Request.Scheme
                 );
 
-                await _emailSender.SendEmailAsync(
+                await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                    UserId.FromGuid(user.Id),
                     Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."

@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsMatchAdapterTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 using eDoxa.Seedwork.Domain;
@@ -36,8 +36,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
                 .Verifiable();
         }
 
-        private static LeagueOfLegendsMatchDto StubMatch =>
-            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"TestHelpers/Stubs/LeagueOfLegends/Matches.json").First();
+        private LeagueOfLegendsMatchDto StubMatch =>
+            TestData.FileStorage.DeserializeJsonFile<IEnumerable<LeagueOfLegendsMatchDto>>(@"Stubs/LeagueOfLegends/Matches.json").First();
 
         private readonly Mock<ILeagueOfLegendsProxy> _mockLeagueOfLegendsProxy;
 
