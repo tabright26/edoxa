@@ -59,6 +59,23 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
+  payment.integration-tests:
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Payment.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__SqlServer=${MSSQL_CASHIER:-Server=mssql.test;Database=Services.Payment.IntegrationTests;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
+      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
+      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
+      - ServiceBus__SubscriptionName=payment
+      - Authority__PrivateUrl=http://${HOST:-localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
   cashier.unit-tests:
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Cashier.UnitTests.trx"
     volumes:

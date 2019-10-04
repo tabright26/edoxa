@@ -8,6 +8,9 @@ using System;
 
 using Autofac.Extensions.DependencyInjection;
 
+using eDoxa.Payment.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Extensions;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +31,10 @@ namespace eDoxa.Payment.Api
                 Log.Information("Building {Application} host...");
 
                 var host = builder.Build();
+
+                Log.Information("Applying {Application} context migrations...");
+
+                host.MigrateDbContextWithRetryPolicy<PaymentDbContext>();
 
                 Log.Information("Starting {Application} host...");
 

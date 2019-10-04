@@ -32,7 +32,7 @@ namespace eDoxa.Notifications.Api.Services
         {
             var message = new SendGridMessage
             {
-                From = new EmailAddress("no-reply@edoxa.gg", "eDoxa Team"),
+                From = new EmailAddress("noreply@edoxa.gg", "eDoxa Team"),
                 Subject = subject,
                 HtmlContent = htmlMessage
             };

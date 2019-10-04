@@ -1,5 +1,5 @@
-﻿// Filename: UnitTest.cs
-// Date Created: 2019-10-02
+﻿// Filename: IntegrationTest.cs
+// Date Created: 2019-10-03
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,12 +12,15 @@ using Xunit;
 
 namespace eDoxa.Payment.TestHelpers
 {
-    public abstract class UnitTest : IClassFixture<TestMapperFixture>
+    public abstract class IntegrationTest : IClassFixture<TestApiFixture>, IClassFixture<TestMapperFixture>
     {
-        protected UnitTest(TestMapperFixture testMapper)
+        protected IntegrationTest(TestApiFixture testApi, TestMapperFixture testMapper)
         {
+            TestApi = testApi;
             TestMapper = testMapper.Instance;
         }
+
+        protected TestApiFixture TestApi { get; }
 
         protected IMapper TestMapper { get; }
     }

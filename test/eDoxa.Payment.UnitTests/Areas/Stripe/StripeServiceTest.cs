@@ -26,7 +26,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe
 {
     public sealed class StripeServiceTest : UnitTest
     {
-        public StripeServiceTest(TestDataFixture testData) : base(testData)
+        public StripeServiceTest(TestMapperFixture testMapper) : base(testMapper)
         {
             _mockAccountService = new Mock<AccountService>();
             _mockCustomerService = new Mock<CustomerService>();

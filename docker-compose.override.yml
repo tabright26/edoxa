@@ -62,6 +62,8 @@ services:
       - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
       - ServiceBus__SubscriptionName=payment
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
     ports:
       - "5001:80"
 

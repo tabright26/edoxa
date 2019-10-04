@@ -17,7 +17,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Fakers
     // TODO: These tests must be recast to be more explicit about the tested behavior. (Check if Bogus has a special librairy to test fakers.)
     public sealed class TransferFakerTest : UnitTest
     {
-        public TransferFakerTest(TestDataFixture testData) : base(testData)
+        public TransferFakerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
 

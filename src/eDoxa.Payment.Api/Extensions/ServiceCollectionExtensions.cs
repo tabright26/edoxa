@@ -19,6 +19,8 @@ namespace eDoxa.Payment.Api.Extensions
             var healthChecks = services.AddHealthChecks();
             healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
             healthChecks.AddAzureKeyVault(appSettings);
+            healthChecks.AddIdentityServer(appSettings);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings);
         }
     }
 }
