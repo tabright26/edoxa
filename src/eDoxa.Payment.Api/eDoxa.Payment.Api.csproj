@@ -11,6 +11,20 @@
     <ApplicationInsightsAnnotationResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1591;1701;1702</NoWarn>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\eDoxa.Payment.Api.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1591;1701;1702</NoWarn>
+    <DocumentationFile>bin\Release\netcoreapp2.2\eDoxa.Payment.Api.xml</DocumentationFile>
+    <OutputPath>bin\Release\</OutputPath>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0" />

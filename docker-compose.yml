@@ -47,6 +47,18 @@ services:
       - rabbitmq 
       - identity.api
 
+  notifications.api:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.api:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+    depends_on:
+      - mssql
+      - rabbitmq
+      - redis
+      - seq
+      - identity.api
+
   arena.challenges.api:
     image: ${ACR_REGISTRY:-edoxa}/arena.challenges.api:${ACR_TAG:-latest}
     build:

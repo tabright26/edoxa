@@ -55,6 +55,8 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public string OrganizationsClansUrl { get; set; }
 
+        public string NotificationsUrl { get; set; }
+
         public WebOptions Web { get; set; }
     }
 

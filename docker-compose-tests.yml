@@ -58,6 +58,24 @@ services:
       - mssql.test
       - redis.test
       - rabbitmq.test
+
+  notifications.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+      target: unit-tests
+
+  notifications.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
       
   arena.challenges.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.challenges.unit-tests:${ACR_TAG:-latest}

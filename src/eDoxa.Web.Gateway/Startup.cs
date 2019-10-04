@@ -66,6 +66,8 @@ namespace eDoxa.Web.Gateway
                 {
                     ["IdentityApiKey"] = IdentityApi,
                     ["CashierApiKey"] = CashierApi,
+                    ["PaymentApiKey"] = PaymentApi,
+                    ["NotificationsApiKey"] = NotificationsApi,
                     ["ArenaChallengesApiKey"] = ArenaChallengesApi,
                     ["OrganizationsClansApiKey"] = OrganizationsClansApi
                 }
