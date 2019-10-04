@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
@@ -26,9 +25,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         {
         }
 
-        public static IEnumerable<object[]> ChallengeStateDataSets =>
-            ChallengeState.GetEnumerations().Where(state => state != ChallengeState.Inscription).Select(state => new object[] {state}).ToList();
+        public static TheoryData<ChallengeState> ChallengeStateDataSets =>
+            new TheoryData<ChallengeState>
+            {
+                ChallengeState.InProgress,
+                ChallengeState.Ended,
+                ChallengeState.Closed
+            };
 
+        [Theory]
         [MemberData(nameof(ChallengeStateDataSets))]
         public void Register_WhenStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
         {

@@ -1,5 +1,5 @@
 ﻿// Filename: ClansDbContextSeeder.cs
-// Date Created: 2019-09-15
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,33 +15,26 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Organizations.Clans.Api.Infrastructure.Data
 {
-    internal sealed class ClansDbContextSeeder : IDbContextSeeder
+    internal sealed class ClansDbContextSeeder : DbContextSeeder
     {
         private readonly ClansDbContext _context;
-        private readonly ILogger<ClansDbContextSeeder> _logger;
-        private readonly IHostingEnvironment _environment;
 
-        public ClansDbContextSeeder(ILogger<ClansDbContextSeeder> logger, IHostingEnvironment environment, ClansDbContext context)
+        public ClansDbContextSeeder(ClansDbContext context, IHostingEnvironment environment, ILogger<ClansDbContextSeeder> logger) : base(environment, logger)
         {
-            _logger = logger;
-            _environment = environment;
             _context = context;
         }
 
-        public async Task SeedAsync()
+        protected override async Task SeedDevelopmentAsync()
         {
-            if (_environment.IsDevelopment())
+            if (!_context.Clans.Any())
             {
-                if (!_context.Clans.Any())
-                {
-                    await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-                    _logger.LogInformation("The clan's being populated.");
-                }
-                else
-                {
-                    _logger.LogInformation("The clan's already populated.");
-                }
+                Logger.LogInformation("The clan's being populated.");
+            }
+            else
+            {
+                Logger.LogInformation("The clan's already populated.");
             }
         }
     }

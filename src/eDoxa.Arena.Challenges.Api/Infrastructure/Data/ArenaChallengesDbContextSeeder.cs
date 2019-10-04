@@ -1,5 +1,5 @@
 ﻿// Filename: ArenaChallengesDbContextSeeder.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,34 +13,35 @@ using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data
 {
-    internal sealed class ArenaChallengesDbContextSeeder : IDbContextSeeder
+    internal sealed class ArenaChallengesDbContextSeeder : DbContextSeeder
     {
         private readonly ArenaChallengesDbContext _context;
-        private readonly IHostingEnvironment _environment;
         private readonly IChallengeRepository _challengeRepository;
 
-        public ArenaChallengesDbContextSeeder(ArenaChallengesDbContext context, IHostingEnvironment environment, IChallengeRepository challengeRepository)
+        public ArenaChallengesDbContextSeeder(
+            ArenaChallengesDbContext context,
+            IChallengeRepository challengeRepository,
+            IHostingEnvironment environment,
+            ILogger<ArenaChallengesDbContextSeeder> logger
+        ) : base(environment, logger)
         {
             _context = context;
-            _environment = environment;
             _challengeRepository = challengeRepository;
         }
 
-        public async Task SeedAsync()
+        protected override async Task SeedDevelopmentAsync()
         {
-            if (_environment.IsDevelopment())
+            if (!_context.Challenges.Any())
             {
-                if (!_context.Challenges.Any())
-                {
-                    var challenges = FileStorage.Challenges;
+                var challenges = FileStorage.Challenges;
 
-                    _challengeRepository.Create(challenges);
+                _challengeRepository.Create(challenges);
 
-                    await _challengeRepository.CommitAsync();
-                }
+                await _challengeRepository.CommitAsync();
             }
         }
     }
