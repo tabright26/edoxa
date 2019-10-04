@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Mediator.Abstractions;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;

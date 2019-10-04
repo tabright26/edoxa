@@ -1,12 +1,8 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-07-02
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -23,6 +19,8 @@ namespace eDoxa.Payment.Api.Extensions
             var healthChecks = services.AddHealthChecks();
             healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
             healthChecks.AddAzureKeyVault(appSettings);
+            healthChecks.AddIdentityServer(appSettings);
+            healthChecks.AddSqlServer(appSettings.ConnectionStrings);
         }
     }
 }

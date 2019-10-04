@@ -51,6 +51,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return ApiResources.ArenaChallengesApi;
 
             yield return ApiResources.OrganizationsClansApi;
+
+            yield return ApiResources.NotificationsApi;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
@@ -62,6 +64,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
 
             yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
+
+            yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
 
             yield return new Client
             {

@@ -45,14 +45,34 @@ services:
       - Authority__PrivateUrl=http://${HOST:-localhost}:5000
       - Authority__PublicUrl=http://${HOST:-localhost}:5000
       - IdentityServer__IdentityUrl=http://${HOST:-localhost}:5000
+      - IdentityServer__PaymentUrl=http://${HOST:-localhost}:5001
       - IdentityServer__CashierUrl=http://${HOST:-localhost}:5002
       - IdentityServer__ArenaChallengesUrl=http://${HOST:-localhost}:5003
+      - IdentityServer__OrganizationsClansUrl=http://${HOST:-localhost}:5010
+      - IdentityServer__NotificationsUrl=http://${HOST:-localhost}:5011
       - IdentityServer__Web__SpaUrl=http://${HOST:-localhost}:5300
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
   payment.unit-tests:
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Payment.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  payment.integration-tests:
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Payment.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__SqlServer=${MSSQL_CASHIER:-Server=mssql.test;Database=Services.Payment.IntegrationTests;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
+      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
+      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
+      - ServiceBus__SubscriptionName=payment
+      - Authority__PrivateUrl=http://${HOST:-localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
@@ -73,12 +93,36 @@ services:
       - AzureServiceBusEnabled=${ASB_ENABLE:-false}
       - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
       - ServiceBus__SubscriptionName=cashier
-      - HealthChecks__PaymentUrl=http://${HOST:-localhost}:5002/health
+      - HealthChecks__PaymentUrl=http://${HOST:-localhost}:5001/health
       - Authority__PrivateUrl=http://${HOST:-localhost}:5000
       - Authority__PublicUrl=http://${HOST:-localhost}:5000
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
       
+  notifications.unit-tests:
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Notifications.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  notifications.integration-tests:
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Notifications.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__SqlServer=${MSSQL_NOTIFICATIONS:-Server=mssql.test;Database=Services.Notifications.IntegrationTests;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__AzureStorage=${AS_NOTIFICATIONS:-DefaultEndpointsProtocol=https;AccountName=edoxa;AccountKey=KjL1k5kHKwVPRPGMSCbvI4w9kx/ql11p+P86u3XnsohS6kGTS2E8f/sqxnEEykJ5lblC3LrHo1KmujXs5cGN/Q==;EndpointSuffix=core.windows.net;BlobEndpoint=https://edoxa.blob.core.windows.net/test/}
+      - ConnectionStrings__Redis=${REDIS:-redis.test}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
+      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
+      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq.test}      
+      - ServiceBus__SubscriptionName=notifications
+      - Authority__PrivateUrl=http://${HOST:-localhost}:5000
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
   arena.challenges.unit-tests:
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.UnitTests.trx"
     volumes:

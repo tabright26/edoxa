@@ -24,7 +24,7 @@ namespace eDoxa.Web.Spa.Extensions
             healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
             healthChecks.AddAzureKeyVault(appSettings);
             healthChecks.AddIdentityServer(appSettings);
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.Web.GatewayUrl, "eDoxa.Web.Gateway", new[] { "gateway", "web" });
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.Web.GatewayUrl, "web-gateway", new[] { "gateway", "web" });
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-15
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,11 +16,13 @@ using AutoMapper;
 using eDoxa.Organizations.Clans.Api.Extensions;
 using eDoxa.Organizations.Clans.Api.Infrastructure;
 using eDoxa.Organizations.Clans.Api.Infrastructure.Data;
+using eDoxa.Organizations.Clans.Api.IntegrationEvents.Extensions;
 using eDoxa.Organizations.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
@@ -30,7 +32,9 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 
 using IdentityServer4.AccessTokenValidation;
+
 using MediatR;
+
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -145,16 +149,14 @@ namespace eDoxa.Organizations.Clans.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            //builder.RegisterModule<DomainEventModule<Startup>>();
-
             builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
 
             builder.RegisterModule<ClansApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            application.UseServiceBusSubscriber();
+            subscriber.UseIntegrationEventSubscriptions();
 
             application.UseCustomExceptionHandler();
 
@@ -182,9 +184,9 @@ namespace eDoxa.Organizations.Clans.Api
                 });
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
-            this.Configure(application);
+            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

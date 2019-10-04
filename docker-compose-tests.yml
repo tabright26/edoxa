@@ -41,6 +41,17 @@ services:
       dockerfile: src/eDoxa.Payment.Api/Dockerfile
       target: unit-tests
 
+  payment.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/payment.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
+
   cashier.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/cashier.unit-tests:${ACR_TAG:-latest}
     build:
@@ -53,6 +64,24 @@ services:
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+      - rabbitmq.test
+
+  notifications.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+      target: unit-tests
+
+  notifications.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
       target: integration-tests
     depends_on:
       - mssql.test

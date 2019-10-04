@@ -1,17 +1,14 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandler.cs
-// Date Created: 2019-07-02
+﻿// Filename: UserAccountWithdrawalIntegrationEventHandler.cs
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
+using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -47,12 +44,11 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     integrationEvent.TransactionId,
                     integrationEvent.TransactionDescription,
                     integrationEvent.ConnectAccountId,
-                    integrationEvent.Amount
-                );
+                    integrationEvent.Amount);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
@@ -60,7 +56,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogError(exception, exception.StripeError?.ToJson());
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }
@@ -68,7 +64,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }

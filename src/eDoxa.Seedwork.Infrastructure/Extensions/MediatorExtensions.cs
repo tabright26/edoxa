@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Mediator.Abstractions;
+using eDoxa.Seedwork.Domain;
 
 using MediatR;
 

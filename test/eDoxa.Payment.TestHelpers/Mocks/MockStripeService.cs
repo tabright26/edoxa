@@ -1,5 +1,5 @@
 ﻿// Filename: MockStripeService.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,8 +8,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
-using eDoxa.Payment.Api.Providers.Stripe.Fakers;
+using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
+using eDoxa.Payment.Api.Areas.Stripe.Fakers;
 
 using Moq;
 
