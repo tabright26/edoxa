@@ -46,26 +46,34 @@ namespace eDoxa.Identity.Api.Infrastructure
         {
             yield return ApiResources.IdentityApi;
 
+            yield return ApiResources.PaymentApi;
+
             yield return ApiResources.CashierApi;
+
+            yield return ApiResources.NotificationsApi;
 
             yield return ApiResources.ArenaChallengesApi;
 
-            yield return ApiResources.OrganizationsClansApi;
+            yield return ApiResources.ArenaGamesLeagueOfLegendsApi;
 
-            yield return ApiResources.NotificationsApi;
+            yield return ApiResources.OrganizationsClansApi;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
         {
             yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.IdentityServer.IdentityUrl);
 
+            yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.IdentityServer.PaymentUrl);
+
             yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl);
+
+            yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
 
             yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
 
-            yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
+            yield return ApiResources.ArenaGamesLeagueOfLegendsApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesLeagueOfLegendsUrl);
 
-            yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
+            yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
 
             yield return new Client
             {

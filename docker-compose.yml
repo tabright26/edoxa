@@ -71,6 +71,17 @@ services:
       - seq
       - identity.api
 
+  arena.games.leagueoflegends.api:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.api:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Games.LeagueOfLegends.Api/Dockerfile
+    depends_on:
+      - rabbitmq
+      - redis
+      - seq
+      - identity.api
+
   organizations.clans.api:
     image: ${ACR_REGISTRY:-edoxa}/organizations.clans.api:${ACR_TAG:-latest}
     build:

@@ -49,13 +49,17 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         public string IdentityUrl { get; set; }
 
+        public string PaymentUrl { get; set; }
+
         public string CashierUrl { get; set; }
+
+        public string NotificationsUrl { get; set; }
 
         public string ArenaChallengesUrl { get; set; }
 
-        public string OrganizationsClansUrl { get; set; }
+        public string ArenaGamesLeagueOfLegendsUrl { get; set; }
 
-        public string NotificationsUrl { get; set; }
+        public string OrganizationsClansUrl { get; set; }
 
         public WebOptions Web { get; set; }
     }

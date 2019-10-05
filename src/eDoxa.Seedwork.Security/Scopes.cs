@@ -17,6 +17,7 @@ namespace eDoxa.Seedwork.Security
         public const string PaymentApi = "payment.api";
         public const string NotificationsApi = "notifications.api";
         public const string ArenaChallengesApi = "arena.challenges.api";
+        public const string ArenaGamesLeagueOfLegendsApi = "arena.games.leagueOfLegends";
         public const string OrganizationsClans = "organizations.clans.api";
     }
 }

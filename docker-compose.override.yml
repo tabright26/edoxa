@@ -43,9 +43,10 @@ services:
       - IdentityServer__IdentityUrl=http://${HOST:-localhost}:5000
       - IdentityServer__PaymentUrl=http://${HOST:-localhost}:5001
       - IdentityServer__CashierUrl=http://${HOST:-localhost}:5002 
-      - IdentityServer__ArenaChallengesUrl=http://${HOST:-localhost}:5003
-      - IdentityServer__OrganizationsClansUrl=http://${HOST:-localhost}:5010
       - IdentityServer__NotificationsUrl=http://${HOST:-localhost}:5011
+      - IdentityServer__ArenaChallengesUrl=http://${HOST:-localhost}:5003
+      - IdentityServer__ArenaGamesLeagueOfLegendsUrl=http://${HOST:-localhost}:5006
+      - IdentityServer__OrganizationsClansUrl=http://${HOST:-localhost}:5010
       - IdentityServer__Web__SpaUrl=http://${HOST:-localhost}:5300
     ports:
       - "5000:80"
@@ -121,6 +122,23 @@ services:
       - Authority__PublicUrl=http://${HOST:-localhost}:5000      
     ports:
       - "5003:80"
+
+  arena.games.leagueoflegends.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - ConnectionStrings__Redis=${REDIS:-redis}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
+      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
+      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
+      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
+      - ServiceBus__SubscriptionName=arena.challenges
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000      
+    ports:
+      - "5006:80"
 
   organizations.clans.api:
     environment:
