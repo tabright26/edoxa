@@ -10,9 +10,9 @@
 
     <ItemGroup>
         <PackageReference Include="Autofac" Version="4.9.4" />
-        <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20191005-202010" />
-        <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20191005-202010" />
-        <PackageReference Include="eDoxa.ServiceBus.Core" Version="1.0.0-CI-20191005-202010" />
+        <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20191006-195144" />
+        <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20191006-195144" />
+        <PackageReference Include="eDoxa.ServiceBus.Core" Version="1.0.0-CI-20191006-195144" />
         <PackageReference Include="eDoxa.Swagger" Version="1.0.0-CI-20190916-031143" />
         <PackageReference Include="eDoxa.Swagger.Client" Version="1.0.0-CI-20190916-031143" />
         <PackageReference Include="eDoxa.Swagger.Extensions" Version="1.0.0-CI-20190916-031143" />
