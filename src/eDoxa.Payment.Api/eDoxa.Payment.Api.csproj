@@ -29,16 +29,12 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.5" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.0.4" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
-    <PackageReference Include="Stripe.net" Version="29.5.0" />
-    <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190901-042717" />
-    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190901-042717" />
-    <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190901-042717" />
+    <PackageReference Include="Stripe.net" Version="29.6.0" />
   </ItemGroup>
 
   <ItemGroup>

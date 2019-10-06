@@ -13,11 +13,6 @@ services:
     ports:
       - "6379:6379"
 
-  rabbitmq:
-    ports:
-      - "15672:15672"
-      - "5672:5672"
-
   seq:
     environment:
       - ACCEPT_EULA=Y
@@ -28,15 +23,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__SqlServer=${MSSQL_IDENTITY:-Server=mssql;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
       - ConnectionStrings__Redis=${REDIS:-redis}
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__SubscriptionName=identity
       - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000
@@ -55,14 +48,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__SqlServer=${MSSQL_PAYMENT:-Server=mssql;Database=Services.Payment;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__SubscriptionName=payment
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000
     ports:
@@ -72,14 +63,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__SqlServer=${MSSQL_CASHIER:-Server=mssql;Database=Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME} 
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}      
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__SubscriptionName=cashier
       - HealthChecks__PaymentUrl=http://payment.api/health
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000      
@@ -90,16 +79,14 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__SqlServer=${MSSQL_NOTIFICATIONS:-Server=mssql;Database=Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__AzureStorage=${AS_NOTIFICATIONS:-DefaultEndpointsProtocol=https;AccountName=edoxa;AccountKey=KjL1k5kHKwVPRPGMSCbvI4w9kx/ql11p+P86u3XnsohS6kGTS2E8f/sqxnEEykJ5lblC3LrHo1KmujXs5cGN/Q==;EndpointSuffix=core.windows.net;BlobEndpoint=https://edoxa.blob.core.windows.net/dev/}
       - ConnectionStrings__Redis=${REDIS:-redis}
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
+      - ConnectionStrings__AzureStorage=${AS_NOTIFICATIONS:-DefaultEndpointsProtocol=https;AccountName=edoxa;AccountKey=KjL1k5kHKwVPRPGMSCbvI4w9kx/ql11p+P86u3XnsohS6kGTS2E8f/sqxnEEykJ5lblC3LrHo1KmujXs5cGN/Q==;EndpointSuffix=core.windows.net;BlobEndpoint=https://edoxa.blob.core.windows.net/dev/}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__SubscriptionName=notifications
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000      
     ports:
@@ -109,15 +96,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__SqlServer=${MSSQL_ARENA_CHALLENGES:-Server=mssql;Database=Services.Arena.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
       - ConnectionStrings__Redis=${REDIS:-redis}
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__SubscriptionName=arena.challenges
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000      
     ports:
@@ -127,14 +112,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__Redis=${REDIS:-redis}
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__SubscriptionName=arena.challenges
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000      
     ports:
@@ -144,15 +127,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__SqlServer=${MSSQL_ORGANIZATIONS_CLANS:-Server=mssql;Database=Services.Organizations.Clans;User Id=sa;Password=fnU3Www9TnBDp3MA}
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - ConnectionStrings__AzureStorage=${AS_ORGANIZATIONS_CLANS:-DefaultEndpointsProtocol=https;AccountName=edoxa;AccountKey=KjL1k5kHKwVPRPGMSCbvI4w9kx/ql11p+P86u3XnsohS6kGTS2E8f/sqxnEEykJ5lblC3LrHo1KmujXs5cGN/Q==;EndpointSuffix=core.windows.net;BlobEndpoint=https://edoxa.blob.core.windows.net/dev/}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
-      - AzureServiceBusEnabled=${ASB_ENABLE:-false}
-      - ServiceBus__HostName=${ASB_HOSTNAME:-rabbitmq}
-      - ServiceBus__SubscriptionName=organizations.clans
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000      
     ports:
@@ -162,12 +143,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - HealthChecks__IdentityUrl=http://identity.api/health
       - HealthChecks__CashierUrl=http://cashier.api/health
       - HealthChecks__PaymentUrl=http://payment.api/health
       - HealthChecks__NotificationsUrl=http://notifications.api/health
       - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health
+      - HealthChecks__ArenaGamesLeagueOfLegendsUrl=http://arena.games.leagueoflegends.api/health
       - HealthChecks__OrganizationsClansUrl=http://organizations.clans.api/health
       - Authority__PrivateUrl=http://identity.api
       - Authority__PublicUrl=http://${HOST:-localhost}:5000
@@ -180,7 +162,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - ConnectionStrings__Redis=${REDIS:-redis}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
@@ -218,7 +200,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
-      - ApplicationInsights__InstrumentationKey=47ce723c-52e7-4714-931a-19e72c037c9a
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
       - HealthChecks__Endpoints__0__Name=eDoxa Identity API
       - HealthChecks__Endpoints__0__Uri=http://identity.api/health
       - HealthChecks__Endpoints__1__Name=eDoxa Payment API
@@ -229,12 +211,14 @@ services:
       - HealthChecks__Endpoints__3__Uri=http://notifications.api/health
       - HealthChecks__Endpoints__4__Name=eDoxa Arena Challenges API
       - HealthChecks__Endpoints__4__Uri=http://arena.challenges.api/health
-      - HealthChecks__Endpoints__5__Name=eDoxa Organizations Clans API
-      - HealthChecks__Endpoints__5__Uri=http://organizations.clans.api/health
-      - HealthChecks__Endpoints__6__Name=eDoxa Web Gateway
-      - HealthChecks__Endpoints__6__Uri=http://web.gateway/health
-      - HealthChecks__Endpoints__7__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__7__Uri=http://web.spa.proxy/health
+      - HealthChecks__Endpoints__5__Name=eDoxa Arena Games LeagueOfLegends API
+      - HealthChecks__Endpoints__5__Uri=http://arena.games.leagueoflegends.api/health
+      - HealthChecks__Endpoints__6__Name=eDoxa Organizations Clans API
+      - HealthChecks__Endpoints__6__Uri=http://organizations.clans.api/health
+      - HealthChecks__Endpoints__7__Name=eDoxa Web Gateway
+      - HealthChecks__Endpoints__7__Uri=http://web.gateway/health
+      - HealthChecks__Endpoints__8__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__8__Uri=http://web.spa.proxy/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:

@@ -10,13 +10,12 @@ using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
-using eDoxa.ServiceBus.Abstractions;
 
 using IdentityServer4.Models;
 
 namespace eDoxa.Notifications.Api.Infrastructure
 {
-    public class NotificationsAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings, IHasServiceBusAppSettings
+    public class NotificationsAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
     {
         [Required]
         public ConnectionStrings ConnectionStrings { get; set; }
@@ -29,8 +28,6 @@ namespace eDoxa.Notifications.Api.Infrastructure
 
         [Required]
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
-
-        public bool AzureServiceBusEnabled { get; set; }
     }
 
     public class ConnectionStrings : IHasSqlServerConnectionString

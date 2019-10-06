@@ -83,7 +83,7 @@ namespace eDoxa.Web.Gateway
                 application.UseDeveloperExceptionPage();
             }
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
             application.UseCors("default");
 

@@ -11,13 +11,11 @@ using Autofac;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.Identity.TestHelpers.Mocks;
 using eDoxa.Seedwork.Testing;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
@@ -34,10 +32,6 @@ namespace eDoxa.Identity.TestHelpers.Fixtures
             builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    var mockEmailSender = new MockEmailSender();
-
-                    container.RegisterInstance(mockEmailSender.Object).As<IEmailSender>().SingleInstance();
-
                     container.RegisterModule<MockServiceBusModule>();
                 });
         }

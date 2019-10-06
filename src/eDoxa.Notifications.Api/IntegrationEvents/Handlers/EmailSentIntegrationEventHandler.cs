@@ -11,7 +11,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 {
-    internal sealed class EmailSentIntegrationEventHandler : IIntegrationEventHandler<EmailSentIntegrationEvent>
+    public sealed class EmailSentIntegrationEventHandler : IIntegrationEventHandler<EmailSentIntegrationEvent>
     {
         private readonly IEmailService _emailService;
 

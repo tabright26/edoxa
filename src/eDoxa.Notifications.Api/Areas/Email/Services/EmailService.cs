@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace eDoxa.Notifications.Api.Services
+namespace eDoxa.Notifications.Api.Areas.Email.Services
 {
     public sealed class EmailService : IEmailService
     {
@@ -32,7 +32,7 @@ namespace eDoxa.Notifications.Api.Services
         {
             var message = new SendGridMessage
             {
-                From = new EmailAddress("noreply@edoxa.gg", "eDoxa Team"),
+                From = new EmailAddress("noreply@edoxa.gg", "eDoxa Support"),
                 Subject = subject,
                 HtmlContent = htmlMessage
             };
