@@ -23,7 +23,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Modules;
+using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
@@ -149,7 +149,7 @@ namespace eDoxa.Notifications.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "notifications"));
 
             builder.RegisterModule<NotificationsApiModule>();
         }

@@ -23,7 +23,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Modules;
+using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -146,7 +146,7 @@ namespace eDoxa.Cashier.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "cashier"));
 
             builder.RegisterModule<CashierApiModule>();
         }
@@ -157,7 +157,7 @@ namespace eDoxa.Cashier.Api
 
             application.UseCustomExceptionHandler();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
             application.UseCors("default");
 

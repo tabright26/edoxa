@@ -7,9 +7,6 @@ services:
   redis.test:
     image: redis:5.0.5
 
-  rabbitmq.test:
-    image: rabbitmq:3-management
-
   seedwork.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/seedwork.unit-tests:${ACR_TAG:-latest}
     build:
@@ -32,7 +29,6 @@ services:
     depends_on:
       - mssql.test
       - redis.test
-      - rabbitmq.test
 
   payment.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/payment.unit-tests:${ACR_TAG:-latest}
@@ -50,7 +46,6 @@ services:
     depends_on:
       - mssql.test
       - redis.test
-      - rabbitmq.test
 
   cashier.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/cashier.unit-tests:${ACR_TAG:-latest}
@@ -68,7 +63,6 @@ services:
     depends_on:
       - mssql.test
       - redis.test
-      - rabbitmq.test
 
   notifications.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/notifications.unit-tests:${ACR_TAG:-latest}
@@ -86,7 +80,6 @@ services:
     depends_on:
       - mssql.test
       - redis.test
-      - rabbitmq.test
       
   arena.challenges.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.challenges.unit-tests:${ACR_TAG:-latest}
@@ -104,7 +97,23 @@ services:
     depends_on:
       - mssql.test
       - redis.test
-      - rabbitmq.test
+
+  arena.games.leagueoflegends.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Games.LeagueOfLegends.Api/Dockerfile
+      target: unit-tests
+
+  arena.games.leagueoflegends.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Games.LeagueOfLegends.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test  
 
   organizations.clans.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/organizations.clans.unit-tests:${ACR_TAG:-latest}
@@ -122,4 +131,3 @@ services:
     depends_on:
       - mssql.test
       - redis.test
-      - rabbitmq.test

@@ -28,7 +28,7 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Modules;
+using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -251,7 +251,7 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "identity"));
 
             builder.RegisterModule<IdentityApiModule>();
         }
@@ -271,7 +271,7 @@ namespace eDoxa.Identity.Api
                 application.UseHsts();
             }
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
             application.UseHttpsRedirection();
             application.UseStaticFiles();
