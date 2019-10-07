@@ -9,7 +9,6 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
@@ -25,10 +24,7 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
-
-using SQLitePCL;
 
 using Xunit;
 

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
-using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
@@ -18,6 +17,8 @@ using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+
+using static eDoxa.Cashier.Api.Infrastructure.Data.Storage.FileStorage;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data
 {
@@ -48,7 +49,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                 var adminAccount = accountFaker.FakeAccount(AccountFaker.AdminAccount);
 
-                foreach (var user in FileStorage.Users)
+                foreach (var user in Users)
                 {
                     if (user.Id == adminAccount.UserId)
                     {
@@ -127,7 +128,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
             if (!_context.Challenges.Any())
             {
-                _challengeRepository.Create(FileStorage.Challenges);
+                _challengeRepository.Create(Challenges);
 
                 await _challengeRepository.CommitAsync();
 
