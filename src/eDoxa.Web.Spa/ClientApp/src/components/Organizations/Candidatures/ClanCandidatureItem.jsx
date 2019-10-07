@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Badge, Col } from "reactstrap";
+import { Col } from "reactstrap";
 
 import CandidatureForm from "forms/Organizations/Candidatures";
 
-const ClanCandidatureItem = ({ candidature, actions, doxaTags, withPermissions }) => {
+const ClanCandidatureItem = ({ candidature, actions, doxaTags, isOwner }) => {
   const [doxaTag, setDoxaTag] = useState(null);
 
   useEffect(() => {
@@ -15,15 +15,20 @@ const ClanCandidatureItem = ({ candidature, actions, doxaTags, withPermissions }
 
   return (
     <Fragment>
-      <Col xs="4" sm="4" md="4">
-        <small className="text-muted">{doxaTag ? doxaTag.name : ""}</small>
-      </Col>
-      <Col xs="4" sm="4" md="4">
-        {withPermissions ? <CandidatureForm.Accept initialValues={{ candidatureId: candidature.id }} onSubmit={data => actions.acceptCandidature(data.candidatureId)} /> : ""}
-      </Col>
-      <Col xs="4" sm="4" md="4">
-        {withPermissions ? <CandidatureForm.Decline initialValues={{ candidatureId: candidature.id }} onSubmit={data => actions.declineCandidature(data.candidatureId)} /> : ""}
-      </Col>
+      <Col>{doxaTag ? doxaTag.name : ""}</Col>
+      {isOwner ? (
+        <Fragment>
+          <Col>
+            <CandidatureForm.Accept initialValues={{ candidatureId: candidature.id }} onSubmit={data => actions.acceptCandidature(data.candidatureId)} />
+          </Col>
+          <Col>
+            <CandidatureForm.Decline initialValues={{ candidatureId: candidature.id }} onSubmit={data => actions.declineCandidature(data.candidatureId)} />
+          </Col>
+        </Fragment>
+      ) : (
+        ""
+      )}
+      ;
     </Fragment>
   );
 };

@@ -1,22 +1,15 @@
 import React from "react";
-import { Label, FormGroup, Form } from "reactstrap";
-import { reduxForm } from "redux-form";
+import { FormGroup, Form } from "reactstrap";
+import { reduxForm, Field } from "redux-form";
+import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
 import { CREATE_INVITATION_FORM } from "forms";
 
-const validateDoxaTag = (doxaTags, values) => {
-  const errors = {};
-  if (!values.name) {
-    errors.name = "DoxaTag is required";
-  }
-  return errors;
-};
-
-const CreateInvitationForm = ({ handleSubmit, initialValues: { clanId }, doxaTags }) => (
+const CreateInvitationForm = ({ handleSubmit, initialValues: { clanId } }) => (
   <Form onSubmit={handleSubmit} className="mt-3">
     <FormGroup className="mb-0">
-      <Input.Text type="hidden" value={doxaTags} name="userId" disabled />
-      <Input.Text type="hidden" value={clanId} name="clanId" disabled />
+      <Field type="text" name="userId" label="User Id" formGroup={FormGroup} component={Input.Text} />
+      <Field type="hidden" name="clanId" value={clanId} formGroup={FormGroup} component={Input.Text} />
       <Button.Submit width="150px" color="info">
         Send
       </Button.Submit>

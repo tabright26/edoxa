@@ -1,26 +1,19 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Badge, Col } from "reactstrap";
 
-const UserInvitationItem = ({ candidature, userId }) => {
-  const [doxaTag, setDoxaTag] = useState(null);
+import InvitationForm from "forms/Organizations/Invitations";
 
-  useEffect(() => {
-    if (doxaTags) {
-      setDoxaTag(doxaTags.find(tag => tag.userId === userId));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candidature]);
-
+const UserInvitationItem = ({ invitation, actions }) => {
   return (
     <Fragment>
-      <Col xs="6" sm="6" md="6">
-        <small className="text-muted">{doxaTag ? doxaTag : ""}</small>
+      <Col xs="4" sm="4" md="4">
+        <small className="text-muted">{invitation ? invitation.clanId : ""}</small>
       </Col>
-      <Col xs="3" sm="3" md="3">
-        <Badge color="success">Accept</Badge>
+      <Col xs="4" sm="4" md="4">
+        <InvitationForm.Accept initialValues={{ candidatureId: invitation.id }} onSubmit={data => actions.acceptInvitation(data.candidatureId)} /> : ""}
       </Col>
-      <Col xs="3" sm="3" md="3">
-        <Badge color="danger">Decline</Badge>
+      <Col xs="4" sm="4" md="4">
+        <InvitationForm.Decline initialValues={{ candidatureId: invitation.id }} onSubmit={data => actions.declineInvitation(data.candidatureId)} /> : ""}
       </Col>
     </Fragment>
   );

@@ -10,7 +10,7 @@ export const connectLogo = (ConnectedComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: AppState) => {
     return {
-      logo: state.organizations.clans
+      logo: state.organizations.logos
     };
   };
 

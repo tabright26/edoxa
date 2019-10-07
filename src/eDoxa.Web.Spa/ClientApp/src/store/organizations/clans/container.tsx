@@ -7,12 +7,13 @@ import { show } from "redux-modal";
 import { CREATE_CLAN_MODAL } from "modals";
 
 export const connectClans = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, clans, userId, ...attributes }) => {
-    return <ConnectedComponent actions={actions} clans={clans} userId={userId} {...attributes} />;
+  const Container: FunctionComponent<any> = ({ actions, clans, userId, doxaTags, ...attributes }) => {
+    return <ConnectedComponent actions={actions} clans={clans} userId={userId} doxaTags={doxaTags} {...attributes} />;
   };
 
   const mapStateToProps = (state: AppState) => {
     return {
+      doxaTags: state.doxaTags,
       userId: state.oidc.user.profile.sub,
       clans: state.organizations.clans
     };

@@ -13,9 +13,7 @@ const ClanInvitationItem = ({ invitation, doxaTags }) => {
 
   return (
     <Fragment>
-      <Col xs="4" sm="4" md="4">
-        <small className="text-muted">{doxaTag ? doxaTag.name : ""}</small>
-      </Col>
+      <Col>{doxaTag ? doxaTag.name : "Name"}</Col>
     </Fragment>
   );
 };

@@ -8,8 +8,8 @@ import Input from "components/Shared/Override/Input";
 
 const KickMemberForm = ({ handleSubmit, handleCancel, initialValues: { clanId, memberId } }) => (
   <Form onSubmit={handleSubmit}>
-    <Input.Text type="text" value={clanId} name="clanId" disabled />
-    <Input.Text type="text" value={memberId} name="memberId" disabled />
+    <Input.Text type="hidden" value={clanId} name="clanId" disabled />
+    <Input.Text type="hidden" value={memberId} name="memberId" disabled />
     <Button.Submit width="50px" color="info">
       Kick
     </Button.Submit>

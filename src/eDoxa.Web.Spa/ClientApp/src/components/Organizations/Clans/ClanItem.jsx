@@ -4,19 +4,12 @@ import { LinkContainer } from "react-router-bootstrap";
 
 const ClanItem = ({ clan }) => {
   return (
-    <Card className="card-accent-primary">
+    <Card>
       <CardHeader>{clan.name}</CardHeader>
       <CardBody>
         <CardTitle>Clan Details</CardTitle>
-        <CardText>
-          <small className="text-muted">Clan summary: {clan.summary}</small>
-        </CardText>
-        <LinkContainer
-          to={"/structures/clans/" + clan.id}
-          style={{
-            cursor: "pointer"
-          }}
-        >
+        <CardText>Clan summary: {clan.summary}</CardText>
+        <LinkContainer to={"/structures/clans/" + clan.id}>
           <Button color="primary">View Details</Button>
         </LinkContainer>
       </CardBody>

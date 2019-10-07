@@ -17,7 +17,7 @@ const UserInvitations = ({ actions, invitations, userId }) => {
         <Col>
           {invitations.map((invitation, index) => (
             <Row key={index}>
-              <UserInvitationItem invitation={invitation}></UserInvitationItem>
+              <UserInvitationItem actions={actions} invitation={invitation}></UserInvitationItem>
             </Row>
           ))}
         </Col>

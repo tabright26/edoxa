@@ -1,25 +1,38 @@
-import React, { useEffect } from "react";
-import { Badge } from "reactstrap";
+import React, { useEffect, useState } from "react";
 
 import { connectCandidatures } from "store/organizations/candidatures/container";
 
 import CandidatureForm from "forms/Organizations/Candidatures";
 
-const ClanCandidatureWidget = ({ actions, candidatures, clan, userId }) => {
+const CandidatureWidget = ({ actions, candidatures, clanId, userId }) => {
+  const [sent, setSent] = useState(null);
+
   useEffect(() => {
-    if (clan) {
-      actions.loadCandidaturesWithClanId(clan.id);
+    if (userId) {
+      actions.loadCandidaturesWithUserId(userId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candidatures, clan, userId]);
+  }, [userId]);
 
-  const candidatureExists = candidatures.find(candidature => candidature.userId === userId);
+  useEffect(() => {
+    if (candidatures) {
+      candidatures.forEach(candidature => {
+        if (candidature.clanId === clanId) {
+          setSent(true);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [candidatures]);
 
-  return !candidatureExists ? (
-    <CandidatureForm.Create initialValues={{ userId: userId, clanId: clan.id }} onSubmit={data => actions.addCandidature(data)} />
-  ) : (
-    <Badge color="success">Candidature already sent.</Badge>
-  );
+  const handleAddCandidature = data => {
+    if (actions) {
+      setSent(true);
+      actions.addCandidature(data);
+    }
+  };
+
+  return sent ? "Candidature already sent." : <CandidatureForm.Create initialValues={{ userId: userId, clanId: clanId }} onSubmit={data => handleAddCandidature(data)} />;
 };
 
-export default connectCandidatures(ClanCandidatureWidget);
+export default connectCandidatures(CandidatureWidget);

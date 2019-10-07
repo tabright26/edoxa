@@ -4,8 +4,8 @@ import { loadInvitationsWithClanId, loadInvitationsWithUserId, loadInvitation, a
 import { AppState } from "store/types";
 
 export const connectInvitations = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, invitations, userId, ...attributes }) => {
-    return <ConnectedComponent actions={actions} invitations={invitations} userId={userId} {...attributes} />;
+  const Container: FunctionComponent<any> = ({ actions, invitations, ...attributes }) => {
+    return <ConnectedComponent actions={actions} invitations={invitations} {...attributes} />;
   };
 
   const mapStateToProps = (state: AppState) => {
@@ -19,7 +19,7 @@ export const connectInvitations = (ConnectedComponent: FunctionComponent<any>) =
     return {
       actions: {
         loadInvitationsWithClanId: (clanId: string) => dispatch(loadInvitationsWithClanId(clanId)),
-        loadInvitationsWithUserId: (clanId: string) => dispatch(loadInvitationsWithUserId(clanId)),
+        loadInvitationsWithUserId: (userId: string) => dispatch(loadInvitationsWithUserId(userId)),
         addInvitation: (data: any) => dispatch(addInvitation(data)),
         loadInvitation: (invitationId: string) => dispatch(loadInvitation(invitationId)),
         acceptInvitation: (invitationId: string) => dispatch(acceptInvitation(invitationId)),

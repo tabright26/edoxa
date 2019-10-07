@@ -35,7 +35,7 @@ export function loadCandidaturesWithUserId(userId: string): CandidaturesActionCr
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/candidatures?clanId=${userId}`
+        url: `/organizations/clans/api/candidatures?userId=${userId}`
       }
     }
   };

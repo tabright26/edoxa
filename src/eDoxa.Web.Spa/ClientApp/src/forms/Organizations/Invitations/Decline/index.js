@@ -1,3 +1,3 @@
-import DeclineInvitationForm from "./Delete";
+import DeclineInvitationForm from "./Decline";
 
 export default DeclineInvitationForm;

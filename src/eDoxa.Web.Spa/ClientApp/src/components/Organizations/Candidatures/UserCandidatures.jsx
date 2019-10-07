@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 
 import { connectCandidatures } from "store/organizations/candidatures/container";
@@ -16,15 +16,13 @@ const UserCandidatures = ({ actions, candidatures, userId }) => {
       <CardHeader>Candidatures</CardHeader>
       <CardBody>
         <Col>
-          {candidatures ? (
-            candidatures.map((candidature, index) => (
-              <Row key={index}>
-                <UserCandidatureItem candidature={candidature} actions={actions}></UserCandidatureItem>
-              </Row>
-            ))
-          ) : (
-            <Row></Row>
-          )}
+          {candidatures
+            ? candidatures.map((candidature, index) => (
+                <Row key={index}>
+                  <UserCandidatureItem candidature={candidature}></UserCandidatureItem>
+                </Row>
+              ))
+            : ""}
         </Col>
       </CardBody>
     </Card>

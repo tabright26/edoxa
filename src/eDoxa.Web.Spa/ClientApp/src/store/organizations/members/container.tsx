@@ -4,13 +4,12 @@ import { loadMembers, kickMember, leaveClan } from "store/organizations/members/
 import { AppState } from "store/types";
 
 export const connectMembers = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, members, userId, ...attributes }) => {
-    return <ConnectedComponent actions={actions} members={members} userId={userId} {...attributes} />;
+  const Container: FunctionComponent<any> = ({ actions, members, ...attributes }) => {
+    return <ConnectedComponent actions={actions} members={members} {...attributes} />;
   };
 
   const mapStateToProps = (state: AppState) => {
     return {
-      userId: state.oidc.user.profile.sub,
       members: state.organizations.members
     };
   };

@@ -1,14 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Badge, Col } from "reactstrap";
+import React from "react";
+import { Col } from "reactstrap";
 
 const UserCandidatureItem = ({ candidature }) => {
-  return (
-    <Fragment>
-      <Col xs="6" sm="6" md="6">
-        <small className="text-muted">{candidature.clanId}</small>
-      </Col>
-    </Fragment>
-  );
+  return <Col>{candidature.clanId}</Col>;
 };
 
 export default UserCandidatureItem;

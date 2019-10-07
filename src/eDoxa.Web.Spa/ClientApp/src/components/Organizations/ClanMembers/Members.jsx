@@ -1,33 +1,36 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 
 import { connectMembers } from "store/organizations/members/container";
 
+import MembersForm from "forms/Organizations/ClanMembers";
+
 import MemberItem from "./MemberItem";
 
-const Members = ({ actions, members, clan, userId }) => {
+const Members = ({ actions, members, clanId, doxaTags, isOwner }) => {
   useEffect(() => {
-    if (clan) {
-      actions.loadMembers(clan.id);
+    if (clanId) {
+      actions.loadMembers(clanId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clan]);
+  }, [clanId]);
 
   return (
     <Card>
-      <CardHeader>Members</CardHeader>
-      <CardBody>
+      <CardHeader>
+        <Col>Members</Col>
         <Col>
-          {members ? (
-            members.map((member, index) => (
+          <MembersForm.LeaveClan initialValues={{ clanId: clanId }} onSubmit={data => actions.leaveClan(data.clanId)} />
+        </Col>
+      </CardHeader>
+      <CardBody>
+        {members
+          ? members.map((member, index) => (
               <Row key={index}>
-                <MemberItem member={member} actions={actions} clanId={clan ? clan.id : ""} withPermissions={clan ? clan.ownerId === userId : false}></MemberItem>
+                <MemberItem member={member} actions={actions} doxaTags={doxaTags} isOwner={isOwner}></MemberItem>
               </Row>
             ))
-          ) : (
-            <Row></Row>
-          )}
-        </Col>
+          : ""}
       </CardBody>
     </Card>
   );

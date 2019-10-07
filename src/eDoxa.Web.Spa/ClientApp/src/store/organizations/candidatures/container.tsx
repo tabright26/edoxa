@@ -4,14 +4,12 @@ import { loadCandidaturesWithClanId, loadCandidaturesWithUserId, loadCandidature
 import { AppState } from "store/types";
 
 export const connectCandidatures = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, candidatures, userId, doxaTags, ...attributes }) => {
-    return <ConnectedComponent actions={actions} candidatures={candidatures} userId={userId} doxaTags={doxaTags} {...attributes} />;
+  const Container: FunctionComponent<any> = ({ actions, candidatures, ...attributes }) => {
+    return <ConnectedComponent actions={actions} candidatures={candidatures} {...attributes} />;
   };
 
   const mapStateToProps = (state: AppState) => {
     return {
-      doxaTags: state.doxaTags,
-      userId: state.oidc.user.profile.sub,
       candidatures: state.organizations.candidatures
     };
   };
