@@ -11,6 +11,7 @@ import ErrorBoundary from "components/Shared/ErrorBoundary";
 const ClanDetailsIndex = ({
   actions,
   clans,
+  userId,
   match: {
     params: { clanId }
   }
@@ -26,7 +27,7 @@ const ClanDetailsIndex = ({
 
   useEffect(() => {
     setClan(clans.find(clan => clan.id === clanId));
-  }, [clanId, clans]);
+  }, [clanId, clans, clan, userId]);
 
   return (
     <ErrorBoundary>
@@ -39,17 +40,14 @@ const ClanDetailsIndex = ({
                   Clan Details: Clan Id: {clanId}
                 </Col>
                 <Col xs="6" sm="6" md="6">
-                  {clan ? <CandidatureWidget clanId={clan.id} /> : ""}
+                  {clan ? <CandidatureWidget clan={clan} /> : ""}
                 </Col>
               </Row>
             </CardHeader>
             <CardBody>
               <Row>
-                <Col xs="6" sm="6" md="6">
-                  {clan ? <ClanInfo clanId={clan.id} /> : ""}
-                </Col>
-                <Col xs="6" sm="6" md="6">
-                  {clan ? <ClanInfo clanId={clan.id} /> : ""}
+                <Col xs="12" sm="12" md="12">
+                  {clan ? <ClanInfo clan={clan} /> : ""}
                 </Col>
               </Row>
             </CardBody>

@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Badge } from "reactstrap";
 
 import { connectCandidatures } from "store/organizations/candidatures/container";
 
 import CandidatureForm from "forms/Organizations/Candidatures";
 
-//HOW TO GET USER ID MORE EASILY
-
-const CandidatureWidget = ({ actions, candidatures, clanId, userId }) => {
+const ClanCandidatureWidget = ({ actions, candidatures, clan, userId }) => {
   useEffect(() => {
-    actions.loadCandidaturesWithClanId(clanId);
+    if (clan) {
+      actions.loadCandidaturesWithClanId(clan.id);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candidatures]);
+  }, [candidatures, clan, userId]);
 
   const candidatureExists = candidatures.find(candidature => candidature.userId === userId);
 
   return !candidatureExists ? (
-    <CandidatureForm.Create initialValues={{ userId: userId, clanId: clanId }} onSubmit={data => actions.addCandidature(data)} />
+    <CandidatureForm.Create initialValues={{ userId: userId, clanId: clan.id }} onSubmit={data => actions.addCandidature(data)} />
   ) : (
     <Badge color="success">Candidature already sent.</Badge>
   );
 };
 
-export default connectCandidatures(CandidatureWidget);
+export default connectCandidatures(ClanCandidatureWidget);

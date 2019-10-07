@@ -4,7 +4,8 @@ import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import { connectClans } from "store/organizations/clans/container";
 
 import ClanInfo from "./ClanInfo";
-import Candidatures from "../Candidatures/Candidatures";
+import ClanCandidatures from "../Candidatures/ClanCandidatures";
+import ClanInvitations from "../Invitations/ClanInvitations";
 import Members from "../ClanMembers/Members";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
@@ -40,13 +41,16 @@ const ClanDashboardIndex = ({
             <CardBody>
               <Row>
                 <Col xs="4" sm="4" md="4">
-                  {clan ? <ClanInfo clanId={clan.id} /> : ""}
+                  {clan ? <ClanInfo clan={clan} /> : ""}
                 </Col>
-                <Col xs="6" sm="6" md="6">
-                  {clan ? <Members clanId={clan.id} /> : ""}
+                <Col xs="3" sm="3" md="3">
+                  {clan ? <Members clan={clan} /> : ""}
+                </Col>
+                <Col xs="3" sm="3" md="3">
+                  {clan ? <ClanCandidatures clan={clan} /> : ""}
                 </Col>
                 <Col xs="2" sm="2" md="2">
-                  {clan ? <Candidatures clanId={clan.id} /> : ""}
+                  {clan ? <ClanInvitations clan={clan} /> : ""}
                 </Col>
               </Row>
             </CardBody>

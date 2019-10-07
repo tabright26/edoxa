@@ -4,12 +4,22 @@ import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import { CREATE_INVITATION_FORM } from "forms";
 
-const CreateInvitationForm = ({ handleSubmit, handleCancel }) => (
+const validateDoxaTag = (doxaTags, values) => {
+  const errors = {};
+  if (!values.name) {
+    errors.name = "DoxaTag is required";
+  }
+  return errors;
+};
+
+const CreateInvitationForm = ({ handleSubmit, initialValues: { clanId }, doxaTags }) => (
   <Form onSubmit={handleSubmit} className="mt-3">
-    <Label>Are you sure you want to this user to the clan?</Label>
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel onClick={handleCancel} />
+      <Input.Text type="hidden" value={doxaTags} name="userId" disabled />
+      <Input.Text type="hidden" value={clanId} name="clanId" disabled />
+      <Button.Submit width="150px" color="info">
+        Send
+      </Button.Submit>
     </FormGroup>
   </Form>
 );

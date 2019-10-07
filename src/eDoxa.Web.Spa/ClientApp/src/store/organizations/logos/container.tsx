@@ -4,8 +4,8 @@ import { loadLogo, updateLogo } from "store/organizations/logos/actions";
 import { AppState } from "store/types";
 
 export const connectLogo = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, clans, ...attributes }) => {
-    return <ConnectedComponent actions={actions} clans={clans} {...attributes} />;
+  const Container: FunctionComponent<any> = ({ actions, logo, ...attributes }) => {
+    return <ConnectedComponent actions={actions} logo={logo} {...attributes} />;
   };
 
   const mapStateToProps = (state: AppState) => {

@@ -24,6 +24,8 @@ export function loadMembers(clanId: string): MembersActionCreators {
 }
 
 export function kickMember(clanId: string, memberId: string): MembersActionCreators {
+  console.log(clanId);
+  console.log(memberId);
   return {
     types: [KICK_MEMBER, KICK_MEMBER_SUCCESS, KICK_MEMBER_FAIL],
     payload: {

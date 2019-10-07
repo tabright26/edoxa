@@ -5,27 +5,28 @@ import { connectMembers } from "store/organizations/members/container";
 
 import MemberItem from "./MemberItem";
 
-const Members = ({ actions, members, clanId }) => {
+const Members = ({ actions, members, clan, userId }) => {
   useEffect(() => {
-    actions.loadMembers(clanId);
+    if (clan) {
+      actions.loadMembers(clan.id);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [clan]);
 
   return (
-    <Card className="card-accent-primary">
+    <Card>
       <CardHeader>Members</CardHeader>
-      <CardBody className="p-1">
+      <CardBody>
         <Col>
-          {members
-            ? members.map((member, index) => (
-                <Fragment>
-                  <Row className="mt-0 mb-1">
-                    <MemberItem member={member} actions={actions} />
-                  </Row>
-                  <hr className="mt-1 mb-0" />
-                </Fragment>
-              ))
-            : ""}
+          {members ? (
+            members.map((member, index) => (
+              <Row key={index}>
+                <MemberItem member={member} actions={actions} clanId={clan ? clan.id : ""} withPermissions={clan ? clan.ownerId === userId : false}></MemberItem>
+              </Row>
+            ))
+          ) : (
+            <Row></Row>
+          )}
         </Col>
       </CardBody>
     </Card>
