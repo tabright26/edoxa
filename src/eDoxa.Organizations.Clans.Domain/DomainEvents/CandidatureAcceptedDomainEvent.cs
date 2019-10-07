@@ -4,8 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Mediator.Abstractions;
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Organizations.Clans.Domain.DomainEvents
 {

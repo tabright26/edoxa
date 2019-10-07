@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsMatchService.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,8 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
         public async Task GetMatchAsync_FromJson_ShouldBeEquivalentToMatch(long gameId)
         {
             // Arrange
-            var matches = JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchDto>>(@"TestHelpers/Stubs/LeagueOfLegends/Matches.json");
+            var matches = TestData.FileStorage.DeserializeJsonFile<IEnumerable<LeagueOfLegendsMatchDto>>(@"Stubs/LeagueOfLegends/Matches.json");
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 
@@ -77,7 +77,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Games.LeagueOfLegends
         {
             // Arrange
             var matchReferencesDTO =
-                JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"TestHelpers/Stubs/LeagueOfLegends/MatchReferences.json");
+                TestData.FileStorage.DeserializeJsonFile<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Stubs/LeagueOfLegends/MatchReferences.json");
 
             var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
 

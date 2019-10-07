@@ -12,7 +12,6 @@ using eDoxa.Identity.Api.Areas.Identity.TokenProviders;
 using eDoxa.Identity.Api.Areas.Identity.TokenProviders.Options;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Extensions
@@ -22,7 +21,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
         public static void BuildCustomServices(this IdentityBuilder builder)
         {
             var services = builder.Services;
-            services.AddSingleton<IEmailSender, EmailSender>();
             services.AddScoped<UserStore>();
             services.AddScoped<CustomUserClaimsPrincipalFactory>();
             services.AddScoped<CustomIdentityErrorDescriber>();

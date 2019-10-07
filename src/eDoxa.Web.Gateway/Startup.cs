@@ -66,6 +66,8 @@ namespace eDoxa.Web.Gateway
                 {
                     ["IdentityApiKey"] = IdentityApi,
                     ["CashierApiKey"] = CashierApi,
+                    ["PaymentApiKey"] = PaymentApi,
+                    ["NotificationsApiKey"] = NotificationsApi,
                     ["ArenaChallengesApiKey"] = ArenaChallengesApi,
                     ["OrganizationsClansApiKey"] = OrganizationsClansApi
                 }
@@ -81,7 +83,7 @@ namespace eDoxa.Web.Gateway
                 application.UseDeveloperExceptionPage();
             }
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
             application.UseCors("default");
 

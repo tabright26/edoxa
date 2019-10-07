@@ -16,7 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Abstractions;

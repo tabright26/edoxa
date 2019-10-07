@@ -1,5 +1,5 @@
 ﻿// Filename: PaymentAppSettings.cs
-// Date Created: 2019-07-24
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,15 +10,29 @@ using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
-using eDoxa.ServiceBus.Abstractions;
+
+using IdentityServer4.Models;
 
 namespace eDoxa.Payment.Api.Infrastructure
 {
-    public class PaymentAppSettings : IHasAzureKeyVaultAppSettings, IHasServiceBusAppSettings
+    public class PaymentAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
     {
         [Required]
-        public AzureKeyVaultOptions AzureKeyVault { get; set; }
+        public ConnectionStrings ConnectionStrings { get; set; }
 
-        public bool AzureServiceBusEnabled { get; set; }
+        [Required]
+        public ApiResource ApiResource { get; set; }
+
+        [Required]
+        public AuthorityOptions Authority { get; set; }
+
+        [Required]
+        public AzureKeyVaultOptions AzureKeyVault { get; set; }
+    }
+
+    public class ConnectionStrings : IHasSqlServerConnectionString
+    {
+        [Required]
+        public string SqlServer { get; set; }
     }
 }

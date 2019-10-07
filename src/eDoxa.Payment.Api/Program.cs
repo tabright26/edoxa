@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,9 @@
 using System;
 
 using Autofac.Extensions.DependencyInjection;
+
+using eDoxa.Payment.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +31,10 @@ namespace eDoxa.Payment.Api
                 Log.Information("Building {Application} host...");
 
                 var host = builder.Build();
+
+                Log.Information("Applying {Application} context migrations...");
+
+                host.MigrateDbContextWithRetryPolicy<PaymentDbContext>();
 
                 Log.Information("Starting {Application} host...");
 

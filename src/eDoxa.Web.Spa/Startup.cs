@@ -82,7 +82,7 @@ namespace eDoxa.Web.Spa
                 application.UseHsts();
             }
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
             application.UseStaticFiles();
             application.UseSpaStaticFiles();

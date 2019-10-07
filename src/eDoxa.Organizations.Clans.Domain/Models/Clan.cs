@@ -23,12 +23,12 @@ namespace eDoxa.Organizations.Clans.Domain.Models
             Members = new HashSet<Member>();
             this.AddMember(new Member(Id, ownerId));
         }
-
+#nullable disable
         private Clan()
         {
-            // Required by EF Core.
+            //Requied by EF Core
         }
-
+#nullable restore
         public string Name { get; private set; }
 
         public string? Summary { get; private set; }

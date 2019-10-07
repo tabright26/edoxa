@@ -1,5 +1,5 @@
 ﻿// Filename: LeagueOfLegendsGameReferencesAdapterTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
+using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-using eDoxa.Arena.Challenges.UnitTests.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
@@ -31,9 +31,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
         {
         }
 
-        private static LeagueOfLegendsMatchReferenceDto[] StubMatchReferences =>
-            JsonFileConvert.DeserializeObject<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"TestHelpers/Stubs/LeagueOfLegends/MatchReferences.json")
-                .ToArray();
+        private LeagueOfLegendsMatchReferenceDto[] StubMatchReferences =>
+            TestData.FileStorage.DeserializeJsonFile<IEnumerable<LeagueOfLegendsMatchReferenceDto>>(@"Stubs/LeagueOfLegends/MatchReferences.json").ToArray();
 
         [Fact]
         public async Task GetGameReferencesAsync_WhenMatchReferenceTimestampIsBetweenRange_ShouldBeLeagueOfLegends()

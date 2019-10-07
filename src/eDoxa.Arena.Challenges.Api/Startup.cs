@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,15 +19,16 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
+using eDoxa.Arena.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Games.Extensions;
-using eDoxa.Mediator;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.ServiceBus.Modules;
+using eDoxa.ServiceBus.Abstractions;
+using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -35,6 +36,8 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 
 using IdentityServer4.AccessTokenValidation;
+
+using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
@@ -138,6 +141,8 @@ namespace eDoxa.Arena.Challenges.Api
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(ArenaChallengesDbContext)));
 
+            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
+
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
                     options =>
@@ -171,20 +176,18 @@ namespace eDoxa.Arena.Challenges.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule<Startup>>();
-
-            builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "arena.challenges"));
 
             builder.RegisterModule<ArenaChallengesApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            application.UseServiceBusSubscriber();
+            subscriber.UseIntegrationEventSubscriptions();
 
             application.UseCustomExceptionHandler();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
             application.UseCors("default");
 
@@ -208,9 +211,9 @@ namespace eDoxa.Arena.Challenges.Api
                 });
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
-            this.Configure(application);
+            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

@@ -7,11 +7,9 @@
 using Autofac;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Services;
-using eDoxa.Organizations.Clans.Api.Infrastructure.Data;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Organizations.Clans.Infrastructure.Repositories;
-using eDoxa.Seedwork.Infrastructure;
 
 namespace eDoxa.Organizations.Clans.Api.Infrastructure
 {
@@ -28,12 +26,6 @@ namespace eDoxa.Organizations.Clans.Api.Infrastructure
             builder.RegisterType<ClanService>().As<IClanService>().InstancePerLifetimeScope();
             builder.RegisterType<CandidatureService>().As<ICandidatureService>().InstancePerLifetimeScope();
             builder.RegisterType<InvitationService>().As<IInvitationService>().InstancePerLifetimeScope();
-
-            // Seeder
-            builder.RegisterType<ClansDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
-
-            // Cleaner
-            builder.RegisterType<ClansDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
         }
     }
 }

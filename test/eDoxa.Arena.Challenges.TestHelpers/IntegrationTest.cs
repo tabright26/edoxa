@@ -1,5 +1,5 @@
-﻿// Filename: IntegrationTestClass.cs
-// Date Created: 2019-09-28
+﻿// Filename: IntegrationTest.cs
+// Date Created: 2019-10-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

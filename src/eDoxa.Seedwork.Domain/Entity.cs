@@ -7,8 +7,6 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Mediator.Abstractions;
-
 namespace eDoxa.Seedwork.Domain
 {
     public abstract class Entity<TEntityId> : IEntity

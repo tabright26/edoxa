@@ -1,5 +1,5 @@
 ﻿// Filename: UserAccountDepositIntegrationEventHandlerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
