@@ -7,6 +7,7 @@ import { reducer as oidcReducer } from "redux-oidc";
 import { reducer as stripeReducer } from "store/stripe/reducer";
 import { reducer as arenaReducer } from "store/arena/reducer";
 import { reducer as userReducer } from "store/user/reducer";
+import { reducer as organizationsReducer } from "store/organizations/reducer";
 import { reducer as doxaTagsReducer } from "store/doxaTags/reducer";
 import { reducer as toastrReducer } from "react-redux-toastr";
 import { reducer as localizeReducer } from "utils/localize";
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   stripe: stripeReducer,
   arena: arenaReducer,
   user: userReducer,
-  doxaTags: doxaTagsReducer
+  doxaTags: doxaTagsReducer,
+  organizations: organizationsReducer
 });
 
 export default rootReducer;

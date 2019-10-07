@@ -40,6 +40,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\data\clans.csv" Link="Setup/clans.csv" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 

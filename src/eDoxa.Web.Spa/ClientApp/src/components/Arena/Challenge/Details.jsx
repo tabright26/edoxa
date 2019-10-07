@@ -28,6 +28,7 @@ const Challenge = ({
   useEffect(() => {
     setChallenge(challenges.find(challenge => challenge.id === challengeId));
   }, [challengeId, challenges]);
+
   return (
     <ErrorBoundary>
       <Container fluid={true}>
