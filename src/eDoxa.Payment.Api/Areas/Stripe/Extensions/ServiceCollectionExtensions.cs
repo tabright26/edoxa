@@ -29,6 +29,8 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Extensions
 
             services.AddTransient<TransferService>();
 
+            services.AddTransient<PaymentMethodService>();
+
             services.AddTransient<IStripeService, StripeService>();
         }
     }

@@ -24,21 +24,21 @@ export const connectStripePaymentMethods = (paymentMethodType: PaymentMethodType
   };
 
   const mapDispatchToProps = (dispatch: any) => {
-    const attachPaymentMethodAction = (paymentMethodId: string, customer: string) => dispatch(attachPaymentMethod(paymentMethodId, customer));
+    const attachPaymentMethodAction = (paymentMethodId: string) => dispatch(attachPaymentMethod(paymentMethodId));
     return {
       actions: {
-        loadPaymentMethods: () => dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", paymentMethodType)),
-        detachPaymentMethod: (paymentMethodId: string) => dispatch(detachPaymentMethod(paymentMethodId)).then(() => dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", paymentMethodType))),
+        loadPaymentMethods: () => dispatch(loadPaymentMethods(paymentMethodType)),
+        detachPaymentMethod: (paymentMethodId: string) => dispatch(detachPaymentMethod(paymentMethodId)).then(() => dispatch(loadPaymentMethods(paymentMethodType))),
         createPaymentMethod: (fields, stripe) =>
           stripe.createPaymentMethod(paymentMethodType).then(result => {
             if (result.paymentMethod) {
-              return attachPaymentMethodAction(result.paymentMethod.id, "cus_F5L8mRzm6YN5ma").then(() => dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", paymentMethodType)));
+              return attachPaymentMethodAction(result.paymentMethod.id).then(() => dispatch(loadPaymentMethods(paymentMethodType)));
             } else {
               return Promise.reject(result.error);
             }
           }),
         updatePaymentMethod: (paymentMethodId: string, data: any) =>
-          dispatch(updatePaymentMethod(paymentMethodId, data.card.exp_month, data.card.exp_year)).then(() => dispatch(loadPaymentMethods("cus_F5L8mRzm6YN5ma", paymentMethodType))),
+          dispatch(updatePaymentMethod(paymentMethodId, data.card.exp_month, data.card.exp_year)).then(() => dispatch(loadPaymentMethods(paymentMethodType))),
         showCreatePaymentMethodModal: () => dispatch(show(CREATE_PAYMENTMETHOD_MODAL)),
         showUpdatePaymentMethodModal: (paymentMethod: any) => dispatch(show(UPDATE_PAYMENTMETHOD_MODAL, { paymentMethod })),
         showDeletePaymentMethodModal: (paymentMethod: any) => dispatch(show(DELETE_PAYMENTMETHOD_MODAL, { paymentMethod }))
