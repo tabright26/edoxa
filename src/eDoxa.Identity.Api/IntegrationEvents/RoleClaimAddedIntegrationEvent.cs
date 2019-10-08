@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class RoleClaimAddedIntegrationEvent : IIntegrationEvent
+    public sealed class RoleClaimAddedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
         public RoleClaimAddedIntegrationEvent(string roleName, string claimType, string claimValue)

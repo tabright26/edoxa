@@ -8,8 +8,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.Payment.Api.Areas.Stripe.Fakers;
+using eDoxa.Payment.Domain.Services;
 
 using Moq;
 

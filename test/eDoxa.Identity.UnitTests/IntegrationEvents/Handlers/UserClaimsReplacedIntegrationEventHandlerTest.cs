@@ -39,7 +39,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             var handler = new UserClaimsReplacedIntegrationEventHandler(mockUserManager.Object);
 
             var integrationEvent = new UserClaimsReplacedIntegrationEvent(
-                Guid.NewGuid(),
+                new UserId(), 
                 1,
                 new Dictionary<string, string>
                 {

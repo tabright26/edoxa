@@ -1,13 +1,13 @@
 ﻿// Filename: ServiceBusPublisherExtensions.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
@@ -32,33 +32,37 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
 
         public static async Task PublishUserAccountDepositIntegrationEventAsync(
             this IServiceBusPublisher publisher,
-            Guid transactionId,
-            string transactionDescription,
-            string customerId,
+            UserId userId,
+            string email,
+            TransactionId transactionId,
+            string description,
             long amount
         )
         {
             await publisher.PublishAsync(
                 new UserAccountDepositIntegrationEvent(
+                    userId,
+                    email,
                     transactionId,
-                    transactionDescription,
-                    customerId,
+                    description,
                     amount));
         }
 
         public static async Task PublishUserAccountWithdrawalIntegrationEventAsync(
             this IServiceBusPublisher publisher,
-            Guid transactionId,
-            string transactionDescription,
-            string connectAccountId,
+            UserId userId,
+            string email,
+            TransactionId transactionId,
+            string description,
             long amount
         )
         {
             await publisher.PublishAsync(
                 new UserAccountWithdrawalIntegrationEvent(
+                    userId,
+                    email,
                     transactionId,
-                    transactionDescription,
-                    connectAccountId,
+                    description,
                     amount));
         }
     }

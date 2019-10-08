@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
@@ -30,12 +29,12 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
                     htmlMessage));
         }
 
-        public static async Task PublishUserTransactionFailedIntegrationEventAsync(this IServiceBusPublisher publisher, Guid transactionId)
+        public static async Task PublishUserTransactionFailedIntegrationEventAsync(this IServiceBusPublisher publisher, TransactionId transactionId)
         {
             await publisher.PublishAsync(new UserTransactionFailedIntegrationEvent(transactionId));
         }
 
-        public static async Task PublishUserTransactionSuccededIntegrationEventAsync(this IServiceBusPublisher publisher, Guid transactionId)
+        public static async Task PublishUserTransactionSuccededIntegrationEventAsync(this IServiceBusPublisher publisher, TransactionId transactionId)
         {
             await publisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(transactionId));
         }

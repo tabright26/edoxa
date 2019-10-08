@@ -1,5 +1,5 @@
 ﻿// Filename: DepositProcessedIntegrationEventHandlerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Abstractions;
@@ -85,6 +85,12 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
+                        var mockStripeCustomerSerivce = new Mock<IStripeCustomerService>();
+
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<eDoxa.Payment.Domain.Models.UserId>())).ReturnsAsync("CustomerId");
+
+                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
+
                         var mockStripeService = new Mock<IStripeService>();
 
                         mockStripeService.Setup(
@@ -120,10 +126,12 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
                         await integrationEventService.PublishAsync(
                             new UserAccountDepositIntegrationEvent(
+                                account.UserId,
+                                "noreply@edoxa.gg",
                                 moneyDepositTransaction.Id,
                                 moneyDepositTransaction.Description.Text,
-                                "cus_test",
-                                5000));
+                                5000
+                                ));
                     });
 
                 var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
@@ -143,6 +151,12 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
+                        var mockStripeCustomerSerivce = new Mock<IStripeCustomerService>();
+
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<eDoxa.Payment.Domain.Models.UserId>())).ReturnsAsync("CustomerId");
+
+                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
+
                         var mockStripeService = new Mock<IStripeService>();
 
                         mockStripeService.Setup(
@@ -178,9 +192,10 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
                         await integrationEventService.PublishAsync(
                             new UserAccountDepositIntegrationEvent(
+                                account.UserId,
+                                "noreply@edoxa.gg",
                                 moneyDepositTransaction.Id,
                                 moneyDepositTransaction.Description.Text,
-                                "cus_test",
                                 5000));
                     });
 

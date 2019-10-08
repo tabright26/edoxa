@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Payment.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class EmailSentIntegrationEvent : IIntegrationEvent
+    public sealed class EmailSentIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
         public EmailSentIntegrationEvent(

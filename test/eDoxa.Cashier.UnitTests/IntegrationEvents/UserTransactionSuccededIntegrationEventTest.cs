@@ -4,9 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Cashier.Api.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 using FluentAssertions;
 
@@ -22,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
         public void UserTransactionSuccededIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToTransactionSuccededEvent()
         {
             //Arrange
-            var transactionSuccededEvent = new UserTransactionSuccededIntegrationEvent(Guid.NewGuid());
+            var transactionSuccededEvent = new UserTransactionSuccededIntegrationEvent(new TransactionId());
 
             var serializedEvent = JsonConvert.SerializeObject(transactionSuccededEvent);
 

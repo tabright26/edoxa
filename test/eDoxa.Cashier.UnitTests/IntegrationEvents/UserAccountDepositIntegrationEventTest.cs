@@ -1,12 +1,12 @@
 ﻿// Filename: UserAccountDepositIntegrationEventTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Cashier.Api.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 using FluentAssertions;
 
@@ -23,9 +23,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
         {
             //Arrange
             var depositEvent = new UserAccountDepositIntegrationEvent(
-                Guid.NewGuid(),
-                "Test transaction",
-                "123",
+                new UserId(),
+                "noreply@edoxa.gg",
+                new TransactionId(),
+                "TransactionDescription",
                 123);
 
             var serializedEvent = JsonConvert.SerializeObject(depositEvent);

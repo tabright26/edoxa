@@ -6,6 +6,7 @@
 
 using System;
 
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
 
 using FluentAssertions;
@@ -22,7 +23,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var integrationEvent = new UserRoleRemovedIntegrationEvent(Guid.NewGuid(), "role");
+            var integrationEvent = new UserRoleRemovedIntegrationEvent(new UserId(), "role");
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 

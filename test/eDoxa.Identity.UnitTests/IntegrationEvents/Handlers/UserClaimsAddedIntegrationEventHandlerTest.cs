@@ -41,7 +41,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             var handler = new UserClaimsAddedIntegrationEventHandler(mockUserManager.Object);
 
             var integrationEvent = new UserClaimsAddedIntegrationEvent(
-                Guid.NewGuid(),
+                new UserId(), 
                 new Dictionary<string, string>
                 {
                     ["role"] = "admin"

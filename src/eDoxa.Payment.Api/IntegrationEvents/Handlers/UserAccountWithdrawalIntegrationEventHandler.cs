@@ -1,5 +1,5 @@
 ﻿// Filename: UserAccountWithdrawalIntegrationEventHandler.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,8 +7,8 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -17,21 +17,24 @@ using Stripe;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserAccountWithdrawalIntegrationEventHandler : IIntegrationEventHandler<UserAccountWithdrawalIntegrationEvent>
+    public sealed class UserAccountWithdrawalIntegrationEventHandler : IIntegrationEventHandler<UserAccountWithdrawalIntegrationEvent>
     {
         private readonly ILogger<UserAccountWithdrawalIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IStripeService _stripeService;
+        private readonly IStripeConnectAccountService _stripeConnectAccountService;
 
         public UserAccountWithdrawalIntegrationEventHandler(
             ILogger<UserAccountWithdrawalIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeService stripeService
+            IStripeService stripeService,
+            IStripeConnectAccountService stripeConnectAccountService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
             _stripeService = stripeService;
+            _stripeConnectAccountService = stripeConnectAccountService;
         }
 
         public async Task HandleAsync(UserAccountWithdrawalIntegrationEvent integrationEvent)
@@ -40,10 +43,12 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
+                var connectAccountId = await _stripeConnectAccountService.GetConnectAccountIdAsync(integrationEvent.UserId);
+
                 await _stripeService.CreateTransferAsync(
                     integrationEvent.TransactionId,
-                    integrationEvent.TransactionDescription,
-                    integrationEvent.ConnectAccountId,
+                    integrationEvent.Description,
+                    connectAccountId,
                     integrationEvent.Amount);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");

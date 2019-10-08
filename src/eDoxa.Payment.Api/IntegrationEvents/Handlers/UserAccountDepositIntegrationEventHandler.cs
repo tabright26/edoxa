@@ -1,5 +1,5 @@
 ﻿// Filename: UserAccountDepositIntegrationEventHandler.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,8 +7,8 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -17,21 +17,24 @@ using Stripe;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserAccountDepositIntegrationEventHandler : IIntegrationEventHandler<UserAccountDepositIntegrationEvent>
+    public sealed class UserAccountDepositIntegrationEventHandler : IIntegrationEventHandler<UserAccountDepositIntegrationEvent>
     {
         private readonly ILogger<UserAccountDepositIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IStripeService _stripeService;
+        private readonly IStripeCustomerService _stripeCustomerService;
 
         public UserAccountDepositIntegrationEventHandler(
             ILogger<UserAccountDepositIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeService stripeService
+            IStripeService stripeService,
+            IStripeCustomerService stripeCustomerService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
             _stripeService = stripeService;
+            _stripeCustomerService = stripeCustomerService;
         }
 
         public async Task HandleAsync(UserAccountDepositIntegrationEvent integrationEvent)
@@ -40,10 +43,12 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountDepositIntegrationEvent)}...");
 
+                var customerId = await _stripeCustomerService.GetCustomerIdAsync(integrationEvent.UserId);
+
                 await _stripeService.CreateInvoiceAsync(
                     integrationEvent.TransactionId,
-                    integrationEvent.TransactionDescription,
-                    integrationEvent.CustomerId,
+                    integrationEvent.Description,
+                    customerId,
                     integrationEvent.Amount);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountDepositIntegrationEvent)}.");

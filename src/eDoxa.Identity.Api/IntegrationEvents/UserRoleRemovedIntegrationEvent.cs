@@ -6,6 +6,7 @@
 
 using System;
 
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -14,17 +15,17 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserRoleRemovedIntegrationEvent : IIntegrationEvent
+    public sealed class UserRoleRemovedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserRoleRemovedIntegrationEvent(Guid userId, string roleName)
+        public UserRoleRemovedIntegrationEvent(UserId userId, string roleName)
         {
             UserId = userId;
             RoleName = roleName;
         }
 
         [JsonProperty]
-        public Guid UserId { get; }
+        public UserId UserId { get; }
 
         [JsonProperty]
         public string RoleName { get; }

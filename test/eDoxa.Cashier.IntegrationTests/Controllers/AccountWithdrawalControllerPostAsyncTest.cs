@@ -54,6 +54,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
             _httpClient = factory.CreateClient();
@@ -80,6 +81,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         {
             var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, new UserId().ToString()),
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
             _httpClient = factory.CreateClient();
@@ -105,6 +107,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
                 new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"));
 
             _httpClient = factory.CreateClient();

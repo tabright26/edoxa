@@ -38,7 +38,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserRoleRemovedIntegrationEventHandler(mockUserManager.Object);
 
-            var integrationEvent = new UserRoleRemovedIntegrationEvent(Guid.NewGuid(), "role");
+            var integrationEvent = new UserRoleRemovedIntegrationEvent(new UserId(), "role");
 
             // Act
             await handler.HandleAsync(integrationEvent);

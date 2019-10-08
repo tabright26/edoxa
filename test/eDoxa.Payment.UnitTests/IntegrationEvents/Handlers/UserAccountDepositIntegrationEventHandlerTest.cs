@@ -1,5 +1,5 @@
 ﻿// Filename: UserAccountDepositIntegrationEventHandlerTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
+using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -44,12 +45,17 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new UserAccountDepositIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object);
+            var mockCustomerService = new Mock<IStripeCustomerService>();
+
+            mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("CustomerId").Verifiable();
+
+            var handler = new UserAccountDepositIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object, mockCustomerService.Object);
 
             var integrationEvent = new UserAccountDepositIntegrationEvent(
-                Guid.NewGuid(),
-                "test",
-                "user",
+                new UserId(),
+                "noreply@edoxa.gg",
+                new TransactionId(),
+                "TransactionDescription",
                 100);
 
             // Act
@@ -68,6 +74,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<long>(),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
+
+            mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
         }
     }
 }

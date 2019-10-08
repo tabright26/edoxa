@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace eDoxa.Payment.Api.Areas.Stripe.Abstractions
+namespace eDoxa.Payment.Domain.Services
 {
     public interface IStripeService
     {

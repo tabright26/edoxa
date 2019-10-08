@@ -39,7 +39,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             var handler = new UserClaimsRemovedIntegrationEventHandler(mockUserManager.Object);
 
             var integrationEvent = new UserClaimsRemovedIntegrationEvent(
-                Guid.NewGuid(),
+                new UserId(), 
                 new Dictionary<string, string>
                 {
                     ["role"] = "admin"

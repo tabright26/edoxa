@@ -1,5 +1,5 @@
 ﻿// Filename: AccountWithdrawalControllerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountService.Setup(
                     accountService => accountService.WithdrawalAsync(
-                        It.IsAny<IMoneyAccount>(),
+                        It.IsAny<IAccount>(),
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
@@ -69,7 +69,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountService.Verify(
                 accountService => accountService.WithdrawalAsync(
-                    It.IsAny<IMoneyAccount>(),
+                    It.IsAny<IAccount>(),
                     It.IsAny<Money>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
@@ -86,7 +86,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountService.Setup(
                     accountService => accountService.WithdrawalAsync(
-                        It.IsAny<IMoneyAccount>(),
+                        It.IsAny<IAccount>(),
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
@@ -111,7 +111,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountService.Verify(
                 accountService => accountService.WithdrawalAsync(
-                    It.IsAny<IMoneyAccount>(),
+                    It.IsAny<IAccount>(),
                     It.IsAny<Money>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
@@ -130,7 +130,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountService.Setup(
                     accountService => accountService.WithdrawalAsync(
-                        It.IsAny<IMoneyAccount>(),
+                        It.IsAny<IAccount>(),
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
@@ -155,7 +155,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountService.Verify(
                 accountService => accountService.WithdrawalAsync(
-                    It.IsAny<IMoneyAccount>(),
+                    It.IsAny<IAccount>(),
                     It.IsAny<Money>(),
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),

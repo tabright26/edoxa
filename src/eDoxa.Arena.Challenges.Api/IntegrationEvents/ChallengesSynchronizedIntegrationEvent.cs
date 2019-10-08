@@ -9,7 +9,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.IntegrationEvents
 {
-    public class ChallengesSynchronizedIntegrationEvent : IIntegrationEvent
+    public sealed class ChallengesSynchronizedIntegrationEvent : IIntegrationEvent
     {
         public string Name => IntegrationEventNames.ArenaChallengesSynchronized;
     }
