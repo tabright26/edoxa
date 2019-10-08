@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Arena.Challenges.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class EmailSentIntegrationEvent : IIntegrationEvent
+    public sealed class EmailSentIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
         public EmailSentIntegrationEvent(

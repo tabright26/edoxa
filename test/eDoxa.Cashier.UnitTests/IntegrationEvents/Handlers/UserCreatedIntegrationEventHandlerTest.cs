@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents;
@@ -30,7 +29,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserCreatedIntegrationEventHandler(mockAccountRepository.Object);
 
-            var integrationEvent = new UserCreatedIntegrationEvent(Guid.NewGuid());
+            var integrationEvent = new UserCreatedIntegrationEvent(new UserId());
 
             // Act
             await handler.HandleAsync(integrationEvent);

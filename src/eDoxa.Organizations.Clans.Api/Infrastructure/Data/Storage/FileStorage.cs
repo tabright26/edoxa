@@ -6,12 +6,9 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
-using Bogus.DataSets;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Seedwork.Infrastructure.Extensions;

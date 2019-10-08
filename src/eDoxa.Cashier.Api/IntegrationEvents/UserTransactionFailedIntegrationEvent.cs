@@ -4,8 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -14,16 +13,16 @@ using Newtonsoft.Json;
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserTransactionFailedIntegrationEvent : IIntegrationEvent
+    public sealed class UserTransactionFailedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserTransactionFailedIntegrationEvent(Guid transactionId)
+        public UserTransactionFailedIntegrationEvent(TransactionId transactionId)
         {
             TransactionId = transactionId;
         }
 
         [JsonProperty]
-        public Guid TransactionId { get; }
+        public TransactionId TransactionId { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserTransactionFailed;

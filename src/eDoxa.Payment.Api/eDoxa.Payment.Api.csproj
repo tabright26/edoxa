@@ -47,4 +47,8 @@
     <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
 </Project>

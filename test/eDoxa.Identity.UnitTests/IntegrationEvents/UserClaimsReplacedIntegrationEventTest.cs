@@ -4,9 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
 
 using FluentAssertions;
@@ -24,7 +24,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
         {
             //Arrange
             var integrationEvent = new UserClaimsReplacedIntegrationEvent(
-                Guid.NewGuid(),
+                new UserId(), 
                 1,
                 new Dictionary<string, string>(),
                 new Dictionary<string, string>());

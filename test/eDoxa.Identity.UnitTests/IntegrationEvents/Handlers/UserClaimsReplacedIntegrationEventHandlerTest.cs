@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             var handler = new UserClaimsReplacedIntegrationEventHandler(mockUserManager.Object);
 
             var integrationEvent = new UserClaimsReplacedIntegrationEvent(
-                Guid.NewGuid(),
+                new UserId(), 
                 1,
                 new Dictionary<string, string>
                 {

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -44,7 +43,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserTransactionSuccededIntegrationEventHandler(mockTransactionRepository.Object);
 
-            var integrationEvent = new UserTransactionSuccededIntegrationEvent(Guid.NewGuid());
+            var integrationEvent = new UserTransactionSuccededIntegrationEvent(new TransactionId());
 
             // Act
             await handler.HandleAsync(integrationEvent);

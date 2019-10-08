@@ -37,8 +37,6 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return IdentityResources.Permissions;
 
-            yield return IdentityResources.Stripe;
-
             yield return IdentityResources.Games;
         }
 
@@ -112,7 +110,6 @@ namespace eDoxa.Identity.Api.Infrastructure
                     IdentityServerConstants.StandardScopes.Profile,
                     Scopes.Roles,
                     Scopes.Permissions,
-                    Scopes.Stripe,
                     Scopes.Games,
                     Scopes.IdentityApi,
                     Scopes.CashierApi,

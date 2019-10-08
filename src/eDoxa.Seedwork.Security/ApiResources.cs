@@ -82,7 +82,7 @@ namespace eDoxa.Seedwork.Security
             internal CashierResource() : base(
                 Security.Scopes.CashierApi,
                 "eDoxa Cashier API",
-                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims.Union(IdentityResources.Stripe.UserClaims)))
+                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
                 ApiSecrets = new HashSet<Secret>
                 {

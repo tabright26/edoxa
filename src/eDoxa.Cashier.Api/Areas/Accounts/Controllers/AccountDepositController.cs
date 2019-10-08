@@ -1,5 +1,5 @@
 ﻿// Filename: AccountDepositController.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             {
                 var userId = HttpContext.GetUserId();
 
-                var customerId = HttpContext.GetCustomerId()!;
+                var email = HttpContext.GetEmail();
 
                 var account = await _accountService.FindUserAccountAsync(userId);
 
@@ -57,7 +57,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
                     return this.NotFound("User's account not found.");
                 }
 
-                var result = await _accountService.DepositAsync(account, currency.Format(amount), customerId);
+                var result = await _accountService.DepositAsync(account, currency.Format(amount), email);
 
                 if (result.IsValid)
                 {

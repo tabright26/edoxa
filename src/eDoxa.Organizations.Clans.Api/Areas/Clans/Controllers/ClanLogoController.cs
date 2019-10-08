@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Organizations.Clans.Api.Extensions;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Services;
@@ -14,6 +13,7 @@ using eDoxa.Organizations.Clans.Domain.Services;
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
@@ -58,7 +58,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         ///     Upload clan logo.
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> PostAsync(ClanId clanId, [FromBody] ClanLogoPostRequest request)
+        public async Task<IActionResult> PostAsync(ClanId clanId, [FromForm] IFormFile logo)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                     return this.NotFound("Clan does not exist.");
                 }
 
-                var result = await _clanService.UploadLogoAsync(clan, userId, request.Logo);
+                var result = await _clanService.UploadLogoAsync(clan, userId, logo);
 
                 if (result.IsValid)
                 {

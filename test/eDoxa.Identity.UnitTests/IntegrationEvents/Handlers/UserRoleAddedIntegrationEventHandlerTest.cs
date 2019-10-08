@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
@@ -38,7 +37,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserRoleAddedIntegrationEventHandler(mockUserManager.Object);
 
-            var integrationEvent = new UserRoleAddedIntegrationEvent(Guid.NewGuid(), "role");
+            var integrationEvent = new UserRoleAddedIntegrationEvent(new UserId(), "role");
 
             // Act
             await handler.HandleAsync(integrationEvent);

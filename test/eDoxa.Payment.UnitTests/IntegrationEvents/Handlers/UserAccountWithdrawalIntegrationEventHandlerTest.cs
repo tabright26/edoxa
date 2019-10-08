@@ -1,5 +1,5 @@
 // Filename: UserAccountWithdrawalIntegrationEventHandlerTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
+using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -44,12 +45,17 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object);
+            var mockConnectAccountService = new Mock<IStripeConnectAccountService>();
+
+            mockConnectAccountService.Setup(customerService => customerService.GetConnectAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
+
+            var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object, mockConnectAccountService.Object);
 
             var integrationEvent = new UserAccountWithdrawalIntegrationEvent(
-                Guid.NewGuid(),
+                new UserId(),
+                "noreply@edoxa.gg",
+                new TransactionId(),
                 "test",
-                "user",
                 100);
 
             // Act
@@ -68,6 +74,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<long>(),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
+
+            mockConnectAccountService.Verify(customerService => customerService.GetConnectAccountIdAsync(It.IsAny<UserId>()), Times.Once);
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿// Filename: UserAccountDepositIntegrationEvent.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
+using eDoxa.Payment.Domain.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -14,30 +13,35 @@ using Newtonsoft.Json;
 namespace eDoxa.Payment.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserAccountDepositIntegrationEvent : IIntegrationEvent
+    public sealed class UserAccountDepositIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
         public UserAccountDepositIntegrationEvent(
-            Guid transactionId,
-            string transactionDescription,
-            string customerId,
+            UserId userId,
+            string email,
+            TransactionId transactionId,
+            string description,
             long amount
         )
         {
+            UserId = userId;
+            Email = email;
             TransactionId = transactionId;
-            TransactionDescription = transactionDescription;
-            CustomerId = customerId;
+            Description = description;
             Amount = amount;
         }
 
         [JsonProperty]
-        public Guid TransactionId { get; }
+        public UserId UserId { get; }
 
         [JsonProperty]
-        public string TransactionDescription { get; }
+        public string Email { get; }
 
         [JsonProperty]
-        public string CustomerId { get; }
+        public TransactionId TransactionId { get; }
+
+        [JsonProperty]
+        public string Description { get; }
 
         [JsonProperty]
         public long Amount { get; }

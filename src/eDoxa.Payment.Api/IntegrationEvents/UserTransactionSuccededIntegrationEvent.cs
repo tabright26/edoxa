@@ -4,8 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
+using eDoxa.Payment.Domain.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -14,16 +13,16 @@ using Newtonsoft.Json;
 namespace eDoxa.Payment.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserTransactionSuccededIntegrationEvent : IIntegrationEvent
+    public sealed class UserTransactionSuccededIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserTransactionSuccededIntegrationEvent(Guid transactionId)
+        public UserTransactionSuccededIntegrationEvent(TransactionId transactionId)
         {
             TransactionId = transactionId;
         }
 
         [JsonProperty]
-        public Guid TransactionId { get; }
+        public TransactionId TransactionId { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserTransactionSucceded;

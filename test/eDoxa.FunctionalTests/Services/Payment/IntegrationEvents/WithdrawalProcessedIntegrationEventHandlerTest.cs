@@ -1,5 +1,5 @@
 ﻿// Filename: WithdrawalProcessedIntegrationEventHandlerTest.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,7 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Abstractions;
@@ -30,6 +30,8 @@ using Moq;
 using Stripe;
 
 using Xunit;
+
+using Account = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account;
 
 namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 {
@@ -57,8 +59,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         var transactionRepository = scope.GetRequiredService<ITransactionRepository>();
 
                         return await transactionRepository.FindTransactionAsync(transactionId);
-                    }
-                );
+                    });
 
                 if (transaction == null || transaction.Status == TransactionStatus.Pending)
                 {
@@ -75,15 +76,20 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
             return null;
         }
 
-        [Fact]
-
         // TODO: The method name must be written as a test scenario.
+        [Fact]
         public async Task TransactionStatus_ShouldBeFailed()
         {
             using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
+                        var mockStripeCustomerSerivce = new Mock<IStripeConnectAccountService>();
+
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetConnectAccountIdAsync(It.IsAny<eDoxa.Payment.Domain.Models.UserId>())).ReturnsAsync("ConnectAccountId");
+
+                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeConnectAccountService>();
+
                         var mockStripeService = new Mock<IStripeService>();
 
                         mockStripeService.Setup(
@@ -92,19 +98,15 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                                     It.IsAny<string>(),
                                     It.IsAny<string>(),
                                     It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()
-                                )
-                            )
+                                    It.IsAny<CancellationToken>()))
                             .Throws<StripeException>();
 
                         container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
-                    }
-                )
-            );
+                    }));
 
             using (paymentWebApplicationFactory.CreateClient())
             {
-                var account = new eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account(new UserId());
+                var account = new Account(new UserId());
                 var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                 account.CreateTransaction(moneyDepositTransaction);
 
@@ -114,8 +116,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         var accountRepository = scope.GetRequiredService<IAccountRepository>();
                         accountRepository.Create(account);
                         await accountRepository.CommitAsync();
-                    }
-                );
+                    });
 
                 await _testServer.UsingScopeAsync(
                     async scope =>
@@ -123,10 +124,13 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
                         await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "acct_test", 5000)
-                        );
-                    }
-                );
+                            new UserAccountWithdrawalIntegrationEvent(
+                                account.UserId,
+                                "noreply@edoxa.gg",
+                                moneyDepositTransaction.Id,
+                                moneyDepositTransaction.Description.Text,
+                                5000));
+                    });
 
                 var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
 
@@ -136,15 +140,20 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
             }
         }
 
-        [Fact]
-
         // TODO: The method name must be written as a test scenario.
+        [Fact]
         public async Task TransactionStatus_ShouldBeSucceded()
         {
             using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
+                        var mockStripeCustomerSerivce = new Mock<IStripeConnectAccountService>();
+
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetConnectAccountIdAsync(It.IsAny<eDoxa.Payment.Domain.Models.UserId>())).ReturnsAsync("ConnectAccountId");
+
+                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeConnectAccountService>();
+
                         var mockStripeService = new Mock<IStripeService>();
 
                         mockStripeService.Setup(
@@ -153,19 +162,15 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                                     It.IsAny<string>(),
                                     It.IsAny<string>(),
                                     It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()
-                                )
-                            )
+                                    It.IsAny<CancellationToken>()))
                             .Returns(Task.CompletedTask);
 
                         container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
-                    }
-                )
-            );
+                    }));
 
             using (paymentWebApplicationFactory.CreateClient())
             {
-                var account = new eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account(new UserId());
+                var account = new Account(new UserId());
                 var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                 account.CreateTransaction(moneyDepositTransaction);
 
@@ -175,8 +180,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         var accountRepository = scope.GetRequiredService<IAccountRepository>();
                         accountRepository.Create(account);
                         await accountRepository.CommitAsync();
-                    }
-                );
+                    });
 
                 await _testServer.UsingScopeAsync(
                     async scope =>
@@ -184,10 +188,13 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
                         await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(moneyDepositTransaction.Id, moneyDepositTransaction.Description.Text, "acct_test", 5000)
-                        );
-                    }
-                );
+                            new UserAccountWithdrawalIntegrationEvent(
+                                account.UserId,
+                                "noreply@edoxa.gg",
+                                moneyDepositTransaction.Id,
+                                moneyDepositTransaction.Description.Text,
+                                5000));
+                    });
 
                 var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
 

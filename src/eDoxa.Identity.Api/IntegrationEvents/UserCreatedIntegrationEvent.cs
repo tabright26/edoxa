@@ -4,8 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -14,16 +13,16 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserCreatedIntegrationEvent : IIntegrationEvent
+    public sealed class UserCreatedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserCreatedIntegrationEvent(Guid userId)
+        public UserCreatedIntegrationEvent(UserId userId)
         {
             UserId = userId;
         }
 
         [JsonProperty]
-        public Guid UserId { get; }
+        public UserId UserId { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserCreated;

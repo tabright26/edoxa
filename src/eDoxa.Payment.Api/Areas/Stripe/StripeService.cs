@@ -1,5 +1,5 @@
 ﻿// Filename: StripeService.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-10-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Areas.Stripe.Abstractions;
+using eDoxa.Payment.Domain.Services;
 
 using Microsoft.Extensions.Options;
 
@@ -54,32 +54,32 @@ namespace eDoxa.Payment.Api.Areas.Stripe
             CancellationToken cancellationToken = default
         )
         {
-            var options = new AccountCreateOptions
-            {
-                Individual = new PersonCreateOptions
+            var account = await _accountService.CreateAsync(
+                new AccountCreateOptions
                 {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Email = email,
-                    Dob = new DobOptions
+                    Individual = new PersonCreateOptions
                     {
-                        Day = day,
-                        Month = month,
-                        Year = year
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Email = email,
+                        Dob = new DobOptions
+                        {
+                            Day = day,
+                            Month = month,
+                            Year = year
+                        }
+                    },
+                    Email = email,
+                    Country = _stripeOptions.Country,
+                    DefaultCurrency = _stripeOptions.Currency,
+                    BusinessType = _stripeOptions.BusinessType,
+                    Type = _stripeOptions.AccountType,
+                    Metadata = new Dictionary<string, string>
+                    {
+                        ["userId"] = userId.ToString()
                     }
                 },
-                Email = email,
-                Country = _stripeOptions.Country,
-                DefaultCurrency = _stripeOptions.Currency,
-                BusinessType = _stripeOptions.BusinessType,
-                Type = _stripeOptions.AccountType,
-                Metadata = new Dictionary<string, string>
-                {
-                    ["userId"] = userId.ToString()
-                }
-            };
-
-            var account = await _accountService.CreateAsync(options, cancellationToken: cancellationToken);
+                cancellationToken: cancellationToken);
 
             return account.Id;
         }
@@ -91,17 +91,16 @@ namespace eDoxa.Payment.Api.Areas.Stripe
             CancellationToken cancellationToken = default
         )
         {
-            var options = new CustomerCreateOptions
-            {
-                Email = email,
-                Metadata = new Dictionary<string, string>
+            var customer = await _customerService.CreateAsync(
+                new CustomerCreateOptions
                 {
-                    ["userId"] = userId.ToString(),
-                    ["connectAccountId"] = connectAccountId
-                }
-            };
-
-            var customer = await _customerService.CreateAsync(options, cancellationToken: cancellationToken);
+                    Email = email,
+                    Metadata = new Dictionary<string, string>
+                    {
+                        ["userId"] = userId.ToString()
+                    }
+                },
+                cancellationToken: cancellationToken);
 
             return customer.Id;
         }

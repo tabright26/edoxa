@@ -14,7 +14,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.IntegrationEvents.Handlers
 {
-    public class ChallengesSynchronizedIntegrationEventHandler : IIntegrationEventHandler<ChallengesSynchronizedIntegrationEvent>
+    public sealed class ChallengesSynchronizedIntegrationEventHandler : IIntegrationEventHandler<ChallengesSynchronizedIntegrationEvent>
     {
         private readonly IChallengeService _challengeService;
 

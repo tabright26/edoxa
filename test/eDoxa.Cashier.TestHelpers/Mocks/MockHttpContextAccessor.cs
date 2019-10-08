@@ -13,8 +13,6 @@ using Microsoft.AspNetCore.Http;
 
 using Moq;
 
-using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
-
 namespace eDoxa.Cashier.TestHelpers.Mocks
 {
     public sealed class MockHttpContextAccessor : Mock<IHttpContextAccessor>
@@ -26,8 +24,7 @@ namespace eDoxa.Cashier.TestHelpers.Mocks
                     new HashSet<Claim>
                     {
                         new Claim(JwtClaimTypes.Subject, "5C43502B-FCE8-4235-8557-C22D2A638AD7"),
-                        new Claim(ClaimTypes.StripeConnectAccountId, "acct_test"),
-                        new Claim(ClaimTypes.StripeCustomerId, "cus_test")
+                        new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg")
                     })
                 .Verifiable();
         }
