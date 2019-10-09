@@ -21,20 +21,20 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     {
         private readonly ILogger<UserAccountWithdrawalIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IStripeService _stripeService;
-        private readonly IStripeConnectAccountService _stripeConnectAccountService;
+        private readonly IStripeTempService _stripeTempService;
+        private readonly IStripeAccountService _stripeAccountService;
 
         public UserAccountWithdrawalIntegrationEventHandler(
             ILogger<UserAccountWithdrawalIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeService stripeService,
-            IStripeConnectAccountService stripeConnectAccountService
+            IStripeTempService stripeTempService,
+            IStripeAccountService stripeAccountService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
-            _stripeService = stripeService;
-            _stripeConnectAccountService = stripeConnectAccountService;
+            _stripeTempService = stripeTempService;
+            _stripeAccountService = stripeAccountService;
         }
 
         public async Task HandleAsync(UserAccountWithdrawalIntegrationEvent integrationEvent)
@@ -43,9 +43,9 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
-                var connectAccountId = await _stripeConnectAccountService.GetConnectAccountIdAsync(integrationEvent.UserId);
+                var connectAccountId = await _stripeAccountService.GetConnectAccountIdAsync(integrationEvent.UserId);
 
-                await _stripeService.CreateTransferAsync(
+                await _stripeTempService.CreateTransferAsync(
                     integrationEvent.TransactionId,
                     integrationEvent.Description,
                     connectAccountId,

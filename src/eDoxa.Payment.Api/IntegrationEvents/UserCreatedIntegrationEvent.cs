@@ -4,13 +4,13 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Payment.Domain.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Identity.Api.IntegrationEvents
+namespace eDoxa.Payment.Api.IntegrationEvents
 {
     [JsonObject]
     public sealed class UserCreatedIntegrationEvent : IIntegrationEvent

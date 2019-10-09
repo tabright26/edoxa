@@ -10,26 +10,8 @@ using System.Threading.Tasks;
 
 namespace eDoxa.Payment.Domain.Services
 {
-    public interface IStripeService
+    public interface IStripeTempService
     {
-        Task<string> CreateAccountAsync(
-            Guid userId,
-            string email,
-            string firstName,
-            string lastName,
-            int year,
-            int month,
-            int day,
-            CancellationToken cancellationToken = default
-        );
-
-        Task<string> CreateCustomerAsync(
-            Guid userId,
-            string connectAccountId,
-            string email,
-            CancellationToken cancellationToken = default
-        );
-
         Task CreateInvoiceAsync(
             Guid transactionId,
             string transactionDescription,
