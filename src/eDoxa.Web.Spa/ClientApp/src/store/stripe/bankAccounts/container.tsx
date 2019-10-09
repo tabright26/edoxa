@@ -1,8 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { show } from "redux-modal";
-import { CREATE_BANK_ACCOUNT_MODAL } from "modals";
-import { loadBankAccounts, createBankAccount, deleteBankAccount, updateBankAccount } from "store/stripe/bankAccounts/actions";
+import { loadBankAccounts, changeBankAccount } from "store/stripe/bankAccounts/actions";
 import { AppState } from "store/types";
 
 export const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<any>) => {
@@ -17,7 +15,7 @@ export const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<
   const mapStateToProps = (state: AppState) => {
     return {
       bankAccounts: state.stripe.bankAccounts,
-      hasBankAccount: state.stripe.bankAccounts.data.lenth
+      hasBankAccount: state.stripe.bankAccounts.data.length
     };
   };
 
@@ -25,10 +23,24 @@ export const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<
     return {
       actions: {
         loadBankAccounts: () => dispatch(loadBankAccounts()),
-        createBankAccount: (data: any) => dispatch(createBankAccount(data)).then(() => dispatch(loadBankAccounts())),
-        updateBankAccount: (bankAccountId: string, data: any) => dispatch(updateBankAccount(bankAccountId, data)).then(() => dispatch(loadBankAccounts())),
-        deleteBankAccount: (bankAccountId: string) => dispatch(deleteBankAccount(bankAccountId)).then(() => dispatch(loadBankAccounts())),
-        showCreateBankAccountModal: () => dispatch(show(CREATE_BANK_ACCOUNT_MODAL))
+        changeBankAccount: (fields, stripe) => {
+          return stripe
+            .createToken("bank_account", {
+              country: fields.country,
+              account_holder_type: "individual",
+              account_holder_name: fields.accountHolderName,
+              routing_number: fields.routingNumber,
+              account_number: fields.accountNumber, 
+              currency: "usd"
+            })
+            .then(result => {
+              if (result.token) {
+                return dispatch(changeBankAccount(result.token.id)).then(() => dispatch(loadBankAccounts()));
+              } else {
+                return Promise.reject(result.error);
+              }
+            });
+        }
       }
     };
   };

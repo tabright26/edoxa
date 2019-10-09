@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadLogo, updateLogo } from "store/organizations/logos/actions";
 import { AppState } from "store/types";

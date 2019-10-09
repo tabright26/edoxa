@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadInvitationsWithClanId, loadInvitationsWithUserId, loadInvitation, addInvitation, acceptInvitation, declineInvitation } from "store/organizations/invitations/actions";
 import { AppState } from "store/types";

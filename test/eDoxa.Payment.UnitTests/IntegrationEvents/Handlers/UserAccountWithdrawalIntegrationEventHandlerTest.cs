@@ -47,7 +47,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var mockConnectAccountService = new Mock<IStripeAccountService>();
 
-            mockConnectAccountService.Setup(customerService => customerService.GetConnectAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
+            mockConnectAccountService.Setup(customerService => customerService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
             var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object, mockConnectAccountService.Object);
 
@@ -75,7 +75,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<CancellationToken>()),
                 Times.Once);
 
-            mockConnectAccountService.Verify(customerService => customerService.GetConnectAccountIdAsync(It.IsAny<UserId>()), Times.Once);
+            mockConnectAccountService.Verify(customerService => customerService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
         }
     }
 }

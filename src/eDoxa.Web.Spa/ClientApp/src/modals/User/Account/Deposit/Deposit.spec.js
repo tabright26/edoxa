@@ -1,5 +1,5 @@
 import React from "react";
-import Create from "./Create";
+import Deposit from "./Deposit";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 
@@ -19,7 +19,7 @@ it("renders correctly", () => {
           subscribe: () => {}
         }}
       >
-        <Create />
+        <Deposit />
       </Provider>
     )
     .toJSON();

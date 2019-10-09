@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using Stripe;
@@ -21,11 +19,11 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             _accountService = accountService;
         }
 
-        public async Task<IActionResult> GetAsync()
-        {
+        //public async Task<IActionResult> GetAsync()
+        //{
             
 
-            return this.Ok();
-        }
+        //    return this.Ok();
+        //}
     }
 }

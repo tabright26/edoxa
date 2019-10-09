@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadMembers, kickMember, leaveClan } from "store/organizations/members/actions";
 import { AppState } from "store/types";

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadClans, loadClan, addClan } from "store/organizations/clans/actions";
 import { AppState } from "store/types";

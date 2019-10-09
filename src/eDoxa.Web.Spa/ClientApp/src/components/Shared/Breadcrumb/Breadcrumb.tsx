@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import BreadcrumbMoney from "./Money";
 import BreadcrumbToken from "./Token";
 import { connectUser } from "store/user/container";

@@ -1,5 +1,5 @@
 ﻿// Filename: IStripeService.cs
-// Date Created: --
+// Date Created: 2019-10-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
 
-namespace eDoxa.Payment.Api.Areas.Stripe.Services
+namespace eDoxa.Payment.Domain.Services
 {
     public interface IStripeService
     {
-        Task CreateReferenceAsync(UserId userId, string customerId, string connectAccountId);
+        Task CreateReferenceAsync(UserId userId, string customerId, string accountId);
 
         Task<bool> ReferenceExistsAsync(UserId userId);
     }

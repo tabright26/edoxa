@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
 using eDoxa.Payment.Domain.Repositories;
+using eDoxa.Payment.Domain.Services;
 
 namespace eDoxa.Payment.Api.Areas.Stripe.Services
 {
@@ -20,9 +21,9 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             _stripeRepository = stripeRepository;
         }
 
-        public async Task CreateReferenceAsync(UserId userId, string customerId, string connectAccountId)
+        public async Task CreateReferenceAsync(UserId userId, string customerId, string accountId)
         {
-            _stripeRepository.Create(new StripeReference(userId, customerId, connectAccountId));
+            _stripeRepository.Create(new StripeReference(userId, customerId, accountId));
 
             await _stripeRepository.UnitOfWork.CommitAsync();
         }

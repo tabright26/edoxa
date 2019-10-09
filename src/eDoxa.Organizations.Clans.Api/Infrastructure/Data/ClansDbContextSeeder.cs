@@ -37,9 +37,7 @@ namespace eDoxa.Organizations.Clans.Api.Infrastructure.Data
         {
             if (!_context.Clans.Any())
             {
-                var clans = FileStorage.Clans;
-
-                foreach (var clan in clans)
+                foreach (var clan in FileStorage.Clans)
                 {
                     _clanRepository.Create(clan);
                 }

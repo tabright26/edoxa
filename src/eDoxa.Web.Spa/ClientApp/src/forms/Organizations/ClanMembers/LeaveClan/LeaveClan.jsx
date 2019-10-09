@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, FormGroup, Form } from "reactstrap";
+import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import { LEAVE_CLAN_FORM } from "forms";

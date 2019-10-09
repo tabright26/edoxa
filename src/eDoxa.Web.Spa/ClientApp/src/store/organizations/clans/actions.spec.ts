@@ -5,7 +5,7 @@ describe("clans actions", () => {
   it("should create an action to get all clans", () => {
     const expectedType = [LOAD_CLANS, LOAD_CLANS_SUCCESS, LOAD_CLANS_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = "/organizations/api/clans";
+    const expectedUrl = "/organizations/clans/api/clans";
 
     const actionCreator = loadClans();
 

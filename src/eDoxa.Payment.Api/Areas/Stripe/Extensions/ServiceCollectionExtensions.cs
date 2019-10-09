@@ -31,6 +31,8 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Extensions
 
             services.AddTransient<PaymentMethodService>();
 
+            services.AddTransient<ExternalAccountService>();
+
             services.AddTransient<IStripeTempService, StripeTempService>();
         }
     }

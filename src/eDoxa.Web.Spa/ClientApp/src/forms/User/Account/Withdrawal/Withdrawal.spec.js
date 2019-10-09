@@ -1,5 +1,5 @@
 import React from "react";
-import Create from "./Create";
+import Withdrawal from "./Withdrawal";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 
@@ -7,7 +7,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={{ getState: () => {}, dispatch: action => {}, subscribe: () => {} }}>
-        <Create />
+        <Withdrawal initialValues={{ amounts: [] }} />
       </Provider>
     )
     .toJSON();

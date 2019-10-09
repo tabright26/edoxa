@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Card, CardHeader } from "reactstrap";
 import { connectClans } from "store/organizations/clans/container";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import ClansItem from "./ClanItem";
 
 import ClanModal from "modals/Organizations/Clan";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
-import { now } from "moment";
 
 const ClansIndex = ({ actions, clans, userClanId }) => {
   const [searchValue, setSearchValue] = useState("");

@@ -24,14 +24,14 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             _stripeRepository = stripeRepository;
         }
 
-        public async Task<string> GetConnectAccountIdAsync(UserId userId)
+        public async Task<string> GetAccountIdAsync(UserId userId)
         {
             var reference = await _stripeRepository.GetReferenceAsync(userId);
 
             return reference.ConnectAccountId;
         }
 
-        public async Task<string?> FindConnectAccountIdAsync(UserId userId)
+        public async Task<string?> FindAccountIdAsync(UserId userId)
         {
             var reference = await _stripeRepository.FindReferenceAsync(userId);
 

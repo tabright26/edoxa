@@ -43,7 +43,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
-                var connectAccountId = await _stripeAccountService.GetConnectAccountIdAsync(integrationEvent.UserId);
+                var connectAccountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
 
                 await _stripeTempService.CreateTransferAsync(
                     integrationEvent.TransactionId,
