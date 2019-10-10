@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { Badge, Col } from "reactstrap";
+import { Col } from "reactstrap";
 
 import MembersForm from "forms/Organizations/ClanMembers";
 

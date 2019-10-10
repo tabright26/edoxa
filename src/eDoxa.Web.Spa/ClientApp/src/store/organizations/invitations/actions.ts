@@ -35,7 +35,7 @@ export function loadInvitationsWithUserId(userId: string): InvitationsActionCrea
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/invitations?clanId=${userId}`
+        url: `/organizations/clans/api/invitations?userId=${userId}`
       }
     }
   };

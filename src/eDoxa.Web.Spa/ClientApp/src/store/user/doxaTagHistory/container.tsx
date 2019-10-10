@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadDoxaTagHistory, changeDoxaTag } from "store/user/doxaTagHistory/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, doxaTag, ...attributes }) => {
@@ -12,7 +12,7 @@ export const connectUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<
     return <ConnectedComponent actions={actions} doxaTag={doxaTag} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     const doxaTagHistory = state.user.doxaTagHistory.sort((left, right) => (left.timestamp < right.timestamp ? 1 : -1));
     return {
       doxaTag: doxaTagHistory[0] || null

@@ -1,5 +1,5 @@
 import React from "react";
-import { Label, FormGroup, Form, Badge } from "reactstrap";
+import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";

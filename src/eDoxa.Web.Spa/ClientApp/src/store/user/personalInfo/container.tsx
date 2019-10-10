@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "store/user/personalInfo/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectUserPersonalInfo = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, personalInfo, ...attributes }) => {
@@ -12,7 +12,7 @@ export const connectUserPersonalInfo = (ConnectedComponent: FunctionComponent<an
     return <ConnectedComponent actions={actions} personalInfo={personalInfo} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       personalInfo: state.user.personalInfo
     };

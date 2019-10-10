@@ -41,7 +41,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe
         private readonly Mock<InvoiceService> _mockInvoiceService;
         private readonly Mock<TransferService> _mockTransferService;
 
-        private StripeService CreateStripeService()
+        private StripeTempService CreateStripeService()
         {
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<StripeOptions>>();
 
@@ -53,7 +53,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe
                         TaxRateIds = Array.Empty<string>().ToList()
                     });
 
-            return new StripeService(
+            return new StripeTempService(
                 mockOptionsSnapshot.Object,
                 _mockAccountService.Object,
                 _mockCustomerService.Object,
@@ -62,62 +62,62 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe
                 _mockTransferService.Object);
         }
 
-        [Fact]
-        public async Task CreateAccountAsync_WhenValid_ShouldBeCompletedTask()
-        {
-            // Arrange
-            var accountFaker = new AccountFaker();
+        //[Fact]
+        //public async Task CreateAccountAsync_WhenValid_ShouldBeCompletedTask()
+        //{
+        //    // Arrange
+        //    var accountFaker = new AccountFaker();
 
-            var account = accountFaker.FakeAccount();
+        //    var account = accountFaker.FakeAccount();
 
-            _mockAccountService.Setup(mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(account)
-                .Verifiable();
+        //    _mockAccountService.Setup(mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(account)
+        //        .Verifiable();
 
-            var service = this.CreateStripeService();
+        //    var service = this.CreateStripeService();
 
-            // Act
-            await service.CreateAccountAsync(
-                Guid.NewGuid(),
-                account.Individual.Email,
-                account.Individual.FirstName,
-                account.Individual.LastName,
-                1,
-                1,
-                2000);
+        //    // Act
+        //    await service.CreateAccountAsync(
+        //        Guid.NewGuid(),
+        //        account.Individual.Email,
+        //        account.Individual.FirstName,
+        //        account.Individual.LastName,
+        //        1,
+        //        1,
+        //        2000);
 
-            // Assert
-            _mockAccountService.Verify(
-                mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-        }
+        //    // Assert
+        //    _mockAccountService.Verify(
+        //        mock => mock.CreateAsync(It.IsAny<AccountCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+        //        Times.Once);
+        //}
 
-        [Fact]
-        public async Task CreateCustomerAsync_WhenValid_ShouldBeCompletedTask()
-        {
-            // Arrange
-            var accountFaker = new AccountFaker();
+        //[Fact]
+        //public async Task CreateCustomerAsync_WhenValid_ShouldBeCompletedTask()
+        //{
+        //    // Arrange
+        //    var accountFaker = new AccountFaker();
 
-            var account = accountFaker.FakeAccount();
+        //    var account = accountFaker.FakeAccount();
 
-            var customerFaker = new CustomerFaker();
+        //    var customerFaker = new CustomerFaker();
 
-            var customer = customerFaker.FakeCustomer();
+        //    var customer = customerFaker.FakeCustomer();
 
-            _mockCustomerService.Setup(mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(customer)
-                .Verifiable();
+        //    _mockCustomerService.Setup(mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(customer)
+        //        .Verifiable();
 
-            var service = this.CreateStripeService();
+        //    var service = this.CreateStripeService();
 
-            // Act
-            await service.CreateCustomerAsync(Guid.NewGuid(), account.Id, customer.Email);
+        //    // Act
+        //    await service.CreateCustomerAsync(Guid.NewGuid(), account.Id, customer.Email);
 
-            // Assert
-            _mockCustomerService.Verify(
-                mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-        }
+        //    // Assert
+        //    _mockCustomerService.Verify(
+        //        mock => mock.CreateAsync(It.IsAny<CustomerCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+        //        Times.Once);
+        //}
 
         [Fact]
         public async Task CreateInvoiceAsync_WhenValid_ShouldBeCompletedTask()

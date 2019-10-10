@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 
 export const LOAD_DOXATAG_HISTORY = "LOAD_DOXATAG_HISTORY";
 export const LOAD_DOXATAG_HISTORY_SUCCESS = "LOAD_DOXATAG_HISTORY_SUCCESS";

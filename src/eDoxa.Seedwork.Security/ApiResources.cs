@@ -52,7 +52,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class OrganizationsClansResource : ApiResource
         {
             internal OrganizationsClansResource() : base(
-                Security.Scopes.OrganizationsClans,
+                Security.Scopes.OrganizationsClansApi,
                 "eDoxa Organizations Clans API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 
 import { connectMembers } from "store/organizations/members/container";

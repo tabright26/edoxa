@@ -1,6 +1,6 @@
 import React from "react";
 import { FormGroup, Form } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
+import { reduxForm } from "redux-form";
 import ImageUploader from "react-images-upload";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";

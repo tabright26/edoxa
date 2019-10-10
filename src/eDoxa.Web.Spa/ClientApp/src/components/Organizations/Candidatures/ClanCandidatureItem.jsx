@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Badge, Col } from "reactstrap";
+import { Col } from "reactstrap";
 
 import CandidatureForm from "forms/Organizations/Candidatures";
 

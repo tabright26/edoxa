@@ -1,16 +1,22 @@
-import React, { FunctionComponent } from "react";
+import React from "react";
 import BreadcrumbMoney from "./Money";
 import BreadcrumbToken from "./Token";
+import { connectUser } from "store/user/container";
 
-const Breadcrumb: FunctionComponent = () => (
-  <nav className="breadcrumb d-flex">
-    <div className="ml-auto">
-      <BreadcrumbMoney />
-    </div>
-    <div className="ml-3">
-      <BreadcrumbToken />
-    </div>
-  </nav>
-);
+const Breadcrumb: any = ({ isAuthenticated }) => {
+  if (isAuthenticated) {
+    return (
+      <nav className="breadcrumb d-flex">
+        <div className="ml-auto">
+          <BreadcrumbMoney />
+        </div>
+        <div className="ml-3">
+          <BreadcrumbToken />
+        </div>
+      </nav>
+    );
+  }
+  return <></>;
+};
 
-export default Breadcrumb;
+export default connectUser(Breadcrumb);

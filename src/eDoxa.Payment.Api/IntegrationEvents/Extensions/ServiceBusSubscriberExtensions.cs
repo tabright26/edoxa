@@ -13,6 +13,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
+            subscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
             subscriber.Subscribe<UserAccountDepositIntegrationEvent, UserAccountDepositIntegrationEventHandler>();
             subscriber.Subscribe<UserAccountWithdrawalIntegrationEvent, UserAccountWithdrawalIntegrationEventHandler>();
         }

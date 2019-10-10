@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
 using eDoxa.Payment.Domain.Repositories;
+using eDoxa.Seedwork.Domain;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,13 @@ namespace eDoxa.Payment.Infrastructure.Repositories
             _context = context;
         }
 
+        public IUnitOfWork UnitOfWork => _context;
+
+        public void Create(StripeReference reference)
+        {
+            _context.StripeReferences.Add(reference);
+        }
+
         public async Task<StripeReference> GetReferenceAsync(UserId userId)
         {
             return await _context.StripeReferences.SingleAsync(reference => reference.UserId == userId);
@@ -30,6 +38,11 @@ namespace eDoxa.Payment.Infrastructure.Repositories
         public async Task<StripeReference?> FindReferenceAsync(UserId userId)
         {
             return await _context.StripeReferences.SingleOrDefaultAsync(reference => reference.UserId == userId);
+        }
+
+        public async Task<bool> ReferenceExistsAsync(UserId userId)
+        {
+            return await _context.StripeReferences.AnyAsync(reference => reference.UserId == userId);
         }
     }
 }

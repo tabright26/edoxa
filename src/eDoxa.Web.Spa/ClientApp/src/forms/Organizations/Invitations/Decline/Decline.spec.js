@@ -1,5 +1,5 @@
 import React from "react";
-import Delete from "./Delete";
+import Decline from "./Decline";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 
@@ -7,7 +7,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={{ getState: () => {}, dispatch: action => {}, subscribe: () => {} }}>
-        <Delete />
+        <Decline />
       </Provider>
     )
     .toJSON();

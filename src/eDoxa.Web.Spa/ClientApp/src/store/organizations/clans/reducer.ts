@@ -1,5 +1,5 @@
 import { SubmissionError } from "redux-form";
-import { AxiosErrorData } from "interfaces/axios";
+import { AxiosErrorData } from "store/types";
 
 import { LOAD_CLANS_FAIL, LOAD_CLANS_SUCCESS, LOAD_CLAN_SUCCESS, LOAD_CLAN_FAIL, ADD_CLAN_SUCCESS, ADD_CLAN_FAIL, ClansActionTypes } from "./types";
 

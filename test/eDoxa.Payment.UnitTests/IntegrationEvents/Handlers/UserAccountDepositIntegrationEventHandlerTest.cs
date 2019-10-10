@@ -29,7 +29,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var mockLogger = new MockLogger<UserAccountDepositIntegrationEventHandler>();
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-            var mockStripeService = new Mock<IStripeService>();
+            var mockStripeService = new Mock<IStripeTempService>();
 
             mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<IIntegrationEvent>()))
                 .Returns(Task.CompletedTask)

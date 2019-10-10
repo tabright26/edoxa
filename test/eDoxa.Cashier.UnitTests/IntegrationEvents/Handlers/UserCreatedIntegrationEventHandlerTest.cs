@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserCreatedIntegrationEventHandler(mockAccountRepository.Object);
 
-            var integrationEvent = new UserCreatedIntegrationEvent(new UserId());
+            var integrationEvent = new UserCreatedIntegrationEvent(new UserId(), "noreply@edoxa.gg", "CA");
 
             // Act
             await handler.HandleAsync(integrationEvent);

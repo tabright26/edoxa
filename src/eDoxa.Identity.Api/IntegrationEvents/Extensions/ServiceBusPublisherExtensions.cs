@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceBusPublisherExtensions.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,6 +27,16 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     email,
                     subject,
                     htmlMessage));
+        }
+
+        public static async Task PublishUserCreatedIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            UserId userId,
+            string email,
+            string country
+        )
+        {
+            await publisher.PublishAsync(new UserCreatedIntegrationEvent(userId, email, country));
         }
     }
 }

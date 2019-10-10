@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<form
+  className="mt-3"
+  onSubmit={[Function]}
+>
+  <div
+    className="mb-0 form-group"
+  >
+    <input
+      className="form-control-sm form-control"
+      disabled={true}
+      name="clanId"
+      type="hidden"
+      value=""
+    />
+    <div
+      className="fileUploader "
+      style={Object {}}
+    >
+      <div
+        className="fileContainer"
+        style={Object {}}
+      >
+        <img
+          alt="Upload Icon"
+          className="uploadIcon"
+          src="UploadIcon.svg"
+        />
+        <p
+          className=""
+          style={Object {}}
+        >
+          Max file size: 5mb, accepted: jpg|gif|png
+        </p>
+        <div
+          className="errorsContainer"
+        >
+          
+        </div>
+        <button
+          className="chooseFileButton "
+          onClick={[Function]}
+          style={Object {}}
+          type="button"
+        >
+          Choose images
+        </button>
+        <input
+          accept="image/*"
+          multiple={true}
+          name="logo"
+          onChange={[Function]}
+          onClick={[Function]}
+          type="file"
+        />
+      </div>
+    </div>
+    <button
+      aria-label={null}
+      className="btn btn-info btn-sm"
+      onClick={[Function]}
+      style={
+        Object {
+          "width": "50px",
+        }
+      }
+      type="submit"
+    >
+      Update
+    </button>
+  </div>
+</form>
+`;

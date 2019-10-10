@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadChallenges, loadChallenge } from "store/arena/challenges/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => <ConnectedComponent actions={actions} challenges={challenges} {...attributes} />;
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       challenges: state.arena.challenges
     };

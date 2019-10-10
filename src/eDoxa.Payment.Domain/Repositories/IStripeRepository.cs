@@ -7,13 +7,20 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Payment.Domain.Repositories
 {
     public interface IStripeRepository
     {
+        IUnitOfWork UnitOfWork { get; }
+
+        void Create(StripeReference reference);
+
         Task<StripeReference> GetReferenceAsync(UserId userId);
 
         Task<StripeReference?> FindReferenceAsync(UserId userId);
+
+        Task<bool> ReferenceExistsAsync(UserId userId);
     }
 }

@@ -1,14 +1,14 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadInvitationsWithClanId, loadInvitationsWithUserId, loadInvitation, addInvitation, acceptInvitation, declineInvitation } from "store/organizations/invitations/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectInvitations = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, invitations, userId, ...attributes }) => {
     return <ConnectedComponent actions={actions} invitations={invitations} userId={userId} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       userId: state.oidc.user.profile.sub,
       invitations: state.organizations.invitations

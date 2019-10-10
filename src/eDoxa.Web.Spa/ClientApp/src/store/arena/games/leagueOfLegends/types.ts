@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 
 export const LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME = "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME";
 export const LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS = "LOAD_LEAGUEOFLEGENDS_SUMMONERS_BY_NAME_SUCCESS";

@@ -7,7 +7,7 @@ import {
   UPDATE_PAYMENTMETHOD_FAIL,
   PaymentMethodsActionTypes
 } from "./types";
-import { AxiosErrorData } from "interfaces/axios";
+import { AxiosErrorData } from "store/types";
 import { SubmissionError } from "redux-form";
 
 export const initialState = { data: [] };

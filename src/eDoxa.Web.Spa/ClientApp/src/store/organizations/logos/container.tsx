@@ -1,14 +1,14 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadLogo, updateLogo } from "store/organizations/logos/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectLogo = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, logo, ...attributes }) => {
     return <ConnectedComponent actions={actions} logo={logo} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       logo: state.organizations.clans
     };
