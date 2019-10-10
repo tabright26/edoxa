@@ -12,7 +12,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserTransactionFailedIntegrationEventHandler : IIntegrationEventHandler<UserTransactionFailedIntegrationEvent>
+    public sealed class UserTransactionFailedIntegrationEventHandler : IIntegrationEventHandler<UserTransactionFailedIntegrationEvent>
     {
         private readonly ITransactionRepository _transactionRepository;
 

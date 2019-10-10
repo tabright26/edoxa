@@ -317,3 +317,6 @@ healthchecksdb
 # TestResult files
 /vsts
 /opt/vsts
+
+# Solution Items
+/NuGet.config

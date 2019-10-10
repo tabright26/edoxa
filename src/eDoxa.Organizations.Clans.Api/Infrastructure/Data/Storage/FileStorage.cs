@@ -1,17 +1,14 @@
 ﻿// Filename: FileStorage.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-10-07
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Immutable;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-
-using Bogus.DataSets;
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -37,22 +34,21 @@ namespace eDoxa.Organizations.Clans.Api.Infrastructure.Data.Storage
                             {
                                 Id = default(Guid),
                                 Name = default(string),
-                                OwnerId = default(Guid),
+                                OwnerId = default(Guid)
                             })
                         .Select(
                             record =>
                             {
-                                var clan = new Clan(record.Name!, UserId.FromGuid(record.OwnerId));
+                                var clan = new Clan(record.Name!, UserId.FromGuid(record.OwnerId!));
 
-                                clan.SetEntityId(record.Id);
+                                clan.SetEntityId(record.Id!);
 
                                 return clan;
                             })
-                                .ToImmutableHashSet();
+                        .ToImmutableHashSet();
                 });
 
         public static IImmutableSet<Clan> Clans => LazyClans.Value;
-
 
         public IImmutableSet<Clan> GetClans()
         {

@@ -1,26 +1,31 @@
-﻿// Filename: ApiModule.cs
-// Date Created: 2019-07-02
+﻿// Filename: PaymentApiModule.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
-
-using System;
 
 using Autofac;
 
-using eDoxa.ServiceBus.Abstractions;
+using eDoxa.Payment.Api.Areas.Stripe.Services;
+using eDoxa.Payment.Domain.Repositories;
+using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Infrastructure.Repositories;
 
 namespace eDoxa.Payment.Api.Infrastructure
 {
     internal sealed class PaymentApiModule : Module
     {
-        protected override void Load( ContainerBuilder builder)
+        protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies()).AsClosedTypesOf(typeof(IIntegrationEventHandler<>));
+            // Repositories
+            builder.RegisterType<StripeRepository>().As<IStripeRepository>().InstancePerLifetimeScope();
+
+            // Services
+            builder.RegisterType<StripeService>().As<IStripeService>().InstancePerLifetimeScope();
+            builder.RegisterType<StripeCustomerService>().As<IStripeCustomerService>().InstancePerLifetimeScope();
+            builder.RegisterType<StripeAccountService>().As<IStripeAccountService>().InstancePerLifetimeScope();
+            builder.RegisterType<StripePersonService>().As<IStripePersonService>().InstancePerLifetimeScope();
+            builder.RegisterType<StripeExternalAccountService>().As<IStripeExternalAccountService>().InstancePerLifetimeScope();
         }
     }
 }

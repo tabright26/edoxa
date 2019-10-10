@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,13 +16,14 @@ using AutoMapper;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
+using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Mediator;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.ServiceBus.Modules;
+using eDoxa.ServiceBus.Abstractions;
+using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -30,6 +31,8 @@ using FluentValidation.AspNetCore;
 using HealthChecks.UI.Client;
 
 using IdentityServer4.AccessTokenValidation;
+
+using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
@@ -121,6 +124,8 @@ namespace eDoxa.Cashier.Api
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(CashierDbContext)));
 
+            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
+
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
                     options =>
@@ -141,20 +146,18 @@ namespace eDoxa.Cashier.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<DomainEventModule<Startup>>();
-
-            builder.RegisterModule(new ServiceBusModule<Startup>(AppSettings));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "cashier"));
 
             builder.RegisterModule<CashierApiModule>();
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            application.UseServiceBusSubscriber();
+            subscriber.UseIntegrationEventSubscriptions();
 
             application.UseCustomExceptionHandler();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATH_BASE"]);
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
             application.UseCors("default");
 
@@ -178,9 +181,9 @@ namespace eDoxa.Cashier.Api
                 });
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
+        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
-            this.Configure(application);
+            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

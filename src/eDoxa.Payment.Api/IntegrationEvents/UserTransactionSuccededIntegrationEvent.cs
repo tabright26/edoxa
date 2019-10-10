@@ -1,15 +1,10 @@
-﻿// Filename: TransactionSuccededIntegrationEvent.cs
-// Date Created: 2019-07-02
+﻿// Filename: UserTransactionSuccededIntegrationEvent.cs
+// Date Created: 2019-09-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
-using System;
-
+using eDoxa.Payment.Domain.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -18,16 +13,16 @@ using Newtonsoft.Json;
 namespace eDoxa.Payment.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserTransactionSuccededIntegrationEvent : IIntegrationEvent
+    public sealed class UserTransactionSuccededIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserTransactionSuccededIntegrationEvent(Guid transactionId)
+        public UserTransactionSuccededIntegrationEvent(TransactionId transactionId)
         {
             TransactionId = transactionId;
         }
 
         [JsonProperty]
-        public Guid TransactionId { get; }
+        public TransactionId TransactionId { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserTransactionSucceded;

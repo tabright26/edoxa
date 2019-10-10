@@ -1,8 +1,10 @@
 ﻿// Filename: Register.cshtml.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
+
+#nullable disable
 
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
@@ -10,21 +12,20 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
-#nullable disable
 
 namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly IEmailSender _emailSender;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IRedirectService _redirectService;
         private readonly ILogger<RegisterModel> _logger;
         private readonly SignInManager _signInManager;
@@ -34,14 +35,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             UserManager userManager,
             SignInManager signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
+            IServiceBusPublisher serviceBusPublisher,
             IRedirectService redirectService
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _serviceBusPublisher = serviceBusPublisher;
             _redirectService = redirectService;
         }
 
@@ -66,8 +67,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                         Email = Input.Email,
                         UserName = Input.Email
                     },
-                    Input.Password
-                );
+                    Input.Password);
 
                 if (result.Succeeded)
                 {
@@ -75,16 +75,17 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User created a new account with password.");
 
+                    await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(UserId.FromGuid(user.Id), Input.Email, "CA");
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var callbackUrl =
-                        $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
+                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
 
-                    await _emailSender.SendEmailAsync(
+                    await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                        UserId.FromGuid(user.Id),
                         Input.Email,
                         "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
-                    );
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, false);
 

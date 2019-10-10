@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectUserPhoneNumber = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, phoneNumber, ...attributes }) => <ConnectedComponent actions={actions} phoneNumber={phoneNumber} {...attributes} />;
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       phoneNumber: "4301233494"
     };

@@ -1,5 +1,5 @@
 ﻿// Filename: AccountWithdrawalController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 
 using FluentValidation.AspNetCore;
@@ -49,7 +48,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             {
                 var userId = HttpContext.GetUserId();
 
-                var connectAccountId = HttpContext.GetConnectAccountId()!;
+                var email = HttpContext.GetEmail();
 
                 var account = await _accountService.FindUserAccountAsync(userId);
 
@@ -58,7 +57,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
                     return this.NotFound("User's account not found.");
                 }
 
-                var result = await _accountService.WithdrawalAsync(new MoneyAccount(account), currency.Format(amount), connectAccountId);
+                var result = await _accountService.WithdrawalAsync(account, currency.Format(amount), email);
 
                 if (result.IsValid)
                 {

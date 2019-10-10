@@ -1,21 +1,18 @@
-﻿// Filename: Config.cs
-// Date Created: 2019-06-25
+﻿// Filename: IdentityServerConfig.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security;
 using eDoxa.Swagger.Client.Extensions;
+
 using IdentityServer4;
 using IdentityServer4.Models;
 
-using IdentityResources = eDoxa.Seedwork.Security.IdentityResources;
+using IdentityResources = IdentityServer4.Models.IdentityResources;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
@@ -23,32 +20,36 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            yield return new IdentityServer4.Models.IdentityResources.OpenId();
+            yield return new IdentityResources.OpenId();
 
-            yield return new IdentityServer4.Models.IdentityResources.Profile();
+            yield return new IdentityResources.Profile();
 
-            yield return new IdentityServer4.Models.IdentityResources.Email();
+            yield return new IdentityResources.Email();
 
-            yield return new IdentityServer4.Models.IdentityResources.Phone();
+            yield return new IdentityResources.Phone();
 
-            yield return new IdentityServer4.Models.IdentityResources.Address();
+            yield return new IdentityResources.Address();
 
-            yield return IdentityResources.Roles;
+            yield return Seedwork.Security.IdentityResources.Roles;
 
-            yield return IdentityResources.Permissions;
+            yield return Seedwork.Security.IdentityResources.Permissions;
 
-            yield return IdentityResources.Stripe;
-
-            yield return IdentityResources.Games;
+            yield return Seedwork.Security.IdentityResources.Games;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
         {
             yield return ApiResources.IdentityApi;
 
+            yield return ApiResources.PaymentApi;
+
             yield return ApiResources.CashierApi;
 
+            yield return ApiResources.NotificationsApi;
+
             yield return ApiResources.ArenaChallengesApi;
+
+            yield return ApiResources.ArenaGamesLeagueOfLegendsApi;
 
             yield return ApiResources.OrganizationsClansApi;
         }
@@ -57,9 +58,15 @@ namespace eDoxa.Identity.Api.Infrastructure
         {
             yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.IdentityServer.IdentityUrl);
 
+            yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.IdentityServer.PaymentUrl);
+
             yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl);
 
+            yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
+
             yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+
+            yield return ApiResources.ArenaGamesLeagueOfLegendsApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesLeagueOfLegendsUrl);
 
             yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
 
@@ -100,14 +107,14 @@ namespace eDoxa.Identity.Api.Infrastructure
                     IdentityServerConstants.StandardScopes.Profile,
                     Scopes.Roles,
                     Scopes.Permissions,
-                    Scopes.Stripe,
                     Scopes.Games,
                     Scopes.IdentityApi,
+                    Scopes.PaymentApi,
                     Scopes.CashierApi,
                     Scopes.ArenaChallengesApi,
-                    Scopes.OrganizationsClans
-                },
-                
+                    Scopes.ArenaGamesLeagueOfLegendsApi,
+                    Scopes.OrganizationsClansApi
+                }
             };
         }
     }

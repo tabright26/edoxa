@@ -11,12 +11,13 @@ using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.ServiceBus.Abstractions;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 using Moq;
@@ -39,15 +40,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GeneratePasswordResetTokenAsync(It.IsAny<User>())).Verifiable();
 
-            var mockEmailSender = new Mock<IEmailSender>();
+            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            mockEmailSender.Setup(emailSender => emailSender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
             var mockRedirectService = new Mock<IRedirectService>();
 
             mockRedirectService.Setup(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>())).Verifiable();
 
-            var controller = new PasswordForgotController(mockUserManager.Object, mockEmailSender.Object, mockRedirectService.Object);
+            var controller = new PasswordForgotController(mockUserManager.Object, mockServiceBusPublisher.Object, mockRedirectService.Object);
 
             controller.ModelState.AddModelError("error", "error");
 
@@ -63,7 +64,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
 
-            mockEmailSender.Verify(emailSender => emailSender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()), Times.Never);
 
             mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>()), Times.Never);
         }
@@ -85,17 +86,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GeneratePasswordResetTokenAsync(It.IsAny<User>())).ReturnsAsync("code").Verifiable();
 
-            var mockEmailSender = new Mock<IEmailSender>();
+            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            mockEmailSender.Setup(emailSender => emailSender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
             var mockRedirectService = new Mock<IRedirectService>();
 
             mockRedirectService.Setup(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>())).Returns("https://edoxa.gg/").Verifiable();
 
-            var controller = new PasswordForgotController(mockUserManager.Object, mockEmailSender.Object, mockRedirectService.Object);
+            var controller = new PasswordForgotController(mockUserManager.Object, mockServiceBusPublisher.Object, mockRedirectService.Object);
 
             // Act
             var result = await controller.PostAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));
@@ -109,7 +108,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Once);
 
-            mockEmailSender.Verify(emailSender => emailSender.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()), Times.Once);
 
             mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>()), Times.Once);
         }

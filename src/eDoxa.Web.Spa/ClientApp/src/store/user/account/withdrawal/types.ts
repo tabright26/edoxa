@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 import { Currency } from "../types";
 
 export const LOAD_WITHDRAWAL_MONEY_AMOUNTS = "LOAD_WITHDRAWAL_MONEY_AMOUNTS";

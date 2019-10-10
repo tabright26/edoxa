@@ -4,9 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Cashier.Api.IntegrationEvents;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 using FluentAssertions;
 
@@ -22,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
         public void UserTransactionFailedIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToTransactionFailedEvent()
         {
             //Arrange
-            var transactionFailedEvent = new UserTransactionFailedIntegrationEvent(Guid.NewGuid());
+            var transactionFailedEvent = new UserTransactionFailedIntegrationEvent(new TransactionId());
 
             var serializedEvent = JsonConvert.SerializeObject(transactionFailedEvent);
 

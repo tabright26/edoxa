@@ -17,7 +17,6 @@ namespace eDoxa.Seedwork.Security
         public static readonly RoleIdentityResource Roles = new RoleIdentityResource();
         public static readonly PermissionIdentityResource Permissions = new PermissionIdentityResource();
         public static readonly GameIdentityResource Games = new GameIdentityResource();
-        public static readonly StripeIdentityResource Stripe = new StripeIdentityResource();
 
         public sealed class GameIdentityResource : IdentityResource
         {
@@ -53,20 +52,6 @@ namespace eDoxa.Seedwork.Security
                 new HashSet<string>
                 {
                     ClaimTypes.Permission
-                })
-            {
-            }
-        }
-
-        public sealed class StripeIdentityResource : IdentityResource
-        {
-            internal StripeIdentityResource() : base(
-                Scopes.Stripe,
-                "Stripe",
-                new HashSet<string>
-                {
-                    ClaimTypes.StripeConnectAccountId,
-                    ClaimTypes.StripeCustomerId
                 })
             {
             }

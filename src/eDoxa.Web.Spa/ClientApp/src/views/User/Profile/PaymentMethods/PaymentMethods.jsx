@@ -5,9 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Loading from "components/Shared/Loading";
 import { connectStripePaymentMethods } from "store/stripe/paymentMethods/container";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/stripe/paymentMethods/types";
-import Cards from "./Cards";
+
 import StripePaymentMethodModal from "modals/Stripe/PaymentMethod";
 import { Elements } from "react-stripe-elements";
+
+const Cards = React.lazy(() => import("./Cards"));
+const BankAccount = React.lazy(() => import("./BankAccount"));
 
 const PaymentMethods = ({ actions }) => (
   <Fragment>
@@ -24,6 +27,9 @@ const PaymentMethods = ({ actions }) => (
     <StripePaymentMethodModal.Delete />
     <Suspense fallback={<Loading.Default />}>
       <Cards className="card-accent-primary my-4" />
+    </Suspense>
+    <Suspense>
+      <BankAccount />
     </Suspense>
   </Fragment>
 );

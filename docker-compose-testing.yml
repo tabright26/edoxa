@@ -6,6 +6,3 @@ services:
 
   redis.testing:
     image: redis:5.0.5
-
-  rabbitmq.testing:
-    image: rabbitmq:3-management

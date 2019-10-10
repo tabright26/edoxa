@@ -6,8 +6,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Mediator.Abstractions;
-
 namespace eDoxa.Seedwork.Domain
 {
     public interface IEntity

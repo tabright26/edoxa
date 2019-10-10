@@ -12,8 +12,3 @@ services:
   redis.testing:
     ports:
       - "10379:6379"
-
-  rabbitmq.testing:
-    ports:
-      - "19672:15672"
-      - "9672:5672"

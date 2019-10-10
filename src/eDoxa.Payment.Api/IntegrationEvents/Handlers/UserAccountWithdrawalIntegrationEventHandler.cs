@@ -1,17 +1,14 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandler.cs
-// Date Created: 2019-07-02
+﻿// Filename: UserAccountWithdrawalIntegrationEventHandler.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Payment.Api.IntegrationEvents.Extensions;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -20,21 +17,24 @@ using Stripe;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserAccountWithdrawalIntegrationEventHandler : IIntegrationEventHandler<UserAccountWithdrawalIntegrationEvent>
+    public sealed class UserAccountWithdrawalIntegrationEventHandler : IIntegrationEventHandler<UserAccountWithdrawalIntegrationEvent>
     {
         private readonly ILogger<UserAccountWithdrawalIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IStripeService _stripeService;
+        private readonly IStripeTempService _stripeTempService;
+        private readonly IStripeAccountService _stripeAccountService;
 
         public UserAccountWithdrawalIntegrationEventHandler(
             ILogger<UserAccountWithdrawalIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeService stripeService
+            IStripeTempService stripeTempService,
+            IStripeAccountService stripeAccountService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
-            _stripeService = stripeService;
+            _stripeTempService = stripeTempService;
+            _stripeAccountService = stripeAccountService;
         }
 
         public async Task HandleAsync(UserAccountWithdrawalIntegrationEvent integrationEvent)
@@ -43,16 +43,17 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
-                await _stripeService.CreateTransferAsync(
+                var connectAccountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
+
+                await _stripeTempService.CreateTransferAsync(
                     integrationEvent.TransactionId,
-                    integrationEvent.TransactionDescription,
-                    integrationEvent.ConnectAccountId,
-                    integrationEvent.Amount
-                );
+                    integrationEvent.Description,
+                    connectAccountId,
+                    integrationEvent.Amount);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
@@ -60,7 +61,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogError(exception, exception.StripeError?.ToJson());
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }
@@ -68,7 +69,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }

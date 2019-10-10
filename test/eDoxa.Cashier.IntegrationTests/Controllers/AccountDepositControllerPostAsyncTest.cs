@@ -1,5 +1,5 @@
 ﻿// Filename: AccountDepositControllerPostAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -51,7 +51,10 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+            var factory = TestApi.WithClaims(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
+                new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -78,7 +81,10 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+            var factory = TestApi.WithClaims(
+                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
+                new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

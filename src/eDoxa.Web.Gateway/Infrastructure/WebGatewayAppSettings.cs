@@ -31,6 +31,9 @@ namespace eDoxa.Web.Gateway.Infrastructure
         public string CashierUrl { get; set; }
 
         [Required]
+        public string PaymentUrl { get; set; }
+
+        [Required]
         public string ArenaChallengesUrl { get; set; }
 
         [Required]

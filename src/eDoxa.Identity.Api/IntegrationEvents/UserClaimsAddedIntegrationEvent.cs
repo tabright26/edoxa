@@ -4,9 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 
+using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -15,17 +15,17 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserClaimsAddedIntegrationEvent : IIntegrationEvent
+    public sealed class UserClaimsAddedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserClaimsAddedIntegrationEvent(Guid userId, IDictionary<string, string> claims)
+        public UserClaimsAddedIntegrationEvent(UserId userId, IDictionary<string, string> claims)
         {
             UserId = userId;
             Claims = claims;
         }
 
         [JsonProperty]
-        public Guid UserId { get; }
+        public UserId UserId { get; }
 
         [JsonProperty]
         public IDictionary<string, string> Claims { get; }

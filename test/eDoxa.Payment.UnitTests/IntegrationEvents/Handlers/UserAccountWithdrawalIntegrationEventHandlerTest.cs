@@ -1,5 +1,5 @@
 // Filename: UserAccountWithdrawalIntegrationEventHandlerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Services;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -28,7 +29,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var mockLogger = new MockLogger<UserAccountWithdrawalIntegrationEventHandler>();
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-            var mockStripeService = new Mock<IStripeService>();
+            var mockStripeService = new Mock<IStripeTempService>();
 
             mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<IIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
@@ -44,12 +45,17 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object);
+            var mockConnectAccountService = new Mock<IStripeAccountService>();
+
+            mockConnectAccountService.Setup(customerService => customerService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
+
+            var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object, mockConnectAccountService.Object);
 
             var integrationEvent = new UserAccountWithdrawalIntegrationEvent(
-                Guid.NewGuid(),
+                new UserId(),
+                "noreply@edoxa.gg",
+                new TransactionId(),
                 "test",
-                "user",
                 100);
 
             // Act
@@ -68,6 +74,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<long>(),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
+
+            mockConnectAccountService.Verify(customerService => customerService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
         }
     }
 }

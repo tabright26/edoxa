@@ -16,12 +16,12 @@ namespace eDoxa.Organizations.Clans.Domain.Models
             UserId = userId;
             ClanId = clanId;
         }
-
+#nullable disable
         private Candidature()
         {
             //Requied by EF Core
         }
-
+#nullable restore
         public UserId UserId { get; private set; }
 
         public ClanId ClanId { get; private set; }
