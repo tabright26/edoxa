@@ -19,7 +19,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.env = .env
 		global.json = global.json
-		NuGet.config = NuGet.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cashier", "Cashier", "{9F1CD6C1-8419-4262-B7AE-F66C530B9EC7}"
@@ -151,15 +150,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Payment.Infrastructur
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Payment.IntegrationTests", "test\eDoxa.Payment.IntegrationTests\eDoxa.Payment.IntegrationTests.csproj", "{8BB4499A-B77E-4AA9-B5FC-9B9C74A33D34}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.LeagueOfLegends.Api", "src\eDoxa.Arena.Games.LeagueOfLegends.Api\eDoxa.Arena.Games.LeagueOfLegends.Api.csproj", "{06E46853-EF5F-4A5D-963E-CFD8CBF76680}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.LeagueOfLegends.Api", "src\eDoxa.Arena.Games.LeagueOfLegends.Api\eDoxa.Arena.Games.LeagueOfLegends.Api.csproj", "{06E46853-EF5F-4A5D-963E-CFD8CBF76680}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LeagueOfLegends", "LeagueOfLegends", "{BE7DD04B-C39C-4898-A5BB-66D1BBDCDE39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.LeagueOfLegends.UnitTests", "test\eDoxa.Arena.Games.LeagueOfLegends.UnitTests\eDoxa.Arena.Games.LeagueOfLegends.UnitTests.csproj", "{2058F26A-26AB-4B0F-8637-3144CADC0BBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.LeagueOfLegends.UnitTests", "test\eDoxa.Arena.Games.LeagueOfLegends.UnitTests\eDoxa.Arena.Games.LeagueOfLegends.UnitTests.csproj", "{2058F26A-26AB-4B0F-8637-3144CADC0BBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests", "test\eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests\eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.csproj", "{F1D195F6-8F89-467D-B714-28FB231D4505}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests", "test\eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests\eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.csproj", "{F1D195F6-8F89-467D-B714-28FB231D4505}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.LeagueOfLegends.TestHelpers", "test\eDoxa.Arena.Games.LeagueOfLegends.TestHelpers\eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.csproj", "{53D9179C-A47C-4FA5-8CCB-CDCB8894059B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.LeagueOfLegends.TestHelpers", "test\eDoxa.Arena.Games.LeagueOfLegends.TestHelpers\eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.csproj", "{53D9179C-A47C-4FA5-8CCB-CDCB8894059B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
