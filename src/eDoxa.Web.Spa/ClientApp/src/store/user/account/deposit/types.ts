@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 import { Currency } from "../types";
 
 export const LOAD_DEPOSIT_MONEY_AMOUNTS = "LOAD_DEPOSIT_MONEY_AMOUNTS";

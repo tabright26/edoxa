@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadBankAccounts, changeBankAccount } from "store/stripe/bankAccounts/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, bankAccounts, hasBankAccount, ...attributes }) => {
@@ -12,7 +12,7 @@ export const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<
     return <ConnectedComponent actions={actions} bankAccounts={bankAccounts} hasBankAccount={hasBankAccount} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       bankAccounts: state.stripe.bankAccounts,
       hasBankAccount: state.stripe.bankAccounts.data.length

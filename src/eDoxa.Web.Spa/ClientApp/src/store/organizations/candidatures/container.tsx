@@ -1,14 +1,14 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { loadCandidaturesWithClanId, loadCandidaturesWithUserId, loadCandidature, addCandidature, acceptCandidature, declineCandidature } from "store/organizations/candidatures/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectCandidatures = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, candidatures, userId, doxaTags, ...attributes }) => {
     return <ConnectedComponent actions={actions} candidatures={candidatures} userId={userId} doxaTags={doxaTags} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       doxaTags: state.doxaTags,
       userId: state.oidc.user.profile.sub,

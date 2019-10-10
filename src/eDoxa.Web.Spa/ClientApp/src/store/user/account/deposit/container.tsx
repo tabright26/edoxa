@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { DEPOSIT_MODAL } from "modals";
 import { loadDepositAmounts, deposit } from "./actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 import { Currency } from "../types";
 
 export const connectUserAccountDeposit = (currency: Currency) => (ConnectedComponent: FunctionComponent<any>) => {
@@ -15,7 +15,7 @@ export const connectUserAccountDeposit = (currency: Currency) => (ConnectedCompo
     return <ConnectedComponent actions={actions} amounts={amounts} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       amounts: state.user.account.deposit.amounts.get(currency)
     };

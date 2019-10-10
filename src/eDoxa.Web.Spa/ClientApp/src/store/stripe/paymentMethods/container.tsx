@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { CREATE_PAYMENTMETHOD_MODAL, UPDATE_PAYMENTMETHOD_MODAL, DELETE_PAYMENTMETHOD_MODAL } from "modals";
 import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPaymentMethod } from "store/stripe/paymentMethods/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 import { PaymentMethodType, CARD_PAYMENTMETHOD_TYPE } from "./types";
 
 export const connectStripePaymentMethods = (paymentMethodType: PaymentMethodType = CARD_PAYMENTMETHOD_TYPE) => (ConnectedComponent: FunctionComponent<any>) => {
@@ -15,7 +15,7 @@ export const connectStripePaymentMethods = (paymentMethodType: PaymentMethodType
     return <ConnectedComponent actions={actions} paymentMethods={paymentMethods} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       paymentMethods: {
         data: state.stripe.paymentMethods.data.filter(paymentMethod => paymentMethod.type === paymentMethodType)

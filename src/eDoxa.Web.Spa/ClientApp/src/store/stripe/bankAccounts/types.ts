@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 
 export const LOAD_BANK_ACCOUNTS = "LOAD_BANK_ACCOUNTS";
 export const LOAD_BANK_ACCOUNTS_SUCCESS = "LOAD_BANK_ACCOUNTS_SUCCESS";

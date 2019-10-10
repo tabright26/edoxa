@@ -3,14 +3,14 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { confirmEmail } from "store/user/email/actions";
 import { forgotPassword, resetPassword } from "store/user/password/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectUser = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, user, isAuthenticated, ...attributes }) => (
     <ConnectedComponent actions={actions} user={user} isAuthenticated={isAuthenticated} {...attributes} />
   );
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     const user = state.oidc.user;
     return {
       user: user,

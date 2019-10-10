@@ -5,7 +5,7 @@ import {
   CHANGE_BANK_ACCOUNT_FAIL,
   BankAccountsActionTypes
 } from "./types";
-import { AxiosErrorData } from "interfaces/axios";
+import { AxiosErrorData } from "store/types";
 import { SubmissionError } from "redux-form";
 
 export const initialState = { data: [] };
