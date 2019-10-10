@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadMembers, kickMember, leaveClan } from "store/organizations/members/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectMembers = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, members, clanId, ...attributes }) => {
@@ -12,7 +12,7 @@ export const connectMembers = (ConnectedComponent: FunctionComponent<any>) => {
     return <ConnectedComponent actions={actions} members={members} clanId={clanId} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     const members = state.organizations.members.map(member => {
       const doxaTag = state.doxaTags.find(doxaTag => doxaTag.userId === member.userId);
 

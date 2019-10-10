@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadInvitations, loadInvitation, addInvitation, acceptInvitation, declineInvitation } from "store/organizations/invitations/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 interface InvitationProps {
   type: string;
@@ -17,7 +17,7 @@ export const connectInvitations = (ConnectedComponent: FunctionComponent<any>) =
     return <ConnectedComponent actions={actions} invitations={invitations} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     const invitations = state.organizations.invitations.map(invitation => {
       const doxatag = state.doxaTags.find(doxaTag => doxaTag.userId === invitation.userId);
       const clan = state.organizations.clans.find(clan => clan.id === invitation.clanId);

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadCandidatures, loadCandidature, addCandidature, acceptCandidature, declineCandidature } from "store/organizations/candidatures/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 interface CandidatureProps {
   type: string;
@@ -25,11 +25,11 @@ export const connectCandidatures = (ConnectedComponent: FunctionComponent<any>) 
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [candidatures]);
+    }, []);
     return <ConnectedComponent actions={actions} candidatures={candidatures} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState, ownProps: CandidatureProps) => {
+  const mapStateToProps = (state: RootState, ownProps: CandidatureProps) => {
     const candidatures = state.organizations.candidatures.map(candidature => {
       const doxaTag = state.doxaTags.find(doxaTag => doxaTag.userId === candidature.userId);
       const clan = state.organizations.clans.find(clan => clan.id === candidature.clanId);
