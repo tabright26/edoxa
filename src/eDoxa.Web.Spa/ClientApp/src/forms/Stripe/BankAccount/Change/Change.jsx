@@ -13,10 +13,10 @@ const style = {
 
 const ChangeBankAccountForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
-    <Field style={style} type="text" name="country" label="country" formGroup={FormGroup} component={Input.Text} />
-    <Field style={style} type="text" name="accountHolderName" label="accountHolderName" formGroup={FormGroup} component={Input.Text} />
-    <Field style={style} type="text" name="routingNumber" label="routingNumber" formGroup={FormGroup} component={Input.Text} />
-    <Field style={style} type="text" name="accountNumber" label="accountNumber" formGroup={FormGroup} component={Input.Text} />
+    <Field style={style} type="text" name="country" label="Country" formGroup={FormGroup} component={Input.Text} />
+    <Field style={style} type="text" name="accountHolderName" label="Account holder name" formGroup={FormGroup} component={Input.Text} />
+    <Field style={style} type="text" name="routingNumber" label="Routing number" formGroup={FormGroup} component={Input.Text} />
+    <Field style={style} type="text" name="accountNumber" label="Account number" formGroup={FormGroup} component={Input.Text} />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
       <Button.Cancel onClick={handleCancel} />

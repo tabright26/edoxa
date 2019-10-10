@@ -17,5 +17,7 @@ namespace eDoxa.Payment.Domain.Services
         Task<string?> FindAccountIdAsync(UserId userId);
 
         Task<string> CreateAccountAsync(UserId userId, string email, string country);
+
+        Task<bool> AccountIsVerifiedAsync(string accountId);
     }
 }

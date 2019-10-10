@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
@@ -54,6 +55,13 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 });
 
             return account.Id;
+        }
+
+        public async Task<bool> AccountIsVerifiedAsync(string accountId)
+        {
+            var account = await this.GetAsync(accountId);
+
+            return !account.Requirements.CurrentlyDue.Any();
         }
     }
 }

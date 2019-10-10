@@ -24,6 +24,7 @@ namespace eDoxa.Payment.Api.Infrastructure
             builder.RegisterType<StripeService>().As<IStripeService>().InstancePerLifetimeScope();
             builder.RegisterType<StripeCustomerService>().As<IStripeCustomerService>().InstancePerLifetimeScope();
             builder.RegisterType<StripeAccountService>().As<IStripeAccountService>().InstancePerLifetimeScope();
+            builder.RegisterType<StripePersonService>().As<IStripePersonService>().InstancePerLifetimeScope();
             builder.RegisterType<StripeExternalAccountService>().As<IStripeExternalAccountService>().InstancePerLifetimeScope();
         }
     }
