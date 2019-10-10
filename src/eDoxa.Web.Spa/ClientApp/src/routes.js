@@ -44,7 +44,7 @@ const routes = [
   { path: "/marketplace", name: "Marketplace", component: Marketplace, exact: true, secure: false, scopes: [] },
   { path: "/news-feeds", name: "News Feeds", component: NewsFeeds, exact: true, secure: false, scopes: [] },
   { path: "/profile", name: "Profile Overview", component: Profile, exact: false, secure: true, scopes: [] },
-  { path: "/structures/clans", name: "Clans", component: StructureClans, exact: true, secure: false, scopes: [] },
+  { path: "/structures/clans", name: "Clans", component: StructureClans, exact: true, secure: true, scopes: [] },
   { path: "/structures/clans/:clanId", name: "Clan Details", component: StructureClanDetails, exact: true, secure: true, scopes: [] },
   { path: "/structures/clans/:clanId/dashboard", name: "Clan Dashboard", component: StructureClanDashboard, exact: true, secure: true, scopes: [] },
   { path: "/structures/clans/:clanId/marketplace", name: "Clan Marketplace", component: StructureClanMarketplace, exact: true, secure: true, scopes: [] },

@@ -1,7 +1,122 @@
-import React from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import { Row, Col, Card, CardHeader, Button } from "reactstrap";
+import { LinkContainer } from "react-router-bootstrap";
 
-import ClansIndex from "components/Organizations/Clans/Clans";
+import { connectClans } from "store/organizations/clans/container";
 
-const Clans = () => <ClansIndex />;
+import ClanCard from "components/Organizations/Clans/ClanCard";
+import CandidatureList from "components/Organizations/Candidatures/CandidatureList";
+import InvitationList from "components/Organizations/Invitations/InvitationList";
 
-export default Clans;
+import ClanModal from "modals/Organizations/Clan";
+
+import ErrorBoundary from "components/Shared/ErrorBoundary";
+
+const ClansIndex = ({ actions, clans, userId, userClan }) => {
+  const [clanList, setClanList] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [sortValue, setSortValue] = useState("");
+
+  useEffect(() => {
+    var tempClans = clans.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
+    switch (sortValue) {
+      case "byNameAsc":
+        tempClans = tempClans.sort((clan1, clan2) => (clan1.name > clan2.name ? 1 : -1));
+        break;
+
+      case "byNameDes":
+        tempClans = tempClans.sort((clan1, clan2) => (clan1.name < clan2.name ? 1 : -1));
+        break;
+
+      case "byMemberCountAsc":
+        tempClans = tempClans.sort((clan1, clan2) => clan1.members.length - clan2.members.length);
+        break;
+
+      case "byMemberCountDsc":
+        tempClans = tempClans.sort((clan1, clan2) => clan2.members.length - clan1.members.length);
+        break;
+
+      default:
+        break;
+    }
+    setClanList(tempClans);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clans, sortValue, searchValue]);
+
+  const handleSearchInputChanges = e => {
+    setSearchValue(e.target.value);
+  };
+
+  const handleSortInputChanges = e => {
+    setSortValue(e.target.value);
+  };
+
+  return (
+    <ErrorBoundary>
+      <Row>
+        <Col>
+          <Row>
+            <Col>
+              <InvitationList type="user" id={userId} />
+            </Col>
+            <Col>
+              <CandidatureList type="user" id={userId} />
+            </Col>
+          </Row>
+          <Card>
+            <CardHeader>
+              <Row>
+                <Col>
+                  Browse all clans
+                  {userClan ? (
+                    <LinkContainer to={"/structures/clans/" + userClan.id + "/dashboard"}>
+                      <Button color="primary">or visit yours</Button>
+                    </LinkContainer>
+                  ) : null}
+                </Col>
+                <Col>
+                  {clans.length} clans and counting...
+                  {!userClan ? (
+                    <Fragment>
+                      <div className="btn-link" onClick={() => actions.showCreateAddressModal()}>
+                        or create your own
+                      </div>
+                      <ClanModal.Create actions={actions}></ClanModal.Create>
+                    </Fragment>
+                  ) : null}
+                </Col>
+                <Col>
+                  Search
+                  <br />
+                  <input type="text" value={searchValue} onChange={handleSearchInputChanges} />
+                </Col>
+                <Col>
+                  Sorting
+                  <br />
+                  <select value={sortValue} onChange={handleSortInputChanges}>
+                    <option value="noSort"></option>
+                    <option value="byNameAsc">by name ascending</option>
+                    <option value="byNameDes">by name descending</option>
+                    <option value="byMemberCountAsc">by member count ascending</option>
+                    <option value="byMemberCountDsc">by member count descending</option>
+                  </select>
+                </Col>
+              </Row>
+            </CardHeader>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        {clanList
+          ? clanList.map((clan, index) => (
+              <Col key={index} xs="6" sm="4" md="3">
+                <ClanCard clan={clan} userId={userId} userClan={userClan} />
+              </Col>
+            ))
+          : null}
+      </Row>
+    </ErrorBoundary>
+  );
+};
+
+export default connectClans(ClansIndex);

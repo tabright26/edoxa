@@ -2,8 +2,8 @@ import { SubmissionError } from "redux-form";
 import { AxiosErrorData } from "store/types";
 
 import {
-  LOAD_CANDIDATURES_FAIL,
   LOAD_CANDIDATURES_SUCCESS,
+  LOAD_CANDIDATURES_FAIL,
   LOAD_CANDIDATURE_SUCCESS,
   LOAD_CANDIDATURE_FAIL,
   ADD_CANDIDATURE_SUCCESS,
