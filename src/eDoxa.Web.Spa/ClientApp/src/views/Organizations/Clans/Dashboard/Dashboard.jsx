@@ -1,28 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
+import { toastr } from "react-redux-toastr";
 
 import { connectClans } from "store/organizations/clans/container";
 
-import ClanInfo from "components/Organizations/Clans/ClanInfo";
 import ClanLogo from "components/Organizations/Clans/ClanLogo";
-import ClanCandidatures from "components/Organizations/Candidatures/ClanCandidatures";
-import ClanInvitations from "components/Organizations/Invitations/ClanInvitations";
+import ClanInfo from "components/Organizations/Clans/ClanInfo";
+
+import CandidatureList from "components/Organizations/Candidatures/CandidatureList";
+import InvitationList from "components/Organizations/Invitations/InvitationList";
+
 import InvitationWidget from "components/Organizations/Invitations/InvitationWidget";
+
 import Members from "components/Organizations/ClanMembers/Members";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
+
+//USE LAZY LOADING
 
 const ClanDashboardIndex = ({
   actions,
   clans,
   userId,
-  doxaTags,
   match: {
     params: { clanId }
   }
 }) => {
   const [clan, setClan] = useState(null);
-  const [isOwner, setIsOwner] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
+  const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
     if (!clans.some(clan => clan.id === clanId)) {
@@ -32,51 +38,63 @@ const ClanDashboardIndex = ({
   }, [clanId]);
 
   useEffect(() => {
-    if (clans) {
-      setClan(clans.find(clan => clan.id === clanId));
-    }
+    setClan(clans.find(clan => clan.id === clanId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clanId, clans]);
+  }, [clanId]);
 
   useEffect(() => {
-    console.log("sdfddf");
     if (clan) {
-      setIsOwner(clan.ownerId === userId);
+      setIsMember(clan.members.some(member => member.userId === userId));
+      if (isMember) {
+        setIsOwner(clan.ownerId === userId);
+        if (isOwner) {
+          toastr.success("SUCCESS", "Entered dashboard as Admin.");
+        } else {
+          toastr.success("SUCCESS", "Entered dashboard as member.");
+        }
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clan, userId]);
+  }, [clan]);
 
   return (
     <ErrorBoundary>
       <Row>
         <Col>
-          <Card>
-            <CardHeader>
-              <Col>{clan ? clan.name : ""} Dashboard</Col>
-              <Col>Clan Id: {clan ? clan.id : ""}</Col>
-              <Col>Clan Owner Id: {clan ? clan.ownerId : ""}</Col>
-              {isOwner ? (
-                <Col>
-                  <InvitationWidget clanId={clan.id} />
-                </Col>
-              ) : (
-                ""
-              )}
-            </CardHeader>
-            <CardBody>
-              <Row>
-                <Col>
-                  <Card>
-                    <CardHeader>{clan ? <ClanLogo clanId={clan.id} userId={userId} isOwner={isOwner} /> : ""}</CardHeader>
-                    <CardBody>{clan ? <ClanInfo clan={clan} /> : ""}</CardBody>
-                  </Card>
-                </Col>
-                <Col>{clan ? <Members clanId={clan.id} userId={userId} doxaTags={doxaTags} isOwner={isOwner} /> : ""}</Col>
-                <Col>{clan ? <ClanCandidatures clan={clan.id} userId={userId} doxaTags={doxaTags} isOwner={isOwner} /> : ""}</Col>
-                <Col>{clan ? <ClanInvitations clan={clan.id} userId={userId} doxaTags={doxaTags} isOwner={isOwner} /> : ""}</Col>
-              </Row>
-            </CardBody>
-          </Card>
+          {isMember ? (
+            <Card>
+              <CardHeader>
+                {isOwner ? (
+                  <Col>
+                    <InvitationWidget clanId={clan.id} />
+                  </Col>
+                ) : null}
+              </CardHeader>
+              <CardBody>
+                <Row>
+                  <Col>
+                    <Card>
+                      <CardHeader>
+                        <ClanLogo clanId={clan.id} userId={userId} isOwner={isOwner} />
+                      </CardHeader>
+                      <CardBody>
+                        <ClanInfo clan={clan} />
+                      </CardBody>
+                    </Card>
+                  </Col>
+                  <Col>
+                    <Members clanId={clan.id} userId={userId} isOwner={isOwner} />
+                  </Col>
+                  <Col>
+                    <InvitationList type="clan" id={clan.id} />
+                  </Col>
+                  <Col>
+                    <CandidatureList type="clan" id={clan.id} isOwner={isOwner} />
+                  </Col>
+                </Row>
+              </CardBody>
+            </Card>
+          ) : null}
         </Col>
       </Row>
     </ErrorBoundary>

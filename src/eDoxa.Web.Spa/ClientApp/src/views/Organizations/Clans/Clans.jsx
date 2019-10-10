@@ -1,74 +1,46 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Card, CardHeader, Button } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
+
 import { connectClans } from "store/organizations/clans/container";
 
-import ClanItem from "components/Organizations/Clans/ClanItem";
-import UserCandidatures from "components/Organizations/Candidatures/UserCandidatures";
+import ClanCard from "components/Organizations/Clans/ClanCard";
+import CandidatureList from "components/Organizations/Candidatures/CandidatureList";
+import InvitationList from "components/Organizations/Invitations/InvitationList";
 
 import ClanModal from "modals/Organizations/Clan";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 
-const ClansIndex = ({ actions, clans, userId }) => {
+const ClansIndex = ({ actions, clans, userId, userClan }) => {
   const [clanList, setClanList] = useState(null);
-  const [userClanId, setUserClanId] = useState(null);
-
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
 
   useEffect(() => {
-    actions.loadClans();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    var tempClans = clans.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
+    switch (sortValue) {
+      case "byNameAsc":
+        tempClans = tempClans.sort((clan1, clan2) => (clan1.name > clan2.name ? 1 : -1));
+        break;
 
-  useEffect(() => {
-    if (clans) {
-      var memberList = [];
+      case "byNameDes":
+        tempClans = tempClans.sort((clan1, clan2) => (clan1.name < clan2.name ? 1 : -1));
+        break;
 
-      clans.forEach(clan => {
-        clan.members.forEach(member => memberList.push(member));
-      });
+      case "byMemberCountAsc":
+        tempClans = tempClans.sort((clan1, clan2) => clan1.members.length - clan2.members.length);
+        break;
 
-      memberList.forEach(member => {
-        if (member.userId === userId) {
-          setUserClanId(member.clanId);
-          console.log(member.clanId);
-        }
-      });
+      case "byMemberCountDsc":
+        tempClans = tempClans.sort((clan1, clan2) => clan2.members.length - clan1.members.length);
+        break;
+
+      default:
+        break;
     }
+    setClanList(tempClans);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clans]);
-
-  useEffect(() => {
-    if (clans) {
-      var tempClans = clans.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
-      switch (sortValue) {
-        case "byNameAsc":
-          tempClans = tempClans.sort((clan1, clan2) => (clan1.name > clan2.name ? 1 : -1));
-          console.log(tempClans);
-          break;
-
-        case "byNameDes":
-          tempClans = tempClans.sort((clan1, clan2) => (clan1.name < clan2.name ? 1 : -1));
-          console.log(tempClans);
-          break;
-
-        case "byMemberCountAsc":
-          tempClans = tempClans.sort((clan1, clan2) => clan1.members.length - clan2.members.length);
-          console.log(tempClans);
-          break;
-
-        case "byMemberCountDsc":
-          tempClans = tempClans.sort((clan1, clan2) => clan2.members.length - clan1.members.length);
-          console.log(tempClans);
-          break;
-
-        default:
-          break;
-      }
-      setClanList(tempClans);
-    }
   }, [clans, sortValue, searchValue]);
 
   const handleSearchInputChanges = e => {
@@ -83,29 +55,35 @@ const ClansIndex = ({ actions, clans, userId }) => {
     <ErrorBoundary>
       <Row>
         <Col>
-          {!userClanId ? (
-            <UserCandidatures userId={userId} />
-          ) : (
-            <LinkContainer to={"/structures/clans/" + userClanId + "/dashboard"}>
-              <Button color="primary">Your dashboard</Button>
-            </LinkContainer>
-          )}
+          <Row>
+            <Col>
+              <InvitationList type="user" id={userId} />
+            </Col>
+            <Col>
+              <CandidatureList type="user" id={userId} />
+            </Col>
+          </Row>
           <Card>
             <CardHeader>
               <Row>
-                <Col>Clans</Col>
+                <Col>
+                  Browse all clans
+                  {userClan ? (
+                    <LinkContainer to={"/structures/clans/" + userClan.id + "/dashboard"}>
+                      <Button color="primary">or visit yours</Button>
+                    </LinkContainer>
+                  ) : null}
+                </Col>
                 <Col>
                   {clans.length} clans and counting...
-                  {!userClanId ? (
+                  {!userClan ? (
                     <Fragment>
-                      <div className="card-header-actions btn-link" onClick={() => actions.showCreateAddressModal()}>
+                      <div className="btn-link" onClick={() => actions.showCreateAddressModal()}>
                         or create your own
                       </div>
                       <ClanModal.Create actions={actions}></ClanModal.Create>
                     </Fragment>
-                  ) : (
-                    ""
-                  )}
+                  ) : null}
                 </Col>
                 <Col>
                   Search
@@ -132,10 +110,10 @@ const ClansIndex = ({ actions, clans, userId }) => {
         {clanList
           ? clanList.map((clan, index) => (
               <Col key={index} xs="6" sm="4" md="3">
-                <ClanItem clan={clan} />
+                <ClanCard clan={clan} userId={userId} userClan={userClan} />
               </Col>
             ))
-          : ""}
+          : null}
       </Row>
     </ErrorBoundary>
   );

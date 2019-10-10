@@ -1,36 +1,38 @@
-import React, { useEffect, useState } from "react";
-import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
+import React from "react";
+import { Card, CardBody, CardHeader, Row, Col, Button } from "reactstrap";
+import { toastr } from "react-redux-toastr";
 
 import { connectMembers } from "store/organizations/members/container";
 
-import MembersForm from "forms/Organizations/ClanMembers";
-
 import MemberItem from "./MemberItem";
 
-const Members = ({ actions, members, clanId, doxaTags, isOwner }) => {
-  useEffect(() => {
-    if (clanId) {
-      actions.loadMembers(clanId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clanId]);
-
+const Members = ({ actions, members, userId, clanId, isOwner }) => {
   return (
     <Card>
       <CardHeader>
         <Col>Members</Col>
         <Col>
-          <MembersForm.LeaveClan initialValues={{ clanId: clanId }} onSubmit={data => actions.leaveClan(data.clanId)} />
+          <Button
+            color="danger"
+            onClick={() =>
+              actions
+                .leaveClan(clanId)
+                .then(toastr.success("SUCCESS", "Why so salty."))
+                .catch(toastr.error("WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM", "Member was not kicked in the butt."))
+            }
+          >
+            Leave clan
+          </Button>
         </Col>
       </CardHeader>
       <CardBody>
         {members
           ? members.map((member, index) => (
               <Row key={index}>
-                <MemberItem member={member} actions={actions} doxaTags={doxaTags} isOwner={isOwner}></MemberItem>
+                <MemberItem member={member} actions={actions} isOwner={isOwner && userId !== member.userId}></MemberItem>
               </Row>
             ))
-          : ""}
+          : null}
       </CardBody>
     </Card>
   );

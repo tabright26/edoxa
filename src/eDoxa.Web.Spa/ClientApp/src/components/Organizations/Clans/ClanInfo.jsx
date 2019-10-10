@@ -1,11 +1,19 @@
 import React, { Fragment } from "react";
-import { Row } from "reactstrap";
 
 const ClanInfo = ({ clan }) => {
   return (
     <Fragment>
-      <Row>Name: {clan ? clan.name : ""}</Row>
-      <Row>Summary: {clan ? clan.summary : ""}</Row>
+      Name: {clan.name}
+      <br />
+      ID: {clan.id}
+      <br />
+      Summary: {clan.summary}
+      <br />
+      Members: {clan.members.length}
+      <br />
+      {clan.ownerDoxaTag}
+      <br />
+      OwnerId: {clan.ownerId}
     </Fragment>
   );
 };

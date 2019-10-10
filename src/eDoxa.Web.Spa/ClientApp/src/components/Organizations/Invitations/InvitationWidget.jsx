@@ -1,30 +1,25 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { toastr } from "react-redux-toastr";
 import { Col } from "reactstrap";
-
-import { connectInvitations } from "store/organizations/invitations/container";
 
 import InvitationForm from "forms/Organizations/Invitations";
 
-const InvitationWidget = ({ actions, invitations, clanId }) => {
-  useEffect(() => {
-    if (clanId) {
-      actions.loadInvitationsWithClanId(clanId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clanId]);
+const InvitationWidget = ({ actions, invitations, doxaTags, clanId }) => {
+  const findDoxaTag = (name, code) => {
+    return doxaTags.find(tag => tag.name === name && tag.code === code);
+  };
 
   const handleAddInvitation = data => {
-    if (actions && invitations) {
-      var memberFound = false;
+    var alreadyExist = invitations.some(invitation => invitation.userId === data.userId);
 
-      invitations.forEach(invitation => {
-        if (invitation.userId === data.userId) {
-          memberFound = true;
-        }
-      });
-
-      if (!memberFound) {
-        actions.addInvitation(data);
+    if (alreadyExist) {
+      toastr.error("Error", "Invitation already exist.");
+    } else {
+      var userIdFound = findDoxaTag(data.name, data.code);
+      if (userIdFound) {
+        actions.addInvitation(clanId, userIdFound.userId).then(toastr.success("SUCCESS", "Candidature was sent successfully."));
+      } else {
+        toastr.error("Error", "User does not exist.");
       }
     }
   };
@@ -36,4 +31,4 @@ const InvitationWidget = ({ actions, invitations, clanId }) => {
   );
 };
 
-export default connectInvitations(InvitationWidget);
+export default InvitationWidget;

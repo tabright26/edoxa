@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Col, Card, CardHeader, CardBody } from "reactstrap";
+import { Card, CardHeader, CardBody } from "reactstrap";
 
 import { connectClans } from "store/organizations/clans/container";
 
-import ClanInfo from "components/Organizations/Clans/ClanInfo";
 import CandidatureWidget from "components/Organizations/Candidatures/CandidatureWidget";
+import ClanInfo from "components/Organizations/Clans/ClanInfo";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 
@@ -12,6 +12,7 @@ const ClanDetailsIndex = ({
   actions,
   clans,
   userId,
+  userClan,
   match: {
     params: { clanId }
   }
@@ -31,15 +32,14 @@ const ClanDetailsIndex = ({
 
   return (
     <ErrorBoundary>
-      <Card>
-        <CardHeader>
-          <Col>Clan Details</Col>
-          <Col>Clan Id: {clan ? clan.id : ""}</Col>
-          <Col>Clan Owner Id: {clan ? clan.ownerId : ""}</Col>
-          <Col>{clan ? <CandidatureWidget clanId={clan.id} userId={userId} /> : ""}</Col>
-        </CardHeader>
-        <CardBody>{clan ? <ClanInfo clan={clan} /> : ""}</CardBody>
-      </Card>
+      {clan ? (
+        <Card>
+          <CardHeader>
+            <ClanInfo clan={clan} />
+          </CardHeader>
+          <CardBody>{!userClan ? <CandidatureWidget type="user" id={userId} clanId={clanId} userId={userId} /> : null}</CardBody>
+        </Card>
+      ) : null}
     </ErrorBoundary>
   );
 };

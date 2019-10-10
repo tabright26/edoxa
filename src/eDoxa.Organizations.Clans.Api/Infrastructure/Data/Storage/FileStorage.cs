@@ -35,12 +35,19 @@ namespace eDoxa.Organizations.Clans.Api.Infrastructure.Data.Storage
                     return csvReader.GetRecords(
                             new
                             {
-                                Id = default(ClanId),
+                                Id = default(Guid),
                                 Name = default(string),
-                                OwnerId = default(UserId),
+                                OwnerId = default(Guid),
                             })
                         .Select(
-                            record => new Clan(record.Name, record.OwnerId))
+                            record =>
+                            {
+                                var clan = new Clan(record.Name!, UserId.FromGuid(record.OwnerId));
+
+                                clan.SetEntityId(record.Id);
+
+                                return clan;
+                            })
                                 .ToImmutableHashSet();
                 });
 

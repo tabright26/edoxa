@@ -1,28 +1,26 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { Col } from "reactstrap";
+import React, { Fragment } from "react";
+import { toastr } from "react-redux-toastr";
+import { Col, Button } from "reactstrap";
 
-import MembersForm from "forms/Organizations/ClanMembers";
-
-const MemberItem = ({ member, actions, doxaTags, isOwner }) => {
-  const [doxaTag, setDoxaTag] = useState(null);
-
-  useEffect(() => {
-    if (doxaTags && member) {
-      setDoxaTag(doxaTags.find(tag => tag.userId === member.userId));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [doxaTags]);
-
+const MemberItem = ({ member, actions, isOwner }) => {
   return (
     <Fragment>
-      <Col>{doxaTag ? doxaTag.name : ""}</Col>
+      <Col>{member.userDoxaTag}</Col>
       {isOwner ? (
         <Col>
-          <MembersForm.KickMember initialValues={{ memberId: member.id, clanId: member.clanId }} onSubmit={data => actions.kickMember(data.clanId, data.memberId)} />
+          <Button
+            color="warning"
+            onClick={() =>
+              actions
+                .kickMember(member.clanId, member.memberId)
+                .then(toastr.success("SUCCESS", "Member was kicked in the butt."))
+                .catch(toastr.error("WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM", "Member was not kicked in the butt."))
+            }
+          >
+            Kick the butt
+          </Button>
         </Col>
-      ) : (
-        ""
-      )}
+      ) : null}
     </Fragment>
   );
 };
