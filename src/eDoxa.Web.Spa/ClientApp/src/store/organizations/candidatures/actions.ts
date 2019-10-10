@@ -17,25 +17,14 @@ import {
   CandidaturesActionCreators
 } from "./types";
 
-export function loadCandidaturesWithClanId(clanId: string): CandidaturesActionCreators {
+export function loadCandidatures(type: string, id: string): CandidaturesActionCreators {
+  console.log("LOADING CANDIDATURES");
   return {
     types: [LOAD_CANDIDATURES, LOAD_CANDIDATURES_SUCCESS, LOAD_CANDIDATURES_FAIL],
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/candidatures?clanId=${clanId}`
-      }
-    }
-  };
-}
-
-export function loadCandidaturesWithUserId(userId: string): CandidaturesActionCreators {
-  return {
-    types: [LOAD_CANDIDATURES, LOAD_CANDIDATURES_SUCCESS, LOAD_CANDIDATURES_FAIL],
-    payload: {
-      request: {
-        method: "GET",
-        url: `/organizations/clans/api/candidatures?clanId=${userId}`
+        url: `/organizations/clans/api/candidatures?${type}Id=${id}`
       }
     }
   };
@@ -53,14 +42,17 @@ export function loadCandidature(candidatureId: string): CandidaturesActionCreato
   };
 }
 
-export function addCandidature(data: any): CandidaturesActionCreators {
+export function addCandidature(clanId, userId): CandidaturesActionCreators {
   return {
     types: [ADD_CANDIDATURE, ADD_CANDIDATURE_SUCCESS, ADD_CANDIDATURE_FAIL],
     payload: {
       request: {
         method: "POST",
         url: "/organizations/clans/api/candidatures",
-        data
+        data: {
+          clanId,
+          userId
+        }
       }
     }
   };

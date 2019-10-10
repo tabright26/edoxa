@@ -1,29 +1,45 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadInvitationsWithClanId, loadInvitationsWithUserId, loadInvitation, addInvitation, acceptInvitation, declineInvitation } from "store/organizations/invitations/actions";
-import { AppState } from "store/types";
+import { loadInvitations, loadInvitation, addInvitation, acceptInvitation, declineInvitation } from "store/organizations/invitations/actions";
+import { RootState } from "store/types";
+
+interface InvitationProps {
+  type: string;
+  id: string;
+}
 
 export const connectInvitations = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, invitations, userId, ...attributes }) => {
-    return <ConnectedComponent actions={actions} invitations={invitations} userId={userId} {...attributes} />;
+  const Container: FunctionComponent<any> = ({ actions, invitations, ...attributes }) => {
+    useEffect(() => {
+      actions.loadInvitations();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return <ConnectedComponent actions={actions} invitations={invitations} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
+    const invitations = state.organizations.invitations.map(invitation => {
+      const doxatag = state.doxaTags.find(doxaTag => doxaTag.userId === invitation.userId);
+      const clan = state.organizations.clans.find(clan => clan.id === invitation.clanId);
+
+      invitation.userDoxaTag = doxatag ? doxatag.name + "#" + doxatag.code : null;
+      invitation.clanName = clan ? clan.name : null;
+      return invitation;
+    });
+
     return {
-      userId: state.oidc.user.profile.sub,
-      invitations: state.organizations.invitations
+      invitations
     };
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
+  const mapDispatchToProps = (dispatch: any, ownProps: InvitationProps) => {
     return {
       actions: {
-        loadInvitationsWithClanId: (clanId: string) => dispatch(loadInvitationsWithClanId(clanId)),
-        loadInvitationsWithUserId: (clanId: string) => dispatch(loadInvitationsWithUserId(clanId)),
-        addInvitation: (data: any) => dispatch(addInvitation(data)),
+        loadInvitations: () => dispatch(loadInvitations(ownProps.type, ownProps.id)),
         loadInvitation: (invitationId: string) => dispatch(loadInvitation(invitationId)),
-        acceptInvitation: (invitationId: string) => dispatch(acceptInvitation(invitationId)),
-        declineInvitation: (invitationId: string) => dispatch(declineInvitation(invitationId))
+        acceptInvitation: (invitationId: string) => dispatch(acceptInvitation(invitationId)).then(loadInvitations(ownProps.type, ownProps.id)),
+        declineInvitation: (invitationId: string) => dispatch(declineInvitation(invitationId)).then(loadInvitations(ownProps.type, ownProps.id)),
+        addInvitation: (clanId: string, userId: string) => dispatch(addInvitation(clanId, userId)).then(loadInvitations(ownProps.type, ownProps.id))
       }
     };
   };

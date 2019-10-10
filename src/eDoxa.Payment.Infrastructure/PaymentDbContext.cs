@@ -4,13 +4,17 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Threading;
+using System.Threading.Tasks;
+
 using eDoxa.Payment.Domain.Models;
+using eDoxa.Seedwork.Domain;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Payment.Infrastructure
 {
-    public sealed class PaymentDbContext : DbContext
+    public sealed class PaymentDbContext : DbContext, IUnitOfWork
     {
         public PaymentDbContext(DbContextOptions<PaymentDbContext> options) : base(options)
         {
@@ -33,6 +37,11 @@ namespace eDoxa.Payment.Infrastructure
 
                     builder.ToTable("StripeReference");
                 });
+        }
+
+        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        {
+            await this.SaveChangesAsync(cancellationToken);
         }
     }
 }

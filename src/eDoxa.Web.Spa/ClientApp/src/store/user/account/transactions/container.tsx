@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountTransactions } from "store/user/account/transactions/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectUserAccountTransactions = currency => (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, transactions, ...attributes }) => {
@@ -12,7 +12,7 @@ export const connectUserAccountTransactions = currency => (ConnectedComponent: F
     return <ConnectedComponent actions={actions} transactions={transactions} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       transactions: state.user.account.transactions.filter(transaction => transaction.currency.toLowerCase() === currency.toLowerCase())
     };

@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 
 export const LOAD_MEMBERS = "LOAD_MEMBERS";
 export const LOAD_MEMBERS_SUCCESS = "LOAD_MEMBERS_SUCCESS";

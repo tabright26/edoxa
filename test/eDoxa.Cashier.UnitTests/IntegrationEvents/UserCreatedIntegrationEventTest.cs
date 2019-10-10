@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
         public void UserCreatedIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToUserCreationEvent()
         {
             //Arrange
-            var userCreatedEvent = new UserCreatedIntegrationEvent(new UserId());
+            var userCreatedEvent = new UserCreatedIntegrationEvent(new UserId(), "noreply@edoxa.gg", "CA");
 
             var serializedEvent = JsonConvert.SerializeObject(userCreatedEvent);
 

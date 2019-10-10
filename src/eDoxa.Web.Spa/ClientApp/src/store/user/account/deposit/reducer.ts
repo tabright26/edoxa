@@ -1,4 +1,4 @@
-import { AxiosErrorData } from "interfaces/axios";
+import { AxiosErrorData } from "store/types";
 import { SubmissionError } from "redux-form";
 import {
   LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS,

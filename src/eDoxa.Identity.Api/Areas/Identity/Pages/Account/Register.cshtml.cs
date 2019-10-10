@@ -1,5 +1,5 @@
 ﻿// Filename: Register.cshtml.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -67,8 +67,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                         Email = Input.Email,
                         UserName = Input.Email
                     },
-                    Input.Password
-                );
+                    Input.Password);
 
                 if (result.Succeeded)
                 {
@@ -76,17 +75,17 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User created a new account with password.");
 
+                    await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(UserId.FromGuid(user.Id), Input.Email, "CA");
+
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var callbackUrl =
-                        $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
+                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
 
                     await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
                         UserId.FromGuid(user.Id),
                         Input.Email,
                         "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
-                    );
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, false);
 

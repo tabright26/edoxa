@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { loadWithdrawalAmounts, withdrawal } from "./actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 import { Currency } from "../types";
 import { WITHDRAWAL_MODAL } from "modals";
 
@@ -15,7 +15,7 @@ export const connectUserAccountWithdrawal = (currency: Currency) => (ConnectedCo
     return <ConnectedComponent actions={actions} amounts={amounts} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       amounts: state.user.account.withdrawal.amounts.get(currency)
     };

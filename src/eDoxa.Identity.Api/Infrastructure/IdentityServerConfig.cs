@@ -1,21 +1,18 @@
-﻿// Filename: Config.cs
-// Date Created: 2019-06-25
+﻿// Filename: IdentityServerConfig.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security;
 using eDoxa.Swagger.Client.Extensions;
+
 using IdentityServer4;
 using IdentityServer4.Models;
 
-using IdentityResources = eDoxa.Seedwork.Security.IdentityResources;
+using IdentityResources = IdentityServer4.Models.IdentityResources;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
@@ -23,21 +20,21 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            yield return new IdentityServer4.Models.IdentityResources.OpenId();
+            yield return new IdentityResources.OpenId();
 
-            yield return new IdentityServer4.Models.IdentityResources.Profile();
+            yield return new IdentityResources.Profile();
 
-            yield return new IdentityServer4.Models.IdentityResources.Email();
+            yield return new IdentityResources.Email();
 
-            yield return new IdentityServer4.Models.IdentityResources.Phone();
+            yield return new IdentityResources.Phone();
 
-            yield return new IdentityServer4.Models.IdentityResources.Address();
+            yield return new IdentityResources.Address();
 
-            yield return IdentityResources.Roles;
+            yield return Seedwork.Security.IdentityResources.Roles;
 
-            yield return IdentityResources.Permissions;
+            yield return Seedwork.Security.IdentityResources.Permissions;
 
-            yield return IdentityResources.Games;
+            yield return Seedwork.Security.IdentityResources.Games;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
@@ -112,11 +109,12 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.Permissions,
                     Scopes.Games,
                     Scopes.IdentityApi,
+                    Scopes.PaymentApi,
                     Scopes.CashierApi,
                     Scopes.ArenaChallengesApi,
-                    Scopes.OrganizationsClans
-                },
-                
+                    Scopes.ArenaGamesLeagueOfLegendsApi,
+                    Scopes.OrganizationsClansApi
+                }
             };
         }
     }

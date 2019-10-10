@@ -1,25 +1,23 @@
-import React, { useEffect } from "react";
-import { Badge } from "reactstrap";
+import React, { useEffect, useState } from "react";
+import { toastr } from "react-redux-toastr";
+import { Button } from "reactstrap";
 
 import { connectCandidatures } from "store/organizations/candidatures/container";
 
-import CandidatureForm from "forms/Organizations/Candidatures";
+//TODO. LE TRUC C<EST QUE ON FAIT UN RELOAD POUR CHAQUE WIDGE TDANS LA PAGE
 
-const ClanCandidatureWidget = ({ actions, candidatures, clan, userId }) => {
+const CandidatureWidget = ({ actions, candidatures, clanId, userId }) => {
+  const [candidatureDisabled, setCandidatureDisabled] = useState(false);
+
   useEffect(() => {
-    if (clan) {
-      actions.loadCandidaturesWithClanId(clan.id);
-    }
+    setCandidatureDisabled(candidatures.some(candidature => candidature.clanId === clanId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [candidatures, clan, userId]);
+  }, []);
 
-  const candidatureExists = candidatures.find(candidature => candidature.userId === userId);
-
-  return !candidatureExists ? (
-    <CandidatureForm.Create initialValues={{ userId: userId, clanId: clan.id }} onSubmit={data => actions.addCandidature(data)} />
-  ) : (
-    <Badge color="success">Candidature already sent.</Badge>
+  return (
+    <Button color="primary" onClick={() => actions.addCandidature(clanId, userId).then(toastr.success("SUCCESS", "Candidature was sent successfully."))} disabled={candidatureDisabled}>
+      Send candidature
+    </Button>
   );
 };
-
-export default connectCandidatures(ClanCandidatureWidget);
+export default connectCandidatures(CandidatureWidget);

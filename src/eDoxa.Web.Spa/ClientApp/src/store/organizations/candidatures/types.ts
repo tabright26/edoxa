@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 
 export const LOAD_CANDIDATURES = "LOAD_CANDIDATURES";
 export const LOAD_CANDIDATURES_SUCCESS = "LOAD_CANDIDATURES_SUCCESS";
@@ -20,11 +20,11 @@ export const DECLINE_CANDIDATURE = "DECLINE_CANDIDATURE";
 export const DECLINE_CANDIDATURE_SUCCESS = "DECLINE_CANDIDATURE_SUCCESS";
 export const DECLINE_CANDIDATURE_FAIL = "DECLINE_CANDIDATURE_FAIL";
 
-type LoadCandidaturesType = typeof LOAD_CANDIDATURES | typeof LOAD_CANDIDATURES_SUCCESS | typeof LOAD_CANDIDATURES_FAIL;
+type LoadCandidaturesdType = typeof LOAD_CANDIDATURES | typeof LOAD_CANDIDATURES_SUCCESS | typeof LOAD_CANDIDATURES_FAIL;
 
-interface LoadCandidaturesActionCreator extends AxiosActionCreator<LoadCandidaturesType> {}
+interface LoadCandidaturesActionCreator extends AxiosActionCreator<LoadCandidaturesdType> {}
 
-interface LoadCandidaturesAction extends AxiosAction<LoadCandidaturesType> {}
+interface LoadCandidaturesAction extends AxiosAction<LoadCandidaturesdType> {}
 
 //---------------------------------------------------------------------------------------------------
 

@@ -1,9 +1,5 @@
-import Create from "./Create";
-import Update from "./Update";
-import Delete from "./Delete";
+import Change from "./Change";
 
 export default {
-  Create,
-  Update,
-  Delete
+  Change
 };

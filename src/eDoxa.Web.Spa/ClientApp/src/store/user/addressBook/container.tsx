@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { CREATE_ADDRESS_MODAL } from "modals";
 import { loadAddressBook, addAddress, updateAddress, removeAddress } from "store/user/addressBook/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectUserAddressBook = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, addressBook, ...attributes }) => {
@@ -14,7 +14,7 @@ export const connectUserAddressBook = (ConnectedComponent: FunctionComponent<any
     return <ConnectedComponent actions={actions} addressBook={addressBook} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       addressBook: state.user.addressBook
     };

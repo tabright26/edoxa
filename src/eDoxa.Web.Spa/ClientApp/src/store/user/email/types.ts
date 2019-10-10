@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "interfaces/axios";
+import { AxiosActionCreator, AxiosAction } from "store/types";
 
 export const CONFIRM_EMAIL = "CONFIRM_EMAIL";
 export const CONFIRM_EMAIL_SUCCESS = "CONFIRM_EMAIL_SUCCESS";

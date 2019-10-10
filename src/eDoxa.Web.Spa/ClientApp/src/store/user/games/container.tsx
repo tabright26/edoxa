@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadGames } from "store/user/games/actions";
-import { AppState } from "store/types";
+import { RootState } from "store/types";
 
 export const connectUserGames = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, games, ...attributes }) => {
@@ -12,7 +12,7 @@ export const connectUserGames = (ConnectedComponent: FunctionComponent<any>) => 
     return <ConnectedComponent actions={actions} games={games} {...attributes} />;
   };
 
-  const mapStateToProps = (state: AppState) => {
+  const mapStateToProps = (state: RootState) => {
     return {
       games: state.user.games
     };

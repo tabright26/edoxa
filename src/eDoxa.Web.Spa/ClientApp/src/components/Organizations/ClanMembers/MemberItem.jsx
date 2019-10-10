@@ -1,15 +1,26 @@
 import React, { Fragment } from "react";
-import { Badge, Col } from "reactstrap";
+import { toastr } from "react-redux-toastr";
+import { Col, Button } from "reactstrap";
 
-import MembersForm from "forms/Organizations/ClanMembers";
-
-const MemberItem = ({ member, actions, clanId, withPermissions }) => {
+const MemberItem = ({ member, actions, isOwner }) => {
   return (
     <Fragment>
-      <Col>
-        <small className="text-muted">{member.id}</small>
-      </Col>
-      <Col>{withPermissions ? <MembersForm.KickMember initialValues={{ memberId: member.id, clanId: clanId }} onSubmit={data => actions.kickMember(data.clanId, data.memberId)} /> : ""}</Col>
+      <Col>{member.userDoxaTag}</Col>
+      {isOwner ? (
+        <Col>
+          <Button
+            color="warning"
+            onClick={() =>
+              actions
+                .kickMember(member.clanId, member.memberId)
+                .then(toastr.success("SUCCESS", "Member was kicked in the butt."))
+                .catch(toastr.error("WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM", "Member was not kicked in the butt."))
+            }
+          >
+            Kick the butt
+          </Button>
+        </Col>
+      ) : null}
     </Fragment>
   );
 };

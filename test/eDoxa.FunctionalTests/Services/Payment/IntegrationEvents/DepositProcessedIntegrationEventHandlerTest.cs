@@ -91,7 +91,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
-                        var mockStripeService = new Mock<IStripeService>();
+                        var mockStripeService = new Mock<IStripeTempService>();
 
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateInvoiceAsync(
@@ -102,7 +102,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                                     It.IsAny<CancellationToken>()))
                             .Throws<StripeException>();
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeTempService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())
@@ -157,7 +157,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
-                        var mockStripeService = new Mock<IStripeService>();
+                        var mockStripeService = new Mock<IStripeTempService>();
 
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateInvoiceAsync(
@@ -168,7 +168,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                                     It.IsAny<CancellationToken>()))
                             .Returns(Task.CompletedTask);
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeTempService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())
