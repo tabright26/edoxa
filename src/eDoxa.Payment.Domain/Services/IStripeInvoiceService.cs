@@ -13,10 +13,10 @@ namespace eDoxa.Payment.Domain.Services
     public interface IStripeInvoiceService
     {
         Task CreateInvoiceAsync(
-            TransactionId transactionId,
-            string description,
             string customerId,
-            long amount
+            TransactionId transactionId,
+            long amount,
+            string description
         );
     }
 }

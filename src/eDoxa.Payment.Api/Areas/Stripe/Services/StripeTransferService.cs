@@ -26,10 +26,10 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
         private StripeOptions Options { get; }
 
         public async Task CreateTransferAsync(
-            TransactionId transactionId,
-            string description,
             string accountId,
-            long amount
+            TransactionId transactionId,
+            long amount,
+            string description
         )
         {
             await this.CreateAsync(

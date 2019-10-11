@@ -46,10 +46,10 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                 var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
 
                 await _stripeTransferService.CreateTransferAsync(
-                    integrationEvent.TransactionId,
-                    integrationEvent.Description,
                     accountId,
-                    integrationEvent.Amount);
+                    integrationEvent.TransactionId,
+                    integrationEvent.Amount,
+                    integrationEvent.Description);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
@@ -57,17 +57,16 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
-            catch (StripeException exception)
-            {
-                _logger.LogError(exception, exception.StripeError?.ToJson());
-
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
-
-                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
-            }
             catch (Exception exception)
             {
-                _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                if (exception is StripeException stripeException)
+                {
+                    _logger.LogCritical(stripeException, stripeException.StripeError?.ToJson());
+                }
+                else
+                {
+                    _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                }
 
                 await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
 

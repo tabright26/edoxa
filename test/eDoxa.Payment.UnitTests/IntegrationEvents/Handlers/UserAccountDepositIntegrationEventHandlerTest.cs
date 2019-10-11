@@ -35,10 +35,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             mockStripeService.Setup(
                     stripeService => stripeService.CreateInvoiceAsync(
+                        It.IsAny<string>(),
                         It.IsAny<TransactionId>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<long>()))
+                        It.IsAny<long>(),
+                        It.IsAny<string>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -65,10 +65,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             mockStripeService.Verify(
                 stripeService => stripeService.CreateInvoiceAsync(
+                    It.IsAny<string>(),
                     It.IsAny<TransactionId>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<long>()),
+                    It.IsAny<long>(),
+                    It.IsAny<string>()),
                 Times.Once);
 
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);

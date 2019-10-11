@@ -13,10 +13,10 @@ namespace eDoxa.Payment.Domain.Services
     public interface IStripeTransferService
     {
         Task CreateTransferAsync(
-            TransactionId transactionId,
-            string description,
             string accountId,
-            long amount
+            TransactionId transactionId,
+            long amount,
+            string description
         );
     }
 }
