@@ -1,5 +1,5 @@
-﻿// Filename: IConnectAccountService.cs
-// Date Created: 2019-10-07
+﻿// Filename: IStripeAccountService.cs
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
+
+using Stripe;
 
 namespace eDoxa.Payment.Domain.Services
 {
@@ -16,8 +18,19 @@ namespace eDoxa.Payment.Domain.Services
 
         Task<string?> FindAccountIdAsync(UserId userId);
 
-        Task<string> CreateAccountAsync(UserId userId, string email, string country);
+        Task<IExternalAccount?> FindBankAccountAsync(string accountId);
+
+        Task<IExternalAccount> UpdateBankAccountAsync(string accountId, string token);
+
+        Task<string> CreateAccountAsync(
+            UserId userId,
+            string email,
+            string country,
+            string customerId
+        );
 
         Task<bool> AccountIsVerifiedAsync(string accountId);
+
+        Task UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
     }
 }

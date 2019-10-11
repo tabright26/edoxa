@@ -1,5 +1,5 @@
-﻿// Filename: PersonPostRequest.cs
-// Date Created: 2019-10-09
+﻿// Filename: BankAccountPutRequest.cs
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Payment.Api.Areas.Stripe.Requests
 {
     [DataContract]
-    public sealed class PersonPostRequest
+    public sealed class BankAccountPutRequest
     {
-        public PersonPostRequest(string token)
+        public BankAccountPutRequest(string token)
         {
             Token = token;
         }

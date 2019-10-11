@@ -1,5 +1,5 @@
 ﻿// Filename: StripeService.cs
-// Date Created: 2019-10-08
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using eDoxa.Payment.Domain.Services;
 
 namespace eDoxa.Payment.Api.Areas.Stripe.Services
 {
-    public class StripeService : IStripeService
+    public sealed class StripeService : IStripeService
     {
         private readonly IStripeRepository _stripeRepository;
 

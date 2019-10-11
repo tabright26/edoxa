@@ -21,19 +21,19 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     {
         private readonly ILogger<UserAccountDepositIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IStripeTempService _stripeTempService;
+        private readonly IStripeInvoiceService _stripeInvoiceService;
         private readonly IStripeCustomerService _stripeCustomerService;
 
         public UserAccountDepositIntegrationEventHandler(
             ILogger<UserAccountDepositIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeTempService stripeTempService,
+            IStripeInvoiceService stripeInvoiceService,
             IStripeCustomerService stripeCustomerService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
-            _stripeTempService = stripeTempService;
+            _stripeInvoiceService = stripeInvoiceService;
             _stripeCustomerService = stripeCustomerService;
         }
 
@@ -45,7 +45,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 var customerId = await _stripeCustomerService.GetCustomerIdAsync(integrationEvent.UserId);
 
-                await _stripeTempService.CreateInvoiceAsync(
+                await _stripeInvoiceService.CreateInvoiceAsync(
                     integrationEvent.TransactionId,
                     integrationEvent.Description,
                     customerId,

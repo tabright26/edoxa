@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Autofac;
@@ -91,18 +89,17 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
-                        var mockStripeService = new Mock<IStripeTempService>();
+                        var mockStripeService = new Mock<IStripeInvoiceService>();
 
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateInvoiceAsync(
-                                    It.IsAny<Guid>(),
+                                    It.IsAny<eDoxa.Payment.Domain.Models.TransactionId>(),
                                     It.IsAny<string>(),
                                     It.IsAny<string>(),
-                                    It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()))
+                                    It.IsAny<long>()))
                             .Throws<StripeException>();
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTempService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeInvoiceService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())
@@ -157,18 +154,17 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
-                        var mockStripeService = new Mock<IStripeTempService>();
+                        var mockStripeService = new Mock<IStripeInvoiceService>();
 
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateInvoiceAsync(
-                                    It.IsAny<Guid>(),
+                                    It.IsAny<eDoxa.Payment.Domain.Models.TransactionId>(),
                                     It.IsAny<string>(),
                                     It.IsAny<string>(),
-                                    It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()))
+                                    It.IsAny<long>()))
                             .Returns(Task.CompletedTask);
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTempService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeInvoiceService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())

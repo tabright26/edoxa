@@ -1,5 +1,5 @@
-﻿// Filename: PaymentMethodPostRequest.cs
-// Date Created: 2019-10-08
+﻿// Filename: PaymentMethodPutRequest.cs
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Payment.Api.Areas.Stripe.Requests
 {
     [DataContract]
-    public sealed class PaymentMethodPostRequest
+    public sealed class PaymentMethodPutRequest
     {
-        public PaymentMethodPostRequest(long expMonth, long expYear)
+        public PaymentMethodPutRequest(long expMonth, long expYear)
         {
             ExpMonth = expMonth;
             ExpYear = expYear;

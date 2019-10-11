@@ -21,19 +21,19 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     {
         private readonly ILogger<UserAccountWithdrawalIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IStripeTempService _stripeTempService;
+        private readonly IStripeTransferService _stripeTransferService;
         private readonly IStripeAccountService _stripeAccountService;
 
         public UserAccountWithdrawalIntegrationEventHandler(
             ILogger<UserAccountWithdrawalIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeTempService stripeTempService,
+            IStripeTransferService stripeTransferService,
             IStripeAccountService stripeAccountService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
-            _stripeTempService = stripeTempService;
+            _stripeTransferService = stripeTransferService;
             _stripeAccountService = stripeAccountService;
         }
 
@@ -43,12 +43,12 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
-                var connectAccountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
+                var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
 
-                await _stripeTempService.CreateTransferAsync(
+                await _stripeTransferService.CreateTransferAsync(
                     integrationEvent.TransactionId,
                     integrationEvent.Description,
-                    connectAccountId,
+                    accountId,
                     integrationEvent.Amount);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");

@@ -25,16 +25,33 @@ export const connectStripeBankAccounts = (ConnectedComponent: FunctionComponent<
         loadBankAccounts: () => dispatch(loadBankAccounts()),
         changeBankAccount: (fields, stripe) => {
           return stripe
-            .createToken("bank_account", {
-              country: fields.country,
-              account_holder_type: "individual",
-              account_holder_name: fields.accountHolderName,
-              routing_number: fields.routingNumber,
-              account_number: fields.accountNumber, 
-              currency: "usd"
+            .createToken("person", {
+              first_name: fields.firstName,
+              last_name: fields.lastName,
+              gender: fields.gender,
+              email: fields.email,
+              dob: {
+                day: fields.dob.day,
+                month: fields.dob.month,
+                year: fields.dob.year
+              },
+              address: {
+                line1: fields.address.line1,
+                city: fields.address.city,
+                state: fields.address.state,
+                postal_code: fields.address.postalCode
+              },
+              // country: fields.country,
+              // account_holder_type: "individual",
+              // account_holder_name: fields.accountHolderName,
+              // routing_number: fields.routingNumber,
+              // account_number: fields.accountNumber,
+              // currency: "usd"
+              tos_shown_and_accepted: true
             })
             .then(result => {
               if (result.token) {
+                console.log(result.token);
                 return dispatch(changeBankAccount(result.token.id)).then(() => dispatch(loadBankAccounts()));
               } else {
                 return Promise.reject(result.error);

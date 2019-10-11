@@ -13,6 +13,7 @@ COPY /src/eDoxa.Web.Spa/ClientApp/package.json /app/package.json
 RUN npm install npm -g --silent
 RUN npm install react-scripts -g --silent
 RUN npm install typesync -g --silent
+RUN typesync
 RUN npm install --silent
 
 # start app

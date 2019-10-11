@@ -1,5 +1,5 @@
 ﻿// Filename: PaymentMethodDetachController.cs
-// Date Created: 2019-10-08
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,30 +23,30 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     [ApiExplorerSettings(GroupName = "Stripe")]
     public sealed class PaymentMethodDetachController : ControllerBase
     {
-        private readonly PaymentMethodService _paymentMethodService;
+        private readonly IStripePaymentMethodService _stripePaymentMethodService;
         private readonly IStripeCustomerService _stripeCustomerService;
 
-        public PaymentMethodDetachController(PaymentMethodService paymentMethodService, IStripeCustomerService stripeCustomerService)
+        public PaymentMethodDetachController(IStripePaymentMethodService stripePaymentMethodService, IStripeCustomerService stripeCustomerService)
         {
-            _paymentMethodService = paymentMethodService;
+            _stripePaymentMethodService = stripePaymentMethodService;
             _stripeCustomerService = stripeCustomerService;
         }
 
         [HttpPost]
         public async Task<IActionResult> PostAsync(string paymentMethodId)
         {
-            var userId = HttpContext.GetUserId();
-
-            var customerId = await _stripeCustomerService.FindCustomerIdAsync(userId);
-
-            if (customerId == null)
-            {
-                return this.NotFound("User not found.");
-            }
-
             try
             {
-                var paymentMethod = await _paymentMethodService.DetachAsync(paymentMethodId, new PaymentMethodDetachOptions());
+                var userId = HttpContext.GetUserId();
+
+                var customerId = await _stripeCustomerService.FindCustomerIdAsync(userId);
+
+                if (customerId == null)
+                {
+                    return this.NotFound("User not found.");
+                }
+
+                var paymentMethod = await _stripePaymentMethodService.DetachPaymentMethodAsync(paymentMethodId);
 
                 return this.Ok(paymentMethod);
             }

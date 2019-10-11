@@ -4,23 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
-using eDoxa.Payment.Api.Areas.Stripe;
-using eDoxa.Payment.Api.Areas.Stripe.Fakers;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
-
-using Microsoft.Extensions.Options;
 
 using Moq;
 
 using Stripe;
-
-using Xunit;
 
 namespace eDoxa.Payment.UnitTests.Areas.Stripe
 {
@@ -41,26 +30,26 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe
         private readonly Mock<InvoiceService> _mockInvoiceService;
         private readonly Mock<TransferService> _mockTransferService;
 
-        private StripeTempService CreateStripeService()
-        {
-            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<StripeOptions>>();
+        //private StripeTempService CreateStripeService()
+        //{
+        //    var mockOptionsSnapshot = new Mock<IOptionsSnapshot<StripeOptions>>();
 
-            mockOptionsSnapshot.Setup(snapshot => snapshot.Value)
-                .Returns(
-                    new StripeOptions
-                    {
-                        Currency = "cad",
-                        TaxRateIds = Array.Empty<string>().ToList()
-                    });
+        //    mockOptionsSnapshot.Setup(snapshot => snapshot.Value)
+        //        .Returns(
+        //            new StripeOptions
+        //            {
+        //                Currency = "cad",
+        //                TaxRateIds = Array.Empty<string>().ToList()
+        //            });
 
-            return new StripeTempService(
-                mockOptionsSnapshot.Object,
-                _mockAccountService.Object,
-                _mockCustomerService.Object,
-                _mockInvoiceService.Object,
-                _mockInvoiceItemService.Object,
-                _mockTransferService.Object);
-        }
+        //    return new StripeTempService(
+        //        mockOptionsSnapshot.Object,
+        //        _mockAccountService.Object,
+        //        _mockCustomerService.Object,
+        //        _mockInvoiceService.Object,
+        //        _mockInvoiceItemService.Object,
+        //        _mockTransferService.Object);
+        //}
 
         //[Fact]
         //public async Task CreateAccountAsync_WhenValid_ShouldBeCompletedTask()
@@ -119,73 +108,73 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe
         //        Times.Once);
         //}
 
-        [Fact]
-        public async Task CreateInvoiceAsync_WhenValid_ShouldBeCompletedTask()
-        {
-            // Arrange
-            var invoiceFaker = new InvoiceFaker();
+        //[Fact]
+        //public async Task CreateInvoiceAsync_WhenValid_ShouldBeCompletedTask()
+        //{
+        //    // Arrange
+        //    var invoiceFaker = new InvoiceFaker();
 
-            var invoiceItemFaker = new InvoiceItemFaker();
+        //    var invoiceItemFaker = new InvoiceItemFaker();
 
-            var customerFaker = new CustomerFaker();
+        //    var customerFaker = new CustomerFaker();
 
-            var customer = customerFaker.FakeCustomer();
+        //    var customer = customerFaker.FakeCustomer();
 
-            _mockInvoiceItemService
-                .Setup(mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(invoiceItemFaker.FakeInvoiceItem)
-                .Verifiable();
+        //    _mockInvoiceItemService
+        //        .Setup(mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(invoiceItemFaker.FakeInvoiceItem)
+        //        .Verifiable();
 
-            _mockInvoiceService.Setup(mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(invoiceFaker.FakeInvoice)
-                .Verifiable();
+        //    _mockInvoiceService.Setup(mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(invoiceFaker.FakeInvoice)
+        //        .Verifiable();
 
-            var service = this.CreateStripeService();
+        //    var service = this.CreateStripeService();
 
-            // Act
-            await service.CreateInvoiceAsync(
-                Guid.NewGuid(),
-                string.Empty,
-                customer.Id,
-                1000);
+        //    // Act
+        //    await service.CreateInvoiceAsync(
+        //        Guid.NewGuid(),
+        //        string.Empty,
+        //        customer.Id,
+        //        1000);
 
-            // Assert
-            _mockInvoiceItemService.Verify(
-                mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+        //    // Assert
+        //    _mockInvoiceItemService.Verify(
+        //        mock => mock.CreateAsync(It.IsAny<InvoiceItemCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+        //        Times.Once);
 
-            _mockInvoiceService.Verify(
-                mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-        }
+        //    _mockInvoiceService.Verify(
+        //        mock => mock.CreateAsync(It.IsAny<InvoiceCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+        //        Times.Once);
+        //}
 
-        [Fact]
-        public async Task CreateTransferAsync_WhenValid_ShouldBeCompletedTask()
-        {
-            // Arrange
-            var transferFaker = new TransferFaker();
+        //[Fact]
+        //public async Task CreateTransferAsync_WhenValid_ShouldBeCompletedTask()
+        //{
+        //    // Arrange
+        //    var transferFaker = new TransferFaker();
 
-            var accountFaker = new AccountFaker();
+        //    var accountFaker = new AccountFaker();
 
-            var account = accountFaker.FakeAccount();
+        //    var account = accountFaker.FakeAccount();
 
-            _mockTransferService.Setup(mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(transferFaker.FakeTransfer)
-                .Verifiable();
+        //    _mockTransferService.Setup(mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(transferFaker.FakeTransfer)
+        //        .Verifiable();
 
-            var service = this.CreateStripeService();
+        //    var service = this.CreateStripeService();
 
-            // Act
-            await service.CreateTransferAsync(
-                Guid.NewGuid(),
-                string.Empty,
-                account.Id,
-                1000);
+        //    // Act
+        //    await service.CreateTransferAsync(
+        //        Guid.NewGuid(),
+        //        string.Empty,
+        //        account.Id,
+        //        1000);
 
-            // Assert
-            _mockTransferService.Verify(
-                mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-        }
+        //    // Assert
+        //    _mockTransferService.Verify(
+        //        mock => mock.CreateAsync(It.IsAny<TransferCreateOptions>(), It.IsAny<RequestOptions>(), It.IsAny<CancellationToken>()),
+        //        Times.Once);
+        //}
     }
 }

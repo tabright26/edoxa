@@ -4,15 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Threading.Tasks;
-
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
-
-using Stripe;
-
-using Xunit;
 
 namespace eDoxa.Payment.UnitTests
 {

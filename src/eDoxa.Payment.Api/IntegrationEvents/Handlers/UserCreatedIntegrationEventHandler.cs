@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedIntegrationEventHandler.cs
-// Date Created: 2019-10-08
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,7 +27,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             _stripeAccount = stripeAccount;
             _stripeService = stripeService;
         }
-        
+
         // TODO: Logger is missing.
         public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
@@ -36,7 +36,8 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             var accountId = await _stripeAccount.CreateAccountAsync(
                 integrationEvent.UserId,
                 integrationEvent.Email,
-                integrationEvent.Country);
+                integrationEvent.Country,
+                customerId);
 
             await _stripeService.CreateReferenceAsync(integrationEvent.UserId, customerId, accountId);
         }

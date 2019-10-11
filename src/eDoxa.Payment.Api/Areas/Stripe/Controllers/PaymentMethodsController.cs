@@ -1,5 +1,5 @@
 ﻿// Filename: PaymentMethodsController.cs
-// Date Created: 2019-10-08
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -24,35 +24,30 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     [ApiExplorerSettings(GroupName = "Stripe")]
     public sealed class PaymentMethodsController : ControllerBase
     {
-        private readonly PaymentMethodService _paymentMethodService;
+        private readonly IStripePaymentMethodService _stripePaymentMethodService;
         private readonly IStripeCustomerService _stripeCustomerService;
 
-        public PaymentMethodsController(PaymentMethodService paymentMethodService, IStripeCustomerService stripeCustomerService)
+        public PaymentMethodsController(IStripePaymentMethodService stripePaymentMethodService, IStripeCustomerService stripeCustomerService)
         {
-            _paymentMethodService = paymentMethodService;
+            _stripePaymentMethodService = stripePaymentMethodService;
             _stripeCustomerService = stripeCustomerService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAsync([FromQuery] string type)
         {
-            var userId = HttpContext.GetUserId();
-
-            var customerId = await _stripeCustomerService.FindCustomerIdAsync(userId);
-
-            if (customerId == null)
-            {
-                return this.NotFound("User not found.");
-            }
-
             try
             {
-                var paymentMethods = await _paymentMethodService.ListAsync(
-                    new PaymentMethodListOptions
-                    {
-                        CustomerId = customerId,
-                        Type = type
-                    });
+                var userId = HttpContext.GetUserId();
+
+                var customerId = await _stripeCustomerService.FindCustomerIdAsync(userId);
+
+                if (customerId == null)
+                {
+                    return this.NotFound("User not found.");
+                }
+
+                var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId, type);
 
                 return this.Ok(paymentMethods);
             }
@@ -62,30 +57,21 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             }
         }
 
-        [HttpPost("{paymentMethodId}")]
-        public async Task<IActionResult> PostAsync(string paymentMethodId, [FromBody] PaymentMethodPostRequest request)
+        [HttpPut("{paymentMethodId}")]
+        public async Task<IActionResult> PostAsync(string paymentMethodId, [FromBody] PaymentMethodPutRequest request)
         {
-            var userId = HttpContext.GetUserId();
-
-            var customerId = await _stripeCustomerService.FindCustomerIdAsync(userId);
-
-            if (customerId == null)
-            {
-                return this.NotFound("User not found.");
-            }
-
             try
             {
-                var paymentMethod = await _paymentMethodService.UpdateAsync(
-                    paymentMethodId,
-                    new PaymentMethodUpdateOptions
-                    {
-                        Card = new PaymentMethodCardUpdateOptions
-                        {
-                            ExpMonth = request.ExpMonth,
-                            ExpYear = request.ExpYear
-                        }
-                    });
+                var userId = HttpContext.GetUserId();
+
+                var customerId = await _stripeCustomerService.FindCustomerIdAsync(userId);
+
+                if (customerId == null)
+                {
+                    return this.NotFound("User not found.");
+                }
+
+                var paymentMethod = await _stripePaymentMethodService.UpdatePaymentMethodAsync(paymentMethodId, request.ExpMonth, request.ExpYear);
 
                 return this.Ok(paymentMethod);
             }
