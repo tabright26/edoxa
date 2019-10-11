@@ -1,6 +1,6 @@
 ﻿// Filename: ClanRepository.cs
 // Date Created: 2019-09-29
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -66,13 +66,17 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 
             var directory = container.GetDirectoryReference($"organizations/clans/{clanId}/logo");
 
-            var blobItem = directory.ListBlobs().OrderByDescending(item => long.Parse(Path.GetFileNameWithoutExtension(item.Uri.ToString()))).First();
-
-            var blockBlob = directory.GetBlockBlobReference(Path.GetFileName(blobItem.Uri.ToString()));
+            var blobList = directory.ListBlobs().ToList();
 
             var memoryStream = new MemoryStream();
 
-            await blockBlob.DownloadToStreamAsync(memoryStream);
+            if (blobList.Any())
+            {
+                var blobItem = blobList.OrderByDescending(item => long.Parse(Path.GetFileNameWithoutExtension(item.Uri.ToString()))).First();
+                var blockBlob = directory.GetBlockBlobReference(Path.GetFileName(blobItem.Uri.ToString()));
+
+                await blockBlob.DownloadToStreamAsync(memoryStream);
+            }
 
             return memoryStream;
         }

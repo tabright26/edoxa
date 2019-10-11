@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -61,12 +62,13 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
+
                 });
 
             var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
 
             // Act
-            using var response = await this.ExecuteAsync(new ClanId(), file);
+            using var response = await this.ExecuteAsync(clan.Id, file);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -140,7 +142,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
                     file.Position = 0;
                     await file.CopyToAsync(fileImageData);
 
-                    dbImageData.Should().Be(fileImageData);
+                    dbImageData.ToArray().Should().BeEquivalentTo(fileImageData.ToArray());
                 });
 
             response.EnsureSuccessStatusCode();
