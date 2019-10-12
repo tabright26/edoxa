@@ -1,5 +1,5 @@
 ﻿// Filename: UserRoleRemovedIntegrationEventHandlerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,8 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -19,8 +21,12 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserRoleRemovedIntegrationEventHandlerTest
+    public sealed class UserRoleRemovedIntegrationEventHandlerTest : UnitTest
     {
+        public UserRoleRemovedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public async Task UserRoleRemovedIntegrationEvent_ShouldBeCompletedTask()
         {
