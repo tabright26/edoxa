@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Stripe;
 
-namespace eDoxa.Payment.Domain.Services
+namespace eDoxa.Payment.Domain.Stripe.Services
 {
     public interface IStripePaymentMethodService
     {

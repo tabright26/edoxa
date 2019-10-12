@@ -6,7 +6,7 @@
 
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Payment.Domain.Models
+namespace eDoxa.Payment.Domain.Stripe.Models
 {
     public sealed class User : Entity<UserId>
     {

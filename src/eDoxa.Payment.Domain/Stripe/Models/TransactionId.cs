@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Payment.Domain.Models
+namespace eDoxa.Payment.Domain.Stripe.Models
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
     public sealed class TransactionId : EntityId<TransactionId>

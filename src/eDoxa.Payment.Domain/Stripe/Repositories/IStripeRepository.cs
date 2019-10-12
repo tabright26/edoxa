@@ -6,10 +6,10 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Stripe.Models;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Payment.Domain.Repositories
+namespace eDoxa.Payment.Domain.Stripe.Repositories
 {
     public interface IStripeRepository
     {

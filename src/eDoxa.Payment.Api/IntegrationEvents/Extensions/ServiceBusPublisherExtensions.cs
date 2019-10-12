@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Stripe.Models;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Extensions

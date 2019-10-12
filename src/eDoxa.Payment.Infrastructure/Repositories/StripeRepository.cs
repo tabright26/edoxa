@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
-using eDoxa.Payment.Domain.Repositories;
+using eDoxa.Payment.Domain.Stripe.Models;
+using eDoxa.Payment.Domain.Stripe.Repositories;
 using eDoxa.Seedwork.Domain;
 
 using Microsoft.EntityFrameworkCore;

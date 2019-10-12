@@ -6,9 +6,9 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Stripe.Models;
 
-namespace eDoxa.Payment.Domain.Services
+namespace eDoxa.Payment.Domain.Stripe.Services
 {
     public interface IStripeInvoiceItemService
     {

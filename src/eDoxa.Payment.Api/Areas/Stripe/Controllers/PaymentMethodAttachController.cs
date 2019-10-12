@@ -7,7 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Extensions;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Models;
+using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;

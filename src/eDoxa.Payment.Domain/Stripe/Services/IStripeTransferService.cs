@@ -1,4 +1,4 @@
-﻿// Filename: IStripeInvoiceService.cs
+﻿// Filename: IStripeTransferService.cs
 // Date Created: 2019-10-10
 // 
 // ================================================
@@ -6,14 +6,14 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Stripe.Models;
 
-namespace eDoxa.Payment.Domain.Services
+namespace eDoxa.Payment.Domain.Stripe.Services
 {
-    public interface IStripeInvoiceService
+    public interface IStripeTransferService
     {
-        Task CreateInvoiceAsync(
-            string customerId,
+        Task CreateTransferAsync(
+            string accountId,
             TransactionId transactionId,
             long amount,
             string description

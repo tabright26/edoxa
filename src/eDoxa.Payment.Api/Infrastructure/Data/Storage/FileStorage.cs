@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Stripe.Models;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 namespace eDoxa.Payment.Api.Infrastructure.Data.Storage

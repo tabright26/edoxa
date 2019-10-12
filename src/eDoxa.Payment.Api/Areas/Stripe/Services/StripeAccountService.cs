@@ -8,9 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
-using eDoxa.Payment.Domain.Repositories;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Models;
+using eDoxa.Payment.Domain.Stripe.Repositories;
+using eDoxa.Payment.Domain.Stripe.Services;
 
 using Stripe;
 
@@ -29,7 +29,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
         {
             var reference = await _stripeRepository.GetReferenceAsync(userId);
 
-            return reference.ConnectAccountId;
+            return reference.AccountId;
         }
 
         public async Task<Account> GetAccountAsync(string accountId)

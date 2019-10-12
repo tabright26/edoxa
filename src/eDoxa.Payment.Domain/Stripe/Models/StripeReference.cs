@@ -4,15 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-namespace eDoxa.Payment.Domain.Models
+namespace eDoxa.Payment.Domain.Stripe.Models
 {
     public sealed class StripeReference
     {
-        public StripeReference(UserId userId, string customerId, string connectAccountId) : this()
+        public StripeReference(UserId userId, string customerId, string accountId) : this()
         {
             UserId = userId;
             CustomerId = customerId;
-            ConnectAccountId = connectAccountId;
+            AccountId = accountId;
         }
 
         private StripeReference()
@@ -24,6 +24,6 @@ namespace eDoxa.Payment.Domain.Models
 
         public string CustomerId { get; private set; }
 
-        public string ConnectAccountId { get; private set; }
+        public string AccountId { get; private set; }
     }
 }

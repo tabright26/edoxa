@@ -10,7 +10,7 @@ using eDoxa.Payment.Infrastructure;
 namespace eDoxa.Payment.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(PaymentDbContext))]
-    [Migration("20191007194537_InitialCreate")]
+    [Migration("20191012024546_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,11 +21,11 @@ namespace eDoxa.Payment.Api.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eDoxa.Payment.Domain.Models.StripeReference", b =>
+            modelBuilder.Entity("eDoxa.Payment.Domain.Stripe.Models.StripeReference", b =>
                 {
                     b.Property<Guid>("UserId");
 
-                    b.Property<string>("ConnectAccountId")
+                    b.Property<string>("AccountId")
                         .IsRequired();
 
                     b.Property<string>("CustomerId")

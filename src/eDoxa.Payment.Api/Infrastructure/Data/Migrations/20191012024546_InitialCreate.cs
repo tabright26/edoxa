@@ -13,7 +13,7 @@ namespace eDoxa.Payment.Api.Infrastructure.Data.Migrations
                 {
                     UserId = table.Column<Guid>(nullable: false),
                     CustomerId = table.Column<string>(nullable: false),
-                    ConnectAccountId = table.Column<string>(nullable: false)
+                    AccountId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
