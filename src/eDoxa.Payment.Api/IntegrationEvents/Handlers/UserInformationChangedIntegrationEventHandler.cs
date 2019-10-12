@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Payment.Domain.Stripe.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -32,13 +33,8 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                 {
                     FirstName = integrationEvent.FirstName,
                     LastName = integrationEvent.LastName,
-                    Gender = integrationEvent.Gender != "Other" ? integrationEvent.Gender.ToLower() : null,
-                    Dob = new DobOptions
-                    {
-                        Day = integrationEvent.Dob.Day,
-                        Month = integrationEvent.Dob.Month,
-                        Year = integrationEvent.Dob.Year
-                    }
+                    Gender = integrationEvent.Gender.ToStripe(),
+                    Dob = integrationEvent.Dob.ToStripe()
                 });
         }
     }

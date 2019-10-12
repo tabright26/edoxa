@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscellaneous;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
@@ -71,7 +72,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     userId,
                     firstName,
                     lastName,
-                    gender.Name,
+                    gender,
                     dob));
         }
 

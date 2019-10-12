@@ -8,6 +8,7 @@ using System;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Domain.Miscellaneous;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -22,7 +23,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents
             UserId userId,
             string firstName,
             string lastName,
-            string gender,
+            Gender gender,
             DateTime dob
         )
         {
@@ -43,7 +44,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         public string LastName { get; }
 
         [JsonProperty]
-        public string Gender { get; }
+        public Gender Gender { get; }
 
         [JsonProperty]
         public DateTime Dob { get; }

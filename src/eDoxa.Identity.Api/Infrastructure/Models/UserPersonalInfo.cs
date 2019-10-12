@@ -6,6 +6,8 @@
 
 using System;
 
+using eDoxa.Seedwork.Domain.Miscellaneous;
+
 namespace eDoxa.Identity.Api.Infrastructure.Models
 {
     public class UserPersonalInfo

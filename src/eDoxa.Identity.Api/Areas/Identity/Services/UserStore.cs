@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscellaneous;
 
 using Microsoft.EntityFrameworkCore;
 

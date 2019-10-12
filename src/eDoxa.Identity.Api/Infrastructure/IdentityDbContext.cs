@@ -7,6 +7,7 @@
 using System;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscellaneous;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

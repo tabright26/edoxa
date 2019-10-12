@@ -7,7 +7,7 @@
 using System;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscellaneous;
 
 using FluentAssertions;
 

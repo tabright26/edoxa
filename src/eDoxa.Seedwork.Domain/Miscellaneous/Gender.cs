@@ -6,9 +6,7 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Seedwork.Domain.Miscellaneous
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Gender : Enumeration<Gender>

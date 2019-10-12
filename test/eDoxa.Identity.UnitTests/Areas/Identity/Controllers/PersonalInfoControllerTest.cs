@@ -15,6 +15,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscellaneous;
 
 using FluentAssertions;
 
