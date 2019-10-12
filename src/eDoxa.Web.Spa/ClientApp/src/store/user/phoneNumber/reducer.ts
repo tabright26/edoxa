@@ -2,7 +2,7 @@ import { Reducer } from "redux";
 import { LOAD_PHONENUMBER_SUCCESS, LOAD_PHONENUMBER_FAIL, PhoneNumberActionTypes, PhoneNumberState } from "./types";
 
 export const initialState: PhoneNumberState = {
-  phoneNumber: "",
+  phoneNumber: null,
   phoneNumberVerified: false
 };
 

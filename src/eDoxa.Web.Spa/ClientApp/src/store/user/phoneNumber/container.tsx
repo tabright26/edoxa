@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadPhoneNumber } from "./actions";
+import { loadPhoneNumber, changePhoneNumber } from "./actions";
 
 export const connectUserPhoneNumber = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, phoneNumber, phoneNumberVerified, ...attributes }) => {
@@ -22,7 +22,8 @@ export const connectUserPhoneNumber = (ConnectedComponent: FunctionComponent<any
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadPhoneNumber: () => dispatch(loadPhoneNumber())
+        loadPhoneNumber: () => dispatch(loadPhoneNumber()),
+        changePhoneNumber: fields => dispatch(changePhoneNumber(fields.phoneNumber)).then(() => dispatch(loadPhoneNumber()))
       }
     };
   };

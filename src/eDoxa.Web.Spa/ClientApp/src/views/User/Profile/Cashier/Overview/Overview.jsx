@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 
-const BankAccount = React.lazy(() => import("./BankAccount"));
+const BankAccount = React.lazy(() => import("../PaymentMethods/BankAccount"));
 
 const Overview = () => (
   <>

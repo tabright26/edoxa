@@ -16,7 +16,7 @@ export const connectStripeBankAccount = (ConnectedComponent: FunctionComponent<a
     const bankAccount = state.stripe.bankAccount;
     return {
       bankAccount: bankAccount,
-      hasBankAccount: bankAccount.data.length
+      hasBankAccount: bankAccount.data
     };
   };
 

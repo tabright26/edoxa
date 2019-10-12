@@ -8,6 +8,7 @@ export const initialState = { data: {} };
 export const reducer: Reducer<any, BankAccountActionTypes> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_BANK_ACCOUNT_SUCCESS:
+    case CHANGE_BANK_ACCOUNT_SUCCESS:
       return { data: action.payload.data };
     case CHANGE_BANK_ACCOUNT_FAIL:
       const { isAxiosError, response } = action.error;
@@ -15,8 +16,17 @@ export const reducer: Reducer<any, BankAccountActionTypes> = (state = initialSta
         throw new SubmissionError<AxiosErrorData>(response.data.errors);
       }
       break;
-    case CHANGE_BANK_ACCOUNT_SUCCESS:
-    case LOAD_BANK_ACCOUNT_FAIL:
+    case LOAD_BANK_ACCOUNT_FAIL: {
+      const { status } = action.payload;
+      switch (status) {
+        case 404: {
+          return { data: null };
+        }
+        default: {
+          return state;
+        }
+      }
+    }
     default:
       return state;
   }

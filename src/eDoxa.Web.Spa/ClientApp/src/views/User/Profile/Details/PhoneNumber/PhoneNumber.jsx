@@ -6,7 +6,7 @@ import Badge from "components/Shared/Override/Badge";
 import { connectUserPhoneNumber } from "store/user/phoneNumber/container";
 import PhoneNumberForm from "forms/User/PhoneNumber";
 
-const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified }) => {
+const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
   return (
     <Card className={className}>
@@ -24,7 +24,13 @@ const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified }) => {
       <CardBody>
         <dl className="row mb-0">
           <dd className="col-sm-3 text-muted mb-0">Phone number</dd>
-          <dd className="col-sm-5 mb-0">{isFormHidden ? <span>{phoneNumber}</span> : <PhoneNumberForm.Update initialValues={{ phoneNumber }} handleCancel={() => setFormHidden(true)} />}</dd>
+          <dd className="col-sm-5 mb-0">
+            {!isFormHidden || !phoneNumber ? (
+              <PhoneNumberForm.Update initialValues={{ phoneNumber }} onSubmit={fields => actions.changePhoneNumber(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+            ) : (
+              <span>{phoneNumber}</span>
+            )}
+          </dd>
         </dl>
       </CardBody>
     </Card>

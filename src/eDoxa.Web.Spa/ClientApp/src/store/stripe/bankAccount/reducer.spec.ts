@@ -1,7 +1,7 @@
 import { LOAD_BANK_ACCOUNT_FAIL, CHANGE_BANK_ACCOUNT_SUCCESS } from "./types";
 import { reducer, initialState } from "./reducer";
 
-const stripeBank204Data = [];
+const stripeBank204Data = {};
 
 describe("user account stripe bank account reducer", () => {
   it("should return the initial state", () => {
@@ -19,7 +19,8 @@ describe("user account stripe bank account reducer", () => {
 
   it("should handle LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL", () => {
     const action: any = {
-      type: LOAD_BANK_ACCOUNT_FAIL
+      type: LOAD_BANK_ACCOUNT_FAIL,
+      payload: { status: 400 }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
