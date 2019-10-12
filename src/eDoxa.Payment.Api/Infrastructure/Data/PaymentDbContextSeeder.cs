@@ -17,22 +17,22 @@ namespace eDoxa.Payment.Api.Infrastructure.Data
 {
     internal sealed class PaymentDbContextSeeder : DbContextSeeder
     {
-        private readonly IStripeService _stripeService;
+        private readonly IStripeReferenceService _stripeReferenceService;
 
-        public PaymentDbContextSeeder(IStripeService stripeService, IHostingEnvironment environment, ILogger<PaymentDbContextSeeder> logger) : base(
+        public PaymentDbContextSeeder(IStripeReferenceService stripeReferenceService, IHostingEnvironment environment, ILogger<PaymentDbContextSeeder> logger) : base(
             environment,
             logger)
         {
-            _stripeService = stripeService;
+            _stripeReferenceService = stripeReferenceService;
         }
 
         protected override async Task SeedDevelopmentAsync()
         {
             var adminId = UserId.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091");
 
-            if (!await _stripeService.ReferenceExistsAsync(adminId))
+            if (!await _stripeReferenceService.ReferenceExistsAsync(adminId))
             {
-                await _stripeService.CreateReferenceAsync(adminId, "cus_F5L8mRzm6YN5ma", "acct_1EbASfAPhMnJQouG");
+                await _stripeReferenceService.CreateReferenceAsync(adminId, "cus_F5L8mRzm6YN5ma", "acct_1EbASfAPhMnJQouG");
 
                 Logger.LogInformation("The stripe references being populated.");
             }

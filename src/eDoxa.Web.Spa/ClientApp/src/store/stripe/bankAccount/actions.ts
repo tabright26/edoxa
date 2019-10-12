@@ -1,4 +1,4 @@
-import { LOAD_BANK_ACCOUNT, LOAD_BANK_ACCOUNT_SUCCESS, LOAD_BANK_ACCOUNT_FAIL, UPDATE_BANK_ACCOUNT, UPDATE_BANK_ACCOUNT_SUCCESS, UPDATE_BANK_ACCOUNT_FAIL, BankAccountActionCreators } from "./types";
+import { LOAD_BANK_ACCOUNT, LOAD_BANK_ACCOUNT_SUCCESS, LOAD_BANK_ACCOUNT_FAIL, CHANGE_BANK_ACCOUNT, CHANGE_BANK_ACCOUNT_SUCCESS, CHANGE_BANK_ACCOUNT_FAIL, BankAccountActionCreators } from "./types";
 
 export function loadBankAccount(): BankAccountActionCreators {
   return {
@@ -12,12 +12,12 @@ export function loadBankAccount(): BankAccountActionCreators {
   };
 }
 
-export function updateBankAccount(token: string): BankAccountActionCreators {
+export function changeBankAccount(token: string): BankAccountActionCreators {
   return {
-    types: [UPDATE_BANK_ACCOUNT, UPDATE_BANK_ACCOUNT_SUCCESS, UPDATE_BANK_ACCOUNT_FAIL],
+    types: [CHANGE_BANK_ACCOUNT, CHANGE_BANK_ACCOUNT_SUCCESS, CHANGE_BANK_ACCOUNT_FAIL],
     payload: {
       request: {
-        method: "PUT",
+        method: "POST",
         url: "/payment/api/stripe/bank-account",
         data: {
           token

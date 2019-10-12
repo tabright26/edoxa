@@ -4,17 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Payment.Api.Areas.Stripe.Fakers;
 using eDoxa.Payment.Domain.Services;
 
 using Moq;
 
 namespace eDoxa.Payment.TestHelpers.Mocks
 {
-    public sealed class MockStripeService : Mock<IStripeService>
+    public sealed class MockStripeService : Mock<IStripeReferenceService>
     {
-        private readonly CustomerFaker _customerFaker = new CustomerFaker();
-        private readonly AccountFaker _accountFaker = new AccountFaker();
+        //private readonly CustomerFaker _customerFaker = new CustomerFaker();
+        //private readonly AccountFaker _accountFaker = new AccountFaker();
 
         public MockStripeService()
         {

@@ -4,9 +4,9 @@ export const LOAD_BANK_ACCOUNT = "LOAD_BANK_ACCOUNT";
 export const LOAD_BANK_ACCOUNT_SUCCESS = "LOAD_BANK_ACCOUNT_SUCCESS";
 export const LOAD_BANK_ACCOUNT_FAIL = "LOAD_BANK_ACCOUNT_FAIL";
 
-export const UPDATE_BANK_ACCOUNT = "UPDATE_BANK_ACCOUNT";
-export const UPDATE_BANK_ACCOUNT_SUCCESS = "UPDATE_BANK_ACCOUNT_SUCCESS";
-export const UPDATE_BANK_ACCOUNT_FAIL = "UPDATE_BANK_ACCOUNT_FAIL";
+export const CHANGE_BANK_ACCOUNT = "CHANGE_BANK_ACCOUNT";
+export const CHANGE_BANK_ACCOUNT_SUCCESS = "CHANGE_BANK_ACCOUNT_SUCCESS";
+export const CHANGE_BANK_ACCOUNT_FAIL = "CHANGE_BANK_ACCOUNT_FAIL";
 
 type LoadBankAccountType = typeof LOAD_BANK_ACCOUNT | typeof LOAD_BANK_ACCOUNT_SUCCESS | typeof LOAD_BANK_ACCOUNT_FAIL;
 
@@ -14,14 +14,14 @@ interface LoadBankAccountActionCreator extends AxiosActionCreator<LoadBankAccoun
 
 interface LoadBankAccountAction extends AxiosAction<LoadBankAccountType> {}
 
-type UpdateBankAccountType = typeof UPDATE_BANK_ACCOUNT | typeof UPDATE_BANK_ACCOUNT_SUCCESS | typeof UPDATE_BANK_ACCOUNT_FAIL;
+type ChangeBankAccountType = typeof CHANGE_BANK_ACCOUNT | typeof CHANGE_BANK_ACCOUNT_SUCCESS | typeof CHANGE_BANK_ACCOUNT_FAIL;
 
-interface UpdateBankAccountActionCreator extends AxiosActionCreator<UpdateBankAccountType> {}
+interface ChangeBankAccountActionCreator extends AxiosActionCreator<ChangeBankAccountType> {}
 
-interface UpdateBankAccountAction extends AxiosAction<UpdateBankAccountType> {}
+interface ChangeBankAccountAction extends AxiosAction<ChangeBankAccountType> {}
 
-export type BankAccountActionCreators = LoadBankAccountActionCreator | UpdateBankAccountActionCreator;
+export type BankAccountActionCreators = LoadBankAccountActionCreator | ChangeBankAccountActionCreator;
 
-export type BankAccountActionTypes = LoadBankAccountAction | UpdateBankAccountAction;
+export type BankAccountActionTypes = LoadBankAccountAction | ChangeBankAccountAction;
 
 export interface BankAccountState {}

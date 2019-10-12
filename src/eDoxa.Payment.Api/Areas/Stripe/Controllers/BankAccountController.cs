@@ -26,17 +26,17 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     {
         private readonly IStripeExternalAccountService _externalAccountService;
         private readonly IStripeAccountService _stripeAccountService;
-        private readonly IStripeService _stripeService;
+        private readonly IStripeReferenceService _stripeReferenceService;
 
         public BankAccountController(
             IStripeExternalAccountService externalAccountService,
             IStripeAccountService stripeAccountService,
-            IStripeService stripeService
+            IStripeReferenceService stripeReferenceService
         )
         {
             _externalAccountService = externalAccountService;
             _stripeAccountService = stripeAccountService;
-            _stripeService = stripeService;
+            _stripeReferenceService = stripeReferenceService;
         }
 
         [HttpGet]
@@ -46,7 +46,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             {
                 var userId = HttpContext.GetUserId();
 
-                if (!await _stripeService.ReferenceExistsAsync(userId))
+                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
                 {
                     return this.NotFound("Stripe reference not found.");
                 }
@@ -68,14 +68,14 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutAsync([FromBody] BankAccountPutRequest request)
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody] BankAccountPostRequest request)
         {
             try
             {
                 var userId = HttpContext.GetUserId();
 
-                if (!await _stripeService.ReferenceExistsAsync(userId))
+                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
                 {
                     return this.NotFound("Stripe reference not found.");
                 }

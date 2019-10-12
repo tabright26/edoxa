@@ -24,12 +24,12 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     public sealed class AccountController : ControllerBase
     {
         private readonly IStripeAccountService _stripeAccountService;
-        private readonly IStripeService _stripeService;
+        private readonly IStripeReferenceService _stripeReferenceService;
 
-        public AccountController(IStripeAccountService stripeAccountService, IStripeService stripeService)
+        public AccountController(IStripeAccountService stripeAccountService, IStripeReferenceService stripeReferenceService)
         {
             _stripeAccountService = stripeAccountService;
-            _stripeService = stripeService;
+            _stripeReferenceService = stripeReferenceService;
         }
 
         [HttpGet]
@@ -39,7 +39,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             {
                 var userId = HttpContext.GetUserId();
 
-                if (!await _stripeService.ReferenceExistsAsync(userId))
+                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
                 {
                     return this.NotFound("Stripe reference not found.");
                 }

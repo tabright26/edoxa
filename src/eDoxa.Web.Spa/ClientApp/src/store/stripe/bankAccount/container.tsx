@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadBankAccount, updateBankAccount } from "store/stripe/bankAccount/actions";
+import { loadBankAccount, changeBankAccount } from "store/stripe/bankAccount/actions";
 import { RootState } from "store/types";
 
 export const connectStripeBankAccount = (ConnectedComponent: FunctionComponent<any>) => {
@@ -36,7 +36,7 @@ export const connectStripeBankAccount = (ConnectedComponent: FunctionComponent<a
             .then(result => {
               if (result.token) {
                 console.log(result.token);
-                return dispatch(updateBankAccount(result.token.id)).then(() => dispatch(loadBankAccount()));
+                return dispatch(changeBankAccount(result.token.id)).then(() => dispatch(loadBankAccount()));
               } else {
                 return Promise.reject(result.error);
               }

@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Payment.Api.Areas.Stripe.Requests
 {
     [DataContract]
-    public sealed class BankAccountPutRequest
+    public sealed class BankAccountPostRequest
     {
-        public BankAccountPutRequest(string token)
+        public BankAccountPostRequest(string token)
         {
             Token = token;
         }

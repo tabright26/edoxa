@@ -12,11 +12,11 @@ using eDoxa.Payment.Domain.Services;
 
 namespace eDoxa.Payment.Api.Areas.Stripe.Services
 {
-    public sealed class StripeService : IStripeService
+    public sealed class StripeReferenceService : IStripeReferenceService
     {
         private readonly IStripeRepository _stripeRepository;
 
-        public StripeService(IStripeRepository stripeRepository)
+        public StripeReferenceService(IStripeRepository stripeRepository)
         {
             _stripeRepository = stripeRepository;
         }

@@ -10,7 +10,7 @@ using eDoxa.Payment.Domain.Models;
 
 namespace eDoxa.Payment.Domain.Services
 {
-    public interface IStripeService
+    public interface IStripeReferenceService
     {
         Task CreateReferenceAsync(UserId userId, string customerId, string accountId);
 
