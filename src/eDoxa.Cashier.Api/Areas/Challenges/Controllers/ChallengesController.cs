@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Challenges.Responses;
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

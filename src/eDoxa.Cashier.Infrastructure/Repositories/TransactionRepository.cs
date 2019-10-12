@@ -15,6 +15,7 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using LinqKit;
 

@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 {

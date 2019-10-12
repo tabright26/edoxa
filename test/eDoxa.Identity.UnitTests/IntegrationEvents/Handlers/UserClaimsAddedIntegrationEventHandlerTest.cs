@@ -14,6 +14,7 @@ using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;
 

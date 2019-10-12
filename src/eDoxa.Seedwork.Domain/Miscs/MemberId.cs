@@ -1,17 +1,15 @@
-﻿// Filename: CandidatureId.cs
-// Date Created: --
+﻿// Filename: AccountId.cs
+// Date Created: 2019-06-25
 //
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Organizations.Clans.Domain.Models
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class InvitationId : EntityId<InvitationId>
+    public sealed class MemberId : EntityId<MemberId>
     {
     }
 }

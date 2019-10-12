@@ -10,9 +10,7 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
     public sealed class UserId : EntityId<UserId>

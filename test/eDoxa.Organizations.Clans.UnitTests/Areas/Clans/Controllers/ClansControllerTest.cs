@@ -15,6 +15,7 @@ using eDoxa.Organizations.Clans.TestHelpers;
 using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 using eDoxa.Organizations.Clans.TestHelpers.Mocks;
 using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

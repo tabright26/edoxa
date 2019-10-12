@@ -6,12 +6,10 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Organizations.Clans.Domain.Models
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class CandidatureId : EntityId<CandidatureId>
+    public sealed class InvitationId : EntityId<InvitationId>
     {
     }
 }

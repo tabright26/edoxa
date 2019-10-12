@@ -16,7 +16,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;

@@ -12,7 +12,7 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage

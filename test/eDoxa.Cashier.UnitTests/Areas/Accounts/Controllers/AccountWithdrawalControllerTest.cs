@@ -14,6 +14,7 @@ using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelpers;
 using eDoxa.Cashier.TestHelpers.Fixtures;
 using eDoxa.Cashier.TestHelpers.Mocks;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

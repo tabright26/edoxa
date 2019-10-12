@@ -16,6 +16,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using FluentValidation.Results;

@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
@@ -17,6 +16,7 @@ using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Arena.Challenges.TestHelpers.Mocks;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

@@ -1,5 +1,5 @@
-﻿// Filename: UserId.cs
-// Date Created: 2019-06-08
+﻿// Filename: ChallengeId.cs
+// Date Created: 2019-06-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,12 +10,10 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Organizations.Clans.Domain.Models
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class UserId : EntityId<UserId>
+    public sealed class ChallengeId : EntityId<ChallengeId>
     {
     }
 }

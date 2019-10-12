@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 

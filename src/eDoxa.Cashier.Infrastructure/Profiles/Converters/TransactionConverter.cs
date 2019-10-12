@@ -10,6 +10,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {

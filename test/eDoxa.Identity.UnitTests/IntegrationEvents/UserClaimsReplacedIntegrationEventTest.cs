@@ -6,10 +6,10 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

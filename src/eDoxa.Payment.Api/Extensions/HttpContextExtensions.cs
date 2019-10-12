@@ -6,8 +6,8 @@
 
 using System;
 
-using eDoxa.Payment.Domain.Stripe.Models;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Http;
 

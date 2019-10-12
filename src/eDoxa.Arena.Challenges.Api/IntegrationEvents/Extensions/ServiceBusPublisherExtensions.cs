@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.IntegrationEvents.Extensions

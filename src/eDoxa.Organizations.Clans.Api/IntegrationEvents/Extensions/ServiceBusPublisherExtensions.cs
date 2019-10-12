@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Organizations.Clans.Api.IntegrationEvents.Extensions

@@ -16,6 +16,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using LinqKit;
 

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

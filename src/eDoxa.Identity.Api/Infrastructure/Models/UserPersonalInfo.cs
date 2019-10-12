@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Identity.Api.Infrastructure.Models
 {

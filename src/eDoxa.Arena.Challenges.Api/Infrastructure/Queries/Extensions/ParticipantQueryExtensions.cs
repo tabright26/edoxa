@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 {

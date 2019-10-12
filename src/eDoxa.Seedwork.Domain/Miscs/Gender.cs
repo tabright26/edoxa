@@ -6,7 +6,7 @@
 
 using System.ComponentModel;
 
-namespace eDoxa.Seedwork.Domain.Miscellaneous
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class Gender : Enumeration<Gender>

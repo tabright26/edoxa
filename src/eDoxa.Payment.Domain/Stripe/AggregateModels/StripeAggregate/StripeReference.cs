@@ -4,7 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-namespace eDoxa.Payment.Domain.Stripe.Models
+using eDoxa.Seedwork.Domain.Miscs;
+
+namespace eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate
 {
     public sealed class StripeReference
     {

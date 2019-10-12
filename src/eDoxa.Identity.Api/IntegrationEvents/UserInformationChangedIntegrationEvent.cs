@@ -6,9 +6,8 @@
 
 using System;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;

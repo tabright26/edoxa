@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Payment.Domain.Stripe.Extensions
 {

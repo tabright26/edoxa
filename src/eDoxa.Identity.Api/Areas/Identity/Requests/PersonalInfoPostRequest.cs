@@ -7,7 +7,7 @@
 using System;
 using System.Runtime.Serialization;
 
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {

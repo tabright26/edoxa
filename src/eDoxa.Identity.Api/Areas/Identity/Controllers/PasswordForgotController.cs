@@ -9,8 +9,8 @@ using System.Web;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;

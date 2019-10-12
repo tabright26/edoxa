@@ -10,6 +10,7 @@ using System.Linq;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.TestHelpers;
 using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

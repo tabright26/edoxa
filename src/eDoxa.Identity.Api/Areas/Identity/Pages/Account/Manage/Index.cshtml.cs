@@ -12,8 +12,8 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;

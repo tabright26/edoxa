@@ -10,12 +10,12 @@ using Autofac;
 
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -85,7 +85,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     {
                         var mockStripeCustomerSerivce = new Mock<IStripeCustomerService>();
 
-                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<eDoxa.Payment.Domain.Stripe.Models.UserId>())).ReturnsAsync("CustomerId");
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("CustomerId");
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
@@ -94,7 +94,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateInvoiceAsync(
                                     It.IsAny<string>(),
-                                    It.IsAny<eDoxa.Payment.Domain.Stripe.Models.TransactionId>(),
+                                    It.IsAny<TransactionId>(),
                                     It.IsAny<long>(),
                                     It.IsAny<string>()))
                             .Throws<StripeException>();
@@ -150,7 +150,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     {
                         var mockStripeCustomerSerivce = new Mock<IStripeCustomerService>();
 
-                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<eDoxa.Payment.Domain.Stripe.Models.UserId>())).ReturnsAsync("CustomerId");
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("CustomerId");
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
@@ -159,7 +159,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateInvoiceAsync(
                                     It.IsAny<string>(),
-                                    It.IsAny<eDoxa.Payment.Domain.Stripe.Models.TransactionId>(),
+                                    It.IsAny<TransactionId>(),
                                     It.IsAny<long>(),
                                     It.IsAny<string>()))
                             .Returns(Task.CompletedTask);

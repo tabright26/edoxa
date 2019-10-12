@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeId.cs
-// Date Created: 2019-06-02
+﻿// Filename: ParticipantId.cs
+// Date Created: 2019-06-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,12 +10,10 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class ChallengeId : EntityId<ChallengeId>
+    public sealed class ParticipantId : EntityId<ParticipantId>
     {
     }
 }

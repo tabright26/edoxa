@@ -1,5 +1,5 @@
 ﻿// Filename: PersonalInfoControllerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,7 +15,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -216,13 +216,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
 
-            mockUserManager.Setup(
-                    userManager => userManager.CreatePersonalInfoAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<Gender>(),
-                        It.IsAny<DateTime>()))
+            mockUserManager.Setup(userManager => userManager.UpdatePersonalInfoAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
@@ -240,14 +234,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
 
-            mockUserManager.Verify(
-                userManager => userManager.CreatePersonalInfoAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<Gender>(),
-                    It.IsAny<DateTime>()),
-                Times.Once);
+            mockUserManager.Verify(userManager => userManager.UpdatePersonalInfoAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -271,13 +258,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>())).ReturnsAsync(user.PersonalInfo).Verifiable();
 
-            mockUserManager.Setup(
-                    userManager => userManager.CreatePersonalInfoAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<Gender>(),
-                        It.IsAny<DateTime>()))
+            mockUserManager.Setup(userManager => userManager.UpdatePersonalInfoAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
@@ -295,14 +276,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.GetPersonalInfoAsync(It.IsAny<User>()), Times.Once);
 
-            mockUserManager.Verify(
-                userManager => userManager.CreatePersonalInfoAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<string>(),
-                    It.IsAny<string>(),
-                    It.IsAny<Gender>(),
-                    It.IsAny<DateTime>()),
-                Times.Once);
+            mockUserManager.Verify(userManager => userManager.UpdatePersonalInfoAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
         }
     }
 }

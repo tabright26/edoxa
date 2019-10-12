@@ -6,7 +6,7 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Requests
 {

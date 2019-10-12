@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Notifications.Api.IntegrationEvents;
-using eDoxa.Notifications.Domain.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

@@ -1,17 +1,15 @@
-﻿// Filename: UserId.cs
-// Date Created: 2019-10-04
-// 
+﻿// Filename: CandidatureId.cs
+// Date Created: --
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Payment.Domain.Stripe.Models
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class UserId : EntityId<UserId>
+    public sealed class CandidatureId : EntityId<CandidatureId>
     {
     }
 }

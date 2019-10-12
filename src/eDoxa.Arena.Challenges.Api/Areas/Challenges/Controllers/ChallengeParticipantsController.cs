@@ -7,7 +7,6 @@
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
@@ -19,6 +18,8 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
 {

@@ -13,6 +13,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

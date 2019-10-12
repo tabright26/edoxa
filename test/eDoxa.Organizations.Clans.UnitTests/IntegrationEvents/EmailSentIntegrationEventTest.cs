@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Organizations.Clans.Api.IntegrationEvents;
-using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

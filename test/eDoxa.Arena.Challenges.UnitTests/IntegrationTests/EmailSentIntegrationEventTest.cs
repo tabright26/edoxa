@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Arena.Challenges.Api.IntegrationEvents;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscellaneous;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Extensions

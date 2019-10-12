@@ -1,4 +1,4 @@
-﻿// Filename: ParticipantId.cs
+﻿// Filename: MatchId.cs
 // Date Created: 2019-06-20
 // 
 // ================================================
@@ -10,12 +10,10 @@
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class ParticipantId : EntityId<ParticipantId>
+    public sealed class MatchId : EntityId<MatchId>
     {
     }
 }

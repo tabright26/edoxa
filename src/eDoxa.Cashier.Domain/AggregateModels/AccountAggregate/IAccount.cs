@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Specifications.Abstractions;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate

@@ -10,8 +10,8 @@
 
 using System;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Http;
 

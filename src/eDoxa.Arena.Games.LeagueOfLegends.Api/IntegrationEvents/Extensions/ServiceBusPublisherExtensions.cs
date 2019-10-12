@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Api.IntegrationEvents.Extensions

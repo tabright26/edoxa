@@ -1,17 +1,15 @@
-﻿// Filename: UserId.cs
-// Date Created: 2019-07-10
+﻿// Filename: AccountId.cs
+// Date Created: 2019-06-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.ComponentModel;
 
-using eDoxa.Seedwork.Domain;
-
-namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
+namespace eDoxa.Seedwork.Domain.Miscs
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class UserId : EntityId<UserId>
+    public sealed class AccountId : EntityId<AccountId>
     {
     }
 }

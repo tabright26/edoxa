@@ -12,9 +12,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Domain.Services
 {
