@@ -184,6 +184,30 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.FindUserAddressAsync(user.Id, addressId);
         }
 
+        public override async Task<IdentityResult> SetEmailAsync(User user, string email)
+        {
+            var result = await base.SetEmailAsync(user, email);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserEmailChangedIntegrationEventAsync(UserId.FromGuid(user.Id), email);
+            }
+
+            return result;
+        }
+
+        public override async Task<IdentityResult> SetPhoneNumberAsync(User user, string phoneNumber)
+        {
+            var result = await base.SetPhoneNumberAsync(user, phoneNumber);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserPhoneChangedIntegrationEventAsync(UserId.FromGuid(user.Id), phoneNumber);
+            }
+
+            return result;
+        }
+
         public async Task<UserPersonalInfo?> GetPersonalInfoAsync(User user)
         {
             this.ThrowIfDisposed();
@@ -196,12 +220,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetPersonalInfoAsync(user, CancellationToken);
         }
 
-        public async Task<IdentityResult> SetPersonalInfoAsync(
+        public async Task<IdentityResult> CreatePersonalInfoAsync(
             User user,
-            string? firstName,
-            string? lastName,
-            Gender? gender,
-            DateTime? birthDate
+            string firstName,
+            string lastName,
+            Gender gender,
+            DateTime dob
         )
         {
             this.ThrowIfDisposed();
@@ -211,15 +235,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var profile = new UserPersonalInfo
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Gender = gender,
-                BirthDate = birthDate
-            };
-
-            await Store.SetPersonalInfoAsync(user, profile, CancellationToken);
+            await Store.SetPersonalInfoAsync(
+                user,
+                new UserPersonalInfo
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Gender = gender,
+                    BirthDate = dob
+                },
+                CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -227,7 +252,53 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             if (result.Succeeded)
             {
-                await _publisher.PublishUserInformationChangedIntegrationEventAsync(UserId.FromGuid(user.Id), profile);
+                await _publisher.PublishUserInformationChangedIntegrationEventAsync(
+                    UserId.FromGuid(user.Id),
+                    firstName,
+                    lastName,
+                    gender,
+                    dob);
+            }
+
+            return result;
+        }
+
+        public async Task<IdentityResult> UpdatePersonalInfoAsync(User user, string firstName)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var lastName = user.PersonalInfo!.LastName!;
+            var gender = user.PersonalInfo!.Gender!;
+            var dob = user.PersonalInfo!.BirthDate!.Value!;
+
+            await Store.SetPersonalInfoAsync(
+                user,
+                new UserPersonalInfo
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Gender = gender,
+                    BirthDate = dob
+                },
+                CancellationToken);
+
+            await this.UpdateSecurityStampAsync(user);
+
+            var result = await this.UpdateUserAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserInformationChangedIntegrationEventAsync(
+                    UserId.FromGuid(user.Id),
+                    firstName,
+                    lastName,
+                    gender,
+                    dob);
             }
 
             return result;

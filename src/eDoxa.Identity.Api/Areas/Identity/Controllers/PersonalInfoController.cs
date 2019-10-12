@@ -80,8 +80,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     return this.BadRequest("The user's personal information has already been created.");
                 }
 
-                // TODO: Must be refactored.
-                var result = await _userManager.SetPersonalInfoAsync(
+                var result = await _userManager.CreatePersonalInfoAsync(
                     user,
                     request.FirstName,
                     request.LastName,
@@ -119,13 +118,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     return this.BadRequest("The user's personal informations does not exist.");
                 }
 
-                // TODO: Must be refactored.
-                var result = await _userManager.SetPersonalInfoAsync(
-                    user,
-                    request.FirstName,
-                    personalInfo.LastName,
-                    personalInfo.Gender,
-                    personalInfo.BirthDate);
+                var result = await _userManager.UpdatePersonalInfoAsync(user, request.FirstName);
 
                 if (result.Succeeded)
                 {

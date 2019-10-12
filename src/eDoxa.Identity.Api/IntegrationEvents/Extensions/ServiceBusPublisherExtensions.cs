@@ -60,16 +60,19 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
         public static async Task PublishUserInformationChangedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
-            UserPersonalInfo information
+            string firstName,
+            string lastName,
+            Gender gender,
+            DateTime dob
         )
         {
             await publisher.PublishAsync(
                 new UserInformationChangedIntegrationEvent(
                     userId,
-                    information.FirstName!,
-                    information.LastName!,
-                    information.Gender! != Gender.Other ? information.Gender!.Name.ToLowerInvariant() : null,
-                    information.BirthDate ?? throw new NullReferenceException(nameof(PublishUserInformationChangedIntegrationEventAsync))));
+                    firstName,
+                    lastName,
+                    gender.Name,
+                    dob));
         }
 
         public static async Task PublishUserPhoneChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, string phoneNumber)

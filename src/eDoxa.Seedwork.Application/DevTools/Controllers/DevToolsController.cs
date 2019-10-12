@@ -34,9 +34,9 @@ namespace eDoxa.Seedwork.Application.DevTools.Controllers
             _cleaner = cleaner;
         }
 
-        [HttpPost("database/reset")]
+        [HttpPost("reset")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        public async Task<IActionResult> DatabaseResetAsync()
+        public async Task<IActionResult> ResetAsync()
         {
             await _cleaner.CleanupAsync();
 
@@ -45,9 +45,9 @@ namespace eDoxa.Seedwork.Application.DevTools.Controllers
             return this.Ok("The database has been reset to the default data.");
         }
 
-        [HttpPost("database/cleanup")]
+        [HttpPost("cleanup")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        public async Task<IActionResult> DatabaseCleanupAsync()
+        public async Task<IActionResult> CleanupAsync()
         {
             await _cleaner.CleanupAsync();
 

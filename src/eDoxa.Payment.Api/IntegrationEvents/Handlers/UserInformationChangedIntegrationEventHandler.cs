@@ -32,7 +32,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                 {
                     FirstName = integrationEvent.FirstName,
                     LastName = integrationEvent.LastName,
-                    Gender = integrationEvent.Gender,
+                    Gender = integrationEvent.Gender != "Other" ? integrationEvent.Gender.ToLower() : null,
                     Dob = new DobOptions
                     {
                         Day = integrationEvent.Dob.Day,

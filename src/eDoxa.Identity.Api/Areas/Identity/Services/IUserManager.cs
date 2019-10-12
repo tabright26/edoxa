@@ -285,7 +285,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         IQueryable<User> Users { get; }
 
-        Task<IdentityResult> SetPersonalInfoAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate);
+        Task<IdentityResult> CreatePersonalInfoAsync(User user, string firstName, string lastName, Gender gender, DateTime dob);
+
+        Task<IdentityResult> UpdatePersonalInfoAsync(User user, string firstName);
 
         Task<IdentityResult> SetDoxaTagAsync(User user, string doxaTagName);
     }

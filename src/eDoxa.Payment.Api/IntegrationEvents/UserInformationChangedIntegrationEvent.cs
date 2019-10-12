@@ -22,7 +22,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents
             UserId userId,
             string firstName,
             string lastName,
-            string? gender,
+            string gender,
             DateTime dob
         )
         {
@@ -43,7 +43,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents
         public string LastName { get; }
 
         [JsonProperty]
-        public string? Gender { get; }
+        public string Gender { get; }
 
         [JsonProperty]
         public DateTime Dob { get; }
