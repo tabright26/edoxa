@@ -16,11 +16,7 @@ namespace eDoxa.Payment.Domain.Services
     {
         Task<string> GetAccountIdAsync(UserId userId);
 
-        Task<string?> FindAccountIdAsync(UserId userId);
-
-        Task<IExternalAccount?> FindBankAccountAsync(string accountId);
-
-        Task<IExternalAccount> UpdateBankAccountAsync(string accountId, string token);
+        Task<Account> GetAccountAsync(string accountId);
 
         Task<string> CreateAccountAsync(
             UserId userId,
@@ -28,8 +24,6 @@ namespace eDoxa.Payment.Domain.Services
             string country,
             string customerId
         );
-
-        Task<bool> AccountIsVerifiedAsync(string accountId);
 
         Task UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
     }

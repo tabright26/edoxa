@@ -17,6 +17,20 @@ namespace eDoxa.Seedwork.Security
         public static readonly RoleIdentityResource Roles = new RoleIdentityResource();
         public static readonly PermissionIdentityResource Permissions = new PermissionIdentityResource();
         public static readonly GameIdentityResource Games = new GameIdentityResource();
+        public static readonly CountryIdentityResource Country = new CountryIdentityResource();
+
+        public sealed class CountryIdentityResource : IdentityResource
+        {
+            internal CountryIdentityResource() : base(
+                Scopes.Country,
+                "Your legal country",
+                new HashSet<string>
+                {
+                    "country"
+                })
+            {
+            }
+        }
 
         public sealed class GameIdentityResource : IdentityResource
         {

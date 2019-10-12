@@ -14,8 +14,6 @@ namespace eDoxa.Payment.Domain.Services
     {
         Task<string> GetCustomerIdAsync(UserId userId);
 
-        Task<string?> FindCustomerIdAsync(UserId userId);
-
         Task<string> CreateCustomerAsync(UserId userId, string email);
     }
 }

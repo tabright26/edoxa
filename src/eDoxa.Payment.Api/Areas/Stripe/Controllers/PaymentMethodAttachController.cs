@@ -25,11 +25,17 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     {
         private readonly IStripePaymentMethodService _stripePaymentMethodService;
         private readonly IStripeCustomerService _stripeCustomerService;
+        private readonly IStripeService _stripeService;
 
-        public PaymentMethodAttachController(IStripePaymentMethodService stripePaymentMethodService, IStripeCustomerService stripeCustomerService)
+        public PaymentMethodAttachController(
+            IStripePaymentMethodService stripePaymentMethodService,
+            IStripeCustomerService stripeCustomerService,
+            IStripeService stripeService
+        )
         {
             _stripePaymentMethodService = stripePaymentMethodService;
             _stripeCustomerService = stripeCustomerService;
+            _stripeService = stripeService;
         }
 
         [HttpPost]
@@ -39,12 +45,12 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             {
                 var userId = HttpContext.GetUserId();
 
-                var customerId = await _stripeCustomerService.FindCustomerIdAsync(userId);
-
-                if (customerId == null)
+                if (!await _stripeService.ReferenceExistsAsync(userId))
                 {
-                    return this.NotFound("User not found.");
+                    return this.NotFound("Stripe reference not found.");
                 }
+
+                var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
 
                 var paymentMethod = await _stripePaymentMethodService.AttachPaymentMethodAsync(paymentMethodId, customerId);
 

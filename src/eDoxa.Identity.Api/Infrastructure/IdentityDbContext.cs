@@ -30,7 +30,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     builder.Property(user => user.Email).IsRequired();
                     builder.Property(user => user.NormalizedEmail).IsRequired();
-                    
+                    builder.Property(user => user.Country).IsRequired();
                     builder.OwnsOne(
                         user => user.PersonalInfo,
                         userPersonalInfo =>

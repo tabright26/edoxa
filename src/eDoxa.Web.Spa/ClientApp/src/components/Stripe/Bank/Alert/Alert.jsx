@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Button } from "reactstrap";
 
-import { connectStripeBankAccounts } from "store/stripe/bankAccounts/container";
+import { connectStripeBankAccount } from "store/stripe/bankAccount/container";
 
 const StripeBankAccountAlert = ({ hasBankAccount }) => {
   if (hasBankAccount) {
@@ -31,4 +31,4 @@ const StripeBankAccountAlert = ({ hasBankAccount }) => {
   }
 };
 
-export default connectStripeBankAccounts(StripeBankAccountAlert);
+export default connectStripeBankAccount(StripeBankAccountAlert);

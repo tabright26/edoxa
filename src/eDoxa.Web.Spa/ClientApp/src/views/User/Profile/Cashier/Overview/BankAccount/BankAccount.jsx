@@ -1,75 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { Elements } from "react-stripe-elements";
-import { Alert, Row, Col, Card, CardBody, CardHeader, CardText, CardTitle } from "reactstrap";
-import { connectStripeBankAccounts } from "store/stripe/bankAccounts/container";
+import { Card, CardBody, CardHeader } from "reactstrap";
+import { connectUser } from "store/user/container";
+import { connectStripeBankAccount } from "store/stripe/bankAccount/container";
 import { injectStripe } from "react-stripe-elements";
-import { Button } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import StripeBankAccountForm from "forms/Stripe/BankAccount";
 
-// let ChangeBankAccount = ({ hasBankAccount, actions, stripe, changeFormHidden, hideChangeForm }) => {
-//   return (
-//     <>
-//       {!hasBankAccount || !changeFormHidden ? (
-//         <Row>
-//           <Col md="4">
-//             <StripeBankAccountForm.Change onSubmit={fields => actions.changeBankAccount(fields, stripe).then(() => hideChangeForm(true))} handleCancel={() => hideChangeForm(true)} />
-//           </Col>
-//           <Col md="8">
-//             <Card>
-//               <CardBody className="text-light">
-//                 <CardTitle className="text-uppercase">Account Withdrawal Policies</CardTitle>
-//                 <CardText className="text-justify ">
-//                   Testqeuwh iuehquweh iqwhe iuhwqe iuhwq uehiuwq heiuwqhehwqieq wiheuqw iuehwq iuheqi hweiuhwq. Testqeuwh iuehquweh iqwhe iuhwqe iuhwq uehiuwq heiuwqhehwqieq wiheuqw iuehwq iuheqi
-//                   hweiuhwq. Testqeuwh iuehquweh iqwhe iuhwqe iuhwq uehiuwq heiuwqhehwqieq wiheuqw iuehwq iuheqi hweiuhwq.
-//                 </CardText>
-//               </CardBody>
-//             </Card>
-//           </Col>
-//         </Row>
-//       ) : (
-//         <p className="mb-0">Testqeuwh iuehquweh iqwhe iuhwqe iuhwq uehiuwq heiuwqhehwqieq wiheuqw iuehwq iuheqi hweiuhwq.</p>
-//       )}
-//     </>
-//   );
-// };
+let UpdateStripeBankAccountForm = ({ actions, stripe, user }) => (
+  <StripeBankAccountForm.Update onSubmit={fields => actions.updateBankAccount(fields, user.profile.country, stripe).then(() => {})} handleCancel={() => {}} />
+);
 
-// ChangeBankAccount = injectStripe(ChangeBankAccount);
+UpdateStripeBankAccountForm = injectStripe(UpdateStripeBankAccountForm);
 
-// const CreditCard = ({ bankAccounts: { data, isLoading, error }, hasBankAccount, actions }) => {
-//   const [changeBankAccountFormHidden, hideBankAccountChangeForm] = useState(true);
-//   return (
-//     <Alert color="primary">
-//       <h5 className="alert-heading d-flex mb-3">
-//         <span className="my-auto">BANK ACCOUNT</span>
-//         {hasBankAccount && changeBankAccountFormHidden ? (
-//           <Button className="my-auto ml-auto px-0" size="sm" color="link" onClick={() => hideBankAccountChangeForm(false)}>
-//             <FontAwesomeIcon icon={faTimes} /> CHANGE
-//           </Button>
-//         ) : null}
-//       </h5>
-//       <Elements>
-//         <ChangeBankAccount actions={actions} hasBankAccount={hasBankAccount} changeFormHidden={changeBankAccountFormHidden} hideChangeForm={hideBankAccountChangeForm} />
-//       </Elements>
-//     </Alert>
-//   );
-// };
-let StripeBankAccountElements = ({ actions, stripe }) => <StripeBankAccountForm.Change onSubmit={fields => actions.changeBankAccount(fields, stripe).then(() => {})} handleCancel={() => {}} />;
-
-StripeBankAccountElements = injectStripe(StripeBankAccountElements);
-
-const BankAccount = ({ bankAccounts: { data, isLoading, error }, hasBankAccount, actions }) => (
+const BankAccount = ({ bankAccount: { data, isLoading, error }, hasBankAccount, user, actions }) => (
   <Card className="card-accent-primary my-4">
     <CardHeader>
       <strong>BANK ACCOUNT</strong>
     </CardHeader>
     <CardBody>
       <Elements>
-        <StripeBankAccountElements actions={actions} />
+        <UpdateStripeBankAccountForm actions={actions} user={user} />
       </Elements>
     </CardBody>
   </Card>
 );
 
-export default connectStripeBankAccounts(BankAccount);
+export default connectUser(connectStripeBankAccount(BankAccount));

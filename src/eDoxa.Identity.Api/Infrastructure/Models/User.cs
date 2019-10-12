@@ -14,11 +14,14 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
 {
     public class User : IdentityUser<Guid>
     {
+#nullable disable
         public User()
         {
             AddressBook = new Collection<UserAddress>();
             DoxaTagHistory = new Collection<UserDoxaTag>();
         }
+#nullable restore
+        public string Country { get; set; }
 
         public UserPersonalInfo? PersonalInfo { get; set; }
 

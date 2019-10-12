@@ -1,5 +1,5 @@
 ﻿// Filename: UserStore.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -62,8 +62,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                     Value = Game.FromName(gameName)!.Value,
                     PlayerId = playerId,
                     UserId = user.Id
-                }
-            );
+                });
 
             return Task.FromResult(false);
         }
@@ -248,8 +247,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                     State = state,
                     PostalCode = postalCode,
                     UserId = user.Id
-                }
-            );
+                });
 
             return Task.FromResult(false);
         }
@@ -364,6 +362,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             user.PersonalInfo = userPersonalInfo;
 
             return Task.CompletedTask;
+        }
+
+        public Task<string> GetCountryAsync(User user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return Task.FromResult(user.Country);
         }
     }
 }

@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Models;
@@ -33,37 +32,9 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             return reference.ConnectAccountId;
         }
 
-        public async Task<string?> FindAccountIdAsync(UserId userId)
+        public async Task<Account> GetAccountAsync(string accountId)
         {
-            var reference = await _stripeRepository.FindReferenceAsync(userId);
-
-            return reference?.ConnectAccountId;
-        }
-
-        public async Task<IExternalAccount?> FindBankAccountAsync(string accountId)
-        {
-            var account = await this.GetAsync(accountId);
-
-            return account.ExternalAccounts.FirstOrDefault();
-        }
-
-        public async Task<IExternalAccount> UpdateBankAccountAsync(string accountId, string token)
-        {
-            var account = await this.UpdateAsync(
-                accountId,
-                new AccountUpdateOptions
-                {
-                    ExternalAccount = token
-                });
-
-            return account.ExternalAccounts.First();
-        }
-
-        public async Task<bool> AccountIsVerifiedAsync(string accountId)
-        {
-            var account = await this.GetAsync(accountId);
-
-            return account.Requirements.CurrentlyDue.Any();
+            return await this.GetAsync(accountId);
         }
 
         public async Task UpdateIndividualAsync(string accountId, PersonUpdateOptions individual)
@@ -97,7 +68,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                             [nameof(userId)] = userId.ToString()
                         }
                     },
-                    TosAcceptance = new AccountTosAcceptanceOptions // TODO: Must be provided by login form.
+                    TosAcceptance = new AccountTosAcceptanceOptions // FRANCIS: Must be provided by login form.
                     {
                         Date = DateTime.UtcNow,
                         Ip = "10.10.10.10"
@@ -109,16 +80,6 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 });
 
             return account.Id;
-        }
-
-        public async Task SetPersonAsync(string accountId)
-        {
-            await this.UpdateAsync(
-                accountId,
-                new AccountUpdateOptions
-                {
-                    Individual = new PersonUpdateOptions()
-                });
         }
     }
 }

@@ -8,11 +8,12 @@ import {
   PaymentMethodsActionTypes
 } from "./types";
 import { AxiosErrorData } from "store/types";
+import { Reducer } from "redux";
 import { SubmissionError } from "redux-form";
 
 export const initialState = { data: [] };
 
-export const reducer = (state = initialState, action: PaymentMethodsActionTypes) => {
+export const reducer: Reducer<any, PaymentMethodsActionTypes> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_PAYMENTMETHODS_SUCCESS:
       const { status, data } = action.payload;

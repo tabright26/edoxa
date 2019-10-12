@@ -33,7 +33,7 @@ export function updatePaymentMethod(paymentMethodId: string, exp_month: number, 
     types: [UPDATE_PAYMENTMETHOD, UPDATE_PAYMENTMETHOD_SUCCESS, UPDATE_PAYMENTMETHOD_FAIL],
     payload: {
       request: {
-        method: "POST",
+        method: "PUT",
         url: `/payment/api/stripe/payment-methods/${paymentMethodId}`,
         data: {
           expMonth: exp_month,

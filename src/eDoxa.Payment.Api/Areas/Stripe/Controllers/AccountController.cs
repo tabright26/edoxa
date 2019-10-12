@@ -1,4 +1,4 @@
-﻿// Filename: PaymentMethodDetachController.cs
+﻿// Filename: AccountController.cs
 // Date Created: 2019-10-10
 // 
 // ================================================
@@ -19,21 +19,21 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/stripe/payment-methods/{paymentMethodId}/detach")]
+    [Route("api/stripe/account")]
     [ApiExplorerSettings(GroupName = "Stripe")]
-    public sealed class PaymentMethodDetachController : ControllerBase
+    public sealed class AccountController : ControllerBase
     {
-        private readonly IStripePaymentMethodService _stripePaymentMethodService;
+        private readonly IStripeAccountService _stripeAccountService;
         private readonly IStripeService _stripeService;
 
-        public PaymentMethodDetachController(IStripePaymentMethodService stripePaymentMethodService, IStripeService stripeService)
+        public AccountController(IStripeAccountService stripeAccountService, IStripeService stripeService)
         {
-            _stripePaymentMethodService = stripePaymentMethodService;
+            _stripeAccountService = stripeAccountService;
             _stripeService = stripeService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostAsync(string paymentMethodId)
+        [HttpGet]
+        public async Task<IActionResult> GetAsync()
         {
             try
             {
@@ -44,9 +44,11 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
                     return this.NotFound("Stripe reference not found.");
                 }
 
-                var paymentMethod = await _stripePaymentMethodService.DetachPaymentMethodAsync(paymentMethodId);
+                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
 
-                return this.Ok(paymentMethod);
+                var account = await _stripeAccountService.GetAccountAsync(accountId);
+
+                return this.Ok(account);
             }
             catch (StripeException exception)
             {

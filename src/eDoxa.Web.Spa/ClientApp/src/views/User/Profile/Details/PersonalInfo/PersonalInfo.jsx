@@ -29,7 +29,7 @@ const PersonalInfoCard = ({ className, personalInfo, actions }) => {
             <dd className="col-sm-9">
               {personalInfo.firstName} {personalInfo.lastName}
             </dd>
-            <dd className="col-sm-3 text-muted">Birth Date</dd>
+            <dd className="col-sm-3 text-muted">Date of birth</dd>
             <dd className="col-sm-9">
               <Moment unix format="ll">
                 {personalInfo.birthDate}

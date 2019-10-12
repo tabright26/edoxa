@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
-import { reducer as bankAccounts } from "./bankAccounts/reducer";
-import { reducer as paymentMethods } from "./paymentMethods/reducer";
+import { reducer as accountReducer } from "./account/reducer";
+import { reducer as bankAccountReducer } from "./bankAccount/reducer";
+import { reducer as paymentMethodsReducer } from "./paymentMethods/reducer";
 
 export const reducer = combineReducers({
-  bankAccounts,
-  paymentMethods
+  account: accountReducer,
+  bankAccount: bankAccountReducer,
+  paymentMethods: paymentMethodsReducer
 });

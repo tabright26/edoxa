@@ -65,7 +65,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                     new User
                     {
                         Email = Input.Email,
-                        UserName = Input.Email
+                        UserName = Input.Email,
+                        Country = Input.Country
                     },
                     Input.Password);
 
@@ -119,6 +120,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public string Country { get; set; } = "CA"; // FRANCIS: Should be in an input of type select. (TEMP)
         }
     }
 }

@@ -31,13 +31,6 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             return reference.CustomerId;
         }
 
-        public async Task<string?> FindCustomerIdAsync(UserId userId)
-        {
-            var reference = await _stripeRepository.FindReferenceAsync(userId);
-
-            return reference?.CustomerId;
-        }
-
         public async Task<string> CreateCustomerAsync(UserId userId, string email)
         {
             var customer = await this.CreateAsync(

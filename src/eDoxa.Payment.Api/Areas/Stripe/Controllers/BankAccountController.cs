@@ -24,11 +24,19 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     [ApiExplorerSettings(GroupName = "Stripe")]
     public sealed class BankAccountController : ControllerBase
     {
+        private readonly IStripeExternalAccountService _externalAccountService;
         private readonly IStripeAccountService _stripeAccountService;
+        private readonly IStripeService _stripeService;
 
-        public BankAccountController(IStripeAccountService stripeAccountService)
+        public BankAccountController(
+            IStripeExternalAccountService externalAccountService,
+            IStripeAccountService stripeAccountService,
+            IStripeService stripeService
+        )
         {
+            _externalAccountService = externalAccountService;
             _stripeAccountService = stripeAccountService;
+            _stripeService = stripeService;
         }
 
         [HttpGet]
@@ -38,14 +46,14 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             {
                 var userId = HttpContext.GetUserId();
 
-                var accountId = await _stripeAccountService.FindAccountIdAsync(userId);
-
-                if (accountId == null)
+                if (!await _stripeService.ReferenceExistsAsync(userId))
                 {
-                    return this.NotFound("User not found.");
+                    return this.NotFound("Stripe reference not found.");
                 }
 
-                var bankAccount = await _stripeAccountService.FindBankAccountAsync(accountId);
+                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
+
+                var bankAccount = await _externalAccountService.FindBankAccountAsync(accountId);
 
                 if (bankAccount == null)
                 {
@@ -67,14 +75,14 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
             {
                 var userId = HttpContext.GetUserId();
 
-                var accountId = await _stripeAccountService.FindAccountIdAsync(userId);
-
-                if (accountId == null)
+                if (!await _stripeService.ReferenceExistsAsync(userId))
                 {
-                    return this.NotFound("User not found.");
+                    return this.NotFound("Stripe reference not found.");
                 }
 
-                var bankAccount = await _stripeAccountService.UpdateBankAccountAsync(accountId, request.Token);
+                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
+
+                var bankAccount = await _externalAccountService.UpdateBankAccountAsync(accountId, request.Token);
 
                 return this.Ok(bankAccount);
             }

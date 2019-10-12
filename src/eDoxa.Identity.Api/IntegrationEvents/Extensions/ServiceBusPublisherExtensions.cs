@@ -40,24 +40,16 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(new UserCreatedIntegrationEvent(userId, email, country));
         }
 
-        public static async Task PublishUserAddressChangedIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string line1,
-            string? line2,
-            string? state,
-            string city,
-            string postalCode
-        )
+        public static async Task PublishUserAddressChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, UserAddress address)
         {
             await publisher.PublishAsync(
                 new UserAddressChangedIntegrationEvent(
                     userId,
-                    line1,
-                    line2,
-                    state,
-                    city,
-                    postalCode));
+                    address.Line1,
+                    address.Line2,
+                    address.State,
+                    address.City,
+                    address.PostalCode));
         }
 
         public static async Task PublishUserEmailChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, string email)
@@ -68,19 +60,16 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
         public static async Task PublishUserInformationChangedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
-            string firstName,
-            string lastName,
-            string gender,
-            DateTime dob
+            UserPersonalInfo information
         )
         {
             await publisher.PublishAsync(
                 new UserInformationChangedIntegrationEvent(
                     userId,
-                    firstName,
-                    lastName,
-                    gender,
-                    dob));
+                    information.FirstName!,
+                    information.LastName!,
+                    information.Gender! != Gender.Other ? information.Gender!.Name.ToLowerInvariant() : null,
+                    information.BirthDate ?? throw new NullReferenceException(nameof(PublishUserInformationChangedIntegrationEventAsync))));
         }
 
         public static async Task PublishUserPhoneChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, string phoneNumber)

@@ -3,7 +3,7 @@ import { injectStripe } from "react-stripe-elements";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
 import { CREATE_BANK_ACCOUNT_MODAL } from "modals";
-import { connectStripeBankAccounts } from "store/stripe/bankAccounts/container";
+import { connectStripeBankAccount } from "store/stripe/bankAccount/container";
 import BankAccountForm from "forms/Stripe/BankAccount";
 
 const CreateStripeBankModal = ({ show, handleHide, className, actions, stripe }) => (
@@ -15,4 +15,4 @@ const CreateStripeBankModal = ({ show, handleHide, className, actions, stripe })
   </Modal>
 );
 
-export default injectStripe(connectModal({ name: CREATE_BANK_ACCOUNT_MODAL })(connectStripeBankAccounts(CreateStripeBankModal)));
+export default injectStripe(connectModal({ name: CREATE_BANK_ACCOUNT_MODAL })(connectStripeBankAccount(CreateStripeBankModal)));

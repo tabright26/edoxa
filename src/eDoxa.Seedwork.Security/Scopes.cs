@@ -8,6 +8,7 @@ namespace eDoxa.Seedwork.Security
 {
     public static class Scopes
     {
+        public const string Country = "country";
         public const string Roles = "roles";
         public const string Permissions = "permissions";
         public const string Games = "games";
