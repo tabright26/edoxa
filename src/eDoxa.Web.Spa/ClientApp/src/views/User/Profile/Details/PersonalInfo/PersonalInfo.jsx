@@ -6,7 +6,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { connectUserPersonalInfo } from "store/user/personalInfo/container";
 import PersonalInfoForm from "forms/User/PersonalInfo";
 
-const PersonalInfoCard = ({ className, personalInfo, actions }) => {
+const PersonalInfo = ({ className, personalInfo, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
   return (
     <Card className={className}>
@@ -46,4 +46,4 @@ const PersonalInfoCard = ({ className, personalInfo, actions }) => {
   );
 };
 
-export default connectUserPersonalInfo(PersonalInfoCard);
+export default connectUserPersonalInfo(PersonalInfo);

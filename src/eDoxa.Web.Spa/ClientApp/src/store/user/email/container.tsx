@@ -1,19 +1,29 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
+import { loadEmail } from "./actions";
 
 export const connectUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, email, ...attributes }) => <ConnectedComponent actions={actions} email={email} {...attributes} />;
+  const Container: FunctionComponent<any> = ({ actions, email, emailVerified, ...attributes }) => {
+    useEffect((): void => {
+      actions.loadEmail();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return <ConnectedComponent actions={actions} email={email} emailVerified={emailVerified} {...attributes} />;
+  };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      email: "admin@edoxa.gg"
+      email: state.user.email.email,
+      emailVerified: state.user.email.emailVerified
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {}
+      actions: {
+        loadEmail: () => dispatch(loadEmail())
+      }
     };
   };
 

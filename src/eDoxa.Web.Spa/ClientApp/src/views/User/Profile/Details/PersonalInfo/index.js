@@ -1,3 +1,3 @@
-import PersonalInfoCard from "./PersonalInfo";
+import PersonalInfo from "./PersonalInfo";
 
-export default PersonalInfoCard;
+export default PersonalInfo;

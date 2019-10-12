@@ -1,11 +1,13 @@
 import React from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
+import Badge from "components/Shared/Override/Badge";
 import { connectUserEmail } from "store/user/email/container";
 
-const EmailCard = ({ className, email }) => (
+const EmailCard = ({ className, email, emailVerified }) => (
   <Card className={className}>
     <CardHeader>
       <strong>EMAIL</strong>
+      <Badge.Verification className="ml-3" verified={emailVerified} />
     </CardHeader>
     <CardBody>
       <dl className="row mb-0">

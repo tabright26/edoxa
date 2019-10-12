@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import Badge from "components/Shared/Override/Badge";
 import { connectUserPhoneNumber } from "store/user/phoneNumber/container";
 import PhoneNumberForm from "forms/User/PhoneNumber";
 
-const PhoneNumberCard = ({ className, phoneNumber }) => {
+const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified }) => {
   const [isFormHidden, setFormHidden] = useState(true);
   return (
     <Card className={className}>
       <CardHeader>
         <strong>PHONE NUMBER</strong>
+        <Badge.Verification className="ml-3" verified={phoneNumberVerified} />
         {isFormHidden ? (
           <div className="card-header-actions btn-link" onClick={() => setFormHidden(false)}>
             <small>
@@ -29,4 +31,4 @@ const PhoneNumberCard = ({ className, phoneNumber }) => {
   );
 };
 
-export default connectUserPhoneNumber(PhoneNumberCard);
+export default connectUserPhoneNumber(PhoneNumber);

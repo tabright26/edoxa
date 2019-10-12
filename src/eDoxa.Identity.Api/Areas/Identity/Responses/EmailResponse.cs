@@ -16,7 +16,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses
         [JsonProperty("email")]
         public string Email { get; set; }
 
-        [JsonProperty("verified")]
+        [JsonProperty("emailVerified")]
         public bool EmailVerified { get; set; }
     }
 }
