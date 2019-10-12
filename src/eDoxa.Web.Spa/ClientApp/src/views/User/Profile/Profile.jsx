@@ -8,7 +8,6 @@ const ProfileOverview = React.lazy(() => import("./Overview/Overview"));
 const ProfileDetails = React.lazy(() => import("./Details/Details"));
 const ProfileSecurity = React.lazy(() => import("./Security/Security"));
 const ProfileConnections = React.lazy(() => import("./Connections/Connections"));
-const ProfileCashierOverview = React.lazy(() => import("./Cashier/Overview"));
 const ProfilePaymentMethods = React.lazy(() => import("./Cashier/PaymentMethods"));
 const ProfileTransactionHistory = React.lazy(() => import("./Cashier/TransactionHistory"));
 
@@ -40,9 +39,6 @@ const Profile = ({ match }) => (
           <strong>Cashier</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={`${match.url}/cashier/overview`}>
-            <ListGroupItem>Overview</ListGroupItem>
-          </LinkContainer>
           <LinkContainer to={`${match.url}/cashier/payment-methods`}>
             <ListGroupItem>Payment Methods</ListGroupItem>
           </LinkContainer>
@@ -69,7 +65,6 @@ const Profile = ({ match }) => (
           <Route path={`${match.url}/details`} exact name="Profile Details" render={props => <ProfileDetails {...props} />} />
           <Route path={`${match.url}/security`} exact name="Security" render={props => <ProfileSecurity {...props} />} />
           <Route path={`${match.url}/connections/games`} exact name="Connections" render={props => <ProfileConnections {...props} />} />
-          <Route path={`${match.url}/cashier/overview`} exact name="Bank Account" render={props => <ProfileCashierOverview {...props} />} />
           <Route path={`${match.url}/cashier/payment-methods`} exact name="Payment Methods" render={props => <ProfilePaymentMethods {...props} />} />
           <Route path={`${match.url}/cashier/transaction-history`} exact name="Transaction History" render={props => <ProfileTransactionHistory {...props} />} />
           <Redirect from={`${match.url}`} to={`${match.url}/overview`} />

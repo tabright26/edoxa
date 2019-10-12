@@ -17,15 +17,7 @@ export const reducer: Reducer<any, BankAccountActionTypes> = (state = initialSta
       }
       break;
     case LOAD_BANK_ACCOUNT_FAIL: {
-      const { status } = action.payload;
-      switch (status) {
-        case 404: {
-          return { data: null };
-        }
-        default: {
-          return state;
-        }
-      }
+      return { data: null };
     }
     default:
       return state;

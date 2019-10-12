@@ -19,9 +19,8 @@ describe("user account stripe bank account reducer", () => {
 
   it("should handle LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL", () => {
     const action: any = {
-      type: LOAD_BANK_ACCOUNT_FAIL,
-      payload: { status: 400 }
+      type: LOAD_BANK_ACCOUNT_FAIL
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    expect(reducer(initialState, action)).toEqual({ data: null });
   });
 });
