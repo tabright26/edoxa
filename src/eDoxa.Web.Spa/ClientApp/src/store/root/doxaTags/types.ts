@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/types";
+import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
 export const LOAD_DOXATAGS = "LOAD_DOXATAGS";
 export const LOAD_DOXATAGS_SUCCESS = "LOAD_DOXATAGS_SUCCESS";

@@ -2,7 +2,7 @@ import "./App.scss";
 import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
-import { history } from "utils/history";
+import { history } from "store/middlewares/router/constants";
 import UserAccountModal from "modals/User/Account";
 import ArenaChallengeParticipantMatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
 import Loading from "./Shared/Override/Loading";

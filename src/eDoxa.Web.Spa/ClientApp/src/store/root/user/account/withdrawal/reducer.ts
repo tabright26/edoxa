@@ -1,4 +1,4 @@
-import { AxiosErrorData } from "store/types";
+import { AxiosErrorData } from "store/middlewares/axios/types";
 import { SubmissionError } from "redux-form";
 import { LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS, LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL, WITHDRAWAL_TOKEN_SUCCESS, WITHDRAWAL_TOKEN_FAIL, WithdrawalState, WithdrawalActionTypes } from "./types";
 import { Currency } from "../types";

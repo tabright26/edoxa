@@ -1,5 +1,5 @@
 import { SubmissionError } from "redux-form";
-import { AxiosErrorData } from "store/types";
+import { AxiosErrorData } from "store/middlewares/axios/types";
 
 import {
   LOAD_INVITATIONS_FAIL,

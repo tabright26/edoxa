@@ -1,5 +1,5 @@
 import { LOAD_BANK_ACCOUNT_SUCCESS, LOAD_BANK_ACCOUNT_FAIL, CHANGE_BANK_ACCOUNT_SUCCESS, CHANGE_BANK_ACCOUNT_FAIL, BankAccountActionTypes } from "./types";
-import { AxiosErrorData } from "store/types";
+import { AxiosErrorData } from "store/middlewares/axios/types";
 import { Reducer } from "redux";
 import { SubmissionError } from "redux-form";
 

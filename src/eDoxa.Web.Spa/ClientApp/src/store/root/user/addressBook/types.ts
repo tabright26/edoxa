@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/types";
+import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
 export const LOAD_ADDRESS_BOOK = "LOAD_ADDRESS_BOOK";
 export const LOAD_ADDRESS_BOOK_SUCCESS = "LOAD_ADDRESS_BOOK_SUCCESS";

@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/types";
+import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
 export const LOAD_USER_ACCOUNT_BALANCE = "LOAD_USER_ACCOUNT_BALANCE";
 export const LOAD_USER_ACCOUNT_BALANCE_SUCCESS = "LOAD_USER_ACCOUNT_BALANCE_SUCCESS";

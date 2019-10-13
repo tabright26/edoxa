@@ -1,5 +1,5 @@
 import { SubmissionError } from "redux-form";
-import { AxiosErrorData } from "store/types";
+import { AxiosErrorData } from "store/middlewares/axios/types";
 import { LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL, DoxatagHistoryActionTypes } from "./types";
 
 export const initialState = [];

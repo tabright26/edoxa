@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/types";
+import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
 export const LOAD_PAYMENTMETHODS = "LOAD_PAYMENTMETHODS";
 export const LOAD_PAYMENTMETHODS_SUCCESS = "LOAD_PAYMENTMETHODS_SUCCESS";

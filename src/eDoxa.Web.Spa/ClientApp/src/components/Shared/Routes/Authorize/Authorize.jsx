@@ -1,7 +1,7 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { connect } from "react-redux";
-import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "store/middlewares/oidc/userManager";
 import Loading from "components/Shared/Override/Loading";
 
 const SecureRoute = ({ isSignedIn, path, exact, name, scopes = [], component: Component }) => (

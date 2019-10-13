@@ -1,16 +1,16 @@
 import { combineReducers } from "redux";
 
-import { reducer as routerReducer } from "store/middlewares/routerMiddleware";
-import { reducer as formReducer } from "redux-form";
-import { reducer as modalReducer } from "redux-modal";
-import { reducer as oidcReducer } from "redux-oidc";
+import { reducer as routerReducer } from "store/middlewares/router/reducer";
+import { reducer as formReducer } from "store/middlewares/form/reducer";
+import { reducer as modalReducer } from "store/middlewares/modal/reducer";
+import { reducer as toastrReducer } from "store/middlewares/toastr/reducer";
+import { reducer as oidcReducer } from "store/middlewares/oidc/reducer";
+import { reducer as localizeReducer } from "store/middlewares/localize/reducer";
 import { reducer as stripeReducer } from "store/root/stripe/reducer";
 import { reducer as arenaReducer } from "store/root/arena/reducer";
 import { reducer as userReducer } from "store/root/user/reducer";
 import { reducer as organizationsReducer } from "store/root/organizations/reducer";
 import { reducer as doxaTagsReducer } from "store/root/doxaTags/reducer";
-import { reducer as toastrReducer } from "react-redux-toastr";
-import { reducer as localizeReducer } from "utils/localize";
 
 export const reducer = combineReducers({
   router: routerReducer,

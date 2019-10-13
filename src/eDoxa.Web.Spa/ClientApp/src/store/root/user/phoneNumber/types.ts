@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/types";
+import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
 export const LOAD_PHONENUMBER = "LOAD_PHONENUMBER";
 export const LOAD_PHONENUMBER_SUCCESS = "LOAD_PHONENUMBER_SUCCESS";
