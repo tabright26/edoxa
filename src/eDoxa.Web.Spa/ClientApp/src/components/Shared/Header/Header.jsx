@@ -39,29 +39,11 @@ class HeaderDropdown extends Component {
               </Button>
             </LinkContainer>
           </Form>
-          <DropdownItem header>Connections</DropdownItem>
-          <LinkContainer to="/profile/connections/games">
-            <DropdownItem>My Games</DropdownItem>
-          </LinkContainer>
-          <DropdownItem header>Cashier</DropdownItem>
-          <LinkContainer to="/account/overview">
-            <DropdownItem>Account Overview</DropdownItem>
-          </LinkContainer>
-          <LinkContainer to="/profile/transaction-history">
-            <DropdownItem>Transaction History</DropdownItem>
-          </LinkContainer>
-          <LinkContainer to="/profile/payment-methods">
-            <DropdownItem>Payment Methods</DropdownItem>
-          </LinkContainer>
-          <DropdownItem header>Arena</DropdownItem>
-          <LinkContainer to="/arena/challenge-history">
-            <DropdownItem>Challenge History</DropdownItem>
-          </LinkContainer>
-          <LinkContainer to="/arena/tournament-history">
-            <DropdownItem>Tournament History</DropdownItem>
-          </LinkContainer>
-          <DropdownItem divider />
-          {process.env.NODE_ENV !== "production" ? <DropdownItem onClick={() => this.userInfoClickHandled()}>User Info</DropdownItem> : null}
+          {process.env.NODE_ENV !== "production" ? (
+            <DropdownItem className="border-top" onClick={() => this.userInfoClickHandled()}>
+              User Info
+            </DropdownItem>
+          ) : null}
           <DropdownItem onClick={() => this.signoutRedirectClickHandled()}>Logout</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>

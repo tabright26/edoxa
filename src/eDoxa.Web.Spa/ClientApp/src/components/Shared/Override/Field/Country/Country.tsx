@@ -5,8 +5,10 @@ import { countries } from "components/Shared/Localization/countries";
 
 const CountryField = () => (
   <Field name="country" type="select" component={Input.Select}>
-    {countries.map(country => (
-      <option value={country.twoDigitIso}>{country.name}</option>
+    {countries.map((country, index) => (
+      <option key={index} value={country.twoDigitIso}>
+        {country.name}
+      </option>
     ))}
   </Field>
 );

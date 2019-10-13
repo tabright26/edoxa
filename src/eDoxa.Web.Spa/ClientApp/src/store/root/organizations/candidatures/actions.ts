@@ -18,7 +18,6 @@ import {
 } from "./types";
 
 export function loadCandidatures(type: string, id: string): CandidaturesActionCreators {
-  console.log("LOADING CANDIDATURES");
   return {
     types: [LOAD_CANDIDATURES, LOAD_CANDIDATURES_SUCCESS, LOAD_CANDIDATURES_FAIL],
     payload: {
