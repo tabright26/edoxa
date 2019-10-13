@@ -35,7 +35,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
             this IServiceBusPublisher publisher,
             UserId userId,
             string email,
-            string country
+            Country country
         )
         {
             await publisher.PublishAsync(new UserCreatedIntegrationEvent(userId, email, country));

@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody, CardHeader, Row, Col, Button } from "reactstrap";
 import { toastr } from "react-redux-toastr";
 
-import { connectMembers } from "store/organizations/members/container";
+import { connectMembers } from "store/root/organizations/members/container";
 
 import MemberItem from "./MemberItem";
 

@@ -6,7 +6,7 @@ import navigation from "./_nav";
 // routes config
 import routes from "routes";
 import Routes from "components/Shared/Routes";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 
 const Aside = React.lazy(() => import("components/Shared/Aside"));
 const Breadcrumb = React.lazy(() => import("components/Shared/Breadcrumb"));
@@ -17,7 +17,7 @@ const Layout = ({ ...props }) => {
   return (
     <div className="app">
       <AppHeader fixed>
-        <Suspense fallback={<Loading.Default />}>
+        <Suspense fallback={<Loading />}>
           <Header />
         </Suspense>
       </AppHeader>
@@ -34,19 +34,19 @@ const Layout = ({ ...props }) => {
         <main className="main">
           <Breadcrumb />
           <Container fluid>
-            <Suspense fallback={<Loading.Default />}>
+            <Suspense fallback={<Loading />}>
               <Routes routes={routes} />
             </Suspense>
           </Container>
         </main>
         <AppAside fixed>
-          <Suspense fallback={<Loading.Default />}>
+          <Suspense fallback={<Loading />}>
             <Aside />
           </Suspense>
         </AppAside>
       </div>
       <AppFooter>
-        <Suspense fallback={<Loading.Default />}>
+        <Suspense fallback={<Loading />}>
           <Footer />
         </Suspense>
       </AppFooter>

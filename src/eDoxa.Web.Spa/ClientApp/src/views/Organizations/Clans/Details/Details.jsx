@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 
-import { connectClans } from "store/organizations/clans/container";
+import { connectClans } from "store/root/organizations/clans/container";
 
 import CandidatureWidget from "components/Organizations/Candidatures/CandidatureWidget";
 import ClanInfo from "components/Organizations/Clans/ClanInfo";

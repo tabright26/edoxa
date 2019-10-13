@@ -34,7 +34,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IdentityResult> AddAddressAsync(
             User user,
-            string country,
+            Country country,
             string line1,
             string? line2,
             string city,

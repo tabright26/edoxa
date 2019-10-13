@@ -18,6 +18,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -49,7 +50,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         Id = Guid.NewGuid(),
                         City = "Test",
                         PostalCode = "Test",
-                        Country = "Test",
+                        Country = Country.Canada,
                         Line1 = "Test"
                     }
                 }
@@ -91,7 +92,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         Id = Guid.NewGuid(),
                         City = "Test",
                         PostalCode = "Test",
-                        Country = "Test",
+                        Country = Country.Canada,
                         Line1 = "Test"
                     }
                 }
@@ -159,7 +160,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     {
                         City = "Test",
                         PostalCode = "Test",
-                        Country = "Test",
+                        Country = Country.Canada,
                         Line1 = "Test"
                     }
                 }
@@ -199,7 +200,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         Id = Guid.NewGuid(),
                         City = "Test",
                         PostalCode = "Test",
-                        Country = "Test",
+                        Country = Country.Canada,
                         Line1 = "Test"
                     }
                 }
@@ -212,7 +213,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Setup(
                     userManager => userManager.AddAddressAsync(
                         It.IsAny<User>(),
-                        It.IsAny<string>(),
+                        It.IsAny<Country>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -224,7 +225,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new AddressBookController(mockUserManager.Object, TestMapper);
 
             var request = new AddressPostRequest(
-                "New",
+                Country.Canada,
                 "New",
                 "New",
                 "New",
@@ -244,7 +245,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(
                 userManager => userManager.AddAddressAsync(
                     It.IsAny<User>(),
-                    It.IsAny<string>(),
+                    It.IsAny<Country>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
@@ -266,7 +267,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         Id = Guid.NewGuid(),
                         City = "Test",
                         PostalCode = "Test",
-                        Country = "Test",
+                        Country = Country.Canada,
                         Line1 = "Test"
                     }
                 }
@@ -279,7 +280,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Setup(
                     userManager => userManager.AddAddressAsync(
                         It.IsAny<User>(),
-                        It.IsAny<string>(),
+                        It.IsAny<Country>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -291,7 +292,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new AddressBookController(mockUserManager.Object, TestMapper);
 
             var request = new AddressPostRequest(
-                "New",
+                Country.Canada,
                 "New",
                 "New",
                 "New",
@@ -311,7 +312,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(
                 userManager => userManager.AddAddressAsync(
                     It.IsAny<User>(),
-                    It.IsAny<string>(),
+                    It.IsAny<Country>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
@@ -386,7 +387,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         Id = Guid.NewGuid(),
                         City = "Test",
                         PostalCode = "Test",
-                        Country = "Test",
+                        Country = Country.Canada,
                         Line1 = "Test"
                     }
                 }

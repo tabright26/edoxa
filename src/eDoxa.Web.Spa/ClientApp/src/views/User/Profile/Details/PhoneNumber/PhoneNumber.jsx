@@ -3,7 +3,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Override/Badge";
-import { connectUserPhoneNumber } from "store/user/phoneNumber/container";
+import { connectUserPhoneNumber } from "store/root/user/phoneNumber/container";
 import PhoneNumberForm from "forms/User/PhoneNumber";
 
 const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified, actions }) => {

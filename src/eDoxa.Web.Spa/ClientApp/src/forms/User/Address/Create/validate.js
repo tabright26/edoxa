@@ -1,5 +1,5 @@
 const validate = values => {
-  const countryRegExp = new RegExp("^(Canada)|(United States)$");
+  const countryRegExp = new RegExp("^(CA)|(US)$");
   const line1RegExp = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
   const line2RegExp = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
   const cityRegExp = new RegExp("^[a-zA-Z- ]{1,}$");

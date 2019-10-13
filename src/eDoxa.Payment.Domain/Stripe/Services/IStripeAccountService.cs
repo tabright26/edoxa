@@ -21,7 +21,7 @@ namespace eDoxa.Payment.Domain.Stripe.Services
         Task<string> CreateAccountAsync(
             UserId userId,
             string email,
-            string country,
+            Country country,
             string customerId
         );
 

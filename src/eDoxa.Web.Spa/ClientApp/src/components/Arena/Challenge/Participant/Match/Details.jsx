@@ -2,7 +2,7 @@ import React from "react";
 import { CardBody, Badge } from "reactstrap";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 import Format from "components/Shared/Format";
 import Moment from "react-moment";
 import { ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL } from "modals";
@@ -11,7 +11,7 @@ const Match = ({ match, position, actions }) => {
   if (!match) {
     return (
       <CardBody className="text-center">
-        <Loading.Default />
+        <Loading />
       </CardBody>
     );
   } else {

@@ -133,7 +133,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                             {
                                 Id = record.Id,
                                 UserName = record.Email,
-                                Country = "CA", // FRANCIS: Should be inside users.csv
+                                Country = Country.Canada, // FRANCIS: Should be inside users.csv
                                 Email = record.Email,
                                 PhoneNumber = record.Phone,
                                 DoxaTagHistory = new Collection<UserDoxaTag>

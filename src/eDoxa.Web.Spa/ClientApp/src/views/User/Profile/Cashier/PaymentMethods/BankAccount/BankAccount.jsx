@@ -3,8 +3,8 @@ import { Elements } from "react-stripe-elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Alert } from "reactstrap";
-import { connectUser } from "store/user/container";
-import { connectStripeBankAccount } from "store/stripe/bankAccount/container";
+import { connectUser } from "store/root/user/container";
+import { connectStripeBankAccount } from "store/root/stripe/bankAccount/container";
 import { injectStripe } from "react-stripe-elements";
 import StripeBankAccountForm from "forms/Stripe/BankAccount";
 

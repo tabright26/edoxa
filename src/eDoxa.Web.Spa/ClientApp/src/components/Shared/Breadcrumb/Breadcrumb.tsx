@@ -1,7 +1,7 @@
 import React from "react";
 import BreadcrumbMoney from "./Money";
 import BreadcrumbToken from "./Token";
-import { connectUser } from "store/user/container";
+import { connectUser } from "store/root/user/container";
 
 const Breadcrumb: any = ({ isAuthenticated }) => {
   if (isAuthenticated) {

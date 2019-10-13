@@ -3,7 +3,7 @@ import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { connectUserPersonalInfo } from "store/user/personalInfo/container";
+import { connectUserPersonalInfo } from "store/root/user/personalInfo/container";
 import PersonalInfoForm from "forms/User/PersonalInfo";
 
 const PersonalInfo = ({ className, personalInfo, actions }) => {

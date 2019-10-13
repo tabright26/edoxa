@@ -5,7 +5,7 @@ import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/history";
 import UserAccountModal from "modals/User/Account";
 import ArenaChallengeParticipantMatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
-import Loading from "./Shared/Loading";
+import Loading from "./Shared/Override/Loading";
 
 const Callback = React.lazy(() => import("./Shared/Callback"));
 const ErrorPage401 = React.lazy(() => import("./Shared/ErrorPage/401"));
@@ -27,7 +27,7 @@ const App = () => (
     <UserAccountModal.Withdrawal />
     <ArenaChallengeParticipantMatchScoreModal.Details />
     <Router history={history}>
-      <Suspense fallback={<Loading.Default />}>
+      <Suspense fallback={<Loading />}>
         <Switch>
           <Route exact path="/callback" name="Callback" render={props => <Callback {...props} />} />
           <Route exact path="/errors/401" name="Error 401" render={props => <ErrorPage401 {...props} />} />
@@ -39,7 +39,7 @@ const App = () => (
             path="/terms-of-services"
             name="Terms of Services"
             render={props => (
-              <Suspense fallback={<Loading.Default />}>
+              <Suspense fallback={<Loading />}>
                 <PartialLayout>
                   <TermsOfServices {...props} />
                 </PartialLayout>
@@ -51,7 +51,7 @@ const App = () => (
             path="/faq"
             name="FAQ"
             render={props => (
-              <Suspense fallback={<Loading.Default />}>
+              <Suspense fallback={<Loading />}>
                 <PartialLayout>
                   <FAQ {...props} />
                 </PartialLayout>
@@ -63,7 +63,7 @@ const App = () => (
             path="/email/confirm"
             name="Confirm Email"
             render={props => (
-              <Suspense fallback={<Loading.Default />}>
+              <Suspense fallback={<Loading />}>
                 <NoneLayout>
                   <EmailConfirm {...props} />
                 </NoneLayout>
@@ -75,7 +75,7 @@ const App = () => (
             path="/password/forgot"
             name="Forgot Password"
             render={props => (
-              <Suspense fallback={<Loading.Default />}>
+              <Suspense fallback={<Loading />}>
                 <NoneLayout>
                   <PasswordForgot {...props} />
                 </NoneLayout>
@@ -87,7 +87,7 @@ const App = () => (
             path="/password/reset"
             name="Reset Password"
             render={props => (
-              <Suspense fallback={<Loading.Default />}>
+              <Suspense fallback={<Loading />}>
                 <NoneLayout>
                   <PasswordReset {...props} />
                 </NoneLayout>

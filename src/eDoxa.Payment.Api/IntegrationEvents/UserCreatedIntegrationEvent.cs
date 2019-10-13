@@ -16,7 +16,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents
     public sealed class UserCreatedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserCreatedIntegrationEvent(UserId userId, string email, string country)
+        public UserCreatedIntegrationEvent(UserId userId, string email, Country country)
         {
             UserId = userId;
             Email = email;
@@ -30,7 +30,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents
         public string Email { get; }
 
         [JsonProperty]
-        public string Country { get; }
+        public Country Country { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserCreated;

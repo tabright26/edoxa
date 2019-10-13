@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody, CardHeader, Row, Col, Badge, Progress } from "reactstrap";
 
 //import Format from "components/Format";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 
 import ChallengeTimeline from "./Timeline";
 
@@ -10,7 +10,7 @@ const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <CardBody className="text-center text-white">
-        <Loading.Default />
+        <Loading />
       </CardBody>
     );
   } else {

@@ -198,7 +198,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         public Task AddAddressAsync(
             User user,
-            string country,
+            Country country,
             string line1,
             string? line2,
             string city,
@@ -214,11 +214,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             if (user == null)
             {
                 throw new ArgumentNullException(nameof(user));
-            }
-
-            if (string.IsNullOrWhiteSpace(country))
-            {
-                throw new ArgumentNullException(nameof(country));
             }
 
             if (string.IsNullOrWhiteSpace(line1))
@@ -365,7 +360,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.CompletedTask;
         }
 
-        public Task<string> GetCountryAsync(User user, CancellationToken cancellationToken)
+        public Task<Country> GetCountryAsync(User user, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

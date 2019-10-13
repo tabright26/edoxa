@@ -77,7 +77,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User created a new account with password.");
 
-                    await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(UserId.FromGuid(user.Id), Input.Email, "CA");
+                    await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(UserId.FromGuid(user.Id), Input.Email, Input.Country);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -122,7 +122,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            public string Country { get; set; } = "CA"; // FRANCIS: Should be in an input of type select. (TEMP)
+            public Country Country { get; set; } = Country.Canada; // FRANCIS: Should be in an input of type select. (TEMP)
         }
     }
 }

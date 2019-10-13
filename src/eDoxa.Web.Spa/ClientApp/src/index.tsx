@@ -8,7 +8,7 @@ import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 import { Provider } from "react-redux";
-import configureStore from "./store/configureStore";
+import { configureStore } from "./store";
 import { OidcProvider } from "redux-oidc";
 import userManager from "./utils/userManager";
 import ReduxToastr from "react-redux-toastr";

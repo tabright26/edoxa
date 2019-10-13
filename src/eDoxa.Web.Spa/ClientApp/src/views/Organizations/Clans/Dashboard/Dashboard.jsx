@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import { toastr } from "react-redux-toastr";
 
-import { connectClans } from "store/organizations/clans/container";
+import { connectClans } from "store/root/organizations/clans/container";
 
 import ClanLogo from "components/Organizations/Clans/ClanLogo";
 import ClanInfo from "components/Organizations/Clans/ClanInfo";

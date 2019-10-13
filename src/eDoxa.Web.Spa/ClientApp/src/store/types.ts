@@ -1,10 +1,6 @@
-import rootReducer from "./reducers";
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 
-export type AxiosClient = "default" | "stripe" | "leagueOfLegends";
-
 export interface AxiosPayload {
-  client?: AxiosClient;
   request: AxiosRequestConfig;
 }
 export interface AxiosActionCreator<T> {
@@ -24,5 +20,3 @@ export interface AxiosAction<ActionType> {
   payload: AxiosResponse;
   error: AxiosError<AxiosErrorData>;
 }
-
-export type RootState = ReturnType<typeof rootReducer>;

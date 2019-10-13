@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 import Pending from "./Pending";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
@@ -27,7 +27,7 @@ it("renders correctly", () => {
           subscribe: () => {}
         }}
       >
-        <Suspense fallback={<Loading.Default />}>
+        <Suspense fallback={<Loading />}>
           <Pending />
         </Suspense>
       </Provider>

@@ -8,7 +8,7 @@ exports[`renders correctly 1`] = `
   <div
     className="form-group"
   >
-    <input
+    <select
       className="form-control-sm form-control"
       name="country"
       onBlur={[Function]}
@@ -16,13 +16,19 @@ exports[`renders correctly 1`] = `
       onDragStart={[Function]}
       onDrop={[Function]}
       onFocus={[Function]}
-      placeholder="Country"
-      type="text"
       value=""
-    />
-    <div
-      className="invalid-feedback"
-    />
+    >
+      <option
+        value="CA"
+      >
+        Canada
+      </option>
+      <option
+        value="US"
+      >
+        United States
+      </option>
+    </select>
   </div>
   <div
     className="form-group"

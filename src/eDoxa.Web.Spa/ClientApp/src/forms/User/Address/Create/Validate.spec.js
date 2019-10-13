@@ -29,7 +29,7 @@ var mockEmptyAddress = {
 
 test("All to be valid", () => {
   const errors = validate(mockValidAddress);
-  expect(errors).not.toHaveProperty("country");
+  expect(errors).not.toHaveProperty("CA");
   expect(errors).not.toHaveProperty("line1");
   expect(errors).not.toHaveProperty("line2");
   expect(errors).not.toHaveProperty("city");

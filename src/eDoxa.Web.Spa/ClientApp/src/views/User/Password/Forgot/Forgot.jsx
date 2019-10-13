@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardBody } from "reactstrap";
-import { connectUser } from "store/user/container";
+import { connectUser } from "store/root/user/container";
 import PasswordForm from "forms/User/Password";
 
 const ForgotPassword = ({ actions }) => (

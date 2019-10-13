@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 
-import { connectInvitations } from "store/organizations/invitations/container";
+import { connectInvitations } from "store/root/organizations/invitations/container";
 
 import InvitationItem from "./InvitationItem";
 

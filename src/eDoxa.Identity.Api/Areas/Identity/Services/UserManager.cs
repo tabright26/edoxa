@@ -432,7 +432,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         public async Task<IdentityResult> AddAddressAsync(
             User user,
-            string country,
+            Country country,
             string line1,
             string? line2,
             string city,
@@ -560,7 +560,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value)!.Name == game.Name) != null;
         }
 
-        public async Task<string> GetCountryAsync(User user)
+        public async Task<Country> GetCountryAsync(User user)
         {
             this.ThrowIfDisposed();
 

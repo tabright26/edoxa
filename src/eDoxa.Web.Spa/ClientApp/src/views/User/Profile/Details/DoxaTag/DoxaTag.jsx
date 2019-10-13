@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { connectUserDoxaTagHistory } from "store/user/doxaTagHistory/container";
+import { connectUserDoxaTagHistory } from "store/root/user/doxaTagHistory/container";
 import DoxaTagForm from "forms/User/DoxaTag";
 
 const DoxaTagCard = ({ className, doxaTag, actions }) => {

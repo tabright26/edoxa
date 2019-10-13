@@ -31,7 +31,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     builder.Property(user => user.Email).IsRequired();
                     builder.Property(user => user.NormalizedEmail).IsRequired();
-                    builder.Property(user => user.Country).IsRequired();
+                    builder.Property(user => user.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
                     builder.OwnsOne(
                         user => user.PersonalInfo,
                         userPersonalInfo =>
@@ -77,7 +77,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.HasKey(address => address.Id);
                     builder.Property(address => address.Id).IsRequired();
                     builder.Property(address => address.Type).HasConversion(type => type.Value, type => UserAddressType.FromValue(type)).IsRequired();
-                    builder.Property(address => address.Country).IsRequired();
+                    builder.Property(address => address.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
                     builder.Property(address => address.Line1).IsRequired();
                     builder.Property(address => address.Line2).IsRequired(false);
                     builder.Property(address => address.City).IsRequired();

@@ -1,7 +1,7 @@
 import React from "react";
 import { Alert, Button } from "reactstrap";
 
-import { connectStripeBankAccount } from "store/stripe/bankAccount/container";
+import { connectStripeBankAccount } from "store/root/stripe/bankAccount/container";
 
 const StripeBankAccountAlert = ({ hasBankAccount }) => {
   if (hasBankAccount) {

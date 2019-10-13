@@ -17,6 +17,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -145,7 +146,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     {
                         City = "Test",
                         PostalCode = "Test",
-                        Country = "Test",
+                        Country = Country.Canada,
                         Line1 = "Test"
                     }
                 }

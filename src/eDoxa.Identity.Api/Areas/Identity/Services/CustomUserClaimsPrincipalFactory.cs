@@ -64,7 +64,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
             Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await UserManager.GetUserIdAsync(user)));
 
-            Identity!.AddClaim(new Claim(ClaimTypes.Country, await UserManager.GetCountryAsync(user)));
+            var country = await UserManager.GetCountryAsync(user);
+
+            Identity!.AddClaim(new Claim(ClaimTypes.Country, country.TwoDigitIso));
 
             await this.TryGenerateDoxaTagClaimAsync(user);
 

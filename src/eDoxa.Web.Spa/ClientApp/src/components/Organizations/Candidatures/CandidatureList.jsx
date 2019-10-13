@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 
-import { connectCandidatures } from "store/organizations/candidatures/container";
+import { connectCandidatures } from "store/root/organizations/candidatures/container";
 
 import CandidatureItem from "./CandidatureItem";
 

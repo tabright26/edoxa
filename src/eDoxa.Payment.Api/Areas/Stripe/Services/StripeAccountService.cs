@@ -50,7 +50,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
         public async Task<string> CreateAccountAsync(
             UserId userId,
             string email,
-            string country,
+            Country country,
             string customerId
         )
         {
@@ -59,7 +59,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 {
                     Type = "custom",
                     BusinessType = "individual",
-                    Country = country,
+                    Country = country.TwoDigitIso,
                     Individual = new PersonCreateOptions
                     {
                         Email = email,

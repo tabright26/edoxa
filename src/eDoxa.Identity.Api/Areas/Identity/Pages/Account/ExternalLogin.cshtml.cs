@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -188,7 +189,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             [Required] [EmailAddress]
             public string Email { get; set; }
 
-            public string Country { get; set; } = "CA";
+            public Country Country { get; set; } = Country.Canada;
         }
     }
 }

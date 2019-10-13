@@ -3,12 +3,15 @@ import { FormGroup, Col, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
+import FieldCountry from "components/Shared/Override/Field/Country";
 import { CREATE_ADDRESS_FORM } from "forms";
 import validate from "./validate";
 
 const CreateAddressForm = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
-    <Field type="text" name="country" label="Country" formGroup={FormGroup} component={Input.Text} />
+    <FormGroup>
+      <FieldCountry />
+    </FormGroup>
     <Field type="text" name="line1" label="Address line 1" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="line2" label="Address line 2 (optional)" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="city" label="City" formGroup={FormGroup} component={Input.Text} />

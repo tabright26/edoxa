@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import { Row, Col, Card, CardHeader, Button } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-import { connectClans } from "store/organizations/clans/container";
+import { connectClans } from "store/root/organizations/clans/container";
 
 import ClanCard from "components/Organizations/Clans/ClanCard";
 import CandidatureList from "components/Organizations/Candidatures/CandidatureList";

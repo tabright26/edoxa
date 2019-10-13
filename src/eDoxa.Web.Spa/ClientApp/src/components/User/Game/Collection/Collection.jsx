@@ -1,7 +1,7 @@
 import React from "react";
 import { CardHeader, CardImg, CardImgOverlay, CardText, Row, Col, Card, Button } from "reactstrap";
 
-import { connectUserGames } from "store/user/games/container";
+import { connectUserGames } from "store/root/user/games/container";
 
 const UserGameIndex = ({ games }) => (
   <Row>

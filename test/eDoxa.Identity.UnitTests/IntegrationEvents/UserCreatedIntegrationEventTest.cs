@@ -27,7 +27,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var integrationEvent = new UserCreatedIntegrationEvent(new UserId(), "noreply@edoxa.gg", "CA");
+            var integrationEvent = new UserCreatedIntegrationEvent(new UserId(), "noreply@edoxa.gg", Country.Canada);
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
