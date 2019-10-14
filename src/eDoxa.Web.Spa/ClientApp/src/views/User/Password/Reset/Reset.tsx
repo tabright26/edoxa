@@ -1,11 +1,11 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
 import queryString from "query-string";
 import { connectUser } from "store/root/user/container";
 import PasswordForm from "forms/User/Password";
 
-const ResetPassword = ({ location, actions }) => {
+const ResetPassword: FunctionComponent<any> = ({ location, actions }) => {
   const code = queryString.parse(location.search).code;
   if (!code) {
     return <Redirect to="/errors/404" />;

@@ -1,9 +1,9 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
 import { connectUser } from "store/root/user/container";
 import PasswordForm from "forms/User/Password";
 
-const ForgotPassword = ({ actions }) => (
+const ForgotPassword: FunctionComponent<any> = ({ actions }) => (
   <Card className="mx-4">
     <CardBody className="p-4">
       <h1>Forgot Password</h1>
