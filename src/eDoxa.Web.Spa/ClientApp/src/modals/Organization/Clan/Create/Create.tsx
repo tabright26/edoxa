@@ -3,6 +3,7 @@ import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { CREATE_CLAN_MODAL } from "modals";
 import ClanForm from "forms/Organizations/Clans";
+import { compose } from "recompose";
 
 const CreateClanModal: FunctionComponent<any> = ({ show, handleHide, className, actions }) => (
   <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>
@@ -18,4 +19,6 @@ const CreateClanModal: FunctionComponent<any> = ({ show, handleHide, className, 
   </Modal>
 );
 
-export default connectModal({ name: CREATE_CLAN_MODAL })(CreateClanModal);
+const enhance = compose<any, any>(connectModal({ name: CREATE_CLAN_MODAL }));
+
+export default enhance(CreateClanModal);

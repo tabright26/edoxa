@@ -6,8 +6,9 @@ import StripePaymentMethodForm from "forms/Payment/PaymentMethod";
 import { CREATE_PAYMENTMETHOD_MODAL } from "modals";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
 import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";
+import { compose } from "recompose";
 
-const CreatePaymentMethodModal: FunctionComponent<any> = ({ show, handleHide, actions, stripe }) => (
+const CreateStripePaymentMethodModal: FunctionComponent<any> = ({ show, handleHide, actions, stripe }) => (
   <Modal isOpen={show} toggle={handleHide}>
     <ModalHeader toggle={handleHide}>ADD NEW PAYMENT METHOD</ModalHeader>
     <ModalBody>
@@ -16,4 +17,10 @@ const CreatePaymentMethodModal: FunctionComponent<any> = ({ show, handleHide, ac
   </Modal>
 );
 
-export default injectStripe(connectModal({ name: CREATE_PAYMENTMETHOD_MODAL })(connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)(CreatePaymentMethodModal)));
+const enhance = compose<any, any>(
+  injectStripe,
+  connectModal({ name: CREATE_PAYMENTMETHOD_MODAL }),
+  connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)
+);
+
+export default enhance(CreateStripePaymentMethodModal);

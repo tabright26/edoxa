@@ -8,7 +8,7 @@ import ClanCard from "components/Organizations/Clans/ClanCard";
 import CandidatureList from "components/Organizations/Candidatures/CandidatureList";
 import InvitationList from "components/Organizations/Invitations/InvitationList";
 
-import ClanModal from "modals/Organizations/Clan";
+import ClanModal from "modals/Organization/Clan";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 

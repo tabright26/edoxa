@@ -1,14 +1,15 @@
 import React from "react";
-import Update from "./Update";
+import Delete from "./Delete";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
+import { DELETE_PAYMENTMETHOD_MODAL } from "modals";
 
 it("renders correctly", () => {
   const store: any = {
     getState: () => {
       return {
         modal: {
-          name: ""
+          name: DELETE_PAYMENTMETHOD_MODAL
         }
       };
     },
@@ -18,7 +19,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Update />
+        <Delete />
       </Provider>
     )
     .toJSON();

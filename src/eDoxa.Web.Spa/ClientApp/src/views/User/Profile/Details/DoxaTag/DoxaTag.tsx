@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { connectUserDoxaTagHistory } from "store/root/user/doxaTagHistory/container";
 import DoxaTagForm from "forms/User/DoxaTag";
+import { compose } from "recompose";
 
-const DoxaTagCard = ({ className, doxaTag, actions }) => {
+const DoxaTag: FunctionComponent<any> = ({ className, doxaTag, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
   return (
     <Card className={className}>
@@ -37,4 +38,6 @@ const DoxaTagCard = ({ className, doxaTag, actions }) => {
   );
 };
 
-export default connectUserDoxaTagHistory(DoxaTagCard);
+const enhance = compose<any, any>(connectUserDoxaTagHistory);
+
+export default enhance(DoxaTag);

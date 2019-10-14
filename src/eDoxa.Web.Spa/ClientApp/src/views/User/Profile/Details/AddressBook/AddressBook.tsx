@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, FunctionComponent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
@@ -6,8 +6,9 @@ import Address from "components/Shared/Localization/Address";
 import AddressForm from "forms/User/Address";
 import { connectUserAddressBook } from "store/root/user/addressBook/container";
 import UserAddressModal from "modals/User/Address";
+import { compose } from "recompose";
 
-const AddressCard = ({ index, actions, address, length }) => {
+const AddressItem: FunctionComponent<any> = ({ index, actions, address, length }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
   const [deleteFormHidden, hideDeleteForm] = useState(true);
   return (
@@ -56,21 +57,25 @@ const AddressCard = ({ index, actions, address, length }) => {
   );
 };
 
-const AddressBookCard = ({ className, addressBook, actions }) => <Card className={className}>
-  <CardHeader>
-    <strong>ADDRESS BOOK</strong>
-    <div className="card-header-actions btn-link" onClick={() => actions.showCreateAddressModal()}>
-      <small>
-        <FontAwesomeIcon icon={faPlus} /> ADD A NEW ADDRESS
-      </small>
-    </div>
-    <UserAddressModal.Create actions={actions} />
-  </CardHeader>
-  <CardBody>
-    {addressBook.map((address, index) => (
-      <AddressCard key={index} index={index + 1} actions={actions} address={address} length={addressBook.length} />
-    ))}
-  </CardBody>
-</Card>;
+const AddressBook: FunctionComponent<any> = ({ className, addressBook, actions }) => (
+  <Card className={className}>
+    <CardHeader>
+      <strong>ADDRESS BOOK</strong>
+      <div className="card-header-actions btn-link" onClick={() => actions.showCreateAddressModal()}>
+        <small>
+          <FontAwesomeIcon icon={faPlus} /> ADD A NEW ADDRESS
+        </small>
+      </div>
+      <UserAddressModal.Create actions={actions} />
+    </CardHeader>
+    <CardBody>
+      {addressBook.map((address, index) => (
+        <AddressItem key={index} index={index + 1} actions={actions} address={address} length={addressBook.length} />
+      ))}
+    </CardBody>
+  </Card>
+);
 
-export default connectUserAddressBook(AddressBookCard);
+const enhance = compose<any, any>(connectUserAddressBook);
+
+export default enhance(AddressBook);

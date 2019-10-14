@@ -1,14 +1,15 @@
 import React from "react";
-import Delete from "./Delete";
+import Score from "./Score";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
+import { MATCH_SCORE_MODAL } from "modals";
 
 it("renders correctly", () => {
   const store: any = {
     getState: () => {
       return {
         modal: {
-          name: ""
+          name: MATCH_SCORE_MODAL
         }
       };
     },
@@ -18,7 +19,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Delete />
+        <Score />
       </Provider>
     )
     .toJSON();

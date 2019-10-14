@@ -5,8 +5,9 @@ import StripePaymentMethodForm from "forms/Payment/PaymentMethod";
 import { DELETE_PAYMENTMETHOD_MODAL } from "modals";
 import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
+import { compose } from "recompose";
 
-const DeletePaymentMethodModal: FunctionComponent<any> = ({ show, handleHide, actions, paymentMethod }) => (
+const DeleteStripePaymentMethodModal: FunctionComponent<any> = ({ show, handleHide, actions, paymentMethod }) => (
   <Modal isOpen={show} toggle={handleHide}>
     <ModalHeader toggle={handleHide}>DELETE PAYMENT METHOD</ModalHeader>
     <ModalBody>
@@ -15,4 +16,9 @@ const DeletePaymentMethodModal: FunctionComponent<any> = ({ show, handleHide, ac
   </Modal>
 );
 
-export default connectModal({ name: DELETE_PAYMENTMETHOD_MODAL })(connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)(DeletePaymentMethodModal));
+const enhance = compose<any, any>(
+  connectModal({ name: DELETE_PAYMENTMETHOD_MODAL }),
+  connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)
+);
+
+export default enhance(DeleteStripePaymentMethodModal);

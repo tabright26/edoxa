@@ -3,6 +3,7 @@ import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { DEPOSIT_MODAL } from "modals";
 import AccountForm from "forms/User/Account/Deposit";
+import { compose } from "recompose";
 
 const DepositModal: FunctionComponent<any> = ({ show, handleHide, actions, amounts }) => {
   const initialValues: any = { amounts };
@@ -16,4 +17,6 @@ const DepositModal: FunctionComponent<any> = ({ show, handleHide, actions, amoun
   );
 };
 
-export default connectModal({ name: DEPOSIT_MODAL })(DepositModal);
+const enhance = compose<any, any>(connectModal({ name: DEPOSIT_MODAL }));
+
+export default enhance(DepositModal);

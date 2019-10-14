@@ -3,6 +3,7 @@ import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { WITHDRAWAL_MODAL } from "modals";
 import AccountForm from "forms/User/Account/Withdrawal";
+import { compose } from "recompose";
 
 const WithdrawalModal: FunctionComponent<any> = ({ show, handleHide, actions, amounts }) => (
   <Modal isOpen={show} toggle={handleHide}>
@@ -13,4 +14,6 @@ const WithdrawalModal: FunctionComponent<any> = ({ show, handleHide, actions, am
   </Modal>
 );
 
-export default connectModal({ name: WITHDRAWAL_MODAL })(WithdrawalModal);
+const enhance = compose<any, any>(connectModal({ name: WITHDRAWAL_MODAL }));
+
+export default enhance(WithdrawalModal);

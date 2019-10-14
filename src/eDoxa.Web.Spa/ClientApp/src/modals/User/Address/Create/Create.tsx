@@ -3,7 +3,8 @@ import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { CREATE_ADDRESS_MODAL } from "modals";
 import AddressForm from "forms/User/Address";
-
+import { compose } from "recompose";
+import { connectUserAddressBook } from "store/root/user/addressBook/container";
 import { connectUser } from "store/root/user/container";
 
 const CreateAddressModal = ({ show, handleHide, className, actions, user }) => (
@@ -20,4 +21,10 @@ const CreateAddressModal = ({ show, handleHide, className, actions, user }) => (
   </Modal>
 );
 
-export default connectModal({ name: CREATE_ADDRESS_MODAL })(connectUser(CreateAddressModal));
+const enhance = compose<any, any>(
+  connectModal({ name: CREATE_ADDRESS_MODAL }),
+  connectUser,
+  connectUserAddressBook
+);
+
+export default enhance(CreateAddressModal);

@@ -2,13 +2,14 @@ import React from "react";
 import Create from "./Create";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
+import { CREATE_ADDRESS_MODAL } from "modals";
 
 it("renders correctly", () => {
   const store: any = {
     getState: () => {
       return {
         modal: {
-          name: ""
+          name: CREATE_ADDRESS_MODAL
         }
       };
     },

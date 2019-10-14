@@ -6,7 +6,7 @@ import Loading from "components/Shared/Override/Loading";
 import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
 
-import StripePaymentMethodModal from "modals/Payment/PaymentMethod";
+import StripePaymentMethodModal from "modals/Payment/Stripe/PaymentMethod";
 import { Elements } from "react-stripe-elements";
 
 const Cards = React.lazy(() => import("./Cards"));

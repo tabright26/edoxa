@@ -1,3 +1,3 @@
-import Details from "./Details";
+import MatchScoreModal from "./Score";
 
-export default { Details };
+export default MatchScoreModal;

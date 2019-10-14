@@ -1,15 +1,15 @@
 import React from "react";
-import Deposit from "./Deposit";
+import Update from "./Update";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { DEPOSIT_MODAL } from "modals";
+import { UPDATE_PAYMENTMETHOD_MODAL } from "modals";
 
 it("renders correctly", () => {
   const store: any = {
     getState: () => {
       return {
         modal: {
-          name: DEPOSIT_MODAL
+          name: UPDATE_PAYMENTMETHOD_MODAL
         }
       };
     },
@@ -19,7 +19,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Deposit />
+        <Update />
       </Provider>
     )
     .toJSON();
