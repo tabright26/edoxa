@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
 import { Alert } from "reactstrap";
 import { connectUser } from "store/root/user/container";
 import queryString from "query-string";
+import { compose } from "recompose";
 
-const EmailConfirm = ({ location, actions }) => {
+const EmailConfirm: FunctionComponent<any> = ({ location, actions }) => {
   const [notFound, setNotFound] = useState(false);
   useEffect(() => {
     const { userId, code } = queryString.parse(location.search);
@@ -26,4 +27,6 @@ const EmailConfirm = ({ location, actions }) => {
   );
 };
 
-export default connectUser(EmailConfirm);
+const enhance = compose<any, any>(connectUser);
+
+export default enhance(EmailConfirm);

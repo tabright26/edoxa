@@ -1,3 +1,3 @@
-import PageFAQ from "./FAQ";
+import FAQ from "./FAQ";
 
-export default PageFAQ;
+export default FAQ;

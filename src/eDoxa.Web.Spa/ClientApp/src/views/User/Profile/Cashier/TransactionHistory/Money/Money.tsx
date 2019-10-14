@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { Card, CardHeader } from "reactstrap";
 import { connectUserAccountTransactions } from "store/root/user/account/transactions/container";
 import MoneyIcon from "icons/Money";
 import TransactionList from "components/User/Account/Transaction/List";
 import Paginate from "components/Shared/Override/Paginate";
+import { compose } from "recompose";
 
 // TODO: Paging logic must be done server side.
-const MoneyTransactionHistory = ({ actions, transactions }) => {
+const MoneyTransactionHistory: FunctionComponent<any> = ({ actions, transactions }) => {
   const pageSize = 4;
   const [data, setDate] = useState([]);
   useEffect(() => {
@@ -33,4 +34,6 @@ const MoneyTransactionHistory = ({ actions, transactions }) => {
   );
 };
 
-export default connectUserAccountTransactions("money")(MoneyTransactionHistory);
+const enhance = compose<any, any>(connectUserAccountTransactions("money"));
+
+export default enhance(MoneyTransactionHistory);

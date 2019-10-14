@@ -6,8 +6,11 @@ import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/c
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
 import CardBrandIcon from "components/Payment/Card/BrandIcon";
 import CardExpiration from "components/Payment/Card/Expiration";
+import { compose } from "recompose";
+import { Button } from "reactstrap";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-const StripeCard: FunctionComponent<any> = ({ index, actions, paymentMethod, length }) => {
+const StripeCardItem: FunctionComponent<any> = ({ index, actions, paymentMethod, length }) => {
   return (
     <>
       <dl className={`row ${length === index ? "mb-0" : null}`}>
@@ -41,13 +44,18 @@ const StripeCards: FunctionComponent<any> = ({ className, actions, paymentMethod
   <Card className={className}>
     <CardHeader>
       <strong>CARDS</strong>
+      <Button className="float-right" size="sm" color="link" onClick={() => actions.showCreatePaymentMethodModal()}>
+        <FontAwesomeIcon icon={faPlus} /> ADD A NEW CARD
+      </Button>
     </CardHeader>
     <CardBody>
       {data.map((paymentMethod, index) => (
-        <StripeCard key={index} index={index + 1} paymentMethod={paymentMethod} length={data.length} actions={actions} />
+        <StripeCardItem key={index} index={index + 1} paymentMethod={paymentMethod} length={data.length} actions={actions} />
       ))}
     </CardBody>
   </Card>
 );
 
-export default connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)(StripeCards);
+const enhance = compose<any, any>(connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE));
+
+export default enhance(StripeCards);

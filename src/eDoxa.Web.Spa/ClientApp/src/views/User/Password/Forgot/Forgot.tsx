@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
 import { connectUser } from "store/root/user/container";
 import PasswordForm from "forms/User/Password";
+import { compose } from "recompose";
 
 const ForgotPassword: FunctionComponent<any> = ({ actions }) => (
   <Card className="mx-4">
@@ -13,4 +14,6 @@ const ForgotPassword: FunctionComponent<any> = ({ actions }) => (
   </Card>
 );
 
-export default connectUser(ForgotPassword);
+const enhance = compose<any, any>(connectUser);
+
+export default enhance(ForgotPassword);

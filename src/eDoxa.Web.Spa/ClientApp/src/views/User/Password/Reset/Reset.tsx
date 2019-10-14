@@ -4,6 +4,7 @@ import { Card, CardBody } from "reactstrap";
 import queryString from "query-string";
 import { connectUser } from "store/root/user/container";
 import PasswordForm from "forms/User/Password";
+import { compose } from "recompose";
 
 const ResetPassword: FunctionComponent<any> = ({ location, actions }) => {
   const code = queryString.parse(location.search).code;
@@ -21,4 +22,6 @@ const ResetPassword: FunctionComponent<any> = ({ location, actions }) => {
   );
 };
 
-export default connectUser(ResetPassword);
+const enhance = compose<any, any>(connectUser);
+
+export default enhance(ResetPassword);

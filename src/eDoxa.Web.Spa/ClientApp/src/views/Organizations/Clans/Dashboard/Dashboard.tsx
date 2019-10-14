@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import { toastr } from "react-redux-toastr";
 
@@ -16,9 +16,11 @@ import Members from "components/Organizations/ClanMembers/Members";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 
+import { compose } from "recompose";
+
 //USE LAZY LOADING
 
-const ClanDashboardIndex = ({
+const ClanDashboardIndex: FunctionComponent<any> = ({
   actions,
   clans,
   userId,
@@ -97,4 +99,6 @@ const ClanDashboardIndex = ({
   );
 };
 
-export default connectClans(ClanDashboardIndex);
+const enhance = compose<any, any>(connectClans);
+
+export default enhance(ClanDashboardIndex);

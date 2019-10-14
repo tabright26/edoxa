@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, FunctionComponent } from "react";
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { connectUserPersonalInfo } from "store/root/user/personalInfo/container";
 import UserInformationForm from "forms/User/Information";
+import { compose } from "recompose";
 
-const PersonalInfo = ({ className, personalInfo, actions }) => {
+const PersonalInformations: FunctionComponent<any> = ({ className, personalInfo, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
   return (
     <Card className={className}>
@@ -46,4 +47,6 @@ const PersonalInfo = ({ className, personalInfo, actions }) => {
   );
 };
 
-export default connectUserPersonalInfo(PersonalInfo);
+const enhance = compose<any, any>(connectUserPersonalInfo);
+
+export default enhance(PersonalInformations);

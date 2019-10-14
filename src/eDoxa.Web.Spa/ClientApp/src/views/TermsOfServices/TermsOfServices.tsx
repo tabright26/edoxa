@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
 import faker from "faker";
 import { Translate, withLocalize } from "react-localize-redux";
+import { compose } from "recompose";
 import locale from "./locale.json";
 
 import "./TermsOfServices.scss";
 
 // https://ryandrewjohnson.github.io/react-localize-redux-docs/
-const PageTermsOfServices = ({ addTranslationForLanguage }) => {
+const TermsOfServices: FunctionComponent<any> = ({ addTranslationForLanguage }) => {
   useEffect(() => {
     addTranslationForLanguage(locale, "en");
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -50,4 +51,6 @@ const PageTermsOfServices = ({ addTranslationForLanguage }) => {
   );
 };
 
-export default withLocalize(PageTermsOfServices);
+const enhance = compose<any, any>(withLocalize);
+
+export default enhance(TermsOfServices);

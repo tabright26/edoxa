@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, Button } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
@@ -12,7 +12,9 @@ import ClanModal from "modals/Organization/Clan";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 
-const ClansIndex = ({ actions, clans, userId, userClan }) => {
+import { compose } from "recompose";
+
+const ClansIndex: FunctionComponent<any> = ({ actions, clans, userId, userClan }) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
@@ -119,4 +121,6 @@ const ClansIndex = ({ actions, clans, userId, userClan }) => {
   );
 };
 
-export default connectClans(ClansIndex);
+const enhance = compose<any, any>(connectClans);
+
+export default enhance(ClansIndex);

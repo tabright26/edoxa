@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense } from "react";
 import Loading from "components/Shared/Override/Loading";
 
-const PersonalInfo = React.lazy(() => import("./PersonalInfo"));
+const PersonalInfo = React.lazy(() => import("./PersonalInformations"));
 const Email = React.lazy(() => import("./Email"));
 const AddressBook = React.lazy(() => import("./AddressBook"));
 

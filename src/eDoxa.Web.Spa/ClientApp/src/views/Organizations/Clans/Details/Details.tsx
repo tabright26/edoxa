@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 
 import { connectClans } from "store/root/organizations/clans/container";
@@ -8,7 +8,9 @@ import ClanInfo from "components/Organizations/Clans/ClanInfo";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 
-const ClanDetailsIndex = ({
+import { compose } from "recompose";
+
+const ClanDetailsIndex: FunctionComponent<any> = ({
   actions,
   clans,
   userId,
@@ -44,4 +46,6 @@ const ClanDetailsIndex = ({
   );
 };
 
-export default connectClans(ClanDetailsIndex);
+const enhance = compose<any, any>(connectClans);
+
+export default enhance(ClanDetailsIndex);

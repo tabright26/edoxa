@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody } from "reactstrap";
 import faker from "faker";
 
-const PageFAQ = () => (
+const FAQ = () => (
   <Card className="mt-4">
     <CardBody className="text-justify p-5">
       <h1>F. A. Q.</h1>
@@ -30,4 +30,4 @@ const PageFAQ = () => (
   </Card>
 );
 
-export default PageFAQ;
+export default FAQ;

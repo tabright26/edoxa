@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Override/Badge";
 import { connectUserPhoneNumber } from "store/root/user/phoneNumber/container";
 import UserPhoneForm from "forms/User/Phone";
+import { compose } from "recompose";
 
-const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified, actions }) => {
+const PhoneNumber: FunctionComponent<any> = ({ className, phoneNumber, phoneNumberVerified, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
   return (
     <Card className={className}>
@@ -37,4 +38,6 @@ const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified, actions }) =
   );
 };
 
-export default connectUserPhoneNumber(PhoneNumber);
+const enhance = compose<any, any>(connectUserPhoneNumber);
+
+export default enhance(PhoneNumber);
