@@ -4,7 +4,8 @@ import { Field, reduxForm } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
 import { DELETE_ADDRESS_FORM } from "forms";
-import validate from "./validate";
+import { validate } from "./validate";
+import { compose } from "recompose";
 
 const UpdateAddressForm: FunctionComponent<any> = ({ initialValues: { country }, handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
@@ -27,4 +28,6 @@ const UpdateAddressForm: FunctionComponent<any> = ({ initialValues: { country },
   </Form>
 );
 
-export default reduxForm<any, { handleCancel: () => any }, string>({ form: DELETE_ADDRESS_FORM, validate })(UpdateAddressForm);
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: DELETE_ADDRESS_FORM, validate }));
+
+export default enhance(UpdateAddressForm);

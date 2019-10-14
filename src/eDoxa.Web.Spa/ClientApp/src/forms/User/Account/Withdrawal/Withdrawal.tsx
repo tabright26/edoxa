@@ -3,16 +3,11 @@ import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import { WITHDRAWAL_FORM } from "forms";
-import validate from "./validate";
-import Amounts from "../Amounts";
+import { validate } from "./validate";
+import Amounts from "../../../../components/Payment/Amounts";
+import { compose } from "recompose";
 
-interface WithdrawalProps {
-  initialValues: any;
-  handleSubmit: any;
-  handleCancel: any;
-}
-
-const WithdrawalForm: FunctionComponent<WithdrawalProps> = ({ initialValues: { amounts }, handleSubmit, handleCancel }) => (
+const WithdrawalForm: FunctionComponent<any> = ({ initialValues: { amounts }, handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
     <Amounts amounts={amounts} />
     <FormGroup className="mb-0">
@@ -22,4 +17,6 @@ const WithdrawalForm: FunctionComponent<WithdrawalProps> = ({ initialValues: { a
   </Form>
 );
 
-export default reduxForm<any, { handleCancel: () => any }, string>({ form: WITHDRAWAL_FORM, validate })(WithdrawalForm);
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: WITHDRAWAL_FORM, validate }));
+
+export default enhance(WithdrawalForm);

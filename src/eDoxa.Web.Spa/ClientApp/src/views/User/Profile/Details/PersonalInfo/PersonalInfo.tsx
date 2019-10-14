@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { connectUserPersonalInfo } from "store/root/user/personalInfo/container";
-import PersonalInfoForm from "forms/User/PersonalInfo";
+import UserInformationForm from "forms/User/Information";
 
 const PersonalInfo = ({ className, personalInfo, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
@@ -22,7 +22,7 @@ const PersonalInfo = ({ className, personalInfo, actions }) => {
       </CardHeader>
       <CardBody>
         {!personalInfo ? (
-          <PersonalInfoForm.Create onSubmit={fields => actions.createPersonalInfo(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+          <UserInformationForm.Create onSubmit={fields => actions.createPersonalInfo(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
         ) : isFormHidden ? (
           <dl className="row mb-0">
             <dd className="col-sm-3 text-muted">Name</dd>
@@ -39,7 +39,7 @@ const PersonalInfo = ({ className, personalInfo, actions }) => {
             <dd className="col-sm-9 mb-0">{personalInfo.gender}</dd>
           </dl>
         ) : (
-          <PersonalInfoForm.Update initialValues={personalInfo} onSubmit={fields => actions.updatePersonalInfo(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+          <UserInformationForm.Update initialValues={personalInfo} onSubmit={fields => actions.updatePersonalInfo(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
         )}
       </CardBody>
     </Card>

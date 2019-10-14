@@ -1,4 +1,4 @@
-import validate from "./validate";
+import { validate } from "./validate";
 
 var mockValidAddress = {
   line1: "4140 av.Kindersley",

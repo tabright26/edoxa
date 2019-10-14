@@ -1,4 +1,4 @@
-const validate = values => {
+export const validate = values => {
   const emailRegExp = new RegExp("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$");
   const passwordRegExp = new RegExp("^((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W]).{8,})$");
   const errors: any = {};
@@ -14,5 +14,3 @@ const validate = values => {
   }
   return errors;
 };
-
-export default validate;

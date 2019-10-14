@@ -4,6 +4,9 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 
 it("renders correctly", () => {
+  const initialValues: any = {
+    amounts: []
+  };
   const store: any = {
     getState: () => {},
     dispatch: action => {},
@@ -12,7 +15,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Deposit initialValues={{ amounts: [] }} />
+        <Deposit initialValues={initialValues} />
       </Provider>
     )
     .toJSON();

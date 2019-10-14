@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Override/Badge";
 import { connectUserPhoneNumber } from "store/root/user/phoneNumber/container";
-import PhoneNumberForm from "forms/User/PhoneNumber";
+import UserPhoneForm from "forms/User/Phone";
 
 const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified, actions }) => {
   const [isFormHidden, setFormHidden] = useState(true);
@@ -26,7 +26,7 @@ const PhoneNumber = ({ className, phoneNumber, phoneNumberVerified, actions }) =
           <dd className="col-sm-3 text-muted mb-0">Phone number</dd>
           <dd className="col-sm-5 mb-0">
             {!isFormHidden || !phoneNumber ? (
-              <PhoneNumberForm.Update initialValues={{ phoneNumber }} onSubmit={fields => actions.changePhoneNumber(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+              <UserPhoneForm.Update initialValues={{ phoneNumber }} onSubmit={fields => actions.changePhoneNumber(fields).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
             ) : (
               <span>{phoneNumber}</span>
             )}

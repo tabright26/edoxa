@@ -1,12 +1,13 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { FormGroup, Form, InputGroup, InputGroupAddon, InputGroupText } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
 import { RESET_PASSWORD_FORM } from "forms";
-import validate from "./validate";
+import { validate } from "./validate";
+import { compose } from "recompose";
 
-const ResetPasswordForm = ({ handleSubmit }) => (
+const ResetPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
     <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
@@ -36,4 +37,6 @@ const ResetPasswordForm = ({ handleSubmit }) => (
   </Form>
 );
 
-export default reduxForm({ form: RESET_PASSWORD_FORM, validate })(ResetPasswordForm);
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: RESET_PASSWORD_FORM, validate }));
+
+export default enhance(ResetPasswordForm);

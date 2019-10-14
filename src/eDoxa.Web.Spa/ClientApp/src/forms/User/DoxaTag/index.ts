@@ -1,3 +1,3 @@
-import Change from "./Change";
+import Update from "./Update";
 
-export default { Change };
+export default { Update };

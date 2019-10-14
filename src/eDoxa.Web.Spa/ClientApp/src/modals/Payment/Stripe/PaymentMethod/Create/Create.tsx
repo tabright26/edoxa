@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { injectStripe } from "react-stripe-elements";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
-import StripePaymentMethodForm from "forms/Payment/PaymentMethod";
+import StripePaymentMethodForm from "forms/Payment/Stripe/PaymentMethod";
 import { CREATE_PAYMENTMETHOD_MODAL } from "modals";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
 import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";

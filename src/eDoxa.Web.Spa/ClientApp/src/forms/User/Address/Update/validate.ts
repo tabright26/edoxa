@@ -1,4 +1,4 @@
-const validate = values => {
+export const validate = values => {
   const line1RegExp = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
   const line2RegExp = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
   const cityRegExp = new RegExp("^[a-zA-Z- ]{1,}$");
@@ -26,5 +26,3 @@ const validate = values => {
   }
   return errors;
 };
-
-export default validate;

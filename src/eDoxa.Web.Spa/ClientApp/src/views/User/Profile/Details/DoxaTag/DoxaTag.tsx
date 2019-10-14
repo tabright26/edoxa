@@ -29,7 +29,7 @@ const DoxaTag: FunctionComponent<any> = ({ className, doxaTag, actions }) => {
                 {doxaTag.name}#{doxaTag.code}
               </span>
             ) : (
-              <DoxaTagForm.Change initialValues={doxaTag} onSubmit={data => actions.changeDoxaTag(data).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
+              <DoxaTagForm.Update initialValues={doxaTag} onSubmit={data => actions.changeDoxaTag(data).then(() => setFormHidden(true))} handleCancel={() => setFormHidden(true)} />
             )}
           </dd>
         </dl>

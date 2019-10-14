@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { connectModal } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { CREATE_CLAN_MODAL } from "modals";
-import ClanForm from "forms/Organizations/Clans";
+import ClanForm from "forms/Organization/Clan";
 import { compose } from "recompose";
 
 const CreateClanModal: FunctionComponent<any> = ({ show, handleHide, className, actions }) => (

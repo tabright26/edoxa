@@ -6,7 +6,7 @@ import { Alert } from "reactstrap";
 import { connectUser } from "store/root/user/container";
 import { connectStripeBankAccount } from "store/root/payment/bankAccount/container";
 import { injectStripe } from "react-stripe-elements";
-import BankAccountForm from "forms/Payment/BankAccount";
+import BankAccountForm from "forms/Payment/Stripe/BankAccount";
 
 let UpdateStripeBankAccountForm: any = ({ actions, stripe, user, setFormHidden }) => (
   <BankAccountForm.Update onSubmit={fields => actions.updateBankAccount(fields, user.profile.country, stripe).then(() => {})} handleCancel={() => setFormHidden(true)} />

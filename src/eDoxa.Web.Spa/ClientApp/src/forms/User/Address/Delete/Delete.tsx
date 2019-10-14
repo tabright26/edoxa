@@ -3,6 +3,7 @@ import { Label, FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import { DELETE_ADDRESS_FORM } from "forms";
+import { compose } from "recompose";
 
 const DeleteAddressForm: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit} className="mt-3">
@@ -14,4 +15,6 @@ const DeleteAddressForm: FunctionComponent<any> = ({ handleSubmit, handleCancel 
   </Form>
 );
 
-export default reduxForm<any, { handleCancel: () => any }, string>({ form: DELETE_ADDRESS_FORM })(DeleteAddressForm);
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: DELETE_ADDRESS_FORM }));
+
+export default enhance(DeleteAddressForm);
