@@ -3,14 +3,14 @@ import Create from "./Create";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { CREATE_PAYMENTMETHOD_MODAL } from "modals";
+import { CREATE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
 
 it("renders correctly", () => {
   const store: any = {
     getState: () => {
       return {
         modal: {
-          name: CREATE_PAYMENTMETHOD_MODAL
+          name: CREATE_STRIPE_PAYMENTMETHOD_MODAL
         }
       };
     },

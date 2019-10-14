@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { reduxForm, Field } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { CHANGE_DOXATAG_FORM } from "forms";
+import { UPDATE_DOXATAG_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
@@ -17,6 +17,6 @@ const UpdateDoxaTagForm: FunctionComponent<any> = ({ handleSubmit, handleCancel 
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: CHANGE_DOXATAG_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: UPDATE_DOXATAG_FORM, validate }));
 
 export default enhance(UpdateDoxaTagForm);

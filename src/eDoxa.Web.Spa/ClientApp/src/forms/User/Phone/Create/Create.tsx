@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { CREATE_PHONENUMBER_FORM } from "forms";
+import { CREATE_PHONE_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
 
@@ -17,6 +17,6 @@ const CreatePhoneForm: FunctionComponent<any> = ({ handleSubmit, handleCancel })
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_PHONENUMBER_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_PHONE_FORM, validate }));
 
 export default enhance(CreatePhoneForm);

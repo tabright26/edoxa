@@ -4,7 +4,7 @@ import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { UPDATE_PERSONALINFO_FORM } from "forms";
+import { UPDATE_INFORMATION_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
@@ -79,6 +79,6 @@ const UpdateInformationForm: FunctionComponent<any> = ({ handleSubmit, handleCan
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_PERSONALINFO_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_INFORMATION_FORM, validate }));
 
 export default enhance(UpdateInformationForm);

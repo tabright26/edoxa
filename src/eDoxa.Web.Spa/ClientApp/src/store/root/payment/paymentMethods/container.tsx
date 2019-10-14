@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
-import { CREATE_PAYMENTMETHOD_MODAL, UPDATE_PAYMENTMETHOD_MODAL, DELETE_PAYMENTMETHOD_MODAL } from "modals";
+import { CREATE_STRIPE_PAYMENTMETHOD_MODAL, UPDATE_STRIPE_PAYMENTMETHOD_MODAL, DELETE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
 import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPaymentMethod } from "store/root/payment/paymentMethods/actions";
 import { RootState } from "store/root/types";
 import { PaymentMethodType, CARD_PAYMENTMETHOD_TYPE } from "./types";
@@ -39,9 +39,9 @@ export const connectStripePaymentMethods: any = (paymentMethodType: PaymentMetho
           }),
         updatePaymentMethod: (paymentMethodId: string, data: any) =>
           dispatch(updatePaymentMethod(paymentMethodId, data.card.exp_month, data.card.exp_year)).then(() => dispatch(loadPaymentMethods(paymentMethodType))),
-        showCreatePaymentMethodModal: () => dispatch(show(CREATE_PAYMENTMETHOD_MODAL)),
-        showUpdatePaymentMethodModal: (paymentMethod: any) => dispatch(show(UPDATE_PAYMENTMETHOD_MODAL, { paymentMethod })),
-        showDeletePaymentMethodModal: (paymentMethod: any) => dispatch(show(DELETE_PAYMENTMETHOD_MODAL, { paymentMethod }))
+        showCreatePaymentMethodModal: () => dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL)),
+        showUpdatePaymentMethodModal: (paymentMethod: any) => dispatch(show(UPDATE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod })),
+        showDeletePaymentMethodModal: (paymentMethod: any) => dispatch(show(DELETE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod }))
       }
     };
   };

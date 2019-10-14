@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Label, FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
-import { DELETE_PAYMENTMETHOD_FORM } from "forms";
+import { DELETE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { compose } from "recompose";
 
 const DeleteStripePaymentMethodForm: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => (
@@ -15,6 +15,6 @@ const DeleteStripePaymentMethodForm: FunctionComponent<any> = ({ handleSubmit, h
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: DELETE_PAYMENTMETHOD_FORM }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: DELETE_STRIPE_PAYMENTMETHOD_FORM }));
 
 export default enhance(DeleteStripePaymentMethodForm);

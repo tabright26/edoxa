@@ -3,7 +3,7 @@ import { FormGroup, Form, Label } from "reactstrap";
 import { Field, reduxForm, FormSection } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { UPDATE_PAYMENTMETHOD_FORM } from "forms";
+import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { validate } from "./validate";
 import { months } from "utils/helper";
 import CardExpirationMonthOption from "components/Payment/Card/Expiration/Month/Option";
@@ -51,6 +51,6 @@ const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_PAYMENTMETHOD_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_STRIPE_PAYMENTMETHOD_FORM, validate }));
 
 export default enhance(UpdateStripePaymentMethodForm);

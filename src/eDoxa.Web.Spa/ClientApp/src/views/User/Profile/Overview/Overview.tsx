@@ -1,7 +1,15 @@
-import React from "react";
+import React, { Fragment, Suspense } from "react";
+import Loading from "components/Shared/Override/Loading";
 
-const ProfileDetails = () => {
-  return <></>;
-};
+const DoxaTag = React.lazy(() => import("./DoxaTag"));
 
-export default ProfileDetails;
+const ProfileOverview = () => (
+  <Fragment>
+    <h5>PROFILE OVERVIEW</h5>
+    <Suspense fallback={<Loading />}>
+      <DoxaTag className="card-accent-primary my-4" />
+    </Suspense>
+  </Fragment>
+);
+
+export default ProfileOverview;

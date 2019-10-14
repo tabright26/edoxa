@@ -3,7 +3,7 @@ import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
-import { UPDATE_BANK_ACCOUNT_FORM } from "forms";
+import { UPDATE_STRIPE_BANKACCOUNT_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
@@ -20,6 +20,6 @@ const UpdateStripeBankAccountForm: FunctionComponent<any> = ({ handleSubmit, han
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_BANK_ACCOUNT_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_STRIPE_BANKACCOUNT_FORM, validate }));
 
 export default enhance(UpdateStripeBankAccountForm);

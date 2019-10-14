@@ -3,7 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { CHANGE_EMAIL_FORM } from "forms";
+import { UPDATE_EMAIL_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
 
@@ -17,6 +17,6 @@ const UpdateEmailForm: FunctionComponent<any> = ({ handleSubmit, handleCancel })
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CHANGE_EMAIL_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_EMAIL_FORM, validate }));
 
 export default enhance(UpdateEmailForm);

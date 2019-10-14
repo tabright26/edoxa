@@ -3,7 +3,7 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, FormSection, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { CREATE_PERSONALINFO_FORM } from "forms";
+import { CREATE_INFORMATION_FORM } from "forms";
 import { months, days, years } from "utils/helper";
 import { compose } from "recompose";
 import { validate } from "./validate";
@@ -73,6 +73,6 @@ const CreateInformationForm: FunctionComponent<any> = ({ handleSubmit }) => (
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_PERSONALINFO_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_INFORMATION_FORM, validate }));
 
 export default enhance(CreateInformationForm);

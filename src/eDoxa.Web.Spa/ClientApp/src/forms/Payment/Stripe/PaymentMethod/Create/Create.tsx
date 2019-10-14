@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import { CardNumberElement, CardExpiryElement, CardCvcElement } from "react-stripe-elements";
 import Button from "components/Shared/Override/Button";
-import { CREATE_PAYMENTMETHOD_FORM } from "forms";
+import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
@@ -30,6 +30,6 @@ const CreateStripePaymentMethodFrom: FunctionComponent<any> = ({ handleSubmit, h
   );
 };
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_PAYMENTMETHOD_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_STRIPE_PAYMENTMETHOD_FORM, validate }));
 
 export default enhance(CreateStripePaymentMethodFrom);

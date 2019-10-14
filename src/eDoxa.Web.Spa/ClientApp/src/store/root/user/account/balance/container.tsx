@@ -2,39 +2,47 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountBalance } from "store/root/user/account/balance/actions";
 import { RootState } from "store/root/types";
+import { Currency, BalanceProp as BalanceSelector } from "store/root/user/account/types";
 
-export const connectUserAccountBalance = currency => (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, currency, available, pending, ...attributes }) => {
+interface UserAccountBalanceProps {
+  currency: Currency;
+  selector: BalanceSelector;
+}
+
+export const connectUserAccountBalance = (ConnectedComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, available, pending, currency, selector, ...attributes }) => {
     useEffect((): void => {
       actions.loadUserAccountBalance();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} currency={currency} available={available} pending={pending} {...attributes} />;
+    return <ConnectedComponent actions={actions} available={available} pending={pending} currency={currency} selector={selector} {...attributes} />;
   };
 
-  const mapStateToProps = (state: RootState) => {
-    switch (currency) {
+  const mapStateToProps = (state: RootState, ownProps: UserAccountBalanceProps) => {
+    switch (ownProps.currency) {
       case "money":
         return {
           available: state.user.account.balance.money.available,
           pending: state.user.account.balance.money.pending,
-          currency
+          currency: ownProps.currency,
+          selector: ownProps.selector
         };
       case "token":
         return {
           available: state.user.account.balance.token.available,
           pending: state.user.account.balance.token.pending,
-          currency
+          currency: ownProps.currency,
+          selector: ownProps.selector
         };
       default:
         throw new Error("Invalid balance currency.");
     }
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
+  const mapDispatchToProps = (dispatch: any, ownProps: UserAccountBalanceProps) => {
     return {
       actions: {
-        loadUserAccountBalance: () => dispatch(loadUserAccountBalance(currency))
+        loadUserAccountBalance: () => dispatch(loadUserAccountBalance(ownProps.currency))
       }
     };
   };

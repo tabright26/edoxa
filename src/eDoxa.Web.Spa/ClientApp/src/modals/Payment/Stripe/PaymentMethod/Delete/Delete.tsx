@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
 import StripePaymentMethodForm from "forms/Payment/Stripe/PaymentMethod";
-import { DELETE_PAYMENTMETHOD_MODAL } from "modals";
+import { DELETE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
 import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
 import { compose } from "recompose";
@@ -17,7 +17,7 @@ const DeleteStripePaymentMethodModal: FunctionComponent<any> = ({ show, handleHi
 );
 
 const enhance = compose<any, any>(
-  connectModal({ name: DELETE_PAYMENTMETHOD_MODAL }),
+  connectModal({ name: DELETE_STRIPE_PAYMENTMETHOD_MODAL }),
   connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)
 );
 

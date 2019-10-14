@@ -1,6 +1,6 @@
 import React from "react";
-import BreadcrumbMoney from "./Money";
-import BreadcrumbToken from "./Token";
+import MoneyBreadcrumb from "./Money";
+import TokenBreadcrumb from "./Token";
 import { connectUser } from "store/root/user/container";
 
 const Breadcrumb: any = ({ isAuthenticated }) => {
@@ -8,15 +8,15 @@ const Breadcrumb: any = ({ isAuthenticated }) => {
     return (
       <nav className="breadcrumb d-flex">
         <div className="ml-auto">
-          <BreadcrumbMoney />
+          <MoneyBreadcrumb />
         </div>
         <div className="ml-3">
-          <BreadcrumbToken />
+          <TokenBreadcrumb />
         </div>
       </nav>
     );
   }
-  return <></>;
+  return null;
 };
 
 export default connectUser(Breadcrumb);
