@@ -2,7 +2,7 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import { toastr } from "react-redux-toastr";
 
-import { connectClans } from "store/root/organizations/clans/container";
+import { withClans } from "store/root/organizations/clans/container";
 
 // import ClanLogo from "components/Organizations/Clans/ClanLogo";
 import ClanInfo from "components/Organizations/Clans/ClanInfo";
@@ -99,6 +99,6 @@ const ClanDashboardIndex: FunctionComponent<any> = ({
   );
 };
 
-const enhance = compose<any, any>(connectClans);
+const enhance = compose<any, any>(withClans);
 
 export default enhance(ClanDashboardIndex);

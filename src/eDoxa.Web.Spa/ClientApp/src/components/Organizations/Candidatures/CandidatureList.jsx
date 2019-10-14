@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 
-import { connectCandidatures } from "store/root/organizations/candidatures/container";
+import { withCandidatures } from "store/root/organizations/candidatures/container";
 
 import CandidatureItem from "./CandidatureItem";
 
@@ -21,4 +21,4 @@ const CandidatureList = ({ actions, candidatures, type, isOwner = false }) => (
     </CardBody>
   </Card>
 );
-export default connectCandidatures(CandidatureList);
+export default withCandidatures(CandidatureList);

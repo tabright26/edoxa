@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadMembers, kickMember, leaveClan } from "store/root/organizations/members/actions";
 import { RootState } from "store/root/types";
 
-export const connectMembers = (ConnectedComponent: FunctionComponent<any>) => {
+export const withClanMembers = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, members, clanId, ...attributes }) => {
     useEffect(() => {
       actions.loadMembers(clanId);

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadUserAccountTransactions } from "store/root/user/account/transactions/actions";
 import { RootState } from "store/root/types";
 
-export const connectUserAccountTransactions = currency => (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountTransactions = currency => (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, transactions, ...attributes }) => {
     useEffect((): void => {
       actions.loadUserAccountTransactions();

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
-import { connectUser } from "store/root/user/container";
+import { withtUser } from "store/root/user/container";
 import PasswordForm from "forms/User/Password";
 import { compose } from "recompose";
 
@@ -14,6 +14,6 @@ const ForgotPassword: FunctionComponent<any> = ({ actions }) => (
   </Card>
 );
 
-const enhance = compose<any, any>(connectUser);
+const enhance = compose<any, any>(withtUser);
 
 export default enhance(ForgotPassword);

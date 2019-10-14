@@ -5,7 +5,7 @@ import { CREATE_ADDRESS_MODAL } from "modals";
 import { loadAddressBook, addAddress, updateAddress, removeAddress } from "store/root/user/addressBook/actions";
 import { RootState } from "store/root/types";
 
-export const connectUserAddressBook = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAddressBook = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, addressBook, ...attributes }) => {
     useEffect((): void => {
       actions.loadAddressBook();

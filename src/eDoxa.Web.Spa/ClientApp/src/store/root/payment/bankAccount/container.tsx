@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadBankAccount, changeBankAccount } from "store/root/payment/bankAccount/actions";
 import { RootState } from "store/root/types";
 
-export const connectStripeBankAccount: any = (ConnectedComponent: FunctionComponent<any>): any => {
+export const withStripeBankAccount: any = (ConnectedComponent: FunctionComponent<any>): any => {
   const Container: any = ({ actions, bankAccounts, hasBankAccount, ...attributes }) => {
     useEffect((): void => {
       actions.loadBankAccount();

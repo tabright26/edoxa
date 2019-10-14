@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
 import queryString from "query-string";
-import { connectUser } from "store/root/user/container";
+import { withtUser } from "store/root/user/container";
 import PasswordForm from "forms/User/Password";
 import { compose } from "recompose";
 
@@ -22,6 +22,6 @@ const ResetPassword: FunctionComponent<any> = ({ location, actions }) => {
   );
 };
 
-const enhance = compose<any, any>(connectUser);
+const enhance = compose<any, any>(withtUser);
 
 export default enhance(ResetPassword);

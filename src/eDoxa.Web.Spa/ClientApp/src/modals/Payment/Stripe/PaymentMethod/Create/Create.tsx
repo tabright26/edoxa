@@ -5,7 +5,7 @@ import { connectModal } from "redux-modal";
 import StripePaymentMethodForm from "forms/Payment/Stripe/PaymentMethod";
 import { CREATE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
-import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";
+import { withStripePaymentMethods } from "store/root/payment/paymentMethods/container";
 import { compose } from "recompose";
 
 const CreateStripePaymentMethodModal: FunctionComponent<any> = ({ show, handleHide, actions, stripe }) => (
@@ -20,7 +20,7 @@ const CreateStripePaymentMethodModal: FunctionComponent<any> = ({ show, handleHi
 const enhance = compose<any, any>(
   injectStripe,
   connectModal({ name: CREATE_STRIPE_PAYMENTMETHOD_MODAL }),
-  connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)
+  withStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)
 );
 
 export default enhance(CreateStripePaymentMethodModal);

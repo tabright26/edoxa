@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, Button } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-import { connectClans } from "store/root/organizations/clans/container";
+import { withClans } from "store/root/organizations/clans/container";
 
 import ClanCard from "components/Organizations/Clans/ClanCard";
 import CandidatureList from "components/Organizations/Candidatures/CandidatureList";
@@ -121,6 +121,6 @@ const ClansIndex: FunctionComponent<any> = ({ actions, clans, userId, userClan }
   );
 };
 
-const enhance = compose<any, any>(connectClans);
+const enhance = compose<any, any>(withClans);
 
 export default enhance(ClansIndex);

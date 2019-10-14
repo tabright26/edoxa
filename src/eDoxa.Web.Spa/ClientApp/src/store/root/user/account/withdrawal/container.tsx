@@ -6,7 +6,7 @@ import { RootState } from "store/root/types";
 import { Currency } from "../types";
 import { WITHDRAWAL_MODAL } from "modals";
 
-export const connectUserAccountWithdrawal = (currency: Currency) => (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountWithdrawal = (currency: Currency) => (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, amounts, ...attributes }) => {
     useEffect((): void => {
       actions.loadWithdrawalAmounts();

@@ -5,7 +5,7 @@ import { confirmEmail } from "store/root/user/email/actions";
 import { forgotPassword, resetPassword } from "store/root/user/password/actions";
 import { RootState } from "store/root/types";
 
-export const connectUser = (ConnectedComponent: FunctionComponent<any>) => {
+export const withtUser = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, user, isAuthenticated, ...attributes }) => (
     <ConnectedComponent actions={actions} user={user} isAuthenticated={isAuthenticated} {...attributes} />
   );

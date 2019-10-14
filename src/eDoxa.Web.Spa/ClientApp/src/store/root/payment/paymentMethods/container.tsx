@@ -6,7 +6,7 @@ import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPay
 import { RootState } from "store/root/types";
 import { PaymentMethodType, CARD_PAYMENTMETHOD_TYPE } from "./types";
 
-export const connectStripePaymentMethods: any = (paymentMethodType: PaymentMethodType = CARD_PAYMENTMETHOD_TYPE) => (ConnectedComponent: FunctionComponent<any>) => {
+export const withStripePaymentMethods: any = (paymentMethodType: PaymentMethodType = CARD_PAYMENTMETHOD_TYPE) => (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, paymentMethods, ...attributes }) => {
     useEffect(() => {
       actions.loadPaymentMethods();

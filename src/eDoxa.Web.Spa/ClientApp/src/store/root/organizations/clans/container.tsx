@@ -6,7 +6,7 @@ import { show } from "redux-modal";
 
 import { CREATE_CLAN_MODAL } from "modals";
 
-export const connectClans = (ConnectedComponent: FunctionComponent<any>) => {
+export const withClans = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, clans, userId, userClan, ...attributes }) => {
     useEffect(() => {
       actions.loadClans();

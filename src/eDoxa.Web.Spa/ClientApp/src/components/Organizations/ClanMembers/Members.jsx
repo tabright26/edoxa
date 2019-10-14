@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardBody, CardHeader, Row, Col, Button } from "reactstrap";
 import { toastr } from "react-redux-toastr";
 
-import { connectMembers } from "store/root/organizations/members/container";
+import { withClanMembers } from "store/root/organizations/members/container";
 
 import MemberItem from "./MemberItem";
 
@@ -38,4 +38,4 @@ const Members = ({ actions, members, userId, clanId, isOwner }) => {
   );
 };
 
-export default connectMembers(Members);
+export default withClanMembers(Members);

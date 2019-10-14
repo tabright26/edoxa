@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Card, CardHeader } from "reactstrap";
-import { connectUserAccountTransactions } from "store/root/user/account/transactions/container";
+import { withUserAccountTransactions } from "store/root/user/account/transactions/container";
 import MoneyIcon from "icons/Money";
 import TransactionList from "components/User/Account/Transaction/List";
 import Paginate from "components/Shared/Override/Paginate";
@@ -34,6 +34,6 @@ const MoneyTransactionHistory: FunctionComponent<any> = ({ actions, transactions
   );
 };
 
-const enhance = compose<any, any>(connectUserAccountTransactions("money"));
+const enhance = compose<any, any>(withUserAccountTransactions("money"));
 
 export default enhance(MoneyTransactionHistory);

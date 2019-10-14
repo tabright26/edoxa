@@ -4,7 +4,7 @@ import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import Address from "components/Shared/Localization/Address";
 import AddressForm from "forms/User/Address";
-import { connectUserAddressBook } from "store/root/user/addressBook/container";
+import { withUserAddressBook } from "store/root/user/addressBook/container";
 import UserAddressModal from "modals/User/Address";
 import { compose } from "recompose";
 
@@ -76,6 +76,6 @@ const AddressBook: FunctionComponent<any> = ({ className, addressBook, actions }
   </Card>
 );
 
-const enhance = compose<any, any>(connectUserAddressBook);
+const enhance = compose<any, any>(withUserAddressBook);
 
 export default enhance(AddressBook);

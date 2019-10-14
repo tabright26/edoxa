@@ -9,7 +9,7 @@ interface UserAccountBalanceProps {
   selector: BalanceSelector;
 }
 
-export const connectUserAccountBalance = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountBalance = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, available, pending, currency, selector, ...attributes }) => {
     useEffect((): void => {
       actions.loadUserAccountBalance();

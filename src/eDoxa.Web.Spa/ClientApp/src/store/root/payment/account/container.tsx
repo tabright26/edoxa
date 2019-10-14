@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RootState } from "store/root/types";
 import { loadAccount } from "./actions";
 
-export const connectStripeAccount = (ConnectedComponent: FunctionComponent<any>) => {
+export const withStripeAccount = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, account, ...attributes }) => {
     useEffect((): void => {
       actions.loadAccount();

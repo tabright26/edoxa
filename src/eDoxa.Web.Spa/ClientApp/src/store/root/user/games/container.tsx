@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadGames } from "store/root/user/games/actions";
 import { RootState } from "store/root/types";
 
-export const connectUserGames = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserGames = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, games, ...attributes }) => {
     useEffect((): void => {
       actions.loadGames();

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "store/root/user/personalInfo/actions";
 import { RootState } from "store/root/types";
 
-export const connectUserPersonalInfo = (ConnectedComponent: FunctionComponent<any>) => {
+export const withtUserInformations = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, personalInfo, ...attributes }) => {
     useEffect((): void => {
       actions.loadPersonalInfo();

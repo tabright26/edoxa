@@ -3,7 +3,7 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { connectModal } from "redux-modal";
 import StripePaymentMethodForm from "forms/Payment/Stripe/PaymentMethod";
 import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
-import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";
+import { withStripePaymentMethods } from "store/root/payment/paymentMethods/container";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
 import { compose } from "recompose";
 
@@ -18,7 +18,7 @@ const UpdateStripePaymentMethodModal: FunctionComponent<any> = ({ show, handleHi
 
 const enhance = compose<any, any>(
   connectModal({ name: UPDATE_STRIPE_PAYMENTMETHOD_MODAL }),
-  connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)
+  withStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE)
 );
 
 export default enhance(UpdateStripePaymentMethodModal);

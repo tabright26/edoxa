@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RootState } from "store/root/types";
 import { loadEmail } from "./actions";
 
-export const connectUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, email, emailVerified, ...attributes }) => {
     useEffect((): void => {
       actions.loadEmail();

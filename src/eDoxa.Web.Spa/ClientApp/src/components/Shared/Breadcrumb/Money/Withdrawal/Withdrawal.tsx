@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "reactstrap";
-import { connectUserAccountWithdrawal } from "store/root/user/account/withdrawal/container";
+import { withUserAccountWithdrawal } from "store/root/user/account/withdrawal/container";
 
 const Withdrawal = ({ actions, amounts }) => (
   <Button color="primary" size="sm" block onClick={() => actions.showWithdrawalModal(actions, amounts)}>
@@ -8,4 +8,4 @@ const Withdrawal = ({ actions, amounts }) => (
   </Button>
 );
 
-export default connectUserAccountWithdrawal("money")(Withdrawal);
+export default withUserAccountWithdrawal("money")(Withdrawal);

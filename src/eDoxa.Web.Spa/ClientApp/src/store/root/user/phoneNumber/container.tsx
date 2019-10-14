@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { RootState } from "store/root/types";
 import { loadPhoneNumber, changePhoneNumber } from "./actions";
 
-export const connectUserPhoneNumber = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserPhone = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, phoneNumber, phoneNumberVerified, ...attributes }) => {
     useEffect((): void => {
       actions.loadPhoneNumber();

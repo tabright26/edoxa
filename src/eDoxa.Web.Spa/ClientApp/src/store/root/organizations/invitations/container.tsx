@@ -8,7 +8,7 @@ interface InvitationProps {
   id: string;
 }
 
-export const connectInvitations = (ConnectedComponent: FunctionComponent<any>) => {
+export const withInvitations = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, invitations, ...attributes }) => {
     useEffect(() => {
       actions.loadInvitations();

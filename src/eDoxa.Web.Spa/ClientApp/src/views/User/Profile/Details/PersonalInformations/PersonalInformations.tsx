@@ -3,7 +3,7 @@ import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { connectUserPersonalInfo } from "store/root/user/personalInfo/container";
+import { withtUserInformations } from "store/root/user/personalInfo/container";
 import UserInformationForm from "forms/User/Information";
 import { compose } from "recompose";
 
@@ -47,6 +47,6 @@ const PersonalInformations: FunctionComponent<any> = ({ className, personalInfo,
   );
 };
 
-const enhance = compose<any, any>(connectUserPersonalInfo);
+const enhance = compose<any, any>(withtUserInformations);
 
 export default enhance(PersonalInformations);

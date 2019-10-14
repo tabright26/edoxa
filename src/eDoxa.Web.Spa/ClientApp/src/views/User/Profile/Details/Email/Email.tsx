@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import Badge from "components/Shared/Override/Badge";
-import { connectUserEmail } from "store/root/user/email/container";
+import { withUserEmail } from "store/root/user/email/container";
 import { compose } from "recompose";
 
 const Email: FunctionComponent<any> = ({ className, email, emailVerified }) => (
@@ -19,6 +19,6 @@ const Email: FunctionComponent<any> = ({ className, email, emailVerified }) => (
   </Card>
 );
 
-const enhance = compose<any, any>(connectUserEmail);
+const enhance = compose<any, any>(withUserEmail);
 
 export default enhance(Email);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 
-import { connectClans } from "store/root/organizations/clans/container";
+import { withClans } from "store/root/organizations/clans/container";
 
 import CandidatureWidget from "components/Organizations/Candidatures/CandidatureWidget";
 import ClanInfo from "components/Organizations/Clans/ClanInfo";
@@ -46,6 +46,6 @@ const ClanDetailsIndex: FunctionComponent<any> = ({
   );
 };
 
-const enhance = compose<any, any>(connectClans);
+const enhance = compose<any, any>(withClans);
 
 export default enhance(ClanDetailsIndex);

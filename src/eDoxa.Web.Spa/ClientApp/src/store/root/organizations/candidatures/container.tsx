@@ -8,7 +8,7 @@ interface CandidatureProps {
   id: string;
 }
 
-export const connectCandidatures = (ConnectedComponent: FunctionComponent<any>) => {
+export const withCandidatures = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, candidatures, ownProps, ...attributes }) => {
     useEffect(() => {
       switch (ownProps.type) {

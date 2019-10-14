@@ -4,8 +4,8 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { CREATE_ADDRESS_MODAL } from "modals";
 import AddressForm from "forms/User/Address";
 import { compose } from "recompose";
-import { connectUserAddressBook } from "store/root/user/addressBook/container";
-import { connectUser } from "store/root/user/container";
+import { withUserAddressBook } from "store/root/user/addressBook/container";
+import { withtUser } from "store/root/user/container";
 
 const CreateAddressModal = ({ show, handleHide, className, actions, user }) => (
   <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>
@@ -23,8 +23,8 @@ const CreateAddressModal = ({ show, handleHide, className, actions, user }) => (
 
 const enhance = compose<any, any>(
   connectModal({ name: CREATE_ADDRESS_MODAL }),
-  connectUser,
-  connectUserAddressBook
+  withtUser,
+  withUserAddressBook
 );
 
 export default enhance(CreateAddressModal);

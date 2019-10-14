@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { loadDoxaTagHistory, changeDoxaTag } from "store/root/user/doxaTagHistory/actions";
 import { RootState } from "store/root/types";
 
-export const connectUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, doxaTag, ...attributes }) => {
     useEffect((): void => {
       actions.loadDoxaTagHistory();

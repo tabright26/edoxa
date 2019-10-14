@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { connectStripePaymentMethods } from "store/root/payment/paymentMethods/container";
+import { withStripePaymentMethods } from "store/root/payment/paymentMethods/container";
 import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types";
 import CardBrandIcon from "components/Payment/Card/BrandIcon";
 import CardExpiration from "components/Payment/Card/Expiration";
@@ -56,6 +56,6 @@ const StripeCards: FunctionComponent<any> = ({ className, actions, paymentMethod
   </Card>
 );
 
-const enhance = compose<any, any>(connectStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE));
+const enhance = compose<any, any>(withStripePaymentMethods(CARD_PAYMENTMETHOD_TYPE));
 
 export default enhance(StripeCards);

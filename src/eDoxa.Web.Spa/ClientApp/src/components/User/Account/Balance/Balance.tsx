@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import Format from "components/Shared/Format";
-import { connectUserAccountBalance } from "store/root/user/account/balance/container";
+import { withUserAccountBalance } from "store/root/user/account/balance/container";
 import { compose } from "recompose";
 
 const UserAccountBalance: FunctionComponent<any> = ({ currency, available, pending, selector }) => {
@@ -14,6 +14,6 @@ const UserAccountBalance: FunctionComponent<any> = ({ currency, available, pendi
   }
 };
 
-const enhance = compose<any, any>(connectUserAccountBalance);
+const enhance = compose<any, any>(withUserAccountBalance);
 
 export default enhance(UserAccountBalance);

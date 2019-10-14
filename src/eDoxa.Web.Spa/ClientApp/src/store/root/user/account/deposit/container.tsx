@@ -6,7 +6,7 @@ import { loadDepositAmounts, deposit } from "./actions";
 import { RootState } from "store/root/types";
 import { Currency } from "../types";
 
-export const connectUserAccountDeposit = (currency: Currency) => (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountDeposit = (currency: Currency) => (ConnectedComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, amounts, ...attributes }) => {
     useEffect((): void => {
       actions.loadDepositAmounts();

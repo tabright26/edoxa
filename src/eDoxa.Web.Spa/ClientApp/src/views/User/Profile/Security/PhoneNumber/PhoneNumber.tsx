@@ -3,7 +3,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Override/Badge";
-import { connectUserPhoneNumber } from "store/root/user/phoneNumber/container";
+import { withUserPhone } from "store/root/user/phoneNumber/container";
 import UserPhoneForm from "forms/User/Phone";
 import { compose } from "recompose";
 
@@ -38,6 +38,6 @@ const PhoneNumber: FunctionComponent<any> = ({ className, phoneNumber, phoneNumb
   );
 };
 
-const enhance = compose<any, any>(connectUserPhoneNumber);
+const enhance = compose<any, any>(withUserPhone);
 
 export default enhance(PhoneNumber);

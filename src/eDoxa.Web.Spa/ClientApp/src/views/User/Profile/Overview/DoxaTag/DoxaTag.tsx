@@ -2,7 +2,7 @@ import React, { useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { connectUserDoxaTagHistory } from "store/root/user/doxaTagHistory/container";
+import { withUserDoxaTagHistory } from "store/root/user/doxaTagHistory/container";
 import DoxaTagForm from "forms/User/DoxaTag";
 import { compose } from "recompose";
 
@@ -38,6 +38,6 @@ const DoxaTag: FunctionComponent<any> = ({ className, doxaTag, actions }) => {
   );
 };
 
-const enhance = compose<any, any>(connectUserDoxaTagHistory);
+const enhance = compose<any, any>(withUserDoxaTagHistory);
 
 export default enhance(DoxaTag);

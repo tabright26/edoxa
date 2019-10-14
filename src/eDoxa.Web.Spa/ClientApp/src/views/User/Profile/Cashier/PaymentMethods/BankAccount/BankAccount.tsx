@@ -2,8 +2,8 @@ import React, { useState, FunctionComponent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Alert } from "reactstrap";
-import { connectUser } from "store/root/user/container";
-import { connectStripeBankAccount } from "store/root/payment/bankAccount/container";
+import { withtUser } from "store/root/user/container";
+import { withStripeBankAccount } from "store/root/payment/bankAccount/container";
 import { injectStripe } from "react-stripe-elements";
 import BankAccountForm from "forms/Payment/Stripe/BankAccount";
 import { compose } from "recompose";
@@ -33,8 +33,8 @@ const BankAccount: FunctionComponent<any> = ({ bankAccount: { data, isLoading, e
 
 const enhance = compose<any, any>(
   injectStripe,
-  connectUser,
-  connectStripeBankAccount
+  withtUser,
+  withStripeBankAccount
 );
 
 export default enhance(BankAccount);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
 import { Alert } from "reactstrap";
-import { connectUser } from "store/root/user/container";
+import { withtUser } from "store/root/user/container";
 import queryString from "query-string";
 import { compose } from "recompose";
 
@@ -27,6 +27,6 @@ const EmailConfirm: FunctionComponent<any> = ({ location, actions }) => {
   );
 };
 
-const enhance = compose<any, any>(connectUser);
+const enhance = compose<any, any>(withtUser);
 
 export default enhance(EmailConfirm);
