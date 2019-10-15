@@ -22,13 +22,23 @@ describe("user doxatag history reducer", () => {
       type: "LOAD_DOXATAG_HISTORY_SUCCESS",
       payload: { status: 200, data: doxaTagHistory200Data }
     };
-    expect(reducer(initialState, action)).toEqual(doxaTagHistory200Data);
+    const state = {
+      data: doxaTagHistory200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_DOXATAG_HISTORY_FAIL", () => {
     const action: any = {
       type: "LOAD_DOXATAG_HISTORY_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_DOXATAG_HISTORY_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

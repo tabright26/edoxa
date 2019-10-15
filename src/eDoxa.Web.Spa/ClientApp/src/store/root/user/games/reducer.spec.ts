@@ -22,13 +22,23 @@ describe("user games reducer", () => {
       type: "LOAD_GAMES_SUCCESS",
       payload: { status: 200, data: games200Data }
     };
-    expect(reducer(initialState, action)).toEqual(games200Data);
+    const state = {
+      data: games200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_GAMES_FAIL", () => {
     const action: any = {
       type: "LOAD_GAMES_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_GAMES_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

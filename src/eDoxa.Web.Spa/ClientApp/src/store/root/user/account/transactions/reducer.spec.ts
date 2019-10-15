@@ -22,13 +22,23 @@ describe("user account transactions reducer", () => {
       type: "LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS",
       payload: { status: 200, data: transaction200Data }
     };
-    expect(reducer([], action)).toEqual(transaction200Data);
+    const state = {
+      data: transaction200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL", () => {
     const action: any = {
       type: "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

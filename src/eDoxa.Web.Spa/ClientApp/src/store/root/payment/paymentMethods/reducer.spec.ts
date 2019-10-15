@@ -22,13 +22,23 @@ describe("user account stripe card reducer", () => {
       type: "LOAD_PAYMENTMETHODS_SUCCESS",
       payload: { status: 200, data: stripeCard200Data }
     };
-    expect(reducer(initialState, action)).toEqual(stripeCard200Data);
+    const state = {
+      data: stripeCard200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_PAYMENTMETHODS_FAIL", () => {
     const action: any = {
       type: "LOAD_PAYMENTMETHODS_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_PAYMENTMETHODS_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

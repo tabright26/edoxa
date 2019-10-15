@@ -22,13 +22,23 @@ describe("user personal info reducer", () => {
       type: "LOAD_PERSONAL_INFO_SUCCESS",
       payload: { status: 200, data: personalInfo200Data }
     };
-    expect(reducer(initialState, action)).toEqual(personalInfo200Data);
+    const state = {
+      data: personalInfo200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_PERSONAL_INFO_FAIL", () => {
     const action: any = {
       type: "LOAD_PERSONAL_INFO_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_PERSONAL_INFO_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

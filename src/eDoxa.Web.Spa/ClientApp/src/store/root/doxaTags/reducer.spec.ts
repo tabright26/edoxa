@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL } from "./types";
 
 const doxaTag204Data = [];
 const doxaTag200Data = "DoxaTagYo";
@@ -11,7 +12,7 @@ describe("doxatag reducer", () => {
 
   it("should handle LOAD_DOXATAGS_SUCCESS 204", () => {
     const action: any = {
-      type: "LOAD_DOXATAGS_SUCCESS",
+      type: LOAD_DOXATAGS_SUCCESS,
       payload: { status: 204, data: doxaTag204Data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
@@ -19,16 +20,26 @@ describe("doxatag reducer", () => {
 
   it("should handle LOAD_DOXATAGS_SUCCESS 200", () => {
     const action: any = {
-      type: "LOAD_DOXATAGS_SUCCESS",
+      type: LOAD_DOXATAGS_SUCCESS,
       payload: { status: 200, data: doxaTag200Data }
     };
-    expect(reducer(initialState, action)).toEqual(doxaTag200Data);
+    const state = {
+      data: doxaTag200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_DOXATAGS_FAIL", () => {
     const action: any = {
-      type: "LOAD_DOXATAGS_FAIL"
+      type: LOAD_DOXATAGS_FAIL
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: LOAD_DOXATAGS_FAIL,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

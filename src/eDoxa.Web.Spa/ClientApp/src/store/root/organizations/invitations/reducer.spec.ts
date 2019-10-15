@@ -26,14 +26,24 @@ describe("invitations reducer", () => {
       type: "LOAD_INVITATIONS_SUCCESS",
       payload: { status: 200, data: invitations200Data }
     };
-    expect(reducer(initialState, action)).toEqual(invitations200Data);
+    const state = {
+      data: invitations200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_INVITATIONS_FAIL", () => {
     const action: any = {
       type: "LOAD_INVITATIONS_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_INVITATIONS_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   //--------------------------------------------------------------------------------------------------------
@@ -43,14 +53,24 @@ describe("invitations reducer", () => {
       type: "LOAD_INVITATION_SUCCESS",
       payload: { data: invitation200Data }
     };
-    expect(reducer(initialState, action)).toEqual([...initialState, invitation200Data]);
+    const state = {
+      data: [...initialState.data, invitation200Data],
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_INVITATION_FAIL", () => {
     const action: any = {
       type: "LOAD_INVITATION_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_INVITATION_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   //--------------------------------------------------------------------------------------------------------

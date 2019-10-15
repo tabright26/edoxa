@@ -34,14 +34,24 @@ describe("candidatures reducer", () => {
       type: LOAD_CLANS_SUCCESS,
       payload: { status: 200, data: clans200Data }
     };
-    expect(reducer(initialState, action)).toEqual(clans200Data);
+    const state = {
+      data: clans200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_CLANS_FAIL", () => {
     const action: any = {
       type: LOAD_CLANS_FAIL
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: LOAD_CLANS_FAIL,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   //--------------------------------------------------------------------------------------------------------
@@ -51,14 +61,24 @@ describe("candidatures reducer", () => {
       type: LOAD_CLAN_SUCCESS,
       payload: { data: clan200Data }
     };
-    expect(reducer(initialState, action)).toEqual([...initialState, clan200Data]);
+    const state = {
+      data: [...initialState.data, clan200Data],
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_CLAN_FAIL", () => {
     const action: any = {
       type: LOAD_CLAN_FAIL
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: LOAD_CLAN_FAIL,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   //--------------------------------------------------------------------------------------------------------
@@ -77,14 +97,24 @@ describe("candidatures reducer", () => {
       type: DOWNLOAD_CLAN_LOGO_SUCCESS,
       payload: { data: logo200Data }
     };
-    expect(reducer(initialState, action)).toEqual([...initialState, logo200Data]);
+    const state = {
+      data: [...initialState.data, logo200Data],
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_LOGO_FAIL", () => {
     const action: any = {
       type: DOWNLOAD_CLAN_LOGO_FAIL
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: DOWNLOAD_CLAN_LOGO_FAIL,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
   //--------------------------------------------------------------------------------------------------------
 

@@ -21,6 +21,11 @@ describe("user account stripe bank account reducer", () => {
     const action: any = {
       type: LOAD_BANK_ACCOUNT_FAIL
     };
-    expect(reducer(initialState, action)).toEqual({ data: null });
+    const state = {
+      data: initialState.data,
+      error: LOAD_BANK_ACCOUNT_FAIL,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

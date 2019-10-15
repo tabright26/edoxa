@@ -26,7 +26,12 @@ describe("user address book reducer", () => {
       type: "LOAD_ADDRESS_BOOK_SUCCESS",
       payload: { status: 200, data: addressBook200Data }
     };
-    expect(reducer(initialState, action)).toEqual(addressBook200Data);
+    const state = {
+      data: addressBook200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle REMOVE_ADDRESS_SUCCESS", () => {
@@ -34,7 +39,12 @@ describe("user address book reducer", () => {
       type: "REMOVE_ADDRESS_SUCCESS",
       payload: { data: removeSuccessData }
     };
-    expect(reducer(initialState, action)).toEqual(removeExpectedState);
+    const state = {
+      data: removeExpectedState,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   // it("should handle ADD_ADDRESS_FAIL", () => {
@@ -79,6 +89,11 @@ describe("user address book reducer", () => {
     const action: any = {
       type: "LOAD_ADDRESS_BOOK_FAIL"
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: "LOAD_ADDRESS_BOOK_FAIL",
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

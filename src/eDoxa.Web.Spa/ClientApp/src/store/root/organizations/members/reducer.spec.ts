@@ -1,6 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import { LOAD_MEMBERS_SUCCESS, LOAD_MEMBERS_FAIL, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL, KICK_MEMBER_SUCCESS } from "./types";
-import { SubmissionError } from "redux-form";
+import { LOAD_MEMBERS_SUCCESS, LOAD_MEMBERS_FAIL, LEAVE_CLAN_SUCCESS, KICK_MEMBER_SUCCESS } from "./types";
 
 const members204Data = [];
 const members200Data = [{ userId: "0", clanId: "10" }, { clanId: "1", userId: "10" }, { clanId: "3", userId: "10" }];
@@ -26,14 +25,24 @@ describe("invitations reducer", () => {
       type: LOAD_MEMBERS_SUCCESS,
       payload: { status: 200, data: members200Data }
     };
-    expect(reducer(initialState, action)).toEqual(members200Data);
+    const state = {
+      data: members200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_MEMBERS_FAIL", () => {
     const action: any = {
       type: LOAD_MEMBERS_FAIL
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const state = {
+      data: initialState.data,
+      error: LOAD_MEMBERS_FAIL,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   //--------------------------------------------------------------------------------------------------------
