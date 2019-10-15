@@ -1,6 +1,6 @@
 ﻿// Filename: Startup.cs
 // Date Created: 2019-10-04
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -38,6 +38,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
+
+using RiotSharp.Interfaces;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 

@@ -1,9 +1,10 @@
 ﻿// Filename: ClanLogoControllerPostAsyncTest.cs
 // Date Created: 2019-10-07
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -62,12 +63,13 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
+
                 });
 
             var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
 
             // Act
-            using var response = await this.ExecuteAsync(new ClanId(), file);
+            using var response = await this.ExecuteAsync(clan.Id, file);
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -77,12 +79,23 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var userId = new UserId();
+            var clan = new Clan("ClanName", new UserId());
+
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
 
             var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+                });
 
             // Act
             using var response = await this.ExecuteAsync(new ClanId(), file);
@@ -96,6 +109,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
         {
             // Arrange
             var userId = new UserId();
+            var clan = new Clan("ClanName", userId);
 
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
@@ -103,12 +117,39 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
             testServer.CleanupDbContext();
             var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
 
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+                });
+
             // Act
-            using var response = await this.ExecuteAsync(new ClanId(), file);
+            using var response = await this.ExecuteAsync(clan.Id, file);
 
             // Assert
+            await testServer.UsingScopeAsync(async scope =>
+                {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    var dbData = await clanRepository.DownloadLogoAsync(clan.Id);
+
+                    var dbImageData = new MemoryStream();
+                    var fileImageData = new MemoryStream();
+
+                    dbData.Position = 0;
+                    await dbData.CopyToAsync(dbImageData);
+
+                    file.Position = 0;
+                    await file.CopyToAsync(fileImageData);
+
+                    dbImageData.ToArray().Should().BeEquivalentTo(fileImageData.ToArray());
+                });
+
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+
         }
     }
 }

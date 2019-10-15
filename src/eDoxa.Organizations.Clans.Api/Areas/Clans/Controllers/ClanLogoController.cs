@@ -1,6 +1,6 @@
 ﻿// Filename: ClanLogoController.cs
 // Date Created: 2019-09-30
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -46,9 +46,9 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 
             var logo = await _clanService.DownloadLogoAsync(clan);
 
-            if (logo == null)
+            if (logo.Length == 0)
             {
-                return this.NotFound("Clan logo not found.");
+                return this.NoContent();
             }
 
             return this.File(logo, "application/octet-stream");

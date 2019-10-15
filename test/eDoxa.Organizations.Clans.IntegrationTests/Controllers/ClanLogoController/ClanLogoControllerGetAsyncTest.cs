@@ -12,6 +12,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.TestHelpers;
@@ -19,6 +20,7 @@ using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.Testing.Http.Extensions;
 
 using FluentAssertions;
 
@@ -61,7 +63,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeNotFoundLogo()
+        public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
             var userId = new UserId();
@@ -81,10 +83,11 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new ClanId());
+            using var response = await this.ExecuteAsync(clan.Id);
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Fact]
@@ -98,15 +101,7 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
-
-            var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
-            IFormFile file = new FormFile(
-                new MemoryStream(Encoding.UTF8.GetBytes("dummy image")),
-                0,
-                0,
-                "Data",
-                Path.Combine(assemblyPath, "Setup/logo/edoxa.png"));
+            var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
 
             await testServer.UsingScopeAsync(
                 async scope =>
@@ -115,16 +110,25 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanLogoControl
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
 
-                    await clanRepository.UploadLogoAsync(clan.Id, file);
-                    await clanRepository.UnitOfWork.CommitAsync();
+                    var logo = new MemoryStream();
+                    file.Position = 0;
+                    file.CopyTo(logo);
+
+                    await clanRepository.UploadLogoAsync(clan.Id, new FormFile(logo, 0, logo.Length, "edoxa", "testImage"));
                 });
 
             // Act
             using var response = await this.ExecuteAsync(clan.Id);
 
-            // Assert
+
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var fileImageData = new MemoryStream();
+            file.Position = 0;
+            await file.CopyToAsync(fileImageData);
+
+            response.Content.Headers.ContentLength.Should().Be(fileImageData.Length);
         }
     }
 }
