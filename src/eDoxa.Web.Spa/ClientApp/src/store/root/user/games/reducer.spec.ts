@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { AxiosError } from "axios";
 
 const games204Data = [];
 const games200Data = [{ gameId: "League" }, { gameId: "Overwatch" }, { gameId: "CSGO" }];
@@ -31,12 +32,19 @@ describe("user games reducer", () => {
   });
 
   it("should handle LOAD_GAMES_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: "LOAD_GAMES_FAIL"
+      type: "LOAD_GAMES_FAIL",
+      error
     };
     const state = {
       data: initialState.data,
-      error: "LOAD_GAMES_FAIL",
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

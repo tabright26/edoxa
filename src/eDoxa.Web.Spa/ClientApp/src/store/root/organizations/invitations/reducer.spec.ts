@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { AxiosError } from "axios";
 
 const invitations204Data = [];
 const invitations200Data = [{ clanId: "0", userId: "1" }, { clanId: "10", userId: "11" }, { clanId: "100", userId: "111" }];
@@ -35,12 +36,19 @@ describe("invitations reducer", () => {
   });
 
   it("should handle LOAD_INVITATIONS_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: "LOAD_INVITATIONS_FAIL"
+      type: "LOAD_INVITATIONS_FAIL",
+      error
     };
     const state = {
       data: initialState.data,
-      error: "LOAD_INVITATIONS_FAIL",
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
@@ -62,12 +70,19 @@ describe("invitations reducer", () => {
   });
 
   it("should handle LOAD_INVITATION_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: "LOAD_INVITATION_FAIL"
+      type: "LOAD_INVITATION_FAIL",
+      error
     };
     const state = {
       data: initialState.data,
-      error: "LOAD_INVITATION_FAIL",
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

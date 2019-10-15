@@ -6,18 +6,18 @@ import { show } from "redux-modal";
 
 import { CREATE_CLAN_MODAL } from "modals";
 
-export const withClans = (ConnectedComponent: FunctionComponent<any>) => {
+export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, clans, userId, userClan, ...attributes }) => {
     useEffect(() => {
       actions.loadClans();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} clans={clans} userId={userId} userClan={userClan} {...attributes} />;
+    return <HighOrderComponent actions={actions} clans={clans} userId={userId} userClan={userClan} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     const clans = state.organizations.clans.data.map(clan => {
-      const doxaTag = state.doxaTags.data.find(doxaTag => doxaTag.userId === clan.ownerId);
+      const doxaTag = state.doxatags.data.find(doxaTag => doxaTag.userId === clan.ownerId);
 
       clan.ownerDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
       return clan;

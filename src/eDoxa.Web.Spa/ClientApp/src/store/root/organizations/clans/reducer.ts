@@ -37,19 +37,19 @@ export const reducer: Reducer<ClansState, ClansActionTypes> = (state = initialSt
       }
     }
     case LOAD_CLANS_FAIL: {
-      return { data: state.data, error: LOAD_CLANS_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case LOAD_CLAN_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };
     }
     case LOAD_CLAN_FAIL: {
-      return { data: state.data, error: LOAD_CLAN_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case DOWNLOAD_CLAN_LOGO_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };
     }
     case DOWNLOAD_CLAN_LOGO_FAIL: {
-      return { data: state.data, error: DOWNLOAD_CLAN_LOGO_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case UPLOAD_CLAN_LOGO_SUCCESS: {
       return { data: state.data, error: null, loading: false };

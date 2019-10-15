@@ -23,7 +23,7 @@ export const reducer: Reducer<MembersState, MembersActionTypes> = (state = initi
       }
     }
     case LOAD_MEMBERS_FAIL: {
-      return { data: state.data, error: LOAD_MEMBERS_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case LEAVE_CLAN_SUCCESS: {
       return { data: state.data, error: null, loading: false };

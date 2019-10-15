@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense } from "react";
 import Loading from "components/Shared/Override/Loading";
 
-const PhoneNumber = React.lazy(() => import("./PhoneNumber"));
+const PhoneNumber = React.lazy(() => import("./Phone"));
 
 const ProfileSecurity = () => (
   <Fragment>

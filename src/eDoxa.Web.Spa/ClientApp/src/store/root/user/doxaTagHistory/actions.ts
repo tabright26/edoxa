@@ -1,6 +1,6 @@
 import { LOAD_DOXATAG_HISTORY, LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL, CHANGE_DOXATAG, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL, DoxatagHistoryActionCreators } from "./types";
 
-export function loadDoxaTagHistory(): DoxatagHistoryActionCreators {
+export function loadDoxatagHistory(): DoxatagHistoryActionCreators {
   return {
     types: [LOAD_DOXATAG_HISTORY, LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL],
     payload: {

@@ -39,13 +39,13 @@ export const reducer: Reducer<CandidaturesState, CandidaturesActionTypes> = (sta
       }
     }
     case LOAD_CANDIDATURES_FAIL: {
-      return { data: state.data, error: LOAD_CANDIDATURES_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case LOAD_CANDIDATURE_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };
     }
     case LOAD_CANDIDATURE_FAIL: {
-      return { data: state.data, error: LOAD_CANDIDATURE_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case ADD_CANDIDATURE_SUCCESS: {
       return { data: state.data, error: null, loading: false };

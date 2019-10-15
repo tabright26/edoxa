@@ -5,13 +5,13 @@ import { CREATE_ADDRESS_MODAL } from "modals";
 import { loadAddressBook, addAddress, updateAddress, removeAddress } from "store/root/user/addressBook/actions";
 import { RootState } from "store/root/types";
 
-export const withUserAddressBook = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAddressBook = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, addressBook, ...attributes }) => {
     useEffect((): void => {
       actions.loadAddressBook();
-         // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} addressBook={addressBook} {...attributes} />;
+    return <HighOrderComponent actions={actions} addressBook={addressBook} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {

@@ -1,5 +1,5 @@
 import { LOAD_DOXATAG_HISTORY, LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL, CHANGE_DOXATAG, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL } from "./types";
-import { loadDoxaTagHistory, changeDoxaTag } from "./actions";
+import { loadDoxatagHistory, changeDoxaTag } from "./actions";
 
 describe("identity actions", () => {
   it("should create an action to get user doxatag history", () => {
@@ -7,7 +7,7 @@ describe("identity actions", () => {
     const expectedMethod = "GET";
     const expectedUrl = "/identity/api/doxatag-history";
 
-    const actionCreator = loadDoxaTagHistory();
+    const actionCreator = loadDoxatagHistory();
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

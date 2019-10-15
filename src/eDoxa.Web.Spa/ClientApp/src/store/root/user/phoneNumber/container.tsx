@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { RootState } from "store/root/types";
 import { loadPhoneNumber, changePhoneNumber } from "./actions";
 
-export const withUserPhone = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserPhone = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, phoneNumber, phoneNumberVerified, ...attributes }) => {
     useEffect((): void => {
       actions.loadPhoneNumber();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} phoneNumber={phoneNumber} phoneNumberVerified={phoneNumberVerified} {...attributes} />;
+    return <HighOrderComponent actions={actions} phoneNumber={phoneNumber} phoneNumberVerified={phoneNumberVerified} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {

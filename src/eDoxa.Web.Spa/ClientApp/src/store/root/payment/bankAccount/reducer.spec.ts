@@ -1,5 +1,6 @@
 import { LOAD_BANK_ACCOUNT_FAIL, CHANGE_BANK_ACCOUNT_SUCCESS } from "./types";
 import { reducer, initialState } from "./reducer";
+import { AxiosError } from "axios";
 
 const stripeBank204Data = {};
 
@@ -18,12 +19,19 @@ describe("user account stripe bank account reducer", () => {
   });
 
   it("should handle LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: LOAD_BANK_ACCOUNT_FAIL
+      type: LOAD_BANK_ACCOUNT_FAIL,
+      error
     };
     const state = {
       data: initialState.data,
-      error: LOAD_BANK_ACCOUNT_FAIL,
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { AxiosError } from "axios";
 
 const stripeCard204Data = [];
 const stripeCard200Data = { data: [{ id: "1" }] };
@@ -31,12 +32,19 @@ describe("user account stripe card reducer", () => {
   });
 
   it("should handle LOAD_PAYMENTMETHODS_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: "LOAD_PAYMENTMETHODS_FAIL"
+      type: "LOAD_PAYMENTMETHODS_FAIL",
+      error
     };
     const state = {
       data: initialState.data,
-      error: "LOAD_PAYMENTMETHODS_FAIL",
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

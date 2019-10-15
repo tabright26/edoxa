@@ -8,7 +8,7 @@ interface CandidatureProps {
   id: string;
 }
 
-export const withCandidatures = (ConnectedComponent: FunctionComponent<any>) => {
+export const withCandidatures = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, candidatures, ownProps, ...attributes }) => {
     useEffect(() => {
       switch (ownProps.type) {
@@ -26,12 +26,12 @@ export const withCandidatures = (ConnectedComponent: FunctionComponent<any>) => 
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} candidatures={candidatures} {...attributes} />;
+    return <HighOrderComponent actions={actions} candidatures={candidatures} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState, ownProps: CandidatureProps) => {
     const candidatures = state.organizations.candidatures.data.map(candidature => {
-      const doxaTag = state.doxaTags.data.find(doxaTag => doxaTag.userId === candidature.userId);
+      const doxaTag = state.doxatags.data.find(doxaTag => doxaTag.userId === candidature.userId);
       const clan = state.organizations.clans.data.find(clan => clan.id === candidature.clanId);
 
       candidature.userDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;

@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { AxiosError } from "axios";
 
 const addressId = "test_id";
 const addressBook204Data = [];
@@ -86,12 +87,19 @@ describe("user address book reducer", () => {
   });
 
   it("should handle LOAD_ADDRESS_BOOK_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: "LOAD_ADDRESS_BOOK_FAIL"
+      type: "LOAD_ADDRESS_BOOK_FAIL",
+      error
     };
     const state = {
       data: initialState.data,
-      error: "LOAD_ADDRESS_BOOK_FAIL",
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

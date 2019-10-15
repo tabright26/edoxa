@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "store/root/user/personalInfo/actions";
 import { RootState } from "store/root/types";
 
-export const withtUserInformations = (ConnectedComponent: FunctionComponent<any>) => {
+export const withtUserInformations = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, personalInfo, ...attributes }) => {
     useEffect((): void => {
       actions.loadPersonalInfo();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} personalInfo={personalInfo} {...attributes} />;
+    return <HighOrderComponent actions={actions} personalInfo={personalInfo} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {

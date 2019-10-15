@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { AxiosError } from "axios";
 
 const transaction204Data = [];
 const transaction200Data = [{ data: [{ id: "1" }] }];
@@ -31,12 +32,19 @@ describe("user account transactions reducer", () => {
   });
 
   it("should handle LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL"
+      type: "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL",
+      error
     };
     const state = {
       data: initialState.data,
-      error: "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL",
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

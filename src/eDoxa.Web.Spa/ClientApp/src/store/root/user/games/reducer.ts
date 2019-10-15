@@ -24,7 +24,7 @@ export const reducer: Reducer<GamesState, GamesActionTypes> = (state = initialSt
       }
     }
     case LOAD_GAMES_FAIL: {
-      return { data: state.data, error: LOAD_GAMES_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     default: {
       return state;

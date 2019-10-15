@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { loadChallenges, loadChallenge } from "store/root/arena/challenges/actions";
 import { RootState } from "store/root/types";
 
-export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => <ConnectedComponent actions={actions} challenges={challenges} {...attributes} />;
+export const connectArenaChallenges = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => <HighOrderComponent actions={actions} challenges={challenges} {...attributes} />;
 
   const mapStateToProps = (state: RootState) => {
     return {

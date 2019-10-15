@@ -25,7 +25,7 @@ export const reducer: Reducer<DoxatagHistoryState, DoxatagHistoryActionTypes> = 
       }
     }
     case LOAD_DOXATAG_HISTORY_FAIL: {
-      return { data: state.data, error: LOAD_DOXATAG_HISTORY_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case CHANGE_DOXATAG_SUCCESS: {
       return { data: state.data, error: null, loading: false };

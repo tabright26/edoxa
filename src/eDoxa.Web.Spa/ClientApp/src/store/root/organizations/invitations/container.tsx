@@ -8,18 +8,18 @@ interface InvitationProps {
   id: string;
 }
 
-export const withInvitations = (ConnectedComponent: FunctionComponent<any>) => {
+export const withInvitations = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, invitations, ...attributes }) => {
     useEffect(() => {
       actions.loadInvitations();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} invitations={invitations} {...attributes} />;
+    return <HighOrderComponent actions={actions} invitations={invitations} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     const invitations = state.organizations.invitations.data.map(invitation => {
-      const doxatag = state.doxaTags.data.find(doxaTag => doxaTag.userId === invitation.userId);
+      const doxatag = state.doxatags.data.find(doxaTag => doxaTag.userId === invitation.userId);
       const clan = state.organizations.clans.data.find(clan => clan.id === invitation.clanId);
 
       invitation.userDoxaTag = doxatag ? doxatag.name + "#" + doxatag.code : null;

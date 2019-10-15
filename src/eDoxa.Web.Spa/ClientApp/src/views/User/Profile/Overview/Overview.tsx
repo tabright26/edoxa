@@ -1,7 +1,7 @@
 import React, { Fragment, Suspense } from "react";
 import Loading from "components/Shared/Override/Loading";
 
-const DoxaTag = React.lazy(() => import("./DoxaTag"));
+const DoxaTag = React.lazy(() => import("./Doxatag"));
 
 const ProfileOverview = () => (
   <Fragment>

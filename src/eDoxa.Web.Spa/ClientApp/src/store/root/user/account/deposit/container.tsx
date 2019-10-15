@@ -6,13 +6,13 @@ import { loadDepositAmounts, deposit } from "./actions";
 import { RootState } from "store/root/types";
 import { Currency } from "../types";
 
-export const withUserAccountDeposit = (currency: Currency) => (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountDeposit = (currency: Currency) => (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, amounts, ...attributes }) => {
     useEffect((): void => {
       actions.loadDepositAmounts();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} amounts={amounts} {...attributes} />;
+    return <HighOrderComponent actions={actions} amounts={amounts} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {

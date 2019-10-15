@@ -25,13 +25,13 @@ export const reducer: Reducer<ChallengesState, ChallengesActionTypes> = (state =
       }
     }
     case LOAD_CHALLENGES_FAIL: {
-      return { data: state.data, error: LOAD_CHALLENGES_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case LOAD_CHALLENGE_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };
     }
     case LOAD_CHALLENGE_FAIL: {
-      return { data: state.data, error: LOAD_CHALLENGE_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     default: {
       return state;

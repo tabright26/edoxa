@@ -9,13 +9,13 @@ interface UserAccountBalanceProps {
   selector: BalanceSelector;
 }
 
-export const withUserAccountBalance = (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountBalance = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, available, pending, currency, selector, ...attributes }) => {
     useEffect((): void => {
       actions.loadUserAccountBalance();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} available={available} pending={pending} currency={currency} selector={selector} {...attributes} />;
+    return <HighOrderComponent actions={actions} available={available} pending={pending} currency={currency} selector={selector} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState, ownProps: UserAccountBalanceProps) => {

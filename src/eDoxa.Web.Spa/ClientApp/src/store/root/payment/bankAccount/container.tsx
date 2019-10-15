@@ -3,20 +3,19 @@ import { connect } from "react-redux";
 import { loadBankAccount, changeBankAccount } from "store/root/payment/bankAccount/actions";
 import { RootState } from "store/root/types";
 
-export const withStripeBankAccount: any = (ConnectedComponent: FunctionComponent<any>): any => {
-  const Container: any = ({ actions, bankAccounts, hasBankAccount, ...attributes }) => {
+export const withStripeBankAccount: any = (HighOrderComponent: FunctionComponent<any>): any => {
+  const Container: any = props => {
     useEffect((): void => {
-      actions.loadBankAccount();
+      props.actions.loadBankAccount();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} bankAccounts={bankAccounts} hasBankAccount={hasBankAccount} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
-    const bankAccount = state.payment.bankAccount.data;
     return {
-      bankAccount: bankAccount,
-      hasBankAccount: bankAccount.data
+      bankAccount: state.payment.bankAccount,
+      hasBankAccount: state.payment.bankAccount.data
     };
   };
 

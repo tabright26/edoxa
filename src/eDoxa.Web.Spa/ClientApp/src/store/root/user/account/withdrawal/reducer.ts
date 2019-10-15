@@ -28,7 +28,7 @@ export const reducer: Reducer<WithdrawalState, WithdrawalActionTypes> = (state =
       return { data: { amounts }, error: null, loading: false };
     }
     case LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL: {
-      return { data: state.data, error: LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case WITHDRAWAL_TOKEN_SUCCESS: {
       return { data: state.data, error: null, loading: false };

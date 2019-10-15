@@ -1,5 +1,6 @@
 import { reducer, initialState } from "./reducer";
 import { LOAD_MEMBERS_SUCCESS, LOAD_MEMBERS_FAIL, LEAVE_CLAN_SUCCESS, KICK_MEMBER_SUCCESS } from "./types";
+import { AxiosError } from "axios";
 
 const members204Data = [];
 const members200Data = [{ userId: "0", clanId: "10" }, { clanId: "1", userId: "10" }, { clanId: "3", userId: "10" }];
@@ -34,12 +35,19 @@ describe("invitations reducer", () => {
   });
 
   it("should handle LOAD_MEMBERS_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: LOAD_MEMBERS_FAIL
+      type: LOAD_MEMBERS_FAIL,
+      error
     };
     const state = {
       data: initialState.data,
-      error: LOAD_MEMBERS_FAIL,
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

@@ -1,3 +1,3 @@
-import DoxaTag from "./DoxaTag";
+import DoxaTag from "./Doxatag";
 
 export default DoxaTag;

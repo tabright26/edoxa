@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { AxiosError } from "axios";
 
 const personalInfo204Data = {};
 const personalInfo200Data = { name: "Gabriel", gender: "Male" };
@@ -31,12 +32,19 @@ describe("user personal info reducer", () => {
   });
 
   it("should handle LOAD_PERSONAL_INFO_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: "LOAD_PERSONAL_INFO_FAIL"
+      type: "LOAD_PERSONAL_INFO_FAIL",
+      error: error
     };
     const state = {
       data: initialState.data,
-      error: "LOAD_PERSONAL_INFO_FAIL",
+      error: error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

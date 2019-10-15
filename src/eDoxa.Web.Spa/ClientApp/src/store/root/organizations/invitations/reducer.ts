@@ -37,13 +37,13 @@ export const reducer: Reducer<InvitationsState, InvitationsActionTypes> = (state
       }
     }
     case LOAD_INVITATIONS_FAIL: {
-      return { data: state.data, error: LOAD_INVITATIONS_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case LOAD_INVITATION_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };
     }
     case LOAD_INVITATION_FAIL: {
-      return { data: state.data, error: LOAD_INVITATION_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case ADD_INVITATION_SUCCESS: {
       return { data: state.data, error: null, loading: false };

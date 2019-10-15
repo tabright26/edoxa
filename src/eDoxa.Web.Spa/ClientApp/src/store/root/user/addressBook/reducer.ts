@@ -37,7 +37,7 @@ export const reducer: Reducer<AddressBookState, AddressBookActionTypes> = (state
       }
     }
     case LOAD_ADDRESS_BOOK_FAIL: {
-      return { data: state.data, error: LOAD_ADDRESS_BOOK_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case ADD_ADDRESS_SUCCESS: {
       return { data: state.data, error: null, loading: false };

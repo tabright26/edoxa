@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { loadUserAccountTransactions } from "store/root/user/account/transactions/actions";
 import { RootState } from "store/root/types";
 
-export const withUserAccountTransactions = currency => (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountTransactions = currency => (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, transactions, ...attributes }) => {
     useEffect((): void => {
       actions.loadUserAccountTransactions();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} transactions={transactions} {...attributes} />;
+    return <HighOrderComponent actions={actions} transactions={transactions} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {

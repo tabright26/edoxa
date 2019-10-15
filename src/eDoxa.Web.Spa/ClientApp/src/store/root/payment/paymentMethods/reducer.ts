@@ -13,7 +13,7 @@ import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import { Reducer } from "redux";
 
 export const initialState: PaymentMethodsState = {
-  data: [],
+  data: { data: [] },
   error: null,
   loading: false
 };
@@ -33,7 +33,7 @@ export const reducer: Reducer<PaymentMethodsState, PaymentMethodsActionTypes> = 
       }
     }
     case LOAD_PAYMENTMETHODS_FAIL: {
-      return { data: state.data, error: LOAD_PAYMENTMETHODS_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case DETACH_PAYMENTMETHOD_SUCCESS: {
       return { data: state.data, error: null, loading: false };

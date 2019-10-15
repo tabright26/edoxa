@@ -24,7 +24,7 @@ export const reducer: Reducer<TransactionsState, TransactionsActionTypes> = (sta
       }
     }
     case LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL: {
-      return { data: state.data, error: LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     default: {
       return state;

@@ -10,7 +10,7 @@ import { reducer as paymentReducer } from "store/root/payment/reducer";
 import { reducer as arenaReducer } from "store/root/arena/reducer";
 import { reducer as userReducer } from "store/root/user/reducer";
 import { reducer as organizationsReducer } from "store/root/organizations/reducer";
-import { reducer as doxaTagsReducer } from "store/root/doxaTags/reducer";
+import { reducer as doxatagsReducer } from "store/root/doxatags/reducer";
 
 export const reducer = combineReducers({
   router: routerReducer,
@@ -22,6 +22,6 @@ export const reducer = combineReducers({
   payment: paymentReducer,
   arena: arenaReducer,
   user: userReducer,
-  doxaTags: doxaTagsReducer,
+  doxatags: doxatagsReducer,
   organizations: organizationsReducer
 });

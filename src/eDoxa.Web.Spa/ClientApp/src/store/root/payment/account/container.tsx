@@ -3,13 +3,13 @@ import { connect } from "react-redux";
 import { RootState } from "store/root/types";
 import { loadAccount } from "./actions";
 
-export const withStripeAccount = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, account, ...attributes }) => {
+export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadAccount();
+      props.actions.loadAccount();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} accountAccount={account} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {

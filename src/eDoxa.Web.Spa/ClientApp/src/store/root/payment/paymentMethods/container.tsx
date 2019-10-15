@@ -6,13 +6,13 @@ import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPay
 import { RootState } from "store/root/types";
 import { PaymentMethodType, CARD_PAYMENTMETHOD_TYPE } from "./types";
 
-export const withStripePaymentMethods: any = (paymentMethodType: PaymentMethodType = CARD_PAYMENTMETHOD_TYPE) => (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, paymentMethods, ...attributes }) => {
+export const withStripePaymentMethods: any = (paymentMethodType: PaymentMethodType = CARD_PAYMENTMETHOD_TYPE) => (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect(() => {
-      actions.loadPaymentMethods();
+      props.actions.loadPaymentMethods();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} paymentMethods={paymentMethods} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {

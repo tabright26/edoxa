@@ -1,5 +1,5 @@
 import { LOAD_DOXATAGS, LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL, DoxatagsState, DoxatagsActionTypes } from "./types";
-import { Reducer } from "react";
+import { Reducer } from "redux";
 
 export const initialState: DoxatagsState = {
   data: [],
@@ -22,7 +22,7 @@ export const reducer: Reducer<DoxatagsState, DoxatagsActionTypes> = (state = ini
       }
     }
     case LOAD_DOXATAGS_FAIL: {
-      return { data: state.data, error: LOAD_DOXATAGS_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     default: {
       return state;

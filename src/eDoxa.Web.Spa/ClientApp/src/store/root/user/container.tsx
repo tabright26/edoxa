@@ -5,10 +5,8 @@ import { confirmEmail } from "store/root/user/email/actions";
 import { forgotPassword, resetPassword } from "store/root/user/password/actions";
 import { RootState } from "store/root/types";
 
-export const withtUser = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, user, isAuthenticated, ...attributes }) => (
-    <ConnectedComponent actions={actions} user={user} isAuthenticated={isAuthenticated} {...attributes} />
-  );
+export const withtUser = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
 
   const mapStateToProps = (state: RootState) => {
     const user = state.oidc.user;
@@ -37,4 +35,16 @@ export const withtUser = (ConnectedComponent: FunctionComponent<any>) => {
     mapStateToProps,
     mapDispatchToProps
   )(Container);
+};
+
+export const withtUserProfile = (claimType: string) => (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
+
+  const mapStateToProps = (state: RootState) => {
+    return {
+      [`${claimType}`]: state.oidc.user.profile[claimType]
+    };
+  };
+
+  return connect(mapStateToProps)(Container);
 };

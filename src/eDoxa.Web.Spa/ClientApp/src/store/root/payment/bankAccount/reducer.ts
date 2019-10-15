@@ -17,7 +17,7 @@ export const reducer: Reducer<BankAccountState, BankAccountActionTypes> = (state
       return { data: action.payload.data, error: null, loading: false };
     }
     case LOAD_BANK_ACCOUNT_FAIL: {
-      return { data: state.data, error: LOAD_BANK_ACCOUNT_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case CHANGE_BANK_ACCOUNT_SUCCESS: {
       return { data: action.payload.data, error: null, loading: false };

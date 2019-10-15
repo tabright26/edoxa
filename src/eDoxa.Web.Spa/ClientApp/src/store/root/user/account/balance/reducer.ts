@@ -18,7 +18,7 @@ export const reducer: Reducer<BalanceState, BalanceActionTypes> = (state = initi
       return { data: state.data, error: null, loading: false };
     }
     case LOAD_USER_ACCOUNT_BALANCE_FAIL: {
-      return { data: state.data, error: LOAD_USER_ACCOUNT_BALANCE_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     default: {
       return state;

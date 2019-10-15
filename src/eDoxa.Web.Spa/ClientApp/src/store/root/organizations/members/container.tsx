@@ -3,18 +3,18 @@ import { connect } from "react-redux";
 import { loadMembers, kickMember, leaveClan } from "store/root/organizations/members/actions";
 import { RootState } from "store/root/types";
 
-export const withClanMembers = (ConnectedComponent: FunctionComponent<any>) => {
+export const withClanMembers = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, members, clanId, ...attributes }) => {
     useEffect(() => {
       actions.loadMembers(clanId);
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [clanId]);
-    return <ConnectedComponent actions={actions} members={members} clanId={clanId} {...attributes} />;
+    return <HighOrderComponent actions={actions} members={members} clanId={clanId} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     const members = state.organizations.members.data.map(member => {
-      const doxaTag = state.doxaTags.data.find(doxaTag => doxaTag.userId === member.userId);
+      const doxaTag = state.doxatags.data.find(doxaTag => doxaTag.userId === member.userId);
 
       member.userDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
       return member;

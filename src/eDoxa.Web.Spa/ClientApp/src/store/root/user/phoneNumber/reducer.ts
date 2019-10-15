@@ -19,7 +19,7 @@ export const reducer: Reducer<PhoneNumberState, PhoneNumberActionTypes> = (state
       return { data: action.payload.data, error: null, loading: false };
     }
     case LOAD_PHONENUMBER_FAIL: {
-      return { data: state.data, error: LOAD_PHONENUMBER_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     default: {
       return state;

@@ -6,13 +6,13 @@ import { RootState } from "store/root/types";
 import { Currency } from "../types";
 import { WITHDRAWAL_MODAL } from "modals";
 
-export const withUserAccountWithdrawal = (currency: Currency) => (ConnectedComponent: FunctionComponent<any>) => {
+export const withUserAccountWithdrawal = (currency: Currency) => (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, amounts, ...attributes }) => {
     useEffect((): void => {
       actions.loadWithdrawalAmounts();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} amounts={amounts} {...attributes} />;
+    return <HighOrderComponent actions={actions} amounts={amounts} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState) => {

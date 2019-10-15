@@ -16,7 +16,7 @@ export const reducer: Reducer<AccountState, AccountActionTypes> = (state = initi
       return { data: action.payload.data, error: null, loading: false };
     }
     case LOAD_ACCOUNT_FAIL: {
-      return { data: state.data, error: LOAD_ACCOUNT_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     default: {
       return state;

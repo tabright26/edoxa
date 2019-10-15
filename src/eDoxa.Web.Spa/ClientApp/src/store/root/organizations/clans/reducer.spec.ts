@@ -1,5 +1,6 @@
 import { reducer, initialState } from "./reducer";
 import { LOAD_CLANS_SUCCESS, LOAD_CLANS_FAIL, LOAD_CLAN_SUCCESS, LOAD_CLAN_FAIL, ADD_CLAN_SUCCESS, DOWNLOAD_CLAN_LOGO_SUCCESS, DOWNLOAD_CLAN_LOGO_FAIL, UPLOAD_CLAN_LOGO_SUCCESS } from "./types";
+import { AxiosError } from "axios";
 
 const clans204Data = [];
 const clans200Data = [
@@ -43,12 +44,19 @@ describe("candidatures reducer", () => {
   });
 
   it("should handle LOAD_CLANS_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: LOAD_CLANS_FAIL
+      type: LOAD_CLANS_FAIL,
+      error
     };
     const state = {
       data: initialState.data,
-      error: LOAD_CLANS_FAIL,
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
@@ -70,12 +78,19 @@ describe("candidatures reducer", () => {
   });
 
   it("should handle LOAD_CLAN_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: LOAD_CLAN_FAIL
+      type: LOAD_CLAN_FAIL,
+      error
     };
     const state = {
       data: initialState.data,
-      error: LOAD_CLAN_FAIL,
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
@@ -90,8 +105,6 @@ describe("candidatures reducer", () => {
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 
-  //--------------------------------------------------------------------------------------------------------
-
   it("should handle LOAD_LOGO_SUCCESS", () => {
     const action: any = {
       type: DOWNLOAD_CLAN_LOGO_SUCCESS,
@@ -104,26 +117,28 @@ describe("candidatures reducer", () => {
     };
     expect(reducer(initialState, action)).toEqual(state);
   });
-
   it("should handle LOAD_LOGO_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: DOWNLOAD_CLAN_LOGO_FAIL
+      type: DOWNLOAD_CLAN_LOGO_FAIL,
+      error
     };
     const state = {
       data: initialState.data,
-      error: DOWNLOAD_CLAN_LOGO_FAIL,
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);
   });
-  //--------------------------------------------------------------------------------------------------------
-
   it("should handle UPDATE_LOGO_SUCCESS", () => {
     const action: any = {
       type: UPLOAD_CLAN_LOGO_SUCCESS
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
-
-  //--------------------------------------------------------------------------------------------------------
 });

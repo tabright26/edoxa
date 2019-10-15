@@ -35,7 +35,7 @@ export const reducer: Reducer<PersonalInfoState, PersonalInfoActionTypes> = (sta
       }
     }
     case LOAD_PERSONAL_INFO_FAIL: {
-      return { data: state.data, error: LOAD_PERSONAL_INFO_FAIL, loading: false };
+      return { data: state.data, error: action.error, loading: false };
     }
     case CREATE_PERSONAL_INFO_SUCCESS: {
       return { data: state.data, error: null, loading: false };
