@@ -45,19 +45,14 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> GetAsync(ParticipantId participantId)
         {
-            if (ModelState.IsValid)
+            var responses = await _matchQuery.FetchParticipantMatchResponsesAsync(participantId);
+
+            if (!responses.Any())
             {
-                var responses = await _matchQuery.FetchParticipantMatchResponsesAsync(participantId);
-
-                if (!responses.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(responses);
+                return this.NoContent();
             }
 
-            return this.BadRequest(ModelState);
+            return this.Ok(responses);
         }
     }
 }

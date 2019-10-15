@@ -66,28 +66,25 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteAsync(ClanId clanId)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
             {
-                var userId = HttpContext.GetUserId();
-
-                var clan = await _clanService.FindClanAsync(clanId);
-
-                if (clan == null)
-                {
-                    return this.NotFound("Clan does not exist.");
-                }
-
-                var result = await _clanService.LeaveClanAsync(clan, userId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The user has left his clan.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("Clan does not exist.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _clanService.LeaveClanAsync(clan, userId);
+
+            if (result.IsValid)
+            {
+                return this.Ok("The user has left his clan.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -96,27 +93,25 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpDelete("{memberId}")]
         public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, MemberId memberId)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
             {
-                var userId = HttpContext.GetUserId();
-                var clan = await _clanService.FindClanAsync(clanId);
-
-                if (clan == null)
-                {
-                    return this.NotFound("Clan does not exist.");
-                }
-
-                var result = await _clanService.KickMemberFromClanAsync(userId, clan, memberId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The user has been kicked from this clan.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("Clan does not exist.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _clanService.KickMemberFromClanAsync(userId, clan, memberId);
+
+            if (result.IsValid)
+            {
+                return this.Ok("The user has been kicked from this clan.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

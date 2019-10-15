@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadClans, loadClan, addClan, loadLogo, updateLogo } from "store/root/organizations/clans/actions";
+import { loadClans, loadClan, createClan, downloadClanLogo, uploadClanLogo } from "store/root/organizations/clans/actions";
 import { RootState } from "store/root/types";
 import { show } from "redux-modal";
 
@@ -37,10 +37,10 @@ export const withClans = (ConnectedComponent: FunctionComponent<any>) => {
       actions: {
         loadClans: () => dispatch(loadClans()),
         loadClan: (clanId: string) => dispatch(loadClan(clanId)),
-        addClan: (data: any) => dispatch(addClan(data)).then(loadClans()),
+        addClan: (data: any) => dispatch(createClan(data)).then(loadClans()),
         showCreateAddressModal: () => dispatch(show(CREATE_CLAN_MODAL)),
-        loadLogo: (clanId: string) => dispatch(loadLogo(clanId)),
-        updateLogo: (clanId: string, data: any) => dispatch(updateLogo(clanId, data))
+        loadLogo: (clanId: string) => dispatch(downloadClanLogo(clanId)),
+        updateLogo: (clanId: string, data: any) => dispatch(uploadClanLogo(clanId, data))
       }
     };
   };

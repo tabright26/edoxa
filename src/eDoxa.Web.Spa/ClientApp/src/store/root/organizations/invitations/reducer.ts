@@ -1,6 +1,4 @@
-import { SubmissionError } from "redux-form";
-import { AxiosErrorData } from "store/middlewares/axios/types";
-
+import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import {
   LOAD_INVITATIONS_FAIL,
   LOAD_INVITATIONS_SUCCESS,
@@ -19,7 +17,7 @@ export const initialState = [];
 
 export const reducer = (state = initialState, action: InvitationsActionTypes) => {
   switch (action.type) {
-    case LOAD_INVITATIONS_SUCCESS:
+    case LOAD_INVITATIONS_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -27,25 +25,37 @@ export const reducer = (state = initialState, action: InvitationsActionTypes) =>
         default:
           return data;
       }
-
-    case LOAD_INVITATION_SUCCESS:
-      return [...state, action.payload.data];
-
-    case ADD_INVITATION_FAIL:
-    case ACCEPT_INVITATION_FAIL:
-    case DECLINE_INVITATION_FAIL: {
-      const { isAxiosError, response } = action.error;
-      if (isAxiosError) {
-        throw new SubmissionError<AxiosErrorData>(response.data.errors);
-      }
-      break;
     }
-
-    case ADD_INVITATION_SUCCESS:
-    case ACCEPT_INVITATION_SUCCESS:
-    case DECLINE_INVITATION_SUCCESS:
-    case LOAD_INVITATIONS_FAIL:
-    case LOAD_INVITATION_FAIL:
+    case LOAD_INVITATIONS_FAIL: {
+      return state;
+    }
+    case LOAD_INVITATION_SUCCESS: {
+      return [...state, action.payload.data];
+    }
+    case LOAD_INVITATION_FAIL: {
+      return state;
+    }
+    case ADD_INVITATION_SUCCESS: {
+      return state;
+    }
+    case ADD_INVITATION_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
+    case ACCEPT_INVITATION_SUCCESS: {
+      return state;
+    }
+    case ACCEPT_INVITATION_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
+    case DECLINE_INVITATION_SUCCESS: {
+      return state;
+    }
+    case DECLINE_INVITATION_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
     default: {
       return state;
     }

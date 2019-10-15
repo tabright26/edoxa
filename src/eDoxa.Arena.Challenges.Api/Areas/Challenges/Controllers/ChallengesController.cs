@@ -47,19 +47,14 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> GetAsync(ChallengeGame? game = null, ChallengeState? state = null)
         {
-            if (ModelState.IsValid)
+            var responses = await _challengeQuery.FetchChallengeResponsesAsync(game, state);
+
+            if (!responses.Any())
             {
-                var responses = await _challengeQuery.FetchChallengeResponsesAsync(game, state);
-
-                if (!responses.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(responses);
+                return this.NoContent();
             }
 
-            return this.BadRequest(ModelState);
+            return this.Ok(responses);
         }
 
         /// <summary>
@@ -72,19 +67,14 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
         {
-            if (ModelState.IsValid)
+            var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+
+            if (response == null)
             {
-                var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
-
-                if (response == null)
-                {
-                    return this.NotFound("Challenge not found.");
-                }
-
-                return this.Ok(response);
+                return this.NotFound("Challenge not found.");
             }
 
-            return this.BadRequest(ModelState);
+            return this.Ok(response);
         }
     }
 }

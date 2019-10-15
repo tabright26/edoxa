@@ -44,19 +44,14 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
         {
-            if (ModelState.IsValid)
+            var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+
+            if (response == null)
             {
-                var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
-
-                if (response == null)
-                {
-                    return this.NotFound("Challenge not found.");
-                }
-
-                return this.Ok(response);
+                return this.NotFound("Challenge not found.");
             }
 
-            return this.BadRequest(ModelState);
+            return this.Ok(response);
         }
     }
 }

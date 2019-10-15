@@ -1,6 +1,5 @@
-import { AxiosErrorData } from "store/middlewares/axios/types";
-import { SubmissionError } from "redux-form";
 import { LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS, LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL, WITHDRAWAL_TOKEN_SUCCESS, WITHDRAWAL_TOKEN_FAIL, WithdrawalState, WithdrawalActionTypes } from "./types";
+import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import { Currency } from "../types";
 
 export const initialState: WithdrawalState = {
@@ -14,15 +13,16 @@ export const reducer = (state = initialState, action: WithdrawalActionTypes): Wi
       amounts.set("money", action.payload.data);
       return { amounts };
     }
-    case WITHDRAWAL_TOKEN_FAIL: {
-      const { isAxiosError, response } = action.error;
-      if (isAxiosError) {
-        throw new SubmissionError<AxiosErrorData>(response.data.errors);
-      }
-      break;
+    case LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL: {
+      return state;
     }
-    case WITHDRAWAL_TOKEN_SUCCESS:
-    case LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL:
+    case WITHDRAWAL_TOKEN_SUCCESS: {
+      return state;
+    }
+    case WITHDRAWAL_TOKEN_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
     default: {
       return state;
     }

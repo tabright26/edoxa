@@ -1,6 +1,4 @@
-import { SubmissionError } from "redux-form";
-import { AxiosErrorData } from "store/middlewares/axios/types";
-
+import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import {
   LOAD_CANDIDATURES_SUCCESS,
   LOAD_CANDIDATURES_FAIL,
@@ -19,7 +17,7 @@ export const initialState = [];
 
 export const reducer = (state = initialState, action: CandidaturesActionTypes) => {
   switch (action.type) {
-    case LOAD_CANDIDATURES_SUCCESS:
+    case LOAD_CANDIDATURES_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -27,25 +25,37 @@ export const reducer = (state = initialState, action: CandidaturesActionTypes) =
         default:
           return data;
       }
-
-    case LOAD_CANDIDATURE_SUCCESS:
-      return [...state, action.payload.data];
-
-    case ADD_CANDIDATURE_FAIL:
-    case ACCEPT_CANDIDATURE_FAIL:
-    case DECLINE_CANDIDATURE_FAIL: {
-      const { isAxiosError, response } = action.error;
-      if (isAxiosError) {
-        throw new SubmissionError<AxiosErrorData>(response.data.errors);
-      }
-      break;
     }
-
-    case ADD_CANDIDATURE_SUCCESS:
-    case ACCEPT_CANDIDATURE_SUCCESS:
-    case DECLINE_CANDIDATURE_SUCCESS:
-    case LOAD_CANDIDATURES_FAIL:
-    case LOAD_CANDIDATURE_FAIL:
+    case LOAD_CANDIDATURES_FAIL: {
+      return state;
+    }
+    case LOAD_CANDIDATURE_SUCCESS: {
+      return [...state, action.payload.data];
+    }
+    case LOAD_CANDIDATURE_FAIL: {
+      return state;
+    }
+    case ADD_CANDIDATURE_SUCCESS: {
+      return state;
+    }
+    case ADD_CANDIDATURE_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
+    case ACCEPT_CANDIDATURE_SUCCESS: {
+      return state;
+    }
+    case ACCEPT_CANDIDATURE_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
+    case DECLINE_CANDIDATURE_SUCCESS: {
+      return state;
+    }
+    case DECLINE_CANDIDATURE_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
     default: {
       return state;
     }

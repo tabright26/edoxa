@@ -4,7 +4,7 @@ export const initialState = [];
 
 export const reducer = (state = initialState, action: ChallengesActionTypes) => {
   switch (action.type) {
-    case LOAD_CHALLENGES_SUCCESS:
+    case LOAD_CHALLENGES_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -12,11 +12,18 @@ export const reducer = (state = initialState, action: ChallengesActionTypes) => 
         default:
           return data;
       }
-    case LOAD_CHALLENGE_SUCCESS:
-      return [...state, action.payload.data];
-    case LOAD_CHALLENGE_FAIL:
-    case LOAD_CHALLENGES_FAIL:
-    default:
+    }
+    case LOAD_CHALLENGES_FAIL: {
       return state;
+    }
+    case LOAD_CHALLENGE_SUCCESS: {
+      return [...state, action.payload.data];
+    }
+    case LOAD_CHALLENGE_FAIL: {
+      return state;
+    }
+    default: {
+      return state;
+    }
   }
 };

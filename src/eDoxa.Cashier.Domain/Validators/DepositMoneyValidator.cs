@@ -21,6 +21,7 @@ namespace eDoxa.Cashier.Domain.Validators
         {
             this.RuleFor(account => account)
                 .Must(new DailyMoneyDepositUnavailableSpecification().Not().IsSatisfiedBy)
+                .WithName("_error")
                 .WithMessage(account => $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
         }
     }

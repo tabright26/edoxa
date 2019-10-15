@@ -57,7 +57,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
             if (await _invitationRepository.ExistsAsync(ownerId, clanId))
             {
-                return new ValidationFailure(string.Empty, "The invitation from this clan to that member already exist.").ToResult();
+                return new ValidationFailure("_error", "The invitation from this clan to that member already exist.").ToResult();
             }
 
             var invitation = new Invitation(userId, clanId);

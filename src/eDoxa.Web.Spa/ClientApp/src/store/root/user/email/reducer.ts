@@ -8,9 +8,12 @@ export const initialState = {
 
 export const reducer: Reducer<EmailState, EmailActionTypes> = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_EMAIL_SUCCESS:
+    case LOAD_EMAIL_SUCCESS: {
       return action.payload.data;
-    case LOAD_EMAIL_FAIL:
+    }
+    case LOAD_EMAIL_FAIL: {
+      return state;
+    }
     default: {
       return state;
     }

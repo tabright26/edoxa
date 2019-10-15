@@ -12,13 +12,13 @@ export const ADD_CLAN = "ADD_CLAN";
 export const ADD_CLAN_SUCCESS = "ADD_CLAN_SUCCESS";
 export const ADD_CLAN_FAIL = "ADD_CLAN_FAIL";
 
-export const LOAD_LOGO = "LOAD_LOGO";
-export const LOAD_LOGO_SUCCESS = "LOAD_LOGO_SUCCESS";
-export const LOAD_LOGO_FAIL = "LOAD_LOGO_FAIL";
+export const DOWNLOAD_CLAN_LOGO = "DOWNLOAD_CLAN_LOGO";
+export const DOWNLOAD_CLAN_LOGO_SUCCESS = "DOWNLOAD_CLAN_LOGO_SUCCESS";
+export const DOWNLOAD_CLAN_LOGO_FAIL = "DOWNLOAD_CLAN_LOGO_FAIL";
 
-export const UPDATE_LOGO = "UPDATE_LOGO";
-export const UPDATE_LOGO_SUCCESS = "UPDATE_LOGO_SUCCESS";
-export const UPDATE_LOGO_FAIL = "UPDATE_LOGO_FAIL";
+export const UPLOAD_CLAN_LOGO = "UPLOAD_CLAN_LOGO";
+export const UPLOAD_CLAN_LOGO_SUCCESS = "UPLOAD_CLAN_LOGO_SUCCESS";
+export const UPLOAD_CLAN_LOGO_FAIL = "UPLOAD_CLAN_LOGO_FAIL";
 
 type LoadClansType = typeof LOAD_CLANS | typeof LOAD_CLANS_SUCCESS | typeof LOAD_CLANS_FAIL;
 
@@ -44,24 +44,24 @@ interface AddClanAction extends AxiosAction<AddClanType> {}
 
 //------------------------------------------------------------------------------------------------
 
-type LoadLogoType = typeof LOAD_LOGO | typeof LOAD_LOGO_SUCCESS | typeof LOAD_LOGO_FAIL;
+type DownloadClanLogoType = typeof DOWNLOAD_CLAN_LOGO | typeof DOWNLOAD_CLAN_LOGO_SUCCESS | typeof DOWNLOAD_CLAN_LOGO_FAIL;
 
-interface LoadLogoActionCreator extends AxiosActionCreator<LoadLogoType> {}
+interface DownloadClanLogoActionCreator extends AxiosActionCreator<DownloadClanLogoType> {}
 
-interface LoadLogoAction extends AxiosAction<LoadLogoType> {}
-
-//----------------------------------------------------------------------------------------------
-
-type UpdateLogoType = typeof UPDATE_LOGO | typeof UPDATE_LOGO_SUCCESS | typeof UPDATE_LOGO_FAIL;
-
-interface UpdateLogoActionCreator extends AxiosActionCreator<UpdateLogoType> {}
-
-interface UpdateLogoAction extends AxiosAction<UpdateLogoType> {}
+interface DownloadClanLogoAction extends AxiosAction<DownloadClanLogoType> {}
 
 //----------------------------------------------------------------------------------------------
 
-export type ClansActionCreators = LoadClansActionCreator | LoadClanActionCreator | AddClanActionCreator | LoadLogoActionCreator | UpdateLogoActionCreator;
+type UploadClanLogoType = typeof UPLOAD_CLAN_LOGO | typeof UPLOAD_CLAN_LOGO_SUCCESS | typeof UPLOAD_CLAN_LOGO_FAIL;
 
-export type ClansActionTypes = LoadClansAction | LoadClanAction | AddClanAction | LoadLogoAction | UpdateLogoAction;
+interface UploadClanLogoActionCreator extends AxiosActionCreator<UploadClanLogoType> {}
+
+interface UploadClanLogoAction extends AxiosAction<UploadClanLogoType> {}
+
+//----------------------------------------------------------------------------------------------
+
+export type ClansActionCreators = LoadClansActionCreator | LoadClanActionCreator | AddClanActionCreator | DownloadClanLogoActionCreator | UploadClanLogoActionCreator;
+
+export type ClansActionTypes = LoadClansAction | LoadClanAction | AddClanAction | DownloadClanLogoAction | UploadClanLogoAction;
 
 export interface ClansState {}

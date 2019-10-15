@@ -68,21 +68,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] PhonePostRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            var result = await _userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
+
+            if (result.Succeeded)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var result = await _userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok("The user's phone number has been changed.");
-                }
-
-                ModelState.Bind(result);
+                return this.Ok("The user's phone number has been changed.");
             }
 
-            return this.BadRequest(ModelState);
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

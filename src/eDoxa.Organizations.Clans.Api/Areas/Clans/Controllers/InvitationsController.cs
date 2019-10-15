@@ -97,21 +97,18 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync(InvitationPostRequest request)
         {
-            if (ModelState.IsValid)
+            var ownerId = HttpContext.GetUserId();
+
+            var result = await _invitationService.SendInvitationAsync(request.ClanId, request.UserId, ownerId);
+
+            if (result.IsValid)
             {
-                var ownerId = HttpContext.GetUserId();
-
-                var result = await _invitationService.SendInvitationAsync(request.ClanId, request.UserId, ownerId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The invitation as been sent.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.Ok("The invitation as been sent.");
             }
 
-            return this.BadRequest(ModelState);
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -120,28 +117,25 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpPost("{invitationId}")]
         public async Task<IActionResult> PostByIdAsync(InvitationId invitationId)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var invitation = await _invitationService.FindInvitationAsync(invitationId);
+
+            if (invitation == null)
             {
-                var userId = HttpContext.GetUserId();
-
-                var invitation = await _invitationService.FindInvitationAsync(invitationId);
-
-                if (invitation == null)
-                {
-                    return this.NotFound("The invitation was not found.");
-                }
-
-                var result = await _invitationService.AcceptInvitationAsync(invitation, userId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The invitation has been accepted.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("The invitation was not found.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _invitationService.AcceptInvitationAsync(invitation, userId);
+
+            if (result.IsValid)
+            {
+                return this.Ok("The invitation has been accepted.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -150,28 +144,25 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpDelete("{invitationId}")]
         public async Task<IActionResult> DeleteByIdAsync(InvitationId invitationId)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var invitation = await _invitationService.FindInvitationAsync(invitationId);
+
+            if (invitation == null)
             {
-                var userId = HttpContext.GetUserId();
-
-                var invitation = await _invitationService.FindInvitationAsync(invitationId);
-
-                if (invitation == null)
-                {
-                    return this.NotFound("The invitation was not found.");
-                }
-
-                var result = await _invitationService.DeclineInvitationAsync(invitation, userId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The invitation has been declined.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("The invitation was not found.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _invitationService.DeclineInvitationAsync(invitation, userId);
+
+            if (result.IsValid)
+            {
+                return this.Ok("The invitation has been declined.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

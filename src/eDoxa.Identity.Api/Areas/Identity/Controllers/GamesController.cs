@@ -62,26 +62,23 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(Game game, [FromBody] GamePostRequest model)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                if (user == null)
-                {
-                    return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-                }
-
-                var result = await _userManager.AddGameAsync(user, game.Name, model.PlayerId);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok($"The user's {game} playerId has been added.");
-                }
-
-                ModelState.Bind(result);
+                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _userManager.AddGameAsync(user, game.Name, model.PlayerId);
+
+            if (result.Succeeded)
+            {
+                return this.Ok($"The user's {game} playerId has been added.");
+            }
+
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
 
         [HttpDelete("{game}")]
@@ -90,26 +87,23 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteAsync(Game game)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                if (user == null)
-                {
-                    return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-                }
-
-                var result = await _userManager.RemoveGameAsync(user, game);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok($"The user's {game} playerId has been removed.");
-                }
-
-                ModelState.Bind(result);
+                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _userManager.RemoveGameAsync(user, game);
+
+            if (result.Succeeded)
+            {
+                return this.Ok($"The user's {game} playerId has been removed.");
+            }
+
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

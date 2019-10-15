@@ -4,12 +4,16 @@ export const initialState = { money: { available: 0, pending: 0 }, token: { avai
 
 export const reducer = (state = initialState, action: BalanceActionTypes) => {
   switch (action.type) {
-    case LOAD_USER_ACCOUNT_BALANCE_SUCCESS:
+    case LOAD_USER_ACCOUNT_BALANCE_SUCCESS: {
       const { currency, available, pending } = action.payload.data;
       state[currency.toLowerCase()] = { available, pending };
       return state;
-    case LOAD_USER_ACCOUNT_BALANCE_FAIL:
-    default:
+    }
+    case LOAD_USER_ACCOUNT_BALANCE_FAIL: {
       return state;
+    }
+    default: {
+      return state;
+    }
   }
 };

@@ -23,10 +23,12 @@ namespace eDoxa.Arena.Challenges.Domain.Validators
         {
             this.RuleFor(challenge => challenge)
                 .Must(challenge => challenge.Participants.All(participant => participant.UserId != userId))
+                .WithName("_error")
                 .WithMessage("The user already is registered.");
 
             this.RuleFor(challenge => challenge)
                 .Must(challenge => challenge.Participants.Count < challenge.Entries)
+                .WithName("_error")
                 .WithMessage("Challenge register is not available.");
         }
     }

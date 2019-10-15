@@ -60,21 +60,18 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync(ClanPostRequest request)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var result = await _clanService.CreateClanAsync(userId, request.Name);
+
+            if (result.IsValid)
             {
-                var userId = HttpContext.GetUserId();
-
-                var result = await _clanService.CreateClanAsync(userId, request.Name);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The clan has been created.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.Ok("The clan has been created.");
             }
 
-            return this.BadRequest(ModelState);
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>

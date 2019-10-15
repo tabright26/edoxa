@@ -8,12 +8,12 @@ import {
   ADD_CLAN,
   ADD_CLAN_SUCCESS,
   ADD_CLAN_FAIL,
-  LOAD_LOGO,
-  LOAD_LOGO_SUCCESS,
-  LOAD_LOGO_FAIL,
-  UPDATE_LOGO,
-  UPDATE_LOGO_SUCCESS,
-  UPDATE_LOGO_FAIL,
+  DOWNLOAD_CLAN_LOGO,
+  DOWNLOAD_CLAN_LOGO_SUCCESS,
+  DOWNLOAD_CLAN_LOGO_FAIL,
+  UPLOAD_CLAN_LOGO,
+  UPLOAD_CLAN_LOGO_SUCCESS,
+  UPLOAD_CLAN_LOGO_FAIL,
   ClansActionCreators
 } from "./types";
 
@@ -41,7 +41,7 @@ export function loadClan(clanId: string): ClansActionCreators {
   };
 }
 
-export function addClan(data: any): ClansActionCreators {
+export function createClan(data: any): ClansActionCreators {
   return {
     types: [ADD_CLAN, ADD_CLAN_SUCCESS, ADD_CLAN_FAIL],
     payload: {
@@ -54,9 +54,9 @@ export function addClan(data: any): ClansActionCreators {
   };
 }
 
-export function loadLogo(clanId: string): ClansActionCreators {
+export function downloadClanLogo(clanId: string): ClansActionCreators {
   return {
-    types: [LOAD_LOGO, LOAD_LOGO_SUCCESS, LOAD_LOGO_FAIL],
+    types: [DOWNLOAD_CLAN_LOGO, DOWNLOAD_CLAN_LOGO_SUCCESS, DOWNLOAD_CLAN_LOGO_FAIL],
     payload: {
       request: {
         method: "GET",
@@ -66,9 +66,9 @@ export function loadLogo(clanId: string): ClansActionCreators {
   };
 }
 
-export function updateLogo(clanId: string, data: any): ClansActionCreators {
+export function uploadClanLogo(clanId: string, data: any): ClansActionCreators {
   return {
-    types: [UPDATE_LOGO, UPDATE_LOGO_SUCCESS, UPDATE_LOGO_FAIL],
+    types: [UPLOAD_CLAN_LOGO, UPLOAD_CLAN_LOGO_SUCCESS, UPLOAD_CLAN_LOGO_FAIL],
     payload: {
       request: {
         method: "POST",

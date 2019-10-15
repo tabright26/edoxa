@@ -1,4 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { SubmissionError } from "redux-form";
 
 export interface AxiosPayload {
   request: AxiosRequestConfig;
@@ -9,14 +10,38 @@ export interface AxiosActionCreator<T> {
 }
 
 export interface AxiosErrorData {
-  errors: { [key: string]: string[] };
   status: number;
   title: string;
-  traceId: string;
+  errors?: { [key: string]: string[] };
+  traceId?: string;
 }
 
 export interface AxiosAction<ActionType> {
   type: ActionType;
   payload: AxiosResponse;
   error: AxiosError<AxiosErrorData>;
+}
+
+export function throwAxiosSubmissionError(error: AxiosError<AxiosErrorData>): void {
+  const { isAxiosError, response } = error;
+  if (isAxiosError) {
+    const { data, status } = response;
+    switch (status) {
+      case 400: {
+        delete data.errors[""];
+        if (data.errors && !data.errors.length) {
+          throw new SubmissionError<AxiosErrorData>(response.data.errors);
+        } else {
+          throw new SubmissionError<AxiosErrorData>({ _error: data.title });
+        }
+      }
+      case 404: {
+        break;
+      }
+      case 415:
+      default: {
+        throw new SubmissionError<AxiosErrorData>({ _error: "Something went wrong. You should try again later ..." });
+      }
+    }
+  }
 }

@@ -1,5 +1,3 @@
-import { AxiosErrorData } from "store/middlewares/axios/types";
-import { SubmissionError } from "redux-form";
 import {
   LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS,
   LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL,
@@ -12,6 +10,7 @@ import {
   DepositState,
   DepositActionTypes
 } from "./types";
+import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import { Currency } from "../types";
 
 export const initialState: DepositState = {
@@ -25,23 +24,33 @@ export const reducer = (state = initialState, action: DepositActionTypes): Depos
       amounts.set("money", action.payload.data);
       return { amounts };
     }
+    case LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
     case LOAD_DEPOSIT_TOKEN_AMOUNTS_SUCCESS: {
       const amounts = new Map<Currency, number[]>(state.amounts);
       amounts.set("token", action.payload.data);
       return { amounts };
     }
-    case DEPOSIT_MONEY_FAIL:
-    case DEPOSIT_TOKEN_FAIL: {
-      const { isAxiosError, response } = action.error;
-      if (isAxiosError) {
-        throw new SubmissionError<AxiosErrorData>(response.data.errors);
-      }
-      break;
+    case LOAD_DEPOSIT_TOKEN_AMOUNTS_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
     }
-    case DEPOSIT_MONEY_SUCCESS:
-    case DEPOSIT_TOKEN_SUCCESS:
-    case LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL:
-    case LOAD_DEPOSIT_TOKEN_AMOUNTS_FAIL:
+    case DEPOSIT_MONEY_SUCCESS: {
+      return state;
+    }
+    case DEPOSIT_MONEY_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
+    case DEPOSIT_TOKEN_SUCCESS: {
+      return state;
+    }
+    case DEPOSIT_TOKEN_FAIL: {
+      throwAxiosSubmissionError(action.error);
+      return state;
+    }
     default: {
       return state;
     }

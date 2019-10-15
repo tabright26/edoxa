@@ -1,4 +1,5 @@
 import { reducer, initialState } from "./reducer";
+import { LOAD_CLANS_SUCCESS, LOAD_CLANS_FAIL, LOAD_CLAN_SUCCESS, LOAD_CLAN_FAIL, ADD_CLAN_SUCCESS, DOWNLOAD_CLAN_LOGO_SUCCESS, DOWNLOAD_CLAN_LOGO_FAIL, UPLOAD_CLAN_LOGO_SUCCESS } from "./types";
 
 const clans204Data = [];
 const clans200Data = [
@@ -22,7 +23,7 @@ describe("candidatures reducer", () => {
 
   it("should handle LOAD_CLANS_SUCCESS 204", () => {
     const action: any = {
-      type: "LOAD_CLANS_SUCCESS",
+      type: LOAD_CLANS_SUCCESS,
       payload: { status: 204, data: clans204Data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
@@ -30,7 +31,7 @@ describe("candidatures reducer", () => {
 
   it("should handle LOAD_CLANS_SUCCESS 200", () => {
     const action: any = {
-      type: "LOAD_CLANS_SUCCESS",
+      type: LOAD_CLANS_SUCCESS,
       payload: { status: 200, data: clans200Data }
     };
     expect(reducer(initialState, action)).toEqual(clans200Data);
@@ -38,7 +39,7 @@ describe("candidatures reducer", () => {
 
   it("should handle LOAD_CLANS_FAIL", () => {
     const action: any = {
-      type: "LOAD_CLANS_FAIL"
+      type: LOAD_CLANS_FAIL
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
@@ -47,7 +48,7 @@ describe("candidatures reducer", () => {
 
   it("should handle LOAD_CLAN_SUCCESS", () => {
     const action: any = {
-      type: "LOAD_CLAN_SUCCESS",
+      type: LOAD_CLAN_SUCCESS,
       payload: { data: clan200Data }
     };
     expect(reducer(initialState, action)).toEqual([...initialState, clan200Data]);
@@ -55,7 +56,7 @@ describe("candidatures reducer", () => {
 
   it("should handle LOAD_CLAN_FAIL", () => {
     const action: any = {
-      type: "LOAD_CLAN_FAIL"
+      type: LOAD_CLAN_FAIL
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
@@ -64,7 +65,7 @@ describe("candidatures reducer", () => {
 
   it("should handle ADD_CLAN_SUCCESS", () => {
     const action: any = {
-      type: "ADD_CLAN_SUCCESS"
+      type: ADD_CLAN_SUCCESS
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
@@ -73,7 +74,7 @@ describe("candidatures reducer", () => {
 
   it("should handle LOAD_LOGO_SUCCESS", () => {
     const action: any = {
-      type: "LOAD_LOGO_SUCCESS",
+      type: DOWNLOAD_CLAN_LOGO_SUCCESS,
       payload: { data: logo200Data }
     };
     expect(reducer(initialState, action)).toEqual([...initialState, logo200Data]);
@@ -81,7 +82,7 @@ describe("candidatures reducer", () => {
 
   it("should handle LOAD_LOGO_FAIL", () => {
     const action: any = {
-      type: "LOAD_LOGO_FAIL"
+      type: DOWNLOAD_CLAN_LOGO_FAIL
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
@@ -89,7 +90,7 @@ describe("candidatures reducer", () => {
 
   it("should handle UPDATE_LOGO_SUCCESS", () => {
     const action: any = {
-      type: "UPDATE_LOGO_SUCCESS"
+      type: UPLOAD_CLAN_LOGO_SUCCESS
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });

@@ -97,21 +97,18 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync(CandidaturePostRequest request)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var result = await _candidatureService.SendCandidatureAsync(userId, request.ClanId);
+
+            if (result.IsValid)
             {
-                var userId = HttpContext.GetUserId();
-
-                var result = await _candidatureService.SendCandidatureAsync(userId, request.ClanId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The candidature as been sent.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.Ok("The candidature as been sent.");
             }
 
-            return this.BadRequest(ModelState);
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -120,28 +117,25 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpPost("{candidatureId}")]
         public async Task<IActionResult> PostByIdAsync(CandidatureId candidatureId)
         {
-            if (ModelState.IsValid)
+            var ownerId = HttpContext.GetUserId();
+
+            var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
+
+            if (candidature == null)
             {
-                var ownerId = HttpContext.GetUserId();
-
-                var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
-
-                if (candidature == null)
-                {
-                    return this.NotFound("The candidature was not found.");
-                }
-
-                var result = await _candidatureService.AcceptCandidatureAsync(candidature, ownerId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The candidature has been accepted.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("The candidature was not found.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _candidatureService.AcceptCandidatureAsync(candidature, ownerId);
+
+            if (result.IsValid)
+            {
+                return this.Ok("The candidature has been accepted.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -150,28 +144,25 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpDelete("{candidatureId}")]
         public async Task<IActionResult> DeleteByIdAsync(CandidatureId candidatureId)
         {
-            if (ModelState.IsValid)
+            var ownerId = HttpContext.GetUserId();
+
+            var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
+
+            if (candidature == null)
             {
-                var ownerId = HttpContext.GetUserId();
-
-                var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
-
-                if (candidature == null)
-                {
-                    return this.NotFound("The candidature was not found.");
-                }
-
-                var result = await _candidatureService.DeclineCandidatureAsync(candidature, ownerId);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The candidature has been declined.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("The candidature was not found.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _candidatureService.DeclineCandidatureAsync(candidature, ownerId);
+
+            if (result.IsValid)
+            {
+                return this.Ok("The candidature has been declined.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

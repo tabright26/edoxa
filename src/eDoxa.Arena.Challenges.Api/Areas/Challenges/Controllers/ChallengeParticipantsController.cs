@@ -74,23 +74,18 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
+
+            if (challenge == null)
             {
-                var userId = HttpContext.GetUserId();
-
-                var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
-
-                if (challenge == null)
-                {
-                    return this.NotFound("Challenge not found.");
-                }
-
-                await _challengeService.RegisterParticipantAsync(challengeId, userId, new UtcNowDateTimeProvider());
-
-                return this.Ok("Participant as been registered.");
+                return this.NotFound("Challenge not found.");
             }
 
-            return this.BadRequest(ModelState);
+            await _challengeService.RegisterParticipantAsync(challengeId, userId, new UtcNowDateTimeProvider());
+
+            return this.Ok("Participant as been registered.");
         }
     }
 }

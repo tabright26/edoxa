@@ -69,33 +69,30 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] PersonalInfoPostRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            var personalInfo = await _userManager.GetPersonalInfoAsync(user);
+
+            if (personalInfo != null)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var personalInfo = await _userManager.GetPersonalInfoAsync(user);
-
-                if (personalInfo != null)
-                {
-                    return this.BadRequest("The user's personal information has already been created.");
-                }
-
-                var result = await _userManager.CreatePersonalInfoAsync(
-                    user,
-                    request.FirstName,
-                    request.LastName,
-                    request.Gender,
-                    request.BirthDate);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok("The user's personal info has been created.");
-                }
-
-                ModelState.Bind(result);
+                return this.BadRequest("The user's personal information has already been created.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _userManager.CreatePersonalInfoAsync(
+                user,
+                request.FirstName,
+                request.LastName,
+                request.Gender,
+                request.BirthDate);
+
+            if (result.Succeeded)
+            {
+                return this.Ok("The user's personal info has been created.");
+            }
+
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -107,28 +104,25 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PutAsync([FromBody] PersonalInfoPutRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            var personalInfo = await _userManager.GetPersonalInfoAsync(user);
+
+            if (personalInfo == null)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var personalInfo = await _userManager.GetPersonalInfoAsync(user);
-
-                if (personalInfo == null)
-                {
-                    return this.BadRequest("The user's personal informations does not exist.");
-                }
-
-                var result = await _userManager.UpdatePersonalInfoAsync(user, request.FirstName);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok("The user's personal info has been updated.");
-                }
-
-                ModelState.Bind(result);
+                return this.BadRequest("The user's personal informations does not exist.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _userManager.UpdatePersonalInfoAsync(user, request.FirstName);
+
+            if (result.Succeeded)
+            {
+                return this.Ok("The user's personal info has been updated.");
+            }
+
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }
