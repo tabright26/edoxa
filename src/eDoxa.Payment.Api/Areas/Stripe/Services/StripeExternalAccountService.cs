@@ -1,5 +1,5 @@
 ﻿// Filename: StripeExternalAccountService.cs
-// Date Created: 2019-10-08
+// Date Created: 2019-10-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,7 +7,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Services;
 
 using Stripe;
 
@@ -15,38 +15,37 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
 {
     public sealed class StripeExternalAccountService : ExternalAccountService, IStripeExternalAccountService
     {
-        public async Task<StripeList<IExternalAccount>> FetchBankAccountsAsync(string accountId)
+        public async Task<IExternalAccount?> FindBankAccountAsync(string accountId)
         {
-            return await this.ListAsync(
+            var bankAccounts = await this.ListAsync(
                 accountId,
                 new ExternalAccountListOptions
                 {
-                    Limit = 1,
                     ExtraParams =
                     {
                         ["object"] = "bank_account"
                     }
                 });
+
+            return bankAccounts.FirstOrDefault();
         }
 
-        public async Task<IExternalAccount> ChangeBankAccountAsync(string accountId, string token)
+        public async Task<IExternalAccount> UpdateBankAccountAsync(string accountId, string token)
         {
-            var externalAccounts = await this.FetchBankAccountsAsync(accountId);
+            var bankAccount = await this.FindBankAccountAsync(accountId);
 
-            var externalAccount = await this.CreateAsync(
+            if (bankAccount != null)
+            {
+                await this.DeleteBankAccountAsync(accountId, bankAccount.Id);
+            }
+
+            return await this.CreateAsync(
                 accountId,
                 new ExternalAccountCreateOptions
                 {
                     ExternalAccount = token,
                     DefaultForCurrency = true
                 });
-
-            if (externalAccounts.Any())
-            {
-                await this.DeleteBankAccountAsync(accountId, externalAccounts.First().Id);
-            }
-
-            return externalAccount;
         }
 
         private async Task DeleteBankAccountAsync(string accountId, string bankAccountId)

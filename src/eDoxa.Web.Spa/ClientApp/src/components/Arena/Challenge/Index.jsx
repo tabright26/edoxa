@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Row, Col, Card, CardHeader } from "reactstrap";
-import { connectArenaChallenges } from "store/arena/challenges/container";
+import { connectArenaChallenges } from "store/root/arena/challenges/container";
 
 import ChallengeItem from "./Item";
 

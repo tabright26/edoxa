@@ -10,15 +10,16 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 namespace eDoxa.Payment.Api.Infrastructure.Data.Storage
 {
     public sealed class FileStorage
     {
-        private static Lazy<IImmutableSet<User>> LazyUsers =>
-            new Lazy<IImmutableSet<User>>(
+        private static Lazy<IImmutableSet<StripeReference>> LazyStripeReferences =>
+            new Lazy<IImmutableSet<StripeReference>>(
                 () =>
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -32,15 +33,15 @@ namespace eDoxa.Payment.Api.Infrastructure.Data.Storage
                             {
                                 Id = default(Guid)
                             })
-                        .Select(record => new User(UserId.FromGuid(record.Id)))
+                        .Select(record => new StripeReference(UserId.FromGuid(record.Id), "customerId", "accountId"))
                         .ToImmutableHashSet();
                 });
 
-        public static IImmutableSet<User> Users => LazyUsers.Value;
+        public static IImmutableSet<StripeReference> StripeReferences => LazyStripeReferences.Value;
 
-        public IImmutableSet<User> GetUsers()
+        public IImmutableSet<StripeReference> GetStripeReferences()
         {
-            return Users;
+            return StripeReferences;
         }
     }
 }

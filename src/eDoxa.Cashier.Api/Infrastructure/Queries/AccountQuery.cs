@@ -20,6 +20,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using LinqKit;
 

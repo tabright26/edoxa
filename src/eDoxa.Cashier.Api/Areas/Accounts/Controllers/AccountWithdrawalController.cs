@@ -44,30 +44,27 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(Currency currency, [FromBody] decimal amount)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var email = HttpContext.GetEmail();
+
+            var account = await _accountService.FindUserAccountAsync(userId);
+
+            if (account == null)
             {
-                var userId = HttpContext.GetUserId();
-
-                var email = HttpContext.GetEmail();
-
-                var account = await _accountService.FindUserAccountAsync(userId);
-
-                if (account == null)
-                {
-                    return this.NotFound("User's account not found.");
-                }
-
-                var result = await _accountService.WithdrawalAsync(account, currency.Format(amount), email);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("Processing the deposit transaction...");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("User's account not found.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _accountService.WithdrawalAsync(account, currency.Format(amount), email);
+
+            if (result.IsValid)
+            {
+                return this.Ok("Processing the deposit transaction...");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
 
         [HttpGet("amounts")]

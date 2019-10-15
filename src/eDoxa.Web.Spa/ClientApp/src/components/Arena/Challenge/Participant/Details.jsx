@@ -2,7 +2,7 @@ import React from "react";
 import { CardBody } from "reactstrap";
 
 //import Format from "Shared/Format";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 
 //import Matches from "./Match/Index";
 

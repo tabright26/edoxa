@@ -310,6 +310,18 @@
 	<s:String x:Key="/Default/FilterSettingsManager/CoverageFilterXml/@EntryValue">&lt;data&gt;&lt;IncludeFilters /&gt;&lt;ExcludeFilters /&gt;&lt;/data&gt;</s:String>
 	<s:Boolean x:Key="/Default/Housekeeping/ExtensionManager/IncludePrereleasePackages/@EntryValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/Housekeeping/ProjectModelSynchronizer/ReadProjectModelFromDisk/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=2C652FEA67EE464EAC534DE3E686E33F/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=2C652FEA67EE464EAC534DE3E686E33F/Color/@EntryValue">207, 157, 50</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=2C652FEA67EE464EAC534DE3E686E33F/MatchComments/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=2C652FEA67EE464EAC534DE3E686E33F/Name/@EntryValue">Gabriel</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=2C652FEA67EE464EAC534DE3E686E33F/Pattern/@EntryValue">(?&lt;=\W|^)(?&lt;TAG&gt;GABRIEL)(\W|$)(.*)</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=2C652FEA67EE464EAC534DE3E686E33F/TodoIconStyle/@EntryValue">Normal</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=FDE5B4F3AB4FD24A8D0B298A28000CCF/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=FDE5B4F3AB4FD24A8D0B298A28000CCF/Color/@EntryValue">207, 157, 50</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=FDE5B4F3AB4FD24A8D0B298A28000CCF/MatchComments/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=FDE5B4F3AB4FD24A8D0B298A28000CCF/Name/@EntryValue">Francis</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=FDE5B4F3AB4FD24A8D0B298A28000CCF/Pattern/@EntryValue">(?&lt;=\W|^)(?&lt;TAG&gt;FRANCIS)(\W|$)(.*)</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/Todo/TodoPatterns/=FDE5B4F3AB4FD24A8D0B298A28000CCF/TodoIconStyle/@EntryValue">Normal</s:String>
 		
 
 	

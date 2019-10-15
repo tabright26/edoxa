@@ -2,7 +2,7 @@ import React from "react";
 import { toastr } from "react-redux-toastr";
 import { Col } from "reactstrap";
 
-import InvitationForm from "forms/Organizations/Invitations";
+import InvitationForm from "forms/Organization/Invitation";
 
 const InvitationWidget = ({ actions, invitations, doxaTags, clanId }) => {
   const findDoxaTag = (name, code) => {

@@ -19,11 +19,11 @@ namespace eDoxa.Payment.Api.Infrastructure.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eDoxa.Payment.Domain.Models.StripeReference", b =>
+            modelBuilder.Entity("eDoxa.Payment.Domain.Stripe.Models.StripeReference", b =>
                 {
                     b.Property<Guid>("UserId");
 
-                    b.Property<string>("ConnectAccountId")
+                    b.Property<string>("AccountId")
                         .IsRequired();
 
                     b.Property<string>("CustomerId")

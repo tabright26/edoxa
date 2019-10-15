@@ -13,6 +13,7 @@ using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
@@ -48,7 +49,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
             if (await _clanRepository.ExistsAsync(name))
             {
-                return new ValidationFailure(string.Empty, "Clan with the same name already exist").ToResult();
+                return new ValidationFailure("_error", "Clan with the same name already exist").ToResult();
             }
 
             var clan = new Clan(name, userId);

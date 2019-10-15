@@ -6,6 +6,7 @@
 
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Organizations.Clans.Domain.DomainEvents
 {

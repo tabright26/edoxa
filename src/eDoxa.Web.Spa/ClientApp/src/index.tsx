@@ -8,13 +8,13 @@ import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 
 import { Provider } from "react-redux";
-import configureStore from "./store/configureStore";
+import { configureStore } from "./store";
 import { OidcProvider } from "redux-oidc";
-import userManager from "./utils/userManager";
+import userManager from "./store/middlewares/oidc/userManager";
 import ReduxToastr from "react-redux-toastr";
 import { StripeProvider } from "react-stripe-elements";
 import { LocalizeProvider } from "react-localize-redux";
-import { initialize } from "utils/localize";
+import { config } from "store/middlewares/localize/config";
 
 const initialState: any = {};
 
@@ -23,7 +23,7 @@ const store = configureStore(initialState);
 ReactDOM.render(
   <Provider store={store}>
     <OidcProvider store={store} userManager={userManager}>
-      <LocalizeProvider store={store} initialize={initialize}>
+      <LocalizeProvider store={store} initialize={config}>
         <StripeProvider apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}>
           <App />
         </StripeProvider>

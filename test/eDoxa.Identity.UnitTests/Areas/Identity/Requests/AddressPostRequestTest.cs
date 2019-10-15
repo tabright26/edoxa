@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -20,8 +21,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
+            var country = Country.Canada;
             var request = new AddressPostRequest(
-                "Country",
+                country,
                 "Line1",
                 "Line2",
                 "City",
@@ -34,6 +36,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
             var requestDeserialized = JsonConvert.DeserializeObject<AddressPostRequest>(requestSerialized);
 
             // Assert
+            requestSerialized.Should().Contain(country.TwoDigitIso);
             requestDeserialized.Should().BeEquivalentTo(request);
         }
     }

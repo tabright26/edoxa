@@ -4,9 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure.Models;
 using eDoxa.Arena.Games.LeagueOfLegends.Api.IntegrationEvents;
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

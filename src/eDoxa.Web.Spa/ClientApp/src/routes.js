@@ -1,8 +1,5 @@
 import React from "react";
 
-const Account = React.lazy(() => import("./views/User/Account/Account"));
-const AccountCashier = React.lazy(() => import("./views/User/Profile/PaymentMethods/PaymentMethods"));
-const AccountTransactionHistory = React.lazy(() => import("./views/User/Account/TransactionHistory/TransactionHistory"));
 const Arena = React.lazy(() => import("./views/Arena/Arena"));
 const ArenaChallenges = React.lazy(() => import("./views/Arena/Challenges/Challenges"));
 const ArenaChallengeDetails = React.lazy(() => import("./views/Arena/Challenges/Details/Details"));
@@ -30,9 +27,6 @@ const StructureTeamMarketplace = React.lazy(() => import("./views/Organizations/
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: "/", name: "Home", exact: true, secure: false, scopes: [] },
-  { path: "/account/overview", name: "Account Overview", component: Account, exact: true, secure: true, scopes: [] },
-  { path: "/account/payment-methods", name: "Payment Methods", component: AccountCashier, exact: true, secure: true, scopes: [] },
-  { path: "/account/transaction-history", name: "Transaction History", component: AccountTransactionHistory, exact: true, secure: true, scopes: [] },
   { path: "/arena", name: "Arena", component: Arena, exact: true, secure: false, scopes: [] },
   { path: "/arena/challenges", name: "Challenges", component: ArenaChallenges, exact: true, secure: true, scopes: [] },
   { path: "/arena/challenges/:challengeId", name: "Challenge Details", component: ArenaChallengeDetails, exact: true, secure: true, scopes: [] },

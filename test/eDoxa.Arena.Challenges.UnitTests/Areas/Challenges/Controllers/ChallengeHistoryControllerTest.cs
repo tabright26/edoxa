@@ -16,6 +16,8 @@ using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
+using FluentValidation.Results;
+
 using Microsoft.AspNetCore.Mvc;
 
 using Moq;
@@ -28,35 +30,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
     {
         public ChallengeHistoryControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
-        }
-
-        [Fact]
-        public async Task GetAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
-
-            mockChallengeQuery.Setup(queries => queries.FetchUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new Collection<IChallenge>())
-                .Verifiable();
-
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
-
-            var controller = new ChallengeHistoryController(mockChallengeQuery.Object);
-
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
-
-            // Act
-            var result = await controller.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-
-            mockChallengeQuery.Verify(
-                challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()),
-                Times.Never);
-
-            mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Never);
         }
 
         [Fact]

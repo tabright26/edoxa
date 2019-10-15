@@ -17,6 +17,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Domain.Miscs;
+
 namespace eDoxa.Cashier.Infrastructure.Repositories
 {
     public sealed partial class AccountRepository

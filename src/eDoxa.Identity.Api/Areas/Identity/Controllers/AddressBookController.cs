@@ -71,28 +71,25 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] AddressPostRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            var result = await _userManager.AddAddressAsync(
+                user,
+                request.Country,
+                request.Line1,
+                request.Line2,
+                request.City,
+                request.State,
+                request.PostalCode);
+
+            if (result.Succeeded)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var result = await _userManager.AddAddressAsync(
-                    user,
-                    request.Country,
-                    request.Line1,
-                    request.Line2,
-                    request.City,
-                    request.State,
-                    request.PostalCode);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok("The user's address has been added.");
-                }
-
-                ModelState.Bind(result);
+                return this.Ok("The user's address has been added.");
             }
 
-            return this.BadRequest(ModelState);
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -103,28 +100,25 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PutAsync(Guid addressId, [FromBody] AddressPutRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            var result = await _userManager.UpdateAddressAsync(
+                user,
+                addressId,
+                request.Line1,
+                request.Line2,
+                request.City,
+                request.State,
+                request.PostalCode);
+
+            if (result.Succeeded)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var result = await _userManager.UpdateAddressAsync(
-                    user,
-                    addressId,
-                    request.Line1,
-                    request.Line2,
-                    request.City,
-                    request.State,
-                    request.PostalCode);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok("The user's address has been updated.");
-                }
-
-                ModelState.Bind(result);
+                return this.Ok("The user's address has been updated.");
             }
 
-            return this.BadRequest(ModelState);
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
 
         /// <summary>
@@ -135,21 +129,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> DeleteAsync(Guid addressId)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            var result = await _userManager.RemoveAddressAsync(user, addressId);
+
+            if (result.Succeeded)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var result = await _userManager.RemoveAddressAsync(user, addressId);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok(addressId);
-                }
-
-                ModelState.Bind(result);
+                return this.Ok(addressId);
             }
+    
+            ModelState.Bind(result);
 
-            return this.BadRequest(ModelState);
+            return this.ValidationProblem(ModelState);
         }
     }
 }

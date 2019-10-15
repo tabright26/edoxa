@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -45,19 +45,14 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> GetAsync(ParticipantId participantId)
         {
-            if (ModelState.IsValid)
+            var responses = await _matchQuery.FetchParticipantMatchResponsesAsync(participantId);
+
+            if (!responses.Any())
             {
-                var responses = await _matchQuery.FetchParticipantMatchResponsesAsync(participantId);
-
-                if (!responses.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(responses);
+                return this.NoContent();
             }
 
-            return this.BadRequest(ModelState);
+            return this.Ok(responses);
         }
     }
 }

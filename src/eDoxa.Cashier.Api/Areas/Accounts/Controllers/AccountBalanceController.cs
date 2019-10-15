@@ -43,19 +43,14 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByCurrencyAsync(Currency currency)
         {
-            if (ModelState.IsValid)
+            var response = await _accountQuery.FindUserBalanceResponseAsync(currency);
+
+            if (response == null)
             {
-                var response = await _accountQuery.FindUserBalanceResponseAsync(currency);
-
-                if (response == null)
-                {
-                    return this.NotFound($"Account balance for currency {currency} not found.");
-                }
-
-                return this.Ok(response);
+                return this.NotFound($"Account balance for currency {currency} not found.");
             }
 
-            return this.BadRequest(ModelState);
+            return this.Ok(response);
         }
     }
 }

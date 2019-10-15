@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.IntegrationEvents;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

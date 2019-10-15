@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.EntityFrameworkCore;
 

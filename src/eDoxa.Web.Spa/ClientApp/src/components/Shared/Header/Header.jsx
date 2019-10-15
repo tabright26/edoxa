@@ -4,8 +4,8 @@ import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledD
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
 import logo from "assets/images/brand/logo.svg";
 import sygnet from "assets/images/brand/sygnet.svg";
-import { connectUser } from "store/user/container";
-import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
+import { withtUser } from "store/root/user/container";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "store/middlewares/oidc/userManager";
 
 class HeaderDropdown extends Component {
   signinRedirectClickHandled = () => {
@@ -39,29 +39,11 @@ class HeaderDropdown extends Component {
               </Button>
             </LinkContainer>
           </Form>
-          <DropdownItem header>Connections</DropdownItem>
-          <LinkContainer to="/profile/connections/games">
-            <DropdownItem>My Games</DropdownItem>
-          </LinkContainer>
-          <DropdownItem header>Cashier</DropdownItem>
-          <LinkContainer to="/account/overview">
-            <DropdownItem>Account Overview</DropdownItem>
-          </LinkContainer>
-          <LinkContainer to="/profile/transaction-history">
-            <DropdownItem>Transaction History</DropdownItem>
-          </LinkContainer>
-          <LinkContainer to="/profile/payment-methods">
-            <DropdownItem>Payment Methods</DropdownItem>
-          </LinkContainer>
-          <DropdownItem header>Arena</DropdownItem>
-          <LinkContainer to="/arena/challenge-history">
-            <DropdownItem>Challenge History</DropdownItem>
-          </LinkContainer>
-          <LinkContainer to="/arena/tournament-history">
-            <DropdownItem>Tournament History</DropdownItem>
-          </LinkContainer>
-          <DropdownItem divider />
-          {process.env.NODE_ENV !== "production" ? <DropdownItem onClick={() => this.userInfoClickHandled()}>User Info</DropdownItem> : null}
+          {process.env.NODE_ENV !== "production" ? (
+            <DropdownItem className="border-top" onClick={() => this.userInfoClickHandled()}>
+              User Info
+            </DropdownItem>
+          ) : null}
           <DropdownItem onClick={() => this.signoutRedirectClickHandled()}>Logout</DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
@@ -117,4 +99,4 @@ class Header extends Component {
   }
 }
 
-export default connectUser(Header);
+export default withtUser(Header);

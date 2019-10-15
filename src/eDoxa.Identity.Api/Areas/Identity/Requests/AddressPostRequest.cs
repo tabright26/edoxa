@@ -6,13 +6,15 @@
 
 using System.Runtime.Serialization;
 
+using eDoxa.Seedwork.Domain.Miscs;
+
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
     public sealed class AddressPostRequest
     {
         public AddressPostRequest(
-            string country,
+            Country country,
             string line1,
             string? line2,
             string city,
@@ -36,7 +38,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
 #nullable restore
 
         [DataMember(Name = "country")]
-        public string Country { get; private set; }
+        public Country Country { get; private set; }
 
         [DataMember(Name = "line1")]
         public string Line1 { get; private set; }

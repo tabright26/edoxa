@@ -10,8 +10,8 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
 {

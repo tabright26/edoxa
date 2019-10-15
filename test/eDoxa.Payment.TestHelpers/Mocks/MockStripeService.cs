@@ -4,21 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
-
-using eDoxa.Payment.Api.Areas.Stripe.Fakers;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Services;
 
 using Moq;
 
 namespace eDoxa.Payment.TestHelpers.Mocks
 {
-    public sealed class MockStripeService : Mock<IStripeTempService>
+    public sealed class MockStripeService : Mock<IStripeReferenceService>
     {
-        private readonly CustomerFaker _customerFaker = new CustomerFaker();
-        private readonly AccountFaker _accountFaker = new AccountFaker();
+        //private readonly CustomerFaker _customerFaker = new CustomerFaker();
+        //private readonly AccountFaker _accountFaker = new AccountFaker();
 
         public MockStripeService()
         {
@@ -42,23 +37,23 @@ namespace eDoxa.Payment.TestHelpers.Mocks
             //            It.IsAny<CancellationToken>()))
             //    .ReturnsAsync(_customerFaker.FakeCustomer().Id);
 
-            this.Setup(
-                    mock => mock.CreateInvoiceAsync(
-                        It.IsAny<Guid>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<long>(),
-                        It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask);
+            //this.Setup(
+            //        mock => mock.CreateInvoiceAsync(
+            //            It.IsAny<Guid>(),
+            //            It.IsAny<string>(),
+            //            It.IsAny<string>(),
+            //            It.IsAny<long>(),
+            //            It.IsAny<CancellationToken>()))
+            //    .Returns(Task.CompletedTask);
 
-            this.Setup(
-                    mock => mock.CreateTransferAsync(
-                        It.IsAny<Guid>(),
-                        It.IsAny<string>(),
-                        It.IsAny<string>(),
-                        It.IsAny<long>(),
-                        It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask);
+            //this.Setup(
+            //        mock => mock.CreateTransferAsync(
+            //            It.IsAny<Guid>(),
+            //            It.IsAny<string>(),
+            //            It.IsAny<string>(),
+            //            It.IsAny<long>(),
+            //            It.IsAny<CancellationToken>()))
+            //    .Returns(Task.CompletedTask);
         }
     }
 }

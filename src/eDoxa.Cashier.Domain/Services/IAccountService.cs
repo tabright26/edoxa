@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 

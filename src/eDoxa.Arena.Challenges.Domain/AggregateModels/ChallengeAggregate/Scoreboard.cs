@@ -7,6 +7,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Seedwork.Domain.Miscs;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoreboard : Dictionary<UserId, Score?>, IScoreboard

@@ -7,8 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Api.Extensions;
-using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Services;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.AspNetCore;
 
@@ -60,28 +60,25 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync(ClanId clanId, [FromForm] IFormFile logo)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
             {
-                var userId = HttpContext.GetUserId();
-
-                var clan = await _clanService.FindClanAsync(clanId);
-
-                if (clan == null)
-                {
-                    return this.NotFound("Clan does not exist.");
-                }
-
-                var result = await _clanService.UploadLogoAsync(clan, userId, logo);
-
-                if (result.IsValid)
-                {
-                    return this.Ok("The logo has been uploaded.");
-                }
-
-                result.AddToModelState(ModelState, null);
+                return this.NotFound("Clan does not exist.");
             }
 
-            return this.BadRequest(ModelState);
+            var result = await _clanService.UploadLogoAsync(clan, userId, logo);
+
+            if (result.IsValid)
+            {
+                return this.Ok("The logo has been uploaded.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

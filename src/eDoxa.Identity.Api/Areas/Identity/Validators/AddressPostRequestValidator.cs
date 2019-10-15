@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 
 using FluentValidation;
 
@@ -17,13 +18,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
     {
         public AddressPostRequestValidator()
         {
-            this.RuleFor(request => request.Country)
-                .NotNull()
-                .WithMessage(AddressBookErrorDescriber.CountryRequired())
-                .NotEmpty()
-                .WithMessage(AddressBookErrorDescriber.CountryRequired())
-                .Matches(new Regex("^(Canada)|(United States)$"))
-                .WithMessage(AddressBookErrorDescriber.CountryInvalid());
+            this.Enumeration(request => request.Country).NotEmpty().NotAll().IsInEnumeration();
 
             this.RuleFor(request => request.Line1)
                 .NotNull()

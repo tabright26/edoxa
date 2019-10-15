@@ -30,6 +30,8 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return new IdentityResources.Address();
 
+            yield return Seedwork.Security.IdentityResources.Country;
+
             yield return Seedwork.Security.IdentityResources.Roles;
 
             yield return Seedwork.Security.IdentityResources.Permissions;
@@ -105,6 +107,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
+                    Scopes.Country,
                     Scopes.Roles,
                     Scopes.Permissions,
                     Scopes.Games,

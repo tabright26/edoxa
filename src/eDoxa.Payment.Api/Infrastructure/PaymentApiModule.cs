@@ -7,8 +7,8 @@
 using Autofac;
 
 using eDoxa.Payment.Api.Areas.Stripe.Services;
-using eDoxa.Payment.Domain.Repositories;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Repositories;
+using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.Infrastructure.Repositories;
 
 namespace eDoxa.Payment.Api.Infrastructure
@@ -21,11 +21,14 @@ namespace eDoxa.Payment.Api.Infrastructure
             builder.RegisterType<StripeRepository>().As<IStripeRepository>().InstancePerLifetimeScope();
 
             // Services
-            builder.RegisterType<StripeService>().As<IStripeService>().InstancePerLifetimeScope();
-            builder.RegisterType<StripeCustomerService>().As<IStripeCustomerService>().InstancePerLifetimeScope();
-            builder.RegisterType<StripeAccountService>().As<IStripeAccountService>().InstancePerLifetimeScope();
-            builder.RegisterType<StripePersonService>().As<IStripePersonService>().InstancePerLifetimeScope();
-            builder.RegisterType<StripeExternalAccountService>().As<IStripeExternalAccountService>().InstancePerLifetimeScope();
+            builder.RegisterType<StripeReferenceService>().As<IStripeReferenceService>().InstancePerLifetimeScope();
+            builder.RegisterType<StripeCustomerService>().As<IStripeCustomerService>().InstancePerDependency();
+            builder.RegisterType<StripeAccountService>().As<IStripeAccountService>().InstancePerDependency();
+            builder.RegisterType<StripeExternalAccountService>().As<IStripeExternalAccountService>().InstancePerDependency();
+            builder.RegisterType<StripePaymentMethodService>().As<IStripePaymentMethodService>().InstancePerDependency();
+            builder.RegisterType<StripeInvoiceService>().As<IStripeInvoiceService>().InstancePerDependency();
+            builder.RegisterType<StripeInvoiceItemService>().As<IStripeInvoiceItemService>().InstancePerDependency();
+            builder.RegisterType<StripeTransferService>().As<IStripeTransferService>().InstancePerDependency();
         }
     }
 }

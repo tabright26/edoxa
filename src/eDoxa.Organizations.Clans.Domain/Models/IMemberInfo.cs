@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Domain.Miscs;
+
 namespace eDoxa.Organizations.Clans.Domain.Models
 {
     public interface IMemberInfo

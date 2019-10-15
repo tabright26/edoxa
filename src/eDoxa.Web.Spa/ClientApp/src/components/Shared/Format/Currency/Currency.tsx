@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import ReactCurrencyFormat from "react-currency-format";
-import { Currency } from "store/user/account/types";
+import { Currency } from "store/root/user/account/types";
 import MoneyIcon from "icons/Money";
 import TokenIcon from "icons/Token";
 import UnknownCurrency from "./Unknown";

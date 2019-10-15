@@ -1,13 +1,15 @@
 ﻿// Filename: UserClaimsAddedIntegrationEventTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -17,8 +19,12 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.IntegrationEvents
 {
-    public sealed class UserClaimsAddedIntegrationEventTest
+    public sealed class UserClaimsAddedIntegrationEventTest : UnitTest
     {
+        public UserClaimsAddedIntegrationEventTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {

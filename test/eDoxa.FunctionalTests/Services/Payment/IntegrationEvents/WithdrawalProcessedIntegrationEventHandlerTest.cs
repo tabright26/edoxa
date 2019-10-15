@@ -4,20 +4,18 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Autofac;
 
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Services.Cashier;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -86,22 +84,21 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     {
                         var mockStripeCustomerSerivce = new Mock<IStripeAccountService>();
 
-                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<eDoxa.Payment.Domain.Models.UserId>())).ReturnsAsync("ConnectAccountId");
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId");
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeAccountService>();
 
-                        var mockStripeService = new Mock<IStripeTempService>();
+                        var mockStripeService = new Mock<IStripeTransferService>();
 
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateTransferAsync(
-                                    It.IsAny<Guid>(),
                                     It.IsAny<string>(),
-                                    It.IsAny<string>(),
+                                    It.IsAny<TransactionId>(),
                                     It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()))
+                                    It.IsAny<string>()))
                             .Throws<StripeException>();
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTempService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())
@@ -150,22 +147,21 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                     {
                         var mockStripeCustomerSerivce = new Mock<IStripeAccountService>();
 
-                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<eDoxa.Payment.Domain.Models.UserId>())).ReturnsAsync("ConnectAccountId");
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId");
 
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeAccountService>();
 
-                        var mockStripeService = new Mock<IStripeTempService>();
+                        var mockStripeService = new Mock<IStripeTransferService>();
 
                         mockStripeService.Setup(
                                 stripeService => stripeService.CreateTransferAsync(
-                                    It.IsAny<Guid>(),
                                     It.IsAny<string>(),
-                                    It.IsAny<string>(),
+                                    It.IsAny<TransactionId>(),
                                     It.IsAny<long>(),
-                                    It.IsAny<CancellationToken>()))
+                                    It.IsAny<string>()))
                             .Returns(Task.CompletedTask);
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTempService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())

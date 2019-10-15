@@ -7,7 +7,7 @@ import ChallengeScoreboard from "./Scoreboard";
 import ChallengeScoring from "./Scoring";
 import ChallengePayout from "./Payout";
 
-import { connectArenaChallenges } from "store/arena/challenges/container";
+import { connectArenaChallenges } from "store/root/arena/challenges/container";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 

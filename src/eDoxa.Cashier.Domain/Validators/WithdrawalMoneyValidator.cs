@@ -20,12 +20,15 @@ namespace eDoxa.Cashier.Domain.Validators
     {
         public WithdrawalMoneyValidator(Money money)
         {
-            //this.RuleFor(account => account.User).Must(new HasBankAccountSpecification().IsSatisfiedBy).WithMessage("A bank account is required to withdrawal.");
+            //this.RuleFor(account => account.User).Must(new HasBankAccountSpecification().IsSatisfiedBy).WithName("_error").WithMessage("A bank account is required to withdrawal.");
 
-            this.RuleFor(account => account).Must(new InsufficientMoneySpecification(money).Not().IsSatisfiedBy).WithMessage("Insufficient funds.");
+            this.RuleFor(account => account).Must(new InsufficientMoneySpecification(money).Not().IsSatisfiedBy)
+                .WithName("_error")
+                .WithMessage("Insufficient funds.");
 
             this.RuleFor(account => account)
                 .Must(new WeeklyMoneyWithdrawUnavailableSpecification().Not().IsSatisfiedBy)
+                .WithName("_error")
                 .WithMessage(account => $"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
         }
     }

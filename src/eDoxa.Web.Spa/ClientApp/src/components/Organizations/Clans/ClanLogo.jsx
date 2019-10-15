@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
 
-import ClanLogoForm from "forms/Organizations/ClanLogo";
+import ClanLogoForm from "forms/Organization/Clan/Logo";
 
 const imageStyle = {
   height: "100%",
@@ -12,7 +12,7 @@ const ClanLogo = ({ actions, logo, clanId, isOwner }) => {
   return (
     <Fragment>
       <img style={imageStyle} src={logo ? logo : "https://via.placeholder.com/350x150"} alt="Team logo"></img>
-      {isOwner ? <ClanLogoForm.Update onSubmit={data => actions.updateLogo(clanId, data)} /> : ""}
+      {isOwner ? <ClanLogoForm.Upload onSubmit={data => actions.updateLogo(clanId, data)} /> : ""}
     </Fragment>
   );
 };

@@ -28,30 +28,30 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
         {
         }
 
-        [Fact]
-        public async Task GetByCurrencyAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockAccountQuery = new Mock<IAccountQuery>();
+        //[Fact]
+        //public async Task GetByCurrencyAsync_ShouldBeOfTypeBadRequestObjectResult()
+        //{
+        //    // Arrange
+        //    var mockAccountQuery = new Mock<IAccountQuery>();
 
-            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
+        //    mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
+        //    mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new AccountBalanceController(mockAccountQuery.Object);
+        //    var controller = new AccountBalanceController(mockAccountQuery.Object);
 
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
+        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
 
-            // Act
-            var result = await controller.GetByCurrencyAsync(Currency.Money);
+        //    // Act
+        //    var result = await controller.GetByCurrencyAsync(Currency.Money);
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Never);
+        //    mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Never);
 
-            mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Never);
-        }
+        //    mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Never);
+        //}
 
         [Fact]
         public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()

@@ -8,7 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -21,19 +21,19 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     {
         private readonly ILogger<UserAccountDepositIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IStripeTempService _stripeTempService;
+        private readonly IStripeInvoiceService _stripeInvoiceService;
         private readonly IStripeCustomerService _stripeCustomerService;
 
         public UserAccountDepositIntegrationEventHandler(
             ILogger<UserAccountDepositIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeTempService stripeTempService,
+            IStripeInvoiceService stripeInvoiceService,
             IStripeCustomerService stripeCustomerService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
-            _stripeTempService = stripeTempService;
+            _stripeInvoiceService = stripeInvoiceService;
             _stripeCustomerService = stripeCustomerService;
         }
 
@@ -45,11 +45,11 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 var customerId = await _stripeCustomerService.GetCustomerIdAsync(integrationEvent.UserId);
 
-                await _stripeTempService.CreateInvoiceAsync(
-                    integrationEvent.TransactionId,
-                    integrationEvent.Description,
+                await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
-                    integrationEvent.Amount);
+                    integrationEvent.TransactionId,
+                    integrationEvent.Amount,
+                    integrationEvent.Description);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountDepositIntegrationEvent)}.");
 
@@ -57,17 +57,16 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
-            catch (StripeException exception)
-            {
-                _logger.LogError(exception, exception.StripeError?.ToJson());
-
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
-
-                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
-            }
             catch (Exception exception)
             {
-                _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                if (exception is StripeException stripeException)
+                {
+                    _logger.LogCritical(stripeException, stripeException.StripeError?.ToJson());
+                }
+                else
+                {
+                    _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                }
 
                 await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
 

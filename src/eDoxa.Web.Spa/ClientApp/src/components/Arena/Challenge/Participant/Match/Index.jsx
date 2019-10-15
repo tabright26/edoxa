@@ -1,13 +1,13 @@
 import React from "react";
 import { CardBody } from "reactstrap";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 import Match from "./Details";
 
 const Matches = ({ participant }) => {
   if (!participant) {
     return (
       <CardBody className="text-center">
-        <Loading.Default />
+        <Loading />
       </CardBody>
     );
   } else {

@@ -10,8 +10,8 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Storage;
-using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {

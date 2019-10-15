@@ -20,7 +20,7 @@ namespace eDoxa.Cashier.Domain.Validators
     {
         public ChargeMoneyValidator(Money money)
         {
-            this.RuleFor(account => account).Must(new InsufficientMoneySpecification(money).Not().IsSatisfiedBy).WithMessage("Insufficient funds.");
+            this.RuleFor(account => account).Must(new InsufficientMoneySpecification(money).Not().IsSatisfiedBy).WithName("_error").WithMessage("Insufficient funds.");
         }
     }
 }

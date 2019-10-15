@@ -15,6 +15,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelpers;
 using eDoxa.Cashier.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -24,8 +25,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
@@ -53,8 +52,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
-                new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -83,8 +81,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
-                new Claim(ClaimTypes.StripeCustomerId, "cus_test"));
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
