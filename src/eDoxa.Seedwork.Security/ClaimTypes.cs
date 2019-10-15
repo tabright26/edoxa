@@ -12,7 +12,6 @@ namespace eDoxa.Seedwork.Security
         public const string SecurityStamp = "security_stamp";
         public const string Permission = "permission";
         public const string Games = "games";
-        public const string StripeCustomerId = "stripe:customerId";
-        public const string StripeConnectAccountId = "stripe:connectAccountId";
+        public const string Country = "country";
     }
 }

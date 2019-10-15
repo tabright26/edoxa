@@ -1,7 +1,7 @@
 import React from "react";
 import { Table, Card, CardBody, CardHeader } from "reactstrap";
 
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 //import CurrencyFormat from 'Shared/Formaters/CurrencyFormat';
 //import BucketFormat from 'Shared/Formaters/BucketFormat';
 
@@ -9,7 +9,7 @@ const Render = ({ challenge }) => {
   if (!challenge) {
     return (
       <CardBody>
-        <Loading.Default />
+        <Loading />
       </CardBody>
     );
   } else {

@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 namespace eDoxa.Organizations.Clans.Api.Infrastructure.Data.Storage

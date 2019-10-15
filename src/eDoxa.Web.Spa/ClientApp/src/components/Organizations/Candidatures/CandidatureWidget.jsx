@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toastr } from "react-redux-toastr";
 import { Button } from "reactstrap";
 
-import { connectCandidatures } from "store/organizations/candidatures/container";
+import { withCandidatures } from "store/root/organizations/candidatures/container";
 
 //TODO. LE TRUC C<EST QUE ON FAIT UN RELOAD POUR CHAQUE WIDGE TDANS LA PAGE
 
@@ -20,4 +20,4 @@ const CandidatureWidget = ({ actions, candidatures, clanId, userId }) => {
     </Button>
   );
 };
-export default connectCandidatures(CandidatureWidget);
+export default withCandidatures(CandidatureWidget);

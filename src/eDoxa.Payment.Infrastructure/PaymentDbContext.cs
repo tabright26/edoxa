@@ -7,8 +7,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
+using eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +34,7 @@ namespace eDoxa.Payment.Infrastructure
 
                     builder.Property(reference => reference.CustomerId).IsRequired();
 
-                    builder.Property(reference => reference.ConnectAccountId).IsRequired();
+                    builder.Property(reference => reference.AccountId).IsRequired();
 
                     builder.ToTable("StripeReference");
                 });

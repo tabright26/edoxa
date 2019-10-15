@@ -7,9 +7,9 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Challenges.Responses;
-using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 {

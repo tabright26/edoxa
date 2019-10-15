@@ -2,7 +2,7 @@ import React from "react";
 import { Card } from "reactstrap";
 
 import Moment from "react-moment";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 
 const style = { width: "200px" };
 
@@ -25,7 +25,7 @@ const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <Card.Body className="text-center text-white">
-        <Loading.Default />
+        <Loading />
       </Card.Body>
     );
   } else {

@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 
-import { connectInvitations } from "store/organizations/invitations/container";
+import { withInvitations } from "store/root/organizations/invitations/container";
 
 import InvitationItem from "./InvitationItem";
 
@@ -21,4 +21,4 @@ const InvitationList = ({ actions, invitations, type }) => (
     </CardBody>
   </Card>
 );
-export default connectInvitations(InvitationList);
+export default withInvitations(InvitationList);

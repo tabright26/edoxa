@@ -1,15 +1,15 @@
 import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
-import Money from "components/User/Account/Balance/Money";
+import Balance from "components/User/Account/Balance";
 import DepositMoney from "./Deposit";
 import WithdrawalMoney from "./Withdrawal";
 
-const BreadcrumbMoney: FunctionComponent<any> = ({ className }) => {
+const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className={className}>
       <Badge id="moneyPopover" color="dark" style={{ width: "100px" }}>
-        <Money.Available />
+        <Balance currency="money" selector="available" />
       </Badge>
       <Popover
         style={{
@@ -32,4 +32,4 @@ const BreadcrumbMoney: FunctionComponent<any> = ({ className }) => {
   );
 };
 
-export default BreadcrumbMoney;
+export default MoneyBreadcrumb;

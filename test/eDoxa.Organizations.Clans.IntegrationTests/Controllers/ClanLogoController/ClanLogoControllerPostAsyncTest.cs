@@ -16,6 +16,7 @@ using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.TestHelpers;
 using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;

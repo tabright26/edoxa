@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Storage.Azure.Extensions;
 
 using Microsoft.AspNetCore.Http;

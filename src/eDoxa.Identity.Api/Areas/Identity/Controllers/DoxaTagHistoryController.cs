@@ -70,21 +70,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
         public async Task<IActionResult> PostAsync([FromBody] DoxaTagPostRequest request)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            var result = await _userManager.SetDoxaTagAsync(user, request.Name);
+
+            if (result.Succeeded)
             {
-                var user = await _userManager.GetUserAsync(User);
-
-                var result = await _userManager.SetDoxaTagAsync(user, request.Name);
-
-                if (result.Succeeded)
-                {
-                    return this.Ok("The user's DoxaTag has been created.");
-                }
-
-                ModelState.Bind(result);
+                return this.Ok("The user's DoxaTag has been created.");
             }
 
-            return this.BadRequest(ModelState);
+            ModelState.Bind(result);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

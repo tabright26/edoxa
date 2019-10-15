@@ -16,6 +16,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using FluentValidation.Results;
@@ -46,11 +47,9 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                 {
                     if (Money.WithdrawalAmounts().All(withdrawal => withdrawal.Amount != money.Amount))
                     {
-                        var failure = new ValidationFailure(
+                        return new ValidationFailure(
                             string.Empty,
-                            $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", Money.WithdrawalAmounts().Select(deposit => deposit.Amount))}].");
-
-                        return failure.ToResult();
+                            $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", Money.WithdrawalAmounts().Select(deposit => deposit.Amount))}].").ToResult();
                     }
 
                     var moneyAccount = new MoneyAccount(account);
@@ -108,11 +107,9 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                 {
                     if (Money.DepositAmounts().All(deposit => deposit.Amount != money.Amount))
                     {
-                        var failure = new ValidationFailure(
+                        return new ValidationFailure(
                             string.Empty,
-                            $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", Money.DepositAmounts().Select(deposit => deposit.Amount))}].");
-
-                        return failure.ToResult();
+                            $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", Money.DepositAmounts().Select(deposit => deposit.Amount))}].").ToResult();
                     }
 
                     var moneyAccount = new MoneyAccount(account);
@@ -138,11 +135,9 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                 {
                     if (Token.DepositAmounts().All(deposit => deposit.Amount != token.Amount))
                     {
-                        var failure = new ValidationFailure(
-                            string.Empty,
-                            $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", Token.DepositAmounts().Select(deposit => deposit.Amount))}].");
-
-                        return failure.ToResult();
+                        return new ValidationFailure(
+                            "_error",
+                            $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", Token.DepositAmounts().Select(deposit => deposit.Amount))}].").ToResult();
                     }
 
                     var tokenAccount = new TokenAccount(account);

@@ -1,13 +1,13 @@
 import React from "react";
 import { Card, CardBody, CardHeader, ListGroup, ListGroupItem } from "reactstrap";
 
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 
 const Body = ({ challenge }) => {
   if (!challenge) {
     return (
       <CardBody className="text-center">
-        <Loading.Default />
+        <Loading />
       </CardBody>
     );
   } else {

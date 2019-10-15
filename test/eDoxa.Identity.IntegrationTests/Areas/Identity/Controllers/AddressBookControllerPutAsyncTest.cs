@@ -16,6 +16,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -65,7 +66,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result = await userManager.AddAddressAsync(
                         user,
-                        "Canada",
+                        Country.Canada,
                         "1234 Test Street",
                         null,
                         "Toronto",

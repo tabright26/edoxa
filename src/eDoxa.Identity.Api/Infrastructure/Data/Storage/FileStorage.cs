@@ -12,6 +12,7 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
@@ -132,6 +133,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                             {
                                 Id = record.Id,
                                 UserName = record.Email,
+                                Country = Country.Canada, // FRANCIS: Should be inside users.csv
                                 Email = record.Email,
                                 PhoneNumber = record.Phone,
                                 DoxaTagHistory = new Collection<UserDoxaTag>

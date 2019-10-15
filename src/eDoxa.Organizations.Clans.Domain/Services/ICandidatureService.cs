@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 

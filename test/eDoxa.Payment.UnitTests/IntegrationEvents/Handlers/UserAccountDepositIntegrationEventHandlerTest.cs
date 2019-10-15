@@ -4,14 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
-using eDoxa.Payment.Domain.Models;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -29,7 +27,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var mockLogger = new MockLogger<UserAccountDepositIntegrationEventHandler>();
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-            var mockStripeService = new Mock<IStripeTempService>();
+            var mockStripeService = new Mock<IStripeInvoiceService>();
 
             mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<IIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
@@ -37,11 +35,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             mockStripeService.Setup(
                     stripeService => stripeService.CreateInvoiceAsync(
-                        It.IsAny<Guid>(),
                         It.IsAny<string>(),
-                        It.IsAny<string>(),
+                        It.IsAny<TransactionId>(),
                         It.IsAny<long>(),
-                        It.IsAny<CancellationToken>()))
+                        It.IsAny<string>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -68,11 +65,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             mockStripeService.Verify(
                 stripeService => stripeService.CreateInvoiceAsync(
-                    It.IsAny<Guid>(),
                     It.IsAny<string>(),
-                    It.IsAny<string>(),
+                    It.IsAny<TransactionId>(),
                     It.IsAny<long>(),
-                    It.IsAny<CancellationToken>()),
+                    It.IsAny<string>()),
                 Times.Once);
 
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);

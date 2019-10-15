@@ -6,8 +6,8 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Http;
 

@@ -11,6 +11,7 @@ using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
@@ -51,7 +52,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
             if (await _candidatureRepository.ExistsAsync(userId, clanId))
             {
-                return new ValidationFailure(string.Empty, "The candidature of this member for that clan already exist.").ToResult();
+                return new ValidationFailure("_error", "The candidature of this member for that clan already exist.").ToResult();
             }
 
             var candidature = new Candidature(userId, clanId);

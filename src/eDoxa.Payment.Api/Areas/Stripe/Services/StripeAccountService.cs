@@ -1,16 +1,16 @@
 ﻿// Filename: StripeAccountService.cs
-// Date Created: 2019-10-07
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Models;
-using eDoxa.Payment.Domain.Repositories;
-using eDoxa.Payment.Domain.Services;
+using eDoxa.Payment.Domain.Stripe.Repositories;
+using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Stripe;
 
@@ -29,39 +29,57 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
         {
             var reference = await _stripeRepository.GetReferenceAsync(userId);
 
-            return reference.ConnectAccountId;
+            return reference.AccountId;
         }
 
-        public async Task<string?> FindAccountIdAsync(UserId userId)
+        public async Task<Account> GetAccountAsync(string accountId)
         {
-            var reference = await _stripeRepository.FindReferenceAsync(userId);
-
-            return reference?.ConnectAccountId;
+            return await this.GetAsync(accountId);
         }
 
-        public async Task<string> CreateAccountAsync(UserId userId, string email, string country)
+        public async Task UpdateIndividualAsync(string accountId, PersonUpdateOptions individual)
+        {
+            await this.UpdateAsync(
+                accountId,
+                new AccountUpdateOptions
+                {
+                    Individual = individual
+                });
+        }
+
+        public async Task<string> CreateAccountAsync(
+            UserId userId,
+            string email,
+            Country country,
+            string customerId
+        )
         {
             var account = await this.CreateAsync(
                 new AccountCreateOptions
                 {
                     Type = "custom",
                     BusinessType = "individual",
-                    Country = country,
-                    Email = email,
+                    Country = country.TwoDigitIso,
+                    Individual = new PersonCreateOptions
+                    {
+                        Email = email,
+                        Metadata = new Dictionary<string, string>
+                        {
+                            [nameof(userId)] = userId.ToString()
+                        }
+                    },
+                    TosAcceptance = new AccountTosAcceptanceOptions // FRANCIS: Must be provided by login form.
+                    {
+                        Date = DateTime.UtcNow,
+                        Ip = "10.10.10.10"
+                    },
                     Metadata = new Dictionary<string, string>
                     {
-                        ["userId"] = userId.ToString()
+                        [nameof(customerId)] = customerId
                     }
                 });
 
             return account.Id;
-        }
-
-        public async Task<bool> AccountIsVerifiedAsync(string accountId)
-        {
-            var account = await this.GetAsync(accountId);
-
-            return !account.Requirements.CurrentlyDue.Any();
         }
     }
 }

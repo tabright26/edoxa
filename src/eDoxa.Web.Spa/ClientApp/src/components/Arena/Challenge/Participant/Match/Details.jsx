@@ -2,16 +2,16 @@ import React from "react";
 import { CardBody, Badge } from "reactstrap";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 import Format from "components/Shared/Format";
 import Moment from "react-moment";
-import { ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL } from "modals";
+import { MATCH_SCORE_MODAL } from "modals";
 
 const Match = ({ match, position, actions }) => {
   if (!match) {
     return (
       <CardBody className="text-center">
-        <Loading.Default />
+        <Loading />
       </CardBody>
     );
   } else {
@@ -54,7 +54,7 @@ const Match = ({ match, position, actions }) => {
 const mapDispatchToProps = dispatch => {
   return {
     actions: {
-      showArenaChallengeParticipantMatchScoreDetailsModal: stats => dispatch(show(ARENA_CHALLENGE_PARTICIPANT_MATCH_SCORE_DETAILS_MODAL, { stats }))
+      showArenaChallengeParticipantMatchScoreDetailsModal: stats => dispatch(show(MATCH_SCORE_MODAL, { stats }))
     }
   };
 };

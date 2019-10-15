@@ -1,10 +1,12 @@
 ﻿// Filename: RoleClaimRemovedIntegrationEventTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Identity.Api.IntegrationEvents;
+using eDoxa.Identity.TestHelpers;
+using eDoxa.Identity.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
@@ -14,8 +16,12 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.IntegrationEvents
 {
-    public sealed class RoleClaimRemovedIntegrationEventTest
+    public sealed class RoleClaimRemovedIntegrationEventTest : UnitTest
     {
+        public RoleClaimRemovedIntegrationEventTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {

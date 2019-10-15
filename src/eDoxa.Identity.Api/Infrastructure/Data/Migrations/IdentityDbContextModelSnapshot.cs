@@ -70,6 +70,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Country")
+                        .IsRequired();
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256);
@@ -254,7 +257,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.User", b =>
                 {
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.PersonalInfo", "PersonalInfo", b1 =>
+                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.UserPersonalInfo", "PersonalInfo", b1 =>
                         {
                             b1.Property<Guid>("UserId");
 
@@ -272,7 +275,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                             b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
                                 .WithOne("PersonalInfo")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.PersonalInfo", "UserId")
+                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.UserPersonalInfo", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });

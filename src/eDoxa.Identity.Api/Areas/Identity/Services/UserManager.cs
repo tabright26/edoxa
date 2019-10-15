@@ -1,5 +1,5 @@
 ﻿// Filename: UserManager.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +24,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     public sealed class UserManager : UserManager<User>, IUserManager
     {
         private static readonly Random Random = new Random();
+        private readonly IServiceBusPublisher _publisher;
 
         public UserManager(
             UserStore store,
@@ -31,7 +35,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             ILookupNormalizer keyNormalizer,
             CustomIdentityErrorDescriber errors,
             IServiceProvider services,
-            ILogger<UserManager> logger
+            ILogger<UserManager> logger,
+            IServiceBusPublisher publisher
         ) : base(
             store,
             optionsAccessor,
@@ -41,16 +46,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             keyNormalizer,
             errors,
             services,
-            logger
-        )
+            logger)
         {
+            _publisher = publisher;
             ErrorDescriber = errors;
             Store = store;
         }
 
-        public new UserStore Store { get; }
-
         private new CustomIdentityErrorDescriber ErrorDescriber { get; }
+
+        public new UserStore Store { get; }
 
         public async Task<IEnumerable<UserDoxaTag>> FetchDoxaTagsAsync()
         {
@@ -98,7 +103,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 return IdentityResult.Failed(ErrorDescriber.GameAlreadyAssociated());
             }
 
-            await Store.AddGameAsync(user, gameName, playerId, CancellationToken);
+            await Store.AddGameAsync(
+                user,
+                gameName,
+                playerId,
+                CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -176,6 +185,30 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.FindUserAddressAsync(user.Id, addressId);
         }
 
+        public override async Task<IdentityResult> SetEmailAsync(User user, string email)
+        {
+            var result = await base.SetEmailAsync(user, email);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserEmailChangedIntegrationEventAsync(UserId.FromGuid(user.Id), email);
+            }
+
+            return result;
+        }
+
+        public override async Task<IdentityResult> SetPhoneNumberAsync(User user, string phoneNumber)
+        {
+            var result = await base.SetPhoneNumberAsync(user, phoneNumber);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserPhoneChangedIntegrationEventAsync(UserId.FromGuid(user.Id), phoneNumber);
+            }
+
+            return result;
+        }
+
         public async Task<UserPersonalInfo?> GetPersonalInfoAsync(User user)
         {
             this.ThrowIfDisposed();
@@ -188,12 +221,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetPersonalInfoAsync(user, CancellationToken);
         }
 
-        public async Task<IdentityResult> SetPersonalInfoAsync(
+        public async Task<IdentityResult> CreatePersonalInfoAsync(
             User user,
-            string? firstName,
-            string? lastName,
-            Gender? gender,
-            DateTime? birthDate
+            string firstName,
+            string lastName,
+            Gender gender,
+            DateTime dob
         )
         {
             this.ThrowIfDisposed();
@@ -203,19 +236,73 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var profile = new UserPersonalInfo
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Gender = gender,
-                BirthDate = birthDate
-            };
-
-            await Store.SetPersonalInfoAsync(user, profile, CancellationToken);
+            await Store.SetPersonalInfoAsync(
+                user,
+                new UserPersonalInfo
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Gender = gender,
+                    BirthDate = dob
+                },
+                CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
-            return await this.UpdateUserAsync(user);
+            var result = await this.UpdateUserAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserInformationChangedIntegrationEventAsync(
+                    UserId.FromGuid(user.Id),
+                    firstName,
+                    lastName,
+                    gender,
+                    dob);
+            }
+
+            return result;
+        }
+
+        public async Task<IdentityResult> UpdatePersonalInfoAsync(User user, string firstName)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            var lastName = user.PersonalInfo!.LastName!;
+            var gender = user.PersonalInfo!.Gender!;
+            var dob = user.PersonalInfo!.BirthDate!.Value!;
+
+            await Store.SetPersonalInfoAsync(
+                user,
+                new UserPersonalInfo
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Gender = gender,
+                    BirthDate = dob
+                },
+                CancellationToken);
+
+            await this.UpdateSecurityStampAsync(user);
+
+            var result = await this.UpdateUserAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserInformationChangedIntegrationEventAsync(
+                    UserId.FromGuid(user.Id),
+                    firstName,
+                    lastName,
+                    gender,
+                    dob);
+            }
+
+            return result;
         }
 
         public async Task<UserDoxaTag?> GetDoxaTagAsync(User user)
@@ -345,7 +432,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         public async Task<IdentityResult> AddAddressAsync(
             User user,
-            string country,
+            Country country,
             string line1,
             string? line2,
             string city,
@@ -368,12 +455,28 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 city,
                 state,
                 postalCode,
-                CancellationToken
-            );
+                CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
 
-            return await this.UpdateUserAsync(user);
+            var result = await this.UpdateUserAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserAddressChangedIntegrationEventAsync(
+                    UserId.FromGuid(user.Id),
+                    new UserAddress
+                    {
+                        City = city,
+                        Country = country,
+                        Line1 = line1,
+                        Line2 = line2,
+                        PostalCode = postalCode,
+                        State = state
+                    });
+            }
+
+            return result;
         }
 
         public async Task<IdentityResult> UpdateAddressAsync(
@@ -402,8 +505,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                     {
                         Code = "UserAddressNotFound",
                         Description = "User's address not found."
-                    }
-                );
+                    });
             }
 
             address.Line1 = line1;
@@ -414,7 +516,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             await this.UpdateSecurityStampAsync(user);
 
-            return await this.UpdateUserAsync(user);
+            var result = await this.UpdateUserAsync(user);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(user.Id), address);
+            }
+
+            return result;
         }
 
         private async Task<int> EnsureCodeUniqueness(string doxaTagName)
@@ -449,6 +558,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             var games = await this.GetGamesAsync(user);
 
             return games.SingleOrDefault(userGame => Game.FromValue(userGame.Value)!.Name == game.Name) != null;
+        }
+
+        public async Task<Country> GetCountryAsync(User user)
+        {
+            this.ThrowIfDisposed();
+
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            return await Store.GetCountryAsync(user, CancellationToken);
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers

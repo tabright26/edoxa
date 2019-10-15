@@ -1,5 +1,5 @@
 ﻿// Filename: IntegrationEventNames.cs
-// Date Created: 2019-08-02
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,6 +23,10 @@ namespace eDoxa.Seedwork.Application
         public const string RoleClaimAdded = "role.claim.added";
         public const string RoleClaimRemoved = "role.claim.removed";
         public const string UserCreated = "user.created";
+        public const string UserEmailChanged = "user.email.changed";
+        public const string UserPhoneChanged = "user.phone.changed";
+        public const string UserInformationChanged = "user.information.changed";
+        public const string UserAddressChanged = "user.address.changed";
         public const string UserClaimsAdded = "user.claims.added";
         public const string UserClaimsRemoved = "user.claims.removed";
         public const string UserClaimsReplaced = "user.claims.replaced";

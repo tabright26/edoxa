@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {

@@ -6,6 +6,8 @@
 
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
+using eDoxa.Seedwork.Application.Validations.ErrorDescribers;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -17,19 +19,19 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 {
     public sealed class AddressPostRequestValidatorTest
     {
-        public static TheoryData<string> ValidCountries =>
-            new TheoryData<string>
+        public static TheoryData<Country> ValidCountries =>
+            new TheoryData<Country>
             {
-                "Canada",
-                "United States"
+                Country.Canada,
+                Country.UnitedStates
             };
 
-        public static TheoryData<string, string> InvalidCountries =>
-            new TheoryData<string, string>
+        public static TheoryData<Country, string> InvalidCountries =>
+            new TheoryData<Country, string>
             {
-                {null, AddressBookErrorDescriber.CountryRequired()},
-                {"", AddressBookErrorDescriber.CountryRequired()},
-                {"Country", AddressBookErrorDescriber.CountryInvalid()}
+                {null, EnumerationErrorDescribers.NotNull<Country>()},
+                {Country.All, EnumerationErrorDescribers.NotAll<Country>()},
+                {new Country(), EnumerationErrorDescribers.IsInEnumeration<Country>()},
             };
 
         public static TheoryData<string> ValidLine1Address =>
@@ -108,7 +110,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 
         [Theory]
         [MemberData(nameof(ValidCountries))]
-        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(string country)
+        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(Country country)
         {
             // Arrange
             var validator = new AddressPostRequestValidator();
@@ -119,14 +121,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 
         [Theory]
         [MemberData(nameof(InvalidCountries))]
-        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(string country, string errorMessage)
+        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(Country country, string errorMessage)
         {
             // Arrange
             var validator = new AddressPostRequestValidator();
 
-            // Act - Assert
+            // Act
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Country, country);
 
+            // Assert
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 

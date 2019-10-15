@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/userManager";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "store/middlewares/oidc/userManager";
 import { connect } from "react-redux";
 import { CallbackComponent } from "redux-oidc";
 import { push } from "react-router-redux";
-import Loading from "components/Shared/Loading";
+import Loading from "components/Shared/Override/Loading";
 
 class Callback extends Component {
   render() {
@@ -19,7 +19,7 @@ class Callback extends Component {
           this.props.dispatch(push("/"));
         }}
       >
-        <Loading.Default />
+        <Loading />
       </CallbackComponent>
     );
   }

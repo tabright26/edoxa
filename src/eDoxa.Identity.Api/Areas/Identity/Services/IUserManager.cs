@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -33,7 +34,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IdentityResult> AddAddressAsync(
             User user,
-            string country,
+            Country country,
             string line1,
             string? line2,
             string city,
@@ -285,7 +286,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         IQueryable<User> Users { get; }
 
-        Task<IdentityResult> SetPersonalInfoAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate);
+        Task<IdentityResult> CreatePersonalInfoAsync(User user, string firstName, string lastName, Gender gender, DateTime dob);
+
+        Task<IdentityResult> UpdatePersonalInfoAsync(User user, string firstName);
 
         Task<IdentityResult> SetDoxaTagAsync(User user, string doxaTagName);
     }

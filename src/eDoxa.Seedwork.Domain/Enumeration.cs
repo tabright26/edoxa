@@ -43,7 +43,7 @@ namespace eDoxa.Seedwork.Domain
             Name = nameof(All)
         };
 
-        private static readonly TEnumeration None = new TEnumeration();
+        protected static readonly TEnumeration None = new TEnumeration();
 
         protected Enumeration(int value, string name) : this()
         {

@@ -7,7 +7,6 @@
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
@@ -19,6 +18,8 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
 {
@@ -73,23 +74,18 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            if (ModelState.IsValid)
+            var userId = HttpContext.GetUserId();
+
+            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
+
+            if (challenge == null)
             {
-                var userId = HttpContext.GetUserId();
-
-                var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
-
-                if (challenge == null)
-                {
-                    return this.NotFound("Challenge not found.");
-                }
-
-                await _challengeService.RegisterParticipantAsync(challengeId, userId, new UtcNowDateTimeProvider());
-
-                return this.Ok("Participant as been registered.");
+                return this.NotFound("Challenge not found.");
             }
 
-            return this.BadRequest(ModelState);
+            await _challengeService.RegisterParticipantAsync(challengeId, userId, new UtcNowDateTimeProvider());
+
+            return this.Ok("Participant as been registered.");
         }
     }
 }
