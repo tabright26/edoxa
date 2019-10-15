@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_CLANS = "LOAD_CLANS";
 export const LOAD_CLANS_SUCCESS = "LOAD_CLANS_SUCCESS";
@@ -64,4 +64,4 @@ export type ClansActionCreators = LoadClansActionCreator | LoadClanActionCreator
 
 export type ClansActionTypes = LoadClansAction | LoadClanAction | AddClanAction | DownloadClanLogoAction | UploadClanLogoAction;
 
-export interface ClansState {}
+export type ClansState = AxiosState;

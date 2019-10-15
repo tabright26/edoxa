@@ -5,7 +5,7 @@ const addressBook204Data = [];
 const addressBook200Data = [{ id: "1" }, { id: "2" }, { id: "1" }];
 
 const removeSuccessData = { addressId: "1" };
-const removeExpectedState = initialState.filter(address => address.id !== addressId);
+const removeExpectedState = initialState.data.filter(address => address.id !== addressId);
 
 describe("user address book reducer", () => {
   it("should return the initial state", () => {

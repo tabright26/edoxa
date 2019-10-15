@@ -14,8 +14,8 @@ export const withUserPhone = (ConnectedComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     return {
-      phoneNumber: state.user.phoneNumber.phoneNumber,
-      phoneNumberVerified: state.user.phoneNumber.phoneNumberVerified
+      phoneNumber: state.user.phoneNumber.data.phoneNumber,
+      phoneNumberVerified: state.user.phoneNumber.data.phoneNumberVerified
     };
   };
 

@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_DOXATAGS = "LOAD_DOXATAGS";
 export const LOAD_DOXATAGS_SUCCESS = "LOAD_DOXATAGS_SUCCESS";
@@ -14,4 +14,4 @@ export type DoxatagsActionCreators = LoadDoxatagsActionCreator;
 
 export type DoxatagsActionTypes = LoadDoxatagsAction;
 
-export interface DoxatagsState {}
+export type DoxatagsState = AxiosState;

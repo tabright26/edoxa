@@ -22,6 +22,12 @@ export interface AxiosAction<ActionType> {
   error: AxiosError<AxiosErrorData>;
 }
 
+export interface AxiosState<AxiosDataState = any, AxiosErrorState = string | AxiosError<AxiosErrorData>> {
+  loading: boolean;
+  data: AxiosDataState;
+  error?: AxiosErrorState;
+}
+
 export function throwAxiosSubmissionError(error: AxiosError<AxiosErrorData>): void {
   const { isAxiosError, response } = error;
   if (isAxiosError) {

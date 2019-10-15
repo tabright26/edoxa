@@ -14,8 +14,8 @@ export const withUserEmail = (ConnectedComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     return {
-      email: state.user.email.email,
-      emailVerified: state.user.email.emailVerified
+      email: state.user.email.data.email,
+      emailVerified: state.user.email.data.emailVerified
     };
   };
 

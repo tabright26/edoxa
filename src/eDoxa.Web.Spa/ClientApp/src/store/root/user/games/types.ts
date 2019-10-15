@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_GAMES = "LOAD_GAMES";
 export const LOAD_GAMES_SUCCESS = "LOAD_GAMES_SUCCESS";
@@ -14,4 +14,4 @@ export type GamesActionCreators = LoadGamesActionCreator;
 
 export type GamesActionTypes = LoadGamesAction;
 
-export interface GamesState {}
+export type GamesState = AxiosState;

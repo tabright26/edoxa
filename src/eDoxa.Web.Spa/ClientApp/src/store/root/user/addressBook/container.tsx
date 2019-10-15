@@ -16,7 +16,7 @@ export const withUserAddressBook = (ConnectedComponent: FunctionComponent<any>) 
 
   const mapStateToProps = (state: RootState) => {
     return {
-      addressBook: state.user.addressBook
+      addressBook: state.user.addressBook.data
     };
   };
 

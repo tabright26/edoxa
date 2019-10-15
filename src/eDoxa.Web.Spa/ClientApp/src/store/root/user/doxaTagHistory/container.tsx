@@ -13,7 +13,7 @@ export const withUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any
   };
 
   const mapStateToProps = (state: RootState) => {
-    const doxaTagHistory = state.user.doxaTagHistory.sort((left, right) => (left.timestamp < right.timestamp ? 1 : -1));
+    const doxaTagHistory = state.user.doxaTagHistory.data.sort((left, right) => (left.timestamp < right.timestamp ? 1 : -1));
     return {
       doxaTag: doxaTagHistory[0] || null
     };

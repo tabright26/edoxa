@@ -17,7 +17,7 @@ export const withUserAccountWithdrawal = (currency: Currency) => (ConnectedCompo
 
   const mapStateToProps = (state: RootState) => {
     return {
-      amounts: state.user.account.withdrawal.amounts.get(currency)
+      amounts: state.user.account.withdrawal.data.amounts.get(currency)
     };
   };
 

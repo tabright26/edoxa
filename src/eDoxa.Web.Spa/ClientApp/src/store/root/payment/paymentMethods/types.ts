@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_PAYMENTMETHODS = "LOAD_PAYMENTMETHODS";
 export const LOAD_PAYMENTMETHODS_SUCCESS = "LOAD_PAYMENTMETHODS_SUCCESS";
@@ -44,7 +44,7 @@ export type PaymentMethodsActionCreators = LoadPaymentMethodsActionCreator | Att
 
 export type PaymentMethodsActionTypes = LoadPaymentMethodsAction | AttachPaymentMethodAction | DetachPaymentMethodAction | UpdatePaymentMethodAction;
 
-export interface PaymentMethodsState {}
+export type PaymentMethodsState = AxiosState;
 
 export const CARD_PAYMENTMETHOD_TYPE = "card";
 

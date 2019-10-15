@@ -13,8 +13,8 @@ export const withClanMembers = (ConnectedComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState) => {
-    const members = state.organizations.members.map(member => {
-      const doxaTag = state.doxaTags.find(doxaTag => doxaTag.userId === member.userId);
+    const members = state.organizations.members.data.map(member => {
+      const doxaTag = state.doxaTags.data.find(doxaTag => doxaTag.userId === member.userId);
 
       member.userDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
       return member;

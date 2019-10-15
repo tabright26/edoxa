@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_CHALLENGES = "LOAD_CHALLENGES";
 export const LOAD_CHALLENGES_SUCCESS = "LOAD_CHALLENGES_SUCCESS";
@@ -23,4 +23,4 @@ export type ChallengesActionCreators = LoadChallengesActionCreator | LoadChallen
 
 export type ChallengesActionTypes = LoadChallengesAction | LoadChallengeAction;
 
-export interface ChallengesState {}
+export type ChallengesState = AxiosState<any>;

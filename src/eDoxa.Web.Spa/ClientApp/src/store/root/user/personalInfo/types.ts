@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_PERSONAL_INFO = "LOAD_PERSONAL_INFO";
 export const LOAD_PERSONAL_INFO_SUCCESS = "LOAD_PERSONAL_INFO_SUCCESS";
@@ -34,4 +34,4 @@ export type PersonalInfoActionCreators = LoadPersonalInfoActionCreator | CreateP
 
 export type PersonalInfoActionTypes = LoadPersonalInfoAction | CreatePersonalInfoAction | UpdatePersonalInfoAction;
 
-export interface PersonalInfoState {}
+export type PersonalInfoState = AxiosState;

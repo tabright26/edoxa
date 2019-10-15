@@ -1,10 +1,10 @@
 import { reducer, initialState } from "./reducer";
 
-const challenges204Data = [];
-const challenges200Data = [{ id: "1" }, { id: "2" }, { id: "1" }];
+const challenges204Data = { data: [], error: null, loading: false };
+const challenges200Data = { data: [{ id: "1" }, { id: "2" }, { id: "1" }], error: null, loading: false };
 
 const challengeSuccessData = { id: "1" };
-const challengeExpectedState = [...initialState, challengeSuccessData];
+const challengeExpectedState = [...initialState.data, challengeSuccessData];
 
 describe("arena challenges reducer", () => {
   it("should return the initial state", () => {
@@ -23,7 +23,7 @@ describe("arena challenges reducer", () => {
   it("should handle LOAD_CHALLENGES_SUCCESS 200", () => {
     const action: any = {
       type: "LOAD_CHALLENGES_SUCCESS",
-      payload: { status: 200, data: challenges200Data }
+      payload: { status: 200, data: challenges200Data.data }
     };
     expect(reducer(initialState, action)).toEqual(challenges200Data);
   });

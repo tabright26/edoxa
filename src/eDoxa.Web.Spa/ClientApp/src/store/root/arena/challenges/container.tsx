@@ -8,7 +8,7 @@ export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any
 
   const mapStateToProps = (state: RootState) => {
     return {
-      challenges: state.arena.challenges
+      challenges: state.arena.challenges.data
     };
   };
 

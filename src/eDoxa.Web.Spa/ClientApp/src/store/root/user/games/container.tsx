@@ -14,7 +14,7 @@ export const withUserGames = (ConnectedComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     return {
-      games: state.user.games
+      games: state.user.games.data
     };
   };
 

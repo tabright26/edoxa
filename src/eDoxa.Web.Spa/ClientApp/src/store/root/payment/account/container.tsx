@@ -14,7 +14,7 @@ export const withStripeAccount = (ConnectedComponent: FunctionComponent<any>) =>
 
   const mapStateToProps = (state: RootState) => {
     return {
-      account: state.payment.account
+      account: state.payment.account.data
     };
   };
 

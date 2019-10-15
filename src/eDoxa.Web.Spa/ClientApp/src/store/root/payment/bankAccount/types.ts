@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_BANK_ACCOUNT = "LOAD_BANK_ACCOUNT";
 export const LOAD_BANK_ACCOUNT_SUCCESS = "LOAD_BANK_ACCOUNT_SUCCESS";
@@ -24,4 +24,4 @@ export type BankAccountActionCreators = LoadBankAccountActionCreator | ChangeBan
 
 export type BankAccountActionTypes = LoadBankAccountAction | ChangeBankAccountAction;
 
-export interface BankAccountState {}
+export type BankAccountState = AxiosState;

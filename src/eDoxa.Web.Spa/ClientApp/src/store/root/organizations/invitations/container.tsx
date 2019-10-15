@@ -18,9 +18,9 @@ export const withInvitations = (ConnectedComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState) => {
-    const invitations = state.organizations.invitations.map(invitation => {
-      const doxatag = state.doxaTags.find(doxaTag => doxaTag.userId === invitation.userId);
-      const clan = state.organizations.clans.find(clan => clan.id === invitation.clanId);
+    const invitations = state.organizations.invitations.data.map(invitation => {
+      const doxatag = state.doxaTags.data.find(doxaTag => doxaTag.userId === invitation.userId);
+      const clan = state.organizations.clans.data.find(clan => clan.id === invitation.clanId);
 
       invitation.userDoxaTag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       invitation.clanName = clan ? clan.name : null;

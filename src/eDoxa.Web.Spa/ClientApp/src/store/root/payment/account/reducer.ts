@@ -1,15 +1,22 @@
-import { LOAD_ACCOUNT_SUCCESS, LOAD_ACCOUNT_FAIL, AccountActionTypes } from "./types";
+import { LOAD_ACCOUNT, LOAD_ACCOUNT_SUCCESS, LOAD_ACCOUNT_FAIL, AccountActionTypes, AccountState } from "./types";
 import { Reducer } from "redux";
 
-export const initialState = { data: {} };
+export const initialState: AccountState = {
+  data: {},
+  error: null,
+  loading: false
+};
 
-export const reducer: Reducer<any, AccountActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<AccountState, AccountActionTypes> = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_ACCOUNT: {
+      return { data: state.data, error: null, loading: true };
+    }
     case LOAD_ACCOUNT_SUCCESS: {
-      return { data: action.payload.data };
+      return { data: action.payload.data, error: null, loading: false };
     }
     case LOAD_ACCOUNT_FAIL: {
-      return state;
+      return { data: state.data, error: LOAD_ACCOUNT_FAIL, loading: false };
     }
     default: {
       return state;

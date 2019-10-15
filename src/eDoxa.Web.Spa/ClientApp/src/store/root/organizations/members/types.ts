@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_MEMBERS = "LOAD_MEMBERS";
 export const LOAD_MEMBERS_SUCCESS = "LOAD_MEMBERS_SUCCESS";
@@ -40,4 +40,4 @@ export type MembersActionCreators = LoadMembersActionCreator | KickMemberActionC
 
 export type MembersActionTypes = LoadMembersAction | KickMemberAction | LeaveClanAction;
 
-export interface MembersState {}
+export type MembersState = AxiosState;

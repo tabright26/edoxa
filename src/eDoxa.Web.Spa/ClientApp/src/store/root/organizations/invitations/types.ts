@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_INVITATIONS = "LOAD_INVITATIONS";
 export const LOAD_INVITATIONS_SUCCESS = "LOAD_INVITATIONS_SUCCESS";
@@ -64,4 +64,4 @@ export type InvitationsActionCreators = LoadInvitationsActionCreator | LoadInvit
 
 export type InvitationsActionTypes = LoadInvitationsAction | LoadInvitationAction | AddInvitationAction | AcceptInvitationAction | DeclineInvitationAction;
 
-export interface InvitationsState {}
+export type InvitationsState = AxiosState;

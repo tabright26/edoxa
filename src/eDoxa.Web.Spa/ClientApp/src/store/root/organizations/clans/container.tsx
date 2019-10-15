@@ -16,8 +16,8 @@ export const withClans = (ConnectedComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState) => {
-    const clans = state.organizations.clans.map(clan => {
-      const doxaTag = state.doxaTags.find(doxaTag => doxaTag.userId === clan.ownerId);
+    const clans = state.organizations.clans.data.map(clan => {
+      const doxaTag = state.doxaTags.data.find(doxaTag => doxaTag.userId === clan.ownerId);
 
       clan.ownerDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
       return clan;

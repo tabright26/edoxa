@@ -14,7 +14,7 @@ export const withtUserInformations = (ConnectedComponent: FunctionComponent<any>
 
   const mapStateToProps = (state: RootState) => {
     return {
-      personalInfo: state.user.personalInfo
+      personalInfo: state.user.personalInfo.data
     };
   };
 

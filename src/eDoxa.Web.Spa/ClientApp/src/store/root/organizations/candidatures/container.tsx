@@ -30,9 +30,9 @@ export const withCandidatures = (ConnectedComponent: FunctionComponent<any>) => 
   };
 
   const mapStateToProps = (state: RootState, ownProps: CandidatureProps) => {
-    const candidatures = state.organizations.candidatures.map(candidature => {
-      const doxaTag = state.doxaTags.find(doxaTag => doxaTag.userId === candidature.userId);
-      const clan = state.organizations.clans.find(clan => clan.id === candidature.clanId);
+    const candidatures = state.organizations.candidatures.data.map(candidature => {
+      const doxaTag = state.doxaTags.data.find(doxaTag => doxaTag.userId === candidature.userId);
+      const clan = state.organizations.clans.data.find(clan => clan.id === candidature.clanId);
 
       candidature.userDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
       candidature.clanName = clan ? clan.name : null;

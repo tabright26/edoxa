@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_CANDIDATURES = "LOAD_CANDIDATURES";
 export const LOAD_CANDIDATURES_SUCCESS = "LOAD_CANDIDATURES_SUCCESS";
@@ -64,4 +64,4 @@ export type CandidaturesActionCreators = LoadCandidaturesActionCreator | LoadCan
 
 export type CandidaturesActionTypes = LoadCandidaturesAction | LoadCandidatureAction | AddCandidatureAction | AcceptCandidatureAction | DeclineCandidatureAction;
 
-export interface CandidaturesState {}
+export type CandidaturesState = AxiosState;

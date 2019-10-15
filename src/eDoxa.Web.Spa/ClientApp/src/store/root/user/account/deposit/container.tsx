@@ -17,7 +17,7 @@ export const withUserAccountDeposit = (currency: Currency) => (ConnectedComponen
 
   const mapStateToProps = (state: RootState) => {
     return {
-      amounts: state.user.account.deposit.amounts.get(currency)
+      amounts: state.user.account.deposit.data.amounts.get(currency)
     };
   };
 

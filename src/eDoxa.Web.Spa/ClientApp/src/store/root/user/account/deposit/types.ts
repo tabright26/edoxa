@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 import { Currency } from "../types";
 
 export const LOAD_DEPOSIT_MONEY_AMOUNTS = "LOAD_DEPOSIT_MONEY_AMOUNTS";
@@ -45,6 +45,4 @@ export type DepositActionCreators = LoadDepositMoneyAmountsActionCreator | LoadD
 
 export type DepositActionTypes = LoadDepositMoneyAmountsAction | LoadDepositTokenAmountsAction | DepositMoneyAction | DepositTokenAction;
 
-export interface DepositState {
-  amounts: Map<Currency, number[]>;
-}
+export type DepositState = AxiosState<{ amounts: Map<Currency, number[]> }>;

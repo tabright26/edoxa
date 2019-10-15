@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 import { Currency } from "../types";
 
 export const LOAD_WITHDRAWAL_MONEY_AMOUNTS = "LOAD_WITHDRAWAL_MONEY_AMOUNTS";
@@ -25,6 +25,4 @@ export type WithdrawalActionCreators = WithdrawalMoneyActionCreator | LoadWithdr
 
 export type WithdrawalActionTypes = WithdrawalMoneyAction | LoadWithdrawalMoneyAmountsAction;
 
-export interface WithdrawalState {
-  amounts: Map<Currency, number[]>;
-}
+export type WithdrawalState = AxiosState<{ amounts: Map<Currency, number[]> }>;

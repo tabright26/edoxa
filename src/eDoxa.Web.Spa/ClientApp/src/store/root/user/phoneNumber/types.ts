@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_PHONENUMBER = "LOAD_PHONENUMBER";
 export const LOAD_PHONENUMBER_SUCCESS = "LOAD_PHONENUMBER_SUCCESS";
@@ -24,7 +24,7 @@ export type PhoneNumberActionCreators = LoadPhoneNumberActionCreator | ChangePho
 
 export type PhoneNumberActionTypes = LoadPhoneNumberAction | ChangePhoneNumberAction;
 
-export interface PhoneNumberState {
+export type PhoneNumberState = AxiosState<{
   phoneNumber: string;
   phoneNumberVerified: boolean;
-}
+}>;

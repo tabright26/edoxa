@@ -18,7 +18,7 @@ export const withStripePaymentMethods: any = (paymentMethodType: PaymentMethodTy
   const mapStateToProps = (state: RootState) => {
     return {
       paymentMethods: {
-        data: state.payment.paymentMethods.data.filter(paymentMethod => paymentMethod.type === paymentMethodType)
+        data: state.payment.paymentMethods.data.data.filter(paymentMethod => paymentMethod.type === paymentMethodType)
       }
     };
   };

@@ -23,5 +23,3 @@ interface ResetPasswordAction extends AxiosAction<ResetPasswordType> {}
 export type PasswordActionCreators = ForgotPasswordActionCreator | ResetPasswordActionCreator;
 
 export type PasswordActionTypes = ForgotPasswordAction | ResetPasswordAction;
-
-export interface PasswordState {}

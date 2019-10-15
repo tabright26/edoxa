@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_USER_ACCOUNT_TRANSACTIONS = "LOAD_USER_ACCOUNT_TRANSACTIONS";
 export const LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS = "LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS";
@@ -14,4 +14,4 @@ export type TransactionsActionCreators = LoadTransactionsActionCreator;
 
 export type TransactionsActionTypes = LoadTransactionsAction;
 
-export interface TransactionsState {}
+export type TransactionsState = AxiosState;

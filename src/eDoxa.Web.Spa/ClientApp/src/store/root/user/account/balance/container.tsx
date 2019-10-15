@@ -22,15 +22,15 @@ export const withUserAccountBalance = (ConnectedComponent: FunctionComponent<any
     switch (ownProps.currency) {
       case "money":
         return {
-          available: state.user.account.balance.money.available,
-          pending: state.user.account.balance.money.pending,
+          available: state.user.account.balance.data.money.available,
+          pending: state.user.account.balance.data.money.pending,
           currency: ownProps.currency,
           selector: ownProps.selector
         };
       case "token":
         return {
-          available: state.user.account.balance.token.available,
-          pending: state.user.account.balance.token.pending,
+          available: state.user.account.balance.data.token.available,
+          pending: state.user.account.balance.data.token.pending,
           currency: ownProps.currency,
           selector: ownProps.selector
         };

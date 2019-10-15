@@ -13,7 +13,7 @@ export const withStripeBankAccount: any = (ConnectedComponent: FunctionComponent
   };
 
   const mapStateToProps = (state: RootState) => {
-    const bankAccount = state.payment.bankAccount;
+    const bankAccount = state.payment.bankAccount.data;
     return {
       bankAccount: bankAccount,
       hasBankAccount: bankAccount.data

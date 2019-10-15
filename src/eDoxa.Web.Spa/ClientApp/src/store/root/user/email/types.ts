@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
 export const LOAD_EMAIL = "LOAD_EMAIL";
 export const LOAD_EMAIL_SUCCESS = "LOAD_EMAIL_SUCCESS";
@@ -24,7 +24,7 @@ export type EmailActionCreators = LoadEmailActionCreator | ConfirmEmailActionCre
 
 export type EmailActionTypes = LoadEmailAction | ConfirmEmailAction;
 
-export interface EmailState {
+export type EmailState = AxiosState<{
   email: string;
   emailVerified: boolean;
-}
+}>;

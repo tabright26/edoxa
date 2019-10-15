@@ -14,7 +14,7 @@ export const withUserAccountTransactions = currency => (ConnectedComponent: Func
 
   const mapStateToProps = (state: RootState) => {
     return {
-      transactions: state.user.account.transactions.filter(transaction => transaction.currency.toLowerCase() === currency.toLowerCase())
+      transactions: state.user.account.transactions.data.filter(transaction => transaction.currency.toLowerCase() === currency.toLowerCase())
     };
   };
 
