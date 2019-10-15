@@ -8,5 +8,6 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.TestHelpers
 {
     public abstract class UnitTest
     {
+
     }
 }
