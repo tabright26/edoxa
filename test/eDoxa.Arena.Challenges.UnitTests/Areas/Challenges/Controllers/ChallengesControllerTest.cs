@@ -31,32 +31,32 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         {
         }
 
-        [Fact]
-        public async Task GetAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
+        //[Fact]
+        //public async Task GetAsync_ShouldBeBadRequestObjectResult()
+        //{
+        //    // Arrange
+        //    var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
-                .ReturnsAsync(new Collection<IChallenge>())
-                .Verifiable();
+        //    mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+        //        .ReturnsAsync(new Collection<IChallenge>())
+        //        .Verifiable();
 
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
+        //    mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockChallengeQuery.Object);
+        //    var controller = new ChallengesController(mockChallengeQuery.Object);
 
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
+        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
 
-            // Act
-            var result = await controller.GetAsync();
+        //    // Act
+        //    var result = await controller.GetAsync();
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockChallengeQuery.Verify(
-                challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()),
-                Times.Never);
-        }
+        //    mockChallengeQuery.Verify(
+        //        challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()),
+        //        Times.Never);
+        //}
 
         [Fact]
         public async Task GetAsync_ShouldBeNoContentResult()
@@ -108,28 +108,28 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeQuery.Verify(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()), Times.Once);
         }
 
-        [Fact]
-        public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
+        //[Fact]
+        //public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
+        //{
+        //    // Arrange
+        //    var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
+        //    mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
+        //    mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockChallengeQuery.Object);
+        //    var controller = new ChallengesController(mockChallengeQuery.Object);
 
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
+        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
 
-            // Act
-            var result = await controller.GetByIdAsync(new ChallengeId());
+        //    // Act
+        //    var result = await controller.GetByIdAsync(new ChallengeId());
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
-        }
+        //    mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
+        //}
 
         [Fact]
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()

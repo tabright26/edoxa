@@ -127,54 +127,54 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
         }
 
-        [Fact]
-        public async Task PostAsync_ShouldBeNBadRequestObjectResultt()
-        {
-            // Arrange
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
+        //[Fact]
+        //public async Task PostAsync_ShouldBeNBadRequestObjectResultt()
+        //{
+        //    // Arrange
+        //    var mockParticipantQuery = new Mock<IParticipantQuery>();
 
-            var mockChallengeService = new Mock<IChallengeService>();
+        //    var mockChallengeService = new Mock<IChallengeService>();
 
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
+        //    var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
+        //    mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Verifiable();
+        //    mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Verifiable();
 
-            mockChallengeService.Setup(
-                    challengeQuery => challengeQuery.RegisterParticipantAsync(
-                        It.IsAny<ChallengeId>(),
-                        It.IsAny<UserId>(),
-                        It.IsAny<UtcNowDateTimeProvider>(),
-                        It.IsAny<CancellationToken>()))
-                .Verifiable();
+        //    mockChallengeService.Setup(
+        //            challengeQuery => challengeQuery.RegisterParticipantAsync(
+        //                It.IsAny<ChallengeId>(),
+        //                It.IsAny<UserId>(),
+        //                It.IsAny<UtcNowDateTimeProvider>(),
+        //                It.IsAny<CancellationToken>()))
+        //        .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
+        //    var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
+        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
+        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
 
-            // Act
-            var result = await controller.PostAsync(new ChallengeId());
+        //    // Act
+        //    var result = await controller.PostAsync(new ChallengeId());
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
+        //    mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
 
-            mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Never);
+        //    mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Never);
 
-            mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterParticipantAsync(
-                    It.IsAny<ChallengeId>(),
-                    It.IsAny<UserId>(),
-                    It.IsAny<UtcNowDateTimeProvider>(),
-                    It.IsAny<CancellationToken>()),
-                Times.Never);
-        }
+        //    mockChallengeService.Verify(
+        //        challengeQuery => challengeQuery.RegisterParticipantAsync(
+        //            It.IsAny<ChallengeId>(),
+        //            It.IsAny<UserId>(),
+        //            It.IsAny<UtcNowDateTimeProvider>(),
+        //            It.IsAny<CancellationToken>()),
+        //        Times.Never);
+        //}
 
         [Fact]
         public async Task PostAsync_ShouldBeNotFoundObjectResult()

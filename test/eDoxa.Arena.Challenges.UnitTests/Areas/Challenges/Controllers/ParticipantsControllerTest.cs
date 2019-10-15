@@ -30,30 +30,30 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         {
         }
 
-        [Fact]
-        public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
+        //[Fact]
+        //public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
+        //{
+        //    // Arrange
+        //    var mockParticipantQuery = new Mock<IParticipantQuery>();
 
-            mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
+        //    mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
 
-            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
+        //    mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ParticipantsController(mockParticipantQuery.Object);
+        //    var controller = new ParticipantsController(mockParticipantQuery.Object);
 
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
+        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
 
-            // Act
-            var result = await controller.GetByIdAsync(new ParticipantId());
+        //    // Act
+        //    var result = await controller.GetByIdAsync(new ParticipantId());
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Never);
+        //    mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Never);
 
-            mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Never);
-        }
+        //    mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Never);
+        //}
 
         [Fact]
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()

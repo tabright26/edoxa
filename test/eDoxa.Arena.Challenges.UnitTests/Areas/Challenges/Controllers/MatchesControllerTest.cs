@@ -30,28 +30,28 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         {
         }
 
-        [Fact]
-        public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockMatchQuery = new Mock<IMatchQuery>();
+        //[Fact]
+        //public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
+        //{
+        //    // Arrange
+        //    var mockMatchQuery = new Mock<IMatchQuery>();
 
-            mockMatchQuery.Setup(matchQuery => matchQuery.FindMatchAsync(It.IsAny<MatchId>())).Verifiable();
+        //    mockMatchQuery.Setup(matchQuery => matchQuery.FindMatchAsync(It.IsAny<MatchId>())).Verifiable();
 
-            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
+        //    mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new MatchesController(mockMatchQuery.Object);
+        //    var controller = new MatchesController(mockMatchQuery.Object);
 
-            controller.ControllerContext.ModelState.AddModelError("error", "error");
+        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
 
-            // Act
-            var result = await controller.GetByIdAsync(new MatchId());
+        //    // Act
+        //    var result = await controller.GetByIdAsync(new MatchId());
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockMatchQuery.Verify(matchQuery => matchQuery.FindMatchAsync(It.IsAny<MatchId>()), Times.Never);
-        }
+        //    mockMatchQuery.Verify(matchQuery => matchQuery.FindMatchAsync(It.IsAny<MatchId>()), Times.Never);
+        //}
 
         [Fact]
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
