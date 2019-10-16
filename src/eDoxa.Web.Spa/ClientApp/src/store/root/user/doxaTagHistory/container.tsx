@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserDoxatagHistory, updateUserDoxatag } from "store/root/user/doxatagHistory/actions";
+import { loadUserDoxatagHistory } from "store/root/user/doxatagHistory/actions";
 import { RootState } from "store/root/types";
 
-export const withUserDoxatagHistory = (HighOrderComponent: FunctionComponent<any>) => {
+export const withUserDoxatag = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.actions.loadDoxatagHistory();
+      props.loadUserDoxatagHistory();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -21,10 +21,7 @@ export const withUserDoxatagHistory = (HighOrderComponent: FunctionComponent<any
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadDoxatagHistory: () => dispatch(loadUserDoxatagHistory()),
-        changeDoxaTag: (data: any) => dispatch(updateUserDoxatag(data)).then(() => dispatch(loadUserDoxatagHistory()))
-      }
+      loadUserDoxatagHistory: () => dispatch(loadUserDoxatagHistory())
     };
   };
 

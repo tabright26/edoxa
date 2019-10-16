@@ -1,3 +1,3 @@
-import UpdateAddressForm from "./Update";
+import UpdateUserAddressContainer from "./Container";
 
-export default UpdateAddressForm;
+export default UpdateUserAddressContainer;

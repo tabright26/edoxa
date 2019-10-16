@@ -1,3 +1,3 @@
-import UpdatePhoneForm from "./Container";
+import UpdateUserPhoneContainer from "./Container";
 
-export default UpdatePhoneForm;
+export default UpdateUserPhoneContainer;

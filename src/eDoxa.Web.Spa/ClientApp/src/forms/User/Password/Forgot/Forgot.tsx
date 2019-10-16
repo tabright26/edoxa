@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { FORGOT_PASSWORD_FORM } from "forms";
+import { FORGOT_USER_PASSWORD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
@@ -16,6 +16,6 @@ const ForgotPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: FORGOT_PASSWORD_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: FORGOT_USER_PASSWORD_FORM, validate }));
 
 export default enhance(ForgotPasswordForm);

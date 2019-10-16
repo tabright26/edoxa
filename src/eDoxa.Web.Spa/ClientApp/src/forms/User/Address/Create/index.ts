@@ -1,3 +1,3 @@
-import CreateAddressForm from "./Create";
+import CreateUserAddressContainer from "./Container";
 
-export default CreateAddressForm;
+export default CreateUserAddressContainer;

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
-import { CREATE_ADDRESS_MODAL } from "modals";
+import { CREATE_USER_ADDRESS_MODAL } from "modals";
 import { loadUserAddressBook, createUserAddress, updateUserAddress, deleteUserAddress } from "store/root/user/addressBook/actions";
 import { RootState } from "store/root/types";
 
@@ -27,7 +27,7 @@ export const withUserAddressBook = (HighOrderComponent: FunctionComponent<any>) 
         addAddress: (data: any) => dispatch(createUserAddress(data)).then(() => dispatch(loadUserAddressBook())),
         updateAddress: (addressId: string, data: any) => dispatch(updateUserAddress(addressId, data)).then(() => dispatch(loadUserAddressBook())),
         removeAddress: (addressId: string) => dispatch(deleteUserAddress(addressId)),
-        showCreateAddressModal: () => dispatch(show(CREATE_ADDRESS_MODAL))
+        showCreateAddressModal: () => dispatch(show(CREATE_USER_ADDRESS_MODAL))
       }
     };
   };

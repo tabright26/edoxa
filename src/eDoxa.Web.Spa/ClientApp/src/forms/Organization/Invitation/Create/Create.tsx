@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { reduxForm, Field } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { CREATE_INVITATION_FORM } from "forms";
+import { SEND_INVITATION_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
 
@@ -19,6 +19,6 @@ const CreateInvitationForm: FunctionComponent<any> = ({ handleSubmit, initialVal
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_INVITATION_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: SEND_INVITATION_FORM, validate }));
 
 export default enhance(CreateInvitationForm);

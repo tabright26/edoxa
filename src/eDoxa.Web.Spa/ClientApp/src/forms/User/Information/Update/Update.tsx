@@ -4,12 +4,12 @@ import { Field, reduxForm } from "redux-form";
 import moment from "moment";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { UPDATE_INFORMATION_FORM } from "forms";
+import { UPDATE_USER_INFORMATION_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
-const UpdateInformationForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, initialValues: { lastName, birthDate, gender } }) => (
-  <Form onSubmit={handleSubmit}>
+const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel, initialValues: { lastName, birthDate, gender } }) => (
+  <Form onSubmit={handleSubmit(data => updateUserInformations(data).then(() => handleCancel()))}>
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
@@ -79,6 +79,6 @@ const UpdateInformationForm: FunctionComponent<any> = ({ handleSubmit, handleCan
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_INFORMATION_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_USER_INFORMATION_FORM, validate }));
 
-export default enhance(UpdateInformationForm);
+export default enhance(UpdateUserInformationsForm);

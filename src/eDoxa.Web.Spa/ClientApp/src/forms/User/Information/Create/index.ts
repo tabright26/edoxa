@@ -1,3 +1,3 @@
-import CreateInformationForm from "./Create";
+import CreateUserInformationsContainer from "./Container";
 
-export default CreateInformationForm;
+export default CreateUserInformationsContainer;
