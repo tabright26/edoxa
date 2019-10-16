@@ -1,5 +1,5 @@
 import { reducer, initialState } from "./reducer";
-import { LOAD_MEMBERS_SUCCESS, LOAD_MEMBERS_FAIL, LEAVE_CLAN_SUCCESS, KICK_MEMBER_SUCCESS } from "./types";
+import { LOAD_CLAN_MEMBERS_SUCCESS, LOAD_CLAN_MEMBERS_FAIL, KICK_CLAN_MEMBER_SUCCESS } from "./types";
 import { AxiosError } from "axios";
 
 const members204Data = [];
@@ -11,11 +11,9 @@ describe("invitations reducer", () => {
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 
-  //--------------------------------------------------------------------------------------------------------
-
   it("should handle LOAD_MEMBERS_SUCCESS 204", () => {
     const action: any = {
-      type: LOAD_MEMBERS_SUCCESS,
+      type: LOAD_CLAN_MEMBERS_SUCCESS,
       payload: { status: 204, data: members204Data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
@@ -23,7 +21,7 @@ describe("invitations reducer", () => {
 
   it("should handle LOAD_MEMBERS_SUCCESS 200", () => {
     const action: any = {
-      type: LOAD_MEMBERS_SUCCESS,
+      type: LOAD_CLAN_MEMBERS_SUCCESS,
       payload: { status: 200, data: members200Data }
     };
     const state = {
@@ -42,7 +40,7 @@ describe("invitations reducer", () => {
       message: ""
     };
     const action: any = {
-      type: LOAD_MEMBERS_FAIL,
+      type: LOAD_CLAN_MEMBERS_FAIL,
       error
     };
     const state = {
@@ -53,36 +51,10 @@ describe("invitations reducer", () => {
     expect(reducer(initialState, action)).toEqual(state);
   });
 
-  //--------------------------------------------------------------------------------------------------------
-
-  it("should handle LEAVE_CLAN_SUCCESS", () => {
-    const action: any = {
-      type: LEAVE_CLAN_SUCCESS
-    };
-    expect(reducer(initialState, action)).toEqual(initialState);
-  });
-
-  // it("should handle LEAVE_CLAN_FAIL", () => {
-  //   const action: any = {
-  //     type: LEAVE_CLAN_FAIL,
-  //     error: {
-  //       isAxiosError: true,
-  //       response: {
-  //         data: []
-  //       }
-  //     }
-  //   };
-  //   expect(reducer(initialState, action)).toThrow();
-  // });
-
-  //--------------------------------------------------------------------------------------------------------
-
   it("should handle KICK_MEMBER_SUCCESS", () => {
     const action: any = {
-      type: KICK_MEMBER_SUCCESS
+      type: KICK_CLAN_MEMBER_SUCCESS
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
-
-  //--------------------------------------------------------------------------------------------------------
 });

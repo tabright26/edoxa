@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadClans, loadClan, createClan, downloadClanLogo, uploadClanLogo } from "store/root/organizations/clans/actions";
+import { loadClans, loadClan, createClan } from "store/root/organizations/clans/actions";
+import { downloadClanLogo, uploadClanLogo } from "store/root/organizations/logos/actions";
 import { RootState } from "store/root/types";
 import { show } from "redux-modal";
 

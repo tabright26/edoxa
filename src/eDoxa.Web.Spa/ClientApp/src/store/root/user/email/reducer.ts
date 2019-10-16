@@ -1,21 +1,21 @@
 import { Reducer } from "redux";
-import { LOAD_EMAIL, LOAD_EMAIL_SUCCESS, LOAD_EMAIL_FAIL, EmailActionTypes, EmailState } from "./types";
+import { LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL, UserEmailActions, UserEmailState } from "./types";
 
-export const initialState: EmailState = {
+export const initialState: UserEmailState = {
   data: { email: null, emailVerified: false },
   error: null,
   loading: false
 };
 
-export const reducer: Reducer<EmailState, EmailActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<UserEmailState, UserEmailActions> = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_EMAIL: {
+    case LOAD_USER_EMAIL: {
       return { data: state.data, error: null, loading: true };
     }
-    case LOAD_EMAIL_SUCCESS: {
+    case LOAD_USER_EMAIL_SUCCESS: {
       return { data: action.payload.data, error: null, loading: false };
     }
-    case LOAD_EMAIL_FAIL: {
+    case LOAD_USER_EMAIL_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

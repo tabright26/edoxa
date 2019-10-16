@@ -12,6 +12,6 @@ interface LoadDoxatagsAction extends AxiosAction<LoadDoxatagsType> {}
 
 export type DoxatagsActionCreators = LoadDoxatagsActionCreator;
 
-export type DoxatagsActionTypes = LoadDoxatagsAction;
+export type DoxatagsActions = LoadDoxatagsAction;
 
 export type DoxatagsState = AxiosState;

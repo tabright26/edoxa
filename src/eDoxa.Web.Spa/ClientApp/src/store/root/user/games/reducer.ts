@@ -1,18 +1,18 @@
-import { LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL, GamesActionTypes, GamesState } from "./types";
+import { LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL, UserGamesActions, UserGamesState } from "./types";
 import { Reducer } from "redux";
 
-export const initialState: GamesState = {
+export const initialState: UserGamesState = {
   data: [],
   error: null,
   loading: false
 };
 
-export const reducer: Reducer<GamesState, GamesActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<UserGamesState, UserGamesActions> = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_GAMES: {
+    case LOAD_USER_GAMES: {
       return { data: state.data, error: null, loading: true };
     }
-    case LOAD_GAMES_SUCCESS: {
+    case LOAD_USER_GAMES_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
         case 204: {
@@ -23,7 +23,7 @@ export const reducer: Reducer<GamesState, GamesActionTypes> = (state = initialSt
         }
       }
     }
-    case LOAD_GAMES_FAIL: {
+    case LOAD_USER_GAMES_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

@@ -1,19 +1,26 @@
-import { LOAD_DOXATAG_HISTORY, LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL, DoxatagHistoryActionTypes, DoxatagHistoryState } from "./types";
-import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
+import {
+  LOAD_USER_DOXATAGHISTORY,
+  LOAD_USER_DOXATAGHISTORY_SUCCESS,
+  LOAD_USER_DOXATAGHISTORY_FAIL,
+  UPDATE_USER_DOXATAG_SUCCESS,
+  UPDATE_USER_DOXATAG_FAIL,
+  UserDoxatagHistoryActions,
+  UserDoxatagHistoryState
+} from "./types";
 import { Reducer } from "redux";
 
-export const initialState: DoxatagHistoryState = {
+export const initialState: UserDoxatagHistoryState = {
   data: [],
   error: null,
   loading: false
 };
 
-export const reducer: Reducer<DoxatagHistoryState, DoxatagHistoryActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<UserDoxatagHistoryState, UserDoxatagHistoryActions> = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_DOXATAG_HISTORY: {
+    case LOAD_USER_DOXATAGHISTORY: {
       return { data: state.data, error: null, loading: true };
     }
-    case LOAD_DOXATAG_HISTORY_SUCCESS: {
+    case LOAD_USER_DOXATAGHISTORY_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
         case 204: {
@@ -24,14 +31,14 @@ export const reducer: Reducer<DoxatagHistoryState, DoxatagHistoryActionTypes> = 
         }
       }
     }
-    case LOAD_DOXATAG_HISTORY_FAIL: {
+    case LOAD_USER_DOXATAGHISTORY_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
-    case CHANGE_DOXATAG_SUCCESS: {
+    case UPDATE_USER_DOXATAG_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
-    case CHANGE_DOXATAG_FAIL: {
-      throwAxiosSubmissionError(action.error);
+    case UPDATE_USER_DOXATAG_FAIL: {
+      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

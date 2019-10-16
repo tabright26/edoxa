@@ -1,4 +1,3 @@
-import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import { Reducer } from "redux";
 import {
   LOAD_CLANS,
@@ -6,14 +5,12 @@ import {
   LOAD_CLANS_SUCCESS,
   LOAD_CLAN_SUCCESS,
   LOAD_CLAN_FAIL,
-  ADD_CLAN_SUCCESS,
-  ADD_CLAN_FAIL,
-  DOWNLOAD_CLAN_LOGO_SUCCESS,
-  DOWNLOAD_CLAN_LOGO_FAIL,
-  UPLOAD_CLAN_LOGO_FAIL,
-  UPLOAD_CLAN_LOGO_SUCCESS,
+  CREATE_CLAN_SUCCESS,
+  CREATE_CLAN_FAIL,
+  LEAVE_CLAN_SUCCESS,
+  LEAVE_CLAN_FAIL,
   ClansState,
-  ClansActionTypes
+  ClansActions
 } from "./types";
 
 export const initialState: ClansState = {
@@ -22,7 +19,7 @@ export const initialState: ClansState = {
   loading: false
 };
 
-export const reducer: Reducer<ClansState, ClansActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<ClansState, ClansActions> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_CLANS: {
       return { data: state.data, error: null, loading: true };
@@ -45,24 +42,18 @@ export const reducer: Reducer<ClansState, ClansActionTypes> = (state = initialSt
     case LOAD_CLAN_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
-    case DOWNLOAD_CLAN_LOGO_SUCCESS: {
-      return { data: [...state.data, action.payload.data], error: null, loading: false };
-    }
-    case DOWNLOAD_CLAN_LOGO_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case UPLOAD_CLAN_LOGO_SUCCESS: {
+    case LEAVE_CLAN_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
-    case UPLOAD_CLAN_LOGO_FAIL: {
-      throwAxiosSubmissionError(action.error);
+    case LEAVE_CLAN_FAIL: {
+      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
-    case ADD_CLAN_SUCCESS: {
+    case CREATE_CLAN_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
-    case ADD_CLAN_FAIL: {
-      throwAxiosSubmissionError(action.error);
+    case CREATE_CLAN_FAIL: {
+      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

@@ -12,6 +12,6 @@ interface LoadBalanceAction extends AxiosAction<LoadBalanceType> {}
 
 export type BalanceActionCreators = LoadBalanceActionCreator;
 
-export type BalanceActionTypes = LoadBalanceAction;
+export type BalanceActions = LoadBalanceAction;
 
 export type BalanceState = AxiosState;

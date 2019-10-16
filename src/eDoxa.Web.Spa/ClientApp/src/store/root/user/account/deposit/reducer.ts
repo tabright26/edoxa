@@ -10,7 +10,7 @@ import {
   DEPOSIT_TOKEN_SUCCESS,
   DEPOSIT_TOKEN_FAIL,
   DepositState,
-  DepositActionTypes
+  DepositActions
 } from "./types";
 import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import { Currency } from "../types";
@@ -22,7 +22,7 @@ export const initialState: DepositState = {
   loading: false
 };
 
-export const reducer: Reducer<DepositState, DepositActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<DepositState, DepositActions> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_DEPOSIT_MONEY_AMOUNTS: {
       return { data: state.data, error: null, loading: true };

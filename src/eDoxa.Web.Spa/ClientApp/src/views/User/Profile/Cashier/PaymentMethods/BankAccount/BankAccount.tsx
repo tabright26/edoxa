@@ -1,9 +1,8 @@
 import React, { useState, FunctionComponent } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Alert } from "reactstrap";
 import { withtUserProfile } from "store/root/user/container";
-import { withStripeBankAccount } from "store/root/payment/bankAccount/container";
+import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
 import { injectStripe } from "react-stripe-elements";
 import BankAccountForm from "forms/Payment/Stripe/BankAccount";
 import { compose } from "recompose";

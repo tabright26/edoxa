@@ -1,4 +1,4 @@
-import { loadClans, loadClan, createClan, downloadClanLogo, uploadClanLogo } from "./actions";
+import { loadClans, loadClan, createClan, leaveClan } from "./actions";
 import {
   LOAD_CLANS,
   LOAD_CLANS_SUCCESS,
@@ -6,15 +6,12 @@ import {
   LOAD_CLAN,
   LOAD_CLAN_SUCCESS,
   LOAD_CLAN_FAIL,
-  ADD_CLAN,
-  ADD_CLAN_SUCCESS,
-  ADD_CLAN_FAIL,
-  DOWNLOAD_CLAN_LOGO,
-  DOWNLOAD_CLAN_LOGO_SUCCESS,
-  DOWNLOAD_CLAN_LOGO_FAIL,
-  UPLOAD_CLAN_LOGO,
-  UPLOAD_CLAN_LOGO_SUCCESS,
-  UPLOAD_CLAN_LOGO_FAIL
+  CREATE_CLAN,
+  CREATE_CLAN_SUCCESS,
+  CREATE_CLAN_FAIL,
+  LEAVE_CLAN,
+  LEAVE_CLAN_FAIL,
+  LEAVE_CLAN_SUCCESS
 } from "./types";
 
 describe("clans", () => {
@@ -47,7 +44,7 @@ describe("clans", () => {
   it("should create an action to create a clan", () => {
     const data = { name: "clanName" };
 
-    const expectedType = [ADD_CLAN, ADD_CLAN_SUCCESS, ADD_CLAN_FAIL];
+    const expectedType = [CREATE_CLAN, CREATE_CLAN_SUCCESS, CREATE_CLAN_FAIL];
     const expectedMethod = "POST";
     const expectedUrl = "/organizations/clans/api/clans";
 
@@ -59,33 +56,17 @@ describe("clans", () => {
     expect(actionCreator.payload.request.data).toEqual(data);
   });
 
-  it("should create an action to get a specific clan photo", () => {
+  it("should create an action to leave the clan", () => {
     const clanId = "0";
 
-    const expectedType = [DOWNLOAD_CLAN_LOGO, DOWNLOAD_CLAN_LOGO_SUCCESS, DOWNLOAD_CLAN_LOGO_FAIL];
-    const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}/logo`;
+    const expectedType = [LEAVE_CLAN, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL];
+    const expectedMethod = "DELETE";
+    const expectedUrl = `/organizations/clans/api/clans/${clanId}/members`;
 
-    const actionCreator = downloadClanLogo(clanId);
+    const actionCreator = leaveClan(clanId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
     expect(actionCreator.payload.request.url).toEqual(expectedUrl);
-  });
-
-  it("should create an action to update a clan logo", () => {
-    const clanId = "0";
-    const data = { logo: "data" };
-
-    const expectedType = [UPLOAD_CLAN_LOGO, UPLOAD_CLAN_LOGO_SUCCESS, UPLOAD_CLAN_LOGO_FAIL];
-    const expectedMethod = "POST";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}/logo`;
-
-    const actionCreator = uploadClanLogo(clanId, data);
-
-    expect(actionCreator.types).toEqual(expectedType);
-    expect(actionCreator.payload.request.method).toEqual(expectedMethod);
-    expect(actionCreator.payload.request.url).toEqual(expectedUrl);
-    expect(actionCreator.payload.request.data).toEqual(data);
   });
 });

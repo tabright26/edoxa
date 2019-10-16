@@ -1,5 +1,6 @@
 import { reducer, initialState } from "./reducer";
 import { LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL } from "./types";
+import { AxiosError } from "axios";
 
 const doxaTag204Data = [];
 const doxaTag200Data = "DoxaTagYo";
@@ -32,12 +33,19 @@ describe("doxatag reducer", () => {
   });
 
   it("should handle LOAD_DOXATAGS_FAIL", () => {
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
+    };
     const action: any = {
-      type: LOAD_DOXATAGS_FAIL
+      type: LOAD_DOXATAGS_FAIL,
+      error
     };
     const state = {
       data: initialState.data,
-      error: LOAD_DOXATAGS_FAIL,
+      error,
       loading: false
     };
     expect(reducer(initialState, action)).toEqual(state);

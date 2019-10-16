@@ -1,25 +1,25 @@
 import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
-export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
-export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";
-export const FORGOT_PASSWORD_FAIL = "FORGOT_PASSWORD_FAIL";
+export const FORGOT_USER_PASSWORD = "FORGOT_USER_PASSWORD";
+export const FORGOT_USER_PASSWORD_SUCCESS = "FORGOT_USER_PASSWORD_SUCCESS";
+export const FORGOT_USER_PASSWORD_FAIL = "FORGOT_USER_PASSWORD_FAIL";
 
-export const RESET_PASSWORD = "RESET_PASSWORD";
-export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
-export const RESET_PASSWORD_FAIL = "RESET_PASSWORD_FAIL";
+export const RESET_USER_PASSWORD = "RESET_USER_PASSWORD";
+export const RESET_USER_PASSWORD_SUCCESS = "RESET_USER_PASSWORD_SUCCESS";
+export const RESET_USER_PASSWORD_FAIL = "RESET_USER_PASSWORD_FAIL";
 
-type ForgotPasswordType = typeof FORGOT_PASSWORD | typeof FORGOT_PASSWORD_SUCCESS | typeof FORGOT_PASSWORD_FAIL;
+type ForgotUserPasswordType = typeof FORGOT_USER_PASSWORD | typeof FORGOT_USER_PASSWORD_SUCCESS | typeof FORGOT_USER_PASSWORD_FAIL;
 
-interface ForgotPasswordActionCreator extends AxiosActionCreator<ForgotPasswordType> {}
+interface ForgotUserPasswordActionCreator extends AxiosActionCreator<ForgotUserPasswordType> {}
 
-interface ForgotPasswordAction extends AxiosAction<ForgotPasswordType> {}
+interface ForgotUserPasswordAction extends AxiosAction<ForgotUserPasswordType> {}
 
-type ResetPasswordType = typeof RESET_PASSWORD | typeof RESET_PASSWORD_SUCCESS | typeof RESET_PASSWORD_FAIL;
+type ResetUserPasswordType = typeof RESET_USER_PASSWORD | typeof RESET_USER_PASSWORD_SUCCESS | typeof RESET_USER_PASSWORD_FAIL;
 
-interface ResetPasswordActionCreator extends AxiosActionCreator<ResetPasswordType> {}
+interface ResetUserPasswordActionCreator extends AxiosActionCreator<ResetUserPasswordType> {}
 
-interface ResetPasswordAction extends AxiosAction<ResetPasswordType> {}
+interface ResetUserPasswordAction extends AxiosAction<ResetUserPasswordType> {}
 
-export type PasswordActionCreators = ForgotPasswordActionCreator | ResetPasswordActionCreator;
+export type UserPasswordActionCreators = ForgotUserPasswordActionCreator | ResetUserPasswordActionCreator;
 
-export type PasswordActionTypes = ForgotPasswordAction | ResetPasswordAction;
+export type UserPasswordActions = ForgotUserPasswordAction | ResetUserPasswordAction;

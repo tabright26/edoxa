@@ -1,19 +1,17 @@
 import {
-  LOAD_MEMBERS,
-  LOAD_MEMBERS_SUCCESS,
-  LOAD_MEMBERS_FAIL,
-  KICK_MEMBER,
-  KICK_MEMBER_SUCCESS,
-  KICK_MEMBER_FAIL,
-  LEAVE_CLAN,
-  LEAVE_CLAN_SUCCESS,
-  LEAVE_CLAN_FAIL,
-  MembersActionCreators
+  LOAD_CLAN_MEMBERS,
+  LOAD_CLAN_MEMBERS_SUCCESS,
+  LOAD_CLAN_MEMBERS_FAIL,
+  KICK_CLAN_MEMBER,
+  KICK_CLAN_MEMBER_SUCCESS,
+  KICK_CLAN_MEMBER_FAIL,
+
+  ClanMembersActionCreators
 } from "./types";
 
-export function loadMembers(clanId: string): MembersActionCreators {
+export function loadMembers(clanId: string): ClanMembersActionCreators {
   return {
-    types: [LOAD_MEMBERS, LOAD_MEMBERS_SUCCESS, LOAD_MEMBERS_FAIL],
+    types: [LOAD_CLAN_MEMBERS, LOAD_CLAN_MEMBERS_SUCCESS, LOAD_CLAN_MEMBERS_FAIL],
     payload: {
       request: {
         method: "GET",
@@ -23,9 +21,9 @@ export function loadMembers(clanId: string): MembersActionCreators {
   };
 }
 
-export function kickMember(clanId: string, memberId: string): MembersActionCreators {
+export function kickMember(clanId: string, memberId: string): ClanMembersActionCreators {
   return {
-    types: [KICK_MEMBER, KICK_MEMBER_SUCCESS, KICK_MEMBER_FAIL],
+    types: [KICK_CLAN_MEMBER, KICK_CLAN_MEMBER_SUCCESS, KICK_CLAN_MEMBER_FAIL],
     payload: {
       request: {
         method: "DELETE",
@@ -35,14 +33,4 @@ export function kickMember(clanId: string, memberId: string): MembersActionCreat
   };
 }
 
-export function leaveClan(clanId: string): MembersActionCreators {
-  return {
-    types: [LEAVE_CLAN, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL],
-    payload: {
-      request: {
-        method: "DELETE",
-        url: `/organizations/clans/api/clans/${clanId}/members`
-      }
-    }
-  };
-}
+

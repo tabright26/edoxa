@@ -5,15 +5,12 @@ import {
   LOAD_CLAN,
   LOAD_CLAN_SUCCESS,
   LOAD_CLAN_FAIL,
-  ADD_CLAN,
-  ADD_CLAN_SUCCESS,
-  ADD_CLAN_FAIL,
-  DOWNLOAD_CLAN_LOGO,
-  DOWNLOAD_CLAN_LOGO_SUCCESS,
-  DOWNLOAD_CLAN_LOGO_FAIL,
-  UPLOAD_CLAN_LOGO,
-  UPLOAD_CLAN_LOGO_SUCCESS,
-  UPLOAD_CLAN_LOGO_FAIL,
+  CREATE_CLAN,
+  CREATE_CLAN_SUCCESS,
+  CREATE_CLAN_FAIL,
+  LEAVE_CLAN,
+  LEAVE_CLAN_SUCCESS,
+  LEAVE_CLAN_FAIL,
   ClansActionCreators
 } from "./types";
 
@@ -43,7 +40,7 @@ export function loadClan(clanId: string): ClansActionCreators {
 
 export function createClan(data: any): ClansActionCreators {
   return {
-    types: [ADD_CLAN, ADD_CLAN_SUCCESS, ADD_CLAN_FAIL],
+    types: [CREATE_CLAN, CREATE_CLAN_SUCCESS, CREATE_CLAN_FAIL],
     payload: {
       request: {
         method: "POST",
@@ -54,26 +51,13 @@ export function createClan(data: any): ClansActionCreators {
   };
 }
 
-export function downloadClanLogo(clanId: string): ClansActionCreators {
+export function leaveClan(clanId: string): ClansActionCreators {
   return {
-    types: [DOWNLOAD_CLAN_LOGO, DOWNLOAD_CLAN_LOGO_SUCCESS, DOWNLOAD_CLAN_LOGO_FAIL],
+    types: [LEAVE_CLAN, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL],
     payload: {
       request: {
-        method: "GET",
-        url: `/organizations/clans/api/clans/${clanId}/logo`
-      }
-    }
-  };
-}
-
-export function uploadClanLogo(clanId: string, data: any): ClansActionCreators {
-  return {
-    types: [UPLOAD_CLAN_LOGO, UPLOAD_CLAN_LOGO_SUCCESS, UPLOAD_CLAN_LOGO_FAIL],
-    payload: {
-      request: {
-        method: "POST",
-        url: `/organizations/clans/api/clans/${clanId}/logo`,
-        data
+        method: "DELETE",
+        url: `/organizations/clans/api/clans/${clanId}/members`
       }
     }
   };

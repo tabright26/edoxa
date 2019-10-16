@@ -1,47 +1,47 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
-export const LOAD_ADDRESS_BOOK = "LOAD_ADDRESS_BOOK";
-export const LOAD_ADDRESS_BOOK_SUCCESS = "LOAD_ADDRESS_BOOK_SUCCESS";
-export const LOAD_ADDRESS_BOOK_FAIL = "LOAD_ADDRESS_BOOK_FAIL";
+export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
+export const LOAD_USER_ADDRESSBOOK_SUCCESS = "LOAD_USER_ADDRESSBOOK_SUCCESS";
+export const LOAD_USER_ADDRESSBOOK_FAIL = "LOAD_USER_ADDRESSBOOK_FAIL";
 
-export const ADD_ADDRESS = "ADD_ADDRESS";
-export const ADD_ADDRESS_SUCCESS = "ADD_ADDRESS_SUCCESS";
-export const ADD_ADDRESS_FAIL = "ADD_ADDRESS_FAIL";
+export const CREATE_USER_ADDRESS = "CREATE_USER_ADDRESS";
+export const CREATE_USER_ADDRESS_SUCCESS = "CREATE_USER_ADDRESS_SUCCESS";
+export const CREATE_USER_ADDRESS_FAIL = "CREATE_USER_ADDRESS_FAIL";
 
-export const UPDATE_ADDRESS = "UPDATE_ADDRESS";
-export const UPDATE_ADDRESS_SUCCESS = "UPDATE_ADDRESS_SUCCESS";
-export const UPDATE_ADDRESS_FAIL = "UPDATE_ADDRESS_FAIL";
+export const UPDATE_USER_ADDRESS = "UPDATE_USER_ADDRESS";
+export const UPDATE_USER_ADDRESS_SUCCESS = "UPDATE_USER_ADDRESS_SUCCESS";
+export const UPDATE_USER_ADDRESS_FAIL = "UPDATE_USER_ADDRESS_FAIL";
 
-export const REMOVE_ADDRESS = "REMOVE_ADDRESS";
-export const REMOVE_ADDRESS_SUCCESS = "REMOVE_ADDRESS_SUCCESS";
-export const REMOVE_ADDRESS_FAIL = "REMOVE_ADDRESS_FAIL";
+export const DELETE_USER_ADDRESS = "DELETE_USER_ADDRESS";
+export const DELETE_USER_ADDRESS_SUCCESS = "DELETE_USER_ADDRESS_SUCCESS";
+export const DELETE_USER_ADDRESS_FAIL = "DELETE_USER_ADDRESS_FAIL";
 
-type LoadAddressBookType = typeof LOAD_ADDRESS_BOOK | typeof LOAD_ADDRESS_BOOK_SUCCESS | typeof LOAD_ADDRESS_BOOK_FAIL;
+type LoadUserAddressBookType = typeof LOAD_USER_ADDRESSBOOK | typeof LOAD_USER_ADDRESSBOOK_SUCCESS | typeof LOAD_USER_ADDRESSBOOK_FAIL;
 
-interface LoadAddressBookActionCreator extends AxiosActionCreator<LoadAddressBookType> {}
+interface LoadUserAddressBookActionCreator extends AxiosActionCreator<LoadUserAddressBookType> {}
 
-interface LoadAddressBookAction extends AxiosAction<LoadAddressBookType> {}
+interface LoadUserAddressBookAction extends AxiosAction<LoadUserAddressBookType> {}
 
-type AddAddressType = typeof ADD_ADDRESS | typeof ADD_ADDRESS_SUCCESS | typeof ADD_ADDRESS_FAIL;
+type CreateUserAddressType = typeof CREATE_USER_ADDRESS | typeof CREATE_USER_ADDRESS_SUCCESS | typeof CREATE_USER_ADDRESS_FAIL;
 
-interface AddAddressActionCreator extends AxiosActionCreator<AddAddressType> {}
+interface CreateUserAddressActionCreator extends AxiosActionCreator<CreateUserAddressType> {}
 
-interface AddAddressAction extends AxiosAction<AddAddressType> {}
+interface CreateUserAddressAction extends AxiosAction<CreateUserAddressType> {}
 
-type UpdateAddressType = typeof UPDATE_ADDRESS | typeof UPDATE_ADDRESS_SUCCESS | typeof UPDATE_ADDRESS_FAIL;
+type UpdateUserAddressType = typeof UPDATE_USER_ADDRESS | typeof UPDATE_USER_ADDRESS_SUCCESS | typeof UPDATE_USER_ADDRESS_FAIL;
 
-interface UpdateAddressActionCreator extends AxiosActionCreator<UpdateAddressType> {}
+interface UpdateUserAddressActionCreator extends AxiosActionCreator<UpdateUserAddressType> {}
 
-interface UpdateAddressAction extends AxiosAction<UpdateAddressType> {}
+interface UpdateUserAddressAction extends AxiosAction<UpdateUserAddressType> {}
 
-type RemoveAddressType = typeof REMOVE_ADDRESS | typeof REMOVE_ADDRESS_SUCCESS | typeof REMOVE_ADDRESS_FAIL;
+type DeleteUserAddressType = typeof DELETE_USER_ADDRESS | typeof DELETE_USER_ADDRESS_SUCCESS | typeof DELETE_USER_ADDRESS_FAIL;
 
-interface RemoveAddressActionCreator extends AxiosActionCreator<RemoveAddressType> {}
+interface DeleteUserAddressActionCreator extends AxiosActionCreator<DeleteUserAddressType> {}
 
-interface RemoveAddressAction extends AxiosAction<RemoveAddressType> {}
+interface DeleteUserAddressAction extends AxiosAction<DeleteUserAddressType> {}
 
-export type AddressBookActionCreators = LoadAddressBookActionCreator | AddAddressActionCreator | UpdateAddressActionCreator | RemoveAddressActionCreator;
+export type UserAddressBookActionCreators = LoadUserAddressBookActionCreator | CreateUserAddressActionCreator | UpdateUserAddressActionCreator | DeleteUserAddressActionCreator;
 
-export type AddressBookActionTypes = LoadAddressBookAction | AddAddressAction | UpdateAddressAction | RemoveAddressAction;
+export type UserAddressBookActions = LoadUserAddressBookAction | CreateUserAddressAction | UpdateUserAddressAction | DeleteUserAddressAction;
 
-export type AddressBookState = AxiosState;
+export type UserAddressBookState = AxiosState;

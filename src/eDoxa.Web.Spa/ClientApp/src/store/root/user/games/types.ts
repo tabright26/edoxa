@@ -1,17 +1,17 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
-export const LOAD_GAMES = "LOAD_GAMES";
-export const LOAD_GAMES_SUCCESS = "LOAD_GAMES_SUCCESS";
-export const LOAD_GAMES_FAIL = "LOAD_GAMES_FAIL";
+export const LOAD_USER_GAMES = "LOAD_USER_GAMES";
+export const LOAD_USER_GAMES_SUCCESS = "LOAD_USER_GAMES_SUCCESS";
+export const LOAD_USER_GAMES_FAIL = "LOAD_USER_GAMES_FAIL";
 
-type LoadGamesType = typeof LOAD_GAMES | typeof LOAD_GAMES_SUCCESS | typeof LOAD_GAMES_FAIL;
+type LoadUserGamesType = typeof LOAD_USER_GAMES | typeof LOAD_USER_GAMES_SUCCESS | typeof LOAD_USER_GAMES_FAIL;
 
-interface LoadGamesActionCreator extends AxiosActionCreator<LoadGamesType> {}
+interface LoadUserGamesActionCreator extends AxiosActionCreator<LoadUserGamesType> {}
 
-interface LoadGamesAction extends AxiosAction<LoadGamesType> {}
+interface LoadUserGamesAction extends AxiosAction<LoadUserGamesType> {}
 
-export type GamesActionCreators = LoadGamesActionCreator;
+export type UserGamesActionCreators = LoadUserGamesActionCreator;
 
-export type GamesActionTypes = LoadGamesAction;
+export type UserGamesActions = LoadUserGamesAction;
 
-export type GamesState = AxiosState;
+export type UserGamesState = AxiosState;

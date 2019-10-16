@@ -1,4 +1,4 @@
-import { LOAD_USER_ACCOUNT_TRANSACTIONS, LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL, TransactionsActionTypes, TransactionsState } from "./types";
+import { LOAD_USER_ACCOUNT_TRANSACTIONS, LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL, TransactionsActions, TransactionsState } from "./types";
 import { Reducer } from "redux";
 
 export const initialState: TransactionsState = {
@@ -7,7 +7,7 @@ export const initialState: TransactionsState = {
   loading: false
 };
 
-export const reducer: Reducer<TransactionsState, TransactionsActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<TransactionsState, TransactionsActions> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_ACCOUNT_TRANSACTIONS: {
       return { data: state.data, error: null, loading: true };

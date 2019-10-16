@@ -1,33 +1,32 @@
-import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import {
-  LOAD_CANDIDATURES,
-  LOAD_CANDIDATURES_SUCCESS,
-  LOAD_CANDIDATURES_FAIL,
-  LOAD_CANDIDATURE_SUCCESS,
-  LOAD_CANDIDATURE_FAIL,
-  ADD_CANDIDATURE_SUCCESS,
-  ADD_CANDIDATURE_FAIL,
-  ACCEPT_CANDIDATURE_SUCCESS,
-  ACCEPT_CANDIDATURE_FAIL,
-  DECLINE_CANDIDATURE_SUCCESS,
-  DECLINE_CANDIDATURE_FAIL,
-  CandidaturesState,
-  CandidaturesActionTypes
+  LOAD_CLAN_CANDIDATURES,
+  LOAD_CLAN_CANDIDATURES_SUCCESS,
+  LOAD_CLAN_CANDIDATURES_FAIL,
+  LOAD_CLAN_CANDIDATURE_SUCCESS,
+  LOAD_CLAN_CANDIDATURE_FAIL,
+  SEND_CLAN_CANDIDATURE_SUCCESS,
+  SEND_CLAN_CANDIDATURE_FAIL,
+  ACCEPT_CLAN_CANDIDATURE_SUCCESS,
+  ACCEPT_CLAN_CANDIDATURE_FAIL,
+  REFUSE_CLAN_CANDIDATURE_SUCCESS,
+  REFUSE_CLAN_CANDIDATURE_FAIL,
+  ClanCandidaturesState,
+  ClanCandidaturesActions
 } from "./types";
 import { Reducer } from "redux";
 
-export const initialState: CandidaturesState = {
+export const initialState: ClanCandidaturesState = {
   data: [],
   error: null,
   loading: false
 };
 
-export const reducer: Reducer<CandidaturesState, CandidaturesActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<ClanCandidaturesState, ClanCandidaturesActions> = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_CANDIDATURES: {
+    case LOAD_CLAN_CANDIDATURES: {
       return { data: state.data, error: null, loading: true };
     }
-    case LOAD_CANDIDATURES_SUCCESS: {
+    case LOAD_CLAN_CANDIDATURES_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
         case 204: {
@@ -38,34 +37,34 @@ export const reducer: Reducer<CandidaturesState, CandidaturesActionTypes> = (sta
         }
       }
     }
-    case LOAD_CANDIDATURES_FAIL: {
+    case LOAD_CLAN_CANDIDATURES_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
-    case LOAD_CANDIDATURE_SUCCESS: {
+    case LOAD_CLAN_CANDIDATURE_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };
     }
-    case LOAD_CANDIDATURE_FAIL: {
+    case LOAD_CLAN_CANDIDATURE_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
-    case ADD_CANDIDATURE_SUCCESS: {
+    case SEND_CLAN_CANDIDATURE_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
-    case ADD_CANDIDATURE_FAIL: {
-      throwAxiosSubmissionError(action.error);
+    case SEND_CLAN_CANDIDATURE_FAIL: {
+      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
-    case ACCEPT_CANDIDATURE_SUCCESS: {
+    case ACCEPT_CLAN_CANDIDATURE_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
-    case ACCEPT_CANDIDATURE_FAIL: {
-      throwAxiosSubmissionError(action.error);
+    case ACCEPT_CLAN_CANDIDATURE_FAIL: {
+      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
-    case DECLINE_CANDIDATURE_SUCCESS: {
+    case REFUSE_CLAN_CANDIDATURE_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
-    case DECLINE_CANDIDATURE_FAIL: {
-      throwAxiosSubmissionError(action.error);
+    case REFUSE_CLAN_CANDIDATURE_FAIL: {
+      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

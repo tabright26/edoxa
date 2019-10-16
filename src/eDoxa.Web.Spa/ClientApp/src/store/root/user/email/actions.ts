@@ -1,8 +1,8 @@
-import { LOAD_EMAIL, LOAD_EMAIL_SUCCESS, LOAD_EMAIL_FAIL, CONFIRM_EMAIL, CONFIRM_EMAIL_SUCCESS, CONFIRM_EMAIL_FAIL, EmailActionCreators } from "./types";
+import { LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL, CONFIRM_USER_EMAIL, CONFIRM_USER_EMAIL_SUCCESS, CONFIRM_USER_EMAIL_FAIL, UserEmailActionCreators } from "./types";
 
-export function loadEmail(): EmailActionCreators {
+export function loadEmail(): UserEmailActionCreators {
   return {
-    types: [LOAD_EMAIL, LOAD_EMAIL_SUCCESS, LOAD_EMAIL_FAIL],
+    types: [LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL],
     payload: {
       request: {
         method: "GET",
@@ -12,9 +12,9 @@ export function loadEmail(): EmailActionCreators {
   };
 }
 
-export function confirmEmail(userId: string, code: string): EmailActionCreators {
+export function confirmEmail(userId: string, code: string): UserEmailActionCreators {
   return {
-    types: [CONFIRM_EMAIL, CONFIRM_EMAIL_SUCCESS, CONFIRM_EMAIL_FAIL],
+    types: [CONFIRM_USER_EMAIL, CONFIRM_USER_EMAIL_SUCCESS, CONFIRM_USER_EMAIL_FAIL],
     payload: {
       request: {
         method: "GET",

@@ -5,7 +5,7 @@ import {
   WITHDRAWAL_TOKEN_SUCCESS,
   WITHDRAWAL_TOKEN_FAIL,
   WithdrawalState,
-  WithdrawalActionTypes
+  WithdrawalActions
 } from "./types";
 import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import { Currency } from "../types";
@@ -17,7 +17,7 @@ export const initialState: WithdrawalState = {
   loading: false
 };
 
-export const reducer: Reducer<WithdrawalState, WithdrawalActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<WithdrawalState, WithdrawalActions> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_WITHDRAWAL_MONEY_AMOUNTS: {
       return { data: state.data, error: null, loading: true };

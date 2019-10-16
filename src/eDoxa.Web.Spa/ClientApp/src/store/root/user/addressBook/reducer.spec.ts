@@ -1,5 +1,6 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
+import { LOAD_USER_ADDRESSBOOK_SUCCESS, LOAD_USER_ADDRESSBOOK_FAIL, CREATE_USER_ADDRESS_SUCCESS, DELETE_USER_ADDRESS_SUCCESS, UPDATE_USER_ADDRESS_SUCCESS } from "./types";
 
 const addressId = "test_id";
 const addressBook204Data = [];
@@ -16,7 +17,7 @@ describe("user address book reducer", () => {
 
   it("should handle LOAD_ADDRESS_BOOK_SUCCESS 204", () => {
     const action: any = {
-      type: "LOAD_ADDRESS_BOOK_SUCCESS",
+      type: LOAD_USER_ADDRESSBOOK_SUCCESS,
       payload: { status: 204, data: addressBook204Data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
@@ -24,7 +25,7 @@ describe("user address book reducer", () => {
 
   it("should handle LOAD_ADDRESS_BOOK_SUCCESS 200", () => {
     const action: any = {
-      type: "LOAD_ADDRESS_BOOK_SUCCESS",
+      type: LOAD_USER_ADDRESSBOOK_SUCCESS,
       payload: { status: 200, data: addressBook200Data }
     };
     const state = {
@@ -37,7 +38,7 @@ describe("user address book reducer", () => {
 
   it("should handle REMOVE_ADDRESS_SUCCESS", () => {
     const action: any = {
-      type: "REMOVE_ADDRESS_SUCCESS",
+      type: DELETE_USER_ADDRESS_SUCCESS,
       payload: { data: removeSuccessData }
     };
     const state = {
@@ -48,40 +49,16 @@ describe("user address book reducer", () => {
     expect(reducer(initialState, action)).toEqual(state);
   });
 
-  // it("should handle ADD_ADDRESS_FAIL", () => {
-  //   const action: any = {
-  //     type: "ADD_ADDRESS_FAIL",
-  //     error: axiosFailErrorData
-  //   };
-  //   expect(reducer(initialState, action)).toEqual(initialState);
-  // });
-
-  // it("should handle UPDATE_ADDRESS_FAIL", () => {
-  //   const action: any = {
-  //     type: "UPDATE_ADDRESS_FAIL",
-  //     error: axiosFailErrorData
-  //   };
-  //   expect(reducer(initialState, action)).toEqual(initialState);
-  // });
-
-  // it("should handle REMOVE_ADDRESS_FAIL", () => {
-  //   const action: any = {
-  //     type: "REMOVE_ADDRESS_FAIL",
-  //     error: axiosFailErrorData
-  //   };
-  //   expect(reducer(initialState, action)).toEqual(initialState);
-  // });
-
   it("should handle ADD_ADDRESS_SUCCESS", () => {
     const action: any = {
-      type: "ADD_ADDRESS_SUCCESS"
+      type: CREATE_USER_ADDRESS_SUCCESS
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 
   it("should handle UPDATE_ADDRESS_SUCCESS", () => {
     const action: any = {
-      type: "UPDATE_ADDRESS_SUCCESS"
+      type: UPDATE_USER_ADDRESS_SUCCESS
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
@@ -94,7 +71,7 @@ describe("user address book reducer", () => {
       message: ""
     };
     const action: any = {
-      type: "LOAD_ADDRESS_BOOK_FAIL",
+      type: LOAD_USER_ADDRESSBOOK_FAIL,
       error
     };
     const state = {

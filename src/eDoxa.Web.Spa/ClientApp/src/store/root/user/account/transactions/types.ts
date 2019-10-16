@@ -12,6 +12,6 @@ interface LoadTransactionsAction extends AxiosAction<LoadTransactionsType> {}
 
 export type TransactionsActionCreators = LoadTransactionsActionCreator;
 
-export type TransactionsActionTypes = LoadTransactionsAction;
+export type TransactionsActions = LoadTransactionsAction;
 
 export type TransactionsState = AxiosState;

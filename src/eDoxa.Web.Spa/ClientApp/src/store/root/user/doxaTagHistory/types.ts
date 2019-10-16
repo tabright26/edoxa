@@ -1,27 +1,27 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
 
-export const LOAD_DOXATAG_HISTORY = "LOAD_DOXATAG_HISTORY";
-export const LOAD_DOXATAG_HISTORY_SUCCESS = "LOAD_DOXATAG_HISTORY_SUCCESS";
-export const LOAD_DOXATAG_HISTORY_FAIL = "LOAD_DOXATAG_HISTORY_FAIL";
+export const LOAD_USER_DOXATAGHISTORY = "LOAD_USER_DOXATAGHISTORY";
+export const LOAD_USER_DOXATAGHISTORY_SUCCESS = "LOAD_USER_DOXATAGHISTORY_SUCCESS";
+export const LOAD_USER_DOXATAGHISTORY_FAIL = "LOAD_USER_DOXATAGHISTORY_FAIL";
 
-export const CHANGE_DOXATAG = "CHANGE_DOXATAG";
-export const CHANGE_DOXATAG_SUCCESS = "CHANGE_DOXATAG_SUCCESS";
-export const CHANGE_DOXATAG_FAIL = "CHANGE_DOXATAG_FAIL";
+export const UPDATE_USER_DOXATAG = "UPDATE_USER_DOXATAG";
+export const UPDATE_USER_DOXATAG_SUCCESS = "UPDATE_USER_DOXATAG_SUCCESS";
+export const UPDATE_USER_DOXATAG_FAIL = "UPDATE_USER_DOXATAG_FAIL";
 
-type LoadDoxatagHistoryType = typeof LOAD_DOXATAG_HISTORY | typeof LOAD_DOXATAG_HISTORY_SUCCESS | typeof LOAD_DOXATAG_HISTORY_FAIL;
+type LoadUserDoxatagHistoryType = typeof LOAD_USER_DOXATAGHISTORY | typeof LOAD_USER_DOXATAGHISTORY_SUCCESS | typeof LOAD_USER_DOXATAGHISTORY_FAIL;
 
-interface LoadDoxatagHistoryActionCreator extends AxiosActionCreator<LoadDoxatagHistoryType> {}
+interface LoadUserDoxatagHistoryActionCreator extends AxiosActionCreator<LoadUserDoxatagHistoryType> {}
 
-interface LoadDoxatagHistoryAction extends AxiosAction<LoadDoxatagHistoryType> {}
+interface LoadUserDoxatagHistoryAction extends AxiosAction<LoadUserDoxatagHistoryType> {}
 
-type ChangeDoxatagType = typeof CHANGE_DOXATAG | typeof CHANGE_DOXATAG_SUCCESS | typeof CHANGE_DOXATAG_FAIL;
+type UpdateUserDoxatagType = typeof UPDATE_USER_DOXATAG | typeof UPDATE_USER_DOXATAG_SUCCESS | typeof UPDATE_USER_DOXATAG_FAIL;
 
-interface ChangeDoxatagActionCreator extends AxiosActionCreator<ChangeDoxatagType> {}
+interface UpdateUserDoxatagActionCreator extends AxiosActionCreator<UpdateUserDoxatagType> {}
 
-interface ChangeDoxatagAction extends AxiosAction<ChangeDoxatagType> {}
+interface UpdateUserDoxatagAction extends AxiosAction<UpdateUserDoxatagType> {}
 
-export type DoxatagHistoryActionCreators = LoadDoxatagHistoryActionCreator | ChangeDoxatagActionCreator;
+export type UserDoxatagHistoryActionCreators = LoadUserDoxatagHistoryActionCreator | UpdateUserDoxatagActionCreator;
 
-export type DoxatagHistoryActionTypes = LoadDoxatagHistoryAction | ChangeDoxatagAction;
+export type UserDoxatagHistoryActions = LoadUserDoxatagHistoryAction | UpdateUserDoxatagAction;
 
-export type DoxatagHistoryState = AxiosState;
+export type UserDoxatagHistoryState = AxiosState;

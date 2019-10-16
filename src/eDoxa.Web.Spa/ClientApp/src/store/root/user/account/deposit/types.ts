@@ -43,6 +43,6 @@ interface DepositTokenAction extends AxiosAction<DepositTokenType> {}
 
 export type DepositActionCreators = LoadDepositMoneyAmountsActionCreator | LoadDepositTokenAmountsActionCreator | DepositMoneyActionCreator | DepositTokenActionCreator;
 
-export type DepositActionTypes = LoadDepositMoneyAmountsAction | LoadDepositTokenAmountsAction | DepositMoneyAction | DepositTokenAction;
+export type DepositActions = LoadDepositMoneyAmountsAction | LoadDepositTokenAmountsAction | DepositMoneyAction | DepositTokenAction;
 
 export type DepositState = AxiosState<{ amounts: Map<Currency, number[]> }>;

@@ -23,6 +23,6 @@ interface WithdrawalMoneyAction extends AxiosAction<WithdrawalTokenType> {}
 
 export type WithdrawalActionCreators = WithdrawalMoneyActionCreator | LoadWithdrawalMoneyAmountsActionCreator;
 
-export type WithdrawalActionTypes = WithdrawalMoneyAction | LoadWithdrawalMoneyAmountsAction;
+export type WithdrawalActions = WithdrawalMoneyAction | LoadWithdrawalMoneyAmountsAction;
 
 export type WithdrawalState = AxiosState<{ amounts: Map<Currency, number[]> }>;

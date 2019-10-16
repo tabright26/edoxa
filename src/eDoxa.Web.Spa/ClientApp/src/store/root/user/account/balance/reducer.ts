@@ -1,4 +1,4 @@
-import { LOAD_USER_ACCOUNT_BALANCE, LOAD_USER_ACCOUNT_BALANCE_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_FAIL, BalanceActionTypes, BalanceState } from "./types";
+import { LOAD_USER_ACCOUNT_BALANCE, LOAD_USER_ACCOUNT_BALANCE_SUCCESS, LOAD_USER_ACCOUNT_BALANCE_FAIL, BalanceActions, BalanceState } from "./types";
 import { Reducer } from "redux";
 
 export const initialState: BalanceState = {
@@ -7,7 +7,7 @@ export const initialState: BalanceState = {
   loading: false
 };
 
-export const reducer: Reducer<BalanceState, BalanceActionTypes> = (state = initialState, action) => {
+export const reducer: Reducer<BalanceState, BalanceActions> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_ACCOUNT_BALANCE: {
       return { data: state.data, error: null, loading: true };

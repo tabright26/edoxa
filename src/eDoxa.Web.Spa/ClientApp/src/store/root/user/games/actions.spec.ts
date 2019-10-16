@@ -1,9 +1,9 @@
 import { loadGames } from "./actions";
-import { LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL } from "./types";
+import { LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL } from "./types";
 
 describe("identity actions", () => {
   it("should create an action to get user games id", () => {
-    const expectedType = [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL];
+    const expectedType = [LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL];
     const expectedMethod = "GET";
     const expectedUrl = "/identity/api/games";
 

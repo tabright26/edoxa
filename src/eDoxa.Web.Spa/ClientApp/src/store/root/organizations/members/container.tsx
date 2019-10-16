@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadMembers, kickMember, leaveClan } from "store/root/organizations/members/actions";
+import { loadMembers, kickMember } from "store/root/organizations/members/actions";
+import { leaveClan } from "store/root/organizations/clans/actions";
 import { RootState } from "store/root/types";
 
 export const withClanMembers = (HighOrderComponent: FunctionComponent<any>) => {
