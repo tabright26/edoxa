@@ -56,7 +56,7 @@ export function loadDepositAmounts(currency: Currency): DepositActionCreators {
         payload: {
           request: {
             method: "GET",
-            url: `/cashier/api/account/deposit/${currency}/amounts`
+            url: `/cashier/api/account/deposit/${currency}/bundles`
           }
         }
       };
@@ -66,7 +66,7 @@ export function loadDepositAmounts(currency: Currency): DepositActionCreators {
         payload: {
           request: {
             method: "GET",
-            url: `/cashier/api/account/deposit/${currency}/amounts`
+            url: `/cashier/api/account/deposit/${currency}/bundles`
           }
         }
       };

@@ -3,7 +3,7 @@
 exports[`renders without crashing 1`] = `
 <button
   aria-label={null}
-  className="btn btn-primary btn-sm"
+  className="btn btn-primary"
   onClick={[Function]}
   style={
     Object {

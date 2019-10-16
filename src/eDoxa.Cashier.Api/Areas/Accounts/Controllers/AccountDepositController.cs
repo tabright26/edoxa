@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             return this.ValidationProblem(ModelState);
         }
 
-        [HttpGet("amounts")]
+        [HttpGet("bundles")]
         public IActionResult Get(Currency currency)
         {
             if (currency == Currency.Money)

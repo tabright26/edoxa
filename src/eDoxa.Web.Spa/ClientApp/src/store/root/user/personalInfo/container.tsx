@@ -4,17 +4,17 @@ import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "store/
 import { RootState } from "store/root/types";
 
 export const withtUserInformations = (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, personalInfo, ...attributes }) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadPersonalInfo();
+      props.actions.loadPersonalInfo();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <HighOrderComponent actions={actions} personalInfo={personalInfo} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      personalInfo: state.user.personalInfo.data
+      informations: state.user.personalInfo.data
     };
   };
 

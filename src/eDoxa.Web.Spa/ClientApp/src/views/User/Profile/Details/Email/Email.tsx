@@ -5,10 +5,10 @@ import { withUserEmail } from "store/root/user/email/container";
 import { compose } from "recompose";
 
 const Email: FunctionComponent<any> = ({ className, email, emailVerified }) => (
-  <Card className={className}>
-    <CardHeader>
-      <strong>EMAIL</strong>
-      <Badge.Verification className="ml-3" verified={emailVerified} />
+  <Card className={`card-accent-primary ${className}`}>
+    <CardHeader className="d-flex">
+      <strong className="text-uppercase my-auto">EMAIL</strong>
+      <Badge.Verification className="ml-3 my-auto" verified={emailVerified} />
     </CardHeader>
     <CardBody>
       <dl className="row mb-0">

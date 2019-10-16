@@ -16,17 +16,13 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
   <Row>
     <Col xs="12" sm="12" md="4" lg="3" xl="2">
       <Card>
-        <ListGroup flush>
-          <LinkContainer to={`${match.url}/overview`}>
-            <ListGroupItem>Overview</ListGroupItem>
-          </LinkContainer>
-        </ListGroup>
-      </Card>
-      <Card>
         <CardHeader>
           <strong>Profile</strong>
         </CardHeader>
         <ListGroup flush>
+          <LinkContainer to={`${match.url}/overview`}>
+            <ListGroupItem>Overview</ListGroupItem>
+          </LinkContainer>
           <LinkContainer to={`${match.url}/details`}>
             <ListGroupItem>Details</ListGroupItem>
           </LinkContainer>

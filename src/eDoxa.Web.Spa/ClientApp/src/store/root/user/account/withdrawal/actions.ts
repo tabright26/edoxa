@@ -39,7 +39,7 @@ export function loadWithdrawalAmounts(currency: Currency): WithdrawalActionCreat
         payload: {
           request: {
             method: "GET",
-            url: `/cashier/api/account/withdrawal/${currency}/amounts`
+            url: `/cashier/api/account/withdrawal/${currency}/bundles`
           }
         }
       };

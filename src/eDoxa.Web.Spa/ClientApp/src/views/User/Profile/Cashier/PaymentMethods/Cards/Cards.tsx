@@ -7,8 +7,8 @@ import { CARD_PAYMENTMETHOD_TYPE } from "store/root/payment/paymentMethods/types
 import CardBrandIcon from "components/Payment/Card/BrandIcon";
 import CardExpiration from "components/Payment/Card/Expiration";
 import { compose } from "recompose";
-import { Button } from "reactstrap";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import Button from "components/Shared/Override/Button";
 
 const StripeCardItem: FunctionComponent<any> = ({ index, actions, paymentMethod, length }) => {
   return (
@@ -23,16 +23,12 @@ const StripeCardItem: FunctionComponent<any> = ({ index, actions, paymentMethod,
           <CardExpiration className="my-auto" month={paymentMethod.card.exp_month} year={paymentMethod.card.exp_year} />
         </dd>
         <dd className="col-sm-6 mb-0 d-flex">
-          <span className="btn-link ml-auto my-auto" onClick={() => actions.showDeletePaymentMethodModal(paymentMethod)}>
-            <small>
-              <FontAwesomeIcon icon={faTimes} /> REMOVE
-            </small>
-          </span>
-          <span className="btn-link ml-auto my-auto" onClick={() => actions.showUpdatePaymentMethodModal(paymentMethod)}>
-            <small>
-              <FontAwesomeIcon icon={faEdit} /> UPDATE
-            </small>
-          </span>
+          <Button.Link className="p-0 ml-auto my-auto" icon={faTimes} onClick={() => actions.showDeletePaymentMethodModal(paymentMethod)}>
+            REMOVE
+          </Button.Link>
+          <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} onClick={() => actions.showUpdatePaymentMethodModal(paymentMethod)}>
+            UPDATE
+          </Button.Link>
         </dd>
       </dl>
       {length !== index ? <hr className="border-secondary" /> : null}
@@ -41,12 +37,12 @@ const StripeCardItem: FunctionComponent<any> = ({ index, actions, paymentMethod,
 };
 
 const StripeCards: FunctionComponent<any> = ({ className, actions, paymentMethods: { data, isLoading, error } }) => (
-  <Card className={className}>
-    <CardHeader>
-      <strong>CARDS</strong>
-      <Button className="float-right" size="sm" color="link" onClick={() => actions.showCreatePaymentMethodModal()}>
-        <FontAwesomeIcon icon={faPlus} /> ADD A NEW CARD
-      </Button>
+  <Card className={`card-accent-primary ${className}`}>
+    <CardHeader className="d-flex">
+      <strong className="text-uppercase my-auto">CARDS</strong>
+      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => actions.showCreatePaymentMethodModal()}>
+        ADD A NEW CARD
+      </Button.Link>
     </CardHeader>
     <CardBody>
       {data.map((paymentMethod, index) => (

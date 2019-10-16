@@ -1,13 +1,13 @@
 import React, { Fragment, Suspense } from "react";
 import Loading from "components/Shared/Override/Loading";
 
-const DoxaTag = React.lazy(() => import("./Doxatag"));
+const Doxatag = React.lazy(() => import("./Doxatag"));
 
 const ProfileOverview = () => (
   <Fragment>
-    <h5>PROFILE OVERVIEW</h5>
+    <h5 className="text-uppercase">PROFILE OVERVIEW</h5>
     <Suspense fallback={<Loading />}>
-      <DoxaTag className="card-accent-primary my-4" />
+      <Doxatag className="my-4" />
     </Suspense>
   </Fragment>
 );

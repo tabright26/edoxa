@@ -7,6 +7,7 @@ import AddressForm from "forms/User/Address";
 import { withUserAddressBook } from "store/root/user/addressBook/container";
 import UserAddressModal from "modals/User/Address";
 import { compose } from "recompose";
+import Button from "components/Shared/Override/Button";
 
 const AddressItem: FunctionComponent<any> = ({ index, actions, address, length }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
@@ -27,28 +28,26 @@ const AddressItem: FunctionComponent<any> = ({ index, actions, address, length }
         )}
         {deleteFormHidden && updateFormHidden ? (
           <dd className="col-sm-4 mb-0 d-flex">
-            <span
-              className="btn-link ml-auto"
+            <Button.Link
+              className="p-0 ml-auto"
+              icon={faTimes}
               onClick={() => {
                 hideUpdateForm(true);
                 hideDeleteForm(false);
               }}
             >
-              <small>
-                <FontAwesomeIcon icon={faTimes} /> REMOVE
-              </small>
-            </span>
-            <span
-              className="btn-link ml-auto"
+              REMOVE
+            </Button.Link>
+            <Button.Link
+              className="p-0 ml-auto"
+              icon={faEdit}
               onClick={() => {
                 hideDeleteForm(true);
                 hideUpdateForm(false);
               }}
             >
-              <small>
-                <FontAwesomeIcon icon={faEdit} /> UPDATE
-              </small>
-            </span>
+              UPDATE
+            </Button.Link>
           </dd>
         ) : null}
       </dl>
@@ -58,14 +57,12 @@ const AddressItem: FunctionComponent<any> = ({ index, actions, address, length }
 };
 
 const AddressBook: FunctionComponent<any> = ({ className, addressBook, actions }) => (
-  <Card className={className}>
-    <CardHeader>
-      <strong>ADDRESS BOOK</strong>
-      <div className="card-header-actions btn-link" onClick={() => actions.showCreateAddressModal()}>
-        <small>
-          <FontAwesomeIcon icon={faPlus} /> ADD A NEW ADDRESS
-        </small>
-      </div>
+  <Card className={`card-accent-primary ${className}`}>
+    <CardHeader className="d-flex">
+      <strong className="text-uppercase my-auto">ADDRESS BOOK</strong>
+      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => actions.showCreateAddressModal()}>
+        ADD A NEW ADDRESS
+      </Button.Link>
       <UserAddressModal.Create actions={actions} />
     </CardHeader>
     <CardBody>

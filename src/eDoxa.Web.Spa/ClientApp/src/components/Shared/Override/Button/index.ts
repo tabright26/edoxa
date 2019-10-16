@@ -5,6 +5,7 @@ import Ok from "./Ok";
 import Save from "./Save";
 import Yes from "./Yes";
 import Submit from "./Submit";
+import Link from "./Link";
 
 export default {
   Cancel,
@@ -13,5 +14,6 @@ export default {
   Ok,
   Save,
   Yes,
-  Submit
+  Submit,
+  Link
 };

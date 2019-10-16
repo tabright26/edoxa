@@ -8,18 +8,18 @@ const BankAccount = React.lazy(() => import("./BankAccount"));
 
 const PaymentMethods = () => (
   <Fragment>
-    <h5>PAYMENT METHODS</h5>
+    <h5 className="text-uppercase">PAYMENT METHODS</h5>
     <Elements>
       <StripePaymentMethodModal.Create />
     </Elements>
     <StripePaymentMethodModal.Update />
     <StripePaymentMethodModal.Delete />
     <Suspense fallback={<Loading />}>
-      <Cards className="card-accent-primary my-4" />
+      <Cards className="my-4" />
     </Suspense>
     <Suspense fallback={<Loading />}>
       <Elements>
-        <BankAccount />
+        <BankAccount className="my-4" />
       </Elements>
     </Suspense>
   </Fragment>
