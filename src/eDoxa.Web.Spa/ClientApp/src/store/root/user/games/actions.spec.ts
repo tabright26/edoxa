@@ -1,4 +1,4 @@
-import { loadGames } from "./actions";
+import { loadUserGames } from "./actions";
 import { LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL } from "./types";
 
 describe("identity actions", () => {
@@ -7,7 +7,7 @@ describe("identity actions", () => {
     const expectedMethod = "GET";
     const expectedUrl = "/identity/api/games";
 
-    const object = loadGames();
+    const object = loadUserGames();
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);

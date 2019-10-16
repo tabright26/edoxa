@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/root/types";
-import { loadAccount } from "./actions";
+import { loadStripeAccount } from "./actions";
 
 export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -21,7 +21,7 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadAccount: () => dispatch(loadAccount())
+        loadAccount: () => dispatch(loadStripeAccount())
       }
     };
   };

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadPersonalInfo, createPersonalInfo, updatePersonalInfo } from "./actions";
+import { loadUserInformations, createUserInformations, updateUserInformations } from "./actions";
 import { RootState } from "store/root/types";
 
 export const withtUserInformations = (HighOrderComponent: FunctionComponent<any>) => {
@@ -21,13 +21,13 @@ export const withtUserInformations = (HighOrderComponent: FunctionComponent<any>
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadPersonalInfo: () => dispatch(loadPersonalInfo()),
+        loadPersonalInfo: () => dispatch(loadUserInformations()),
         createPersonalInfo: (data: any) => {
           const { year, month, day } = data.birthDate;
           data.birthDate = new Date(year, month, day);
-          return dispatch(createPersonalInfo(data)).then(() => dispatch(loadPersonalInfo()));
+          return dispatch(createUserInformations(data)).then(() => dispatch(loadUserInformations()));
         },
-        updatePersonalInfo: (data: any) => dispatch(updatePersonalInfo(data)).then(() => dispatch(loadPersonalInfo()))
+        updatePersonalInfo: (data: any) => dispatch(updateUserInformations(data)).then(() => dispatch(loadUserInformations()))
       }
     };
   };

@@ -1,30 +1,26 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/root/types";
-import { loadPhoneNumber, changePhoneNumber } from "./actions";
+import { loadUserPhone } from "./actions";
 
 export const withUserPhone = (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, phoneNumber, phoneNumberVerified, ...attributes }) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadPhoneNumber();
+      props.loadUserPhone();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <HighOrderComponent actions={actions} phoneNumber={phoneNumber} phoneNumberVerified={phoneNumberVerified} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      phoneNumber: state.user.phone.data.phoneNumber,
-      phoneNumberVerified: state.user.phone.data.phoneNumberVerified
+      phone: state.user.phone
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadPhoneNumber: () => dispatch(loadPhoneNumber()),
-        changePhoneNumber: fields => dispatch(changePhoneNumber(fields.phoneNumber)).then(() => dispatch(loadPhoneNumber()))
-      }
+      loadUserPhone: () => dispatch(loadUserPhone())
     };
   };
 

@@ -11,7 +11,7 @@ import {
   UserInformationsActionCreators
 } from "./types";
 
-export function loadPersonalInfo(): UserInformationsActionCreators {
+export function loadUserInformations(): UserInformationsActionCreators {
   return {
     types: [LOAD_USER_INFORMATIONS, LOAD_USER_INFORMATIONS_SUCCESS, LOAD_USER_INFORMATIONS_FAIL],
     payload: {
@@ -23,7 +23,7 @@ export function loadPersonalInfo(): UserInformationsActionCreators {
   };
 }
 
-export function createPersonalInfo(data: any): UserInformationsActionCreators {
+export function createUserInformations(data: any): UserInformationsActionCreators {
   return {
     types: [CREATE_USER_INFORMATIONS, CREATE_USER_INFORMATIONS_SUCCESS, CREATE_USER_INFORMATIONS_FAIL],
     payload: {
@@ -36,7 +36,7 @@ export function createPersonalInfo(data: any): UserInformationsActionCreators {
   };
 }
 
-export function updatePersonalInfo(data: any): UserInformationsActionCreators {
+export function updateUserInformations(data: any): UserInformationsActionCreators {
   return {
     types: [UPDATE_USER_INFORMATIONS, UPDATE_USER_INFORMATIONS_SUCCESS, UPDATE_USER_INFORMATIONS_FAIL],
     payload: {

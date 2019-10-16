@@ -1,6 +1,14 @@
-import { LOAD_USER_DOXATAGHISTORY, LOAD_USER_DOXATAGHISTORY_SUCCESS, LOAD_USER_DOXATAGHISTORY_FAIL, UPDATE_USER_DOXATAG, UPDATE_USER_DOXATAG_SUCCESS, UPDATE_USER_DOXATAG_FAIL, UserDoxatagHistoryActionCreators } from "./types";
+import {
+  LOAD_USER_DOXATAGHISTORY,
+  LOAD_USER_DOXATAGHISTORY_SUCCESS,
+  LOAD_USER_DOXATAGHISTORY_FAIL,
+  UPDATE_USER_DOXATAG,
+  UPDATE_USER_DOXATAG_SUCCESS,
+  UPDATE_USER_DOXATAG_FAIL,
+  UserDoxatagHistoryActionCreators
+} from "./types";
 
-export function loadDoxatagHistory(): UserDoxatagHistoryActionCreators {
+export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
   return {
     types: [LOAD_USER_DOXATAGHISTORY, LOAD_USER_DOXATAGHISTORY_SUCCESS, LOAD_USER_DOXATAGHISTORY_FAIL],
     payload: {
@@ -12,7 +20,7 @@ export function loadDoxatagHistory(): UserDoxatagHistoryActionCreators {
   };
 }
 
-export function changeDoxaTag(data: any): UserDoxatagHistoryActionCreators {
+export function updateUserDoxatag(data: any): UserDoxatagHistoryActionCreators {
   return {
     types: [UPDATE_USER_DOXATAG, UPDATE_USER_DOXATAG_SUCCESS, UPDATE_USER_DOXATAG_FAIL],
     payload: {

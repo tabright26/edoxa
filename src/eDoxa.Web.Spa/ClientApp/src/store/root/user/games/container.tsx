@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadGames } from "store/root/user/games/actions";
+import { loadUserGames } from "store/root/user/games/actions";
 import { RootState } from "store/root/types";
 
 export const withUserGames = (HighOrderComponent: FunctionComponent<any>) => {
@@ -21,7 +21,7 @@ export const withUserGames = (HighOrderComponent: FunctionComponent<any>) => {
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadGames: () => dispatch(loadGames())
+        loadGames: () => dispatch(loadUserGames())
       }
     };
   };

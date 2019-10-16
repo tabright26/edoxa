@@ -7,7 +7,14 @@ import UserPhoneForm from "forms/User/Phone";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
 
-const PhoneNumber: FunctionComponent<any> = ({ className, phoneNumber, phoneNumberVerified, actions }) => {
+const Phone: FunctionComponent<any> = ({
+  className,
+  phone: {
+    data: { phoneNumber, phoneNumberVerified },
+    error,
+    loading
+  }
+}) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
@@ -20,18 +27,8 @@ const PhoneNumber: FunctionComponent<any> = ({ className, phoneNumber, phoneNumb
       </CardHeader>
       <CardBody>
         <dl className="row mb-0">
-          <dd className="col-sm-3 text-muted mb-0">Phone number</dd>
-          <dd className="col-sm-5 mb-0">
-            {buttonDisabled || !phoneNumber ? (
-              <UserPhoneForm.Update
-                initialValues={{ phoneNumber }}
-                onSubmit={fields => actions.changePhoneNumber(fields).then(() => setButtonDisabled(false))}
-                handleCancel={() => setButtonDisabled(false)}
-              />
-            ) : (
-              <span>{phoneNumber}</span>
-            )}
-          </dd>
+          <dd className="col-sm-3 text-muted mb-0">Number</dd>
+          <dd className="col-sm-5 mb-0">{buttonDisabled || !phoneNumber ? <UserPhoneForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>{phoneNumber}</span>}</dd>
         </dl>
       </CardBody>
     </Card>
@@ -40,4 +37,4 @@ const PhoneNumber: FunctionComponent<any> = ({ className, phoneNumber, phoneNumb
 
 const enhance = compose<any, any>(withUserPhone);
 
-export default enhance(PhoneNumber);
+export default enhance(Phone);

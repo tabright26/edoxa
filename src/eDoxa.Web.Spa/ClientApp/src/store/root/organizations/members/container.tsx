@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadMembers, kickMember } from "store/root/organizations/members/actions";
+import { loadClanMembers, kickClanMember } from "store/root/organizations/members/actions";
 import { leaveClan } from "store/root/organizations/clans/actions";
 import { RootState } from "store/root/types";
 
@@ -29,8 +29,8 @@ export const withClanMembers = (HighOrderComponent: FunctionComponent<any>) => {
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadMembers: (clanId: string) => dispatch(loadMembers(clanId)),
-        kickMember: (clanId: string, memberId: string) => dispatch(kickMember(clanId, memberId)).then(dispatch(loadMembers(clanId))),
+        loadMembers: (clanId: string) => dispatch(loadClanMembers(clanId)),
+        kickMember: (clanId: string, memberId: string) => dispatch(kickClanMember(clanId, memberId)).then(dispatch(loadClanMembers(clanId))),
         leaveClan: (clanId: string) => dispatch(leaveClan(clanId))
       }
     };

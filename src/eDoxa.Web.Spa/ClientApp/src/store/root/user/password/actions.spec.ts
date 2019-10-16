@@ -1,4 +1,4 @@
-import { forgotPassword, resetPassword } from "./actions";
+import { forgotUserPassword, resetUserPassword } from "./actions";
 import { FORGOT_USER_PASSWORD, FORGOT_USER_PASSWORD_SUCCESS, FORGOT_USER_PASSWORD_FAIL, RESET_USER_PASSWORD, RESET_USER_PASSWORD_SUCCESS, RESET_USER_PASSWORD_FAIL } from "./types";
 
 describe("identity actions", () => {
@@ -8,7 +8,7 @@ describe("identity actions", () => {
     const expectedUrl = "/identity/api/password/forgot";
     const expectedEmail = { email: "gab@edoxa.gg" };
 
-    const object = forgotPassword(expectedEmail);
+    const object = forgotUserPassword(expectedEmail);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);
@@ -22,7 +22,7 @@ describe("identity actions", () => {
     const expectedUrl = "/identity/api/password/reset";
     const expectedEmail = { email: "gab@edoxa.gg", password: "password" };
 
-    const object = resetPassword(expectedEmail);
+    const object = resetUserPassword(expectedEmail);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);

@@ -1,3 +1,3 @@
-import PhoneNumber from "./Phone";
+import Phone from "./Phone";
 
-export default PhoneNumber;
+export default Phone;

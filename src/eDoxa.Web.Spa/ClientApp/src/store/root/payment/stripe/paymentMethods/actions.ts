@@ -16,7 +16,7 @@ import {
   StripePaymentMethodType
 } from "./types";
 
-export function loadPaymentMethods(type: StripePaymentMethodType = STRIPE_PAYMENTMETHOD_CARD_TYPE): StripePaymentMethodsActionCreators {
+export function loadStripePaymentMethods(type: StripePaymentMethodType = STRIPE_PAYMENTMETHOD_CARD_TYPE): StripePaymentMethodsActionCreators {
   return {
     types: [LOAD_STRIPE_PAYMENTMETHODS, LOAD_STRIPE_PAYMENTMETHODS_SUCCESS, LOAD_STRIPE_PAYMENTMETHODS_FAIL],
     payload: {
@@ -28,7 +28,7 @@ export function loadPaymentMethods(type: StripePaymentMethodType = STRIPE_PAYMEN
   };
 }
 
-export function updatePaymentMethod(paymentMethodId: string, exp_month: number, exp_year: number): StripePaymentMethodsActionCreators {
+export function updateStripePaymentMethod(paymentMethodId: string, exp_month: number, exp_year: number): StripePaymentMethodsActionCreators {
   return {
     types: [UPDATE_STRIPE_PAYMENTMETHOD, UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS, UPDATE_STRIPE_PAYMENTMETHOD_FAIL],
     payload: {
@@ -44,7 +44,7 @@ export function updatePaymentMethod(paymentMethodId: string, exp_month: number, 
   };
 }
 
-export function attachPaymentMethod(paymentMethodId: string): StripePaymentMethodsActionCreators {
+export function attachStripePaymentMethod(paymentMethodId: string): StripePaymentMethodsActionCreators {
   return {
     types: [ATTACH_STRIPE_PAYMENTMETHOD, ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS, ATTACH_STRIPE_PAYMENTMETHOD_FAIL],
     payload: {
@@ -56,7 +56,7 @@ export function attachPaymentMethod(paymentMethodId: string): StripePaymentMetho
   };
 }
 
-export function detachPaymentMethod(paymentMethodId: string): StripePaymentMethodsActionCreators {
+export function detachStripePaymentMethod(paymentMethodId: string): StripePaymentMethodsActionCreators {
   return {
     types: [DETACH_STRIPE_PAYMENTMETHOD, DETACH_STRIPE_PAYMENTMETHOD_SUCCESS, DETACH_STRIPE_PAYMENTMETHOD_FAIL],
     payload: {

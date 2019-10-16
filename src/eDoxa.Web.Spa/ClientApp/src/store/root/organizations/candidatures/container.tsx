@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadCandidatures, loadCandidature, addCandidature, acceptCandidature, declineCandidature } from "store/root/organizations/candidatures/actions";
+import { loadClanCandidatures, loadClanCandidature, sendClanCandidature, acceptClanCandidature, declineClanCandidature } from "store/root/organizations/candidatures/actions";
 import { RootState } from "store/root/types";
 
 interface CandidatureProps {
@@ -48,11 +48,11 @@ export const withCandidatures = (HighOrderComponent: FunctionComponent<any>) => 
   const mapDispatchToProps = (dispatch: any, ownProps: CandidatureProps) => {
     return {
       actions: {
-        loadCandidatures: () => dispatch(loadCandidatures(ownProps.type, ownProps.id)),
-        loadCandidature: (candidatureId: string) => dispatch(loadCandidature(candidatureId)),
-        acceptCandidature: (candidatureId: string) => dispatch(acceptCandidature(candidatureId)).then(loadCandidatures(ownProps.type, ownProps.id)),
-        declineCandidature: (candidatureId: string) => dispatch(declineCandidature(candidatureId)).then(loadCandidatures(ownProps.type, ownProps.id)),
-        addCandidature: (clanId: string, userId: string) => dispatch(addCandidature(clanId, userId)).then(loadCandidatures(ownProps.type, ownProps.id))
+        loadCandidatures: () => dispatch(loadClanCandidatures(ownProps.type, ownProps.id)),
+        loadCandidature: (candidatureId: string) => dispatch(loadClanCandidature(candidatureId)),
+        acceptCandidature: (candidatureId: string) => dispatch(acceptClanCandidature(candidatureId)).then(loadClanCandidatures(ownProps.type, ownProps.id)),
+        declineCandidature: (candidatureId: string) => dispatch(declineClanCandidature(candidatureId)).then(loadClanCandidatures(ownProps.type, ownProps.id)),
+        addCandidature: (clanId: string, userId: string) => dispatch(sendClanCandidature(clanId, userId)).then(loadClanCandidatures(ownProps.type, ownProps.id))
       }
     };
   };

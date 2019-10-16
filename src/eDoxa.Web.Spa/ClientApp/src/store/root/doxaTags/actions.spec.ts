@@ -1,4 +1,4 @@
-import { loadDoxaTags } from "./actions";
+import { loadDoxatags } from "./actions";
 import { LOAD_DOXATAGS, LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL } from "./types";
 
 describe("identity actions", () => {
@@ -7,7 +7,7 @@ describe("identity actions", () => {
     const expectedMethod = "GET";
     const expectedUrl = "/identity/api/doxatags";
 
-    const actionCreator = loadDoxaTags();
+    const actionCreator = loadDoxatags();
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

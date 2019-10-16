@@ -1,4 +1,4 @@
-import { loadAddressBook, addAddress, updateAddress, removeAddress } from "./actions";
+import { loadUserAddressBook, createUserAddress, updateUserAddress, deleteUserAddress } from "./actions";
 import {
   LOAD_USER_ADDRESSBOOK,
   LOAD_USER_ADDRESSBOOK_SUCCESS,
@@ -20,7 +20,7 @@ describe("identity actions", () => {
     const expectedMethod = "GET";
     const expectedUrl = "/identity/api/address-book";
 
-    const object = loadAddressBook();
+    const object = loadUserAddressBook();
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);
@@ -33,7 +33,7 @@ describe("identity actions", () => {
     const expectedUrl = "/identity/api/address-book";
     const expectedAddress = { country: "Canada", city: "Montreal" };
 
-    const object = addAddress(expectedAddress);
+    const object = createUserAddress(expectedAddress);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);
@@ -49,7 +49,7 @@ describe("identity actions", () => {
     const expectedUrl = `/identity/api/address-book/${addressId}`;
     const expectedAddress = { country: "Canada", city: "Montreal" };
 
-    const object = updateAddress(addressId, expectedAddress);
+    const object = updateUserAddress(addressId, expectedAddress);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);
@@ -64,7 +64,7 @@ describe("identity actions", () => {
     const expectedMethod = "DELETE";
     const expectedUrl = `/identity/api/address-book/${addressId}`;
 
-    const object = removeAddress(addressId);
+    const object = deleteUserAddress(addressId);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);
@@ -77,7 +77,7 @@ describe("identity actions", () => {
     const expectedMethod = "DELETE";
     const expectedUrl = `/identity/api/address-book/${addressId}`;
 
-    const object = removeAddress(addressId);
+    const object = deleteUserAddress(addressId);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);

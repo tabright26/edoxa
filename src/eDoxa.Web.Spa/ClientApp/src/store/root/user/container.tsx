@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
-import { confirmEmail } from "store/root/user/email/actions";
-import { forgotPassword, resetPassword } from "store/root/user/password/actions";
+import { confirmUserEmail } from "store/root/user/email/actions";
+import { forgotUserPassword, resetUserPassword } from "store/root/user/password/actions";
 import { RootState } from "store/root/types";
 
 export const withtUser = (HighOrderComponent: FunctionComponent<any>) => {
@@ -19,13 +19,13 @@ export const withtUser = (HighOrderComponent: FunctionComponent<any>) => {
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        confirmEmail: (userId: string, code: string) => dispatch(confirmEmail(userId, code)),
-        forgotPassword: (fields: any) => dispatch(forgotPassword(fields)).then(() => dispatch(push("/"))),
+        confirmEmail: (userId: string, code: string) => dispatch(confirmUserEmail(userId, code)),
+        forgotPassword: (fields: any) => dispatch(forgotUserPassword(fields)).then(() => dispatch(push("/"))),
         resetPassword: (fields: any, code: string) => {
           const data = fields;
           delete data.confirmPassword;
           data.code = code;
-          return dispatch(resetPassword(data)).then(() => (window.location.href = `${process.env.REACT_APP_AUTHORITY}/account/login`));
+          return dispatch(resetUserPassword(data)).then(() => (window.location.href = `${process.env.REACT_APP_AUTHORITY}/account/login`));
         }
       }
     };

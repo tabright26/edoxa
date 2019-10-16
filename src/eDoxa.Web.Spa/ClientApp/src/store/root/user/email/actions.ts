@@ -1,6 +1,6 @@
 import { LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL, CONFIRM_USER_EMAIL, CONFIRM_USER_EMAIL_SUCCESS, CONFIRM_USER_EMAIL_FAIL, UserEmailActionCreators } from "./types";
 
-export function loadEmail(): UserEmailActionCreators {
+export function loadUserEmail(): UserEmailActionCreators {
   return {
     types: [LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL],
     payload: {
@@ -12,7 +12,7 @@ export function loadEmail(): UserEmailActionCreators {
   };
 }
 
-export function confirmEmail(userId: string, code: string): UserEmailActionCreators {
+export function confirmUserEmail(userId: string, code: string): UserEmailActionCreators {
   return {
     types: [CONFIRM_USER_EMAIL, CONFIRM_USER_EMAIL_SUCCESS, CONFIRM_USER_EMAIL_FAIL],
     payload: {

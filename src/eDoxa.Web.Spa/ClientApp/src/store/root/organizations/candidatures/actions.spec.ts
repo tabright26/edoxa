@@ -1,4 +1,4 @@
-import { loadCandidatures, loadCandidature, addCandidature, acceptCandidature, declineCandidature } from "./actions";
+import { loadClanCandidatures, loadClanCandidature, sendClanCandidature, acceptClanCandidature, declineClanCandidature } from "./actions";
 import {
   LOAD_CLAN_CANDIDATURES,
   LOAD_CLAN_CANDIDATURES_SUCCESS,
@@ -26,7 +26,7 @@ describe("candidatures", () => {
     const expectedMethod = "GET";
     const expectedUrl = `/organizations/clans/api/candidatures?${type}Id=${id}`;
 
-    const actionCreator = loadCandidatures(type, id);
+    const actionCreator = loadClanCandidatures(type, id);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -41,7 +41,7 @@ describe("candidatures", () => {
     const expectedMethod = "GET";
     const expectedUrl = `/organizations/clans/api/candidatures?${type}Id=${id}`;
 
-    const actionCreator = loadCandidatures(type, id);
+    const actionCreator = loadClanCandidatures(type, id);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -55,7 +55,7 @@ describe("candidatures", () => {
     const expectedMethod = "GET";
     const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
 
-    const actionCreator = loadCandidature(candidatureId);
+    const actionCreator = loadClanCandidature(candidatureId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -70,7 +70,7 @@ describe("candidatures", () => {
     const expectedMethod = "POST";
     const expectedUrl = "/organizations/clans/api/candidatures";
 
-    const actionCreator = addCandidature(clanId, userId);
+    const actionCreator = sendClanCandidature(clanId, userId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -85,7 +85,7 @@ describe("candidatures", () => {
     const expectedMethod = "POST";
     const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
 
-    const actionCreator = acceptCandidature(candidatureId);
+    const actionCreator = acceptClanCandidature(candidatureId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -99,7 +99,7 @@ describe("candidatures", () => {
     const expectedMethod = "DELETE";
     const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
 
-    const actionCreator = declineCandidature(candidatureId);
+    const actionCreator = declineClanCandidature(candidatureId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

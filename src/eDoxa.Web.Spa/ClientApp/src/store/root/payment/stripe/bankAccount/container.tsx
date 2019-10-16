@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadBankAccount, changeBankAccount } from "./actions";
+import { loadStripeBankAccount, updateStripeBankAccount } from "./actions";
 import { RootState } from "store/root/types";
 
 export const withStripeBankAccount: any = (HighOrderComponent: FunctionComponent<any>): any => {
@@ -22,7 +22,7 @@ export const withStripeBankAccount: any = (HighOrderComponent: FunctionComponent
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadBankAccount: () => dispatch(loadBankAccount()),
+        loadBankAccount: () => dispatch(loadStripeBankAccount()),
         updateBankAccount: (fields, country, stripe) => {
           return stripe
             .createToken("bank_account", {
@@ -35,7 +35,7 @@ export const withStripeBankAccount: any = (HighOrderComponent: FunctionComponent
             .then(result => {
               if (result.token) {
                 console.log(result.token);
-                return dispatch(changeBankAccount(result.token.id)).then(() => dispatch(loadBankAccount()));
+                return dispatch(updateStripeBankAccount(result.token.id)).then(() => dispatch(loadStripeBankAccount()));
               } else {
                 return Promise.reject(result.error);
               }

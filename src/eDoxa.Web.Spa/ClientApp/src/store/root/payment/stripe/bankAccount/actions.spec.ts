@@ -1,5 +1,5 @@
 import { LOAD_STRIPE_BANKACCOUNT, LOAD_STRIPE_BANKACCOUNT_SUCCESS, LOAD_STRIPE_BANKACCOUNT_FAIL } from "./types";
-import { loadBankAccount } from "./actions";
+import { loadStripeBankAccount } from "./actions";
 
 describe("stripe actions", () => {
   it("should create an action to get user stripe banks", () => {
@@ -7,7 +7,7 @@ describe("stripe actions", () => {
     const expectedMethod = "GET";
     const expectedUrl = "/payment/api/stripe/bank-account";
 
-    const actionCreator = loadBankAccount();
+    const actionCreator = loadStripeBankAccount();
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

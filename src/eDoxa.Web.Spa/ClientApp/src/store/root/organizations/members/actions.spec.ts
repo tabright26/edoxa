@@ -1,4 +1,4 @@
-import { loadMembers, kickMember } from "./actions";
+import { loadClanMembers, kickClanMember } from "./actions";
 import {
   LOAD_CLAN_MEMBERS,
   LOAD_CLAN_MEMBERS_SUCCESS,
@@ -16,7 +16,7 @@ describe("members", () => {
     const expectedMethod = "GET";
     const expectedUrl = `/organizations/clans/api/clans/${clanId}/members`;
 
-    const actionCreator = loadMembers(clanId);
+    const actionCreator = loadClanMembers(clanId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -31,7 +31,7 @@ describe("members", () => {
     const expectedMethod = "DELETE";
     const expectedUrl = `/organizations/clans/api/clans/${clanId}/members/${memberId}`;
 
-    const actionCreator = kickMember(clanId, memberId);
+    const actionCreator = kickClanMember(clanId, memberId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

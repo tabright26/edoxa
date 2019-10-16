@@ -17,7 +17,7 @@ import {
   ClanCandidaturesActionCreators
 } from "./types";
 
-export function loadCandidatures(type: string, id: string): ClanCandidaturesActionCreators {
+export function loadClanCandidatures(type: string, id: string): ClanCandidaturesActionCreators {
   return {
     types: [LOAD_CLAN_CANDIDATURES, LOAD_CLAN_CANDIDATURES_SUCCESS, LOAD_CLAN_CANDIDATURES_FAIL],
     payload: {
@@ -29,7 +29,7 @@ export function loadCandidatures(type: string, id: string): ClanCandidaturesActi
   };
 }
 
-export function loadCandidature(candidatureId: string): ClanCandidaturesActionCreators {
+export function loadClanCandidature(candidatureId: string): ClanCandidaturesActionCreators {
   return {
     types: [LOAD_CLAN_CANDIDATURE, LOAD_CLAN_CANDIDATURE_SUCCESS, LOAD_CLAN_CANDIDATURE_FAIL],
     payload: {
@@ -41,7 +41,7 @@ export function loadCandidature(candidatureId: string): ClanCandidaturesActionCr
   };
 }
 
-export function addCandidature(clanId: string, userId: string): ClanCandidaturesActionCreators {
+export function sendClanCandidature(clanId: string, userId: string): ClanCandidaturesActionCreators {
   return {
     types: [SEND_CLAN_CANDIDATURE, SEND_CLAN_CANDIDATURE_SUCCESS, SEND_CLAN_CANDIDATURE_FAIL],
     payload: {
@@ -57,7 +57,7 @@ export function addCandidature(clanId: string, userId: string): ClanCandidatures
   };
 }
 
-export function acceptCandidature(candidatureId: string): ClanCandidaturesActionCreators {
+export function acceptClanCandidature(candidatureId: string): ClanCandidaturesActionCreators {
   return {
     types: [ACCEPT_CLAN_CANDIDATURE, ACCEPT_CLAN_CANDIDATURE_SUCCESS, ACCEPT_CLAN_CANDIDATURE_FAIL],
     payload: {
@@ -69,7 +69,7 @@ export function acceptCandidature(candidatureId: string): ClanCandidaturesAction
   };
 }
 
-export function declineCandidature(candidatureId: string): ClanCandidaturesActionCreators {
+export function declineClanCandidature(candidatureId: string): ClanCandidaturesActionCreators {
   return {
     types: [REFUSE_CLAN_CANDIDATURE, REFUSE_CLAN_CANDIDATURE_SUCCESS, REFUSE_CLAN_CANDIDATURE_FAIL],
     payload: {

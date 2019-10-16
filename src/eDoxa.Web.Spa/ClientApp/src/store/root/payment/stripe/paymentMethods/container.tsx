@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { show } from "redux-modal";
 import { CREATE_STRIPE_PAYMENTMETHOD_MODAL, UPDATE_STRIPE_PAYMENTMETHOD_MODAL, DELETE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
-import { loadPaymentMethods, attachPaymentMethod, updatePaymentMethod, detachPaymentMethod } from "./actions";
+import { loadStripePaymentMethods, attachStripePaymentMethod, updateStripePaymentMethod, detachStripePaymentMethod } from "./actions";
 import { RootState } from "store/root/types";
 import { StripePaymentMethodType, STRIPE_PAYMENTMETHOD_CARD_TYPE } from "./types";
 
@@ -24,21 +24,21 @@ export const withStripePaymentMethods: any = (paymentMethodType: StripePaymentMe
   };
 
   const mapDispatchToProps = (dispatch: any) => {
-    const attachPaymentMethodAction = (paymentMethodId: string) => dispatch(attachPaymentMethod(paymentMethodId));
+    const attachPaymentMethodAction = (paymentMethodId: string) => dispatch(attachStripePaymentMethod(paymentMethodId));
     return {
       actions: {
-        loadPaymentMethods: () => dispatch(loadPaymentMethods(paymentMethodType)),
-        detachPaymentMethod: (paymentMethodId: string) => dispatch(detachPaymentMethod(paymentMethodId)).then(() => dispatch(loadPaymentMethods(paymentMethodType))),
+        loadPaymentMethods: () => dispatch(loadStripePaymentMethods(paymentMethodType)),
+        detachPaymentMethod: (paymentMethodId: string) => dispatch(detachStripePaymentMethod(paymentMethodId)).then(() => dispatch(loadStripePaymentMethods(paymentMethodType))),
         createPaymentMethod: (fields, stripe) =>
           stripe.createPaymentMethod(paymentMethodType).then(result => {
             if (result.paymentMethod) {
-              return attachPaymentMethodAction(result.paymentMethod.id).then(() => dispatch(loadPaymentMethods(paymentMethodType)));
+              return attachPaymentMethodAction(result.paymentMethod.id).then(() => dispatch(loadStripePaymentMethods(paymentMethodType)));
             } else {
               return Promise.reject(result.error);
             }
           }),
         updatePaymentMethod: (paymentMethodId: string, data: any) =>
-          dispatch(updatePaymentMethod(paymentMethodId, data.card.exp_month, data.card.exp_year)).then(() => dispatch(loadPaymentMethods(paymentMethodType))),
+          dispatch(updateStripePaymentMethod(paymentMethodId, data.card.exp_month, data.card.exp_year)).then(() => dispatch(loadStripePaymentMethods(paymentMethodType))),
         showCreatePaymentMethodModal: () => dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL)),
         showUpdatePaymentMethodModal: (paymentMethod: any) => dispatch(show(UPDATE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod })),
         showDeletePaymentMethodModal: (paymentMethod: any) => dispatch(show(DELETE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod }))

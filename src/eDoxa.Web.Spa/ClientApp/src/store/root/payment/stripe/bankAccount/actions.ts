@@ -1,6 +1,14 @@
-import { LOAD_STRIPE_BANKACCOUNT, LOAD_STRIPE_BANKACCOUNT_SUCCESS, LOAD_STRIPE_BANKACCOUNT_FAIL, UPDATE_STRIPE_BANKACCOUNT, UPDATE_STRIPE_BANKACCOUNT_SUCCESS, UPDATE_STRIPE_BANKACCOUNT_FAIL, StripeBankAccountActionCreators } from "./types";
+import {
+  LOAD_STRIPE_BANKACCOUNT,
+  LOAD_STRIPE_BANKACCOUNT_SUCCESS,
+  LOAD_STRIPE_BANKACCOUNT_FAIL,
+  UPDATE_STRIPE_BANKACCOUNT,
+  UPDATE_STRIPE_BANKACCOUNT_SUCCESS,
+  UPDATE_STRIPE_BANKACCOUNT_FAIL,
+  StripeBankAccountActionCreators
+} from "./types";
 
-export function loadBankAccount(): StripeBankAccountActionCreators {
+export function loadStripeBankAccount(): StripeBankAccountActionCreators {
   return {
     types: [LOAD_STRIPE_BANKACCOUNT, LOAD_STRIPE_BANKACCOUNT_SUCCESS, LOAD_STRIPE_BANKACCOUNT_FAIL],
     payload: {
@@ -12,7 +20,7 @@ export function loadBankAccount(): StripeBankAccountActionCreators {
   };
 }
 
-export function changeBankAccount(token: string): StripeBankAccountActionCreators {
+export function updateStripeBankAccount(token: string): StripeBankAccountActionCreators {
   return {
     types: [UPDATE_STRIPE_BANKACCOUNT, UPDATE_STRIPE_BANKACCOUNT_SUCCESS, UPDATE_STRIPE_BANKACCOUNT_FAIL],
     payload: {

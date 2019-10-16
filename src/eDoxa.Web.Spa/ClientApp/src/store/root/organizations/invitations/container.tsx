@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadInvitations, loadInvitation, addInvitation, acceptInvitation, declineInvitation } from "store/root/organizations/invitations/actions";
+import { loadClanInvitations, loadClanInvitation, sendClanInvitation, acceptClanInvitation, declineClanInvitation } from "store/root/organizations/invitations/actions";
 import { RootState } from "store/root/types";
 
 interface InvitationProps {
@@ -35,11 +35,11 @@ export const withInvitations = (HighOrderComponent: FunctionComponent<any>) => {
   const mapDispatchToProps = (dispatch: any, ownProps: InvitationProps) => {
     return {
       actions: {
-        loadInvitations: () => dispatch(loadInvitations(ownProps.type, ownProps.id)),
-        loadInvitation: (invitationId: string) => dispatch(loadInvitation(invitationId)),
-        acceptInvitation: (invitationId: string) => dispatch(acceptInvitation(invitationId)).then(loadInvitations(ownProps.type, ownProps.id)),
-        declineInvitation: (invitationId: string) => dispatch(declineInvitation(invitationId)).then(loadInvitations(ownProps.type, ownProps.id)),
-        addInvitation: (clanId: string, userId: string) => dispatch(addInvitation(clanId, userId)).then(loadInvitations(ownProps.type, ownProps.id))
+        loadInvitations: () => dispatch(loadClanInvitations(ownProps.type, ownProps.id)),
+        loadInvitation: (invitationId: string) => dispatch(loadClanInvitation(invitationId)),
+        acceptInvitation: (invitationId: string) => dispatch(acceptClanInvitation(invitationId)).then(loadClanInvitations(ownProps.type, ownProps.id)),
+        declineInvitation: (invitationId: string) => dispatch(declineClanInvitation(invitationId)).then(loadClanInvitations(ownProps.type, ownProps.id)),
+        addInvitation: (clanId: string, userId: string) => dispatch(sendClanInvitation(clanId, userId)).then(loadClanInvitations(ownProps.type, ownProps.id))
       }
     };
   };

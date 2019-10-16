@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/root/types";
-import { loadEmail } from "./actions";
+import { loadUserEmail } from "./actions";
 
 export const withUserEmail = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, email, emailVerified, ...attributes }) => {
@@ -22,7 +22,7 @@ export const withUserEmail = (HighOrderComponent: FunctionComponent<any>) => {
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadEmail: () => dispatch(loadEmail())
+        loadEmail: () => dispatch(loadUserEmail())
       }
     };
   };

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadDoxatagHistory, changeDoxaTag } from "store/root/user/doxatagHistory/actions";
+import { loadUserDoxatagHistory, updateUserDoxatag } from "store/root/user/doxatagHistory/actions";
 import { RootState } from "store/root/types";
 
 export const withUserDoxatagHistory = (HighOrderComponent: FunctionComponent<any>) => {
@@ -22,8 +22,8 @@ export const withUserDoxatagHistory = (HighOrderComponent: FunctionComponent<any
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        loadDoxatagHistory: () => dispatch(loadDoxatagHistory()),
-        changeDoxaTag: (data: any) => dispatch(changeDoxaTag(data)).then(() => dispatch(loadDoxatagHistory()))
+        loadDoxatagHistory: () => dispatch(loadUserDoxatagHistory()),
+        changeDoxaTag: (data: any) => dispatch(updateUserDoxatag(data)).then(() => dispatch(loadUserDoxatagHistory()))
       }
     };
   };

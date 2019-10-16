@@ -17,7 +17,7 @@ import {
   ClanInvitationsActionCreators
 } from "./types";
 
-export function loadInvitations(type: string, id: string): ClanInvitationsActionCreators {
+export function loadClanInvitations(type: string, id: string): ClanInvitationsActionCreators {
   return {
     types: [LOAD_CLAN_INVITATIONS, LOAD_CLAN_INVITATIONS_SUCCESS, LOAD_CLAN_INVITATIONS_FAIL],
     payload: {
@@ -29,7 +29,7 @@ export function loadInvitations(type: string, id: string): ClanInvitationsAction
   };
 }
 
-export function loadInvitation(invitationId: string): ClanInvitationsActionCreators {
+export function loadClanInvitation(invitationId: string): ClanInvitationsActionCreators {
   return {
     types: [LOAD_CLAN_INVITATION, LOAD_CLAN_INVITATION_SUCCESS, LOAD_CLAN_INVITATION_FAIL],
     payload: {
@@ -41,7 +41,7 @@ export function loadInvitation(invitationId: string): ClanInvitationsActionCreat
   };
 }
 
-export function addInvitation(clanId, userId): ClanInvitationsActionCreators {
+export function sendClanInvitation(clanId, userId): ClanInvitationsActionCreators {
   return {
     types: [SEND_CLAN_INVITATION, SEND_CLAN_INVITATION_SUCCESS, SEND_CLAN_INVITATION_FAIL],
     payload: {
@@ -57,7 +57,7 @@ export function addInvitation(clanId, userId): ClanInvitationsActionCreators {
   };
 }
 
-export function acceptInvitation(invitationId: string): ClanInvitationsActionCreators {
+export function acceptClanInvitation(invitationId: string): ClanInvitationsActionCreators {
   return {
     types: [ACCEPT_CLAN_INVITATION, ACCEPT_CLAN_INVITATION_SUCCESS, ACCEPT_CLAN_INVITATION_FAIL],
     payload: {
@@ -69,7 +69,7 @@ export function acceptInvitation(invitationId: string): ClanInvitationsActionCre
   };
 }
 
-export function declineInvitation(invitationId: string): ClanInvitationsActionCreators {
+export function declineClanInvitation(invitationId: string): ClanInvitationsActionCreators {
   return {
     types: [DECLINE_CLAN_INVITATION, DECLINE_CLAN_INVITATION_SUCCESS, DECLINE_CLAN_INVITATION_FAIL],
     payload: {

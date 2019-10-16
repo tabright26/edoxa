@@ -1,6 +1,6 @@
 import { LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL, UserGamesActionCreators } from "./types";
 
-export function loadGames(): UserGamesActionCreators {
+export function loadUserGames(): UserGamesActionCreators {
   return {
     types: [LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL],
     payload: {
