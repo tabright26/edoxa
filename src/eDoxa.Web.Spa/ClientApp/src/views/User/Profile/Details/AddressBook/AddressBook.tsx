@@ -8,13 +8,13 @@ import UserAddressModal from "modals/User/Address";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
 
-const AddressItem: FunctionComponent<any> = ({ index, address, length }) => {
+const AddressItem: FunctionComponent<any> = ({ hasMore, position, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
   const [deleteFormHidden, hideDeleteForm] = useState(true);
   return (
     <>
-      <dl className={`row ${length === index && "mb-0"}`}>
-        <dd className="col-sm-3 m-0 text-muted">{`Address ${index}`}</dd>
+      <dl className={`row ${!hasMore && "mb-0"}`}>
+        <dd className="col-sm-3 m-0 text-muted">{`Address ${position}`}</dd>
         {!updateFormHidden ? (
           <dd className="col-sm-6 m-0">
             <AddressForm.Update addressId={address.id} handleCancel={() => hideUpdateForm(true)} />
@@ -50,7 +50,7 @@ const AddressItem: FunctionComponent<any> = ({ index, address, length }) => {
           </dd>
         )}
       </dl>
-      {length !== index ? <hr className="border-secondary" /> : null}
+      {hasMore && <hr className="border-secondary" />}
     </>
   );
 };
@@ -66,7 +66,7 @@ const AddressBook: FunctionComponent<any> = ({ className, addressBook, actions }
     </CardHeader>
     <CardBody>
       {addressBook.map((address, index) => (
-        <AddressItem key={index} index={index + 1} address={address} length={addressBook.length} />
+        <AddressItem key={index} address={address} position={index + 1} hasMore={addressBook.length !== index + 1} />
       ))}
     </CardBody>
   </Card>

@@ -28,7 +28,7 @@ export function loadStripePaymentMethods(type: StripePaymentMethodType = STRIPE_
   };
 }
 
-export function updateStripePaymentMethod(paymentMethodId: string, exp_month: number, exp_year: number): StripePaymentMethodsActionCreators {
+export function updateStripePaymentMethod(paymentMethodId: string, expMonth: string, expYear: string): StripePaymentMethodsActionCreators {
   return {
     types: [UPDATE_STRIPE_PAYMENTMETHOD, UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS, UPDATE_STRIPE_PAYMENTMETHOD_FAIL],
     payload: {
@@ -36,8 +36,8 @@ export function updateStripePaymentMethod(paymentMethodId: string, exp_month: nu
         method: "PUT",
         url: `/payment/api/stripe/payment-methods/${paymentMethodId}`,
         data: {
-          expMonth: exp_month,
-          expYear: exp_year
+          expMonth,
+          expYear
         }
       }
     }

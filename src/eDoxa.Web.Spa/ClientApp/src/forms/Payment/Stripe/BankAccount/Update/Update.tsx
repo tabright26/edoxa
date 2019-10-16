@@ -7,8 +7,8 @@ import { UPDATE_STRIPE_BANKACCOUNT_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
-const UpdateStripeBankAccountForm: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit}>
+const UpdateStripeBankAccountForm: FunctionComponent<any> = ({ updateStripeBankAccount, handleSubmit, handleCancel }) => (
+  <Form onSubmit={handleSubmit(data => updateStripeBankAccount(data).then(() => handleCancel()))}>
     <Field type="text" name="currency" label="Currency" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="accountHolderName" label="Account Holder Name" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="routingNumber" label="Routing Number" formGroup={FormGroup} component={Input.Text} />

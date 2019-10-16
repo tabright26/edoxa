@@ -37,9 +37,7 @@ export const withStripePaymentMethods: any = (paymentMethodType: StripePaymentMe
               return Promise.reject(result.error);
             }
           }),
-        updatePaymentMethod: (paymentMethodId: string, data: any) =>
-          dispatch(updateStripePaymentMethod(paymentMethodId, data.card.exp_month, data.card.exp_year)).then(() => dispatch(loadStripePaymentMethods(paymentMethodType))),
-        showCreatePaymentMethodModal: () => dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL)),
+        showCreatePaymentMethodModal: type => dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL, { type })),
         showUpdatePaymentMethodModal: (paymentMethod: any) => dispatch(show(UPDATE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod })),
         showDeletePaymentMethodModal: (paymentMethod: any) => dispatch(show(DELETE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod }))
       }

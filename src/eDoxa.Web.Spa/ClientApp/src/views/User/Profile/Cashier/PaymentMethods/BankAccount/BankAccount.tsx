@@ -1,14 +1,12 @@
 import React, { useState, FunctionComponent } from "react";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Alert } from "reactstrap";
-import { withtUserProfile } from "store/root/user/container";
 import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
-import { injectStripe } from "react-stripe-elements";
 import BankAccountForm from "forms/Payment/Stripe/BankAccount";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
 
-const BankAccount: FunctionComponent<any> = ({ className, bankAccount: { data, loading, error }, hasBankAccount, country, actions, stripe }) => {
+const BankAccount: FunctionComponent<any> = ({ className, bankAccount: { data, loading, error }, hasBankAccount}) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
     <Alert color="primary" className={className}>
@@ -21,22 +19,12 @@ const BankAccount: FunctionComponent<any> = ({ className, bankAccount: { data, l
       <hr className="mt-0 mb-2" />
       <dl className="row mb-0">
         <dd className="col-sm-3 text-muted mb-0">Bank account</dd>
-        <dd className="col-sm-5 mb-0">
-          {buttonDisabled || !hasBankAccount ? (
-            <BankAccountForm.Update onSubmit={fields => actions.updateBankAccount(fields, country, stripe).then(() => setButtonDisabled(false))} handleCancel={() => setButtonDisabled(false)} />
-          ) : (
-            <span>XXXXX-{data.last4}</span>
-          )}
-        </dd>
+        <dd className="col-sm-5 mb-0">{buttonDisabled || !hasBankAccount ? <BankAccountForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>XXXXX-{data.last4}</span>}</dd>
       </dl>
     </Alert>
   );
 };
 
-const enhance = compose<any, any>(
-  injectStripe,
-  withtUserProfile("country"),
-  withStripeBankAccount
-);
+const enhance = compose<any, any>(withStripeBankAccount);
 
 export default enhance(BankAccount);

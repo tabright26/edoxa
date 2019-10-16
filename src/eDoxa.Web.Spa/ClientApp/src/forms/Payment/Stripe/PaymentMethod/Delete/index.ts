@@ -1,3 +1,3 @@
-import DeleteStripePaymentMethodForm from "./Delete";
+import DeleteStripePaymentMethodContainer from "./Container";
 
-export default DeleteStripePaymentMethodForm;
+export default DeleteStripePaymentMethodContainer;

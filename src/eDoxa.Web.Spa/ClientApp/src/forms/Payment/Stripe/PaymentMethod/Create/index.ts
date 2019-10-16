@@ -1,3 +1,3 @@
-import CreateStripePaymentMethodForm from "./Create";
+import CreateStripePaymentMethodContainer from "./Container";
 
-export default CreateStripePaymentMethodForm;
+export default CreateStripePaymentMethodContainer;

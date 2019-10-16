@@ -7,9 +7,9 @@ import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
-const CreateStripePaymentMethodFrom: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => {
+const CreateStripePaymentMethodFrom: FunctionComponent<any> = ({ handleSubmit, handleCancel, createStripePaymentMethod }) => {
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit(() => createStripePaymentMethod().then(() => handleCancel()))}>
       <label>
         Card number
         <CardNumberElement />

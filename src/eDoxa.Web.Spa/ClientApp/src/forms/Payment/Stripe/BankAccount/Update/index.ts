@@ -1,3 +1,3 @@
-import UpdateStripeBankAccountForm from "./Update";
+import UpdateStripeBankAccountContainer from "./Container";
 
-export default UpdateStripeBankAccountForm;
+export default UpdateStripeBankAccountContainer;

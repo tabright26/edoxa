@@ -9,10 +9,10 @@ import { compose } from "recompose";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Shared/Override/Button";
 
-const StripeCardItem: FunctionComponent<any> = ({ index, actions, paymentMethod, length }) => {
+const StripeCardItem: FunctionComponent<any> = ({ hasMore, actions, paymentMethod }) => {
   return (
     <>
-      <dl className={`row ${length === index ? "mb-0" : null}`}>
+      <dl className={`row ${!hasMore && "mb-0"}`}>
         <dd className="col-sm-4 m-0 d-flex">
           <CardBrandIcon className="my-auto" brand={paymentMethod.card.brand} size="2x" />
           <span className="ml-2 my-auto">{`XXXX XXXX XXXX ${paymentMethod.card.last4}`}</span>
@@ -30,22 +30,22 @@ const StripeCardItem: FunctionComponent<any> = ({ index, actions, paymentMethod,
           </Button.Link>
         </dd>
       </dl>
-      {length !== index ? <hr className="border-secondary" /> : null}
+      {hasMore && <hr className="border-secondary" />}
     </>
   );
 };
 
-const StripeCards: FunctionComponent<any> = ({ className, actions, paymentMethods: { data, isLoading, error } }) => (
+const StripeCards: FunctionComponent<any> = ({ className, actions, paymentMethods: { data, loading, error } }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">CARDS</strong>
-      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => actions.showCreatePaymentMethodModal()}>
+      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => actions.showCreatePaymentMethodModal(STRIPE_PAYMENTMETHOD_CARD_TYPE)}>
         ADD A NEW CARD
       </Button.Link>
     </CardHeader>
     <CardBody>
       {data.map((paymentMethod, index) => (
-        <StripeCardItem key={index} index={index + 1} paymentMethod={paymentMethod} length={data.length} actions={actions} />
+        <StripeCardItem key={index} paymentMethod={paymentMethod} hasMore={data.length !== index + 1} actions={actions} />
       ))}
     </CardBody>
   </Card>

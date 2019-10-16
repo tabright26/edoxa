@@ -24,9 +24,11 @@ const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
   handleSubmit,
   initialValues: {
     card: { brand, last4, exp_year }
-  }
+  },
+  handleCancel,
+  updateStripePaymentMethod
 }) => (
-  <Form onSubmit={handleSubmit} inline className="d-flex">
+  <Form onSubmit={handleSubmit((data: any) => updateStripePaymentMethod(data).then(() => handleCancel()))} inline className="d-flex">
     <FormGroup>
       <div className="d-flex">
         <CardBrandIcon className="my-auto" brand={brand} size="2x" />

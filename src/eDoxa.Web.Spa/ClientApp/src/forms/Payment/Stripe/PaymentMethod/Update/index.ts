@@ -1,3 +1,3 @@
-import UpdateStripePaymentMethodForm from "./Update";
+import UpdateStripePaymentMethodContainer from "./Container";
 
-export default UpdateStripePaymentMethodForm;
+export default UpdateStripePaymentMethodContainer;

@@ -5,8 +5,8 @@ import Button from "components/Shared/Override/Button";
 import { DELETE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { compose } from "recompose";
 
-const DeleteStripePaymentMethodForm: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit}>
+const DeleteStripePaymentMethodForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, deleteStripePaymentMethod }) => (
+  <Form onSubmit={handleSubmit(() => deleteStripePaymentMethod().then(() => handleCancel()))}>
     <Label className="mb-3">Are you sure you want to delete this payment method?</Label>
     <FormGroup className="mb-0">
       <Button.Yes type="submit" className="mr-2" />
