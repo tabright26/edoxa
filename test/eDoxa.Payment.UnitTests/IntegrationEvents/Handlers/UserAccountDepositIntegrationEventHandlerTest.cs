@@ -1,6 +1,6 @@
 ﻿// Filename: UserAccountDepositIntegrationEventHandlerTest.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.TestHelpers;
+using eDoxa.Payment.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
@@ -19,8 +21,12 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserAccountDepositIntegrationEventHandlerTest
+    public sealed class UserAccountDepositIntegrationEventHandlerTest: UnitTest
     {
+        public UserAccountDepositIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
         [Fact]
         public async Task HandleAsync_WhenUserAccountDepositIntegrationEventIsValid_ShouldBeCompletedTask()
         {
