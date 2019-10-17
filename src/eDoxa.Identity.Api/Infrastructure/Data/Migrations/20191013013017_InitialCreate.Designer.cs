@@ -170,7 +170,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserClaim");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxaTag", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxatag", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -188,7 +188,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserDoxaTag");
+                    b.ToTable("UserDoxatag");
                 });
 
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserGame", b =>
@@ -261,7 +261,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.User", b =>
                 {
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.UserPersonalInfo", "PersonalInfo", b1 =>
+                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.UserInformations", "Informations", b1 =>
                         {
                             b1.Property<Guid>("UserId");
 
@@ -275,11 +275,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("PersonalInfo");
+                            b1.ToTable("Informations");
 
                             b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                                .WithOne("PersonalInfo")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.UserPersonalInfo", "UserId")
+                                .WithOne("Informations")
+                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.UserInformations", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
                 });
@@ -300,10 +300,10 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxaTag", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxatag", b =>
                 {
                     b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                        .WithMany("DoxaTagHistory")
+                        .WithMany("DoxatagHistory")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

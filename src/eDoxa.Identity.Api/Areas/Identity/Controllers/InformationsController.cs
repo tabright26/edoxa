@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoController.cs
+﻿// Filename: InformationsController.cs
 // Date Created: 2019-08-27
 // 
 // ================================================
@@ -26,15 +26,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/personal-info")]
-    [ApiExplorerSettings(GroupName = "Personal Info")]
+    [Route("api/informations")]
+    [ApiExplorerSettings(GroupName = "Informations")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class PersonalInfoController : ControllerBase
+    public class InformationsController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public PersonalInfoController(IUserManager userManager, IMapper mapper)
+        public InformationsController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -44,20 +44,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         ///     Find user's personal info.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserPersonalInfoResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserInformationsResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var personalInfo = await _userManager.GetPersonalInfoAsync(user);
+            var informations = await _userManager.GetInformationsAsync(user);
 
-            if (personalInfo == null)
+            if (informations == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<UserPersonalInfoResponse>(personalInfo));
+            return this.Ok(_mapper.Map<UserInformationsResponse>(informations));
         }
 
         /// <summary>
@@ -67,18 +67,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
-        public async Task<IActionResult> PostAsync([FromBody] PersonalInfoPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] InformationsPostRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var personalInfo = await _userManager.GetPersonalInfoAsync(user);
+            var informations = await _userManager.GetInformationsAsync(user);
 
-            if (personalInfo != null)
+            if (informations != null)
             {
                 return this.BadRequest("The user's personal information has already been created.");
             }
 
-            var result = await _userManager.CreatePersonalInfoAsync(
+            var result = await _userManager.CreateInformationsAsync(
                 user,
                 request.FirstName,
                 request.LastName,
@@ -102,18 +102,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
-        public async Task<IActionResult> PutAsync([FromBody] PersonalInfoPutRequest request)
+        public async Task<IActionResult> PutAsync([FromBody] InformationsPutRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var personalInfo = await _userManager.GetPersonalInfoAsync(user);
+            var informations = await _userManager.GetInformationsAsync(user);
 
-            if (personalInfo == null)
+            if (informations == null)
             {
                 return this.BadRequest("The user's personal informations does not exist.");
             }
 
-            var result = await _userManager.UpdatePersonalInfoAsync(user, request.FirstName);
+            var result = await _userManager.UpdateInformationsAsync(user, request.FirstName);
 
             if (result.Succeeded)
             {

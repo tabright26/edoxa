@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagsControllerGetAsyncTest.cs
+﻿// Filename: DoxatagsControllerGetAsyncTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -23,9 +23,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagsControllerGetAsyncTest : IntegrationTest
+    public sealed class DoxatagsControllerGetAsyncTest : IntegrationTest
     {
-        public DoxaTagsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        public DoxatagsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testApi,
             testData,
             testMapper)
@@ -87,7 +87,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var users = await response.DeserializeAsync<UserDoxaTagResponse[]>();
+            var users = await response.DeserializeAsync<UserDoxatagResponse[]>();
 
             users.Should().HaveCount(100);
         }

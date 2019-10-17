@@ -17,7 +17,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [AllowAnonymous]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/email/confirm")]
     [ApiExplorerSettings(GroupName = "Email")]
     public class EmailConfirmController : ControllerBase

@@ -1,4 +1,4 @@
-﻿// Filename: UserDoxaTagResponse.cs
+﻿// Filename: UserDoxatagResponse.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -14,7 +14,7 @@ using Newtonsoft.Json.Converters;
 namespace eDoxa.Identity.Api.Areas.Identity.Responses
 {
     [JsonObject]
-    public class UserDoxaTagResponse
+    public class UserDoxatagResponse
     {
         [JsonProperty("userId")]
         public Guid UserId { get; set; }

@@ -7,7 +7,7 @@ import { compose } from "recompose";
 const Email: FunctionComponent<any> = ({
   className,
   email: {
-    data: { email, emailVerified },
+    data: { address, verified },
     error,
     loading
   }
@@ -15,12 +15,12 @@ const Email: FunctionComponent<any> = ({
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">EMAIL</strong>
-      <Badge.Verification className="ml-3 my-auto" verified={emailVerified} />
+      <Badge.Verification className="ml-3 my-auto" verified={verified} />
     </CardHeader>
     <CardBody>
       <dl className="row mb-0">
         <dd className="col-sm-3 mb-0 text-muted">Email</dd>
-        <dd className="col-sm-9 mb-0">{email}</dd>
+        <dd className="col-sm-9 mb-0">{address}</dd>
       </dl>
     </CardBody>
   </Card>

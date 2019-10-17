@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagHistoryControllerGetAsyncTest.cs
+﻿// Filename: DoxatagHistoryControllerGetAsyncTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -32,9 +32,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagHistoryControllerGetAsyncTest : IntegrationTest
+    public sealed class DoxatagHistoryControllerGetAsyncTest : IntegrationTest
     {
-        public DoxaTagHistoryControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        public DoxatagHistoryControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testApi,
             testData,
             testMapper)
@@ -53,7 +53,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.DoxaTagHistory = null;
+            user.DoxatagHistory = null;
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -84,9 +84,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
 
-            user.DoxaTagHistory = new Collection<UserDoxaTag>
+            user.DoxatagHistory = new Collection<UserDoxatag>
             {
-                new UserDoxaTag
+                new UserDoxatag
                 {
                     Id = Guid.NewGuid(),
                     UserId = user.Id,
@@ -124,13 +124,13 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var doxaTagResponse = (await response.DeserializeAsync<IEnumerable<UserDoxaTagResponse>>()).First();
+                    var doxatagResponse = (await response.DeserializeAsync<IEnumerable<UserDoxatagResponse>>()).First();
 
-                    var expectedDoxaTagResponse = mapper.Map<IEnumerable<UserDoxaTagResponse>>(user.DoxaTagHistory).First();
+                    var expectedDoxatagResponse = mapper.Map<IEnumerable<UserDoxatagResponse>>(user.DoxatagHistory).First();
 
-                    doxaTagResponse.Name.Should().Be(expectedDoxaTagResponse.Name);
+                    doxatagResponse.Name.Should().Be(expectedDoxatagResponse.Name);
 
-                    doxaTagResponse.Code.Should().Be(expectedDoxaTagResponse.Code);
+                    doxatagResponse.Code.Should().Be(expectedDoxatagResponse.Code);
                 });
         }
     }

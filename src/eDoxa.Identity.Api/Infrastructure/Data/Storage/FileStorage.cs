@@ -136,9 +136,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                 Country = Country.Canada, // FRANCIS: Should be inside users.csv
                                 Email = record.Email,
                                 PhoneNumber = record.Phone,
-                                DoxaTagHistory = new Collection<UserDoxaTag>
+                                DoxatagHistory = new Collection<UserDoxatag>
                                 {
-                                    new UserDoxaTag
+                                    new UserDoxatag
                                     {
                                         Id = Guid.NewGuid(),
                                         UserId = record.Id,
@@ -147,7 +147,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                         Timestamp = DateTime.UtcNow
                                     }
                                 },
-                                PersonalInfo = new UserPersonalInfo
+                                Informations = new UserInformations
                                 {
                                     FirstName = record.FirstName,
                                     LastName = record.LastName,

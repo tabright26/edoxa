@@ -1,5 +1,5 @@
-﻿// Filename: PhoneNumberController.cs
-// Date Created: 2019-10-12
+﻿// Filename: PhoneController.cs
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -26,15 +26,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/phone-number")]
-    [ApiExplorerSettings(GroupName = "Phone Number")]
+    [Route("api/phone")]
+    [ApiExplorerSettings(GroupName = "Phone")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class PhoneNumberController : ControllerBase
+    public class PhoneController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public PhoneNumberController(IUserManager userManager, IMapper mapper)
+        public PhoneController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -70,11 +70,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var result = await _userManager.SetPhoneNumberAsync(user, request.PhoneNumber);
+            var result = await _userManager.SetPhoneNumberAsync(user, request.Number);
 
             if (result.Succeeded)
             {
-                return this.Ok("The user's phone number has been changed.");
+                return this.Ok(_mapper.Map<PhoneResponse>(user));
             }
 
             ModelState.Bind(result);

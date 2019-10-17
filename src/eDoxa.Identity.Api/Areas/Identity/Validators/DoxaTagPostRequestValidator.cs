@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagPostRequestValidator.cs
+﻿// Filename: DoxatagPostRequestValidator.cs
 // Date Created: 2019-08-21
 //
 // ================================================
@@ -13,17 +13,17 @@ using FluentValidation;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Validators
 {
-    public class DoxaTagPostRequestValidator : AbstractValidator<DoxaTagPostRequest>
+    public class DoxatagPostRequestValidator : AbstractValidator<DoxatagPostRequest>
     {
-        public DoxaTagPostRequestValidator()
+        public DoxatagPostRequestValidator()
         {
-            this.RuleFor(request => request.Name).NotNull().WithMessage(DoxaTagErrorDescriber.Required()).
-                NotEmpty().WithMessage(DoxaTagErrorDescriber.Required()).
-                Length(2, 16).WithMessage(DoxaTagErrorDescriber.Length()).
+            this.RuleFor(request => request.Name).NotNull().WithMessage(DoxatagErrorDescriber.Required()).
+                NotEmpty().WithMessage(DoxatagErrorDescriber.Required()).
+                Length(2, 16).WithMessage(DoxatagErrorDescriber.Length()).
                 Matches(new Regex("^[a-zA-Z_]{2,16}$")).
-                WithMessage(DoxaTagErrorDescriber.Invalid()).
+                WithMessage(DoxatagErrorDescriber.Invalid()).
                 Matches(new Regex("^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$")).
-                WithMessage(DoxaTagErrorDescriber.InvalidUnderscore()); ;
+                WithMessage(DoxatagErrorDescriber.InvalidUnderscore()); ;
 
         }
     }

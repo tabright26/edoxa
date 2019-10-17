@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoPostRequestValidatorTest.cs
+﻿// Filename: InformationsPostRequestValidatorTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -18,7 +18,7 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 {
-    public sealed class PersonalInfoPostRequestValidatorTest
+    public sealed class InformationsPostRequestValidatorTest
     {
         public static TheoryData<string> ValidFirstNames =>
             new TheoryData<string>
@@ -39,27 +39,27 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public static TheoryData<string, string> InvalidFirstNames =>
             new TheoryData<string, string>
             {
-                {null, PersonalInfoErrorDescriber.FirstNameRequired()},
-                {"", PersonalInfoErrorDescriber.FirstNameRequired()},
-                {"G", PersonalInfoErrorDescriber.FirstNameLength()},
-                {"Gabriel-Roy-Gab-R", PersonalInfoErrorDescriber.FirstNameLength()},
-                {"Gab123", PersonalInfoErrorDescriber.FirstNameInvalid()},
-                {"Gabriel-Ro_Roy", PersonalInfoErrorDescriber.FirstNameInvalid()},
-                {"gabriel-Roy", PersonalInfoErrorDescriber.FirstNameUppercase()},
-                {"Gabriel-roy", PersonalInfoErrorDescriber.FirstNameUppercase()}
+                {null, InformationsErrorDescriber.FirstNameRequired()},
+                {"", InformationsErrorDescriber.FirstNameRequired()},
+                {"G", InformationsErrorDescriber.FirstNameLength()},
+                {"Gabriel-Roy-Gab-R", InformationsErrorDescriber.FirstNameLength()},
+                {"Gab123", InformationsErrorDescriber.FirstNameInvalid()},
+                {"Gabriel-Ro_Roy", InformationsErrorDescriber.FirstNameInvalid()},
+                {"gabriel-Roy", InformationsErrorDescriber.FirstNameUppercase()},
+                {"Gabriel-roy", InformationsErrorDescriber.FirstNameUppercase()}
             };
 
         public static TheoryData<string, string> InvalidLastNames =>
             new TheoryData<string, string>
             {
-                {null, PersonalInfoErrorDescriber.LastNameRequired()},
-                {"", PersonalInfoErrorDescriber.LastNameRequired()},
-                {"G", PersonalInfoErrorDescriber.LastNameLength()},
-                {"Gabriel-Roy-Gab-R", PersonalInfoErrorDescriber.LastNameLength()},
-                {"Gab123", PersonalInfoErrorDescriber.LastNameInvalid()},
-                {"Gabriel-Ro_Roy", PersonalInfoErrorDescriber.LastNameInvalid()},
-                {"gabriel-Roy", PersonalInfoErrorDescriber.LastNameUppercase()},
-                {"Gabriel-roy", PersonalInfoErrorDescriber.LastNameUppercase()}
+                {null, InformationsErrorDescriber.LastNameRequired()},
+                {"", InformationsErrorDescriber.LastNameRequired()},
+                {"G", InformationsErrorDescriber.LastNameLength()},
+                {"Gabriel-Roy-Gab-R", InformationsErrorDescriber.LastNameLength()},
+                {"Gab123", InformationsErrorDescriber.LastNameInvalid()},
+                {"Gabriel-Ro_Roy", InformationsErrorDescriber.LastNameInvalid()},
+                {"gabriel-Roy", InformationsErrorDescriber.LastNameUppercase()},
+                {"Gabriel-roy", InformationsErrorDescriber.LastNameUppercase()}
             };
 
         public static TheoryData<Gender> ValidGenders =>
@@ -73,7 +73,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public static TheoryData<Gender, string> InvalidGenders =>
             new TheoryData<Gender, string>
             {
-                {null, PersonalInfoErrorDescriber.GenderRequired()}
+                {null, InformationsErrorDescriber.GenderRequired()}
             };
 
         public static TheoryData<DateTime> ValidBirthDates =>
@@ -85,8 +85,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public static TheoryData<DateTime?, string> InvalidBirthDates =>
             new TheoryData<DateTime?, string>
             {
-                {null, PersonalInfoErrorDescriber.BirthDateRequired()},
-                {new DateTime(), PersonalInfoErrorDescriber.BirthDateRequired()}
+                {null, InformationsErrorDescriber.BirthDateRequired()},
+                {new DateTime(), InformationsErrorDescriber.BirthDateRequired()}
             };
 
         [Theory]
@@ -94,7 +94,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsValid_ShouldNotHaveValidationErrorFor(string firstName)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.FirstName, firstName);
@@ -105,7 +105,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsInvalid_ShouldHaveValidationErrorFor(string firstName, string errorMessage)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.FirstName, firstName);
@@ -117,7 +117,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLastNameIsValid_ShouldNotHaveValidationErrorFor(string lastName)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.LastName, lastName);
@@ -128,7 +128,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLastNameIsInvalid_ShouldHaveValidationErrorFor(string lastName, string errorMessage)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.LastName, lastName);
@@ -140,7 +140,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(Gender gender)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender);
@@ -151,7 +151,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(Gender gender, string errorMessage)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender);
@@ -163,7 +163,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenBirthDateIsValid_ShouldNotHaveValidationErrorFor(DateTime birthDate)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.BirthDate, birthDate);
@@ -174,7 +174,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenBirthDateIsInvalid_ShouldHaveValidationErrorFor(DateTime birthDate, string errorMessage)
         {
             //Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             //Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.BirthDate, birthDate);

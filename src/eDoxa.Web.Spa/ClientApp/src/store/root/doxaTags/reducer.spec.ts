@@ -2,8 +2,8 @@ import { reducer, initialState } from "./reducer";
 import { LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL } from "./types";
 import { AxiosError } from "axios";
 
-const doxaTag204Data = [];
-const doxaTag200Data = "DoxaTagYo";
+const doxatag204Data = [];
+const doxatag200Data = "DoxatagYo";
 
 describe("doxatag reducer", () => {
   it("should return the initial state", () => {
@@ -14,7 +14,7 @@ describe("doxatag reducer", () => {
   it("should handle LOAD_DOXATAGS_SUCCESS 204", () => {
     const action: any = {
       type: LOAD_DOXATAGS_SUCCESS,
-      payload: { status: 204, data: doxaTag204Data }
+      payload: { status: 204, data: doxatag204Data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
@@ -22,10 +22,10 @@ describe("doxatag reducer", () => {
   it("should handle LOAD_DOXATAGS_SUCCESS 200", () => {
     const action: any = {
       type: LOAD_DOXATAGS_SUCCESS,
-      payload: { status: 200, data: doxaTag200Data }
+      payload: { status: 200, data: doxatag200Data }
     };
     const state = {
-      data: doxaTag200Data,
+      data: doxatag200Data,
       error: null,
       loading: false
     };

@@ -18,13 +18,13 @@ describe("identity actions", () => {
     const expectedType = [UPDATE_USER_DOXATAG, UPDATE_USER_DOXATAG_SUCCESS, UPDATE_USER_DOXATAG_FAIL];
     const expectedMethod = "POST";
     const expectedUrl = "/identity/api/doxatag-history";
-    const expectedDoxaTag = "DoxaTag";
+    const expectedDoxatag = "Doxatag";
 
-    const actionCreator = updateUserDoxatag(expectedDoxaTag);
+    const actionCreator = updateUserDoxatag(expectedDoxatag);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
     expect(actionCreator.payload.request.url).toEqual(expectedUrl);
-    expect(actionCreator.payload.request.data).toEqual(expectedDoxaTag);
+    expect(actionCreator.payload.request.data).toEqual(expectedDoxatag);
   });
 });

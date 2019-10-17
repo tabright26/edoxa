@@ -1,4 +1,4 @@
-﻿// Filename: UserDoxaTag.cs
+﻿// Filename: UserDoxatag.cs
 // Date Created: 2019-08-18
 // 
 // ================================================
@@ -10,7 +10,7 @@ using System;
 
 namespace eDoxa.Identity.Api.Infrastructure.Models
 {
-    public class UserDoxaTag
+    public class UserDoxatag
     {
         public Guid Id { get; set; }
 

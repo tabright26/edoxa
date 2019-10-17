@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoResponse.cs
+﻿// Filename: InformationsResponse.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -14,7 +14,7 @@ using Newtonsoft.Json.Converters;
 namespace eDoxa.Identity.Api.Areas.Identity.Responses
 {
     [JsonObject]
-    public class UserPersonalInfoResponse
+    public class UserInformationsResponse
     {
         [JsonProperty("name")]
         public string Name { get; set; }

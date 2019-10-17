@@ -1,4 +1,5 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { Doxatag } from "types";
 
 export const LOAD_USER_DOXATAGHISTORY = "LOAD_USER_DOXATAGHISTORY";
 export const LOAD_USER_DOXATAGHISTORY_SUCCESS = "LOAD_USER_DOXATAGHISTORY_SUCCESS";
@@ -24,4 +25,4 @@ export type UserDoxatagHistoryActionCreators = LoadUserDoxatagHistoryActionCreat
 
 export type UserDoxatagHistoryActions = LoadUserDoxatagHistoryAction | UpdateUserDoxatagAction;
 
-export type UserDoxatagHistoryState = AxiosState;
+export type UserDoxatagHistoryState = AxiosState<Doxatag[]>;

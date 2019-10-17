@@ -33,41 +33,41 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(user => user.NormalizedEmail).IsRequired();
                     builder.Property(user => user.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
                     builder.OwnsOne(
-                        user => user.PersonalInfo,
-                        userPersonalInfo =>
+                        user => user.Informations,
+                        userInformations =>
                         {
-                            userPersonalInfo.Property(personalInfo => personalInfo!.FirstName).IsRequired(false);
-                            userPersonalInfo.Property(personalInfo => personalInfo!.LastName).IsRequired(false);
+                            userInformations.Property(informations => informations!.FirstName).IsRequired(false);
+                            userInformations.Property(informations => informations!.LastName).IsRequired(false);
 
-                            userPersonalInfo.Property(personalInfo => personalInfo!.Gender)
+                            userInformations.Property(informations => informations!.Gender)
                                 .HasConversion(
                                     gender => gender != null ? (int?) gender.Value : null,
                                     gender => gender.HasValue ? Gender.FromValue(gender.Value) : null
                                 )
                                 .IsRequired(false);
 
-                            userPersonalInfo.Property(personalInfo => personalInfo!.BirthDate).IsRequired(false);
-                            userPersonalInfo.ToTable("PersonalInfo");
+                            userInformations.Property(informations => informations!.BirthDate).IsRequired(false);
+                            userInformations.ToTable("Informations");
                         }
                     );
 
-                    builder.HasMany(user => user.DoxaTagHistory).WithOne().HasForeignKey(doxaTag => doxaTag.UserId).IsRequired();
+                    builder.HasMany(user => user.DoxatagHistory).WithOne().HasForeignKey(doxatag => doxatag.UserId).IsRequired();
                     builder.HasMany(user => user.AddressBook).WithOne().HasForeignKey(address => address.UserId).IsRequired();
                     builder.HasMany<UserGame>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
                 }
             );
 
-            modelBuilder.Entity<UserDoxaTag>(
+            modelBuilder.Entity<UserDoxatag>(
                 builder =>
                 {
-                    builder.HasKey(doxaTag => doxaTag.Id);
-                    builder.Property(doxaTag => doxaTag.Id).IsRequired();
-                    builder.Property(doxaTag => doxaTag.UserId).IsRequired();
-                    builder.Property(doxaTag => doxaTag.Name).IsRequired();
-                    builder.Property(doxaTag => doxaTag.Code).IsRequired();
-                    builder.Property(doxaTag => doxaTag.Timestamp).HasConversion(dateTime => dateTime.Ticks, ticks => new DateTime(ticks)).IsRequired();
-                    builder.ToTable("UserDoxaTag");
+                    builder.HasKey(doxatag => doxatag.Id);
+                    builder.Property(doxatag => doxatag.Id).IsRequired();
+                    builder.Property(doxatag => doxatag.UserId).IsRequired();
+                    builder.Property(doxatag => doxatag.Name).IsRequired();
+                    builder.Property(doxatag => doxatag.Code).IsRequired();
+                    builder.Property(doxatag => doxatag.Timestamp).HasConversion(dateTime => dateTime.Ticks, ticks => new DateTime(ticks)).IsRequired();
+                    builder.ToTable("UserDoxatag");
                 }
             );
 

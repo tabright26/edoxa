@@ -5,7 +5,7 @@ import { Col, Button } from "reactstrap";
 const InvitationItem = ({ actions, invitation, type }) => {
   return (
     <Fragment>
-      <Col>{type === "user" ? invitation.clanName : invitation.doxaTag}</Col>
+      <Col>{type === "user" ? invitation.clanName : invitation.doxatag}</Col>
       {type === "user" ? (
         <Col>
           <Button

@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagPostRequestValidatorTest.cs
+﻿// Filename: DoxatagPostRequestValidatorTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -15,46 +15,46 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 {
-    public sealed class DoxaTagPostRequestValidatorTest
+    public sealed class DoxatagPostRequestValidatorTest
     {
-        public static TheoryData<string> ValidDoxaTags =>
+        public static TheoryData<string> ValidDoxatags =>
             new TheoryData<string>
             {
-                "DoxaTagName",
+                "DoxatagName",
                 "Doxa_Tag_Name",
                 "aaaaaaaaaaaaaaaa"
             };
 
-        public static TheoryData<string, string> InvalidDoxaTags =>
+        public static TheoryData<string, string> InvalidDoxatags =>
             new TheoryData<string, string>
             {
-                {null, DoxaTagErrorDescriber.Required()},
-                {"", DoxaTagErrorDescriber.Required()},
-                {"D", DoxaTagErrorDescriber.Length()},
-                {"aaaaaaaaaaaaaaaaa", DoxaTagErrorDescriber.Length()},
-                {"@DoxaTagName", DoxaTagErrorDescriber.Invalid()},
-                {"DoxaTagName1", DoxaTagErrorDescriber.Invalid()},
-                {"_DoxaTagName", DoxaTagErrorDescriber.InvalidUnderscore()},
-                {"DoxaTagName_", DoxaTagErrorDescriber.InvalidUnderscore()}
+                {null, DoxatagErrorDescriber.Required()},
+                {"", DoxatagErrorDescriber.Required()},
+                {"D", DoxatagErrorDescriber.Length()},
+                {"aaaaaaaaaaaaaaaaa", DoxatagErrorDescriber.Length()},
+                {"@DoxatagName", DoxatagErrorDescriber.Invalid()},
+                {"DoxatagName1", DoxatagErrorDescriber.Invalid()},
+                {"_DoxatagName", DoxatagErrorDescriber.InvalidUnderscore()},
+                {"DoxatagName_", DoxatagErrorDescriber.InvalidUnderscore()}
             };
 
         [Theory]
-        [MemberData(nameof(ValidDoxaTags))]
+        [MemberData(nameof(ValidDoxatags))]
         public void Validate_WhenNameIsValid_ShouldNotHaveValidationErrorFor(string name)
         {
             // Arrange
-            var validator = new DoxaTagPostRequestValidator();
+            var validator = new DoxatagPostRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Name, name);
         }
 
         [Theory]
-        [MemberData(nameof(InvalidDoxaTags))]
+        [MemberData(nameof(InvalidDoxatags))]
         public void Validate_WhenNameIsInvalid_ShouldHaveValidationErrorFor(string name, string errorMessage)
         {
             // Arrange
-            var validator = new DoxaTagPostRequestValidator();
+            var validator = new DoxatagPostRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Name, name);

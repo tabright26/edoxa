@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoControllerGetAsyncTest.cs
+﻿// Filename: InformationsControllerGetAsyncTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -29,9 +29,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class PersonalInfoControllerGetAsyncTest : IntegrationTest
+    public sealed class InformationsControllerGetAsyncTest : IntegrationTest
     {
-        public PersonalInfoControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        public InformationsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testApi,
             testData,
             testMapper)
@@ -42,7 +42,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync("api/personal-info");
+            return await _httpClient.GetAsync("api/informations");
         }
 
         [Fact]
@@ -50,7 +50,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.PersonalInfo = null;
+            user.Informations = null;
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -80,8 +80,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            var profile = new UserPersonalInfo();
-            user.PersonalInfo = profile;
+            var profile = new UserInformations();
+            user.Informations = profile;
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -110,9 +110,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.DeserializeAsync<UserPersonalInfoResponse>();
+                    var profileResponse = await response.DeserializeAsync<UserInformationsResponse>();
 
-                    profileResponse.Should().BeEquivalentTo(mapper.Map<UserPersonalInfoResponse>(profile));
+                    profileResponse.Should().BeEquivalentTo(mapper.Map<UserInformationsResponse>(profile));
                 });
         }
     }

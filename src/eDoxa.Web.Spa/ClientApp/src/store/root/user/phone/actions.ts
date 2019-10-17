@@ -6,7 +6,7 @@ export function loadUserPhone(): UserPhoneActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: "/identity/api/phone-number"
+        url: "/identity/api/phone"
       }
     }
   };
@@ -18,7 +18,7 @@ export function updateUserPhone(data: any): UserPhoneActionCreators {
     payload: {
       request: {
         method: "POST",
-        url: "/identity/api/phone-number",
+        url: "/identity/api/phone",
         data
       }
     }

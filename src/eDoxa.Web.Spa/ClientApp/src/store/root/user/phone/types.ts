@@ -1,4 +1,5 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { Phone } from "types";
 
 export const LOAD_USER_PHONE = "LOAD_USER_PHONE";
 export const LOAD_USER_PHONE_SUCCESS = "LOAD_USER_PHONE_SUCCESS";
@@ -24,7 +25,4 @@ export type UserPhoneActionCreators = LoadUserPhoneActionCreator | UpdateUserPho
 
 export type UserPhoneActions = LoadUserPhoneAction | UpdateUserPhoneAction;
 
-export type UserPhoneState = AxiosState<{
-  phoneNumber: string;
-  phoneNumberVerified: boolean;
-}>;
+export type UserPhoneState = AxiosState<Phone>;

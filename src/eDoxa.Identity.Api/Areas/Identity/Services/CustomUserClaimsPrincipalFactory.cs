@@ -68,7 +68,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             Identity!.AddClaim(new Claim(ClaimTypes.Country, country.TwoDigitIso));
 
-            await this.TryGenerateDoxaTagClaimAsync(user);
+            await this.TryGenerateDoxatagClaimAsync(user);
 
             await this.TryGenerateFirstNameClaimAsync(user);
 
@@ -93,17 +93,17 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
         }
 
-        private async Task TryGenerateDoxaTagClaimAsync(User user)
+        private async Task TryGenerateDoxatagClaimAsync(User user)
         {
-            var doxaTag = await UserManager.GetDoxaTagAsync(user);
+            var doxatag = await UserManager.GetDoxatagAsync(user);
 
-            if (doxaTag != null)
+            if (doxatag != null)
             {
                 Identity!.AddClaim(
                     new Claim(
-                        ClaimTypes.DoxaTag,
+                        ClaimTypes.Doxatag,
                         JsonConvert.SerializeObject(
-                            doxaTag,
+                            doxatag,
                             Formatting.Indented,
                             new JsonSerializerSettings
                             {

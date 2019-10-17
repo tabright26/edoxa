@@ -5,7 +5,7 @@ import { Col, Button } from "reactstrap";
 const MemberItem = ({ member, actions, isOwner }) => {
   return (
     <Fragment>
-      <Col>{member.userDoxaTag}</Col>
+      <Col>{member.userDoxatag}</Col>
       {isOwner ? (
         <Col>
           <Button

@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoPutRequestValidator.cs
+﻿// Filename: InformationsPutRequestValidator.cs
 // Date Created: 2019-08-22
 //
 // ================================================
@@ -13,21 +13,21 @@ using FluentValidation;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Validators
 {
-    public class PersonalInfoPutRequestValidator : AbstractValidator<PersonalInfoPutRequest>
+    public class InformationsPutRequestValidator : AbstractValidator<InformationsPutRequest>
     {
-        public PersonalInfoPutRequestValidator()
+        public InformationsPutRequestValidator()
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
+                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
                 .NotEmpty()
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
+                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameLength())
+                .WithMessage(InformationsErrorDescriber.FirstNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameInvalid())
+                .WithMessage(InformationsErrorDescriber.FirstNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameUppercase());
+                .WithMessage(InformationsErrorDescriber.FirstNameUppercase());
         }
     }
 }

@@ -15,9 +15,9 @@ export const withClanMembers = (HighOrderComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     const members = state.organizations.members.data.map(member => {
-      const doxaTag = state.doxatags.data.find(doxaTag => doxaTag.userId === member.userId);
+      const doxatag = state.doxatags.data.find(doxatag => doxatag.userId === member.userId);
 
-      member.userDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
+      member.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       return member;
     });
 

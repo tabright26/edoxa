@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoPostRequestTest.cs
+﻿// Filename: InformationsPostRequestTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -17,13 +17,13 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
 {
-    public sealed class PersonalInfoPostRequestTest
+    public sealed class InformationsPostRequestTest
     {
         [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var request = new PersonalInfoPostRequest(
+            var request = new InformationsPostRequest(
                 "FirstName",
                 "LastName",
                 Gender.Other,
@@ -32,7 +32,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act
-            var requestDeserialized = JsonConvert.DeserializeObject<PersonalInfoPostRequest>(requestSerialized);
+            var requestDeserialized = JsonConvert.DeserializeObject<InformationsPostRequest>(requestSerialized);
 
             // Assert
             requestDeserialized.Should().BeEquivalentTo(request);

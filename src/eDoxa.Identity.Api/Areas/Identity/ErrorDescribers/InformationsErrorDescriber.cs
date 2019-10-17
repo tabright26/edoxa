@@ -1,6 +1,6 @@
 ﻿namespace eDoxa.Identity.Api.Areas.Identity.ErrorDescribers
 {
-    public class PersonalInfoErrorDescriber
+    public class InformationsErrorDescriber
     {
         public static string FirstNameRequired()
         {

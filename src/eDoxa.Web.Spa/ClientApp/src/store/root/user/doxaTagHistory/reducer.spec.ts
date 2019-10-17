@@ -10,8 +10,8 @@ import {
 } from "./types";
 import { AxiosError } from "axios";
 
-const doxaTagHistory204Data = [];
-const doxaTagHistory200Data = [{ doxaTag: "DoxaTag1" }, { doxaTag: "DoxaTag2" }, { doxaTag: "DoxaTag3" }];
+const doxatagHistory204Data = [];
+const doxatagHistory200Data = [{ doxatag: "Doxatag1" }, { doxatag: "Doxatag2" }, { doxatag: "Doxatag3" }];
 
 describe("user doxatag history reducer", () => {
   it("should return the initial state", () => {
@@ -22,7 +22,7 @@ describe("user doxatag history reducer", () => {
   it("should handle LOAD_DOXATAG_HISTORY_SUCCESS 204", () => {
     const action: any = {
       type: LOAD_USER_DOXATAGHISTORY_SUCCESS,
-      payload: { status: 204, data: doxaTagHistory204Data }
+      payload: { status: 204, data: doxatagHistory204Data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
@@ -30,10 +30,10 @@ describe("user doxatag history reducer", () => {
   it("should handle LOAD_DOXATAG_HISTORY_SUCCESS 200", () => {
     const action: any = {
       type: LOAD_USER_DOXATAGHISTORY_SUCCESS,
-      payload: { status: 200, data: doxaTagHistory200Data }
+      payload: { status: 200, data: doxatagHistory200Data }
     };
     const state = {
-      data: doxaTagHistory200Data,
+      data: doxatagHistory200Data,
       error: null,
       loading: false
     };

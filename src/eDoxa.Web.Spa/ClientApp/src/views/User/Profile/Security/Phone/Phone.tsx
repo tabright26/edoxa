@@ -10,7 +10,7 @@ import Button from "components/Shared/Override/Button";
 const Phone: FunctionComponent<any> = ({
   className,
   phone: {
-    data: { phoneNumber, phoneNumberVerified },
+    data: { number, verified },
     error,
     loading
   }
@@ -20,7 +20,7 @@ const Phone: FunctionComponent<any> = ({
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">PHONE</strong>
-        <Badge.Verification className="ml-3 my-auto" verified={phoneNumberVerified} />
+        <Badge.Verification className="ml-3 my-auto" verified={verified} />
         <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} disabled={buttonDisabled} onClick={() => setButtonDisabled(true)}>
           UPDATE
         </Button.Link>
@@ -28,7 +28,7 @@ const Phone: FunctionComponent<any> = ({
       <CardBody>
         <dl className="row mb-0">
           <dd className="col-sm-3 text-muted mb-0">Number</dd>
-          <dd className="col-sm-5 mb-0">{buttonDisabled || !phoneNumber ? <UserPhoneForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>{phoneNumber}</span>}</dd>
+          <dd className="col-sm-5 mb-0">{buttonDisabled || !number ? <UserPhoneForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>{number}</span>}</dd>
         </dl>
       </CardBody>
     </Card>

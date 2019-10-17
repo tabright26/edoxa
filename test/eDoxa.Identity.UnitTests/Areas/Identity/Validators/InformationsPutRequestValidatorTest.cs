@@ -42,7 +42,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsValid_ShouldNotHaveValidationErrorFor(string firstName)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.FirstName, firstName);
@@ -53,7 +53,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsInvalid_ShouldHaveValidationErrorFor(string firstName, string errorMessage)
         {
             // Arrange
-            var validator = new PersonalInfoPostRequestValidator();
+            var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.FirstName, firstName);

@@ -1,25 +1,25 @@
 ﻿namespace eDoxa.Identity.Api.Areas.Identity.ErrorDescribers
 {
-    public class DoxaTagErrorDescriber
+    public static class DoxatagErrorDescriber
     {
         public static string Required()
         {
-            return "DoxaTag is required";
+            return "Doxatag is required";
         }
 
         public static string Length()
         {
-            return "DoxaTag must be between 2 and 16 characters long";
+            return "Doxatag must be between 2 and 16 characters long";
         }
 
         public static string Invalid()
         {
-            return "DoxaTag invalid. May only contains (a-z,A-Z,_)";
+            return "Doxatag invalid. May only contains (a-z,A-Z,_)";
         }
 
         public static string InvalidUnderscore()
         {
-            return "DoxaTag invalid. Cannot start or end with _";
+            return "Doxatag invalid. Cannot start or end with _";
         }
     }
 }

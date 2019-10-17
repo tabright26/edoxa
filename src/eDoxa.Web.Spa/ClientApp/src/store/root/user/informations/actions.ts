@@ -17,7 +17,7 @@ export function loadUserInformations(): UserInformationsActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: "/identity/api/personal-info"
+        url: "/identity/api/informations"
       }
     }
   };
@@ -29,7 +29,7 @@ export function createUserInformations(data: any): UserInformationsActionCreator
     payload: {
       request: {
         method: "POST",
-        url: "/identity/api/personal-info",
+        url: "/identity/api/informations",
         data: {
           firstName: data.firstName,
           lastName: data.lastName,
@@ -47,7 +47,7 @@ export function updateUserInformations(data: any): UserInformationsActionCreator
     payload: {
       request: {
         method: "PUT",
-        url: "/identity/api/personal-info",
+        url: "/identity/api/informations",
         data: {
           firstName: data.firstName
         }

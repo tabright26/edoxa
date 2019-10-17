@@ -31,10 +31,10 @@ export const withCandidatures = (HighOrderComponent: FunctionComponent<any>) => 
 
   const mapStateToProps = (state: RootState, ownProps: CandidatureProps) => {
     const candidatures = state.organizations.candidatures.data.map(candidature => {
-      const doxaTag = state.doxatags.data.find(doxaTag => doxaTag.userId === candidature.userId);
+      const doxatag = state.doxatags.data.find(doxatag => doxatag.userId === candidature.userId);
       const clan = state.organizations.clans.data.find(clan => clan.id === candidature.clanId);
 
-      candidature.userDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
+      candidature.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       candidature.clanName = clan ? clan.name : null;
       return candidature;
     });

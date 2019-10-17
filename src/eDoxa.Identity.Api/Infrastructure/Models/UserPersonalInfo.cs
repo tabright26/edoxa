@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfo.cs
+﻿// Filename: Informations.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -10,7 +10,7 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Identity.Api.Infrastructure.Models
 {
-    public class UserPersonalInfo
+    public class UserInformations
     {
         public string? FirstName { get; set; }
 

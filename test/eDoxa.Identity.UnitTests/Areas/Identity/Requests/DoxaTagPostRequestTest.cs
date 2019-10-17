@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagPostRequestTest.cs
+﻿// Filename: DoxatagPostRequestTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -14,17 +14,17 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
 {
-    public sealed class DoxaTagPostRequestTest
+    public sealed class DoxatagPostRequestTest
     {
         [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var request = new DoxaTagPostRequest("DoxaTag");
+            var request = new DoxatagPostRequest("Doxatag");
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act
-            var requestDeserialized = JsonConvert.DeserializeObject<DoxaTagPostRequest>(requestSerialized);
+            var requestDeserialized = JsonConvert.DeserializeObject<DoxatagPostRequest>(requestSerialized);
 
             // Assert
             requestDeserialized.Should().BeEquivalentTo(request);

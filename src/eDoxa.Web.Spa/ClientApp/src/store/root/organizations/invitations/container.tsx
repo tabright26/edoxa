@@ -19,10 +19,10 @@ export const withInvitations = (HighOrderComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     const invitations = state.organizations.invitations.data.map(invitation => {
-      const doxatag = state.doxatags.data.find(doxaTag => doxaTag.userId === invitation.userId);
+      const doxatag = state.doxatags.data.find(doxatag => doxatag.userId === invitation.userId);
       const clan = state.organizations.clans.data.find(clan => clan.id === invitation.clanId);
 
-      invitation.userDoxaTag = doxatag ? doxatag.name + "#" + doxatag.code : null;
+      invitation.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       invitation.clanName = clan ? clan.name : null;
       return invitation;
     });

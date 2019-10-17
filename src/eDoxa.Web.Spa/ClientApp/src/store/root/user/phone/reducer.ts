@@ -3,8 +3,8 @@ import { LOAD_USER_PHONE, LOAD_USER_PHONE_SUCCESS, LOAD_USER_PHONE_FAIL, UPDATE_
 
 export const initialState: UserPhoneState = {
   data: {
-    phoneNumber: null,
-    phoneNumberVerified: false
+    number: null,
+    verified: false
   },
   error: null,
   loading: false

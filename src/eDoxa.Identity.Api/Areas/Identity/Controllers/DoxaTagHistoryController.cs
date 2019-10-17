@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagHistoryController.cs
+﻿// Filename: DoxatagHistoryController.cs
 // Date Created: 2019-08-27
 // 
 // ================================================
@@ -29,54 +29,54 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/doxatag-history")]
-    [ApiExplorerSettings(GroupName = "DoxaTag History")]
+    [ApiExplorerSettings(GroupName = "Doxatag History")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class DoxaTagHistoryController : ControllerBase
+    public class DoxatagHistoryController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public DoxaTagHistoryController(IUserManager userManager, IMapper mapper)
+        public DoxatagHistoryController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
         }
 
         /// <summary>
-        ///     Find user's DoxaTag history.
+        ///     Find user's Doxatag history.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxaTagResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxatagResponse>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var doxaTagHistory = await _userManager.GetDoxaTagHistoryAsync(user);
+            var doxatagHistory = await _userManager.GetDoxatagHistoryAsync(user);
 
-            if (!doxaTagHistory.Any())
+            if (!doxatagHistory.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserDoxaTagResponse>>(doxaTagHistory));
+            return this.Ok(_mapper.Map<IEnumerable<UserDoxatagResponse>>(doxatagHistory));
         }
 
         /// <summary>
-        ///     Create new user's DoxaTag.
+        ///     Create new user's Doxatag.
         /// </summary>
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
-        public async Task<IActionResult> PostAsync([FromBody] DoxaTagPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] DoxatagPostRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var result = await _userManager.SetDoxaTagAsync(user, request.Name);
+            var result = await _userManager.SetDoxatagAsync(user, request.Name);
 
             if (result.Succeeded)
             {
-                return this.Ok("The user's DoxaTag has been created.");
+                return this.Ok("The user's Doxatag has been created.");
             }
 
             ModelState.Bind(result);

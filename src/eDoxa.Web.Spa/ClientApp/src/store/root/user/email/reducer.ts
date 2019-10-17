@@ -2,7 +2,10 @@ import { Reducer } from "redux";
 import { LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL, UserEmailActions, UserEmailState } from "./types";
 
 export const initialState: UserEmailState = {
-  data: { email: null, emailVerified: false },
+  data: {
+    address: null,
+    verified: false
+  },
   error: null,
   loading: false
 };

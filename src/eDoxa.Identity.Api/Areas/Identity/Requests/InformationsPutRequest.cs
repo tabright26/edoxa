@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoPutRequest.cs
+﻿// Filename: InformationsPutRequest.cs
 // Date Created: 2019-08-22
 // 
 // ================================================
@@ -9,15 +9,15 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public sealed class PersonalInfoPutRequest
+    public sealed class InformationsPutRequest
     {
-        public PersonalInfoPutRequest(string firstName)
+        public InformationsPutRequest(string firstName)
         {
             FirstName = firstName;
         }
 
 #nullable disable
-        public PersonalInfoPutRequest()
+        public InformationsPutRequest()
         {
             // Required by Fluent Validation.
         }

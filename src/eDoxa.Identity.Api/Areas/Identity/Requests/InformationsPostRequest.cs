@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoPostRequest.cs
+﻿// Filename: InformationsPostRequest.cs
 // Date Created: 2019-08-22
 // 
 // ================================================
@@ -12,9 +12,9 @@ using eDoxa.Seedwork.Domain.Miscs;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public sealed class PersonalInfoPostRequest
+    public sealed class InformationsPostRequest
     {
-        public PersonalInfoPostRequest(
+        public InformationsPostRequest(
             string firstName,
             string lastName,
             Gender gender,
@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
         }
 
 #nullable disable
-        public PersonalInfoPostRequest()
+        public InformationsPostRequest()
         {
             // Required by Fluent Validation.
         }

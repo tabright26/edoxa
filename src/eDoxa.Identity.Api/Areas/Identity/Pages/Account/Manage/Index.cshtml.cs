@@ -102,9 +102,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
             if (Input.PhoneNumber != phoneNumber)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var result = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
 
-                if (!setPhoneResult.Succeeded)
+                if (!result.Succeeded)
                 {
                     var userId = await _userManager.GetUserIdAsync(user);
 

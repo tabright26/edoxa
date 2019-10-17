@@ -4,9 +4,9 @@ import { Col } from "reactstrap";
 
 import InvitationForm from "forms/Organization/Invitation";
 
-const InvitationWidget = ({ actions, invitations, doxaTags, clanId }) => {
-  const findDoxaTag = (name, code) => {
-    return doxaTags.find(tag => tag.name === name && tag.code === code);
+const InvitationWidget = ({ actions, invitations, doxatags, clanId }) => {
+  const findDoxatag = (name, code) => {
+    return doxatags.find(tag => tag.name === name && tag.code === code);
   };
 
   const handleAddInvitation = data => {
@@ -15,7 +15,7 @@ const InvitationWidget = ({ actions, invitations, doxaTags, clanId }) => {
     if (alreadyExist) {
       toastr.error("Error", "Invitation already exist.");
     } else {
-      var userIdFound = findDoxaTag(data.name, data.code);
+      var userIdFound = findDoxatag(data.name, data.code);
       if (userIdFound) {
         actions.addInvitation(clanId, userIdFound.userId).then(toastr.success("SUCCESS", "Candidature was sent successfully."));
       } else {

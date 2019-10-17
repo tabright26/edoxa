@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagsController.cs
+﻿// Filename: DoxatagsController.cs
 // Date Created: 2019-08-27
 // 
 // ================================================
@@ -25,34 +25,34 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/doxatags")]
-    [ApiExplorerSettings(GroupName = "DoxaTags")]
-    public class DoxaTagsController : ControllerBase
+    [ApiExplorerSettings(GroupName = "Doxatags")]
+    public class DoxatagsController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public DoxaTagsController(IUserManager userManager, IMapper mapper)
+        public DoxatagsController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
         }
 
         /// <summary>
-        ///     Fetch DoxaTags.
+        ///     Fetch Doxatags.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxaTagResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxatagResponse>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var doxaTags = await _userManager.FetchDoxaTagsAsync();
+            var doxatags = await _userManager.FetchDoxatagsAsync();
 
-            if (!doxaTags.Any())
+            if (!doxatags.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserDoxaTagResponse>>(doxaTags));
+            return this.Ok(_mapper.Map<IEnumerable<UserDoxatagResponse>>(doxatags));
         }
     }
 }

@@ -6,9 +6,7 @@ import Update from "./Update";
 const mapStateToProps = (state: RootState) => {
   const { data } = state.user.phone;
   return {
-    initialValues: {
-      phoneNumber: data.phoneNumber
-    }
+    initialValues: data
   };
 };
 

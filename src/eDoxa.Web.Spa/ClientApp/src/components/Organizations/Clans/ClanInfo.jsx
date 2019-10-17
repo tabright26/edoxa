@@ -11,7 +11,7 @@ const ClanInfo = ({ clan }) => {
       <br />
       Members: {clan.members.length}
       <br />
-      {clan.ownerDoxaTag}
+      {clan.ownerDoxatag}
       <br />
       OwnerId: {clan.ownerId}
     </Fragment>

@@ -1,0 +1,32 @@
+﻿// Filename: InformationsProfile.cs
+// Date Created: 2019-08-10
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using AutoMapper;
+
+using eDoxa.Identity.Api.Infrastructure.Models;
+
+namespace eDoxa.Identity.Api.Areas.Identity.Responses.Profiles
+{
+    public sealed class UserInformationsProfile : Profile
+    {
+        public UserInformationsProfile()
+        {
+            this.CreateMap<UserInformations, UserInformationsResponse>()
+                .ForMember(
+                    informations => informations.Name,
+                    config =>
+                    {
+                        config.Condition(informations => informations.FirstName != null && informations.LastName != null);
+                        config.MapFrom(informations => $"{informations.FirstName} {informations.LastName}");
+                    }
+                )
+                .ForMember(informations => informations.FirstName, config => config.MapFrom(informations => informations.FirstName))
+                .ForMember(informations => informations.LastName, config => config.MapFrom(informations => informations.LastName))
+                .ForMember(informations => informations.Gender, config => config.MapFrom(informations => informations.Gender))
+                .ForMember(informations => informations.BirthDate, config => config.MapFrom(informations => informations.BirthDate));
+        }
+    }
+}

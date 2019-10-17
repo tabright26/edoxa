@@ -13,10 +13,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses
     [JsonObject]
     public sealed class EmailResponse
     {
-        [JsonProperty("email")]
-        public string Email { get; set; }
+        [JsonProperty("address")]
+        public string Address { get; set; }
 
-        [JsonProperty("emailVerified")]
-        public bool EmailVerified { get; set; }
+        [JsonProperty("verified")]
+        public bool Verified { get; set; }
     }
 }

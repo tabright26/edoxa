@@ -70,7 +70,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PersonalInfo",
+                name: "Informations",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
@@ -81,9 +81,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PersonalInfo", x => x.UserId);
+                    table.PrimaryKey("PK_Informations", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_PersonalInfo_User_UserId",
+                        name: "FK_Informations_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -137,7 +137,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDoxaTag",
+                name: "UserDoxatag",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -148,9 +148,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserDoxaTag", x => x.Id);
+                    table.PrimaryKey("PK_UserDoxatag", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserDoxaTag_User_UserId",
+                        name: "FK_UserDoxatag_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -275,8 +275,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDoxaTag_UserId",
-                table: "UserDoxaTag",
+                name: "IX_UserDoxatag_UserId",
+                table: "UserDoxatag",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -298,7 +298,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PersonalInfo");
+                name: "Informations");
 
             migrationBuilder.DropTable(
                 name: "RoleClaim");
@@ -310,7 +310,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "UserClaim");
 
             migrationBuilder.DropTable(
-                name: "UserDoxaTag");
+                name: "UserDoxatag");
 
             migrationBuilder.DropTable(
                 name: "UserGame");

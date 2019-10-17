@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagProfile.cs
+﻿// Filename: DoxatagProfile.cs
 // Date Created: 2019-08-09
 // 
 // ================================================
@@ -10,15 +10,15 @@ using Profile = AutoMapper.Profile;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Responses.Profiles
 {
-    public class UserDoxaTagProfile : Profile
+    public class UserDoxatagProfile : Profile
     {
-        public UserDoxaTagProfile()
+        public UserDoxatagProfile()
         {
-            this.CreateMap<UserDoxaTag, UserDoxaTagResponse>()
-                .ForMember(doxaTag => doxaTag.UserId, config => config.MapFrom(doxaTag => doxaTag.UserId))
-                .ForMember(doxaTag => doxaTag.Name, config => config.MapFrom(doxaTag => doxaTag.Name))
-                .ForMember(doxaTag => doxaTag.Code, config => config.MapFrom(doxaTag => doxaTag.Code))
-                .ForMember(doxaTag => doxaTag.Timestamp, config => config.MapFrom(doxaTag => doxaTag.Timestamp));
+            this.CreateMap<UserDoxatag, UserDoxatagResponse>()
+                .ForMember(doxatag => doxatag.UserId, config => config.MapFrom(doxatag => doxatag.UserId))
+                .ForMember(doxatag => doxatag.Name, config => config.MapFrom(doxatag => doxatag.Name))
+                .ForMember(doxatag => doxatag.Code, config => config.MapFrom(doxatag => doxatag.Code))
+                .ForMember(doxatag => doxatag.Timestamp, config => config.MapFrom(doxatag => doxatag.Timestamp));
         }
     }
 }

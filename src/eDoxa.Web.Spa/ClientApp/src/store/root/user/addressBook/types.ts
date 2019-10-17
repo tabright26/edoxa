@@ -1,4 +1,5 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { Address } from "types";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
 export const LOAD_USER_ADDRESSBOOK_SUCCESS = "LOAD_USER_ADDRESSBOOK_SUCCESS";
@@ -44,4 +45,4 @@ export type UserAddressBookActionCreators = LoadUserAddressBookActionCreator | C
 
 export type UserAddressBookActions = LoadUserAddressBookAction | CreateUserAddressAction | UpdateUserAddressAction | DeleteUserAddressAction;
 
-export type UserAddressBookState = AxiosState;
+export type UserAddressBookState = AxiosState<Address[]>;

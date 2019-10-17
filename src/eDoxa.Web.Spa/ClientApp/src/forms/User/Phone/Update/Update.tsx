@@ -10,7 +10,7 @@ import { validate } from "./validate";
 const UpdateUserPhoneForm: FunctionComponent<any> = ({ updateUserPhone, handleSubmit, handleCancel }) => {
   return (
     <Form onSubmit={handleSubmit(values => updateUserPhone(values).then(() => handleCancel()))}>
-      <Field type="text" name="phoneNumber" label="Phone Number" formGroup={FormGroup} component={Input.Text} />
+      <Field type="text" name="number" label="Phone Number" formGroup={FormGroup} component={Input.Text} />
       <FormGroup className="mb-0">
         <Button.Save className="mr-2" />
         <Button.Cancel onClick={handleCancel} />

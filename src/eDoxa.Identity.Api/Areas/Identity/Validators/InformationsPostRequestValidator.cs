@@ -1,4 +1,4 @@
-﻿// Filename: PersonalInfoPostRequestValidator.cs
+﻿// Filename: InformationsPostRequestValidator.cs
 // Date Created: 2019-08-22
 //
 // ================================================
@@ -14,48 +14,48 @@ using FluentValidation;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Validators
 {
-    public class PersonalInfoPostRequestValidator : AbstractValidator<PersonalInfoPostRequest>
+    public class InformationsPostRequestValidator : AbstractValidator<InformationsPostRequest>
     {
-        public PersonalInfoPostRequestValidator()
+        public InformationsPostRequestValidator()
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
+                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
                 .NotEmpty()
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameRequired())
+                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameLength())
+                .WithMessage(InformationsErrorDescriber.FirstNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameInvalid())
+                .WithMessage(InformationsErrorDescriber.FirstNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(PersonalInfoErrorDescriber.FirstNameUppercase());
+                .WithMessage(InformationsErrorDescriber.FirstNameUppercase());
 
             this.RuleFor(request => request.LastName)
                 .NotNull()
-                .WithMessage(PersonalInfoErrorDescriber.LastNameRequired())
+                .WithMessage(InformationsErrorDescriber.LastNameRequired())
                 .NotEmpty()
-                .WithMessage(PersonalInfoErrorDescriber.LastNameRequired())
+                .WithMessage(InformationsErrorDescriber.LastNameRequired())
                 .Length(2, 16)
-                .WithMessage(PersonalInfoErrorDescriber.LastNameLength())
+                .WithMessage(InformationsErrorDescriber.LastNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(PersonalInfoErrorDescriber.LastNameInvalid())
+                .WithMessage(InformationsErrorDescriber.LastNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(PersonalInfoErrorDescriber.LastNameUppercase());
+                .WithMessage(InformationsErrorDescriber.LastNameUppercase());
 
             this.RuleFor(request => request.Gender)
                 .NotNull()
-                .WithMessage(PersonalInfoErrorDescriber.GenderRequired())
+                .WithMessage(InformationsErrorDescriber.GenderRequired())
                 .NotEmpty()
-                .WithMessage(PersonalInfoErrorDescriber.GenderRequired());
+                .WithMessage(InformationsErrorDescriber.GenderRequired());
 
             //https://stackoverflow.com/questions/7777985/validate-datetime-with-fluentvalidator
             this.RuleFor(request => request.BirthDate)
                 .NotNull()
-                .WithMessage(PersonalInfoErrorDescriber.BirthDateRequired())
+                .WithMessage(InformationsErrorDescriber.BirthDateRequired())
                 .NotEmpty()
-                .WithMessage(PersonalInfoErrorDescriber.BirthDateRequired())
+                .WithMessage(InformationsErrorDescriber.BirthDateRequired())
                 .Must(BeAValidDate)
-                .WithMessage(PersonalInfoErrorDescriber.BirthDateInvalid());
+                .WithMessage(InformationsErrorDescriber.BirthDateInvalid());
         }
 
         private static bool BeAValidDate(DateTime date)

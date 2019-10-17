@@ -1,4 +1,4 @@
-﻿// Filename: DoxaTagHistoryControllerPostAsyncTest.cs
+﻿// Filename: DoxatagHistoryControllerPostAsyncTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
@@ -30,16 +30,16 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class DoxaTagHistoryControllerPostAsyncTest : IntegrationTest
+    public sealed class DoxatagHistoryControllerPostAsyncTest : IntegrationTest
     {
-        public DoxaTagHistoryControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        public DoxatagHistoryControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testApi,
             testData,
             testMapper)
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(DoxaTagPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(DoxatagPostRequest request)
         {
             return await _httpClient.PostAsync("api/doxatag-history", new JsonContent(request));
         }
@@ -52,9 +52,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
 
-            user.DoxaTagHistory = new Collection<UserDoxaTag>
+            user.DoxatagHistory = new Collection<UserDoxatag>
             {
-                new UserDoxaTag
+                new UserDoxatag
                 {
                     Id = Guid.NewGuid(),
                     UserId = user.Id,
@@ -80,7 +80,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new DoxaTagPostRequest("New"));
+            using var response = await this.ExecuteAsync(new DoxatagPostRequest("New"));
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -8,7 +8,7 @@ const ClanCandidatureItem = ({ candidature, actions, type, isOwner }) => {
     <Fragment>
       <Col>
         {type === "clan" ? (
-          candidature.doxaTag
+          candidature.doxatag
         ) : (
           <Col>
             <LinkContainer to={"/structures/clans/" + candidature.clanId}>

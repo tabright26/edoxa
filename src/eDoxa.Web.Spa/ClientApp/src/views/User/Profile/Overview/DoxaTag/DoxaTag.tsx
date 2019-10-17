@@ -2,11 +2,11 @@ import React, { useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { withUserDoxatag } from "store/root/user/doxatagHistory/container";
-import DoxaTagForm from "forms/User/Doxatag";
+import DoxatagForm from "forms/User/Doxatag";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
 
-const DoxaTag: FunctionComponent<any> = ({ className, doxatag: { data, error, loading } }) => {
+const Doxatag: FunctionComponent<any> = ({ className, doxatag: { data, error, loading } }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
@@ -25,7 +25,7 @@ const DoxaTag: FunctionComponent<any> = ({ className, doxatag: { data, error, lo
                 {data.name}#{data.code}
               </span>
             ) : (
-              <DoxaTagForm.Update handleCancel={() => setButtonDisabled(false)} />
+              <DoxatagForm.Update handleCancel={() => setButtonDisabled(false)} />
             )}
           </dd>
         </dl>
@@ -36,4 +36,4 @@ const DoxaTag: FunctionComponent<any> = ({ className, doxatag: { data, error, lo
 
 const enhance = compose<any, any>(withUserDoxatag);
 
-export default enhance(DoxaTag);
+export default enhance(Doxatag);

@@ -1,9 +1,10 @@
-﻿// Filename: PersonalInfoControllerPutAsyncTest.cs
+﻿// Filename: InformationsControllerPostAsyncTest.cs
 // Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,6 +16,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http;
 using eDoxa.Seedwork.Testing.Http.Extensions;
@@ -27,18 +29,18 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class PersonalInfoControllerPutAsyncTest : IntegrationTest
+    public sealed class InformationsControllerPostAsyncTest : IntegrationTest
     {
-        public PersonalInfoControllerPutAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        public InformationsControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testApi,
             testData,
             testMapper)
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(PersonalInfoPutRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(InformationsPostRequest request)
         {
-            return await _httpClient.PutAsync("api/personal-info", new JsonContent(request));
+            return await _httpClient.PostAsync("api/informations", new JsonContent(request));
         }
 
         private HttpClient _httpClient;
@@ -48,6 +50,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
+            user.Informations = null;
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -64,12 +67,20 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new PersonalInfoPutRequest("Bob"));
+            using var response = await this.ExecuteAsync(
+                new InformationsPostRequest(
+                    "Bob",
+                    "Bob",
+                    Gender.Male,
+                    new DateTime(2000, 1, 1)));
 
             // Assert
             response.EnsureSuccessStatusCode();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
+
             var message = await response.DeserializeAsync<string>();
+
             message.Should().NotBeNullOrWhiteSpace();
         }
     }

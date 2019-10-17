@@ -9,15 +9,15 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public sealed class DoxaTagPostRequest
+    public sealed class DoxatagPostRequest
     {
-        public DoxaTagPostRequest(string name)
+        public DoxatagPostRequest(string name)
         {
             Name = name;
         }
 
 #nullable disable
-        public DoxaTagPostRequest()
+        public DoxatagPostRequest()
         {
             // Required by Fluent Validation.
         }

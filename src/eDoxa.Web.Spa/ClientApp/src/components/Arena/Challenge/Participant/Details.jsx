@@ -27,7 +27,7 @@ const ArenaChallengeParticipantDetails = ({ participant, position }) => {
               >
                 <Badge variant="primary">{position}</Badge>
               </div>
-              <div className="px-3 py-2">{participant.user.doxaTag.name || "Unavailable"}</div>
+              <div className="px-3 py-2">{participant.user.doxatag.name || "Unavailable"}</div>
               <div
                 className="bg-primary px-3 py-2 text-center ml-auto"
                 style={{
