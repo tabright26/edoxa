@@ -3,8 +3,8 @@ import { Field } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import { countries } from "components/Shared/Localization/countries";
 
-const CountryField = () => (
-  <Field name="country" type="select" component={Input.Select}>
+const CountryField = ({ disabled = false }) => (
+  <Field name="country" type="select" component={Input.Select} disabled={disabled}>
     {countries.map((country, index) => (
       <option key={index} value={country.twoDigitIso}>
         {country.name}

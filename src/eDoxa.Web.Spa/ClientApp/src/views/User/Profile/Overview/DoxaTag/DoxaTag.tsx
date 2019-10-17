@@ -6,7 +6,7 @@ import DoxaTagForm from "forms/User/Doxatag";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
 
-const DoxaTag: FunctionComponent<any> = ({ className, doxatag, actions }) => {
+const DoxaTag: FunctionComponent<any> = ({ className, doxatag: { data, error, loading } }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
@@ -20,9 +20,9 @@ const DoxaTag: FunctionComponent<any> = ({ className, doxatag, actions }) => {
         <dl className="row mb-0">
           <dd className="col-sm-3 mb-0 text-muted">Doxatag</dd>
           <dd className="col-sm-5 mb-0">
-            {!buttonDisabled && doxatag ? (
+            {!buttonDisabled && data ? (
               <span>
-                {doxatag.name}#{doxatag.code}
+                {data.name}#{data.code}
               </span>
             ) : (
               <DoxaTagForm.Update handleCancel={() => setButtonDisabled(false)} />

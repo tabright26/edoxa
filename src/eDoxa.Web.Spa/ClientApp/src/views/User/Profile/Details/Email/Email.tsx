@@ -4,7 +4,14 @@ import Badge from "components/Shared/Override/Badge";
 import { withUserEmail } from "store/root/user/email/container";
 import { compose } from "recompose";
 
-const Email: FunctionComponent<any> = ({ className, email, emailVerified }) => (
+const Email: FunctionComponent<any> = ({
+  className,
+  email: {
+    data: { email, emailVerified },
+    error,
+    loading
+  }
+}) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">EMAIL</strong>

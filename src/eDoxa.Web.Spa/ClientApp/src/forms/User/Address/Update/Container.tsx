@@ -4,7 +4,7 @@ import { loadUserAddressBook, updateUserAddress } from "store/root/user/addressB
 import Update from "./Update";
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
-  const { data, error, loading } = state.user.addressBook;
+  const { data } = state.user.addressBook;
   return {
     initialValues: data.find(address => address.id === ownProps.addressId)
   };

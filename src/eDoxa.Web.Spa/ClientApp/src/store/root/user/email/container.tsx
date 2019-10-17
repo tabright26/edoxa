@@ -4,26 +4,23 @@ import { RootState } from "store/root/types";
 import { loadUserEmail } from "./actions";
 
 export const withUserEmail = (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, email, emailVerified, ...attributes }) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadEmail();
+      props.loadUserEmail();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <HighOrderComponent actions={actions} email={email} emailVerified={emailVerified} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      email: state.user.email.data.email,
-      emailVerified: state.user.email.data.emailVerified
+      email: state.user.email
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadEmail: () => dispatch(loadUserEmail())
-      }
+      loadUserEmail: () => dispatch(loadUserEmail())
     };
   };
 

@@ -4,7 +4,7 @@ import { loadUserPhone, updateUserPhone } from "store/root/user/phone/actions";
 import Update from "./Update";
 
 const mapStateToProps = (state: RootState) => {
-  const { data, error, loading } = state.user.phone;
+  const { data } = state.user.phone;
   return {
     initialValues: {
       phoneNumber: data.phoneNumber

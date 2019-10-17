@@ -26,10 +26,12 @@ export const reducer: Reducer<StripePaymentMethodsState, StripePaymentMethodsAct
     case LOAD_STRIPE_PAYMENTMETHODS_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
-        case 204:
+        case 204: {
           return { data: state.data, error: null, loading: false };
-        default:
+        }
+        default: {
           return { data: data, error: null, loading: false };
+        }
       }
     }
     case LOAD_STRIPE_PAYMENTMETHODS_FAIL: {

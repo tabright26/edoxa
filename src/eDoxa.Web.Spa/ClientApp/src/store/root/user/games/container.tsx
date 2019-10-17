@@ -4,25 +4,23 @@ import { loadUserGames } from "store/root/user/games/actions";
 import { RootState } from "store/root/types";
 
 export const withUserGames = (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, games, ...attributes }) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadGames();
+      props.loadUserGames();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <HighOrderComponent actions={actions} games={games} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      games: state.user.games.data
+      games: state.user.games
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadGames: () => dispatch(loadUserGames())
-      }
+      loadUserGames: () => dispatch(loadUserGames())
     };
   };
 

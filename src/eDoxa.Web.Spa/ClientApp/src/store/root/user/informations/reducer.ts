@@ -13,7 +13,7 @@ import {
 import { Reducer } from "redux";
 
 export const initialState: UserInformationsState = {
-  data: {},
+  data: null,
   error: null,
   loading: false
 };

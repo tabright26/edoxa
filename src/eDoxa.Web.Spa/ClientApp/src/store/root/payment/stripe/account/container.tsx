@@ -6,7 +6,7 @@ import { loadStripeAccount } from "./actions";
 export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.actions.loadAccount();
+      props.loadStripeAccount();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -14,15 +14,13 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
 
   const mapStateToProps = (state: RootState) => {
     return {
-      account: state.payment.stripe.account.data
+      account: state.payment.stripe.account
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadAccount: () => dispatch(loadStripeAccount())
-      }
+      loadStripeAccount: () => dispatch(loadStripeAccount())
     };
   };
 

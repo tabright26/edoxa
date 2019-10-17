@@ -1,14 +1,16 @@
 import React, { FunctionComponent } from "react";
 import { Form, FormGroup } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
-import moment from "moment";
+import { Field, reduxForm, FormSection } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
 import { UPDATE_USER_INFORMATION_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import DaySelectField from "components/Shared/Override/Field/Day";
+import MonthSelectField from "components/Shared/Override/Field/Month";
+import YearSelectField from "components/Shared/Override/Field/Year";
 
-const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel, initialValues: { lastName, birthDate, gender } }) => (
+const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit(data => updateUserInformations(data).then(() => handleCancel()))}>
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
@@ -18,56 +20,25 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformat
             <Field name="firstName" label="Enter your first name" component={Input.Text} />
           </dt>
           <dd className="col-sm-4 mb-0">
-            <Input.Text type="text" value={lastName} bsSize="sm" disabled />
+            <Field name="lastName" label="Enter your first name" component={Input.Text} disabled />
           </dd>
         </dl>
       </dd>
       <dd className="col-sm-3 text-muted mb-0">Date of birth</dd>
       <dd className="col-sm-9 mb-0">
         <FormGroup>
-          <Input.Text
-            type="text"
-            className="d-inline"
-            value={moment
-              .unix(birthDate)
-              .toDate()
-              .getMonth()}
-            name="month"
-            bsSize="sm"
-            style={{ width: "60px" }}
-            disabled
-          />
-          <span className="d-inline mx-2">/</span>
-          <Input.Text
-            type="text"
-            className="d-inline"
-            value={moment
-              .unix(birthDate)
-              .toDate()
-              .getDate()}
-            name="day"
-            bsSize="sm"
-            style={{ width: "60px" }}
-            disabled
-          />
-          <span className="d-inline mx-2">/</span>
-          <Input.Text
-            className="d-inline"
-            type="text"
-            value={moment
-              .unix(birthDate)
-              .toDate()
-              .getFullYear()}
-            name="year"
-            bsSize="sm"
-            style={{ width: "75px" }}
-            disabled
-          />
+          <FormSection name="birthDate">
+            <YearSelectField className="d-inline" width="75px" disabled />
+            <span className="d-inline mx-2">/</span>
+            <MonthSelectField className="d-inline" width="60px" disabled />
+            <span className="d-inline mx-2">/</span>
+            <DaySelectField className="d-inline" width="60px" disabled />
+          </FormSection>
         </FormGroup>
       </dd>
       <dd className="col-sm-3 mb-0 text-muted">Gender</dd>
       <dd className="col-sm-3 mb-0">
-        <Input.Text type="text" value="Male" name={gender} bsSize="sm" disabled />
+        <Field name="gender" label="Gender" component={Input.Text} disabled />
       </dd>
       <dd className="col-sm-6 mb-0">{""}</dd>
       <dd className="col-sm-3 mb-0">{""}</dd>

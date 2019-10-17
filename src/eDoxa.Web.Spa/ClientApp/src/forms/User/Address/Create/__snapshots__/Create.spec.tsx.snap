@@ -10,6 +10,7 @@ exports[`renders correctly 1`] = `
   >
     <select
       className="form-control-sm form-control"
+      disabled={false}
       name="country"
       onBlur={[Function]}
       onChange={[Function]}

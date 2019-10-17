@@ -1,16 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Row, Col, Card, CardHeader } from "reactstrap";
-import { connectArenaChallenges } from "store/root/arena/challenges/container";
+import { withChallenges } from "store/root/arena/challenges/container";
 
 import ChallengeItem from "./Item";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 
-const ArenaChallengeIndex = ({ actions, challenges }) => {
-  useEffect(() => {
-    actions.loadChallenges();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+const ArenaChallengeIndex = ({ challenges: { data, error, loading } }) => {
   return (
     <ErrorBoundary>
       <Row>
@@ -23,7 +19,7 @@ const ArenaChallengeIndex = ({ actions, challenges }) => {
         </Col>
       </Row>
       <Row>
-        {challenges
+        {data
           .sort((left, right) => (left.timestamp < right.timestamp ? -1 : 1))
           .map((challenge, index) => (
             <Col key={index} xs="6" sm="4" md="3">
@@ -35,4 +31,4 @@ const ArenaChallengeIndex = ({ actions, challenges }) => {
   );
 };
 
-export default connectArenaChallenges(ArenaChallengeIndex);
+export default withChallenges(ArenaChallengeIndex);

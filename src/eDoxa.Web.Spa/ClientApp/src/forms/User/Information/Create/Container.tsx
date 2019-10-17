@@ -4,7 +4,17 @@ import Create from "./Create";
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    createUserInformations: (data: any) => dispatch(createUserInformations(data)).then(() => dispatch(loadUserInformations()))
+    createUserInformations: (data: any) =>
+      dispatch(
+        createUserInformations({
+          ...data,
+          birthDate: {
+            year: data.birthDate.year,
+            month: data.birthDate.month - 1,
+            day: data.birthDate.day
+          }
+        })
+      ).then(() => dispatch(loadUserInformations()))
   };
 };
 

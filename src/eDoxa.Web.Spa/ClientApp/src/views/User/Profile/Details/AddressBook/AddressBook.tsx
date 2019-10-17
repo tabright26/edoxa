@@ -55,7 +55,7 @@ const AddressItem: FunctionComponent<any> = ({ hasMore, position, address }) => 
   );
 };
 
-const AddressBook: FunctionComponent<any> = ({ className, addressBook, actions }) => (
+const AddressBook: FunctionComponent<any> = ({ className, addressBook: { data, error, loading }, actions }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">ADDRESS BOOK</strong>
@@ -65,8 +65,8 @@ const AddressBook: FunctionComponent<any> = ({ className, addressBook, actions }
       <UserAddressModal.Create />
     </CardHeader>
     <CardBody>
-      {addressBook.map((address, index) => (
-        <AddressItem key={index} address={address} position={index + 1} hasMore={addressBook.length !== index + 1} />
+      {data.map((address, index) => (
+        <AddressItem key={index} address={address} position={index + 1} hasMore={data.length !== index + 1} />
       ))}
     </CardBody>
   </Card>

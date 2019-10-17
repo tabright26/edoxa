@@ -3,9 +3,9 @@ import { CardHeader, CardImg, CardImgOverlay, CardText, Row, Col, Card, Button }
 
 import { withUserGames } from "store/root/user/games/container";
 
-const UserGameIndex = ({ games }) => (
+const UserGameIndex = ({ games: { data, error, loading } }) => (
   <Row>
-    {games.map((game, index) => (
+    {data.map((game, index) => (
       <Col key={index} xl="4">
         <Card className="card-accent-primary my-3">
           <CardHeader>

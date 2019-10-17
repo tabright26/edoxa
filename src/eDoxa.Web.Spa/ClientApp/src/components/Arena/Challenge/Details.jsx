@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Container, Row, Col } from "reactstrap";
 
 import ChallengeLogo from "./Logo";
@@ -7,28 +7,11 @@ import ChallengeScoreboard from "./Scoreboard";
 import ChallengeScoring from "./Scoring";
 import ChallengePayout from "./Payout";
 
-import { connectArenaChallenges } from "store/root/arena/challenges/container";
+import { withChallenge } from "store/root/arena/challenges/container";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 
-const Challenge = ({
-  actions,
-  challenges,
-  match: {
-    params: { challengeId }
-  }
-}) => {
-  const [challenge, setChallenge] = useState(null);
-  useEffect(() => {
-    if (!challenges.some(challenge => challenge.id === challengeId)) {
-      actions.loadChallenge(challengeId);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [challengeId]);
-  useEffect(() => {
-    setChallenge(challenges.find(challenge => challenge.id === challengeId));
-  }, [challengeId, challenges]);
-
+const Challenge = ({ challenge }) => {
   return (
     <ErrorBoundary>
       <Container fluid={true}>
@@ -58,4 +41,4 @@ const Challenge = ({
   );
 };
 
-export default connectArenaChallenges(Challenge);
+export default withChallenge(Challenge);

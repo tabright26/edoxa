@@ -3,13 +3,16 @@ import { FormGroup, Col, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
+import FormField from "components/Shared/Override/Field";
 import { DELETE_USER_ADDRESS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
-const UpdateUserAddressForm: FunctionComponent<any> = ({ initialValues: { country }, updateUserAddress, handleSubmit, handleCancel }) => (
+const UpdateUserAddressForm: FunctionComponent<any> = ({ updateUserAddress, handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit(data => updateUserAddress(data).then(() => handleCancel()))}>
-    <Input.Text value={country} disabled />
+    <FormGroup>
+      <FormField.Country disabled={true} />
+    </FormGroup>
     <Field type="text" name="line1" label="Address line 1" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="line2" label="Address line 2 (optional)" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="city" label="City" formGroup={FormGroup} component={Input.Text} />

@@ -30,7 +30,12 @@ export function createUserInformations(data: any): UserInformationsActionCreator
       request: {
         method: "POST",
         url: "/identity/api/personal-info",
-        data
+        data: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          gender: data.gender,
+          birthDate: new Date(data.birthDate.year, data.birthDate.month, data.birthDate.day)
+        }
       }
     }
   };
@@ -43,7 +48,9 @@ export function updateUserInformations(data: any): UserInformationsActionCreator
       request: {
         method: "PUT",
         url: "/identity/api/personal-info",
-        data
+        data: {
+          firstName: data.firstName
+        }
       }
     }
   };

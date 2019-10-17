@@ -5,13 +5,18 @@ import Update from "./Update";
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
   const {
-    data: { data, hasMore },
-    error,
-    loading
+    data: { data }
   } = state.payment.stripe.paymentMethods;
   const paymentMethod = data.find(paymentMethod => paymentMethod.id === ownProps.paymentMethodId);
   return {
-    initialValues: paymentMethod
+    initialValues: {
+      card: {
+        brand: paymentMethod.card.brand,
+        last4: paymentMethod.card.last4,
+        exp_month: paymentMethod.card.exp_month,
+        exp_year: paymentMethod.card.exp_year
+      }
+    }
   };
 };
 
