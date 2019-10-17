@@ -3,10 +3,13 @@ import {
   LOAD_CLANS,
   LOAD_CLANS_FAIL,
   LOAD_CLANS_SUCCESS,
+  LOAD_CLAN,
   LOAD_CLAN_SUCCESS,
   LOAD_CLAN_FAIL,
+  CREATE_CLAN,
   CREATE_CLAN_SUCCESS,
   CREATE_CLAN_FAIL,
+  LEAVE_CLAN,
   LEAVE_CLAN_SUCCESS,
   LEAVE_CLAN_FAIL,
   ClansState,
@@ -27,14 +30,19 @@ export const reducer: Reducer<ClansState, ClansActions> = (state = initialState,
     case LOAD_CLANS_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
-        case 204:
+        case 204: {
           return { data: state.data, error: null, loading: false };
-        default:
+        }
+        default: {
           return { data: data, error: null, loading: false };
+        }
       }
     }
     case LOAD_CLANS_FAIL: {
       return { data: state.data, error: action.error, loading: false };
+    }
+    case LOAD_CLAN: {
+      return { data: state.data, error: null, loading: true };
     }
     case LOAD_CLAN_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };
@@ -42,18 +50,22 @@ export const reducer: Reducer<ClansState, ClansActions> = (state = initialState,
     case LOAD_CLAN_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
+    case LEAVE_CLAN: {
+      return { data: state.data, error: null, loading: true };
+    }
     case LEAVE_CLAN_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
     case LEAVE_CLAN_FAIL: {
-      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
+    }
+    case CREATE_CLAN: {
+      return { data: state.data, error: null, loading: true };
     }
     case CREATE_CLAN_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
     case CREATE_CLAN_FAIL: {
-      //throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

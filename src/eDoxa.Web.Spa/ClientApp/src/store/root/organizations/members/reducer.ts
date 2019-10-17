@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { LOAD_CLAN_MEMBERS, LOAD_CLAN_MEMBERS_FAIL, LOAD_CLAN_MEMBERS_SUCCESS, KICK_CLAN_MEMBER_FAIL, KICK_CLAN_MEMBER_SUCCESS, ClanMembersState, ClanMembersActions } from "./types";
+import { LOAD_CLAN_MEMBERS, LOAD_CLAN_MEMBERS_FAIL, LOAD_CLAN_MEMBERS_SUCCESS, KICK_CLAN_MEMBER, KICK_CLAN_MEMBER_FAIL, KICK_CLAN_MEMBER_SUCCESS, ClanMembersState, ClanMembersActions } from "./types";
 
 export const initialState: ClanMembersState = {
   data: [],
@@ -42,6 +42,13 @@ export const reducer: Reducer<ClanMembersState, ClanMembersActions> = (state = i
         loading: false
       };
     }
+    case KICK_CLAN_MEMBER: {
+      return {
+        data: state.data,
+        error: null,
+        loading: true
+      };
+    }
     case KICK_CLAN_MEMBER_SUCCESS: {
       return {
         data: state.data,
@@ -50,7 +57,6 @@ export const reducer: Reducer<ClanMembersState, ClanMembersActions> = (state = i
       };
     }
     case KICK_CLAN_MEMBER_FAIL: {
-      //throwAxiosSubmissionError(action.error);
       return {
         data: state.data,
         error: action.error,

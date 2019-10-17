@@ -11,15 +11,15 @@ interface LoadWithdrawalMoneyAmountsActionCreator extends AxiosActionCreator<Loa
 
 interface LoadWithdrawalMoneyAmountsAction extends AxiosAction<LoadWithdrawalMoneyAmountsType> {}
 
-export const WITHDRAWAL_TOKEN = "WITHDRAWAL_TOKEN";
-export const WITHDRAWAL_TOKEN_SUCCESS = "WITHDRAWAL_TOKEN_SUCCESS";
-export const WITHDRAWAL_TOKEN_FAIL = "WITHDRAWAL_TOKEN_FAIL";
+export const WITHDRAWAL_MONEY = "WITHDRAWAL_MONEY";
+export const WITHDRAWAL_MONEY_SUCCESS = "WITHDRAWAL_MONEY_SUCCESS";
+export const WITHDRAWAL_MONEY_FAIL = "WITHDRAWAL_MONEY_FAIL";
 
-type WithdrawalTokenType = typeof WITHDRAWAL_TOKEN | typeof WITHDRAWAL_TOKEN_SUCCESS | typeof WITHDRAWAL_TOKEN_FAIL;
+type WithdrawalMoneyType = typeof WITHDRAWAL_MONEY | typeof WITHDRAWAL_MONEY_SUCCESS | typeof WITHDRAWAL_MONEY_FAIL;
 
-interface WithdrawalMoneyActionCreator extends AxiosActionCreator<WithdrawalTokenType> {}
+interface WithdrawalMoneyActionCreator extends AxiosActionCreator<WithdrawalMoneyType> {}
 
-interface WithdrawalMoneyAction extends AxiosAction<WithdrawalTokenType> {}
+interface WithdrawalMoneyAction extends AxiosAction<WithdrawalMoneyType> {}
 
 export type WithdrawalActionCreators = WithdrawalMoneyActionCreator | LoadWithdrawalMoneyAmountsActionCreator;
 

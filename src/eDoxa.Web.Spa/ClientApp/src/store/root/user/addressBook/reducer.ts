@@ -1,12 +1,14 @@
-import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import {
   LOAD_USER_ADDRESSBOOK,
   LOAD_USER_ADDRESSBOOK_SUCCESS,
   LOAD_USER_ADDRESSBOOK_FAIL,
+  CREATE_USER_ADDRESS,
   CREATE_USER_ADDRESS_SUCCESS,
   CREATE_USER_ADDRESS_FAIL,
+  DELETE_USER_ADDRESS,
   DELETE_USER_ADDRESS_SUCCESS,
   DELETE_USER_ADDRESS_FAIL,
+  UPDATE_USER_ADDRESS,
   UPDATE_USER_ADDRESS_SUCCESS,
   UPDATE_USER_ADDRESS_FAIL,
   UserAddressBookActions,
@@ -39,26 +41,32 @@ export const reducer: Reducer<UserAddressBookState, UserAddressBookActions> = (s
     case LOAD_USER_ADDRESSBOOK_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
+    case CREATE_USER_ADDRESS: {
+      return { data: state.data, error: null, loading: true };
+    }
     case CREATE_USER_ADDRESS_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
     case CREATE_USER_ADDRESS_FAIL: {
-      throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
+    }
+    case UPDATE_USER_ADDRESS: {
+      return { data: state.data, error: null, loading: true };
     }
     case UPDATE_USER_ADDRESS_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
     case UPDATE_USER_ADDRESS_FAIL: {
-      throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
+    }
+    case DELETE_USER_ADDRESS: {
+      return { data: state.data, error: null, loading: true };
     }
     case DELETE_USER_ADDRESS_SUCCESS: {
       const { data: addressId } = action.payload;
       return { data: state.data.filter(address => address.id !== addressId), error: null, loading: false };
     }
     case DELETE_USER_ADDRESS_FAIL: {
-      throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

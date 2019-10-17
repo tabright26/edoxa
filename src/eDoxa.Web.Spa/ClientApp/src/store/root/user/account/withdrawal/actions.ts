@@ -2,9 +2,9 @@ import {
   LOAD_WITHDRAWAL_MONEY_AMOUNTS,
   LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS,
   LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL,
-  WITHDRAWAL_TOKEN,
-  WITHDRAWAL_TOKEN_SUCCESS,
-  WITHDRAWAL_TOKEN_FAIL,
+  WITHDRAWAL_MONEY,
+  WITHDRAWAL_MONEY_SUCCESS,
+  WITHDRAWAL_MONEY_FAIL,
   WithdrawalActionCreators
 } from "./types";
 import { Currency } from "../types";
@@ -13,7 +13,7 @@ export function withdrawal(currency: Currency, amount: number): WithdrawalAction
   switch (currency) {
     case "money":
       return {
-        types: [WITHDRAWAL_TOKEN, WITHDRAWAL_TOKEN_SUCCESS, WITHDRAWAL_TOKEN_FAIL],
+        types: [WITHDRAWAL_MONEY, WITHDRAWAL_MONEY_SUCCESS, WITHDRAWAL_MONEY_FAIL],
         payload: {
           request: {
             method: "POST",

@@ -1,10 +1,11 @@
-import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import {
   LOAD_USER_INFORMATIONS,
   LOAD_USER_INFORMATIONS_SUCCESS,
   LOAD_USER_INFORMATIONS_FAIL,
+  CREATE_USER_INFORMATIONS,
   CREATE_USER_INFORMATIONS_SUCCESS,
   CREATE_USER_INFORMATIONS_FAIL,
+  UPDATE_USER_INFORMATIONS,
   UPDATE_USER_INFORMATIONS_SUCCESS,
   UPDATE_USER_INFORMATIONS_FAIL,
   UserInformationsActions,
@@ -37,18 +38,22 @@ export const reducer: Reducer<UserInformationsState, UserInformationsActions> = 
     case LOAD_USER_INFORMATIONS_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
+    case CREATE_USER_INFORMATIONS: {
+      return { data: state.data, error: null, loading: true };
+    }
     case CREATE_USER_INFORMATIONS_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
     case CREATE_USER_INFORMATIONS_FAIL: {
-      throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
+    }
+    case UPDATE_USER_INFORMATIONS: {
+      return { data: state.data, error: null, loading: true };
     }
     case UPDATE_USER_INFORMATIONS_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
     case UPDATE_USER_INFORMATIONS_FAIL: {
-      throwAxiosSubmissionError(action.error);
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

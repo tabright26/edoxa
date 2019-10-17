@@ -2,12 +2,12 @@ import {
   LOAD_WITHDRAWAL_MONEY_AMOUNTS,
   LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS,
   LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL,
-  WITHDRAWAL_TOKEN_SUCCESS,
-  WITHDRAWAL_TOKEN_FAIL,
+  WITHDRAWAL_MONEY,
+  WITHDRAWAL_MONEY_SUCCESS,
+  WITHDRAWAL_MONEY_FAIL,
   WithdrawalState,
   WithdrawalActions
 } from "./types";
-import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
 import { Currency } from "../types";
 import { Reducer } from "redux";
 
@@ -30,11 +30,13 @@ export const reducer: Reducer<WithdrawalState, WithdrawalActions> = (state = ini
     case LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
-    case WITHDRAWAL_TOKEN_SUCCESS: {
+    case WITHDRAWAL_MONEY: {
+      return { data: state.data, error: null, loading: true };
+    }
+    case WITHDRAWAL_MONEY_SUCCESS: {
       return { data: state.data, error: null, loading: false };
     }
-    case WITHDRAWAL_TOKEN_FAIL: {
-      throwAxiosSubmissionError(action.error);
+    case WITHDRAWAL_MONEY_FAIL: {
       return { data: state.data, error: action.error, loading: false };
     }
     default: {

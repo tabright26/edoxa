@@ -1,4 +1,13 @@
-import { LOAD_CHALLENGES, LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL, ChallengesState, ChallengesActions } from "store/root/arena/challenges/types";
+import {
+  LOAD_CHALLENGES,
+  LOAD_CHALLENGES_SUCCESS,
+  LOAD_CHALLENGES_FAIL,
+  LOAD_CHALLENGE,
+  LOAD_CHALLENGE_SUCCESS,
+  LOAD_CHALLENGE_FAIL,
+  ChallengesState,
+  ChallengesActions
+} from "store/root/arena/challenges/types";
 import { Reducer } from "redux";
 
 export const initialState: ChallengesState = {
@@ -26,6 +35,9 @@ export const reducer: Reducer<ChallengesState, ChallengesActions> = (state = ini
     }
     case LOAD_CHALLENGES_FAIL: {
       return { data: state.data, error: action.error, loading: false };
+    }
+    case LOAD_CHALLENGE: {
+      return { data: state.data, error: null, loading: true };
     }
     case LOAD_CHALLENGE_SUCCESS: {
       return { data: [...state.data, action.payload.data], error: null, loading: false };

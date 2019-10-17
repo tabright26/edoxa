@@ -2,6 +2,7 @@ import {
   LOAD_USER_DOXATAGHISTORY,
   LOAD_USER_DOXATAGHISTORY_SUCCESS,
   LOAD_USER_DOXATAGHISTORY_FAIL,
+  UPDATE_USER_DOXATAG,
   UPDATE_USER_DOXATAG_SUCCESS,
   UPDATE_USER_DOXATAG_FAIL,
   UserDoxatagHistoryActions,
@@ -33,6 +34,9 @@ export const reducer: Reducer<UserDoxatagHistoryState, UserDoxatagHistoryActions
     }
     case LOAD_USER_DOXATAGHISTORY_FAIL: {
       return { data: state.data, error: action.error, loading: false };
+    }
+    case UPDATE_USER_DOXATAG: {
+      return { data: state.data, error: null, loading: true };
     }
     case UPDATE_USER_DOXATAG_SUCCESS: {
       return { data: state.data, error: null, loading: false };
