@@ -4,6 +4,7 @@ import Update from "./Update";
 import { compose } from "recompose";
 import { injectStripe } from "react-stripe-elements";
 import { withtUserProfile } from "store/root/user/container";
+import { COUNTRY_CLAIM_TYPE } from "store/middlewares/oidc/types";
 
 const mapDispatchToProps = (dispatch: any, ownProps: any) => {
   return {
@@ -29,7 +30,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
 
 const enhance = compose<any, any>(
   injectStripe,
-  withtUserProfile("country"),
+  withtUserProfile(COUNTRY_CLAIM_TYPE),
   connect(
     null,
     mapDispatchToProps

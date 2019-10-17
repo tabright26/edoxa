@@ -7,8 +7,8 @@ import { FORGOT_USER_PASSWORD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
-const ForgotPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
-  <Form onSubmit={handleSubmit}>
+const ForgotUserPasswordForm: FunctionComponent<any> = ({ handleSubmit, forgotUserPassword }) => (
+  <Form onSubmit={handleSubmit(data => forgotUserPassword(data))}>
     <Field type="text" name="email" label="Email" formGroup={FormGroup} component={Input.Text} />
     <FormGroup className="mb-0">
       <Button.Submit block>Send Email</Button.Submit>
@@ -18,4 +18,4 @@ const ForgotPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
 
 const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: FORGOT_USER_PASSWORD_FORM, validate }));
 
-export default enhance(ForgotPasswordForm);
+export default enhance(ForgotUserPasswordForm);

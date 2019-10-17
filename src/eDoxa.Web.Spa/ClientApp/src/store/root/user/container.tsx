@@ -1,9 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
 import { confirmUserEmail } from "store/root/user/email/actions";
-import { forgotUserPassword, resetUserPassword } from "store/root/user/password/actions";
 import { RootState } from "store/root/types";
+import { ClaimType } from "store/middlewares/oidc/types";
 
 export const withtUser = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
@@ -19,14 +18,7 @@ export const withtUser = (HighOrderComponent: FunctionComponent<any>) => {
   const mapDispatchToProps = (dispatch: any) => {
     return {
       actions: {
-        confirmEmail: (userId: string, code: string) => dispatch(confirmUserEmail(userId, code)),
-        forgotPassword: (fields: any) => dispatch(forgotUserPassword(fields)).then(() => dispatch(push("/"))),
-        resetPassword: (fields: any, code: string) => {
-          const data = fields;
-          delete data.confirmPassword;
-          data.code = code;
-          return dispatch(resetUserPassword(data)).then(() => (window.location.href = `${process.env.REACT_APP_AUTHORITY}/account/login`));
-        }
+        confirmEmail: (userId: string, code: string) => dispatch(confirmUserEmail(userId, code))
       }
     };
   };
@@ -37,12 +29,12 @@ export const withtUser = (HighOrderComponent: FunctionComponent<any>) => {
   )(Container);
 };
 
-export const withtUserProfile = (claimType: string) => (HighOrderComponent: FunctionComponent<any>) => {
+export const withtUserProfile = (claimType: ClaimType) => (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
 
   const mapStateToProps = (state: RootState) => {
     return {
-      [`${claimType}`]: state.oidc.user.profile[claimType]
+      [claimType]: state.oidc.user.profile[claimType]
     };
   };
 

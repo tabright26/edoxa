@@ -7,8 +7,8 @@ import { RESET_USER_PASSWORD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 
-const ResetPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
-  <Form onSubmit={handleSubmit}>
+const ResetUserPasswordForm: FunctionComponent<any> = ({ handleSubmit, resetUserPassword }) => (
+  <Form onSubmit={handleSubmit(data => resetUserPassword(data))}>
     <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
         <InputGroupText>@</InputGroupText>
@@ -39,4 +39,4 @@ const ResetPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
 
 const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: RESET_USER_PASSWORD_FORM, validate }));
 
-export default enhance(ResetPasswordForm);
+export default enhance(ResetUserPasswordForm);

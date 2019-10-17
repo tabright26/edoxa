@@ -1,3 +1,3 @@
-import ForgotPassword from "./Forgot";
+import ForgotUserPassword from "./Forgot";
 
-export default ForgotPassword;
+export default ForgotUserPassword;

@@ -1,3 +1,3 @@
-import ForgotPasswordForm from "./Forgot";
+import ForgotUserPasswordContainer from "./Container";
 
-export default ForgotPasswordForm;
+export default ForgotUserPasswordContainer;
