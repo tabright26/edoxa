@@ -1,5 +1,5 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
-import { Currency } from "../types";
+import { Currency } from "types";
 
 export const LOAD_DEPOSIT_MONEY_AMOUNTS = "LOAD_DEPOSIT_MONEY_AMOUNTS";
 export const LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS = "LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS";

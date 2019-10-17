@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadWithdrawalAmounts, withdrawal } from "./actions";
 import { RootState } from "store/root/types";
-import { Currency } from "../types";
+import { Currency } from "types";
 
 export const withUserAccountWithdrawal = (currency: Currency) => (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {

@@ -17,7 +17,7 @@ const EmailConfirm: FunctionComponent<any> = ({ location, confirmUserEmail }) =>
     if (!notFound) {
       confirmUserEmail(userId, code);
     }
-  }, [location.search, notFound]);
+  }, [confirmUserEmail, location.search, notFound]);
   if (notFound) {
     return <Redirect to="/errors/404" />;
   }

@@ -14,7 +14,7 @@ import {
   DepositState,
   DepositActions
 } from "./types";
-import { Currency } from "../types";
+import { Currency } from "types";
 import { Reducer } from "redux";
 
 export const initialState: DepositState = {

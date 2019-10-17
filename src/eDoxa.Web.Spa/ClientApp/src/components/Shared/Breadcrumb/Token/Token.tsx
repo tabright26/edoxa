@@ -8,7 +8,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   return (
     <div className={className}>
       <Badge id="tokenPopover" color="dark" style={{ width: "100px" }}>
-        <Balance currency="token" selector="available" />
+        <Balance currency="token" attribute="available" />
       </Badge>
       <Popover
         style={{

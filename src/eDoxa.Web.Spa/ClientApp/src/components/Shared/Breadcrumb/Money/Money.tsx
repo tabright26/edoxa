@@ -9,7 +9,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
   return (
     <div className={className}>
       <Badge id="moneyPopover" color="dark" style={{ width: "100px" }}>
-        <Balance currency="money" selector="available" />
+        <Balance currency="money" attribute="available" />
       </Badge>
       <Popover
         style={{

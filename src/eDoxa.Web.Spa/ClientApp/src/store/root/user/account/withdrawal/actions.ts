@@ -7,7 +7,7 @@ import {
   WITHDRAWAL_MONEY_FAIL,
   WithdrawalActionCreators
 } from "./types";
-import { Currency } from "../types";
+import { Currency } from "types";
 
 export function withdrawal(currency: Currency, amount: number): WithdrawalActionCreators {
   switch (currency) {

@@ -8,7 +8,7 @@ import {
   WithdrawalState,
   WithdrawalActions
 } from "./types";
-import { Currency } from "../types";
+import { Currency } from "types";
 import { Reducer } from "redux";
 
 export const initialState: WithdrawalState = {

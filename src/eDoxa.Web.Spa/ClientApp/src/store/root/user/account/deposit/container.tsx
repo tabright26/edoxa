@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadDepositAmounts, deposit } from "./actions";
 import { RootState } from "store/root/types";
-import { Currency } from "../types";
+import { Currency } from "types";
 
 export const withUserAccountDeposit = (currency: Currency) => (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, amounts, ...attributes }) => {

@@ -1,3 +1,13 @@
+export const MONEY_CURRENCY = "money";
+export const TOKEN_CURRENCY = "token";
+
+export type Currency = typeof MONEY_CURRENCY | typeof TOKEN_CURRENCY;
+
+export interface Balance {
+  available: number;
+  pending: number;
+}
+
 export interface Email {
   address: string;
   verified: boolean;

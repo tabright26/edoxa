@@ -1,12 +1,16 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { loadUserAccountBalance } from "store/root/user/account/balance/actions";
 import { RootState } from "store/root/types";
-import { Currency, BalanceProp as BalanceSelector } from "store/root/user/account/types";
+import { Currency } from "types";
+import { UserAccountBalanceState } from "./types";
 
-interface UserAccountBalanceProps {
+interface UserAccountBalanceStateProps {
+  balance: UserAccountBalanceState;
+}
+
+interface UserAccountBalanceOwnProps {
   currency: Currency;
-  selector: BalanceSelector;
 }
 
 export const withUserAccountBalance = (HighOrderComponent: FunctionComponent<any>) => {
@@ -18,28 +22,13 @@ export const withUserAccountBalance = (HighOrderComponent: FunctionComponent<any
     return <HighOrderComponent {...props} />;
   };
 
-  const mapStateToProps = (state: RootState, ownProps: UserAccountBalanceProps) => {
-    switch (ownProps.currency) {
-      case "money":
-        return {
-          available: state.user.account.balance.data.money.available,
-          pending: state.user.account.balance.data.money.pending,
-          currency: ownProps.currency,
-          selector: ownProps.selector
-        };
-      case "token":
-        return {
-          available: state.user.account.balance.data.token.available,
-          pending: state.user.account.balance.data.token.pending,
-          currency: ownProps.currency,
-          selector: ownProps.selector
-        };
-      default:
-        throw new Error("Invalid balance currency.");
-    }
+  const mapStateToProps: MapStateToProps<UserAccountBalanceStateProps, UserAccountBalanceOwnProps, RootState> = (state, ownProps) => {
+    return {
+      balance: state.user.account.balance[ownProps.currency]
+    };
   };
 
-  const mapDispatchToProps = (dispatch: any, ownProps: UserAccountBalanceProps) => {
+  const mapDispatchToProps = (dispatch: any, ownProps: UserAccountBalanceOwnProps) => {
     return {
       loadUserAccountBalance: () => dispatch(loadUserAccountBalance(ownProps.currency))
     };

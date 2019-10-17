@@ -13,7 +13,7 @@ import {
   DEPOSIT_TOKEN_FAIL,
   DepositActionCreators
 } from "./types";
-import { Currency } from "../types";
+import { Currency } from "types";
 
 export function deposit(currency: Currency, amount: number): DepositActionCreators {
   switch (currency) {
