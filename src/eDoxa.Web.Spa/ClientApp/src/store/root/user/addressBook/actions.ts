@@ -13,6 +13,7 @@ import {
   UPDATE_USER_ADDRESS_FAIL,
   UserAddressBookActionCreators
 } from "./types";
+import { AddressId } from "types";
 
 export function loadUserAddressBook(): UserAddressBookActionCreators {
   return {
@@ -39,7 +40,7 @@ export function createUserAddress(data: any): UserAddressBookActionCreators {
   };
 }
 
-export function updateUserAddress(addressId: string, data: any): UserAddressBookActionCreators {
+export function updateUserAddress(addressId: AddressId, data: any): UserAddressBookActionCreators {
   return {
     types: [UPDATE_USER_ADDRESS, UPDATE_USER_ADDRESS_SUCCESS, UPDATE_USER_ADDRESS_FAIL],
     payload: {
@@ -52,7 +53,7 @@ export function updateUserAddress(addressId: string, data: any): UserAddressBook
   };
 }
 
-export function deleteUserAddress(addressId: string): UserAddressBookActionCreators {
+export function deleteUserAddress(addressId: AddressId): UserAddressBookActionCreators {
   return {
     types: [DELETE_USER_ADDRESS, DELETE_USER_ADDRESS_SUCCESS, DELETE_USER_ADDRESS_FAIL],
     payload: {

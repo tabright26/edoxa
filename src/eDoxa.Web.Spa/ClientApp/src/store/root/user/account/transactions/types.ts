@@ -4,14 +4,14 @@ export const LOAD_USER_ACCOUNT_TRANSACTIONS = "LOAD_USER_ACCOUNT_TRANSACTIONS";
 export const LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS = "LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS";
 export const LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL = "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL";
 
-type LoadTransactionsType = typeof LOAD_USER_ACCOUNT_TRANSACTIONS | typeof LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS | typeof LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL;
+type LoadUserAccountTransactionsType = typeof LOAD_USER_ACCOUNT_TRANSACTIONS | typeof LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS | typeof LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL;
 
-interface LoadTransactionsActionCreator extends AxiosActionCreator<LoadTransactionsType> {}
+interface LoadUserAccountTransactionsActionCreator extends AxiosActionCreator<LoadUserAccountTransactionsType> {}
 
-interface LoadTransactionsAction extends AxiosAction<LoadTransactionsType> {}
+interface LoadUserAccountTransactionsAction extends AxiosAction<LoadUserAccountTransactionsType> {}
 
-export type TransactionsActionCreators = LoadTransactionsActionCreator;
+export type UserAccountTransactionsActionCreators = LoadUserAccountTransactionsActionCreator;
 
-export type TransactionsActions = LoadTransactionsAction;
+export type UserAccountTransactionsActions = LoadUserAccountTransactionsAction;
 
-export type TransactionsState = AxiosState;
+export type UserAccountTransactionsState = AxiosState;
