@@ -1,11 +1,18 @@
 import React from "react";
 import { Button } from "reactstrap";
 import { withUserAccountDeposit } from "store/root/user/account/deposit/container";
+import { withModals } from "store/middlewares/modal/container";
+import { compose } from "recompose";
 
-const DepositButton = ({ actions, amounts }) => (
-  <Button color="primary" size="sm" block onClick={() => actions.showDepositModal(actions, amounts)}>
+const DepositButton = ({ modals, actions, amounts }) => (
+  <Button color="primary" size="sm" block onClick={() => modals.showDepositModal(actions, amounts)}>
     Deposit Money
   </Button>
 );
 
-export default withUserAccountDeposit("money")(DepositButton);
+const enhance = compose<any, any>(
+  withUserAccountDeposit("money"),
+  withModals
+);
+
+export default enhance(DepositButton);

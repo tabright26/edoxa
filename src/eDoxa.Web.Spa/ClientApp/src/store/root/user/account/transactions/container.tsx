@@ -4,12 +4,12 @@ import { loadUserAccountTransactions } from "store/root/user/account/transaction
 import { RootState } from "store/root/types";
 
 export const withUserAccountTransactions = currency => (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, transactions, ...attributes }) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadUserAccountTransactions();
+      props.loadUserAccountTransactions();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <HighOrderComponent actions={actions} transactions={transactions} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
@@ -20,9 +20,7 @@ export const withUserAccountTransactions = currency => (HighOrderComponent: Func
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadUserAccountTransactions: () => dispatch(loadUserAccountTransactions(currency))
-      }
+      loadUserAccountTransactions: () => dispatch(loadUserAccountTransactions(currency))
     };
   };
 

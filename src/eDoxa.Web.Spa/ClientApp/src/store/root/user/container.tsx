@@ -1,32 +1,31 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
-import { confirmUserEmail } from "store/root/user/email/actions";
 import { RootState } from "store/root/types";
 import { ClaimType } from "store/middlewares/oidc/types";
 
-export const withtUser = (HighOrderComponent: FunctionComponent<any>) => {
+export const withUser = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
 
   const mapStateToProps = (state: RootState) => {
-    const user = state.oidc.user;
     return {
-      user: user,
-      isAuthenticated: user
+      user: state.oidc.user
     };
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
+  return connect(mapStateToProps)(Container);
+};
+
+export const withUserIsAuthenticated = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
+
+  const mapStateToProps = (state: RootState) => {
+    const isAuthenticated: boolean = !!state.oidc.user;
     return {
-      actions: {
-        confirmEmail: (userId: string, code: string) => dispatch(confirmUserEmail(userId, code))
-      }
+      isAuthenticated
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps)(Container);
 };
 
 export const withtUserProfile = (claimType: ClaimType) => (HighOrderComponent: FunctionComponent<any>) => {
@@ -34,7 +33,7 @@ export const withtUserProfile = (claimType: ClaimType) => (HighOrderComponent: F
 
   const mapStateToProps = (state: RootState) => {
     return {
-      [claimType]: state.oidc.user.profile[claimType]
+      [claimType]: state.oidc.user.profile[claimType] || null
     };
   };
 

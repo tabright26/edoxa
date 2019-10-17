@@ -1,18 +1,16 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { show } from "redux-modal";
 import { loadWithdrawalAmounts, withdrawal } from "./actions";
 import { RootState } from "store/root/types";
 import { Currency } from "../types";
-import { WITHDRAWAL_MODAL } from "modals";
 
 export const withUserAccountWithdrawal = (currency: Currency) => (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, amounts, ...attributes }) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadWithdrawalAmounts();
+      props.actions.loadWithdrawalAmounts();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <HighOrderComponent actions={actions} amounts={amounts} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
@@ -25,8 +23,7 @@ export const withUserAccountWithdrawal = (currency: Currency) => (HighOrderCompo
     return {
       actions: {
         loadWithdrawalAmounts: () => dispatch(loadWithdrawalAmounts(currency)),
-        withdrawal: (amount: number) => dispatch(withdrawal(currency, amount)),
-        showWithdrawalModal: (actions, amounts) => dispatch(show(WITHDRAWAL_MODAL, { actions, amounts }))
+        withdrawal: (amount: number) => dispatch(withdrawal(currency, amount))
       }
     };
   };

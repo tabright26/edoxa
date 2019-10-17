@@ -1,13 +1,12 @@
 import React from "react";
 import { CardBody, Badge } from "reactstrap";
-import { connect } from "react-redux";
-import { show } from "redux-modal";
 import Loading from "components/Shared/Override/Loading";
 import Format from "components/Shared/Format";
 import Moment from "react-moment";
-import { MATCH_SCORE_MODAL } from "modals";
+import { compose } from "recompose";
+import { withModals } from "store/middlewares/modal/container";
 
-const Match = ({ match, position, actions }) => {
+const Match = ({ match, position, modals }) => {
   if (!match) {
     return (
       <CardBody className="text-center">
@@ -35,7 +34,7 @@ const Match = ({ match, position, actions }) => {
             {match.synchronizedAt}
           </Moment>
         </div>
-        <div className="py-2 text-center mx-auto" onClick={() => actions.showArenaChallengeParticipantMatchScoreDetailsModal(match.stats)}>
+        <div className="py-2 text-center mx-auto" onClick={() => modals.showChallengeMatchScoreModal(match.stats)}>
           <Badge variant="primary">View details</Badge>
         </div>
         <div
@@ -51,15 +50,6 @@ const Match = ({ match, position, actions }) => {
   }
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    actions: {
-      showArenaChallengeParticipantMatchScoreDetailsModal: stats => dispatch(show(MATCH_SCORE_MODAL, { stats }))
-    }
-  };
-};
+const enhance = compose(withModals);
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Match);
+export default enhance(Match);

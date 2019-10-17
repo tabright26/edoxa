@@ -1,20 +1,16 @@
 import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, Button } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
-
 import { withClans } from "store/root/organizations/clans/container";
-
 import ClanCard from "components/Organizations/Clans/ClanCard";
 import CandidatureList from "components/Organizations/Candidatures/CandidatureList";
 import InvitationList from "components/Organizations/Invitations/InvitationList";
-
 import ClanModal from "modals/Organization/Clan";
-
 import ErrorBoundary from "components/Shared/ErrorBoundary";
-
+import { withModals } from "store/middlewares/modal/container";
 import { compose } from "recompose";
 
-const ClansIndex: FunctionComponent<any> = ({ actions, clans, userId, userClan }) => {
+const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan }) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
@@ -80,10 +76,10 @@ const ClansIndex: FunctionComponent<any> = ({ actions, clans, userId, userClan }
                   {clans.length} clans and counting...
                   {!userClan ? (
                     <Fragment>
-                      <div className="btn-link" onClick={() => actions.showCreateAddressModal()}>
+                      <div className="btn-link" onClick={() => modals.showCreateAddressModal()}>
                         or create your own
                       </div>
-                      <ClanModal.Create actions={actions}></ClanModal.Create>
+                      <ClanModal.Create />
                     </Fragment>
                   ) : null}
                 </Col>
@@ -121,6 +117,9 @@ const ClansIndex: FunctionComponent<any> = ({ actions, clans, userId, userClan }
   );
 };
 
-const enhance = compose<any, any>(withClans);
+const enhance = compose<any, any>(
+  withClans,
+  withModals
+);
 
 export default enhance(ClansIndex);

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 import { Alert } from "reactstrap";
-import { withtUser } from "store/root/user/container";
+import { withUser } from "store/root/user/container";
 import queryString from "query-string";
 import { compose } from "recompose";
+import { confirmUserEmail } from "store/root/user/email/actions";
 
-const EmailConfirm: FunctionComponent<any> = ({ location, actions }) => {
+const EmailConfirm: FunctionComponent<any> = ({ location, confirmUserEmail }) => {
   const [notFound, setNotFound] = useState(false);
   useEffect(() => {
     const { userId, code } = queryString.parse(location.search);
@@ -13,9 +15,9 @@ const EmailConfirm: FunctionComponent<any> = ({ location, actions }) => {
       setNotFound(true);
     }
     if (!notFound) {
-      actions.confirmEmail(userId, code);
+      confirmUserEmail(userId, code);
     }
-  }, [actions, location.search, notFound]);
+  }, [location.search, notFound]);
   if (notFound) {
     return <Redirect to="/errors/404" />;
   }
@@ -27,6 +29,18 @@ const EmailConfirm: FunctionComponent<any> = ({ location, actions }) => {
   );
 };
 
-const enhance = compose<any, any>(withtUser);
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    confirmUserEmail: (userId: string, code: string) => dispatch(confirmUserEmail(userId, code))
+  };
+};
+
+const enhance = compose<any, any>(
+  withUser,
+  connect(
+    null,
+    mapDispatchToProps
+  )
+);
 
 export default enhance(EmailConfirm);

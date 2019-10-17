@@ -10,12 +10,12 @@ interface UserAccountBalanceProps {
 }
 
 export const withUserAccountBalance = (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, available, pending, currency, selector, ...attributes }) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadUserAccountBalance();
+      props.loadUserAccountBalance();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <HighOrderComponent actions={actions} available={available} pending={pending} currency={currency} selector={selector} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState, ownProps: UserAccountBalanceProps) => {
@@ -41,9 +41,7 @@ export const withUserAccountBalance = (HighOrderComponent: FunctionComponent<any
 
   const mapDispatchToProps = (dispatch: any, ownProps: UserAccountBalanceProps) => {
     return {
-      actions: {
-        loadUserAccountBalance: () => dispatch(loadUserAccountBalance(ownProps.currency))
-      }
+      loadUserAccountBalance: () => dispatch(loadUserAccountBalance(ownProps.currency))
     };
   };
 

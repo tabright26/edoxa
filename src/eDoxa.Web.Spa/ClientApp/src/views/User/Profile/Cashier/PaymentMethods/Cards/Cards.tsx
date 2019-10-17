@@ -5,11 +5,12 @@ import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMetho
 import { STRIPE_PAYMENTMETHOD_CARD_TYPE } from "store/root/payment/stripe/paymentMethods/types";
 import CardBrandIcon from "components/Payment/Card/BrandIcon";
 import CardExpiration from "components/Payment/Card/Expiration";
-import { compose } from "recompose";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Shared/Override/Button";
+import { withModals } from "store/middlewares/modal/container";
+import { compose } from "recompose";
 
-const StripeCardItem: FunctionComponent<any> = ({ hasMore, actions, paymentMethod }) => {
+const StripeCardItem: FunctionComponent<any> = ({ hasMore, modals, paymentMethod }) => {
   return (
     <>
       <dl className={`row ${!hasMore && "mb-0"}`}>
@@ -22,10 +23,10 @@ const StripeCardItem: FunctionComponent<any> = ({ hasMore, actions, paymentMetho
           <CardExpiration className="my-auto" month={paymentMethod.card.exp_month} year={paymentMethod.card.exp_year} />
         </dd>
         <dd className="col-sm-6 mb-0 d-flex">
-          <Button.Link className="p-0 ml-auto my-auto" icon={faTimes} onClick={() => actions.showDeletePaymentMethodModal(paymentMethod)}>
+          <Button.Link className="p-0 ml-auto my-auto" icon={faTimes} onClick={() => modals.showDeleteStripePaymentMethodModal(paymentMethod)}>
             REMOVE
           </Button.Link>
-          <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} onClick={() => actions.showUpdatePaymentMethodModal(paymentMethod)}>
+          <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} onClick={() => modals.showUpdateStripePaymentMethodModal(paymentMethod)}>
             UPDATE
           </Button.Link>
         </dd>
@@ -35,22 +36,25 @@ const StripeCardItem: FunctionComponent<any> = ({ hasMore, actions, paymentMetho
   );
 };
 
-const StripeCards: FunctionComponent<any> = ({ className, actions, paymentMethods: { data, loading, error } }) => (
+const StripeCards: FunctionComponent<any> = ({ className, modals, paymentMethods: { data, loading, error } }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">CARDS</strong>
-      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => actions.showCreatePaymentMethodModal(STRIPE_PAYMENTMETHOD_CARD_TYPE)}>
+      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => modals.showCreateStripePaymentMethodModal(STRIPE_PAYMENTMETHOD_CARD_TYPE)}>
         ADD A NEW CARD
       </Button.Link>
     </CardHeader>
     <CardBody>
       {data.map((paymentMethod, index) => (
-        <StripeCardItem key={index} paymentMethod={paymentMethod} hasMore={data.length !== index + 1} actions={actions} />
+        <StripeCardItem key={index} paymentMethod={paymentMethod} hasMore={data.length !== index + 1} modals={modals} />
       ))}
     </CardBody>
   </Card>
 );
 
-const enhance = compose<any, any>(withStripePaymentMethods(STRIPE_PAYMENTMETHOD_CARD_TYPE));
+const enhance = compose<any, any>(
+  withStripePaymentMethods,
+  withModals
+);
 
 export default enhance(StripeCards);

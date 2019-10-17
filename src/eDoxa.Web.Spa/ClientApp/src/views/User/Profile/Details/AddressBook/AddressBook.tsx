@@ -7,6 +7,7 @@ import { withUserAddressBook } from "store/root/user/addressBook/container";
 import UserAddressModal from "modals/User/Address";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
+import { withModals } from "store/middlewares/modal/container";
 
 const AddressItem: FunctionComponent<any> = ({ hasMore, position, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
@@ -55,11 +56,11 @@ const AddressItem: FunctionComponent<any> = ({ hasMore, position, address }) => 
   );
 };
 
-const AddressBook: FunctionComponent<any> = ({ className, addressBook: { data, error, loading }, actions }) => (
+const AddressBook: FunctionComponent<any> = ({ className, addressBook: { data, error, loading }, modals }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">ADDRESS BOOK</strong>
-      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => actions.showCreateAddressModal()}>
+      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => modals.showCreateUserAddressModal()}>
         ADD A NEW ADDRESS
       </Button.Link>
       <UserAddressModal.Create />
@@ -72,6 +73,9 @@ const AddressBook: FunctionComponent<any> = ({ className, addressBook: { data, e
   </Card>
 );
 
-const enhance = compose<any, any>(withUserAddressBook);
+const enhance = compose<any, any>(
+  withUserAddressBook,
+  withModals
+);
 
 export default enhance(AddressBook);

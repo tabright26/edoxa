@@ -1,7 +1,7 @@
 import React from "react";
 import MoneyBreadcrumb from "./Money";
 import TokenBreadcrumb from "./Token";
-import { withtUser } from "store/root/user/container";
+import { withUserIsAuthenticated } from "store/root/user/container";
 
 const Breadcrumb: any = ({ isAuthenticated }) => {
   if (isAuthenticated) {
@@ -19,4 +19,4 @@ const Breadcrumb: any = ({ isAuthenticated }) => {
   return null;
 };
 
-export default withtUser(Breadcrumb);
+export default withUserIsAuthenticated(Breadcrumb);

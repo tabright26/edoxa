@@ -1,7 +1,5 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { show } from "redux-modal";
-import { DEPOSIT_MODAL } from "modals";
 import { loadDepositAmounts, deposit } from "./actions";
 import { RootState } from "store/root/types";
 import { Currency } from "../types";
@@ -25,8 +23,7 @@ export const withUserAccountDeposit = (currency: Currency) => (HighOrderComponen
     return {
       actions: {
         loadDepositAmounts: () => dispatch(loadDepositAmounts(currency)),
-        deposit: (amount: number) => dispatch(deposit(currency, amount)),
-        showDepositModal: (actions, amounts) => dispatch(show(DEPOSIT_MODAL, { actions, amounts }))
+        deposit: (amount: number) => dispatch(deposit(currency, amount))
       }
     };
   };
