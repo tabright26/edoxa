@@ -35,6 +35,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
             // Services
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
+            builder.RegisterType<BundlesService>().As<IBundlesService>().InstancePerLifetimeScope();
 
             // Strategies
             builder.RegisterType<PayoutStrategy>().As<IPayoutStrategy>().SingleInstance();

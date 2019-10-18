@@ -12,6 +12,7 @@ using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Infrastructure;
 
@@ -25,11 +26,13 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
     internal sealed class CashierDbContextSeeder : DbContextSeeder
     {
         private readonly CashierDbContext _context;
+        private readonly IBundlesService _bundlesService;
         private readonly IAccountRepository _accountRepository;
         private readonly IChallengeRepository _challengeRepository;
 
         public CashierDbContextSeeder(
             CashierDbContext context,
+            IBundlesService bundlesService,
             IAccountRepository accountRepository,
             IChallengeRepository challengeRepository,
             IHostingEnvironment environment,
@@ -39,6 +42,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             _accountRepository = accountRepository;
             _challengeRepository = challengeRepository;
             _context = context;
+            _bundlesService = bundlesService;
         }
 
         protected override async Task SeedDevelopmentAsync()
@@ -55,7 +59,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                     {
                         var moneyAccount = new MoneyAccount(adminAccount);
 
-                        moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceded(); // 500
+                        moneyAccount.Deposit(Money.FiveHundred, _bundlesService.FetchDepositMoneyBundles()).MarkAsSucceded(); // 500
 
                         moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 490
 
@@ -75,7 +79,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                         moneyAccount.Payout(Money.Twenty).MarkAsSucceded(); // 435
 
-                        moneyAccount.Withdrawal(Money.OneHundred).MarkAsSucceded(); // 335
+                        moneyAccount.Withdrawal(Money.OneHundred, _bundlesService.FetchWithdrawalMoneyBundles()).MarkAsSucceded(); // 335
 
                         moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 325
 
@@ -87,7 +91,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                         var tokenAccount = new TokenAccount(adminAccount);
 
-                        tokenAccount.Deposit(Token.OneMillion).MarkAsSucceded(); // 1000000
+                        tokenAccount.Deposit(Token.OneMillion, _bundlesService.FetchDepositTokenBundles()).MarkAsSucceded(); // 1000000
 
                         tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceded(); // 1050000
 

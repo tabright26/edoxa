@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
@@ -32,7 +33,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         DateTime? LastDeposit { get; }
 
-        ITransaction Deposit(TCurrency amount);
+        ITransaction Deposit(TCurrency amount, IImmutableSet<Bundle> bundles);
 
         ITransaction Charge(TCurrency amount);
 

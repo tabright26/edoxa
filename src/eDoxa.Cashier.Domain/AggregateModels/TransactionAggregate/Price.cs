@@ -5,10 +5,13 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
+
+using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
-    public sealed class Price
+    public sealed class Price : ValueObject
     {
         private const decimal TokenToMoneyFactor = 1000M;
 
@@ -31,9 +34,21 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
             _money = money ?? throw new ArgumentException(nameof(currency));
         }
 
+        public Money Money => _money;
+
         public long ToCents()
         {
             return _money.ToCents();
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return _money;
+        }
+
+        public override string ToString()
+        {
+            return _money.ToString();
         }
     }
 }

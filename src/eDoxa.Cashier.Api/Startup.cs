@@ -13,6 +13,7 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Api.Areas.Accounts;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
@@ -80,6 +81,8 @@ namespace eDoxa.Cashier.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<CashierAppSettings>(Configuration);
+
+            services.Configure<BundlesOptions>(Configuration.GetSection("Bundles"));
 
             services.AddHealthChecks(AppSettings);
 

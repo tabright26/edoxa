@@ -4,8 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
@@ -28,10 +32,14 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     public sealed class AccountWithdrawalController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IBundlesService _bundlesService;
+        private readonly IMapper _mapper;
 
-        public AccountWithdrawalController(IAccountService accountService)
+        public AccountWithdrawalController(IAccountService accountService, IBundlesService bundlesService, IMapper mapper)
         {
             _accountService = accountService;
+            _bundlesService = bundlesService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -71,7 +79,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         {
             if (currency == Currency.Money)
             {
-                return this.Ok(Money.WithdrawalAmounts());
+                return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundlesService.FetchWithdrawalMoneyBundles()));
             }
 
             return this.BadRequest("Invalid or unsuported currency.");

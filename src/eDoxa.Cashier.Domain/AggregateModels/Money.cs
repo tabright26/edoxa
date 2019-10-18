@@ -43,23 +43,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels
             return new Money(-money.Amount);
         }
 
-        public static IImmutableSet<Money> DepositAmounts()
-        {
-            return new[]
-            {
-                Ten,
-                Twenty,
-                Fifty,
-                OneHundred,
-                FiveHundred
-            }.ToImmutableHashSet();
-        }
-
-        public static IImmutableSet<Money> WithdrawalAmounts()
-        {
-            return new[] {Fifty, OneHundred, TwoHundred}.ToImmutableHashSet();
-        }
-
         public override string ToString()
         {
             return Amount.ToString("$##.##");

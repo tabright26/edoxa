@@ -94,7 +94,9 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
-            var controller = new AccountWithdrawalController(mockAccountService.Object);
+            var mockBundlesService = new Mock<IBundlesService>();
+
+            var controller = new AccountWithdrawalController(mockAccountService.Object, mockBundlesService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
@@ -138,7 +140,9 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
-            var controller = new AccountWithdrawalController(mockAccountService.Object);
+            var mockBundlesService = new Mock<IBundlesService>();
+
+            var controller = new AccountWithdrawalController(mockAccountService.Object, mockBundlesService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
