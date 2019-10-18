@@ -142,7 +142,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodController.PostAsync("type", new PaymentMethodPutRequest(11, 22));
+            var result = await paymentMethodController.PutAsync("type", new PaymentMethodPutRequest(11, 22));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -167,7 +167,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodController.PostAsync("type", new PaymentMethodPutRequest(11, 22));
+            var result = await paymentMethodController.PutAsync("type", new PaymentMethodPutRequest(11, 22));
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -195,7 +195,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodController.PostAsync("type", new PaymentMethodPutRequest(11, 22));
+            var result = await paymentMethodController.PutAsync("type", new PaymentMethodPutRequest(11, 22));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
