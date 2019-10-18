@@ -1,5 +1,5 @@
 ﻿// Filename: InformationsPostRequestTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,11 +23,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
+            var unixEpoch = DateTime.UnixEpoch;
+
             var request = new InformationsPostRequest(
                 "FirstName",
                 "LastName",
                 Gender.Other,
-                DateTime.UnixEpoch);
+                unixEpoch.Year,
+                unixEpoch.Month,
+                unixEpoch.Day);
 
             var requestSerialized = JsonConvert.SerializeObject(request);
 

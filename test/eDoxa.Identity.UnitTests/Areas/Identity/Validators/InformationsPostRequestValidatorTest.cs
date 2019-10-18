@@ -1,13 +1,12 @@
 ﻿// Filename: InformationsPostRequestValidatorTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
+using eDoxa.Seedwork.Application.Requests;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
@@ -76,18 +75,24 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
                 {null, InformationsErrorDescriber.GenderRequired()}
             };
 
-        public static TheoryData<DateTime> ValidBirthDates =>
-            new TheoryData<DateTime>
+        public static TheoryData<DobRequest> ValidDob =>
+            new TheoryData<DobRequest>
             {
-                new DateTime(1995, 08, 04)
+                new DobRequest(1995, 8, 4)
             };
 
-        public static TheoryData<DateTime?, string> InvalidBirthDates =>
-            new TheoryData<DateTime?, string>
-            {
-                {null, InformationsErrorDescriber.BirthDateRequired()},
-                {new DateTime(), InformationsErrorDescriber.BirthDateRequired()}
-            };
+        //public static TheoryData<DobRequest, string> InvalidDob
+        //{
+        //    get
+        //    {
+        //        var dob = new DateTime();
+
+        //        return new TheoryData<DobRequest, string>
+        //        {
+        //            {new DobRequest(dob.Year, dob.Month, dob.Day), InformationsErrorDescriber.BirthDateInvalid()}
+        //        };
+        //    }
+        //}
 
         [Theory]
         [MemberData(nameof(ValidFirstNames))]
@@ -159,26 +164,28 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         }
 
         [Theory]
-        [MemberData(nameof(ValidBirthDates))]
-        public void Validate_WhenBirthDateIsValid_ShouldNotHaveValidationErrorFor(DateTime birthDate)
+        [MemberData(nameof(ValidDob))]
+        public void Validate_WhenDobIsValid_ShouldNotHaveValidationErrorFor(DobRequest dob)
         {
             // Arrange
             var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.BirthDate, birthDate);
+            validator.ShouldNotHaveValidationErrorFor(request => request.Dob, dob);
         }
 
-        [Theory]
-        [MemberData(nameof(InvalidBirthDates))]
-        public void Validate_WhenBirthDateIsInvalid_ShouldHaveValidationErrorFor(DateTime birthDate, string errorMessage)
-        {
-            //Arrange
-            var validator = new InformationsPostRequestValidator();
+        //[Theory]
+        //[MemberData(nameof(InvalidDob))]
+        //public void Validate_WhenDobIsInvalid_ShouldHaveValidationErrorFor(DobRequest dob, string errorMessage)
+        //{
+        //    // Arrange
+        //    var validator = new InformationsPostRequestValidator();
 
-            //Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.BirthDate, birthDate);
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }
+        //    // Act
+        //    var failures = validator.ShouldHaveValidationErrorFor(request => request.Dob, dob);
+
+        //    // Assert
+        //    failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+        //}
     }
 }

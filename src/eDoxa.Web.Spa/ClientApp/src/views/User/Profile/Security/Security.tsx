@@ -1,14 +1,10 @@
-import React, { Fragment, Suspense } from "react";
-import Loading from "components/Shared/Override/Loading";
-
-const Phone = React.lazy(() => import("./Phone"));
+import React, { Fragment } from "react";
+import Phone from "./Phone";
 
 const ProfileSecurity = () => (
   <Fragment>
     <h5 className="text-uppercase">PROFILE SECURITY</h5>
-    <Suspense fallback={<Loading />}>
-      <Phone className="my-4" />
-    </Suspense>
+    <Phone className="my-4" />
   </Fragment>
 );
 

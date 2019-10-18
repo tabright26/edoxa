@@ -6,8 +6,8 @@ import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { validate } from "./validate";
 import CardBrandIcon from "components/Payment/Card/BrandIcon";
 import { compose } from "recompose";
-import MonthSelectField from "components/Shared/Override/Field/Month";
-import YearSelectField from "components/Shared/Override/Field/Year";
+import MonthSelectField from "components/Shared/Override/Form/Field/Month";
+import YearSelectField from "components/Shared/Override/Form/Field/Year";
 
 const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
   handleSubmit,

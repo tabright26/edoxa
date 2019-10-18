@@ -14,7 +14,6 @@ using eDoxa.Seedwork.Domain.Miscs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -39,7 +38,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         /// </summary>
         [HttpGet("{matchId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchResponse))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {

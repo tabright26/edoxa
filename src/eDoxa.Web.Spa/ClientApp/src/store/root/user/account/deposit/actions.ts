@@ -1,74 +1,36 @@
 import {
-  LOAD_DEPOSIT_MONEY_AMOUNTS,
-  LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS,
-  LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL,
-  LOAD_DEPOSIT_TOKEN_AMOUNTS,
-  LOAD_DEPOSIT_TOKEN_AMOUNTS_SUCCESS,
-  LOAD_DEPOSIT_TOKEN_AMOUNTS_FAIL,
-  DEPOSIT_MONEY,
-  DEPOSIT_MONEY_SUCCESS,
-  DEPOSIT_MONEY_FAIL,
-  DEPOSIT_TOKEN,
-  DEPOSIT_TOKEN_SUCCESS,
-  DEPOSIT_TOKEN_FAIL,
-  DepositActionCreators
+  USER_ACCOUNT_DEPOSIT_MONEY,
+  USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS,
+  USER_ACCOUNT_DEPOSIT_MONEY_FAIL,
+  USER_ACCOUNT_DEPOSIT_TOKEN,
+  USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS,
+  USER_ACCOUNT_DEPOSIT_TOKEN_FAIL,
+  UserAccountDepositActionCreators
 } from "./types";
-import { Currency } from "types";
+import { Currency, MONEY, TOKEN } from "types";
+import { AxiosPayload } from "store/middlewares/axios/types";
 
-export function deposit(currency: Currency, amount: number): DepositActionCreators {
+export function accountDeposit(currency: Currency, amount: number): UserAccountDepositActionCreators {
+  const payload: AxiosPayload = {
+    request: {
+      method: "POST",
+      url: `/cashier/api/account/deposit/${currency}`,
+      data: amount,
+      headers: {
+        "content-type": "application/json-patch+json"
+      }
+    }
+  };
   switch (currency) {
-    case "money":
+    case MONEY:
       return {
-        types: [DEPOSIT_MONEY, DEPOSIT_MONEY_SUCCESS, DEPOSIT_MONEY_FAIL],
-        payload: {
-          request: {
-            method: "POST",
-            url: `/cashier/api/account/deposit/${currency}`,
-            data: amount,
-            headers: {
-              "content-type": "application/json-patch+json"
-            }
-          }
-        }
+        types: [USER_ACCOUNT_DEPOSIT_MONEY, USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS, USER_ACCOUNT_DEPOSIT_MONEY_FAIL],
+        payload
       };
-    case "token":
+    case TOKEN:
       return {
-        types: [DEPOSIT_TOKEN, DEPOSIT_TOKEN_SUCCESS, DEPOSIT_TOKEN_FAIL],
-        payload: {
-          request: {
-            method: "POST",
-            url: `/cashier/api/account/deposit/${currency}`,
-            data: amount,
-            headers: {
-              "Content-Type": "application/json-patch+json"
-            }
-          }
-        }
-      };
-  }
-}
-
-export function loadDepositAmounts(currency: Currency): DepositActionCreators {
-  switch (currency) {
-    case "money":
-      return {
-        types: [LOAD_DEPOSIT_MONEY_AMOUNTS, LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS, LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL],
-        payload: {
-          request: {
-            method: "GET",
-            url: `/cashier/api/account/deposit/${currency}/bundles`
-          }
-        }
-      };
-    case "token":
-      return {
-        types: [LOAD_DEPOSIT_TOKEN_AMOUNTS, LOAD_DEPOSIT_TOKEN_AMOUNTS_SUCCESS, LOAD_DEPOSIT_TOKEN_AMOUNTS_FAIL],
-        payload: {
-          request: {
-            method: "GET",
-            url: `/cashier/api/account/deposit/${currency}/bundles`
-          }
-        }
+        types: [USER_ACCOUNT_DEPOSIT_TOKEN, USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS, USER_ACCOUNT_DEPOSIT_TOKEN_FAIL],
+        payload
       };
   }
 }

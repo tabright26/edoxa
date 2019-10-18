@@ -3,7 +3,7 @@ import { FormGroup, Col, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import FieldCountry from "components/Shared/Override/Field/Country";
+import FieldCountry from "components/Shared/Override/Form/Field/Country";
 import { CREATE_USER_ADDRESS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";

@@ -20,7 +20,6 @@ using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore.Internal;
 
 using Swashbuckle.AspNetCore.Annotations;
@@ -68,7 +67,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         /// </summary>
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] AddressPostRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -97,7 +96,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         /// </summary>
         [HttpPut("{addressId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync(Guid addressId, [FromBody] AddressPutRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -126,7 +125,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         /// </summary>
         [HttpDelete("{addressId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Guid))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> DeleteAsync(Guid addressId)
         {
             var user = await _userManager.GetUserAsync(User);

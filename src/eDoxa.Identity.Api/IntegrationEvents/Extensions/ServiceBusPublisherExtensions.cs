@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
@@ -64,7 +63,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
             string firstName,
             string lastName,
             Gender gender,
-            DateTime dob
+            Dob dob
         )
         {
             await publisher.PublishAsync(

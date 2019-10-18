@@ -75,7 +75,7 @@ exports[`renders correctly 1`] = `
           <select
             className="d-inline form-control-sm form-control"
             disabled={true}
-            name="birthDate.year"
+            name="dob.year"
             onBlur={[Function]}
             onChange={[Function]}
             onDragStart={[Function]}
@@ -602,7 +602,7 @@ exports[`renders correctly 1`] = `
           <select
             className="d-inline form-control-sm form-control"
             disabled={true}
-            name="birthDate.month"
+            name="dob.month"
             onBlur={[Function]}
             onChange={[Function]}
             onDragStart={[Function]}
@@ -684,7 +684,7 @@ exports[`renders correctly 1`] = `
           <select
             className="d-inline form-control-sm form-control"
             disabled={true}
-            name="birthDate.day"
+            name="dob.day"
             onBlur={[Function]}
             onChange={[Function]}
             onDragStart={[Function]}

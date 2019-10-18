@@ -8,7 +8,7 @@ it("renders correctly", () => {
   const informations = {
     firstName: "Boby",
     lastName: "Bob",
-    birthDate: moment(new Date(2000, 2, 1)).unix(),
+    dob: moment(new Date(2000, 2, 1)).unix(),
     gender: "Male"
   };
   const tree = renderer

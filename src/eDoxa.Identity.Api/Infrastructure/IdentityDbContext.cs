@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -32,31 +32,27 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(user => user.Email).IsRequired();
                     builder.Property(user => user.NormalizedEmail).IsRequired();
                     builder.Property(user => user.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
+
                     builder.OwnsOne(
                         user => user.Informations,
                         userInformations =>
                         {
-                            userInformations.Property(informations => informations!.FirstName).IsRequired(false);
-                            userInformations.Property(informations => informations!.LastName).IsRequired(false);
-
+                            userInformations.Property(informations => informations!.FirstName).IsRequired();
+                            userInformations.Property(informations => informations!.LastName).IsRequired();
                             userInformations.Property(informations => informations!.Gender)
-                                .HasConversion(
-                                    gender => gender != null ? (int?) gender.Value : null,
-                                    gender => gender.HasValue ? Gender.FromValue(gender.Value) : null
-                                )
-                                .IsRequired(false);
-
-                            userInformations.Property(informations => informations!.BirthDate).IsRequired(false);
-                            userInformations.ToTable("Informations");
-                        }
-                    );
+                                .HasConversion(gender => gender.Value, value => Gender.FromValue(value))
+                                .IsRequired();
+                            userInformations.OwnsOne(informations => informations!.Dob).Property(dob => dob.Year).HasColumnName("Dob_Year").IsRequired();
+                            userInformations.OwnsOne(informations => informations!.Dob).Property(dob => dob.Month).HasColumnName("Dob_Month").IsRequired();
+                            userInformations.OwnsOne(informations => informations!.Dob).Property(dob => dob.Day).HasColumnName("Dob_Day").IsRequired();
+                            userInformations.ToTable("UserInformations");
+                        });
 
                     builder.HasMany(user => user.DoxatagHistory).WithOne().HasForeignKey(doxatag => doxatag.UserId).IsRequired();
                     builder.HasMany(user => user.AddressBook).WithOne().HasForeignKey(address => address.UserId).IsRequired();
                     builder.HasMany<UserGame>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
-                }
-            );
+                });
 
             modelBuilder.Entity<UserDoxatag>(
                 builder =>
@@ -68,8 +64,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(doxatag => doxatag.Code).IsRequired();
                     builder.Property(doxatag => doxatag.Timestamp).HasConversion(dateTime => dateTime.Ticks, ticks => new DateTime(ticks)).IsRequired();
                     builder.ToTable("UserDoxatag");
-                }
-            );
+                });
 
             modelBuilder.Entity<UserAddress>(
                 builder =>
@@ -84,8 +79,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.Property(address => address.State).IsRequired(false);
                     builder.Property(address => address.PostalCode).IsRequired(false);
                     builder.ToTable("UserAddress");
-                }
-            );
+                });
 
             modelBuilder.Entity<UserClaim>().ToTable("UserClaim");
             modelBuilder.Entity<UserLogin>().ToTable("UserLogin");
@@ -102,12 +96,10 @@ namespace eDoxa.Identity.Api.Infrastructure
                         {
                             userGame.Value,
                             userGame.PlayerId
-                        }
-                    );
+                        });
 
                     builder.ToTable("UserGame");
-                }
-            );
+                });
         }
     }
 }

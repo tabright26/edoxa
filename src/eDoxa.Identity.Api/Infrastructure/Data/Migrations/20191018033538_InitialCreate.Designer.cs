@@ -10,7 +10,7 @@ using eDoxa.Identity.Api.Infrastructure;
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20191017152528_InitialCreate")]
+    [Migration("20191018033538_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -265,22 +265,45 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         {
                             b1.Property<Guid>("UserId");
 
-                            b1.Property<DateTime?>("BirthDate");
+                            b1.Property<string>("FirstName")
+                                .IsRequired();
 
-                            b1.Property<string>("FirstName");
+                            b1.Property<int>("Gender");
 
-                            b1.Property<int?>("Gender");
-
-                            b1.Property<string>("LastName");
+                            b1.Property<string>("LastName")
+                                .IsRequired();
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("Informations");
+                            b1.ToTable("UserInformations");
 
                             b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
                                 .WithOne("Informations")
                                 .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.UserInformations", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
+
+                            b1.OwnsOne("eDoxa.Seedwork.Domain.Miscs.Dob", "Dob", b2 =>
+                                {
+                                    b2.Property<Guid>("UserInformationsUserId");
+
+                                    b2.Property<int>("Day")
+                                        .HasColumnName("Dob_Day");
+
+                                    b2.Property<int>("Month")
+                                        .HasColumnName("Dob_Month");
+
+                                    b2.Property<int>("Year")
+                                        .HasColumnName("Dob_Year");
+
+                                    b2.HasKey("UserInformationsUserId");
+
+                                    b2.ToTable("UserInformations");
+
+                                    b2.HasOne("eDoxa.Identity.Api.Infrastructure.Models.UserInformations")
+                                        .WithOne("Dob")
+                                        .HasForeignKey("eDoxa.Seedwork.Domain.Miscs.Dob", "UserInformationsUserId")
+                                        .OnDelete(DeleteBehavior.Cascade);
+                                });
                         });
                 });
 

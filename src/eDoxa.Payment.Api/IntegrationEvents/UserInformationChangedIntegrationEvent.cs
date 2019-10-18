@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
@@ -23,7 +21,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents
             string firstName,
             string lastName,
             Gender gender,
-            DateTime dob
+            Dob dob
         )
         {
             UserId = userId;
@@ -46,7 +44,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents
         public Gender Gender { get; }
 
         [JsonProperty]
-        public DateTime Dob { get; }
+        public Dob Dob { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserInformationChanged;

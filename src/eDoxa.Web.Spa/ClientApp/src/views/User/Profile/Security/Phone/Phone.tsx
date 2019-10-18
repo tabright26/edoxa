@@ -6,6 +6,7 @@ import { withUserPhone } from "store/root/user/phone/container";
 import UserPhoneForm from "forms/User/Phone";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
+import Loading from "components/Shared/Override/Loading";
 
 const Phone: FunctionComponent<any> = ({
   className,
@@ -26,10 +27,14 @@ const Phone: FunctionComponent<any> = ({
         </Button.Link>
       </CardHeader>
       <CardBody>
-        <dl className="row mb-0">
-          <dd className="col-sm-3 text-muted mb-0">Number</dd>
-          <dd className="col-sm-5 mb-0">{buttonDisabled || !number ? <UserPhoneForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>{number}</span>}</dd>
-        </dl>
+        {loading ? (
+          <Loading />
+        ) : (
+          <dl className="row mb-0">
+            <dd className="col-sm-3 text-muted mb-0">Number</dd>
+            <dd className="col-sm-5 mb-0">{buttonDisabled || !number ? <UserPhoneForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>{number}</span>}</dd>
+          </dl>
+        )}
       </CardBody>
     </Card>
   );

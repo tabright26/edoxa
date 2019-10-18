@@ -28,14 +28,14 @@ describe("identity actions", () => {
     const expectedType = [CREATE_USER_INFORMATIONS, CREATE_USER_INFORMATIONS_SUCCESS, CREATE_USER_INFORMATIONS_FAIL];
     const expectedMethod = "POST";
     const expectedUrl = "/identity/api/informations";
-    const expectedInformations = { firstName: "Bob", lastName: "Afrete", gender: "Male", birthDate: { year: 1990, month: 5, day: 10 } };
+    const expectedInformations = { firstName: "Bob", lastName: "Afrete", gender: "Male", dob: { year: 1990, month: 5, day: 10 } };
 
     const object = createUserInformations(expectedInformations);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);
     expect(object.payload.request.url).toEqual(expectedUrl);
-    expect(object.payload.request.data).toEqual({ firstName: "Bob", lastName: "Afrete", gender: "Male", birthDate: new Date(1990, 5, 10) });
+    expect(object.payload.request.data).toEqual(expectedInformations);
   });
 
   it("should create an action to put user personal info", () => {

@@ -226,7 +226,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             string firstName,
             string lastName,
             Gender gender,
-            DateTime dob
+            Dob dob
         )
         {
             this.ThrowIfDisposed();
@@ -238,13 +238,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             await Store.SetInformationsAsync(
                 user,
-                new UserInformations
-                {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Gender = gender,
-                    BirthDate = dob
-                },
+                new UserInformations(
+                    firstName,
+                    lastName,
+                    gender,
+                    dob),
                 CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
@@ -275,17 +273,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             var lastName = user.Informations!.LastName!;
             var gender = user.Informations!.Gender!;
-            var dob = user.Informations!.BirthDate!.Value!;
+            var dob = user.Informations!.Dob!;
 
             await Store.SetInformationsAsync(
                 user,
-                new UserInformations
-                {
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Gender = gender,
-                    BirthDate = dob
-                },
+                new UserInformations(
+                    firstName,
+                    lastName,
+                    gender,
+                    dob),
                 CancellationToken);
 
             await this.UpdateSecurityStampAsync(user);
@@ -354,7 +350,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await this.UpdateUserAsync(user);
         }
 
-        public async Task<string?> GetBirthDateAsync(User user)
+        public async Task<Dob?> GetDobAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -363,7 +359,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetBirthDateAsync(user, CancellationToken);
+            return await Store.GetDobAsync(user, CancellationToken);
         }
 
         public async Task<string?> GetFirstNameAsync(User user)

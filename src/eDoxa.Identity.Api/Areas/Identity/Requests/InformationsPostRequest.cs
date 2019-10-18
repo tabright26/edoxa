@@ -1,12 +1,12 @@
 ﻿// Filename: InformationsPostRequest.cs
-// Date Created: 2019-08-22
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Runtime.Serialization;
 
+using eDoxa.Seedwork.Application.Requests;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
@@ -18,21 +18,21 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             string firstName,
             string lastName,
             Gender gender,
-            DateTime birthDate
+            int year,
+            int month,
+            int day
         )
         {
             FirstName = firstName;
             LastName = lastName;
             Gender = gender;
-            BirthDate = birthDate;
+            Dob = new DobRequest(year, month, day);
         }
 
-#nullable disable
         public InformationsPostRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
         [DataMember(Name = "firstName")]
         public string FirstName { get; private set; }
@@ -43,7 +43,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
         [DataMember(Name = "gender")]
         public Gender Gender { get; private set; }
 
-        [DataMember(Name = "birthDate")]
-        public DateTime BirthDate { get; private set; }
+        [DataMember(Name = "dob")]
+        public DobRequest Dob { get; private set; }
     }
 }

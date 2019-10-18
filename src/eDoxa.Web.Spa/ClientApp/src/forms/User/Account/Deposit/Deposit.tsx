@@ -6,11 +6,11 @@ import { DEPOSIT_FORM } from "forms";
 import { validate } from "./validate";
 import Amounts from "components/Payment/Amounts";
 import { compose } from "recompose";
-import ValidationSummary from "components/Shared/Override/Form/ValidationSummary";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
 const DepositForm: FunctionComponent<any> = ({ initialValues: { amounts }, handleSubmit, handleCancel, error }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <ValidationSummary error={error} />}
+    {error && <FormValidation error={error} />}
     <Amounts amounts={amounts} />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />

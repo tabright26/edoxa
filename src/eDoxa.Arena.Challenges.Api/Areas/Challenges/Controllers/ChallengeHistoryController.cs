@@ -16,7 +16,6 @@ using eDoxa.Arena.Challenges.Domain.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -42,7 +41,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeResponse>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(ChallengeGame? game = null, ChallengeState? state = null)
         {
             var responses = await _challengeQuery.FetchUserChallengeHistoryResponsesAsync(game, state);

@@ -70,27 +70,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Informations",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
-                    Gender = table.Column<int>(nullable: true),
-                    BirthDate = table.Column<DateTime>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Informations", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Informations_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserAddress",
                 columns: table => new
                 {
@@ -170,6 +149,29 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     table.PrimaryKey("PK_UserGame", x => new { x.Value, x.PlayerId });
                     table.ForeignKey(
                         name: "FK_UserGame_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserInformations",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
+                    Dob_Year = table.Column<int>(nullable: false),
+                    Dob_Month = table.Column<int>(nullable: false),
+                    Dob_Day = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserInformations", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_UserInformations_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -298,9 +300,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Informations");
-
-            migrationBuilder.DropTable(
                 name: "RoleClaim");
 
             migrationBuilder.DropTable(
@@ -314,6 +313,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserGame");
+
+            migrationBuilder.DropTable(
+                name: "UserInformations");
 
             migrationBuilder.DropTable(
                 name: "UserLogin");

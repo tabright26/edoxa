@@ -6,10 +6,9 @@
 
 #nullable disable
 
-using System;
+using eDoxa.Seedwork.Application.Responses;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Responses
 {
@@ -28,8 +27,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses
         [JsonProperty("gender")]
         public string Gender { get; set; }
 
-        [JsonProperty("birthDate")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime? BirthDate { get; set; }
+        [JsonProperty("dob")]
+        public DobResponse Dob { get; set; }
     }
 }

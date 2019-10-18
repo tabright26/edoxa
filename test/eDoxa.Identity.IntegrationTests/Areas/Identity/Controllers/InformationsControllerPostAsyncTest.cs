@@ -1,10 +1,9 @@
 ﻿// Filename: InformationsControllerPostAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -72,7 +71,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     "Bob",
                     "Bob",
                     Gender.Male,
-                    new DateTime(2000, 1, 1)));
+                    2000,
+                    1,
+                    1));
 
             // Assert
             response.EnsureSuccessStatusCode();

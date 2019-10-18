@@ -6,6 +6,7 @@ import { withtUserInformations } from "store/root/user/informations/container";
 import UserInformationForm from "forms/User/Information";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
+import Loading from "components/Shared/Override/Loading";
 
 const Informations: FunctionComponent<any> = ({ className, informations: { data, loading, error } }) => {
   const [buttonDisabled, setbuttonDisabled] = useState(false);
@@ -18,7 +19,9 @@ const Informations: FunctionComponent<any> = ({ className, informations: { data,
         </Button.Link>
       </CardHeader>
       <CardBody>
-        {!data ? (
+        {loading ? (
+          <Loading />
+        ) : !data ? (
           <UserInformationForm.Create handleCancel={() => setbuttonDisabled(false)} />
         ) : !buttonDisabled ? (
           <dl className="row mb-0">
@@ -28,9 +31,7 @@ const Informations: FunctionComponent<any> = ({ className, informations: { data,
             </dd>
             <dd className="col-sm-3 text-muted">Date of birth</dd>
             <dd className="col-sm-9">
-              <Moment unix format="ll">
-                {data.birthDate}
-              </Moment>
+              <Moment date={[data.dob.year, data.dob.month - 1, data.dob.day]} format="ll" />
             </dd>
             <dd className="col-sm-3 text-muted mb-0">Gender</dd>
             <dd className="col-sm-9 mb-0">{data.gender}</dd>

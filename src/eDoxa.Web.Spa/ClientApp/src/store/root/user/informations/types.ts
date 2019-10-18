@@ -1,4 +1,5 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { Informations } from "types";
 
 export const LOAD_USER_INFORMATIONS = "LOAD_USER_INFORMATIONS";
 export const LOAD_USER_INFORMATIONS_SUCCESS = "LOAD_USER_INFORMATIONS_SUCCESS";
@@ -34,4 +35,4 @@ export type UserInformationsActionCreators = LoadUserInformationsActionCreator |
 
 export type UserInformationsActions = LoadUserInformationsAction | CreateUserInformationsAction | UpdateUserInformationsAction;
 
-export type UserInformationsState = AxiosState;
+export type UserInformationsState = AxiosState<Informations>;

@@ -330,7 +330,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return Task.FromResult(user.Informations?.Gender);
         }
 
-        public Task<string?> GetBirthDateAsync(User user, CancellationToken cancellationToken = default)
+        public Task<Dob?> GetDobAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -341,7 +341,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Informations?.BirthDate?.ToString("yyyy-MM-dd"));
+            return Task.FromResult(user.Informations?.Dob);
         }
 
         public Task SetInformationsAsync(User user, UserInformations userInformations, CancellationToken cancellationToken)

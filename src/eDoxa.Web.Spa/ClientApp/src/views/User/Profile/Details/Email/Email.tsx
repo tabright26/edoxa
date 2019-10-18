@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import Badge from "components/Shared/Override/Badge";
 import { withUserEmail } from "store/root/user/email/container";
 import { compose } from "recompose";
+import Loading from "components/Shared/Override/Loading";
 
 const Email: FunctionComponent<any> = ({
   className,
@@ -18,10 +19,14 @@ const Email: FunctionComponent<any> = ({
       <Badge.Verification className="ml-3 my-auto" verified={verified} />
     </CardHeader>
     <CardBody>
-      <dl className="row mb-0">
-        <dd className="col-sm-3 mb-0 text-muted">Email</dd>
-        <dd className="col-sm-9 mb-0">{address}</dd>
-      </dl>
+      {loading ? (
+        <Loading />
+      ) : (
+        <dl className="row mb-0">
+          <dd className="col-sm-3 mb-0 text-muted">Email</dd>
+          <dd className="col-sm-9 mb-0">{address}</dd>
+        </dl>
+      )}
     </CardBody>
   </Card>
 );

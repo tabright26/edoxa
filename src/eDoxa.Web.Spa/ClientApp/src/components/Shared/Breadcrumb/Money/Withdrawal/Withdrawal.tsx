@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Button } from "reactstrap";
 import { withModals } from "store/middlewares/modal/container";
-import { withUserAccountWithdrawal } from "store/root/user/account/withdrawal/container";
+import { withUserAccountWithdrawalBundles } from "store/root/user/account/withdrawal/bundles/container";
 import { compose } from "recompose";
 
 const Withdrawal: FunctionComponent<any> = ({ modals, actions, amounts }) => (
@@ -11,7 +11,7 @@ const Withdrawal: FunctionComponent<any> = ({ modals, actions, amounts }) => (
 );
 
 const enhance = compose<any, any>(
-  withUserAccountWithdrawal("money"),
+  withUserAccountWithdrawalBundles,
   withModals
 );
 

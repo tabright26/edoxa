@@ -47,14 +47,14 @@
             return "Gender is required";
         }
 
-        public static string BirthDateRequired()
+        public static string DobRequired()
         {
-            return "Birth date is required";
+            return "Date of birth is required";
         }
 
-        public static string BirthDateInvalid()
+        public static string DobInvalid()
         {
-            return "Birth date invalid";
+            return "Date of birth invalid";
         }
     }
 }

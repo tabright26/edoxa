@@ -5,6 +5,7 @@ import { withUserDoxatag } from "store/root/user/doxatagHistory/container";
 import DoxatagForm from "forms/User/Doxatag";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
+import Loading from "components/Shared/Override/Loading";
 
 const Doxatag: FunctionComponent<any> = ({ className, doxatag: { data, error, loading } }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -17,18 +18,22 @@ const Doxatag: FunctionComponent<any> = ({ className, doxatag: { data, error, lo
         </Button.Link>
       </CardHeader>
       <CardBody>
-        <dl className="row mb-0">
-          <dd className="col-sm-3 mb-0 text-muted">Doxatag</dd>
-          <dd className="col-sm-5 mb-0">
-            {!buttonDisabled && data ? (
-              <span>
-                {data.name}#{data.code}
-              </span>
-            ) : (
-              <DoxatagForm.Update handleCancel={() => setButtonDisabled(false)} />
-            )}
-          </dd>
-        </dl>
+        {loading ? (
+          <Loading />
+        ) : (
+          <dl className="row mb-0">
+            <dd className="col-sm-3 mb-0 text-muted">Doxatag</dd>
+            <dd className="col-sm-5 mb-0">
+              {!buttonDisabled && data ? (
+                <span>
+                  {data.name}#{data.code}
+                </span>
+              ) : (
+                <DoxatagForm.Update handleCancel={() => setButtonDisabled(false)} />
+              )}
+            </dd>
+          </dl>
+        )}
       </CardBody>
     </Card>
   );

@@ -18,7 +18,6 @@ using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -65,7 +64,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         /// </summary>
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] PhonePostRequest request)
         {
             var user = await _userManager.GetUserAsync(User);

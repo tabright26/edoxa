@@ -64,7 +64,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<ICollection<UserDoxatag>> GetDoxatagHistoryAsync(User user);
 
-        Task<string?> GetBirthDateAsync(User user);
+        Task<Dob?> GetDobAsync(User user);
 
         Task<string?> GetFirstNameAsync(User user);
 
@@ -286,7 +286,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         IQueryable<User> Users { get; }
 
-        Task<IdentityResult> CreateInformationsAsync(User user, string firstName, string lastName, Gender gender, DateTime dob);
+        Task<IdentityResult> CreateInformationsAsync(User user, string firstName, string lastName, Gender gender, Dob dob);
 
         Task<IdentityResult> UpdateInformationsAsync(User user, string firstName);
 

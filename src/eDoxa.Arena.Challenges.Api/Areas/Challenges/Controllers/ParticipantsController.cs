@@ -14,7 +14,6 @@ using eDoxa.Seedwork.Domain.Miscs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -40,7 +39,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [HttpGet("{participantId}")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
         {
             var response = await _query.FindParticipantResponseAsync(participantId);

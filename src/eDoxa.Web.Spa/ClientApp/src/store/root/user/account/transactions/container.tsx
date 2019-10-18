@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { loadUserAccountTransactions } from "store/root/user/account/transactions/actions";
 import { RootState } from "store/root/types";
 import { UserAccountTransactionsState } from "./types";

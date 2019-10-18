@@ -1,48 +1,25 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
-import { Currency } from "types";
+import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
-export const LOAD_DEPOSIT_MONEY_AMOUNTS = "LOAD_DEPOSIT_MONEY_AMOUNTS";
-export const LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS = "LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS";
-export const LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL = "LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL";
+export const USER_ACCOUNT_DEPOSIT_MONEY = "USER_ACCOUNT_DEPOSIT_MONEY";
+export const USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS = "USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS";
+export const USER_ACCOUNT_DEPOSIT_MONEY_FAIL = "USER_ACCOUNT_DEPOSIT_MONEY_FAIL";
 
-type LoadDepositMoneyAmountsType = typeof LOAD_DEPOSIT_MONEY_AMOUNTS | typeof LOAD_DEPOSIT_MONEY_AMOUNTS_SUCCESS | typeof LOAD_DEPOSIT_MONEY_AMOUNTS_FAIL;
+export type UserAccountDepositMoneyType = typeof USER_ACCOUNT_DEPOSIT_MONEY | typeof USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS | typeof USER_ACCOUNT_DEPOSIT_MONEY_FAIL;
 
-interface LoadDepositMoneyAmountsActionCreator extends AxiosActionCreator<LoadDepositMoneyAmountsType> {}
+interface UserAccountDepositMoneyActionCreator extends AxiosActionCreator<UserAccountDepositMoneyType> {}
 
-interface LoadDepositMoneyAmountsAction extends AxiosAction<LoadDepositMoneyAmountsType> {}
+interface UserAccountDepositMoneyAction extends AxiosAction<UserAccountDepositMoneyType> {}
 
-export const LOAD_DEPOSIT_TOKEN_AMOUNTS = "LOAD_DEPOSIT_TOKEN_AMOUNTS";
-export const LOAD_DEPOSIT_TOKEN_AMOUNTS_SUCCESS = "LOAD_DEPOSIT_TOKEN_AMOUNTS_SUCCESS";
-export const LOAD_DEPOSIT_TOKEN_AMOUNTS_FAIL = "LOAD_DEPOSIT_TOKEN_AMOUNTS_FAIL";
+export const USER_ACCOUNT_DEPOSIT_TOKEN = "USER_ACCOUNT_DEPOSIT_TOKEN";
+export const USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS = "USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS";
+export const USER_ACCOUNT_DEPOSIT_TOKEN_FAIL = "USER_ACCOUNT_DEPOSIT_TOKEN_FAIL";
 
-type LoadDepositTokenAmountsType = typeof LOAD_DEPOSIT_TOKEN_AMOUNTS | typeof LOAD_DEPOSIT_TOKEN_AMOUNTS_SUCCESS | typeof LOAD_DEPOSIT_TOKEN_AMOUNTS_FAIL;
+export type UserAccountDepositTokenType = typeof USER_ACCOUNT_DEPOSIT_TOKEN | typeof USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS | typeof USER_ACCOUNT_DEPOSIT_TOKEN_FAIL;
 
-interface LoadDepositTokenAmountsActionCreator extends AxiosActionCreator<LoadDepositTokenAmountsType> {}
+interface UserAccountDepositTokenActionCreator extends AxiosActionCreator<UserAccountDepositTokenType> {}
 
-interface LoadDepositTokenAmountsAction extends AxiosAction<LoadDepositTokenAmountsType> {}
+interface UserAccountDepositTokenAction extends AxiosAction<UserAccountDepositTokenType> {}
 
-export const DEPOSIT_MONEY = "DEPOSIT_MONEY";
-export const DEPOSIT_MONEY_SUCCESS = "DEPOSIT_MONEY_SUCCESS";
-export const DEPOSIT_MONEY_FAIL = "DEPOSIT_MONEY_FAIL";
+export type UserAccountDepositActionCreators = UserAccountDepositMoneyActionCreator | UserAccountDepositTokenActionCreator;
 
-export type DepositMoneyType = typeof DEPOSIT_MONEY | typeof DEPOSIT_MONEY_SUCCESS | typeof DEPOSIT_MONEY_FAIL;
-
-interface DepositMoneyActionCreator extends AxiosActionCreator<DepositMoneyType> {}
-
-interface DepositMoneyAction extends AxiosAction<DepositMoneyType> {}
-
-export const DEPOSIT_TOKEN = "DEPOSIT_TOKEN";
-export const DEPOSIT_TOKEN_SUCCESS = "DEPOSIT_TOKEN_SUCCESS";
-export const DEPOSIT_TOKEN_FAIL = "DEPOSIT_TOKEN_FAIL";
-
-export type DepositTokenType = typeof DEPOSIT_TOKEN | typeof DEPOSIT_TOKEN_SUCCESS | typeof DEPOSIT_TOKEN_FAIL;
-
-interface DepositTokenActionCreator extends AxiosActionCreator<DepositTokenType> {}
-
-interface DepositTokenAction extends AxiosAction<DepositTokenType> {}
-
-export type DepositActionCreators = LoadDepositMoneyAmountsActionCreator | LoadDepositTokenAmountsActionCreator | DepositMoneyActionCreator | DepositTokenActionCreator;
-
-export type DepositActions = LoadDepositMoneyAmountsAction | LoadDepositTokenAmountsAction | DepositMoneyAction | DepositTokenAction;
-
-export type DepositState = AxiosState<{ amounts: Map<Currency, number[]> }>;
+export type UserAccountDepositActions = UserAccountDepositMoneyAction | UserAccountDepositTokenAction;

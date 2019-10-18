@@ -2,6 +2,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import Balance from "components/User/Account/Balance";
 import BuyToken from "./Buy";
+import { TOKEN } from "types";
 
 const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
       >
         <PopoverHeader>TOKEN</PopoverHeader>
         <PopoverBody>
-          <BuyToken />
+          <BuyToken currency={TOKEN} />
         </PopoverBody>
       </Popover>
     </div>

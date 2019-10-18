@@ -5,16 +5,21 @@ import { compose } from "recompose";
 import { UserAccountBalanceState } from "store/root/user/account/balance/types";
 import { Currency } from "types";
 
-interface UserAccountBalanceProps {
-  currency: Currency;
+interface InnerProps {
   balance: UserAccountBalanceState;
+}
+
+interface OutterProps {
+  currency: Currency;
   attribute: "available" | "pending";
 }
 
-const UserAccountBalance: FunctionComponent<UserAccountBalanceProps> = ({ currency, balance: { data, error, loading }, attribute }) => (
+type Props = InnerProps & OutterProps;
+
+const UserAccountBalance: FunctionComponent<Props> = ({ currency, balance: { data, error, loading }, attribute }) => (
   <Format.Currency currency={currency} amount={data[attribute]} alignment="justify" />
 );
 
-const enhance = compose<any, any>(withUserAccountBalance);
+const enhance = compose<InnerProps, OutterProps>(withUserAccountBalance);
 
 export default enhance(UserAccountBalance);

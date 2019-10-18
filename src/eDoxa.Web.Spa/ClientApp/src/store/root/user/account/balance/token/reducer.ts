@@ -1,7 +1,8 @@
-import { LOAD_USER_TOKEN_ACCOUNT_BALANCE, LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS, LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL, UserTokenAccountBalanceActions, UserTokenAccountBalanceState } from "./types";
+import { LOAD_USER_TOKEN_ACCOUNT_BALANCE, LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS, LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL, UserTokenAccountBalanceActions } from "./types";
+import { UserAccountBalanceState } from "../types";
 import { Reducer } from "redux";
 
-export const initialState: UserTokenAccountBalanceState = {
+export const initialState: UserAccountBalanceState = {
   data: {
     available: 0,
     pending: 0
@@ -10,7 +11,7 @@ export const initialState: UserTokenAccountBalanceState = {
   loading: false
 };
 
-export const reducer: Reducer<UserTokenAccountBalanceState, UserTokenAccountBalanceActions> = (state = initialState, action) => {
+export const reducer: Reducer<UserAccountBalanceState, UserTokenAccountBalanceActions> = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_TOKEN_ACCOUNT_BALANCE: {
       return { data: state.data, error: null, loading: true };

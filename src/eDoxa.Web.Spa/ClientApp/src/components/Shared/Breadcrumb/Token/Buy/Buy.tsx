@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "reactstrap";
-import { withUserAccountDeposit } from "store/root/user/account/deposit/container";
+import { withUserAccountDepositBundles } from "store/root/user/account/deposit/bundles/container";
 import { withModals } from "store/middlewares/modal/container";
 import { compose } from "recompose";
 
@@ -11,7 +11,7 @@ const DepositButton = ({ modals, actions, amounts }) => (
 );
 
 const enhance = compose<any, any>(
-  withUserAccountDeposit("token"),
+  withUserAccountDepositBundles,
   withModals
 );
 

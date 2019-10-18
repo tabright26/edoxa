@@ -1,6 +1,6 @@
 ﻿// Filename: InformationsPostRequestValidator.cs
-// Date Created: 2019-08-22
-//
+// Date Created: 2019-10-06
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -48,19 +48,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
                 .NotEmpty()
                 .WithMessage(InformationsErrorDescriber.GenderRequired());
 
-            //https://stackoverflow.com/questions/7777985/validate-datetime-with-fluentvalidator
-            this.RuleFor(request => request.BirthDate)
-                .NotNull()
-                .WithMessage(InformationsErrorDescriber.BirthDateRequired())
-                .NotEmpty()
-                .WithMessage(InformationsErrorDescriber.BirthDateRequired())
-                .Must(BeAValidDate)
-                .WithMessage(InformationsErrorDescriber.BirthDateInvalid());
+            ////https://stackoverflow.com/questions/7777985/validate-datetime-with-fluentvalidator
+            //this.RuleFor(request => request.Dob)
+            //    .Must(request => BeAValidDate(new DateTime(request.Year, request.Month, request.Day)))
+            //    .WithMessage(InformationsErrorDescriber.BirthDateInvalid());
         }
 
         private static bool BeAValidDate(DateTime date)
         {
-            return !date.Equals(default(DateTime));
+            return !date.Equals(default);
         }
     }
 }

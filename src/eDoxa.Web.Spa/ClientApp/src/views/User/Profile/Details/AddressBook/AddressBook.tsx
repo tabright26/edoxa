@@ -8,6 +8,7 @@ import UserAddressModal from "modals/User/Address";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
 import { withModals } from "store/middlewares/modal/container";
+import Loading from "components/Shared/Override/Loading";
 
 const AddressItem: FunctionComponent<any> = ({ hasMore, position, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
@@ -65,11 +66,7 @@ const AddressBook: FunctionComponent<any> = ({ className, addressBook: { data, e
       </Button.Link>
       <UserAddressModal.Create />
     </CardHeader>
-    <CardBody>
-      {data.map((address, index) => (
-        <AddressItem key={index} address={address} position={index + 1} hasMore={data.length !== index + 1} />
-      ))}
-    </CardBody>
+    <CardBody>{loading ? <Loading /> : data.map((address, index) => <AddressItem key={index} address={address} position={index + 1} hasMore={data.length !== index + 1} />)}</CardBody>
   </Card>
 );
 

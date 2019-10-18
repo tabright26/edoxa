@@ -147,11 +147,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private async Task TryGenerateBirthDateClaimAsync(User user)
         {
-            var birthDate = await UserManager.GetBirthDateAsync(user);
+            var dob = await UserManager.GetDobAsync(user);
 
-            if (birthDate != null)
+            if (dob != null)
             {
-                Identity!.AddClaim(new Claim(JwtClaimTypes.BirthDate, birthDate));
+                Identity!.AddClaim(new Claim(JwtClaimTypes.BirthDate, dob.ToString()));
             }
         }
 

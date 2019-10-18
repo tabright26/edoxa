@@ -61,15 +61,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
+            var dob = DateTime.UtcNow.AddDays(-20);
+
             var user = new User
             {
-                Informations = new UserInformations
-                {
-                    FirstName = "Test",
-                    LastName = "Test",
-                    Gender = Gender.Male,
-                    BirthDate = DateTime.UtcNow.AddDays(-20)
-                }
+                Informations = new UserInformations("Test", "Test", Gender.Male, new Dob(dob))
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -162,7 +158,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<Gender>(),
-                        It.IsAny<DateTime>()))
+                        It.IsAny<Dob>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
@@ -174,7 +170,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     "Bob",
                     "Bob",
                     Gender.Male,
-                    new DateTime(2000, 1, 1)));
+                    2000,
+                    1,
+                    1));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -191,7 +189,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Gender>(),
-                    It.IsAny<DateTime>()),
+                    It.IsAny<Dob>()),
                 Times.Once);
         }
 
@@ -241,15 +239,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         public async Task PutAsync_ShouldBeOkObjectResult()
         {
             // Arrange
+            var dob = DateTime.UtcNow.AddDays(-20);
+
             var user = new User
             {
-                Informations = new UserInformations
-                {
-                    FirstName = "FirstName",
-                    LastName = "LastName",
-                    Gender = Gender.Male,
-                    BirthDate = DateTime.UtcNow.AddDays(-20)
-                }
+                Informations = new UserInformations("FirstName", "LastName", Gender.Male, new Dob(dob))
             };
 
             var mockUserManager = new Mock<IUserManager>();

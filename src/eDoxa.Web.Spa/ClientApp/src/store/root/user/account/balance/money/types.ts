@@ -1,5 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
-import { Balance } from "types";
+import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
 
 export const LOAD_USER_MONEY_ACCOUNT_BALANCE = "LOAD_USER_MONEY_ACCOUNT_BALANCE";
 export const LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS = "LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS";
@@ -12,5 +11,3 @@ export interface LoadUserMoneyAccountBalanceActionCreator extends AxiosActionCre
 interface LoadUserMoneyAccountBalanceAction extends AxiosAction<LoadUserMoneyAccountBalanceType> {}
 
 export type UserMoneyAccountBalanceActions = LoadUserMoneyAccountBalanceAction;
-
-export type UserMoneyAccountBalanceState = AxiosState<Balance>;

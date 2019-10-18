@@ -1,5 +1,5 @@
 ﻿// Filename: InformationsController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,13 +12,13 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -66,7 +66,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] InformationsPostRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -83,7 +83,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 request.FirstName,
                 request.LastName,
                 request.Gender,
-                request.BirthDate);
+                new Dob(request.Dob.Year, request.Dob.Month, request.Dob.Day));
 
             if (result.Succeeded)
             {
@@ -101,7 +101,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [HttpPut]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync([FromBody] InformationsPutRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
