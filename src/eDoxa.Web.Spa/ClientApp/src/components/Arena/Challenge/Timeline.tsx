@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "reactstrap";
+import { CardBody } from "reactstrap";
 
 import Moment from "react-moment";
 import Loading from "components/Shared/Override/Loading";
@@ -24,9 +24,9 @@ const ArenaChallengeTimeline = ({ challenge, state, date }) => {
 const Body = ({ challenge }) => {
   if (!challenge) {
     return (
-      <Card.Body className="text-center text-white">
+      <CardBody className="text-center text-white">
         <Loading />
-      </Card.Body>
+      </CardBody>
     );
   } else {
     return (

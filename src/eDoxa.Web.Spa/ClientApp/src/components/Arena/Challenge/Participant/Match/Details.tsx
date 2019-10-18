@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { CardBody, Badge } from "reactstrap";
 import Loading from "components/Shared/Override/Loading";
 import Format from "components/Shared/Format";
@@ -6,7 +6,7 @@ import Moment from "react-moment";
 import { compose } from "recompose";
 import { withModals } from "store/middlewares/modal/container";
 
-const Match = ({ match, position, modals }) => {
+const Match: FunctionComponent<any> = ({ match, position, modals }) => {
   if (!match) {
     return (
       <CardBody className="text-center">
@@ -50,6 +50,6 @@ const Match = ({ match, position, modals }) => {
   }
 };
 
-const enhance = compose(withModals);
+const enhance = compose<any, any>(withModals);
 
 export default enhance(Match);

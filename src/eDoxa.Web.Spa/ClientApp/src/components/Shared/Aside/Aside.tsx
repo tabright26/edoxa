@@ -1,22 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { FunctionComponent } from "react";
 
-const propTypes = {
-  children: PropTypes.node
+const Aside: FunctionComponent<any> = () => {
+  return <React.Fragment>Aside</React.Fragment>;
 };
-
-const defaultProps = {};
-
-class Aside extends Component {
-  render() {
-    // eslint-disable-next-line
-    const { children, ...attributes } = this.props;
-
-    return <React.Fragment>Aside</React.Fragment>;
-  }
-}
-
-Aside.propTypes = propTypes;
-Aside.defaultProps = defaultProps;
 
 export default Aside;

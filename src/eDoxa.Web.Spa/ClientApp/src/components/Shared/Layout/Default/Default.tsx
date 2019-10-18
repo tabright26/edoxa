@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, FunctionComponent } from "react";
 import { Container } from "reactstrap";
 import { AppFooter, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
 // sidebar nav config
@@ -13,7 +13,7 @@ const Breadcrumb = React.lazy(() => import("components/Shared/Breadcrumb"));
 const Footer = React.lazy(() => import("components/Shared/Footer"));
 const Header = React.lazy(() => import("components/Shared/Header"));
 
-const Layout = ({ ...props }) => {
+const Layout: FunctionComponent<any> = ({ ...props }) => {
   return (
     <div className="app">
       <AppHeader fixed>
@@ -25,7 +25,7 @@ const Layout = ({ ...props }) => {
         <AppSidebar fixed minimized display="lg">
           <AppSidebarHeader />
           <AppSidebarForm />
-          <Suspense>
+          <Suspense fallback={<Loading />}>
             <AppSidebarNav navConfig={navigation} {...props} />
           </Suspense>
           <AppSidebarFooter />

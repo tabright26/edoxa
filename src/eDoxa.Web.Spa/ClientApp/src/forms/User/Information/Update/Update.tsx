@@ -6,9 +6,7 @@ import Button from "components/Shared/Override/Button";
 import { UPDATE_USER_INFORMATION_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
-import DaySelectField from "components/Shared/Override/Form/Field/Day";
-import MonthSelectField from "components/Shared/Override/Form/Field/Month";
-import YearSelectField from "components/Shared/Override/Form/Field/Year";
+import FormField from "components/Shared/Override/Form/Field";
 
 const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit(data => updateUserInformations(data).then(() => handleCancel()))}>
@@ -28,11 +26,11 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformat
       <dd className="col-sm-9 mb-0">
         <FormGroup>
           <FormSection name="dob">
-            <YearSelectField className="d-inline" width="75px" disabled />
+            <FormField.Year className="d-inline" width="75px" disabled />
             <span className="d-inline mx-2">/</span>
-            <MonthSelectField className="d-inline" width="60px" disabled />
+            <FormField.Month className="d-inline" width="60px" disabled />
             <span className="d-inline mx-2">/</span>
-            <DaySelectField className="d-inline" width="60px" disabled />
+            <FormField.Day className="d-inline" width="60px" disabled />
           </FormSection>
         </FormGroup>
       </dd>

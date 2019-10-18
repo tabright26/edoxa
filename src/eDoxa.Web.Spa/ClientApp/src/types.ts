@@ -79,8 +79,13 @@ export interface Phone {
   readonly verified: boolean;
 }
 
+export interface Country {
+  readonly name: string;
+  readonly twoDigitIso: string;
+}
+
 export interface Address extends Entity<AddressId> {
-  readonly country: string;
+  readonly country: Country | string;
   readonly line1: string;
   readonly line2?: string;
   readonly city: string;
