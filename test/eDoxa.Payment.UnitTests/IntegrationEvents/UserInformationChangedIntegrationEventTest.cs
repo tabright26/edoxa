@@ -31,7 +31,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents
             //Arrange
             var integrationEvent = new UserInformationChangedIntegrationEvent(
                 new UserId(),
-                "Gabriel", "Roy", Gender.Male, DateTime.Now);
+                "Gabriel", "Roy", Gender.Male, new Dob(2000,1,1));
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 

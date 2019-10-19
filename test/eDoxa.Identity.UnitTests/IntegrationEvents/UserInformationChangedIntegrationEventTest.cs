@@ -1,10 +1,8 @@
 ﻿// Filename: UserInformationChangedIntegrationEventTest.cs
-// Date Created: 2019-10-11
-//
+// Date Created: 2019-10-15
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System;
 
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.TestHelpers;
@@ -31,7 +29,10 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
             //Arrange
             var integrationEvent = new UserInformationChangedIntegrationEvent(
                 new UserId(),
-                "Gabriel", "Roy", Gender.Male, DateTime.Now);
+                "Gabriel",
+                "Roy",
+                Gender.Male,
+                new Dob(2000, 1, 1));
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
