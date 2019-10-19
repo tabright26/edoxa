@@ -19,6 +19,7 @@ using Moq;
 using Stripe;
 
 using Xunit;
+using Dob = eDoxa.Seedwork.Domain.Miscs.Dob;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
@@ -47,7 +48,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserInformationChangedIntegrationEvent(
                 new UserId(),
-                "Gabriel", "Roy", Gender.Male, DateTime.Now);
+                "Gabriel", "Roy", Gender.Male, new Dob(2000,1,1));
 
             // Act
             await handler.HandleAsync(integrationEvent);
