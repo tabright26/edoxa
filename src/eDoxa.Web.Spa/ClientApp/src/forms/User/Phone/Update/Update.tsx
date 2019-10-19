@@ -6,10 +6,18 @@ import Button from "components/Shared/Override/Button";
 import { UPDATE_USER_PHONE_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const UpdateUserPhoneForm: FunctionComponent<any> = ({ updateUserPhone, handleSubmit, handleCancel }) => {
+const UpdateUserPhoneForm: FunctionComponent<any> = ({ updateUserPhone, handleSubmit, handleCancel, error }) => {
   return (
-    <Form onSubmit={handleSubmit(values => updateUserPhone(values).then(() => handleCancel()))}>
+    <Form
+      onSubmit={handleSubmit(values =>
+        updateUserPhone(values).then(() => {
+          handleCancel();
+        })
+      )}
+    >
+      {error && <FormValidation error={error} />}
       <Field type="text" name="number" label="Phone Number" formGroup={FormGroup} component={Input.Text} />
       <FormGroup className="mb-0">
         <Button.Save className="mr-2" />

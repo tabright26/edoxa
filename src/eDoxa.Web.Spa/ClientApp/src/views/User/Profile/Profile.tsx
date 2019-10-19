@@ -1,7 +1,7 @@
 import React, { Suspense, FunctionComponent } from "react";
 import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
 import { Card, CardHeader, Col, Row, ListGroup, ListGroupItem } from "reactstrap";
-import { RouteProps } from "store/middlewares/router/types";
+import { RouteProps } from "utils/router/types";
 import { LinkContainer } from "react-router-bootstrap";
 import Loading from "components/Shared/Override/Loading";
 

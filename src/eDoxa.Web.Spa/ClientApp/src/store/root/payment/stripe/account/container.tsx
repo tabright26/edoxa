@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 import { loadStripeAccount } from "./actions";
 
 export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
@@ -14,7 +14,7 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
 
   const mapStateToProps = (state: RootState) => {
     return {
-      account: state.payment.stripe.account
+      account: state.root.payment.stripe.account
     };
   };
 

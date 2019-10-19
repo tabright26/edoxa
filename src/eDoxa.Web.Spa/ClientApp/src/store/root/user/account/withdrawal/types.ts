@@ -1,4 +1,5 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
+import { Transaction } from "types";
 
 export const USER_ACCOUNT_WITHDRAWAL_MONEY = "USER_ACCOUNT_WITHDRAWAL_MONEY";
 export const USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS = "USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS";
@@ -8,7 +9,7 @@ type UserAccountWithdrawalMoneyType = typeof USER_ACCOUNT_WITHDRAWAL_MONEY | typ
 
 interface UserAccountWithdrawalMoneyActionCreator extends AxiosActionCreator<UserAccountWithdrawalMoneyType> {}
 
-interface UserAccountWithdrawalMoneyAction extends AxiosAction<UserAccountWithdrawalMoneyType> {}
+interface UserAccountWithdrawalMoneyAction extends AxiosAction<UserAccountWithdrawalMoneyType, Transaction> {}
 
 export type UserAccountWithdrawalActionCreators = UserAccountWithdrawalMoneyActionCreator;
 

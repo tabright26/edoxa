@@ -12,12 +12,13 @@ interface InnerProps {
 interface OutterProps {
   currency: Currency;
   attribute: "available" | "pending";
+  alignment?: "right" | "left" | "center" | "justify";
 }
 
 type Props = InnerProps & OutterProps;
 
-const UserAccountBalance: FunctionComponent<Props> = ({ currency, balance: { data, error, loading }, attribute }) => (
-  <Format.Currency currency={currency} amount={data[attribute]} alignment="justify" />
+const UserAccountBalance: FunctionComponent<Props> = ({ currency, balance: { data, error, loading }, attribute, alignment = "justify" }) => (
+  <Format.Currency currency={currency} amount={data[attribute]} alignment={alignment} />
 );
 
 const enhance = compose<InnerProps, OutterProps>(withUserAccountBalance);

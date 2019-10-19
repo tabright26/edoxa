@@ -7,6 +7,7 @@ import { validate } from "./validate";
 import CardBrandIcon from "components/Payment/Card/BrandIcon";
 import { compose } from "recompose";
 import FormField from "components/Shared/Override/Form/Field";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
 const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
   handleSubmit,
@@ -14,9 +15,19 @@ const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
     card: { brand, last4, exp_year }
   },
   handleCancel,
+  error,
   updateStripePaymentMethod
 }) => (
-  <Form onSubmit={handleSubmit((data: any) => updateStripePaymentMethod(data).then(() => handleCancel()))} inline className="d-flex">
+  <Form
+    onSubmit={handleSubmit((data: any) =>
+      updateStripePaymentMethod(data).then(() => {
+        handleCancel();
+      })
+    )}
+    inline
+    className="d-flex"
+  >
+    {error && <FormValidation error={error} />}
     <FormGroup>
       <div className="d-flex">
         <CardBrandIcon className="my-auto" brand={brand} size="2x" />

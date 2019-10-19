@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadUserAccountWithdrawalBundlesFor } from "./actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
 export const withUserAccountWithdrawalBundles = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -14,7 +14,7 @@ export const withUserAccountWithdrawalBundles = (HighOrderComponent: FunctionCom
 
   const mapStateToProps = (state: RootState, ownProps: any) => {
     return {
-      bundles: state.user.account.withdrawal.bundles[ownProps.currency]
+      bundles: state.root.user.account.withdrawal.bundles[ownProps.currency]
     };
   };
 

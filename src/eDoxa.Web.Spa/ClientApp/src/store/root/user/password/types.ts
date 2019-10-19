@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 
 export const FORGOT_USER_PASSWORD = "FORGOT_USER_PASSWORD";
 export const FORGOT_USER_PASSWORD_SUCCESS = "FORGOT_USER_PASSWORD_SUCCESS";

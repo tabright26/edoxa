@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 import { Challenge } from "types";
 
 export const LOAD_CHALLENGES = "LOAD_CHALLENGES";

@@ -6,10 +6,18 @@ import Button from "components/Shared/Override/Button";
 import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const CreateStripePaymentMethodFrom: FunctionComponent<any> = ({ handleSubmit, handleCancel, createStripePaymentMethod }) => {
+const CreateStripePaymentMethodFrom: FunctionComponent<any> = ({ handleSubmit, handleCancel, createStripePaymentMethod, error }) => {
   return (
-    <Form onSubmit={handleSubmit(() => createStripePaymentMethod().then(() => handleCancel()))}>
+    <Form
+      onSubmit={handleSubmit(() =>
+        createStripePaymentMethod().then(() => {
+          handleCancel();
+        })
+      )}
+    >
+      {error && <FormValidation error={error} />}
       <label>
         Card number
         <CardNumberElement />

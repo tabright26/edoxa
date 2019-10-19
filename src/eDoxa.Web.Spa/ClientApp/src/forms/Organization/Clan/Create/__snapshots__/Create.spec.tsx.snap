@@ -25,11 +25,11 @@ exports[`renders correctly 1`] = `
     />
   </div>
   <div
-    className="form-group"
+    className="mb-0 form-group"
   >
     <button
       aria-label={null}
-      className="btn btn-primary btn-sm"
+      className="mr-2 btn btn-primary btn-sm"
       onClick={[Function]}
       style={
         Object {

@@ -7,9 +7,17 @@ import FormField from "components/Shared/Override/Form/Field";
 import { DELETE_USER_ADDRESS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const UpdateUserAddressForm: FunctionComponent<any> = ({ updateUserAddress, handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit(data => updateUserAddress(data).then(() => handleCancel()))}>
+const UpdateUserAddressForm: FunctionComponent<any> = ({ updateUserAddress, handleSubmit, handleCancel, error }) => (
+  <Form
+    onSubmit={handleSubmit(data =>
+      updateUserAddress(data).then(() => {
+        handleCancel();
+      })
+    )}
+  >
+    {error && <FormValidation error={error} />}
     <FormGroup>
       <FormField.Country disabled={true} />
     </FormGroup>

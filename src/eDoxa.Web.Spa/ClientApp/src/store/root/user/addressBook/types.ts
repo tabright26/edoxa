@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 import { Address } from "types";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadChallenges, loadChallenge } from "store/root/arena/challenges/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
 export const withChallenges = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -14,7 +14,7 @@ export const withChallenges = (HighOrderComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     return {
-      challenges: state.arena.challenges
+      challenges: state.root.arena.challenges
     };
   };
 
@@ -40,7 +40,7 @@ export const withChallenge = (HighOrderComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState, ownProps: any) => {
-    const { data } = state.arena.challenges;
+    const { data } = state.root.arena.challenges;
     return {
       challenge: data.find(challenge => challenge.id === ownProps.match.params.challengeId)
     };

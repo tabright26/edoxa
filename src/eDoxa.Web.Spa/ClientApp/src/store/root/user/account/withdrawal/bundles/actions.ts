@@ -5,7 +5,7 @@ import {
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL,
   UserAccountWithdrawalBundlesActionCreators
 } from "./types";
-import { AxiosPayload } from "store/middlewares/axios/types";
+import { AxiosPayload } from "utils/axios/types";
 
 export function loadUserAccountWithdrawalBundlesFor(currency: Currency): UserAccountWithdrawalBundlesActionCreators {
   const payload: AxiosPayload = {

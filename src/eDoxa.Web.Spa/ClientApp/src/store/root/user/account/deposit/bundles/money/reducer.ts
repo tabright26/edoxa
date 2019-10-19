@@ -24,7 +24,7 @@ export const reducer: Reducer<UserAccountDepositBundlesState, UserAccountDeposit
     }
     case LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_SUCCESS: {
       return {
-        data: state.data,
+        data: action.payload.data,
         error: null,
         loading: false
       };

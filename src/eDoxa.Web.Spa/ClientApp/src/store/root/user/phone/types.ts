@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 import { Phone } from "types";
 
 export const LOAD_USER_PHONE = "LOAD_USER_PHONE";

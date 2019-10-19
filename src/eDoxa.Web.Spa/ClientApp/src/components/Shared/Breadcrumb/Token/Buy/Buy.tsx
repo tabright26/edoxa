@@ -1,18 +1,19 @@
 import React from "react";
 import { Button } from "reactstrap";
-import { withUserAccountDepositBundles } from "store/root/user/account/deposit/bundles/container";
-import { withModals } from "store/middlewares/modal/container";
+import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
+import { TOKEN } from "types";
+import { withUserAccountDepositBundles } from "store/root/user/account/deposit/bundles/container";
 
-const DepositButton = ({ modals, actions, amounts }) => (
-  <Button color="primary" size="sm" block onClick={() => modals.showDepositModal(actions, amounts)}>
+const DepositButton = ({ modals, bundles: { data, loading } }) => (
+  <Button color="primary" size="sm" block disabled={loading} onClick={() => modals.showDepositModal(TOKEN, data)}>
     Buy Token
   </Button>
 );
 
 const enhance = compose<any, any>(
-  withUserAccountDepositBundles,
-  withModals
+  withModals,
+  withUserAccountDepositBundles
 );
 
 export default enhance(DepositButton);

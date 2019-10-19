@@ -3,13 +3,21 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, reduxForm, FormSection } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { UPDATE_USER_INFORMATION_FORM } from "forms";
+import { UPDATE_USER_INFORMATIONS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 import FormField from "components/Shared/Override/Form/Field";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit(data => updateUserInformations(data).then(() => handleCancel()))}>
+const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel, error }) => (
+  <Form
+    onSubmit={handleSubmit(data =>
+      updateUserInformations(data).then(() => {
+        handleCancel();
+      })
+    )}
+  >
+    {error && <FormValidation error={error} />}
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
@@ -48,6 +56,6 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformat
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_USER_INFORMATION_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_USER_INFORMATIONS_FORM, validate }));
 
 export default enhance(UpdateUserInformationsForm);

@@ -19,7 +19,7 @@ export const reducer: Reducer<UserAccountWithdrawalBundlesState, UserAccountWith
       return { data: state.data, error: null, loading: true };
     }
     case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
+      return { data: action.payload.data, error: null, loading: false };
     }
     case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL: {
       return { data: state.data, error: action.error, loading: false };

@@ -4,7 +4,7 @@ import Loading from "components/Shared/Override/Loading";
 import Format from "components/Shared/Format";
 import Moment from "react-moment";
 import { compose } from "recompose";
-import { withModals } from "store/middlewares/modal/container";
+import { withModals } from "utils/modal/container";
 
 const Match: FunctionComponent<any> = ({ match, position, modals }) => {
   if (!match) {

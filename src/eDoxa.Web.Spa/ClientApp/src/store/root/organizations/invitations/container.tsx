@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadClanInvitations, loadClanInvitation, sendClanInvitation, acceptClanInvitation, declineClanInvitation } from "store/root/organizations/invitations/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
 interface InvitationProps {
   type: string;
@@ -18,9 +18,9 @@ export const withInvitations = (HighOrderComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState) => {
-    const invitations = state.organizations.invitations.data.map(invitation => {
-      const doxatag = state.doxatags.data.find(doxatag => doxatag.userId === invitation.userId);
-      const clan = state.organizations.clans.data.find(clan => clan.id === invitation.clanId);
+    const invitations = state.root.organizations.invitations.data.map(invitation => {
+      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === invitation.userId);
+      const clan = state.root.organizations.clans.data.find(clan => clan.id === invitation.clanId);
 
       invitation.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       invitation.clanName = clan ? clan.name : null;

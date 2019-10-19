@@ -6,12 +6,14 @@ import Input from "components/Shared/Override/Input";
 import { CREATE_CLAN_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const CreateClanForm: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => (
+const CreateClanForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, error }) => (
   <Form onSubmit={handleSubmit}>
+    {error && <FormValidation error={error} />}
     <Field type="text" name="name" label="Name" formGroup={FormGroup} component={Input.Text} />
-    <FormGroup>
-      <Button.Save />
+    <FormGroup className="mb-0">
+      <Button.Save className="mr-2" />
       <Button.Cancel onClick={handleCancel} />
     </FormGroup>
   </Form>

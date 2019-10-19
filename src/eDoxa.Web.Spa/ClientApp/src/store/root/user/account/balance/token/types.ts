@@ -1,4 +1,5 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
+import { Balance } from "types";
 
 export const LOAD_USER_TOKEN_ACCOUNT_BALANCE = "LOAD_USER_TOKEN_ACCOUNT_BALANCE";
 export const LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS = "LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS";
@@ -8,6 +9,6 @@ type LoadUserTokenAccountBalanceType = typeof LOAD_USER_TOKEN_ACCOUNT_BALANCE | 
 
 export interface LoadUserTokenAccountBalanceActionCreator extends AxiosActionCreator<LoadUserTokenAccountBalanceType> {}
 
-interface LoadUserTokenAccountBalanceAction extends AxiosAction<LoadUserTokenAccountBalanceType> {}
+interface LoadUserTokenAccountBalanceAction extends AxiosAction<LoadUserTokenAccountBalanceType, Balance> {}
 
 export type UserTokenAccountBalanceActions = LoadUserTokenAccountBalanceAction;

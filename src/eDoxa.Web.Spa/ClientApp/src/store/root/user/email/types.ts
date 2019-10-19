@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 import { Email } from "types";
 
 export const LOAD_USER_EMAIL = "LOAD_USER_EMAIL";

@@ -9,7 +9,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   return (
     <div className={className}>
       <Badge id="tokenPopover" color="dark" style={{ width: "100px" }}>
-        <Balance currency="token" attribute="available" />
+        <Balance currency={TOKEN} attribute="available" />
       </Badge>
       <Popover
         style={{
@@ -24,6 +24,16 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
       >
         <PopoverHeader>TOKEN</PopoverHeader>
         <PopoverBody>
+          <dl className="row mb-0">
+            <dt className="col-6">Available</dt>
+            <dd className="col-6">
+              <Balance currency={TOKEN} attribute="available" alignment="right" />
+            </dd>
+            <dt className="col-6">Pending</dt>
+            <dd className="col-6">
+              <Balance currency={TOKEN} attribute="pending" alignment="right" />
+            </dd>
+          </dl>
           <BuyToken currency={TOKEN} />
         </PopoverBody>
       </Popover>

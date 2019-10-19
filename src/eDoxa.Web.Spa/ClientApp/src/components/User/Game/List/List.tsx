@@ -1,10 +1,10 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { CardHeader, CardImg, CardImgOverlay, CardText, Row, Col, Card, Button } from "reactstrap";
 import Loading from "components/Shared/Override/Loading";
-
 import { withUserGames } from "store/root/user/games/container";
+import { compose } from "recompose";
 
-const UserGameList = ({ games: { data, error, loading } }) =>
+const UserGameList: FunctionComponent<any> = ({ games: { data, error, loading } }) =>
   loading ? (
     <Loading />
   ) : (
@@ -36,4 +36,6 @@ const UserGameList = ({ games: { data, error, loading } }) =>
     </Row>
   );
 
-export default withUserGames(UserGameList);
+const enhance = compose<any, any>(withUserGames);
+
+export default enhance(UserGameList);

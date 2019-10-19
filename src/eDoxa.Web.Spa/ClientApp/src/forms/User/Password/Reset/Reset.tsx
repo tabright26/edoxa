@@ -6,9 +6,11 @@ import Input from "components/Shared/Override/Input";
 import { RESET_USER_PASSWORD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const ResetUserPasswordForm: FunctionComponent<any> = ({ handleSubmit, resetUserPassword }) => (
+const ResetUserPasswordForm: FunctionComponent<any> = ({ handleSubmit, resetUserPassword, error }) => (
   <Form onSubmit={handleSubmit(data => resetUserPassword(data))}>
+    {error && <FormValidation error={error} />}
     <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
         <InputGroupText>@</InputGroupText>

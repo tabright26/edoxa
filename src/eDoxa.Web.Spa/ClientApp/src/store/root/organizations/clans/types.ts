@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 
 export const LOAD_CLANS = "LOAD_CLANS";
 export const LOAD_CLANS_SUCCESS = "LOAD_CLANS_SUCCESS";

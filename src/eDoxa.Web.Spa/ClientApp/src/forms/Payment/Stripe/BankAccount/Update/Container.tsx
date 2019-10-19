@@ -1,10 +1,12 @@
 import { connect } from "react-redux";
 import { loadStripeBankAccount, updateStripeBankAccount } from "store/root/payment/stripe/bankAccount/actions";
+import { UPDATE_STRIPE_BANKACCOUNT_FAIL, StripeBankAccountActions } from "store/root/payment/stripe/bankAccount/types";
 import Update from "./Update";
 import { compose } from "recompose";
 import { injectStripe } from "react-stripe-elements";
 import { withtUserProfile } from "store/root/user/container";
-import { COUNTRY_CLAIM_TYPE } from "store/middlewares/oidc/types";
+import { COUNTRY_CLAIM_TYPE } from "utils/oidc/types";
+import { throwSubmissionError } from "utils/form/types";
 
 const mapDispatchToProps = (dispatch: any, ownProps: any) => {
   return {
@@ -19,8 +21,18 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
         })
         .then(result => {
           if (result.token) {
-            console.log(result.token);
-            return dispatch(updateStripeBankAccount(result.token.id)).then(() => dispatch(loadStripeBankAccount()));
+            return dispatch(updateStripeBankAccount(result.token.id)).then((action: StripeBankAccountActions) => {
+              switch (action.type) {
+                case UPDATE_STRIPE_BANKACCOUNT_FAIL: {
+                  throwSubmissionError(action.error);
+                  break;
+                }
+                default: {
+                  dispatch(loadStripeBankAccount());
+                  break;
+                }
+              }
+            });
           } else {
             return Promise.reject(result.error);
           }

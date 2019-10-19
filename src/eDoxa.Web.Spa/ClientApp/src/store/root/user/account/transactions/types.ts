@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 import { Transaction } from "types";
 
 export const LOAD_USER_ACCOUNT_TRANSACTIONS = "LOAD_USER_ACCOUNT_TRANSACTIONS";
@@ -9,7 +9,7 @@ type LoadUserAccountTransactionsType = typeof LOAD_USER_ACCOUNT_TRANSACTIONS | t
 
 interface LoadUserAccountTransactionsActionCreator extends AxiosActionCreator<LoadUserAccountTransactionsType> {}
 
-interface LoadUserAccountTransactionsAction extends AxiosAction<LoadUserAccountTransactionsType> {}
+interface LoadUserAccountTransactionsAction extends AxiosAction<LoadUserAccountTransactionsType, Transaction[]> {}
 
 export type UserAccountTransactionsActionCreators = LoadUserAccountTransactionsActionCreator;
 

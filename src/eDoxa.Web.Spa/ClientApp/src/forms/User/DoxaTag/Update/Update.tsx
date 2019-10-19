@@ -6,9 +6,17 @@ import Input from "components/Shared/Override/Input";
 import { UPDATE_USER_DOXATAG_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const UpdateUserDoxatagForm: FunctionComponent<any> = ({ updateUserDoxatag, handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit(data => updateUserDoxatag(data).then(() => handleCancel()))}>
+const UpdateUserDoxatagForm: FunctionComponent<any> = ({ updateUserDoxatag, handleSubmit, handleCancel, error }) => (
+  <Form
+    onSubmit={handleSubmit(data =>
+      updateUserDoxatag(data).then(() => {
+        handleCancel();
+      })
+    )}
+  >
+    {error && <FormValidation error={error} />}
     <Field type="text" name="name" label="Name" formGroup={FormGroup} component={Input.Text} />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />

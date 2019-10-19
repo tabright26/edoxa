@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 import { Bundle } from "types";
 
 export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES = "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES";
@@ -12,7 +12,7 @@ type LoadUserAccountWithdrawalMoneyBundlesType =
 
 interface LoadUserAccountWithdrawalMoneyBundlesActionCreator extends AxiosActionCreator<LoadUserAccountWithdrawalMoneyBundlesType> {}
 
-interface LoadUserAccountWithdrawalMoneyBundlesAction extends AxiosAction<LoadUserAccountWithdrawalMoneyBundlesType> {}
+interface LoadUserAccountWithdrawalMoneyBundlesAction extends AxiosAction<LoadUserAccountWithdrawalMoneyBundlesType, Bundle[]> {}
 
 export type UserAccountWithdrawalBundlesActionCreators = LoadUserAccountWithdrawalMoneyBundlesActionCreator;
 

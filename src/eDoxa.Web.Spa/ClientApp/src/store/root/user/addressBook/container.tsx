@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadUserAddressBook } from "store/root/user/addressBook/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
 export const withUserAddressBook = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -14,7 +14,7 @@ export const withUserAddressBook = (HighOrderComponent: FunctionComponent<any>) 
 
   const mapStateToProps = (state: RootState) => {
     return {
-      addressBook: state.user.addressBook
+      addressBook: state.root.user.addressBook
     };
   };
 

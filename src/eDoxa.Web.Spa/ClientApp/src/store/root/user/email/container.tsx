@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 import { loadUserEmail } from "./actions";
 
 export const withUserEmail = (HighOrderComponent: FunctionComponent<any>) => {
@@ -14,7 +14,7 @@ export const withUserEmail = (HighOrderComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     return {
-      email: state.user.email
+      email: state.root.user.email
     };
   };
 

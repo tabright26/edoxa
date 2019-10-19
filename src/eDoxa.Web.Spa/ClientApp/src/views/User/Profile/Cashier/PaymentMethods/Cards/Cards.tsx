@@ -7,8 +7,9 @@ import CardBrandIcon from "components/Payment/Card/BrandIcon";
 import CardExpiration from "components/Payment/Card/Expiration";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Shared/Override/Button";
-import { withModals } from "store/middlewares/modal/container";
+import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
+import Loading from "components/Shared/Override/Loading";
 
 const StripeCardItem: FunctionComponent<any> = ({ hasMore, modals, paymentMethod }) => {
   return (
@@ -44,11 +45,7 @@ const StripeCards: FunctionComponent<any> = ({ className, modals, paymentMethods
         ADD A NEW CARD
       </Button.Link>
     </CardHeader>
-    <CardBody>
-      {data.map((paymentMethod, index) => (
-        <StripeCardItem key={index} paymentMethod={paymentMethod} hasMore={data.length !== index + 1} modals={modals} />
-      ))}
-    </CardBody>
+    <CardBody>{loading ? <Loading /> : data.map((paymentMethod, index) => <StripeCardItem key={index} paymentMethod={paymentMethod} hasMore={data.length !== index + 1} modals={modals} />)}</CardBody>
   </Card>
 );
 

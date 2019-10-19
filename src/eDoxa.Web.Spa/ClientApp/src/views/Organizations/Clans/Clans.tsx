@@ -7,7 +7,7 @@ import CandidatureList from "components/Organizations/Candidatures/CandidatureLi
 import InvitationList from "components/Organizations/Invitations/InvitationList";
 import ClanModal from "modals/Organization/Clan";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
-import { withModals } from "store/middlewares/modal/container";
+import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
 
 const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan }) => {

@@ -7,9 +7,17 @@ import FormField from "components/Shared/Override/Form/Field";
 import { CREATE_USER_ADDRESS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const CreateUserAddressForm: FunctionComponent<any> = ({ createUserAddress, handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit(data => createUserAddress(data).then(() => handleCancel()))}>
+const CreateUserAddressForm: FunctionComponent<any> = ({ createUserAddress, handleSubmit, handleCancel, error }) => (
+  <Form
+    onSubmit={handleSubmit(data =>
+      createUserAddress(data).then(() => {
+        handleCancel();
+      })
+    )}
+  >
+    {error && <FormValidation error={error} />}
     <FormGroup>
       <FormField.Country />
     </FormGroup>

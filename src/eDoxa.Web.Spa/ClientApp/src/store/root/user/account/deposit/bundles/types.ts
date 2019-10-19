@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 import { Bundle } from "types";
 
 export const LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES = "LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES";
@@ -12,7 +12,7 @@ type LoadUserAccountDepositMoneyBundlesType =
 
 interface LoadUserAccountDepositMoneyBundlesActionCreator extends AxiosActionCreator<LoadUserAccountDepositMoneyBundlesType> {}
 
-interface LoadUserAccountDepositMoneyBundlesAction extends AxiosAction<LoadUserAccountDepositMoneyBundlesType> {}
+interface LoadUserAccountDepositMoneyBundlesAction extends AxiosAction<LoadUserAccountDepositMoneyBundlesType, Bundle[]> {}
 
 export const LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES = "LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES";
 export const LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS = "LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS";
@@ -25,7 +25,7 @@ type LoadUserAccountDepositTokenBundlesType =
 
 interface LoadUserAccountDepositTokenBundlesActionCreator extends AxiosActionCreator<LoadUserAccountDepositTokenBundlesType> {}
 
-interface LoadUserAccountDepositTokenBundlesAction extends AxiosAction<LoadUserAccountDepositTokenBundlesType> {}
+interface LoadUserAccountDepositTokenBundlesAction extends AxiosAction<LoadUserAccountDepositTokenBundlesType, Bundle[]> {}
 
 export type UserAccountDepositBundlesActionCreators = LoadUserAccountDepositMoneyBundlesActionCreator | LoadUserAccountDepositTokenBundlesActionCreator;
 

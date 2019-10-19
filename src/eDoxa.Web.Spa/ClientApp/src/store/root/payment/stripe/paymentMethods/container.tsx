@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadStripePaymentMethods } from "./actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
 export const withStripePaymentMethods = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -17,7 +17,7 @@ export const withStripePaymentMethods = (HighOrderComponent: FunctionComponent<a
       data: { data },
       error,
       loading
-    } = state.payment.stripe.paymentMethods;
+    } = state.root.payment.stripe.paymentMethods;
     return {
       paymentMethods: {
         data: data.filter(paymentMethod => paymentMethod.type === ownProps.paymentMethodType),

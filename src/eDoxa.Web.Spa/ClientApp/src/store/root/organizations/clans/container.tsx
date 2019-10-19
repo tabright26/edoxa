@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadClans, loadClan, createClan } from "store/root/organizations/clans/actions";
 import { downloadClanLogo, uploadClanLogo } from "store/root/organizations/logos/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
 export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -14,8 +14,8 @@ export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState) => {
-    const clans = state.organizations.clans.data.map(clan => {
-      const doxatag = state.doxatags.data.find(doxatag => doxatag.userId === clan.ownerId);
+    const clans = state.root.organizations.clans.data.map(clan => {
+      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === clan.ownerId);
 
       clan.ownerDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       return clan;

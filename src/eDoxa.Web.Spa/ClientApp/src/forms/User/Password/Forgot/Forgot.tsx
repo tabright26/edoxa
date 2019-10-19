@@ -6,9 +6,11 @@ import Input from "components/Shared/Override/Input";
 import { FORGOT_USER_PASSWORD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const ForgotUserPasswordForm: FunctionComponent<any> = ({ handleSubmit, forgotUserPassword }) => (
+const ForgotUserPasswordForm: FunctionComponent<any> = ({ handleSubmit, forgotUserPassword, error }) => (
   <Form onSubmit={handleSubmit(data => forgotUserPassword(data))}>
+    {error && <FormValidation error={error} />}
     <Field type="text" name="email" label="Email" formGroup={FormGroup} component={Input.Text} />
     <FormGroup className="mb-0">
       <Button.Submit block>Send Email</Button.Submit>

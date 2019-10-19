@@ -2,11 +2,10 @@ import React from "react";
 import Withdrawal from "./Withdrawal";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
+import { Bundle } from "types";
 
 it("renders correctly", () => {
-  const initialValues: any = {
-    amounts: []
-  };
+  const bundles: Bundle[] = [];
   const store: any = {
     getState: () => {},
     dispatch: action => {},
@@ -15,7 +14,7 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Withdrawal initialValues={initialValues} />
+        <Withdrawal bundles={bundles} />
       </Provider>
     )
     .toJSON();

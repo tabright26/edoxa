@@ -11,6 +11,7 @@ import {
   DEPOSIT_MODAL,
   WITHDRAWAL_MODAL
 } from "modals";
+import { Currency, Bundle, Stat } from "types";
 
 export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
@@ -19,10 +20,10 @@ export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
     return {
       modals: {
         showCreateUserAddressModal: () => dispatch(show(CREATE_USER_ADDRESS_MODAL)),
-        showChallengeMatchScoreModal: stats => dispatch(show(CHALLENGE_MATCH_SCORE_MODAL, { stats })),
+        showChallengeMatchScoreModal: (stats: Stat[]) => dispatch(show(CHALLENGE_MATCH_SCORE_MODAL, { stats })),
         showCreateClanModal: () => dispatch(show(CREATE_CLAN_MODAL)),
-        showDepositModal: (actions, amounts) => dispatch(show(DEPOSIT_MODAL, { actions, amounts })),
-        showWithdrawalModal: (actions, amounts) => dispatch(show(WITHDRAWAL_MODAL, { actions, amounts })),
+        showDepositModal: (currency: Currency, bundles: Bundle[]) => dispatch(show(DEPOSIT_MODAL, { currency, bundles })),
+        showWithdrawalModal: (currency: Currency, bundles: Bundle[]) => dispatch(show(WITHDRAWAL_MODAL, { currency, bundles })),
         showCreateStripePaymentMethodModal: type => dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL, { type })),
         showUpdateStripePaymentMethodModal: (paymentMethod: any) => dispatch(show(UPDATE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod })),
         showDeleteStripePaymentMethodModal: (paymentMethod: any) => dispatch(show(DELETE_STRIPE_PAYMENTMETHOD_MODAL, { paymentMethod }))

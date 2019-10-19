@@ -7,7 +7,7 @@ import { withUserAddressBook } from "store/root/user/addressBook/container";
 import UserAddressModal from "modals/User/Address";
 import { compose } from "recompose";
 import Button from "components/Shared/Override/Button";
-import { withModals } from "store/middlewares/modal/container";
+import { withModals } from "utils/modal/container";
 import Loading from "components/Shared/Override/Loading";
 
 const AddressItem: FunctionComponent<any> = ({ hasMore, position, address }) => {

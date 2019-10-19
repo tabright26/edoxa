@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 
 export const LOAD_STRIPE_ACCOUNT = "LOAD_STRIPE_ACCOUNT";
 export const LOAD_STRIPE_ACCOUNT_SUCCESS = "LOAD_STRIPE_ACCOUNT_SUCCESS";

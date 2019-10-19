@@ -3,13 +3,15 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, FormSection, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { CREATE_USER_INFORMATION_FORM } from "forms";
+import { CREATE_USER_INFORMATIONS_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
 import FormField from "components/Shared/Override/Form/Field";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const CreateUserInformationsForm: FunctionComponent<any> = ({ handleSubmit, createUserInformations }) => (
+const CreateUserInformationsForm: FunctionComponent<any> = ({ handleSubmit, createUserInformations, error }) => (
   <Form onSubmit={handleSubmit((data: any) => createUserInformations(data))}>
+    {error && <FormValidation error={error} />}
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
@@ -54,6 +56,6 @@ const CreateUserInformationsForm: FunctionComponent<any> = ({ handleSubmit, crea
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm({ form: CREATE_USER_INFORMATION_FORM, validate }));
+const enhance = compose<any, any>(reduxForm({ form: CREATE_USER_INFORMATIONS_FORM, validate }));
 
 export default enhance(CreateUserInformationsForm);

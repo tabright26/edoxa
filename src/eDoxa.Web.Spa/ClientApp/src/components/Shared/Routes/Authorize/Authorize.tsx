@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { Route } from "react-router-dom";
-import userManager, { POST_LOGIN_REDIRECT_URI } from "store/middlewares/oidc/userManager";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/manager";
 import Loading from "components/Shared/Override/Loading";
-import { RouteProps } from "store/middlewares/router/types";
+import { RouteProps } from "utils/router/types";
 import { withUserIsAuthenticated } from "store/root/user/container";
 import { compose } from "recompose";
 

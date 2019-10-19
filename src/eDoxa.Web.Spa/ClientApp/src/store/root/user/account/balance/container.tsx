@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { loadUserAccountBalance } from "store/root/user/account/balance/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 import { Currency } from "types";
 import { UserAccountBalanceState } from "./types";
 
@@ -24,7 +24,7 @@ export const withUserAccountBalance = (HighOrderComponent: FunctionComponent<any
 
   const mapStateToProps: MapStateToProps<UserAccountBalanceStateProps, UserAccountBalanceOwnProps, RootState> = (state, ownProps) => {
     return {
-      balance: state.user.account.balance[ownProps.currency]
+      balance: state.root.user.account.balance[ownProps.currency]
     };
   };
 

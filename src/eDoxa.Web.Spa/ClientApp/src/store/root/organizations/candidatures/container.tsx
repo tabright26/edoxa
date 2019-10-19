@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadClanCandidatures, loadClanCandidature, sendClanCandidature, acceptClanCandidature, declineClanCandidature } from "store/root/organizations/candidatures/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
 interface CandidatureProps {
   type: string;
@@ -30,9 +30,9 @@ export const withCandidatures = (HighOrderComponent: FunctionComponent<any>) => 
   };
 
   const mapStateToProps = (state: RootState, ownProps: CandidatureProps) => {
-    const candidatures = state.organizations.candidatures.data.map(candidature => {
-      const doxatag = state.doxatags.data.find(doxatag => doxatag.userId === candidature.userId);
-      const clan = state.organizations.clans.data.find(clan => clan.id === candidature.clanId);
+    const candidatures = state.root.organizations.candidatures.data.map(candidature => {
+      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === candidature.userId);
+      const clan = state.root.organizations.clans.data.find(clan => clan.id === candidature.clanId);
 
       candidature.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       candidature.clanName = clan ? clan.name : null;

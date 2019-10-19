@@ -1,6 +1,6 @@
 import { USER_ACCOUNT_WITHDRAWAL_MONEY, USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS, USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL, UserAccountWithdrawalActionCreators } from "./types";
 import { Currency, MONEY, TOKEN } from "types";
-import { AxiosPayload } from "store/middlewares/axios/types";
+import { AxiosPayload } from "utils/axios/types";
 
 export function accountWithdrawal(currency: Currency, amount: number): UserAccountWithdrawalActionCreators {
   const payload: AxiosPayload = {

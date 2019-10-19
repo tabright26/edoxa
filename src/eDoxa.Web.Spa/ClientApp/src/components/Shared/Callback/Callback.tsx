@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import userManager, { POST_LOGIN_REDIRECT_URI } from "store/middlewares/oidc/userManager";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/manager";
 import { connect } from "react-redux";
 import { CallbackComponent } from "redux-oidc";
 import { push } from "react-router-redux";

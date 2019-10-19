@@ -1,4 +1,5 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
+import { Transaction } from "types";
 
 export const USER_ACCOUNT_DEPOSIT_MONEY = "USER_ACCOUNT_DEPOSIT_MONEY";
 export const USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS = "USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS";
@@ -8,7 +9,7 @@ export type UserAccountDepositMoneyType = typeof USER_ACCOUNT_DEPOSIT_MONEY | ty
 
 interface UserAccountDepositMoneyActionCreator extends AxiosActionCreator<UserAccountDepositMoneyType> {}
 
-interface UserAccountDepositMoneyAction extends AxiosAction<UserAccountDepositMoneyType> {}
+interface UserAccountDepositMoneyAction extends AxiosAction<UserAccountDepositMoneyType, Transaction> {}
 
 export const USER_ACCOUNT_DEPOSIT_TOKEN = "USER_ACCOUNT_DEPOSIT_TOKEN";
 export const USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS = "USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS";
@@ -18,7 +19,7 @@ export type UserAccountDepositTokenType = typeof USER_ACCOUNT_DEPOSIT_TOKEN | ty
 
 interface UserAccountDepositTokenActionCreator extends AxiosActionCreator<UserAccountDepositTokenType> {}
 
-interface UserAccountDepositTokenAction extends AxiosAction<UserAccountDepositTokenType> {}
+interface UserAccountDepositTokenAction extends AxiosAction<UserAccountDepositTokenType, Transaction> {}
 
 export type UserAccountDepositActionCreators = UserAccountDepositMoneyActionCreator | UserAccountDepositTokenActionCreator;
 

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { connect } from "react-redux";
-import { RootState } from "store/root/types";
-import { ClaimType } from "store/middlewares/oidc/types";
+import { RootState } from "store/types";
+import { ClaimType } from "utils/oidc/types";
 
 export const withUser = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;

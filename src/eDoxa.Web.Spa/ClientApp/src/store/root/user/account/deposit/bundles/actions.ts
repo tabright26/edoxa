@@ -8,7 +8,7 @@ import {
   UserAccountDepositBundlesActionCreators
 } from "./types";
 import { Currency, MONEY, TOKEN } from "types";
-import { AxiosPayload } from "store/middlewares/axios/types";
+import { AxiosPayload } from "utils/axios/types";
 
 export function loadUserAccountDepositBundlesFor(currency: Currency): UserAccountDepositBundlesActionCreators {
   const payload: AxiosPayload = {

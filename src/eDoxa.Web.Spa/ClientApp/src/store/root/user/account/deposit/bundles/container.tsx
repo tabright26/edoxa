@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 import { loadUserAccountDepositBundlesFor } from "./actions";
 
 export const withUserAccountDepositBundles = (HighOrderComponent: FunctionComponent<any>) => {
@@ -14,7 +14,7 @@ export const withUserAccountDepositBundles = (HighOrderComponent: FunctionCompon
 
   const mapStateToProps = (state: RootState, ownProps: any) => {
     return {
-      bundles: state.user.account.deposit.bundles[ownProps.currency]
+      bundles: state.root.user.account.deposit.bundles[ownProps.currency]
     };
   };
 
