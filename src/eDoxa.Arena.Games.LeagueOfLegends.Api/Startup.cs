@@ -11,6 +11,8 @@ using System.Reflection;
 
 using Autofac;
 
+using AutoMapper;
+
 using eDoxa.Arena.Games.LeagueOfLegends.Api.Extensions;
 using eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure;
 using eDoxa.Arena.Games.LeagueOfLegends.Api.IntegrationEvents.Extensions;
@@ -103,6 +105,8 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
+
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)));
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
