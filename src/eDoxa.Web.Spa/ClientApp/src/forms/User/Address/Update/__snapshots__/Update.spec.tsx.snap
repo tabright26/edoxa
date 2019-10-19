@@ -5,13 +5,32 @@ exports[`renders correctly 1`] = `
   className=""
   onSubmit={[Function]}
 >
-  <input
-    className="form-control-sm form-control"
-    disabled={true}
-    placeholder={null}
-    type="text"
-    value="CANADA"
-  />
+  <div
+    className="form-group"
+  >
+    <select
+      className="form-control-sm form-control"
+      disabled={true}
+      name="country"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      value=""
+    >
+      <option
+        value="CA"
+      >
+        Canada
+      </option>
+      <option
+        value="US"
+      >
+        United States
+      </option>
+    </select>
+  </div>
   <div
     className="form-group"
   >

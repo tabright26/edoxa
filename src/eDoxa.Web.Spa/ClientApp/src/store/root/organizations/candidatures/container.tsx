@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadCandidatures, loadCandidature, addCandidature, acceptCandidature, declineCandidature } from "store/root/organizations/candidatures/actions";
-import { RootState } from "store/root/types";
+import { loadClanCandidatures, loadClanCandidature, sendClanCandidature, acceptClanCandidature, declineClanCandidature } from "store/root/organizations/candidatures/actions";
+import { RootState } from "store/types";
 
 interface CandidatureProps {
   type: string;
   id: string;
 }
 
-export const withCandidatures = (ConnectedComponent: FunctionComponent<any>) => {
+export const withCandidatures = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = ({ actions, candidatures, ownProps, ...attributes }) => {
     useEffect(() => {
       switch (ownProps.type) {
@@ -26,15 +26,15 @@ export const withCandidatures = (ConnectedComponent: FunctionComponent<any>) => 
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} candidatures={candidatures} {...attributes} />;
+    return <HighOrderComponent actions={actions} candidatures={candidatures} {...attributes} />;
   };
 
   const mapStateToProps = (state: RootState, ownProps: CandidatureProps) => {
-    const candidatures = state.organizations.candidatures.map(candidature => {
-      const doxaTag = state.doxaTags.find(doxaTag => doxaTag.userId === candidature.userId);
-      const clan = state.organizations.clans.find(clan => clan.id === candidature.clanId);
+    const candidatures = state.root.organizations.candidatures.data.map(candidature => {
+      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === candidature.userId);
+      const clan = state.root.organizations.clans.data.find(clan => clan.id === candidature.clanId);
 
-      candidature.userDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
+      candidature.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       candidature.clanName = clan ? clan.name : null;
       return candidature;
     });
@@ -48,11 +48,11 @@ export const withCandidatures = (ConnectedComponent: FunctionComponent<any>) => 
   const mapDispatchToProps = (dispatch: any, ownProps: CandidatureProps) => {
     return {
       actions: {
-        loadCandidatures: () => dispatch(loadCandidatures(ownProps.type, ownProps.id)),
-        loadCandidature: (candidatureId: string) => dispatch(loadCandidature(candidatureId)),
-        acceptCandidature: (candidatureId: string) => dispatch(acceptCandidature(candidatureId)).then(loadCandidatures(ownProps.type, ownProps.id)),
-        declineCandidature: (candidatureId: string) => dispatch(declineCandidature(candidatureId)).then(loadCandidatures(ownProps.type, ownProps.id)),
-        addCandidature: (clanId: string, userId: string) => dispatch(addCandidature(clanId, userId)).then(loadCandidatures(ownProps.type, ownProps.id))
+        loadCandidatures: () => dispatch(loadClanCandidatures(ownProps.type, ownProps.id)),
+        loadCandidature: (candidatureId: string) => dispatch(loadClanCandidature(candidatureId)),
+        acceptCandidature: (candidatureId: string) => dispatch(acceptClanCandidature(candidatureId)).then(loadClanCandidatures(ownProps.type, ownProps.id)),
+        declineCandidature: (candidatureId: string) => dispatch(declineClanCandidature(candidatureId)).then(loadClanCandidatures(ownProps.type, ownProps.id)),
+        addCandidature: (clanId: string, userId: string) => dispatch(sendClanCandidature(clanId, userId)).then(loadClanCandidatures(ownProps.type, ownProps.id))
       }
     };
   };

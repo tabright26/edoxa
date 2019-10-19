@@ -15,12 +15,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses.Profiles
         public UserProfile()
         {
             this.CreateMap<User, EmailResponse>()
-                .ForMember(response => response.Email, config => config.MapFrom(user => user.Email))
-                .ForMember(response => response.EmailVerified, config => config.MapFrom(user => user.EmailConfirmed));
+                .ForMember(response => response.Address, config => config.MapFrom(user => user.Email))
+                .ForMember(response => response.Verified, config => config.MapFrom(user => user.EmailConfirmed));
 
             this.CreateMap<User, PhoneResponse>()
-                .ForMember(response => response.PhoneNumber, config => config.MapFrom(user => user.PhoneNumber))
-                .ForMember(response => response.PhoneNumberVerified, config => config.MapFrom(user => user.PhoneNumberConfirmed));
+                .ForMember(response => response.Number, config => config.MapFrom(user => user.PhoneNumber))
+                .ForMember(response => response.Verified, config => config.MapFrom(user => user.PhoneNumberConfirmed));
         }
     }
 }

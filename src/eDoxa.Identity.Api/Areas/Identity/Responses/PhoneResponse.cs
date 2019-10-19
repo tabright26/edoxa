@@ -13,10 +13,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Responses
     [JsonObject]
     public sealed class PhoneResponse
     {
-        [JsonProperty("phoneNumber")]
-        public string PhoneNumber { get; set; }
+        [JsonProperty("number")]
+        public string Number { get; set; }
 
-        [JsonProperty("phoneNumberVerified")]
-        public bool PhoneNumberVerified { get; set; }
+        [JsonProperty("verified")]
+        public bool Verified { get; set; }
     }
 }

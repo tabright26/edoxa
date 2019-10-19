@@ -11,12 +11,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
     [DataContract]
     public sealed class PhonePostRequest
     {
-        public PhonePostRequest(string phoneNumber)
+        public PhonePostRequest(string number)
         {
-            PhoneNumber = phoneNumber;
+            Number = number;
         }
 
-        [DataMember(Name = "phoneNumber")]
-        public string PhoneNumber { get; }
+        [DataMember(Name = "number")]
+        public string Number { get; }
     }
 }

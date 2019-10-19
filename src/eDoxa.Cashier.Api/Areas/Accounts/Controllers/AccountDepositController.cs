@@ -4,8 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
@@ -15,7 +19,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -29,10 +32,14 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     public sealed class AccountDepositController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IBundlesService _bundlesService;
+        private readonly IMapper _mapper;
 
-        public AccountDepositController(IAccountService accountService)
+        public AccountDepositController(IAccountService accountService, IBundlesService bundlesService, IMapper mapper)
         {
             _accountService = accountService;
+            _bundlesService = bundlesService;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -40,7 +47,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         /// </summary>
         [HttpPost]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(Currency currency, [FromBody] decimal amount)
         {
@@ -67,17 +74,17 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             return this.ValidationProblem(ModelState);
         }
 
-        [HttpGet("amounts")]
+        [HttpGet("bundles")]
         public IActionResult Get(Currency currency)
         {
             if (currency == Currency.Money)
             {
-                return this.Ok(Money.DepositAmounts());
+                return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundlesService.FetchDepositMoneyBundles()));
             }
 
             if (currency == Currency.Token)
             {
-                return this.Ok(Token.DepositAmounts());
+                return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundlesService.FetchDepositTokenBundles()));
             }
 
             return this.BadRequest("Invalid or unsuported currency.");

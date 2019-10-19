@@ -1,3 +1,3 @@
-import UpdateInformationForm from "./Update";
+import UpdateUserInformationsContainer from "./Container";
 
-export default UpdateInformationForm;
+export default UpdateUserInformationsContainer;

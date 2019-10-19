@@ -2,14 +2,14 @@ import React from "react";
 import Score from "./Score";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { MATCH_SCORE_MODAL } from "modals";
+import { CHALLENGE_MATCH_SCORE_MODAL } from "modals";
 
 it("renders correctly", () => {
   const store: any = {
     getState: () => {
       return {
         modal: {
-          name: MATCH_SCORE_MODAL
+          name: CHALLENGE_MATCH_SCORE_MODAL
         }
       };
     },

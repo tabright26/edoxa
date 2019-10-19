@@ -1,34 +1,26 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { show } from "redux-modal";
-import { CREATE_ADDRESS_MODAL } from "modals";
-import { loadAddressBook, addAddress, updateAddress, removeAddress } from "store/root/user/addressBook/actions";
-import { RootState } from "store/root/types";
+import { loadUserAddressBook } from "store/root/user/addressBook/actions";
+import { RootState } from "store/types";
 
-export const withUserAddressBook = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, addressBook, ...attributes }) => {
+export const withUserAddressBook = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadAddressBook();
-         // eslint-disable-next-line react-hooks/exhaustive-deps
+      props.loadAddressBook();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} addressBook={addressBook} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      addressBook: state.user.addressBook
+      addressBook: state.root.user.addressBook
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadAddressBook: () => dispatch(loadAddressBook()),
-        addAddress: (data: any) => dispatch(addAddress(data)).then(() => dispatch(loadAddressBook())),
-        updateAddress: (addressId: string, data: any) => dispatch(updateAddress(addressId, data)).then(() => dispatch(loadAddressBook())),
-        removeAddress: (addressId: string) => dispatch(removeAddress(addressId)),
-        showCreateAddressModal: () => dispatch(show(CREATE_ADDRESS_MODAL))
-      }
+      loadAddressBook: () => dispatch(loadUserAddressBook())
     };
   };
 

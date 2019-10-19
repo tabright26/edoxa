@@ -1,22 +1,20 @@
 import React, { FunctionComponent } from "react";
 import ReactCurrencyFormat from "react-currency-format";
-import { Currency } from "store/root/user/account/types";
+import { Currency } from "types";
 import MoneyIcon from "icons/Money";
 import TokenIcon from "icons/Token";
 import UnknownCurrency from "./Unknown";
 
-type AlignmentProp = "right" | "left" | "center" | "justify";
-
 interface CurrencyProps {
   currency: Currency;
   amount: number;
-  alignment?: AlignmentProp;
+  alignment?: "right" | "left" | "center" | "justify";
 }
 
 interface CurrencyIconProps {
   icon: any;
   amount: number;
-  alignment?: AlignmentProp;
+  alignment?: "right" | "left" | "center" | "justify";
 }
 
 const CurrencyIconFormat: FunctionComponent<CurrencyIconProps> = ({ icon: Icon, amount, alignment }) => {

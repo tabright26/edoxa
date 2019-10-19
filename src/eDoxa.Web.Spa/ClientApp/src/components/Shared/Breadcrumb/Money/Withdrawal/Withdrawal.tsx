@@ -1,11 +1,19 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { Button } from "reactstrap";
-import { withUserAccountWithdrawal } from "store/root/user/account/withdrawal/container";
+import { withModals } from "utils/modal/container";
+import { compose } from "recompose";
+import { MONEY } from "types";
+import { withUserAccountWithdrawalBundles } from "store/root/user/account/withdrawal/bundles/container";
 
-const Withdrawal = ({ actions, amounts }) => (
-  <Button color="primary" size="sm" block onClick={() => actions.showWithdrawalModal(actions, amounts)}>
+const Withdrawal: FunctionComponent<any> = ({ modals, bundles: { data, loading } }) => (
+  <Button color="primary" size="sm" block disabled={loading} onClick={() => modals.showWithdrawalModal(MONEY, data)}>
     Withdrawal Money
   </Button>
 );
 
-export default withUserAccountWithdrawal("money")(Withdrawal);
+const enhance = compose<any, any>(
+  withModals,
+  withUserAccountWithdrawalBundles
+);
+
+export default enhance(Withdrawal);

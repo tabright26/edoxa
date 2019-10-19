@@ -1,6 +1,6 @@
 import { LOAD_DOXATAGS, LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL, DoxatagsActionCreators } from "./types";
 
-export function loadDoxaTags(): DoxatagsActionCreators {
+export function loadDoxatags(): DoxatagsActionCreators {
   return {
     types: [LOAD_DOXATAGS, LOAD_DOXATAGS_SUCCESS, LOAD_DOXATAGS_FAIL],
     payload: {

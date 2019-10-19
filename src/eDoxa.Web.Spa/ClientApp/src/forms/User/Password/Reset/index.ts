@@ -1,3 +1,3 @@
-import ResetPasswordForm from "./Reset";
+import ResetUserPasswordContainer from "./Container";
 
-export default ResetPasswordForm;
+export default ResetUserPasswordContainer;

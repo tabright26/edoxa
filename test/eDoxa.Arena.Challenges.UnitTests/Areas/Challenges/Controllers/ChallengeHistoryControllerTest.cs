@@ -16,8 +16,6 @@ using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 
 using FluentAssertions;
 
-using FluentValidation.Results;
-
 using Microsoft.AspNetCore.Mvc;
 
 using Moq;

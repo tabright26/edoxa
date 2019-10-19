@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
-import { reducer as challenges } from "./challenges/reducer";
+import { reducer as challengesReducer } from "./challenges/reducer";
 
 export const reducer = combineReducers({
-  challenges
+  challenges: challengesReducer
 });

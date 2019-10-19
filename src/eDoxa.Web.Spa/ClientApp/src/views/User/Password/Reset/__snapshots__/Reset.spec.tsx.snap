@@ -106,7 +106,7 @@ exports[`renders correctly 1`] = `
       >
         <button
           aria-label={null}
-          className="btn btn-primary btn-sm btn-block"
+          className="btn btn-primary btn-block"
           onClick={[Function]}
           style={
             Object {

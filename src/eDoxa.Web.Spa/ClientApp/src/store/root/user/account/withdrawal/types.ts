@@ -1,30 +1,16 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
-import { Currency } from "../types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
+import { Transaction } from "types";
 
-export const LOAD_WITHDRAWAL_MONEY_AMOUNTS = "LOAD_WITHDRAWAL_MONEY_AMOUNTS";
-export const LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS = "LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS";
-export const LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL = "LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL";
+export const USER_ACCOUNT_WITHDRAWAL_MONEY = "USER_ACCOUNT_WITHDRAWAL_MONEY";
+export const USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS = "USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS";
+export const USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL = "USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL";
 
-type LoadWithdrawalMoneyAmountsType = typeof LOAD_WITHDRAWAL_MONEY_AMOUNTS | typeof LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS | typeof LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL;
+type UserAccountWithdrawalMoneyType = typeof USER_ACCOUNT_WITHDRAWAL_MONEY | typeof USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS | typeof USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL;
 
-interface LoadWithdrawalMoneyAmountsActionCreator extends AxiosActionCreator<LoadWithdrawalMoneyAmountsType> {}
+interface UserAccountWithdrawalMoneyActionCreator extends AxiosActionCreator<UserAccountWithdrawalMoneyType> {}
 
-interface LoadWithdrawalMoneyAmountsAction extends AxiosAction<LoadWithdrawalMoneyAmountsType> {}
+interface UserAccountWithdrawalMoneyAction extends AxiosAction<UserAccountWithdrawalMoneyType, Transaction> {}
 
-export const WITHDRAWAL_TOKEN = "WITHDRAWAL_TOKEN";
-export const WITHDRAWAL_TOKEN_SUCCESS = "WITHDRAWAL_TOKEN_SUCCESS";
-export const WITHDRAWAL_TOKEN_FAIL = "WITHDRAWAL_TOKEN_FAIL";
+export type UserAccountWithdrawalActionCreators = UserAccountWithdrawalMoneyActionCreator;
 
-type WithdrawalTokenType = typeof WITHDRAWAL_TOKEN | typeof WITHDRAWAL_TOKEN_SUCCESS | typeof WITHDRAWAL_TOKEN_FAIL;
-
-interface WithdrawalMoneyActionCreator extends AxiosActionCreator<WithdrawalTokenType> {}
-
-interface WithdrawalMoneyAction extends AxiosAction<WithdrawalTokenType> {}
-
-export type WithdrawalActionCreators = WithdrawalMoneyActionCreator | LoadWithdrawalMoneyAmountsActionCreator;
-
-export type WithdrawalActionTypes = WithdrawalMoneyAction | LoadWithdrawalMoneyAmountsAction;
-
-export interface WithdrawalState {
-  amounts: Map<Currency, number[]>;
-}
+export type UserAccountWithdrawalActions = UserAccountWithdrawalMoneyAction;

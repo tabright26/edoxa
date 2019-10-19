@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 
 export const LOAD_CLANS = "LOAD_CLANS";
 export const LOAD_CLANS_SUCCESS = "LOAD_CLANS_SUCCESS";
@@ -8,17 +8,13 @@ export const LOAD_CLAN = "LOAD_CLAN";
 export const LOAD_CLAN_SUCCESS = "LOAD_CLAN_SUCCESS";
 export const LOAD_CLAN_FAIL = "LOAD_CLAN_FAIL";
 
-export const ADD_CLAN = "ADD_CLAN";
-export const ADD_CLAN_SUCCESS = "ADD_CLAN_SUCCESS";
-export const ADD_CLAN_FAIL = "ADD_CLAN_FAIL";
+export const CREATE_CLAN = "CREATE_CLAN";
+export const CREATE_CLAN_SUCCESS = "CREATE_CLAN_SUCCESS";
+export const CREATE_CLAN_FAIL = "CREATE_CLAN_FAIL";
 
-export const DOWNLOAD_CLAN_LOGO = "DOWNLOAD_CLAN_LOGO";
-export const DOWNLOAD_CLAN_LOGO_SUCCESS = "DOWNLOAD_CLAN_LOGO_SUCCESS";
-export const DOWNLOAD_CLAN_LOGO_FAIL = "DOWNLOAD_CLAN_LOGO_FAIL";
-
-export const UPLOAD_CLAN_LOGO = "UPLOAD_CLAN_LOGO";
-export const UPLOAD_CLAN_LOGO_SUCCESS = "UPLOAD_CLAN_LOGO_SUCCESS";
-export const UPLOAD_CLAN_LOGO_FAIL = "UPLOAD_CLAN_LOGO_FAIL";
+export const LEAVE_CLAN = "LEAVE_CLAN";
+export const LEAVE_CLAN_SUCCESS = "LEAVE_CLAN_SUCCESS";
+export const LEAVE_CLAN_FAIL = "LEAVE_CLAN_FAIL";
 
 type LoadClansType = typeof LOAD_CLANS | typeof LOAD_CLANS_SUCCESS | typeof LOAD_CLANS_FAIL;
 
@@ -26,42 +22,26 @@ interface LoadClansActionCreator extends AxiosActionCreator<LoadClansType> {}
 
 interface LoadClansAction extends AxiosAction<LoadClansType> {}
 
-//------------------------------------------------------------------------------------------------
-
 type LoadClanType = typeof LOAD_CLAN | typeof LOAD_CLAN_SUCCESS | typeof LOAD_CLAN_FAIL;
 
 interface LoadClanActionCreator extends AxiosActionCreator<LoadClanType> {}
 
 interface LoadClanAction extends AxiosAction<LoadClanType> {}
 
-//------------------------------------------------------------------------------------------------
+type CreateClanType = typeof CREATE_CLAN | typeof CREATE_CLAN_SUCCESS | typeof CREATE_CLAN_FAIL;
 
-type AddClanType = typeof ADD_CLAN | typeof ADD_CLAN_SUCCESS | typeof ADD_CLAN_FAIL;
+interface CreateClanActionCreator extends AxiosActionCreator<CreateClanType> {}
 
-interface AddClanActionCreator extends AxiosActionCreator<AddClanType> {}
+interface CreateClanAction extends AxiosAction<CreateClanType> {}
 
-interface AddClanAction extends AxiosAction<AddClanType> {}
+type LeaveClanType = typeof LEAVE_CLAN | typeof LEAVE_CLAN_SUCCESS | typeof LEAVE_CLAN_FAIL;
 
-//------------------------------------------------------------------------------------------------
+interface LeaveClanActionCreator extends AxiosActionCreator<LeaveClanType> {}
 
-type DownloadClanLogoType = typeof DOWNLOAD_CLAN_LOGO | typeof DOWNLOAD_CLAN_LOGO_SUCCESS | typeof DOWNLOAD_CLAN_LOGO_FAIL;
+interface LeaveClanAction extends AxiosAction<LeaveClanType> {}
 
-interface DownloadClanLogoActionCreator extends AxiosActionCreator<DownloadClanLogoType> {}
+export type ClansActionCreators = LoadClansActionCreator | LoadClanActionCreator | CreateClanActionCreator | LeaveClanActionCreator;
 
-interface DownloadClanLogoAction extends AxiosAction<DownloadClanLogoType> {}
+export type ClansActions = LoadClansAction | LoadClanAction | CreateClanAction | LeaveClanAction;
 
-//----------------------------------------------------------------------------------------------
-
-type UploadClanLogoType = typeof UPLOAD_CLAN_LOGO | typeof UPLOAD_CLAN_LOGO_SUCCESS | typeof UPLOAD_CLAN_LOGO_FAIL;
-
-interface UploadClanLogoActionCreator extends AxiosActionCreator<UploadClanLogoType> {}
-
-interface UploadClanLogoAction extends AxiosAction<UploadClanLogoType> {}
-
-//----------------------------------------------------------------------------------------------
-
-export type ClansActionCreators = LoadClansActionCreator | LoadClanActionCreator | AddClanActionCreator | DownloadClanLogoActionCreator | UploadClanLogoActionCreator;
-
-export type ClansActionTypes = LoadClansAction | LoadClanAction | AddClanAction | DownloadClanLogoAction | UploadClanLogoAction;
-
-export interface ClansState {}
+export type ClansState = AxiosState;

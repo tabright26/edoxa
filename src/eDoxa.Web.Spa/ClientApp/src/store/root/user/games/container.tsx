@@ -1,28 +1,26 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadGames } from "store/root/user/games/actions";
-import { RootState } from "store/root/types";
+import { loadUserGames } from "store/root/user/games/actions";
+import { RootState } from "store/types";
 
-export const withUserGames = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, games, ...attributes }) => {
+export const withUserGames = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadGames();
+      props.loadUserGames();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} games={games} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      games: state.user.games
+      games: state.root.user.games
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadGames: () => dispatch(loadGames())
-      }
+      loadUserGames: () => dispatch(loadUserGames())
     };
   };
 

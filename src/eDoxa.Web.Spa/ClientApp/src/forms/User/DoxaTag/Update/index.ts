@@ -1,3 +1,3 @@
-import UpdateDoxaTagForm from "./Update";
+import UpdateUserDoxatagContainer from "./Container";
 
-export default UpdateDoxaTagForm;
+export default UpdateUserDoxatagContainer;

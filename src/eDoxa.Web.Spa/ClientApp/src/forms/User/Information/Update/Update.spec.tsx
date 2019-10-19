@@ -5,16 +5,16 @@ import moment from "moment";
 import { Provider } from "react-redux";
 
 it("renders correctly", () => {
-  const personalInfo = {
+  const informations = {
     firstName: "Boby",
     lastName: "Bob",
-    birthDate: moment(new Date(2000, 2, 1)).unix(),
+    dob: moment(new Date(2000, 2, 1)).unix(),
     gender: "Male"
   };
   const tree = renderer
     .create(
       <Provider store={{ getState: () => {}, dispatch: action => {}, subscribe: () => {} }}>
-        <Update initialValues={personalInfo} />
+        <Update initialValues={informations} />
       </Provider>
     )
     .toJSON();

@@ -1,7 +1,17 @@
 import { reducer, initialState } from "./reducer";
+import {
+  LOAD_USER_DOXATAGHISTORY,
+  LOAD_USER_DOXATAGHISTORY_SUCCESS,
+  LOAD_USER_DOXATAGHISTORY_FAIL,
+  UPDATE_USER_DOXATAG,
+  UPDATE_USER_DOXATAG_SUCCESS,
+  UPDATE_USER_DOXATAG_FAIL,
+  UserDoxatagHistoryActionCreators
+} from "./types";
+import { AxiosError } from "axios";
 
-const doxaTagHistory204Data = [];
-const doxaTagHistory200Data = [{ doxaTag: "DoxaTag1" }, { doxaTag: "DoxaTag2" }, { doxaTag: "DoxaTag3" }];
+const doxatagHistory204Data = [];
+const doxatagHistory200Data = [{ doxatag: "Doxatag1" }, { doxatag: "Doxatag2" }, { doxatag: "Doxatag3" }];
 
 describe("user doxatag history reducer", () => {
   it("should return the initial state", () => {
@@ -11,24 +21,41 @@ describe("user doxatag history reducer", () => {
 
   it("should handle LOAD_DOXATAG_HISTORY_SUCCESS 204", () => {
     const action: any = {
-      type: "LOAD_DOXATAG_HISTORY_SUCCESS",
-      payload: { status: 204, data: doxaTagHistory204Data }
+      type: LOAD_USER_DOXATAGHISTORY_SUCCESS,
+      payload: { status: 204, data: doxatagHistory204Data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 
   it("should handle LOAD_DOXATAG_HISTORY_SUCCESS 200", () => {
     const action: any = {
-      type: "LOAD_DOXATAG_HISTORY_SUCCESS",
-      payload: { status: 200, data: doxaTagHistory200Data }
+      type: LOAD_USER_DOXATAGHISTORY_SUCCESS,
+      payload: { status: 200, data: doxatagHistory200Data }
     };
-    expect(reducer(initialState, action)).toEqual(doxaTagHistory200Data);
+    const state = {
+      data: doxatagHistory200Data,
+      error: null,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 
   it("should handle LOAD_DOXATAG_HISTORY_FAIL", () => {
-    const action: any = {
-      type: "LOAD_DOXATAG_HISTORY_FAIL"
+    const error: AxiosError = {
+      isAxiosError: true,
+      config: {},
+      name: "",
+      message: ""
     };
-    expect(reducer(initialState, action)).toEqual(initialState);
+    const action: any = {
+      type: LOAD_USER_DOXATAGHISTORY_FAIL,
+      error
+    };
+    const state = {
+      data: initialState.data,
+      error,
+      loading: false
+    };
+    expect(reducer(initialState, action)).toEqual(state);
   });
 });

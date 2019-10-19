@@ -1,8 +1,16 @@
-import { LOAD_DOXATAG_HISTORY, LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL, CHANGE_DOXATAG, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL, DoxatagHistoryActionCreators } from "./types";
+import {
+  LOAD_USER_DOXATAGHISTORY,
+  LOAD_USER_DOXATAGHISTORY_SUCCESS,
+  LOAD_USER_DOXATAGHISTORY_FAIL,
+  UPDATE_USER_DOXATAG,
+  UPDATE_USER_DOXATAG_SUCCESS,
+  UPDATE_USER_DOXATAG_FAIL,
+  UserDoxatagHistoryActionCreators
+} from "./types";
 
-export function loadDoxaTagHistory(): DoxatagHistoryActionCreators {
+export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
   return {
-    types: [LOAD_DOXATAG_HISTORY, LOAD_DOXATAG_HISTORY_SUCCESS, LOAD_DOXATAG_HISTORY_FAIL],
+    types: [LOAD_USER_DOXATAGHISTORY, LOAD_USER_DOXATAGHISTORY_SUCCESS, LOAD_USER_DOXATAGHISTORY_FAIL],
     payload: {
       request: {
         method: "GET",
@@ -12,9 +20,9 @@ export function loadDoxaTagHistory(): DoxatagHistoryActionCreators {
   };
 }
 
-export function changeDoxaTag(data: any): DoxatagHistoryActionCreators {
+export function updateUserDoxatag(data: any): UserDoxatagHistoryActionCreators {
   return {
-    types: [CHANGE_DOXATAG, CHANGE_DOXATAG_SUCCESS, CHANGE_DOXATAG_FAIL],
+    types: [UPDATE_USER_DOXATAG, UPDATE_USER_DOXATAG_SUCCESS, UPDATE_USER_DOXATAG_FAIL],
     payload: {
       request: {
         method: "POST",

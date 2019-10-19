@@ -1,23 +1,26 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadChallenges, loadChallenge } from "store/root/arena/challenges/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
-export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, challenges, ...attributes }) => <ConnectedComponent actions={actions} challenges={challenges} {...attributes} />;
+export const withChallenges = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
+    useEffect((): void => {
+      props.loadChallenges();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return <HighOrderComponent {...props} />;
+  };
 
   const mapStateToProps = (state: RootState) => {
     return {
-      challenges: state.arena.challenges
+      challenges: state.root.arena.challenges
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadChallenges: () => dispatch(loadChallenges()),
-        loadChallenge: (challengeId: string) => dispatch(loadChallenge(challengeId))
-      }
+      loadChallenges: () => dispatch(loadChallenges())
     };
   };
 
@@ -27,21 +30,30 @@ export const connectArenaChallenges = (ConnectedComponent: FunctionComponent<any
   )(Container);
 };
 
-// DEPRECATED
-// const mapStateToProps = (state: AppState, ownProps) => {
-//   const challenge = state.arena.challenges.find(challenge => challenge.id === ownProps.match.params.challengeId);
-//   if (challenge) {
-//     challenge.participants.forEach(participant => {
-//       participant.user = {
-//         doxaTag: state.doxaTags.find(doxaTag => doxaTag.userId === participant.userId) || {
-//           doxaTag: {
-//             name: "[Unloaded]"
-//           }
-//         }
-//       };
-//     });
-//   }
-//   return {
-//     challenge
-//   };
-// };
+export const withChallenge = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
+    useEffect((): void => {
+      props.loadChallenge();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return <HighOrderComponent {...props} />;
+  };
+
+  const mapStateToProps = (state: RootState, ownProps: any) => {
+    const { data } = state.root.arena.challenges;
+    return {
+      challenge: data.find(challenge => challenge.id === ownProps.match.params.challengeId)
+    };
+  };
+
+  const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+    return {
+      loadChallenge: () => dispatch(loadChallenge(ownProps.match.params.challengeId))
+    };
+  };
+
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Container);
+};

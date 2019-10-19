@@ -1,19 +1,19 @@
 import { createStore, compose, applyMiddleware } from "redux";
 
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
 
-import { reducer as rootReducer } from "store/root/reducer";
+import { reducer as rootReducer } from "store/reducer";
 
-import { middleware as thunkMiddleware } from "store/middlewares/thunk/middleware";
-import { middleware as routerMiddleware } from "store/middlewares/router/middleware";
-import { middleware as axiosMiddleware } from "store/middlewares/axios/middleware";
-import { middleware as signalrMiddleware } from "store/middlewares/signalr/middleware";
-import { middleware as loggerMiddleware } from "store/middlewares/logger/middleware";
+import { middleware as thunkMiddleware } from "utils/thunk/middleware";
+import { middleware as routerMiddleware } from "utils/router/middleware";
+import { middleware as axiosMiddleware } from "utils/axios/middleware";
+import { middleware as signalrMiddleware } from "utils/signalr/middleware";
+import { middleware as loggerMiddleware } from "utils/logger/middleware";
 
-import userManager from "store/middlewares/oidc/userManager";
+import userManager from "utils/oidc/manager";
 
 import { loadUser } from "redux-oidc";
-import { loadDoxaTags } from "store/root/doxaTags/actions";
+import { loadDoxatags } from "store/root/doxatags/actions";
 
 // This enables the webpack development tools such as the Hot Module Replacement.
 const composeEnhancers = (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as typeof compose) || compose;
@@ -21,7 +21,7 @@ const composeEnhancers = (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as type
 export const configureStore = (initialState: RootState) => {
   const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunkMiddleware, axiosMiddleware, signalrMiddleware, routerMiddleware, loggerMiddleware)));
   loadUser(store, userManager);
-  const action: any = loadDoxaTags();
+  const action: any = loadDoxatags();
   store.dispatch(action);
   return store;
 };

@@ -6,7 +6,7 @@ describe("cashier actions", () => {
     const expectedCurrency = "token";
     const expectedType = [LOAD_USER_ACCOUNT_TRANSACTIONS, LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/cashier/api/transactions?currency=${expectedCurrency}`;
+    const expectedUrl = `/cashier/api/transactions`;
 
     const actionCreator = loadUserAccountTransactions(expectedCurrency);
 

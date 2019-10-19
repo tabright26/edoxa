@@ -1,43 +1,27 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
 
-export const LOAD_MEMBERS = "LOAD_MEMBERS";
-export const LOAD_MEMBERS_SUCCESS = "LOAD_MEMBERS_SUCCESS";
-export const LOAD_MEMBERS_FAIL = "LOAD_MEMBERS_FAIL";
+export const LOAD_CLAN_MEMBERS = "LOAD_CLAN_MEMBERS";
+export const LOAD_CLAN_MEMBERS_SUCCESS = "LOAD_CLAN_MEMBERS_SUCCESS";
+export const LOAD_CLAN_MEMBERS_FAIL = "LOAD_CLAN_MEMBERS_FAIL";
 
-export const KICK_MEMBER = "KICK_MEMBER";
-export const KICK_MEMBER_SUCCESS = "KICK_MEMBER_SUCCESS";
-export const KICK_MEMBER_FAIL = "KICK_MEMBER_FAIL";
+export const KICK_CLAN_MEMBER = "KICK_CLAN_MEMBER";
+export const KICK_CLAN_MEMBER_SUCCESS = "KICK_CLAN_MEMBER_SUCCESS";
+export const KICK_CLAN_MEMBER_FAIL = "KICK_CLAN_MEMBER_FAIL";
 
-export const LEAVE_CLAN = "LEAVE_CLAN";
-export const LEAVE_CLAN_SUCCESS = "LEAVE_CLAN_SUCCESS";
-export const LEAVE_CLAN_FAIL = "LEAVE_CLAN_FAIL";
+type LoadClanMembersType = typeof LOAD_CLAN_MEMBERS | typeof LOAD_CLAN_MEMBERS_SUCCESS | typeof LOAD_CLAN_MEMBERS_FAIL;
 
-type LoadMembersType = typeof LOAD_MEMBERS | typeof LOAD_MEMBERS_SUCCESS | typeof LOAD_MEMBERS_FAIL;
+interface LoadClanMembersActionCreator extends AxiosActionCreator<LoadClanMembersType> {}
 
-interface LoadMembersActionCreator extends AxiosActionCreator<LoadMembersType> {}
+interface LoadClanMembersAction extends AxiosAction<LoadClanMembersType> {}
 
-interface LoadMembersAction extends AxiosAction<LoadMembersType> {}
+type KickClanMemberType = typeof KICK_CLAN_MEMBER | typeof KICK_CLAN_MEMBER_SUCCESS | typeof KICK_CLAN_MEMBER_FAIL;
 
-//---------------------------------------------------------------------------------------------------------
+interface KickClanMemberActionCreator extends AxiosActionCreator<KickClanMemberType> {}
 
-type KickMemberType = typeof KICK_MEMBER | typeof KICK_MEMBER_SUCCESS | typeof KICK_MEMBER_FAIL;
+interface KickClanMemberAction extends AxiosAction<KickClanMemberType> {}
 
-interface KickMemberActionCreator extends AxiosActionCreator<KickMemberType> {}
+export type ClanMembersActionCreators = LoadClanMembersActionCreator | KickClanMemberActionCreator;
 
-interface KickMemberAction extends AxiosAction<KickMemberType> {}
+export type ClanMembersActions = LoadClanMembersAction | KickClanMemberAction;
 
-//---------------------------------------------------------------------------------------------------------
-
-type LeaveClanType = typeof LEAVE_CLAN | typeof LEAVE_CLAN_SUCCESS | typeof LEAVE_CLAN_FAIL;
-
-interface LeaveClanActionCreator extends AxiosActionCreator<LeaveClanType> {}
-
-interface LeaveClanAction extends AxiosAction<LeaveClanType> {}
-
-//---------------------------------------------------------------------------------------------------------
-
-export type MembersActionCreators = LoadMembersActionCreator | KickMemberActionCreator | LeaveClanActionCreator;
-
-export type MembersActionTypes = LoadMembersAction | KickMemberAction | LeaveClanAction;
-
-export interface MembersState {}
+export type ClanMembersState = AxiosState;

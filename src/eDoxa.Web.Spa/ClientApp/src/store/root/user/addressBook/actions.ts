@@ -1,22 +1,23 @@
 import {
-  LOAD_ADDRESS_BOOK,
-  LOAD_ADDRESS_BOOK_SUCCESS,
-  LOAD_ADDRESS_BOOK_FAIL,
-  ADD_ADDRESS,
-  ADD_ADDRESS_SUCCESS,
-  ADD_ADDRESS_FAIL,
-  REMOVE_ADDRESS,
-  REMOVE_ADDRESS_SUCCESS,
-  REMOVE_ADDRESS_FAIL,
-  UPDATE_ADDRESS,
-  UPDATE_ADDRESS_SUCCESS,
-  UPDATE_ADDRESS_FAIL,
-  AddressBookActionCreators
+  LOAD_USER_ADDRESSBOOK,
+  LOAD_USER_ADDRESSBOOK_SUCCESS,
+  LOAD_USER_ADDRESSBOOK_FAIL,
+  CREATE_USER_ADDRESS,
+  CREATE_USER_ADDRESS_SUCCESS,
+  CREATE_USER_ADDRESS_FAIL,
+  DELETE_USER_ADDRESS,
+  DELETE_USER_ADDRESS_SUCCESS,
+  DELETE_USER_ADDRESS_FAIL,
+  UPDATE_USER_ADDRESS,
+  UPDATE_USER_ADDRESS_SUCCESS,
+  UPDATE_USER_ADDRESS_FAIL,
+  UserAddressBookActionCreators
 } from "./types";
+import { AddressId } from "types";
 
-export function loadAddressBook(): AddressBookActionCreators {
+export function loadUserAddressBook(): UserAddressBookActionCreators {
   return {
-    types: [LOAD_ADDRESS_BOOK, LOAD_ADDRESS_BOOK_SUCCESS, LOAD_ADDRESS_BOOK_FAIL],
+    types: [LOAD_USER_ADDRESSBOOK, LOAD_USER_ADDRESSBOOK_SUCCESS, LOAD_USER_ADDRESSBOOK_FAIL],
     payload: {
       request: {
         method: "GET",
@@ -26,9 +27,9 @@ export function loadAddressBook(): AddressBookActionCreators {
   };
 }
 
-export function addAddress(data: any): AddressBookActionCreators {
+export function createUserAddress(data: any): UserAddressBookActionCreators {
   return {
-    types: [ADD_ADDRESS, ADD_ADDRESS_SUCCESS, ADD_ADDRESS_FAIL],
+    types: [CREATE_USER_ADDRESS, CREATE_USER_ADDRESS_SUCCESS, CREATE_USER_ADDRESS_FAIL],
     payload: {
       request: {
         method: "POST",
@@ -39,9 +40,9 @@ export function addAddress(data: any): AddressBookActionCreators {
   };
 }
 
-export function updateAddress(addressId: string, data: any): AddressBookActionCreators {
+export function updateUserAddress(addressId: AddressId, data: any): UserAddressBookActionCreators {
   return {
-    types: [UPDATE_ADDRESS, UPDATE_ADDRESS_SUCCESS, UPDATE_ADDRESS_FAIL],
+    types: [UPDATE_USER_ADDRESS, UPDATE_USER_ADDRESS_SUCCESS, UPDATE_USER_ADDRESS_FAIL],
     payload: {
       request: {
         method: "PUT",
@@ -52,9 +53,9 @@ export function updateAddress(addressId: string, data: any): AddressBookActionCr
   };
 }
 
-export function removeAddress(addressId: string): AddressBookActionCreators {
+export function deleteUserAddress(addressId: AddressId): UserAddressBookActionCreators {
   return {
-    types: [REMOVE_ADDRESS, REMOVE_ADDRESS_SUCCESS, REMOVE_ADDRESS_FAIL],
+    types: [DELETE_USER_ADDRESS, DELETE_USER_ADDRESS_SUCCESS, DELETE_USER_ADDRESS_FAIL],
     payload: {
       request: {
         method: "DELETE",

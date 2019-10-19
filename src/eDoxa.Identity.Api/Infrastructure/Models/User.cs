@@ -19,15 +19,16 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
 #nullable disable
         public User()
         {
+            Informations = null;
+            DoxatagHistory = new Collection<UserDoxatag>();
             AddressBook = new Collection<UserAddress>();
-            DoxaTagHistory = new Collection<UserDoxaTag>();
         }
 #nullable restore
         public Country Country { get; set; }
 
-        public UserPersonalInfo? PersonalInfo { get; set; }
+        public UserInformations? Informations { get; set; }
 
-        public ICollection<UserDoxaTag> DoxaTagHistory { get; set; }
+        public ICollection<UserDoxatag> DoxatagHistory { get; set; }
 
         public ICollection<UserAddress> AddressBook { get; set; }
     }

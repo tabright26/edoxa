@@ -3,7 +3,7 @@ import { connectModal } from "redux-modal";
 import { Modal, ModalFooter, ModalHeader, Table } from "reactstrap";
 import Button from "components/Shared/Override/Button";
 import Format from "components/Shared/Format";
-import { MATCH_SCORE_MODAL } from "modals";
+import { CHALLENGE_MATCH_SCORE_MODAL } from "modals";
 import { compose } from "recompose";
 
 const MatchScoreModal: FunctionComponent<any> = ({ show, handleHide, stats }) => (
@@ -47,6 +47,6 @@ const MatchScoreModal: FunctionComponent<any> = ({ show, handleHide, stats }) =>
   </Modal>
 );
 
-const enhance = compose<any, any>(connectModal({ name: MATCH_SCORE_MODAL }));
+const enhance = compose<any, any>(connectModal({ name: CHALLENGE_MATCH_SCORE_MODAL }));
 
 export default enhance(MatchScoreModal);

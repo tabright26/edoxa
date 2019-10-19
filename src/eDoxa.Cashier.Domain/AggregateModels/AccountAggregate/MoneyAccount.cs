@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -45,7 +46,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(Money amount)
+        public ITransaction Deposit(Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanDeposit())
             {
@@ -82,7 +83,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Withdrawal(Money amount)
+        public ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanWithdraw(amount))
             {

@@ -1,17 +1,8 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { LoadUserMoneyAccountBalanceActionCreator } from "./money/types";
+import { LoadUserTokenAccountBalanceActionCreator } from "./token/types";
+import { AxiosState } from "utils/axios/types";
+import { Balance } from "types";
 
-export const LOAD_USER_ACCOUNT_BALANCE = "LOAD_USER_ACCOUNT_BALANCE";
-export const LOAD_USER_ACCOUNT_BALANCE_SUCCESS = "LOAD_USER_ACCOUNT_BALANCE_SUCCESS";
-export const LOAD_USER_ACCOUNT_BALANCE_FAIL = "LOAD_USER_ACCOUNT_BALANCE_FAIL";
+export type UserAccountBalanceActionCreators = LoadUserMoneyAccountBalanceActionCreator | LoadUserTokenAccountBalanceActionCreator;
 
-type LoadBalanceType = typeof LOAD_USER_ACCOUNT_BALANCE | typeof LOAD_USER_ACCOUNT_BALANCE_SUCCESS | typeof LOAD_USER_ACCOUNT_BALANCE_FAIL;
-
-interface LoadBalanceActionCreator extends AxiosActionCreator<LoadBalanceType> {}
-
-interface LoadBalanceAction extends AxiosAction<LoadBalanceType> {}
-
-export type BalanceActionCreators = LoadBalanceActionCreator;
-
-export type BalanceActionTypes = LoadBalanceAction;
-
-export interface BalanceState {}
+export type UserAccountBalanceState = AxiosState<Balance>;

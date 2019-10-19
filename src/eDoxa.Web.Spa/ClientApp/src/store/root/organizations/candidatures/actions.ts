@@ -1,37 +1,37 @@
 import {
-  LOAD_CANDIDATURES,
-  LOAD_CANDIDATURES_SUCCESS,
-  LOAD_CANDIDATURES_FAIL,
-  LOAD_CANDIDATURE,
-  LOAD_CANDIDATURE_SUCCESS,
-  LOAD_CANDIDATURE_FAIL,
-  ADD_CANDIDATURE,
-  ADD_CANDIDATURE_SUCCESS,
-  ADD_CANDIDATURE_FAIL,
-  ACCEPT_CANDIDATURE,
-  ACCEPT_CANDIDATURE_SUCCESS,
-  ACCEPT_CANDIDATURE_FAIL,
-  DECLINE_CANDIDATURE,
-  DECLINE_CANDIDATURE_SUCCESS,
-  DECLINE_CANDIDATURE_FAIL,
-  CandidaturesActionCreators
+  LOAD_CLAN_CANDIDATURES,
+  LOAD_CLAN_CANDIDATURES_SUCCESS,
+  LOAD_CLAN_CANDIDATURES_FAIL,
+  LOAD_CLAN_CANDIDATURE,
+  LOAD_CLAN_CANDIDATURE_SUCCESS,
+  LOAD_CLAN_CANDIDATURE_FAIL,
+  SEND_CLAN_CANDIDATURE,
+  SEND_CLAN_CANDIDATURE_SUCCESS,
+  SEND_CLAN_CANDIDATURE_FAIL,
+  ACCEPT_CLAN_CANDIDATURE,
+  ACCEPT_CLAN_CANDIDATURE_SUCCESS,
+  ACCEPT_CLAN_CANDIDATURE_FAIL,
+  REFUSE_CLAN_CANDIDATURE,
+  REFUSE_CLAN_CANDIDATURE_SUCCESS,
+  REFUSE_CLAN_CANDIDATURE_FAIL,
+  ClanCandidaturesActionCreators
 } from "./types";
 
-export function loadCandidatures(type: string, id: string): CandidaturesActionCreators {
+export function loadClanCandidatures(type: string, id: string): ClanCandidaturesActionCreators {
   return {
-    types: [LOAD_CANDIDATURES, LOAD_CANDIDATURES_SUCCESS, LOAD_CANDIDATURES_FAIL],
+    types: [LOAD_CLAN_CANDIDATURES, LOAD_CLAN_CANDIDATURES_SUCCESS, LOAD_CLAN_CANDIDATURES_FAIL],
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/candidatures?${type}Id=${id}`
+        url: `/organizations/clans/api/candidatures?${type}Id=${id}` // FRANCIS: This is wrong.
       }
     }
   };
 }
 
-export function loadCandidature(candidatureId: string): CandidaturesActionCreators {
+export function loadClanCandidature(candidatureId: string): ClanCandidaturesActionCreators {
   return {
-    types: [LOAD_CANDIDATURE, LOAD_CANDIDATURE_SUCCESS, LOAD_CANDIDATURE_FAIL],
+    types: [LOAD_CLAN_CANDIDATURE, LOAD_CLAN_CANDIDATURE_SUCCESS, LOAD_CLAN_CANDIDATURE_FAIL],
     payload: {
       request: {
         method: "GET",
@@ -41,9 +41,9 @@ export function loadCandidature(candidatureId: string): CandidaturesActionCreato
   };
 }
 
-export function addCandidature(clanId, userId): CandidaturesActionCreators {
+export function sendClanCandidature(clanId: string, userId: string): ClanCandidaturesActionCreators {
   return {
-    types: [ADD_CANDIDATURE, ADD_CANDIDATURE_SUCCESS, ADD_CANDIDATURE_FAIL],
+    types: [SEND_CLAN_CANDIDATURE, SEND_CLAN_CANDIDATURE_SUCCESS, SEND_CLAN_CANDIDATURE_FAIL],
     payload: {
       request: {
         method: "POST",
@@ -57,9 +57,9 @@ export function addCandidature(clanId, userId): CandidaturesActionCreators {
   };
 }
 
-export function acceptCandidature(candidatureId: string): CandidaturesActionCreators {
+export function acceptClanCandidature(candidatureId: string): ClanCandidaturesActionCreators {
   return {
-    types: [ACCEPT_CANDIDATURE, ACCEPT_CANDIDATURE_SUCCESS, ACCEPT_CANDIDATURE_FAIL],
+    types: [ACCEPT_CLAN_CANDIDATURE, ACCEPT_CLAN_CANDIDATURE_SUCCESS, ACCEPT_CLAN_CANDIDATURE_FAIL],
     payload: {
       request: {
         method: "POST",
@@ -69,9 +69,9 @@ export function acceptCandidature(candidatureId: string): CandidaturesActionCrea
   };
 }
 
-export function declineCandidature(candidatureId: string): CandidaturesActionCreators {
+export function declineClanCandidature(candidatureId: string): ClanCandidaturesActionCreators {
   return {
-    types: [DECLINE_CANDIDATURE, DECLINE_CANDIDATURE_SUCCESS, DECLINE_CANDIDATURE_FAIL],
+    types: [REFUSE_CLAN_CANDIDATURE, REFUSE_CLAN_CANDIDATURE_SUCCESS, REFUSE_CLAN_CANDIDATURE_FAIL],
     payload: {
       request: {
         method: "DELETE",

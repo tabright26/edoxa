@@ -1,20 +1,20 @@
-import { loadCandidatures, loadCandidature, addCandidature, acceptCandidature, declineCandidature } from "./actions";
+import { loadClanCandidatures, loadClanCandidature, sendClanCandidature, acceptClanCandidature, declineClanCandidature } from "./actions";
 import {
-  LOAD_CANDIDATURES,
-  LOAD_CANDIDATURES_SUCCESS,
-  LOAD_CANDIDATURES_FAIL,
-  LOAD_CANDIDATURE,
-  LOAD_CANDIDATURE_SUCCESS,
-  LOAD_CANDIDATURE_FAIL,
-  ADD_CANDIDATURE,
-  ADD_CANDIDATURE_SUCCESS,
-  ADD_CANDIDATURE_FAIL,
-  ACCEPT_CANDIDATURE,
-  ACCEPT_CANDIDATURE_SUCCESS,
-  ACCEPT_CANDIDATURE_FAIL,
-  DECLINE_CANDIDATURE,
-  DECLINE_CANDIDATURE_SUCCESS,
-  DECLINE_CANDIDATURE_FAIL
+  LOAD_CLAN_CANDIDATURES,
+  LOAD_CLAN_CANDIDATURES_SUCCESS,
+  LOAD_CLAN_CANDIDATURES_FAIL,
+  LOAD_CLAN_CANDIDATURE,
+  LOAD_CLAN_CANDIDATURE_SUCCESS,
+  LOAD_CLAN_CANDIDATURE_FAIL,
+  SEND_CLAN_CANDIDATURE,
+  SEND_CLAN_CANDIDATURE_SUCCESS,
+  SEND_CLAN_CANDIDATURE_FAIL,
+  ACCEPT_CLAN_CANDIDATURE,
+  ACCEPT_CLAN_CANDIDATURE_SUCCESS,
+  ACCEPT_CLAN_CANDIDATURE_FAIL,
+  REFUSE_CLAN_CANDIDATURE,
+  REFUSE_CLAN_CANDIDATURE_SUCCESS,
+  REFUSE_CLAN_CANDIDATURE_FAIL
 } from "./types";
 
 describe("candidatures", () => {
@@ -22,11 +22,11 @@ describe("candidatures", () => {
     const type = "user";
     const id = "0";
 
-    const expectedType = [LOAD_CANDIDATURES, LOAD_CANDIDATURES_SUCCESS, LOAD_CANDIDATURES_FAIL];
+    const expectedType = [LOAD_CLAN_CANDIDATURES, LOAD_CLAN_CANDIDATURES_SUCCESS, LOAD_CLAN_CANDIDATURES_FAIL];
     const expectedMethod = "GET";
     const expectedUrl = `/organizations/clans/api/candidatures?${type}Id=${id}`;
 
-    const actionCreator = loadCandidatures(type, id);
+    const actionCreator = loadClanCandidatures(type, id);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -37,11 +37,11 @@ describe("candidatures", () => {
     const type = "clan";
     const id = "100";
 
-    const expectedType = [LOAD_CANDIDATURES, LOAD_CANDIDATURES_SUCCESS, LOAD_CANDIDATURES_FAIL];
+    const expectedType = [LOAD_CLAN_CANDIDATURES, LOAD_CLAN_CANDIDATURES_SUCCESS, LOAD_CLAN_CANDIDATURES_FAIL];
     const expectedMethod = "GET";
     const expectedUrl = `/organizations/clans/api/candidatures?${type}Id=${id}`;
 
-    const actionCreator = loadCandidatures(type, id);
+    const actionCreator = loadClanCandidatures(type, id);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -51,11 +51,11 @@ describe("candidatures", () => {
   it("should create an action to get a specific candidature", () => {
     const candidatureId = "10";
 
-    const expectedType = [LOAD_CANDIDATURE, LOAD_CANDIDATURE_SUCCESS, LOAD_CANDIDATURE_FAIL];
+    const expectedType = [LOAD_CLAN_CANDIDATURE, LOAD_CLAN_CANDIDATURE_SUCCESS, LOAD_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "GET";
     const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
 
-    const actionCreator = loadCandidature(candidatureId);
+    const actionCreator = loadClanCandidature(candidatureId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -66,11 +66,11 @@ describe("candidatures", () => {
     const clanId = "10";
     const userId = "10";
 
-    const expectedType = [ADD_CANDIDATURE, ADD_CANDIDATURE_SUCCESS, ADD_CANDIDATURE_FAIL];
+    const expectedType = [SEND_CLAN_CANDIDATURE, SEND_CLAN_CANDIDATURE_SUCCESS, SEND_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "POST";
     const expectedUrl = "/organizations/clans/api/candidatures";
 
-    const actionCreator = addCandidature(clanId, userId);
+    const actionCreator = sendClanCandidature(clanId, userId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -81,11 +81,11 @@ describe("candidatures", () => {
   it("should create an action to accept a candidature", () => {
     const candidatureId = "10";
 
-    const expectedType = [ACCEPT_CANDIDATURE, ACCEPT_CANDIDATURE_SUCCESS, ACCEPT_CANDIDATURE_FAIL];
+    const expectedType = [ACCEPT_CLAN_CANDIDATURE, ACCEPT_CLAN_CANDIDATURE_SUCCESS, ACCEPT_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "POST";
     const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
 
-    const actionCreator = acceptCandidature(candidatureId);
+    const actionCreator = acceptClanCandidature(candidatureId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -95,11 +95,11 @@ describe("candidatures", () => {
   it("should create an action to decline a candidature", () => {
     const candidatureId = "10";
 
-    const expectedType = [DECLINE_CANDIDATURE, DECLINE_CANDIDATURE_SUCCESS, DECLINE_CANDIDATURE_FAIL];
+    const expectedType = [REFUSE_CLAN_CANDIDATURE, REFUSE_CLAN_CANDIDATURE_SUCCESS, REFUSE_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "DELETE";
     const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
 
-    const actionCreator = declineCandidature(candidatureId);
+    const actionCreator = declineClanCandidature(candidatureId);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

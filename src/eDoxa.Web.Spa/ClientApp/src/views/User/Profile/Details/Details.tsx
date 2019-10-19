@@ -1,22 +1,14 @@
-import React, { Fragment, Suspense } from "react";
-import Loading from "components/Shared/Override/Loading";
-
-const PersonalInfo = React.lazy(() => import("./PersonalInformations"));
-const Email = React.lazy(() => import("./Email"));
-const AddressBook = React.lazy(() => import("./AddressBook"));
+import React, { Fragment } from "react";
+import Informations from "./Informations";
+import Email from "./Email";
+import AddressBook from "./AddressBook";
 
 const ProfileDetails = () => (
   <Fragment>
-    <h5>PROFILE DETAILS</h5>
-    <Suspense fallback={<Loading />}>
-      <PersonalInfo className="card-accent-primary my-4" />
-    </Suspense>
-    <Suspense fallback={<Loading />}>
-      <Email className="card-accent-primary my-4" />
-    </Suspense>
-    <Suspense fallback={<Loading />}>
-      <AddressBook className="card-accent-primary my-4" />
-    </Suspense>
+    <h5 className="text-uppercase">PROFILE DETAILS</h5>
+    <Informations className="my-4" />
+    <Email className="my-4" />
+    <AddressBook className="my-4" />
   </Fragment>
 );
 

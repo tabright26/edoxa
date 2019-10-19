@@ -41,19 +41,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels
             return new Token(-token.Amount);
         }
 
-        public static IImmutableSet<Token> DepositAmounts()
-        {
-            return new[]
-            {
-                FiftyThousand,
-                OneHundredThousand,
-                TwoHundredFiftyThousand,
-                FiveHundredThousand,
-                OneMillion,
-                FiveMillions
-            }.ToImmutableHashSet();
-        }
-
         public override string ToString()
         {
             return Amount.ToString(CultureInfo.InvariantCulture);

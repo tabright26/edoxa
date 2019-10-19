@@ -3,13 +3,24 @@ import { FormGroup, Col, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { DELETE_ADDRESS_FORM } from "forms";
+import FormField from "components/Shared/Override/Form/Field";
+import { DELETE_USER_ADDRESS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const UpdateAddressForm: FunctionComponent<any> = ({ initialValues: { country }, handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit}>
-    <Input.Text value={country} disabled />
+const UpdateUserAddressForm: FunctionComponent<any> = ({ updateUserAddress, handleSubmit, handleCancel, error }) => (
+  <Form
+    onSubmit={handleSubmit(data =>
+      updateUserAddress(data).then(() => {
+        handleCancel();
+      })
+    )}
+  >
+    {error && <FormValidation error={error} />}
+    <FormGroup>
+      <FormField.Country disabled={true} />
+    </FormGroup>
     <Field type="text" name="line1" label="Address line 1" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="line2" label="Address line 2 (optional)" formGroup={FormGroup} component={Input.Text} />
     <Field type="text" name="city" label="City" formGroup={FormGroup} component={Input.Text} />
@@ -28,6 +39,6 @@ const UpdateAddressForm: FunctionComponent<any> = ({ initialValues: { country },
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: DELETE_ADDRESS_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: DELETE_USER_ADDRESS_FORM, validate }));
 
-export default enhance(UpdateAddressForm);
+export default enhance(UpdateUserAddressForm);

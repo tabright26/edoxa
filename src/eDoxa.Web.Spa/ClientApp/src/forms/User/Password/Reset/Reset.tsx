@@ -3,12 +3,14 @@ import { FormGroup, Form, InputGroup, InputGroupAddon, InputGroupText } from "re
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { RESET_PASSWORD_FORM } from "forms";
+import { RESET_USER_PASSWORD_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const ResetPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
-  <Form onSubmit={handleSubmit}>
+const ResetUserPasswordForm: FunctionComponent<any> = ({ handleSubmit, resetUserPassword, error }) => (
+  <Form onSubmit={handleSubmit(data => resetUserPassword(data))}>
+    {error && <FormValidation error={error} />}
     <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
         <InputGroupText>@</InputGroupText>
@@ -37,6 +39,6 @@ const ResetPasswordForm: FunctionComponent<any> = ({ handleSubmit }) => (
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: RESET_PASSWORD_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: RESET_USER_PASSWORD_FORM, validate }));
 
-export default enhance(ResetPasswordForm);
+export default enhance(ResetUserPasswordForm);

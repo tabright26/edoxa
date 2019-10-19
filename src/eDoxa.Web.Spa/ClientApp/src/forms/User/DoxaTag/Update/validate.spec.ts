@@ -1,28 +1,28 @@
 import { validate } from "./validate";
 
-var mockValidDoxaTag = {
+var mockValidDoxatag = {
   name: "gabTheVegetoy"
 };
 
-var mockInvalidDoxaTag = {
+var mockInvalidDoxatag = {
   name: "_yoMonsieur"
 };
 
-var mockEmptyDoxaTag = {
+var mockEmptyDoxatag = {
   name: null
 };
 
 test("name to be valid", () => {
-  const errors = validate(mockValidDoxaTag);
+  const errors = validate(mockValidDoxatag);
   expect(errors).not.toHaveProperty("name");
 });
 
 test("name to be invalid", () => {
-  const errors = validate(mockInvalidDoxaTag);
+  const errors = validate(mockInvalidDoxatag);
   expect(errors).toHaveProperty("name", "Invalid format. Must between 16 characters and greater than characters 2");
 });
 
 test("name to be empty", () => {
-  const errors = validate(mockEmptyDoxaTag);
-  expect(errors).toHaveProperty("name", "DoxaTag is required");
+  const errors = validate(mockEmptyDoxatag);
+  expect(errors).toHaveProperty("name", "Doxatag is required");
 });

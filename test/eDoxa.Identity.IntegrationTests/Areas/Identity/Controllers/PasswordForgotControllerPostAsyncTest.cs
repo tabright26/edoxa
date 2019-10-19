@@ -44,7 +44,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.PersonalInfo = null;
+            user.Informations = null;
 
             _httpClient = TestApi.CreateClient();
             var testServer = TestApi.Server;

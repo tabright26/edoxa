@@ -1,8 +1,8 @@
-import { LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL, GamesActionCreators } from "./types";
+import { LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL, UserGamesActionCreators } from "./types";
 
-export function loadGames(): GamesActionCreators {
+export function loadUserGames(): UserGamesActionCreators {
   return {
-    types: [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL],
+    types: [LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL],
     payload: {
       request: {
         method: "GET",

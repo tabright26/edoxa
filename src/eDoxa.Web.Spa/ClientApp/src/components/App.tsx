@@ -2,11 +2,11 @@ import "./App.scss";
 import React, { Suspense, FunctionComponent } from "react";
 import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
-import { history } from "store/middlewares/router/constants";
+import { history } from "utils/router/config";
 import UserAccountModal from "modals/User/Account";
 import MatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
 import Loading from "./Shared/Override/Loading";
-import { RouteProps } from "store/middlewares/router/types";
+import { RouteProps } from "utils/router/types";
 
 const Callback: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Shared/Callback"));
 const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Shared/ErrorPage/401"));

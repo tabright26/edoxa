@@ -1,35 +1,67 @@
-import { throwAxiosSubmissionError } from "store/middlewares/axios/types";
-import { LOAD_MEMBERS_FAIL, LOAD_MEMBERS_SUCCESS, KICK_MEMBER_FAIL, KICK_MEMBER_SUCCESS, LEAVE_CLAN_FAIL, LEAVE_CLAN_SUCCESS, MembersActionTypes } from "./types";
+import { Reducer } from "redux";
+import { LOAD_CLAN_MEMBERS, LOAD_CLAN_MEMBERS_FAIL, LOAD_CLAN_MEMBERS_SUCCESS, KICK_CLAN_MEMBER, KICK_CLAN_MEMBER_FAIL, KICK_CLAN_MEMBER_SUCCESS, ClanMembersState, ClanMembersActions } from "./types";
 
-export const initialState = [];
+export const initialState: ClanMembersState = {
+  data: [],
+  error: null,
+  loading: false
+};
 
-export const reducer = (state = initialState, action: MembersActionTypes) => {
+export const reducer: Reducer<ClanMembersState, ClanMembersActions> = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_MEMBERS_SUCCESS: {
+    case LOAD_CLAN_MEMBERS: {
+      return {
+        data: state.data,
+        error: null,
+        loading: true
+      };
+    }
+    case LOAD_CLAN_MEMBERS_SUCCESS: {
       const { status, data } = action.payload;
       switch (status) {
-        case 204:
-          return state;
-        default:
-          return data;
+        case 204: {
+          return {
+            data: state.data,
+            error: null,
+            loading: false
+          };
+        }
+        default: {
+          return {
+            data: data,
+            error: null,
+            loading: false
+          };
+        }
       }
     }
-    case LOAD_MEMBERS_FAIL: {
-      return state;
+    case LOAD_CLAN_MEMBERS_FAIL: {
+      return {
+        data: state.data,
+        error: action.error,
+        loading: false
+      };
     }
-    case LEAVE_CLAN_SUCCESS: {
-      return state;
+    case KICK_CLAN_MEMBER: {
+      return {
+        data: state.data,
+        error: null,
+        loading: true
+      };
     }
-    case LEAVE_CLAN_FAIL: {
-      throwAxiosSubmissionError(action.error);
-      return state;
+    case KICK_CLAN_MEMBER_SUCCESS: {
+      return {
+        data: state.data,
+        error: null,
+        loading: false
+      };
     }
-    case KICK_MEMBER_SUCCESS: {
-      return state;
-    }
-    case KICK_MEMBER_FAIL: {
-      throwAxiosSubmissionError(action.error);
-      return state;
+    case KICK_CLAN_MEMBER_FAIL: {
+      return {
+        data: state.data,
+        error: action.error,
+        loading: false
+      };
     }
     default: {
       return state;

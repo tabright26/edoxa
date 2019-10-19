@@ -1,14 +1,10 @@
-import React, { Fragment, Suspense } from "react";
-import Loading from "components/Shared/Override/Loading";
-
-const PhoneNumber = React.lazy(() => import("./PhoneNumber"));
+import React, { Fragment } from "react";
+import Phone from "./Phone";
 
 const ProfileSecurity = () => (
   <Fragment>
-    <h5>PROFILE SECURITY</h5>
-    <Suspense fallback={<Loading />}>
-      <PhoneNumber className="card-accent-primary my-4" />
-    </Suspense>
+    <h5 className="text-uppercase">PROFILE SECURITY</h5>
+    <Phone className="my-4" />
   </Fragment>
 );
 

@@ -8,6 +8,19 @@ exports[`renders correctly 1`] = `
   <div
     className="row"
   />
+  <hr
+    className="border-secondary"
+  />
+  Quia fugit est hic aut atque ea officiis.
+Non perferendis ipsa nisi qui quia ut at voluptas.
+Quia est quod et reprehenderit veritatis sit.
+Maxime et quasi.
+Rerum dicta tenetur vero non et esse expedita doloremque.
+Voluptatibus illum laboriosam labore nihil sunt.
+Eum aperiam eos at inventore.
+  <hr
+    className="border-secondary"
+  />
   <div
     className="mb-0 form-group"
   >

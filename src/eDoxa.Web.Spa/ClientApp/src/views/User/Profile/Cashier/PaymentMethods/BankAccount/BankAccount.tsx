@@ -1,40 +1,36 @@
 import React, { useState, FunctionComponent } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { Alert } from "reactstrap";
-import { withtUser } from "store/root/user/container";
-import { withStripeBankAccount } from "store/root/payment/bankAccount/container";
-import { injectStripe } from "react-stripe-elements";
+import { Card, CardBody, CardHeader } from "reactstrap";
+import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
 import BankAccountForm from "forms/Payment/Stripe/BankAccount";
 import { compose } from "recompose";
+import Button from "components/Shared/Override/Button";
+import Loading from "components/Shared/Override/Loading";
 
-const BankAccount: FunctionComponent<any> = ({ bankAccount: { data, isLoading, error }, hasBankAccount, user, actions, stripe }) => {
-  const [isFormHidden, setFormHidden] = useState(true);
+const BankAccount: FunctionComponent<any> = ({ className, bankAccount: { data, loading, error }, hasBankAccount }) => {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
-    <Alert color="primary">
-      <h5>
-        <strong>BANK ACCOUNT</strong>
-        {isFormHidden ? (
-          <div className="card-header-actions btn-link" onClick={() => setFormHidden(false)}>
-            <small>
-              <FontAwesomeIcon icon={faEdit} /> UPDATE
-            </small>
-          </div>
-        ) : null}
-      </h5>
-      <hr className="mt-0" />
-      <dl className="row mb-0">
-        <dd className="col-sm-3 text-muted mb-0">Bank account</dd>
-        <dd className="col-sm-5 mb-0">{!isFormHidden || !hasBankAccount ?<BankAccountForm.Update onSubmit={fields => actions.updateBankAccount(fields, user.profile.country, stripe).then(() => {})} handleCancel={() => setFormHidden(true)} /> : <span>{data.last4}</span>}</dd>
-      </dl>
-    </Alert>
+    <Card className={`card-accent-primary ${className}`}>
+      <CardHeader className="d-flex">
+        <strong className="text-uppercase my-auto">BANK ACCOUNT</strong>
+        <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} disabled={buttonDisabled} onClick={() => setButtonDisabled(true)}>
+          UPDATE
+        </Button.Link>
+      </CardHeader>
+      <CardBody>
+        {loading ? (
+          <Loading />
+        ) : (
+          <dl className="row mb-0">
+            <dd className="col-sm-3 text-muted mb-0">Bank account</dd>
+            <dd className="col-sm-5 mb-0">{buttonDisabled || !hasBankAccount ? <BankAccountForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>XXXXX-{data.last4}</span>}</dd>
+          </dl>
+        )}
+      </CardBody>
+    </Card>
   );
 };
 
-const enhance = compose<any, any>(
-  injectStripe,
-  withtUser,
-  withStripeBankAccount
-);
+const enhance = compose<any, any>(withStripeBankAccount);
 
 export default enhance(BankAccount);

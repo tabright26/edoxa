@@ -1,49 +1,25 @@
-import {
-  LOAD_WITHDRAWAL_MONEY_AMOUNTS,
-  LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS,
-  LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL,
-  WITHDRAWAL_TOKEN,
-  WITHDRAWAL_TOKEN_SUCCESS,
-  WITHDRAWAL_TOKEN_FAIL,
-  WithdrawalActionCreators
-} from "./types";
-import { Currency } from "../types";
+import { USER_ACCOUNT_WITHDRAWAL_MONEY, USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS, USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL, UserAccountWithdrawalActionCreators } from "./types";
+import { Currency, MONEY, TOKEN } from "types";
+import { AxiosPayload } from "utils/axios/types";
 
-export function withdrawal(currency: Currency, amount: number): WithdrawalActionCreators {
+export function accountWithdrawal(currency: Currency, amount: number): UserAccountWithdrawalActionCreators {
+  const payload: AxiosPayload = {
+    request: {
+      method: "POST",
+      url: `/cashier/api/account/withdrawal/${currency}`,
+      data: amount,
+      headers: {
+        "Content-Type": "application/json-patch+json"
+      }
+    }
+  };
   switch (currency) {
-    case "money":
+    case MONEY:
       return {
-        types: [WITHDRAWAL_TOKEN, WITHDRAWAL_TOKEN_SUCCESS, WITHDRAWAL_TOKEN_FAIL],
-        payload: {
-          request: {
-            method: "POST",
-            url: `/cashier/api/account/withdrawal/${currency}`,
-            data: amount,
-            headers: {
-              "Content-Type": "application/json-patch+json"
-            }
-          }
-        }
+        types: [USER_ACCOUNT_WITHDRAWAL_MONEY, USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS, USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL],
+        payload
       };
-
-    case "token":
-      throw new Error("Token is not supported for withdrawal.");
-  }
-}
-
-export function loadWithdrawalAmounts(currency: Currency): WithdrawalActionCreators {
-  switch (currency) {
-    case "money":
-      return {
-        types: [LOAD_WITHDRAWAL_MONEY_AMOUNTS, LOAD_WITHDRAWAL_MONEY_AMOUNTS_SUCCESS, LOAD_WITHDRAWAL_MONEY_AMOUNTS_FAIL],
-        payload: {
-          request: {
-            method: "GET",
-            url: `/cashier/api/account/withdrawal/${currency}/amounts`
-          }
-        }
-      };
-    case "token":
+    case TOKEN:
       throw new Error("Token is not supported for withdrawal.");
   }
 }

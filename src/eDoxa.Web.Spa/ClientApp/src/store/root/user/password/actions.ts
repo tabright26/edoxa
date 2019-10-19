@@ -1,8 +1,8 @@
-import { FORGOT_PASSWORD, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_FAIL, RESET_PASSWORD, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL, PasswordActionCreators } from "./types";
+import { FORGOT_USER_PASSWORD, FORGOT_USER_PASSWORD_SUCCESS, FORGOT_USER_PASSWORD_FAIL, RESET_USER_PASSWORD, RESET_USER_PASSWORD_SUCCESS, RESET_USER_PASSWORD_FAIL, UserPasswordActionCreators } from "./types";
 
-export function forgotPassword(data: any): PasswordActionCreators {
+export function forgotUserPassword(data: any): UserPasswordActionCreators {
   return {
-    types: [FORGOT_PASSWORD, FORGOT_PASSWORD_SUCCESS, FORGOT_PASSWORD_FAIL],
+    types: [FORGOT_USER_PASSWORD, FORGOT_USER_PASSWORD_SUCCESS, FORGOT_USER_PASSWORD_FAIL],
     payload: {
       request: {
         method: "POST",
@@ -13,9 +13,9 @@ export function forgotPassword(data: any): PasswordActionCreators {
   };
 }
 
-export function resetPassword(data: any): PasswordActionCreators {
+export function resetUserPassword(data: any): UserPasswordActionCreators {
   return {
-    types: [RESET_PASSWORD, RESET_PASSWORD_SUCCESS, RESET_PASSWORD_FAIL],
+    types: [RESET_USER_PASSWORD, RESET_USER_PASSWORD_SUCCESS, RESET_USER_PASSWORD_FAIL],
     payload: {
       request: {
         method: "POST",

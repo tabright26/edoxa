@@ -1,5 +1,5 @@
 ﻿// Filename: FileStorage.cs
-// Date Created: 2019-09-30
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -136,9 +136,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                 Country = Country.Canada, // FRANCIS: Should be inside users.csv
                                 Email = record.Email,
                                 PhoneNumber = record.Phone,
-                                DoxaTagHistory = new Collection<UserDoxaTag>
+                                DoxatagHistory = new Collection<UserDoxatag>
                                 {
-                                    new UserDoxaTag
+                                    new UserDoxatag
                                     {
                                         Id = Guid.NewGuid(),
                                         UserId = record.Id,
@@ -147,13 +147,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                         Timestamp = DateTime.UtcNow
                                     }
                                 },
-                                PersonalInfo = new UserPersonalInfo
-                                {
-                                    FirstName = record.FirstName,
-                                    LastName = record.LastName,
-                                    BirthDate = DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date,
-                                    Gender = Gender.FromValue(record.Gender)
-                                }
+                                Informations = new UserInformations(
+                                    record.FirstName,
+                                    record.LastName,
+                                    Gender.FromValue(record.Gender),
+                                    new Dob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
                             })
                         .ToImmutableHashSet();
                 });

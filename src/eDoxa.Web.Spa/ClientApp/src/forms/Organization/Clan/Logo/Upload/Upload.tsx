@@ -5,14 +5,16 @@ import Button from "components/Shared/Override/Button";
 import { UPLOAD_CLAN_LOGO_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const UploadClanLogoForm: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => (
+const UploadClanLogoForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, error }) => (
   <Form onSubmit={handleSubmit}>
+    {error && <FormValidation error={error} />}
     <FormGroup>
       <input type="file" name="Logo" accept="image/png, image/jpeg" />
-      <Button.Submit width="100px" color="info">
-        Update
-      </Button.Submit>
+    </FormGroup>
+    <FormGroup className="mb-0">
+      <Button.Save />
     </FormGroup>
   </Form>
 );

@@ -3,13 +3,15 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, FormSection, reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
 import Input from "components/Shared/Override/Input";
-import { CREATE_INFORMATION_FORM } from "forms";
-import { months, days, years } from "utils/helper";
+import { CREATE_USER_INFORMATIONS_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
+import FormField from "components/Shared/Override/Form/Field";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const CreateInformationForm: FunctionComponent<any> = ({ handleSubmit }) => (
-  <Form onSubmit={handleSubmit}>
+const CreateUserInformationsForm: FunctionComponent<any> = ({ handleSubmit, createUserInformations, error }) => (
+  <Form onSubmit={handleSubmit((data: any) => createUserInformations(data))}>
+    {error && <FormValidation error={error} />}
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
@@ -22,36 +24,17 @@ const CreateInformationForm: FunctionComponent<any> = ({ handleSubmit }) => (
           </dd>
         </dl>
       </dd>
-      <dd className="col-sm-3 text-muted mb-0">Birth date</dd>
+      <dd className="col-sm-3 text-muted mb-0">Date of birth</dd>
       <dd className="col-sm-9 mb-0">
-        <FormSection name="birthDate">
-          <Field className="d-inline" name="year" type="select" style={{ width: "75px" }} component={Input.Select}>
-            <option value="">yyyy</option>
-            {years.map((year, index) => (
-              <option key={index} value={year}>
-                {year}
-              </option>
-            ))}
-          </Field>
-          <span className="d-inline mx-2">/</span>
-          <Field className="d-inline" name="month" type="select" style={{ width: "60px" }} component={Input.Select}>
-            <option value="">MM</option>
-            {months.map((month, index) => (
-              <option key={index} value={month}>
-                {month}
-              </option>
-            ))}
-          </Field>
-          <span className="d-inline mx-2">/</span>
-          <Field className="d-inline" name="day" type="select" style={{ width: "60px" }} component={Input.Select}>
-            <option value="">dd</option>
-            {days.map((day, index) => (
-              <option key={index} value={day}>
-                {day}
-              </option>
-            ))}
-          </Field>
-        </FormSection>
+        <FormGroup>
+          <FormSection name="dob">
+            <FormField.Year className="d-inline" width="75px" />
+            <span className="d-inline mx-2">/</span>
+            <FormField.Month className="d-inline" width="60px" />
+            <span className="d-inline mx-2">/</span>
+            <FormField.Day className="d-inline" width="60px" />
+          </FormSection>
+        </FormGroup>
       </dd>
       <dd className="col-sm-3 text-muted mb-0">Gender</dd>
       <dd className="col-sm-3 mb-0">
@@ -67,12 +50,12 @@ const CreateInformationForm: FunctionComponent<any> = ({ handleSubmit }) => (
       <dd className="col-sm-6 mb-0">{""}</dd>
       <dd className="col-sm-3 mb-0">{""}</dd>
       <dd className="col-sm-9 mb-0">
-        <Button.Save className="mt-3" />
+        <Button.Save />
       </dd>
     </dl>
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: CREATE_INFORMATION_FORM, validate }));
+const enhance = compose<any, any>(reduxForm({ form: CREATE_USER_INFORMATIONS_FORM, validate }));
 
-export default enhance(CreateInformationForm);
+export default enhance(CreateUserInformationsForm);

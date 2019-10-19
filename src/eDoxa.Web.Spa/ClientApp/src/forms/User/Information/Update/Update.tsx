@@ -1,15 +1,23 @@
 import React, { FunctionComponent } from "react";
 import { Form, FormGroup } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
-import moment from "moment";
+import { Field, reduxForm, FormSection } from "redux-form";
 import Input from "components/Shared/Override/Input";
 import Button from "components/Shared/Override/Button";
-import { UPDATE_INFORMATION_FORM } from "forms";
+import { UPDATE_USER_INFORMATIONS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
+import FormField from "components/Shared/Override/Form/Field";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const UpdateInformationForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, initialValues: { lastName, birthDate, gender } }) => (
-  <Form onSubmit={handleSubmit}>
+const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel, error }) => (
+  <Form
+    onSubmit={handleSubmit(data =>
+      updateUserInformations(data).then(() => {
+        handleCancel();
+      })
+    )}
+  >
+    {error && <FormValidation error={error} />}
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
@@ -18,56 +26,25 @@ const UpdateInformationForm: FunctionComponent<any> = ({ handleSubmit, handleCan
             <Field name="firstName" label="Enter your first name" component={Input.Text} />
           </dt>
           <dd className="col-sm-4 mb-0">
-            <Input.Text type="text" value={lastName} bsSize="sm" disabled />
+            <Field name="lastName" label="Enter your first name" component={Input.Text} disabled />
           </dd>
         </dl>
       </dd>
       <dd className="col-sm-3 text-muted mb-0">Date of birth</dd>
       <dd className="col-sm-9 mb-0">
         <FormGroup>
-          <Input.Text
-            type="text"
-            className="d-inline"
-            value={moment
-              .unix(birthDate)
-              .toDate()
-              .getMonth()}
-            name="month"
-            bsSize="sm"
-            style={{ width: "60px" }}
-            disabled
-          />
-          <span className="d-inline mx-2">/</span>
-          <Input.Text
-            type="text"
-            className="d-inline"
-            value={moment
-              .unix(birthDate)
-              .toDate()
-              .getDate()}
-            name="day"
-            bsSize="sm"
-            style={{ width: "60px" }}
-            disabled
-          />
-          <span className="d-inline mx-2">/</span>
-          <Input.Text
-            className="d-inline"
-            type="text"
-            value={moment
-              .unix(birthDate)
-              .toDate()
-              .getFullYear()}
-            name="year"
-            bsSize="sm"
-            style={{ width: "75px" }}
-            disabled
-          />
+          <FormSection name="dob">
+            <FormField.Year className="d-inline" width="75px" disabled />
+            <span className="d-inline mx-2">/</span>
+            <FormField.Month className="d-inline" width="60px" disabled />
+            <span className="d-inline mx-2">/</span>
+            <FormField.Day className="d-inline" width="60px" disabled />
+          </FormSection>
         </FormGroup>
       </dd>
       <dd className="col-sm-3 mb-0 text-muted">Gender</dd>
       <dd className="col-sm-3 mb-0">
-        <Input.Text type="text" value="Male" name={gender} bsSize="sm" disabled />
+        <Field name="gender" label="Gender" component={Input.Text} disabled />
       </dd>
       <dd className="col-sm-6 mb-0">{""}</dd>
       <dd className="col-sm-3 mb-0">{""}</dd>
@@ -79,6 +56,6 @@ const UpdateInformationForm: FunctionComponent<any> = ({ handleSubmit, handleCan
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_INFORMATION_FORM, validate }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_USER_INFORMATIONS_FORM, validate }));
 
-export default enhance(UpdateInformationForm);
+export default enhance(UpdateUserInformationsForm);

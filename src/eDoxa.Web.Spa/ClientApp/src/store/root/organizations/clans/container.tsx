@@ -1,25 +1,23 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadClans, loadClan, createClan, downloadClanLogo, uploadClanLogo } from "store/root/organizations/clans/actions";
-import { RootState } from "store/root/types";
-import { show } from "redux-modal";
+import { loadClans, loadClan, createClan } from "store/root/organizations/clans/actions";
+import { downloadClanLogo, uploadClanLogo } from "store/root/organizations/logos/actions";
+import { RootState } from "store/types";
 
-import { CREATE_CLAN_MODAL } from "modals";
-
-export const withClans = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, clans, userId, userClan, ...attributes }) => {
+export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect(() => {
-      actions.loadClans();
+      props.actions.loadClans();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} clans={clans} userId={userId} userClan={userClan} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
-    const clans = state.organizations.clans.map(clan => {
-      const doxaTag = state.doxaTags.find(doxaTag => doxaTag.userId === clan.ownerId);
+    const clans = state.root.organizations.clans.data.map(clan => {
+      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === clan.ownerId);
 
-      clan.ownerDoxaTag = doxaTag ? doxaTag.name + "#" + doxaTag.code : null;
+      clan.ownerDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
       return clan;
     });
 
@@ -38,7 +36,6 @@ export const withClans = (ConnectedComponent: FunctionComponent<any>) => {
         loadClans: () => dispatch(loadClans()),
         loadClan: (clanId: string) => dispatch(loadClan(clanId)),
         addClan: (data: any) => dispatch(createClan(data)).then(loadClans()),
-        showCreateAddressModal: () => dispatch(show(CREATE_CLAN_MODAL)),
         loadLogo: (clanId: string) => dispatch(downloadClanLogo(clanId)),
         updateLogo: (clanId: string, data: any) => dispatch(uploadClanLogo(clanId, data))
       }

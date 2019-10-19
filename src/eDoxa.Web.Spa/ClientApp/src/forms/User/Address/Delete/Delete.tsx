@@ -2,11 +2,20 @@ import React, { FunctionComponent } from "react";
 import { Label, FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Override/Button";
-import { DELETE_ADDRESS_FORM } from "forms";
+import { DELETE_USER_ADDRESS_FORM } from "forms";
 import { compose } from "recompose";
+import FormValidation from "components/Shared/Override/Form/Validation";
 
-const DeleteAddressForm: FunctionComponent<any> = ({ handleSubmit, handleCancel }) => (
-  <Form onSubmit={handleSubmit} className="mt-3">
+const DeleteUserAddressForm: FunctionComponent<any> = ({ deleteUserAddress, handleSubmit, handleCancel, error }) => (
+  <Form
+    onSubmit={handleSubmit(() =>
+      deleteUserAddress().then(() => {
+        handleCancel();
+      })
+    )}
+    className="mt-3"
+  >
+    {error && <FormValidation error={error} />}
     <Label>Are you sure you want to remove this address?</Label>
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
@@ -15,6 +24,6 @@ const DeleteAddressForm: FunctionComponent<any> = ({ handleSubmit, handleCancel 
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: DELETE_ADDRESS_FORM }));
+const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: DELETE_USER_ADDRESS_FORM }));
 
-export default enhance(DeleteAddressForm);
+export default enhance(DeleteUserAddressForm);

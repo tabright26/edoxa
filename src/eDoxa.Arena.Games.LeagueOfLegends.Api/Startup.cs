@@ -39,8 +39,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
 
-using RiotSharp.Interfaces;
-
 using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Api

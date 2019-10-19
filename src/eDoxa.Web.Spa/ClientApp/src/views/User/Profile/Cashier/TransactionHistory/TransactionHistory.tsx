@@ -1,12 +1,10 @@
 import React, { Fragment } from "react";
-import MoneyTransactionHistory from "./Money";
-import TokenTransactionHistory from "./Token";
+import FilteredTransactions from "./FilteredTransactions";
 
 const TransactionHistory = () => (
   <Fragment>
-    <h5 className="mb-4">TRANSACTION HISTORY</h5>
-    <MoneyTransactionHistory />
-    <TokenTransactionHistory />
+    <h5 className="text-uppercase mb-4">TRANSACTION HISTORY</h5>
+    <FilteredTransactions currency={null} type={null} status={null} />
   </Fragment>
 );
 

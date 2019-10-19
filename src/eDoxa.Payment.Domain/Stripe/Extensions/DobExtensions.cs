@@ -4,15 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using Stripe;
+
+using Dob = eDoxa.Seedwork.Domain.Miscs.Dob;
 
 namespace eDoxa.Payment.Domain.Stripe.Extensions
 {
     public static class DatetimeExtensions
     {
-        public static DobOptions ToStripe(this DateTime dob)
+        public static DobOptions ToStripe(this Dob dob)
         {
             return new DobOptions
             {

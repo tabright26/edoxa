@@ -2,8 +2,13 @@ import React, { FunctionComponent } from "react";
 import { Table, Badge } from "reactstrap";
 import Moment from "react-moment";
 import Format from "components/Shared/Format";
+import { Transaction } from "types";
 
-const TransactionList: FunctionComponent<any> = ({ transactions }) => (
+interface Props {
+  transactions: Transaction[];
+}
+
+const TransactionList: FunctionComponent<Props> = ({ transactions }) => (
   <Table className="mb-0" responsive striped hover dark>
     <thead>
       <tr>

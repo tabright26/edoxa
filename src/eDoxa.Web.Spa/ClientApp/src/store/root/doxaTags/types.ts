@@ -1,4 +1,5 @@
-import { AxiosActionCreator, AxiosAction } from "store/middlewares/axios/types";
+import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
+import { Doxatag } from "types";
 
 export const LOAD_DOXATAGS = "LOAD_DOXATAGS";
 export const LOAD_DOXATAGS_SUCCESS = "LOAD_DOXATAGS_SUCCESS";
@@ -12,6 +13,6 @@ interface LoadDoxatagsAction extends AxiosAction<LoadDoxatagsType> {}
 
 export type DoxatagsActionCreators = LoadDoxatagsActionCreator;
 
-export type DoxatagsActionTypes = LoadDoxatagsAction;
+export type DoxatagsActions = LoadDoxatagsAction;
 
-export interface DoxatagsState {}
+export type DoxatagsState = AxiosState<Doxatag[]>;

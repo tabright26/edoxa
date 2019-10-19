@@ -1,28 +1,38 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { loadUserAccountTransactions } from "store/root/user/account/transactions/actions";
-import { RootState } from "store/root/types";
+import { RootState } from "store/types";
+import { UserAccountTransactionsState } from "./types";
+import { Currency, TransactionType, TransactionStatus } from "types";
 
-export const withUserAccountTransactions = currency => (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, transactions, ...attributes }) => {
+interface UserAccountTransactionsStateProps {
+  transactions: UserAccountTransactionsState;
+}
+
+interface UserAccountTransactionsOwnProps {
+  currency?: Currency | null;
+  type?: TransactionType | null;
+  status?: TransactionStatus | null;
+}
+
+export const withUserAccountTransactions = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadUserAccountTransactions();
+      props.loadUserAccountTransactions();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} transactions={transactions} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
-  const mapStateToProps = (state: RootState) => {
+  const mapStateToProps: MapStateToProps<UserAccountTransactionsStateProps, UserAccountTransactionsOwnProps, RootState> = state => {
     return {
-      transactions: state.user.account.transactions.filter(transaction => transaction.currency.toLowerCase() === currency.toLowerCase())
+      transactions: state.root.user.account.transactions
     };
   };
 
-  const mapDispatchToProps = (dispatch: any) => {
+  const mapDispatchToProps = (dispatch: any, ownProps: UserAccountTransactionsOwnProps) => {
     return {
-      actions: {
-        loadUserAccountTransactions: () => dispatch(loadUserAccountTransactions(currency))
-      }
+      loadUserAccountTransactions: () => dispatch(loadUserAccountTransactions(ownProps.currency, ownProps.type, ownProps.status))
     };
   };
 

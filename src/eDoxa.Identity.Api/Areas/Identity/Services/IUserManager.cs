@@ -22,7 +22,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     {
         UserStore Store { get; }
 
-        Task<IEnumerable<UserDoxaTag>> FetchDoxaTagsAsync();
+        Task<IEnumerable<UserDoxatag>> FetchDoxatagsAsync();
 
         Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId);
 
@@ -58,13 +58,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId);
 
-        Task<UserPersonalInfo?> GetPersonalInfoAsync(User user);
+        Task<UserInformations?> GetInformationsAsync(User user);
 
-        Task<UserDoxaTag?> GetDoxaTagAsync(User user);
+        Task<UserDoxatag?> GetDoxatagAsync(User user);
 
-        Task<ICollection<UserDoxaTag>> GetDoxaTagHistoryAsync(User user);
+        Task<ICollection<UserDoxatag>> GetDoxatagHistoryAsync(User user);
 
-        Task<string?> GetBirthDateAsync(User user);
+        Task<Dob?> GetDobAsync(User user);
 
         Task<string?> GetFirstNameAsync(User user);
 
@@ -286,10 +286,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         IQueryable<User> Users { get; }
 
-        Task<IdentityResult> CreatePersonalInfoAsync(User user, string firstName, string lastName, Gender gender, DateTime dob);
+        Task<IdentityResult> CreateInformationsAsync(User user, string firstName, string lastName, Gender gender, Dob dob);
 
-        Task<IdentityResult> UpdatePersonalInfoAsync(User user, string firstName);
+        Task<IdentityResult> UpdateInformationsAsync(User user, string firstName);
 
-        Task<IdentityResult> SetDoxaTagAsync(User user, string doxaTagName);
+        Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName);
     }
 }
