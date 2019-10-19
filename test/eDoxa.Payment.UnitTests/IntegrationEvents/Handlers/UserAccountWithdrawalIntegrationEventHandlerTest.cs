@@ -1,6 +1,6 @@
 // Filename: UserAccountWithdrawalIntegrationEventHandlerTest.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.TestHelpers;
+using eDoxa.Payment.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Mocks;
 using eDoxa.ServiceBus.Abstractions;
@@ -19,10 +21,14 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserAccountWithdrawalIntegrationEventHandlerTest
+    public sealed class UserAccountWithdrawalIntegrationEventHandlerTest: UnitTest
     {
+        public UserAccountWithdrawalIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
         [Fact]
-        public async Task HandleAsync_WhenUserAccountDepositIntegrationEventIsValid_ShouldBeCompletedTask()
+        public async Task HandleAsync_WhenUserAccountWithdrawalIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
             var mockLogger = new MockLogger<UserAccountWithdrawalIntegrationEventHandler>();

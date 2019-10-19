@@ -1,6 +1,6 @@
 ﻿// Filename: PaymentMethodsController.cs
 // Date Created: 2019-10-10
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -64,7 +64,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         }
 
         [HttpPut("{paymentMethodId}")]
-        public async Task<IActionResult> PostAsync(string paymentMethodId, [FromBody] PaymentMethodPutRequest request)
+        public async Task<IActionResult> PutAsync(string paymentMethodId, [FromBody] PaymentMethodPutRequest request)
         {
             try
             {
