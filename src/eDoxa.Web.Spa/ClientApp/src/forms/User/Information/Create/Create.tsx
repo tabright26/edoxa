@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 import { Form, FormGroup } from "reactstrap";
 import { Field, FormSection, reduxForm } from "redux-form";
-import Button from "components/Shared/Override/Button";
-import Input from "components/Shared/Override/Input";
+import Button from "components/Shared/Button";
+import Input from "components/Shared/Input";
 import { CREATE_USER_INFORMATIONS_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
-import FormField from "components/Shared/Override/Form/Field";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormField from "components/Shared/Form/Field";
+import FormValidation from "components/Shared/Form/Validation";
 
 const CreateUserInformationsForm: FunctionComponent<any> = ({ handleSubmit, createUserInformations, error }) => (
   <Form onSubmit={handleSubmit((data: any) => createUserInformations(data))}>

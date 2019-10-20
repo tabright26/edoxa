@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
-import Button from "components/Shared/Override/Button";
+import Button from "components/Shared/Button";
 import { UPLOAD_CLAN_LOGO_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormValidation from "components/Shared/Form/Validation";
 
 const UploadClanLogoForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, error }) => (
   <Form onSubmit={handleSubmit}>

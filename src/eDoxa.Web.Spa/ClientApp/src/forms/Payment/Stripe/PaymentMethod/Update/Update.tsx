@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form, Label } from "reactstrap";
 import { reduxForm, FormSection } from "redux-form";
-import Button from "components/Shared/Override/Button";
+import Button from "components/Shared/Button";
 import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
 import { validate } from "./validate";
-import CardBrandIcon from "components/Payment/Card/BrandIcon";
+import CardIcon from "components/Payment/Stripe/PaymentMethod/Card/Icon";
 import { compose } from "recompose";
-import FormField from "components/Shared/Override/Form/Field";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormField from "components/Shared/Form/Field";
+import FormValidation from "components/Shared/Form/Validation";
 
 const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
   handleSubmit,
@@ -30,7 +30,7 @@ const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
     {error && <FormValidation error={error} />}
     <FormGroup>
       <div className="d-flex">
-        <CardBrandIcon className="my-auto" brand={brand} size="2x" />
+        <CardIcon className="my-auto" brand={brand} size="2x" />
         <span className="my-auto ml-2">{`XXXX XXXX XXXX ${last4}`}</span>
       </div>
     </FormGroup>

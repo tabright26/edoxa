@@ -1,7 +1,7 @@
 import React, { FunctionComponent, ExoticComponent } from "react";
 import { Route, Redirect } from "react-router-dom";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/userManager";
-import Loading from "components/Shared/Override/Loading";
+import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 import { withUserIsAuthenticated } from "store/root/user/container";
 import { compose } from "recompose";

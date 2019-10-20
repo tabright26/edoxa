@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from "react";
-import Button from "components/Shared/Override/Button";
-import Input from "components/Shared/Override/Input";
+import Button from "components/Shared/Button";
+import Input from "components/Shared/Input";
 import { Field, reduxForm } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
 import { UPDATE_STRIPE_BANKACCOUNT_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormValidation from "components/Shared/Form/Validation";
 
 const UpdateStripeBankAccountForm: FunctionComponent<any> = ({ updateStripeBankAccount, handleSubmit, handleCancel, error }) => (
   <Form

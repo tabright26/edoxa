@@ -5,14 +5,14 @@ import { toastr } from "react-redux-toastr";
 import { withClans } from "store/root/organizations/clans/container";
 
 // import ClanLogo from "components/Organizations/Clans/ClanLogo";
-import ClanInfo from "components/Organizations/Clans/ClanInfo";
+import ClanInfo from "components/Organization/Clan/Summary/Summary";
 
-import CandidatureList from "components/Organizations/Candidatures/CandidatureList";
-import InvitationList from "components/Organizations/Invitations/InvitationList";
+import CandidatureList from "components/Organization/Clan/Candidature/List/List";
+import InvitationList from "components/Organization/Clan/Invitation/List/List";
 
 // import InvitationWidget from "components/Organizations/Invitations/InvitationWidget";
 
-import Members from "components/Organizations/ClanMembers/Members";
+import Members from "components/Organization/Clan/Member/List/List";
 
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 

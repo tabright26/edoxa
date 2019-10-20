@@ -3,13 +3,13 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMethods/container";
 import { STRIPE_PAYMENTMETHOD_CARD_TYPE } from "store/root/payment/stripe/paymentMethods/types";
-import CardBrandIcon from "components/Payment/Card/BrandIcon";
-import CardExpiration from "components/Payment/Card/Expiration";
+import CardBrandIcon from "components/Payment/Stripe/PaymentMethod/Card/Icon";
+import CardExpiration from "components/Payment/Stripe/PaymentMethod/Card/Expiration";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Button from "components/Shared/Override/Button";
+import Button from "components/Shared/Button";
 import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
-import Loading from "components/Shared/Override/Loading";
+import Loading from "components/Shared/Loading";
 
 const StripeCardItem: FunctionComponent<any> = ({ hasMore, modals, paymentMethod }) => {
   return (

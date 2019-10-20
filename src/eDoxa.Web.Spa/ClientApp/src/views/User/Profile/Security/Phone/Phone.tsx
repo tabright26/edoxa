@@ -1,12 +1,12 @@
 import React, { useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import Badge from "components/Shared/Override/Badge";
+import Badge from "components/Shared/Badge";
 import { withUserPhone } from "store/root/user/phone/container";
 import UserPhoneForm from "forms/User/Phone";
 import { compose } from "recompose";
-import Button from "components/Shared/Override/Button";
-import Loading from "components/Shared/Override/Loading";
+import Button from "components/Shared/Button";
+import Loading from "components/Shared/Loading";
 
 const Phone: FunctionComponent<any> = ({
   className,

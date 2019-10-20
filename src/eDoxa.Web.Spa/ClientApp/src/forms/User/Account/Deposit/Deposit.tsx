@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
-import Button from "components/Shared/Override/Button";
+import Button from "components/Shared/Button";
 import { USER_ACCOUNT_DEPOSIT_FORM } from "forms";
 import { validate } from "./validate";
-import FormField from "components/Payment/Form/Field";
+import FormField from "components/Shared/Form/Field";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormValidation from "components/Shared/Form/Validation";
 import faker from "faker";
 
 faker.seed(1000);

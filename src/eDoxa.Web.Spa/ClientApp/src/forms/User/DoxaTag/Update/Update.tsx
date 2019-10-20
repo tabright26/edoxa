@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm, Field } from "redux-form";
-import Button from "components/Shared/Override/Button";
-import Input from "components/Shared/Override/Input";
+import Button from "components/Shared/Button";
+import Input from "components/Shared/Input";
 import { UPDATE_USER_DOXATAG_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormValidation from "components/Shared/Form/Validation";
 
 const UpdateUserDoxatagForm: FunctionComponent<any> = ({ updateUserDoxatag, handleSubmit, handleCancel, error }) => (
   <Form

@@ -3,7 +3,7 @@ import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/userManager";
 import { connect } from "react-redux";
 import { CallbackComponent } from "redux-oidc";
 import { push } from "react-router-redux";
-import Loading from "components/Shared/Override/Loading";
+import Loading from "components/Shared/Loading";
 
 const Callback: FunctionComponent<any> = ({ dispatch }) => {
   return (
