@@ -1,11 +1,10 @@
 import React, { Suspense, FunctionComponent } from "react";
 import { Container } from "reactstrap";
-import { AppFooter, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
+import { AppFooter, AppBreadcrumb, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
 // sidebar nav config
 import navigation from "./_nav";
 // routes config
-import routes from "routes";
-import Routes from "components/Shared/Routes";
+import Routes from "utils/router/components/Routes";
 import Loading from "components/Shared/Override/Loading";
 
 const Aside = React.lazy(() => import("components/Shared/Aside"));
@@ -35,7 +34,7 @@ const Layout: FunctionComponent<any> = ({ ...props }) => {
           <Breadcrumb />
           <Container fluid>
             <Suspense fallback={<Loading />}>
-              <Routes routes={routes} />
+              <Routes />
             </Suspense>
           </Container>
         </main>

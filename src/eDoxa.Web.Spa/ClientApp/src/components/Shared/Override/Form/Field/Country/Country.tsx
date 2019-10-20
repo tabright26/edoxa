@@ -1,7 +1,7 @@
 import React from "react";
 import { Field } from "redux-form";
 import Input from "components/Shared/Override/Input";
-import { countries } from "components/Shared/Localization/countries";
+import { countries } from "utils/localize/countries";
 
 const CountryField = ({ disabled = false }) => (
   <Field name="country" type="select" component={Input.Select} disabled={disabled}>

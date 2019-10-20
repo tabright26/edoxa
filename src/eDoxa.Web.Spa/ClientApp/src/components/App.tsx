@@ -8,7 +8,7 @@ import MatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
 import Loading from "./Shared/Override/Loading";
 import { RouteProps } from "utils/router/types";
 
-const Callback: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Shared/Callback"));
+const Callback: FunctionComponent<RouteComponentProps> = React.lazy(() => import("../utils/oidc/components/Callback"));
 const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Shared/ErrorPage/401"));
 const ErrorPage403: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Shared/ErrorPage/403"));
 const ErrorPage404: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Shared/ErrorPage/404"));

@@ -10,7 +10,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { configureStore } from "./store";
 import { OidcProvider } from "redux-oidc";
-import userManager from "utils/oidc/manager";
+import userManager from "utils/oidc/userManager";
 import ReduxToastr from "react-redux-toastr";
 import { StripeProvider } from "react-stripe-elements";
 import { LocalizeProvider } from "react-localize-redux";

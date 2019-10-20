@@ -5,7 +5,7 @@ import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/reac
 import logo from "assets/images/brand/logo.svg";
 import sygnet from "assets/images/brand/sygnet.svg";
 import { withUser, withUserIsAuthenticated } from "store/root/user/container";
-import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/manager";
+import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/userManager";
 import { compose } from "recompose";
 
 const HeaderDropdown: FunctionComponent<any> = ({ user }) => {
