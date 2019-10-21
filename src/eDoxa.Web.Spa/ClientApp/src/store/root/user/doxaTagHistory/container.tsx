@@ -1,30 +1,59 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadDoxaTagHistory, changeDoxaTag } from "store/root/user/doxaTagHistory/actions";
-import { RootState } from "store/root/types";
+import { loadUserDoxatagHistory } from "store/root/user/doxaTagHistory/actions";
+import { RootState } from "store/types";
 
-export const withUserDoxaTagHistory = (ConnectedComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = ({ actions, doxaTag, ...attributes }) => {
+export const withUserDoxatagHistory = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      actions.loadDoxaTagHistory();
+      props.loadUserDoxatagHistory();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <ConnectedComponent actions={actions} doxaTag={doxaTag} {...attributes} />;
+    return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
-    const doxaTagHistory = state.user.doxaTagHistory.sort((left, right) => (left.timestamp < right.timestamp ? 1 : -1));
     return {
-      doxaTag: doxaTagHistory[0] || null
+      doxatagHistory: state.root.user.doxatagHistory
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      actions: {
-        loadDoxaTagHistory: () => dispatch(loadDoxaTagHistory()),
-        changeDoxaTag: (data: any) => dispatch(changeDoxaTag(data)).then(() => dispatch(loadDoxaTagHistory()))
+      loadUserDoxatagHistory: () => dispatch(loadUserDoxatagHistory())
+    };
+  };
+
+  return connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Container);
+};
+
+export const withUserDoxatag = (HighOrderComponent: FunctionComponent<any>) => {
+  const Container: FunctionComponent<any> = props => {
+    useEffect((): void => {
+      props.loadUserDoxatagHistory();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return <HighOrderComponent {...props} />;
+  };
+
+  const mapStateToProps = (state: RootState) => {
+    const { data, error, loading } = state.root.user.doxatagHistory;
+    const doxatag = data.sort((left: any, right: any) => (left.timestamp < right.timestamp ? 1 : -1))[0] || null;
+    return {
+      doxatag: {
+        data: doxatag,
+        error,
+        loading
       }
+    };
+  };
+
+  const mapDispatchToProps = (dispatch: any) => {
+    return {
+      loadUserDoxatagHistory: () => dispatch(loadUserDoxatagHistory())
     };
   };
 
