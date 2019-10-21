@@ -1,4 +1,5 @@
 import { Stream } from "stream";
+import { Country } from "utils/localize/types";
 
 export const MONEY = "money";
 export const TOKEN = "token";
@@ -77,11 +78,6 @@ export interface Email {
 export interface Phone {
   readonly number: string;
   readonly verified: boolean;
-}
-
-export interface Country {
-  readonly name: string;
-  readonly twoDigitIso: string;
 }
 
 export interface Address extends Entity<AddressId> {

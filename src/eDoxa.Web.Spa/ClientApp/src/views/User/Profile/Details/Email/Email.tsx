@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import Badge from "components/Shared/Override/Badge";
+import Badge from "components/Shared/Badge";
 import { withUserEmail } from "store/root/user/email/container";
 import { compose } from "recompose";
-import Loading from "components/Shared/Override/Loading";
+import Loading from "components/Shared/Loading";
 
 const Email: FunctionComponent<any> = ({
   className,

@@ -10,7 +10,7 @@ import { middleware as axiosMiddleware } from "utils/axios/middleware";
 import { middleware as signalrMiddleware } from "utils/signalr/middleware";
 import { middleware as loggerMiddleware } from "utils/logger/middleware";
 
-import userManager from "utils/oidc/manager";
+import userManager from "utils/oidc/userManager";
 
 import { loadUser } from "redux-oidc";
 import { loadDoxatags } from "store/root/doxatags/actions";

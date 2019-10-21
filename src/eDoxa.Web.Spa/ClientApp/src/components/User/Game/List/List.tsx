@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { CardHeader, CardImg, CardImgOverlay, CardText, Row, Col, Card, Button } from "reactstrap";
-import Loading from "components/Shared/Override/Loading";
+import Loading from "components/Shared/Loading";
 import { withUserGames } from "store/root/user/games/container";
 import { compose } from "recompose";
 

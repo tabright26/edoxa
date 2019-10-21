@@ -5,8 +5,8 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { withtUserInformations } from "store/root/user/informations/container";
 import UserInformationForm from "forms/User/Information";
 import { compose } from "recompose";
-import Button from "components/Shared/Override/Button";
-import Loading from "components/Shared/Override/Loading";
+import Button from "components/Shared/Button";
+import Loading from "components/Shared/Loading";
 
 const Informations: FunctionComponent<any> = ({ className, informations: { data, loading, error } }) => {
   const [buttonDisabled, setbuttonDisabled] = useState(false);

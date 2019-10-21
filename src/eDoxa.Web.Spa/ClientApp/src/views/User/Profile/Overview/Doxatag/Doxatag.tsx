@@ -4,8 +4,8 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { withUserDoxatag } from "store/root/user/doxatagHistory/container";
 import DoxatagForm from "forms/User/Doxatag";
 import { compose } from "recompose";
-import Button from "components/Shared/Override/Button";
-import Loading from "components/Shared/Override/Loading";
+import Button from "components/Shared/Button";
+import Loading from "components/Shared/Loading";
 
 const Doxatag: FunctionComponent<any> = ({ className, doxatag: { data, error, loading } }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);

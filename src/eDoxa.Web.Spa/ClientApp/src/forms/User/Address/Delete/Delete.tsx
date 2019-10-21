@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
 import { Label, FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
-import Button from "components/Shared/Override/Button";
+import Button from "components/Shared/Button";
 import { DELETE_USER_ADDRESS_FORM } from "forms";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormValidation from "components/Shared/Form/Validation";
 
 const DeleteUserAddressForm: FunctionComponent<any> = ({ deleteUserAddress, handleSubmit, handleCancel, error }) => (
   <Form

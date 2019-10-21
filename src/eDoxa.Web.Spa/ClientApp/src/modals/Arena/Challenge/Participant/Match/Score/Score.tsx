@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { connectModal } from "redux-modal";
 import { Modal, ModalFooter, ModalHeader, Table } from "reactstrap";
-import Button from "components/Shared/Override/Button";
+import Button from "components/Shared/Button";
 import Format from "components/Shared/Format";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "modals";
 import { compose } from "recompose";

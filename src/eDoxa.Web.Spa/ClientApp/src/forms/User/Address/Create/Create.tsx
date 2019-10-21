@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Col, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
-import Button from "components/Shared/Override/Button";
-import Input from "components/Shared/Override/Input";
-import FormField from "components/Shared/Override/Form/Field";
+import Button from "components/Shared/Button";
+import Input from "components/Shared/Input";
+import FormField from "components/Shared/Form/Field";
 import { CREATE_USER_ADDRESS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Override/Form/Validation";
+import FormValidation from "components/Shared/Form/Validation";
 
 const CreateUserAddressForm: FunctionComponent<any> = ({ createUserAddress, handleSubmit, handleCancel, error }) => (
   <Form

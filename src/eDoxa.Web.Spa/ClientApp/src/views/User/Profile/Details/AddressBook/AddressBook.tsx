@@ -1,14 +1,14 @@
 import React, { useState, FunctionComponent } from "react";
 import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import Address from "components/Shared/Localization/Address";
+import Address from "utils/localize/components/Address";
 import AddressForm from "forms/User/Address";
 import { withUserAddressBook } from "store/root/user/addressBook/container";
 import UserAddressModal from "modals/User/Address";
 import { compose } from "recompose";
-import Button from "components/Shared/Override/Button";
+import Button from "components/Shared/Button";
 import { withModals } from "utils/modal/container";
-import Loading from "components/Shared/Override/Loading";
+import Loading from "components/Shared/Loading";
 
 const AddressItem: FunctionComponent<any> = ({ hasMore, position, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);

@@ -3,7 +3,7 @@ import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
 import { Card, CardHeader, Col, Row, ListGroup, ListGroupItem } from "reactstrap";
 import { RouteProps } from "utils/router/types";
 import { LinkContainer } from "react-router-bootstrap";
-import Loading from "components/Shared/Override/Loading";
+import Loading from "components/Shared/Loading";
 
 const ProfileOverview: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Overview/Overview"));
 const ProfileDetails: FunctionComponent<RouteComponentProps> = React.lazy(() => import("./Details/Details"));

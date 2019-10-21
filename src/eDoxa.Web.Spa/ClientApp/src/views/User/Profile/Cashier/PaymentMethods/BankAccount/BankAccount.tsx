@@ -4,8 +4,8 @@ import { Card, CardBody, CardHeader } from "reactstrap";
 import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
 import BankAccountForm from "forms/Payment/Stripe/BankAccount";
 import { compose } from "recompose";
-import Button from "components/Shared/Override/Button";
-import Loading from "components/Shared/Override/Loading";
+import Button from "components/Shared/Button";
+import Loading from "components/Shared/Loading";
 
 const BankAccount: FunctionComponent<any> = ({ className, bankAccount: { data, loading, error }, hasBankAccount }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
