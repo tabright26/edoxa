@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 
 import { reducer as informationsReducer } from "./informations/reducer";
-import { reducer as doxatagHistoryReducer } from "./doxaTagHistory/reducer";
+import { reducer as doxatagHistoryReducer } from "./doxatagHistory/reducer";
 import { reducer as addressBookReducer } from "./addressBook/reducer";
 import { reducer as accountReducer } from "./account/reducer";
 import { reducer as gamesReducer } from "./games/reducer";

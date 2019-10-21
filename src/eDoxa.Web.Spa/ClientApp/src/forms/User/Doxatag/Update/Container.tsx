@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadUserDoxatagHistory, updateUserDoxatag } from "store/root/user/doxaTagHistory/actions";
-import { UserDoxatagHistoryActions, UPDATE_USER_DOXATAG_FAIL } from "store/root/user/doxaTagHistory/types";
+import { loadUserDoxatagHistory, updateUserDoxatag } from "store/root/user/doxatagHistory/actions";
+import { UserDoxatagHistoryActions, UPDATE_USER_DOXATAG_FAIL } from "store/root/user/doxatagHistory/types";
 import Update from "./Update";
 import { throwSubmissionError } from "utils/form/types";
 

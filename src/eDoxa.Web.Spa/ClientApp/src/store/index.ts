@@ -13,7 +13,7 @@ import { middleware as loggerMiddleware } from "utils/logger/middleware";
 import userManager from "utils/oidc/userManager";
 
 import { loadUser } from "redux-oidc";
-import { loadDoxatags } from "store/root/doxaTags/actions";
+import { loadDoxatags } from "store/root/doxatags/actions";
 
 // This enables the webpack development tools such as the Hot Module Replacement.
 const composeEnhancers = (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as typeof compose) || compose;
