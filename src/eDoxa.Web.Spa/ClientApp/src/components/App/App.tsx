@@ -8,7 +8,6 @@ import MatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
 import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 
-const Landing: FunctionComponent<RouteComponentProps> = React.lazy(() => import("pages/Landing/Landing"));
 const Callback: FunctionComponent<RouteComponentProps> = React.lazy(() => import("utils/oidc/components/Callback"));
 const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/401"));
 const ErrorPage403: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/403"));
@@ -33,7 +32,6 @@ const App = () => (
       <Suspense fallback={<Loading />}>
         <Switch>
           <Route<RouteProps> exact path="/callback" name="Callback" render={props => <Callback {...props} />} />
-          <Route<RouteProps> exact path="/landing" name="Landing" render={props => <Landing {...props} />} />
           <Route<RouteProps> exact path="/errors/401" name="Error 401" render={props => <ErrorPage401 {...props} />} />
           <Route<RouteProps> exact path="/errors/403" name="Error 403" render={props => <ErrorPage403 {...props} />} />
           <Route<RouteProps> exact path="/errors/404" name="Error 404" render={props => <ErrorPage404 {...props} />} />

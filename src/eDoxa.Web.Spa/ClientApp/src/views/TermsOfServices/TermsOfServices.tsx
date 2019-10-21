@@ -1,7 +1,6 @@
 import React, { useEffect, FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
-import faker from "faker";
-import { Translate, withLocalize } from "react-localize-redux";
+import { withLocalize } from "react-localize-redux";
 import { compose } from "recompose";
 import locale from "./locale.json";
 
