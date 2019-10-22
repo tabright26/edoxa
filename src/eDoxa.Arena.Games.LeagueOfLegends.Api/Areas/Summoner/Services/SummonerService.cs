@@ -5,9 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.IO;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services.Abstractions;
@@ -15,10 +12,7 @@ using eDoxa.Seedwork.Application.Validations.Extensions;
 
 using FluentValidation.Results;
 
-using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http2.HPack;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Caching.Redis;
 
 using RiotSharp;
 using RiotSharp.Misc;

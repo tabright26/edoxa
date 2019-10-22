@@ -15,6 +15,8 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
+using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
+
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 {
     public sealed class FileStorage

@@ -16,6 +16,8 @@ using eDoxa.Seedwork.Domain.Miscs;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
+using Claim = System.Security.Claims.Claim;
+
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public interface IUserManager

@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
@@ -18,7 +16,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents
     public sealed class UserClaimsAddedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserClaimsAddedIntegrationEvent(UserId userId, IDictionary<string, string> claims)
+        public UserClaimsAddedIntegrationEvent(UserId userId, Claims claims)
         {
             UserId = userId;
             Claims = claims;
@@ -28,7 +26,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         public UserId UserId { get; }
 
         [JsonProperty]
-        public IDictionary<string, string> Claims { get; }
+        public Claims Claims { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserClaimsAdded;

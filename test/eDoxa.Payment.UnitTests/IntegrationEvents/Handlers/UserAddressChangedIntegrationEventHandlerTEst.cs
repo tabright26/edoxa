@@ -12,8 +12,6 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Testing.Mocks;
-using eDoxa.ServiceBus.Abstractions;
 
 using Moq;
 

@@ -13,8 +13,8 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
-            subscriber.Subscribe<RoleClaimAddedIntegrationEvent, RoleClaimAddedIntegrationEventHandler>();
-            subscriber.Subscribe<RoleClaimRemovedIntegrationEvent, RoleClaimRemovedIntegrationEventHandler>();
+            subscriber.Subscribe<RoleClaimsAddedIntegrationEvent, RoleClaimsAddedIntegrationEventHandler>();
+            subscriber.Subscribe<RoleClaimsRemovedIntegrationEvent, RoleClaimsRemovedIntegrationEventHandler>();
             subscriber.Subscribe<RoleCreatedIntegrationEvent, RoleCreatedIntegrationEventHandler>();
             subscriber.Subscribe<RoleDeletedIntegrationEvent, RoleDeletedIntegrationEventHandler>();
             subscriber.Subscribe<UserClaimsAddedIntegrationEvent, UserClaimsAddedIntegrationEventHandler>();

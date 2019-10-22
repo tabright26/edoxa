@@ -80,6 +80,8 @@ namespace eDoxa.Organizations.Clans.Infrastructure
 
                     builder.Property(clan => clan.OwnerId).HasConversion(invitationId => invitationId.ToGuid(), value => UserId.FromGuid(value)).IsRequired();
 
+                    builder.Ignore(clan => clan.Deleted);
+
                     builder.HasMany(clan => clan.Members).WithOne().HasForeignKey(member => member.ClanId);
 
                     builder.HasKey(clan => clan.Id);

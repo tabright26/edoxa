@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
@@ -13,6 +12,7 @@ using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -20,11 +20,13 @@ using Moq;
 
 using Xunit;
 
+using Claim = System.Security.Claims.Claim;
+
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class RoleClaimRemovedIntegrationEventHandlerTest : UnitTest
+    public sealed class RoleClaimsRemovedIntegrationEventHandlerTest : UnitTest
     {
-        public RoleClaimRemovedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public RoleClaimsRemovedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
@@ -42,9 +44,9 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var handler = new RoleClaimRemovedIntegrationEventHandler(mockRoleManager.Object);
+            var handler = new RoleClaimsRemovedIntegrationEventHandler(mockRoleManager.Object);
 
-            var integrationEvent = new RoleClaimRemovedIntegrationEvent("role", "admin", "allow");
+            var integrationEvent = new RoleClaimsRemovedIntegrationEvent("role", new Claims(new Seedwork.Domain.Miscs.Claim("admin", "allow")));
 
             // Act
             await handler.HandleAsync(integrationEvent);

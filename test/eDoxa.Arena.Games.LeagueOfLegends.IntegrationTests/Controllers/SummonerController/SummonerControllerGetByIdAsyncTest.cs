@@ -6,7 +6,6 @@
 
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers;
@@ -18,6 +17,8 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.SummonerController
 {

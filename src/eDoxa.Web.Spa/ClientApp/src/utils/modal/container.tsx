@@ -21,7 +21,7 @@ export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
       modals: {
         showCreateUserAddressModal: () => dispatch(show(CREATE_USER_ADDRESS_MODAL)),
         showChallengeMatchScoreModal: (stats: Stat[]) => dispatch(show(CHALLENGE_MATCH_SCORE_MODAL, { stats })),
-        showCreateClanModal: () => dispatch(show(CREATE_CLAN_MODAL)),
+        showCreateClanModal: actions => dispatch(show(CREATE_CLAN_MODAL, { actions })),
         showDepositModal: (currency: Currency, bundles: Bundle[]) => dispatch(show(DEPOSIT_MODAL, { currency, bundles })),
         showWithdrawalModal: (currency: Currency, bundles: Bundle[]) => dispatch(show(WITHDRAWAL_MODAL, { currency, bundles })),
         showCreateStripePaymentMethodModal: type => dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL, { type })),

@@ -6,7 +6,6 @@
 
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Autofac;
@@ -15,7 +14,6 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Testing.Http;
 
 using FluentAssertions;
 
@@ -28,6 +26,8 @@ using Moq;
 using Stripe;
 
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 {

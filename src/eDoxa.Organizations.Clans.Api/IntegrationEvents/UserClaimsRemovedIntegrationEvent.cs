@@ -10,7 +10,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Identity.Api.IntegrationEvents
+namespace eDoxa.Organizations.Clans.Api.IntegrationEvents
 {
     [JsonObject]
     public sealed class UserClaimsRemovedIntegrationEvent : IIntegrationEvent

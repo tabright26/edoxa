@@ -1,4 +1,4 @@
-﻿// Filename: UserClaimsRemovedIntegrationEvent.cs
+﻿// Filename: UserClaimsAddedIntegrationEvent.cs
 // Date Created: 2019-07-05
 // 
 // ================================================
@@ -10,13 +10,13 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Identity.Api.IntegrationEvents
+namespace eDoxa.Organizations.Clans.Api.IntegrationEvents
 {
     [JsonObject]
-    public sealed class UserClaimsRemovedIntegrationEvent : IIntegrationEvent
+    public sealed class UserClaimsAddedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserClaimsRemovedIntegrationEvent(UserId userId, Claims claims)
+        public UserClaimsAddedIntegrationEvent(UserId userId, Claims claims)
         {
             UserId = userId;
             Claims = claims;
@@ -29,6 +29,6 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         public Claims Claims { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.UserClaimsRemoved;
+        public string Name => IntegrationEventNames.UserClaimsAdded;
     }
 }

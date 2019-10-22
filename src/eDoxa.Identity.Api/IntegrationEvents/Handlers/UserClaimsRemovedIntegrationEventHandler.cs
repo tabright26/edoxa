@@ -1,5 +1,5 @@
 ﻿// Filename: UserClaimsRemovedIntegrationEventHandler.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,11 +25,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
         {
             var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
 
-            foreach (var (type, value) in integrationEvent.Claims)
+            foreach (var claim in integrationEvent.Claims)
             {
-                var claim = new Claim(type, value);
-
-                await _userManager.RemoveClaimAsync(user, claim);
+                await _userManager.RemoveClaimAsync(user, new Claim(claim.Type, claim.Value));
             }
         }
     }

@@ -7,7 +7,6 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Areas.Stripe.Controllers;
-using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;

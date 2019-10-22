@@ -15,8 +15,6 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using Moq;
 
-using Stripe;
-
 using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers

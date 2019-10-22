@@ -7,7 +7,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Autofac;
@@ -30,6 +29,8 @@ using Microsoft.AspNetCore.TestHost;
 using Moq;
 
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {

@@ -1,5 +1,5 @@
-﻿// Filename: ClanMemberAddedDomainEvent.cs
-// Date Created: 2019-10-06
+﻿// Filename: ClanMemberRemovedDomainEvent.cs
+// Date Created: 2019-10-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,9 +9,9 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Organizations.Clans.Domain.DomainEvents
 {
-    public sealed class ClanMemberAddedDomainEvent : IDomainEvent
+    public sealed class ClanMemberRemovedDomainEvent : IDomainEvent
     {
-        public ClanMemberAddedDomainEvent(UserId userId, ClanId clanId)
+        public ClanMemberRemovedDomainEvent(UserId userId, ClanId clanId)
         {
             UserId = userId;
             ClanId = clanId;

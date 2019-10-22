@@ -6,7 +6,6 @@
 
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.Models;
@@ -23,6 +22,8 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsController
 {

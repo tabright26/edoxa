@@ -12,6 +12,8 @@ using eDoxa.Seedwork.Domain.Miscs;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
+using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
+
 namespace eDoxa.Identity.Api.Infrastructure
 {
     public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>

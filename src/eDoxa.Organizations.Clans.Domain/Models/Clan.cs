@@ -36,6 +36,8 @@ namespace eDoxa.Organizations.Clans.Domain.Models
 
         public UserId OwnerId { get; private set; }
 
+        public bool Deleted => !Members.Any();
+
         public ICollection<Member> Members { get; private set; }
 
         public void AddMember(IMemberInfo memberInfo)
@@ -49,7 +51,7 @@ namespace eDoxa.Organizations.Clans.Domain.Models
 
             Members.Add(member);
 
-            this.AddDomainEvent(new ClanMemberAddedDomainEvent(member.UserId));
+            this.AddDomainEvent(new ClanMemberAddedDomainEvent(member.UserId, Id));
         }
 
         public void Leave(Member member)
@@ -82,6 +84,8 @@ namespace eDoxa.Organizations.Clans.Domain.Models
         private void Remove(Member member)
         {
             Members.Remove(member);
+
+            this.AddDomainEvent(new ClanMemberRemovedDomainEvent(member.UserId, Id));
         }
 
         private bool MemberIsOwner(Member member)
@@ -97,11 +101,6 @@ namespace eDoxa.Organizations.Clans.Domain.Models
         public bool CanDelegateOwnership()
         {
             return Members.Count > 1;
-        }
-
-        public bool IsDelete()
-        {
-            return DomainEvents.Any(domainEvent => domainEvent is ClanDeletedDomainEvent);
         }
 
         public bool HasMember(UserId userId)

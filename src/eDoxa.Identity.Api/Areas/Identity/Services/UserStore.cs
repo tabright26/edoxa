@@ -16,6 +16,8 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.EntityFrameworkCore;
 
+using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
+
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public sealed class UserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,

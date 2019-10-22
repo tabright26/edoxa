@@ -1,10 +1,11 @@
-﻿// Filename: RoleClaimRemovedIntegrationEvent.cs
-// Date Created: 2019-06-25
+﻿// Filename: RoleClaimsRemovedIntegrationEvent.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -12,24 +13,20 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     [JsonObject]
-    public sealed class RoleClaimRemovedIntegrationEvent : IIntegrationEvent
+    public sealed class RoleClaimsRemovedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public RoleClaimRemovedIntegrationEvent(string roleName, string claimType, string claimValue)
+        public RoleClaimsRemovedIntegrationEvent(string roleName, Claims claims)
         {
             RoleName = roleName;
-            ClaimType = claimType;
-            ClaimValue = claimValue;
+            Claims = claims;
         }
 
         [JsonProperty]
         public string RoleName { get; }
 
         [JsonProperty]
-        public string ClaimType { get; }
-
-        [JsonProperty]
-        public string ClaimValue { get; }
+        public Claims Claims { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.RoleClaimRemoved;

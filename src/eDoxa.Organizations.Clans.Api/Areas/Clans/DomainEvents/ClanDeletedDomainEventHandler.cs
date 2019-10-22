@@ -4,35 +4,66 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Domain.DomainEvents;
 using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
+
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Organizations.Clans.Api.Areas.Clans.DomainEvents
 {
+    // GABRIEL: THIS CLASS UNIT TEST NEED TO BE REFACTORED.
     public sealed class ClanDeletedDomainEventHandler : IDomainEventHandler<ClanDeletedDomainEvent>
     {
         private readonly IClanService _clanService;
         private readonly ICandidatureService _candidatureService;
         private readonly IInvitationService _invitationService;
+        private readonly ILogger _logger;
 
-        public ClanDeletedDomainEventHandler(IClanService clanService, ICandidatureService candidatureService, IInvitationService invitationService)
+        public ClanDeletedDomainEventHandler(IClanService clanService, ICandidatureService candidatureService, IInvitationService invitationService, ILogger<ClanDeletedDomainEventHandler> logger)
         {
             _clanService = clanService;
             _candidatureService = candidatureService;
             _invitationService = invitationService;
+            _logger = logger;
         }
 
         public async Task Handle(ClanDeletedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
             await _clanService.DeleteLogoAsync(domainEvent.ClanId);
 
-            await _candidatureService.DeleteCandidaturesAsync(domainEvent.ClanId);
+            await this.DeleteCandidaturesAsync(domainEvent.ClanId);
 
-            await _invitationService.DeleteInvitationsAsync(domainEvent.ClanId);
+            await this.DeleteInvitationsAsync(domainEvent.ClanId);
+        }
+
+        private async Task DeleteCandidaturesAsync(ClanId clanId)
+        {
+            try
+            {
+                await _invitationService.DeleteInvitationsAsync(clanId);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception, "The clan's user invitations have not been deleted correctly.");
+            }
+        }
+
+        private async Task DeleteInvitationsAsync(ClanId clanId)
+        {
+            try
+            {
+                await _candidatureService.DeleteCandidaturesAsync(clanId);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogCritical(exception, "The clan's user candidatures have not been deleted correctly.");
+            }
         }
     }
 }

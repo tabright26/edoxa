@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
@@ -32,8 +30,8 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
             var integrationEvent = new UserClaimsReplacedIntegrationEvent(
                 new UserId(),
                 1,
-                new Dictionary<string, string>(),
-                new Dictionary<string, string>());
+                new Claims(), 
+                new Claims());
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 

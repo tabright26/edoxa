@@ -25,18 +25,13 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
         public async Task HandleAsync(UserClaimsAddedIntegrationEvent integrationEvent)
         {
             var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
+            
             var claims = await _userManager.GetClaimsAsync(user);
 
-            foreach (var (type, value) in integrationEvent.Claims)
+            foreach (var claim in integrationEvent.Claims.Where(claim => !claims.Any(securityClaim => securityClaim.Type == claim.Type && securityClaim.Value == claim.Value)))
             {
-                var claimToAdd = new Claim(type, value);
-
-                if (!claims.Any(claim => claim.Type == claimToAdd.Type && claim.Value == claimToAdd.Value))
-                {
-                    await _userManager.AddClaimAsync(user, claimToAdd);
-                }
+                await _userManager.AddClaimAsync(user, new Claim(claim.Type, claim.Value));
             }
-            
         }
     }
 }
