@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -13,14 +14,17 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishUserEmailSentIntegrationEventAsync(
+        public static async Task PublishUserTransactionEmailSentIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
-            string subject,
-            string htmlMessage
+            ITransaction transaction
         )
         {
-            await publisher.PublishAsync(new UserEmailSentIntegrationEvent(userId, subject, htmlMessage));
+            await publisher.PublishAsync(
+                new UserEmailSentIntegrationEvent(
+                    userId,
+                    $"{transaction.GetType().Name} - {transaction.Currency.Type} - {transaction.Status.Name}",
+                    transaction.Description.Text));
         }
 
         public static async Task PublishUserAccountDepositIntegrationEventAsync(

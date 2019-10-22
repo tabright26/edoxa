@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
         public void UserTransactionFailedIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToTransactionFailedEvent()
         {
             //Arrange
-            var transactionFailedEvent = new UserTransactionFailedIntegrationEvent(new TransactionId());
+            var transactionFailedEvent = new UserTransactionFailedIntegrationEvent(new UserId(), new TransactionId());
 
             var serializedEvent = JsonConvert.SerializeObject(transactionFailedEvent);
 

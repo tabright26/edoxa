@@ -1,5 +1,5 @@
 ﻿// Filename: UserTransactionFailedIntegrationEvent.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,16 +10,20 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Payment.Api.IntegrationEvents
+namespace eDoxa.Cashier.Api.IntegrationEvents
 {
     [JsonObject]
     public sealed class UserTransactionFailedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserTransactionFailedIntegrationEvent(TransactionId transactionId)
+        public UserTransactionFailedIntegrationEvent(UserId userId, TransactionId transactionId)
         {
+            UserId = userId;
             TransactionId = transactionId;
         }
+
+        [JsonProperty]
+        public UserId UserId { get; }
 
         [JsonProperty]
         public TransactionId TransactionId { get; }

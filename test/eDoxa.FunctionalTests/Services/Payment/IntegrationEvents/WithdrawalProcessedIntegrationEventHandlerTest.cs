@@ -145,11 +145,13 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
-                        var mockStripeCustomerSerivce = new Mock<IStripeAccountService>();
+                        var mockStripeAccountSerivce = new Mock<IStripeAccountService>();
 
-                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId");
+                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.HasAccountVerifiedAsync(It.IsAny<string>())).ReturnsAsync(true);
 
-                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeAccountService>();
+                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("AccountId");
+
+                        container.RegisterInstance(mockStripeAccountSerivce.Object).As<IStripeAccountService>();
 
                         var mockStripeService = new Mock<IStripeTransferService>();
 

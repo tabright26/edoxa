@@ -26,5 +26,7 @@ namespace eDoxa.Payment.Domain.Stripe.Services
         );
 
         Task UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
+
+        Task<bool> HasAccountVerifiedAsync(string accountId);
     }
 }

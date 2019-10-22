@@ -2,7 +2,7 @@ import { LOAD_STRIPE_ACCOUNT, LOAD_STRIPE_ACCOUNT_SUCCESS, LOAD_STRIPE_ACCOUNT_F
 import { Reducer } from "redux";
 
 export const initialState: StripeAccountState = {
-  data: {},
+  data: null,
   error: null,
   loading: false
 };

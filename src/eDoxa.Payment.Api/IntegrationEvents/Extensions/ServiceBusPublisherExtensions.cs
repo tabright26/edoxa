@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -23,14 +24,14 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(new UserEmailSentIntegrationEvent(userId, subject, htmlMessage));
         }
 
-        public static async Task PublishUserTransactionFailedIntegrationEventAsync(this IServiceBusPublisher publisher, TransactionId transactionId)
+        public static async Task PublishUserTransactionFailedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, TransactionId transactionId)
         {
-            await publisher.PublishAsync(new UserTransactionFailedIntegrationEvent(transactionId));
+            await publisher.PublishAsync(new UserTransactionFailedIntegrationEvent(userId, transactionId));
         }
 
-        public static async Task PublishUserTransactionSuccededIntegrationEventAsync(this IServiceBusPublisher publisher, TransactionId transactionId)
+        public static async Task PublishUserTransactionSuccededIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, TransactionId transactionId)
         {
-            await publisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(transactionId));
+            await publisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(userId, transactionId));
         }
     }
 }

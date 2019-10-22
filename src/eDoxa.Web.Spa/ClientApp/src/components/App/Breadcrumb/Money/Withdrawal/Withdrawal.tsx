@@ -4,16 +4,18 @@ import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
 import { MONEY } from "types";
 import { withUserAccountWithdrawalBundles } from "store/root/user/account/withdrawal/bundles/container";
+import { withStripeIsAccountVerified } from "store/root/payment/stripe/account/container";
 
-const Withdrawal: FunctionComponent<any> = ({ modals, bundles: { data, loading } }) => (
-  <Button color="primary" size="sm" block disabled={loading} onClick={() => modals.showWithdrawalModal(MONEY, data)}>
+const Withdrawal: FunctionComponent<any> = ({ modals, bundles: { data, loading }, hasAccountVerified }) => (
+  <Button color="primary" size="sm" block disabled={loading || !hasAccountVerified} onClick={() => modals.showWithdrawalModal(MONEY, data)}>
     Withdrawal Money
   </Button>
 );
 
 const enhance = compose<any, any>(
   withModals,
-  withUserAccountWithdrawalBundles
+  withUserAccountWithdrawalBundles,
+  withStripeIsAccountVerified
 );
 
 export default enhance(Withdrawal);
