@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceBusPublisherExtensions.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,20 +13,14 @@ namespace eDoxa.Organizations.Clans.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishEmailSentIntegrationEventAsync(
+        public static async Task PublishUserEmailSentIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
-            string email,
             string subject,
             string htmlMessage
         )
         {
-            await publisher.PublishAsync(
-                new EmailSentIntegrationEvent(
-                    userId,
-                    email,
-                    subject,
-                    htmlMessage));
+            await publisher.PublishAsync(new UserEmailSentIntegrationEvent(userId, subject, htmlMessage));
         }
     }
 }
