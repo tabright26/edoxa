@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using Autofac;
 
+using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
@@ -40,9 +41,9 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(string paymentMethodId)
+        private async Task<HttpResponseMessage> ExecuteAsync(string paymentMethodId, PaymentMethodAttachPostRequest request)
         {
-            return await _httpClient.PostAsync($"api/stripe/payment-methods/{paymentMethodId}/attach", new JsonContent(""));
+            return await _httpClient.PostAsync($"api/stripe/payment-methods/{paymentMethodId}/attach", new JsonContent(request));
         }
 
         [Fact]
@@ -62,7 +63,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 
                     mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerId");
 
-                    mockStripePaymentMethodService.Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>()))
+                    mockStripePaymentMethodService.Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                         .ReturnsAsync(new PaymentMethod());
 
                     container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
@@ -72,7 +73,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
             _httpClient = factory.CreateClient();
 
             // Act
-            using var response = await this.ExecuteAsync("paymentMethodId");
+            using var response = await this.ExecuteAsync("paymentMethodId", new PaymentMethodAttachPostRequest());
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -101,7 +102,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
             _httpClient = factory.CreateClient();
 
             // Act
-            using var response = await this.ExecuteAsync("paymentMethodId");
+            using var response = await this.ExecuteAsync("paymentMethodId", new PaymentMethodAttachPostRequest());
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -131,7 +132,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
             _httpClient = factory.CreateClient();
 
             // Act
-            using var response = await this.ExecuteAsync("paymentMethodId");
+            using var response = await this.ExecuteAsync("paymentMethodId", new PaymentMethodAttachPostRequest());
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

@@ -10,13 +10,13 @@ describe("user account stripe bank account reducer", () => {
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 
-  it("should handle LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS 204", () => {
-    const action: any = {
-      type: UPDATE_STRIPE_BANKACCOUNT_SUCCESS,
-      payload: { status: 204, data: stripeBank204Data }
-    };
-    expect(reducer(initialState, action)).toEqual(initialState);
-  });
+  // it("should handle LOAD_USER_STRIPE_BANK_ACCOUNTS_SUCCESS 204", () => {
+  //   const action: any = {
+  //     type: UPDATE_STRIPE_BANKACCOUNT_SUCCESS,
+  //     payload: { status: 204, data: stripeBank204Data }
+  //   };
+  //   expect(reducer(initialState, action)).toEqual(initialState);
+  // });
 
   it("should handle LOAD_USER_ACCOUNT_BALANCE_TOKEN_FAIL", () => {
     const error: AxiosError = {

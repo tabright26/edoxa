@@ -44,13 +44,16 @@ export function updateStripePaymentMethod(paymentMethodId: string, expMonth: str
   };
 }
 
-export function attachStripePaymentMethod(paymentMethodId: string): StripePaymentMethodsActionCreators {
+export function attachStripePaymentMethod(paymentMethodId: string, defaultPaymentMethod: boolean = false): StripePaymentMethodsActionCreators {
   return {
     types: [ATTACH_STRIPE_PAYMENTMETHOD, ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS, ATTACH_STRIPE_PAYMENTMETHOD_FAIL],
     payload: {
       request: {
         method: "POST",
-        url: `/payment/api/stripe/payment-methods/${paymentMethodId}/attach`
+        url: `/payment/api/stripe/payment-methods/${paymentMethodId}/attach`,
+        data: {
+          defaultPaymentMethod
+        }
       }
     }
   };

@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Areas.Stripe.Controllers;
+using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
@@ -47,7 +48,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync("customerId")
                 .Verifiable();
 
-            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>()))
+            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .ReturnsAsync(new PaymentMethod())
                 .Verifiable();
 
@@ -56,13 +57,13 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodAttachController.PostAsync("PaymentMethod");
+            var result = await paymentMethodAttachController.PostAsync("paymentMethodId", new PaymentMethodAttachPostRequest());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
-            mockPaymentMethodService.Verify(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockPaymentMethodService.Verify(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()), Times.Once);
         }
 
         [Fact]
@@ -82,7 +83,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodAttachController.PostAsync("PaymentMethod");
+            var result = await paymentMethodAttachController.PostAsync("PaymentMethod", new PaymentMethodAttachPostRequest());
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -110,7 +111,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodAttachController.PostAsync("PaymentMethod");
+            var result = await paymentMethodAttachController.PostAsync("PaymentMethod", new PaymentMethodAttachPostRequest());
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();

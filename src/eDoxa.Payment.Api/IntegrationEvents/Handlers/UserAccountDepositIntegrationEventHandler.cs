@@ -46,6 +46,13 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 var customerId = await _stripeCustomerService.GetCustomerIdAsync(integrationEvent.UserId);
 
+                // GABRIEL: UNIT TEST NEED TO BE UPDATED.
+                if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
+                {
+                    throw new InvalidOperationException(
+                        "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.");
+                }
+
                 await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
                     integrationEvent.TransactionId,

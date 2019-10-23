@@ -1,12 +1,11 @@
-﻿// Filename: PaymentMethodAttachController.cs
-// Date Created: 2019-10-10
+﻿// Filename: CustomerController.cs
+// Date Created: 2019-10-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 
@@ -20,27 +19,21 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/stripe/payment-methods/{paymentMethodId}/attach")]
+    [Route("api/stripe/customer")]
     [ApiExplorerSettings(GroupName = "Stripe")]
-    public sealed class PaymentMethodAttachController : ControllerBase
+    public sealed class CustomerController : ControllerBase
     {
-        private readonly IStripePaymentMethodService _stripePaymentMethodService;
         private readonly IStripeCustomerService _stripeCustomerService;
         private readonly IStripeReferenceService _stripeReferenceService;
 
-        public PaymentMethodAttachController(
-            IStripePaymentMethodService stripePaymentMethodService,
-            IStripeCustomerService stripeCustomerService,
-            IStripeReferenceService stripeReferenceService
-        )
+        public CustomerController(IStripeCustomerService stripeCustomerService, IStripeReferenceService stripeReferenceService)
         {
-            _stripePaymentMethodService = stripePaymentMethodService;
             _stripeCustomerService = stripeCustomerService;
             _stripeReferenceService = stripeReferenceService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> PostAsync(string paymentMethodId, [FromBody] PaymentMethodAttachPostRequest request)
+        [HttpGet]
+        public async Task<IActionResult> GetAsync()
         {
             try
             {
@@ -53,9 +46,9 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
 
-                var paymentMethod = await _stripePaymentMethodService.AttachPaymentMethodAsync(paymentMethodId, customerId, request.DefaultPaymentMethod);
+                var customer = await _stripeCustomerService.FindCustomerAsync(customerId);
 
-                return this.Ok(paymentMethod);
+                return this.Ok(customer);
             }
             catch (StripeException exception)
             {

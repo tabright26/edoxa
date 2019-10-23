@@ -39,11 +39,44 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                     Email = email,
                     Metadata = new Dictionary<string, string>
                     {
-                        ["userId"] = userId.ToString()
+                        [nameof(userId)] = userId.ToString()
                     }
                 });
 
             return customer.Id;
+        }
+
+        public async Task<bool> HasDefaultPaymentMethodAsync(string customerId)
+        {
+            var customer = await this.GetAsync(
+                customerId,
+                new CustomerGetOptions
+                {
+                    Expand = new List<string>
+                    {
+                        "invoice_settings.default_payment_method"
+                    }
+                });
+
+            return customer.InvoiceSettings.DefaultPaymentMethod != null;
+        }
+
+        public async Task<Customer> SetDefaultPaymentMethodAsync(string customerId, string paymentMethodId)
+        {
+            return await this.UpdateAsync(
+                customerId,
+                new CustomerUpdateOptions
+                {
+                    InvoiceSettings = new CustomerInvoiceSettingsOptions
+                    {
+                        DefaultPaymentMethodId = paymentMethodId
+                    }
+                });
+        }
+
+        public async Task<Customer> FindCustomerAsync(string customerId)
+        {
+            return await this.GetAsync(customerId);
         }
     }
 }

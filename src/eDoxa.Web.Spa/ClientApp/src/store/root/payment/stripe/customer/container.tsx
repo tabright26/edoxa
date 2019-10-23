@@ -1,13 +1,13 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadStripeAccount } from "./actions";
-import { selectHasAccountVerified } from "./selectors";
+import { loadStripeCustomer } from "./actions";
+import { selectHasDefaultPaymentMethod } from "./selectors";
 
-export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeCustomer = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadStripeAccount();
+      props.loadStripeCustomer();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -15,13 +15,13 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
 
   const mapStateToProps = (state: RootState) => {
     return {
-      account: state.root.payment.stripe.account
+      customer: state.root.payment.stripe.customer
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      loadStripeAccount: () => dispatch(loadStripeAccount())
+      loadStripeCustomer: () => dispatch(loadStripeCustomer())
     };
   };
 
@@ -31,25 +31,25 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
   )(Container);
 };
 
-export const withStripeHasAccountVerified = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeCustomerHasDefaultPaymentMethod = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadStripeAccount();
+      props.loadStripeCustomer();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
   };
 
   const mapStateToProps = (state: RootState) => {
-    const { data, error } = state.root.payment.stripe.account;
+    const { data, error } = state.root.payment.stripe.customer;
     return {
-      hasAccountVerified: selectHasAccountVerified(data, error)
+      hasDefaultPaymentMethod: selectHasDefaultPaymentMethod(data, error)
     };
   };
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      loadStripeAccount: () => dispatch(loadStripeAccount())
+      loadStripeCustomer: () => dispatch(loadStripeCustomer())
     };
   };
 

@@ -152,6 +152,8 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
 
                         mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("CustomerId");
 
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.HasDefaultPaymentMethodAsync(It.IsAny<string>())).ReturnsAsync(true);
+
                         container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
                         var mockStripeService = new Mock<IStripeInvoiceService>();
