@@ -1,4 +1,5 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
+import * as Stripe from "stripe";
 
 export const LOAD_STRIPE_PAYMENTMETHODS = "LOAD_STRIPE_PAYMENTMETHODS";
 export const LOAD_STRIPE_PAYMENTMETHODS_SUCCESS = "LOAD_STRIPE_PAYMENTMETHODS_SUCCESS";
@@ -22,25 +23,25 @@ type LoadStripePaymentMethodsType = typeof LOAD_STRIPE_PAYMENTMETHODS | typeof L
 
 interface LoadStripePaymentMethodsActionCreator extends AxiosActionCreator<LoadStripePaymentMethodsType> {}
 
-interface LoadStripePaymentMethodsAction extends AxiosAction<LoadStripePaymentMethodsType> {}
+interface LoadStripePaymentMethodsAction extends AxiosAction<LoadStripePaymentMethodsType, Stripe.IList<Stripe.paymentMethods.ICardPaymentMethod>> {}
 
 type UpdateStripePaymentMethodType = typeof UPDATE_STRIPE_PAYMENTMETHOD | typeof UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS | typeof UPDATE_STRIPE_PAYMENTMETHOD_FAIL;
 
 interface UpdateStripePaymentMethodActionCreator extends AxiosActionCreator<UpdateStripePaymentMethodType> {}
 
-interface UpdateStripePaymentMethodAction extends AxiosAction<UpdateStripePaymentMethodType> {}
+interface UpdateStripePaymentMethodAction extends AxiosAction<UpdateStripePaymentMethodType, Stripe.paymentMethods.ICardPaymentMethod> {}
 
 type AttachStripePaymentMethodType = typeof ATTACH_STRIPE_PAYMENTMETHOD | typeof ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS | typeof ATTACH_STRIPE_PAYMENTMETHOD_FAIL;
 
 interface AttachStripePaymentMethodActionCreator extends AxiosActionCreator<AttachStripePaymentMethodType> {}
 
-interface AttachStripePaymentMethodAction extends AxiosAction<AttachStripePaymentMethodType> {}
+interface AttachStripePaymentMethodAction extends AxiosAction<AttachStripePaymentMethodType, Stripe.paymentMethods.ICardPaymentMethod> {}
 
 type DetachStripePaymentMethodType = typeof DETACH_STRIPE_PAYMENTMETHOD | typeof DETACH_STRIPE_PAYMENTMETHOD_SUCCESS | typeof DETACH_STRIPE_PAYMENTMETHOD_FAIL;
 
 interface DetachStripePaymentMethodActionCreator extends AxiosActionCreator<DetachStripePaymentMethodType> {}
 
-interface DetachStripePaymentMethodAction extends AxiosAction<DetachStripePaymentMethodType> {}
+interface DetachStripePaymentMethodAction extends AxiosAction<DetachStripePaymentMethodType, Stripe.paymentMethods.ICardPaymentMethod> {}
 
 export type StripePaymentMethodsActionCreators =
   | LoadStripePaymentMethodsActionCreator
@@ -50,6 +51,6 @@ export type StripePaymentMethodsActionCreators =
 
 export type StripePaymentMethodsActions = LoadStripePaymentMethodsAction | AttachStripePaymentMethodAction | DetachStripePaymentMethodAction | UpdateStripePaymentMethodAction;
 
-export type StripePaymentMethodsState = AxiosState;
+export type StripePaymentMethodsState = AxiosState<Stripe.IList<Stripe.paymentMethods.ICardPaymentMethod>>;
 
 export type StripePaymentMethodType = typeof STRIPE_PAYMENTMETHOD_CARD_TYPE;

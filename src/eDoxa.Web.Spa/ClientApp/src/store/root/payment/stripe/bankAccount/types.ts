@@ -1,4 +1,5 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
+import * as Stripe from "stripe";
 
 export const LOAD_STRIPE_BANKACCOUNT = "LOAD_STRIPE_BANKACCOUNT";
 export const LOAD_STRIPE_BANKACCOUNT_SUCCESS = "LOAD_STRIPE_BANKACCOUNT_SUCCESS";
@@ -12,16 +13,16 @@ type LoadStripeBankAccountType = typeof LOAD_STRIPE_BANKACCOUNT | typeof LOAD_ST
 
 interface LoadStripeBankAccountActionCreator extends AxiosActionCreator<LoadStripeBankAccountType> {}
 
-interface LoadStripeBankAccountAction extends AxiosAction<LoadStripeBankAccountType> {}
+interface LoadStripeBankAccountAction extends AxiosAction<LoadStripeBankAccountType, Stripe.bankAccounts.IBankAccount> {}
 
 type UpdateStripeBankAccountType = typeof UPDATE_STRIPE_BANKACCOUNT | typeof UPDATE_STRIPE_BANKACCOUNT_SUCCESS | typeof UPDATE_STRIPE_BANKACCOUNT_FAIL;
 
 interface UpdateStripeBankAccountActionCreator extends AxiosActionCreator<UpdateStripeBankAccountType> {}
 
-interface UpdateStripeBankAccountAction extends AxiosAction<UpdateStripeBankAccountType> {}
+interface UpdateStripeBankAccountAction extends AxiosAction<UpdateStripeBankAccountType, Stripe.bankAccounts.IBankAccount> {}
 
 export type StripeBankAccountActionCreators = LoadStripeBankAccountActionCreator | UpdateStripeBankAccountActionCreator;
 
 export type StripeBankAccountActions = LoadStripeBankAccountAction | UpdateStripeBankAccountAction;
 
-export type StripeBankAccountState = AxiosState;
+export type StripeBankAccountState = AxiosState<Stripe.bankAccounts.IBankAccount>;

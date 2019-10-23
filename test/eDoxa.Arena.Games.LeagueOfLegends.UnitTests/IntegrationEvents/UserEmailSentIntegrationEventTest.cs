@@ -16,22 +16,21 @@ using Xunit;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.UnitTests.IntegrationEvents
 {
-    public sealed class EmailSentIntegrationEventTest : UnitTest
+    public sealed class UserEmailSentIntegrationEventTest : UnitTest
     {
         [Fact]
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var integrationEvent = new EmailSentIntegrationEvent(
+            var integrationEvent = new UserEmailSentIntegrationEvent(
                 new UserId(),
-                "gabriel@edoxa.gg",
                 "mange Dla Baloney",
                 "Mah man");
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var integrationEventDeserialized = JsonConvert.DeserializeObject<EmailSentIntegrationEvent>(integrationEventSerialized);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserEmailSentIntegrationEvent>(integrationEventSerialized);
 
             //Assert
             integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);

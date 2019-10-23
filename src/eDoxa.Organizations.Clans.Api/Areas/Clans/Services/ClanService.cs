@@ -136,7 +136,7 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services
 
             await _clanRepository.UnitOfWork.CommitAsync();
 
-            if (clan.IsDelete())
+            if (clan.Deleted)
             {
                 await this.DeleteClanAsync(clan);
             }

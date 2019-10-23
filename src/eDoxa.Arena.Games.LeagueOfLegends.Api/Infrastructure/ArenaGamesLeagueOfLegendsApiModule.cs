@@ -10,8 +10,6 @@ using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services;
 using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services.Abstractions;
 
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Caching.Redis;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure
 {

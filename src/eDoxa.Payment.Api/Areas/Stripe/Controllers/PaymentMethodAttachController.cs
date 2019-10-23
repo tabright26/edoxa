@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 
@@ -39,7 +40,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync(string paymentMethodId)
+        public async Task<IActionResult> PostAsync(string paymentMethodId, [FromBody] PaymentMethodAttachPostRequest request)
         {
             try
             {
@@ -52,7 +53,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
 
-                var paymentMethod = await _stripePaymentMethodService.AttachPaymentMethodAsync(paymentMethodId, customerId);
+                var paymentMethod = await _stripePaymentMethodService.AttachPaymentMethodAsync(paymentMethodId, customerId, request.DefaultPaymentMethod);
 
                 return this.Ok(paymentMethod);
             }

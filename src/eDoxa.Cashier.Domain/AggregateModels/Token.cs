@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Globalization;
 
 using eDoxa.Seedwork.Domain;

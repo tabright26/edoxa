@@ -11,14 +11,7 @@ const mapStateToProps = (state: RootState, ownProps: any) => {
   } = state.root.payment.stripe.paymentMethods;
   const paymentMethod = data.find(paymentMethod => paymentMethod.id === ownProps.paymentMethodId);
   return {
-    initialValues: {
-      card: {
-        brand: paymentMethod.card.brand,
-        last4: paymentMethod.card.last4,
-        exp_month: paymentMethod.card.exp_month,
-        exp_year: paymentMethod.card.exp_year
-      }
-    }
+    initialValues: paymentMethod
   };
 };
 

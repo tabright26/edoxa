@@ -21,15 +21,15 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents
         public void UserTransactionSuccededIntegrationEvent_WithNewUserAccount_ShouldBeEquivalentToTransactionSuccededEvent()
         {
             //Arrange
-            var transactionSuccededEvent = new UserTransactionSuccededIntegrationEvent(new TransactionId());
+            var integrationEvent = new UserTransactionSuccededIntegrationEvent(new UserId(), new TransactionId());
 
-            var serializedEvent = JsonConvert.SerializeObject(transactionSuccededEvent);
+            var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 
             //Act
-            var deserializedEvent = JsonConvert.DeserializeObject<UserTransactionSuccededIntegrationEvent>(serializedEvent);
+            var integrationEventDeserialized = JsonConvert.DeserializeObject<UserTransactionSuccededIntegrationEvent>(integrationEventSerialized);
 
             //Assert
-            deserializedEvent.Should().BeEquivalentTo(transactionSuccededEvent);
+            integrationEventDeserialized.Should().BeEquivalentTo(integrationEvent);
         }
     }
 }

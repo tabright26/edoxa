@@ -1,5 +1,5 @@
-﻿// Filename: EmailSentIntegrationEvent.cs
-// Date Created: 2019-10-04
+﻿// Filename: UserEmailSentIntegrationEvent.cs
+// Date Created: 2019-10-21
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,21 +10,15 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Challenges.Api.IntegrationEvents
+namespace eDoxa.Arena.Games.LeagueOfLegends.Api.IntegrationEvents
 {
     [JsonObject]
-    public sealed class EmailSentIntegrationEvent : IIntegrationEvent
+    public sealed class UserEmailSentIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public EmailSentIntegrationEvent(
-            UserId userId,
-            string email,
-            string subject,
-            string htmlMessage
-        )
+        public UserEmailSentIntegrationEvent(UserId userId, string subject, string htmlMessage)
         {
             UserId = userId;
-            Email = email;
             Subject = subject;
             HtmlMessage = htmlMessage;
         }
@@ -33,15 +27,12 @@ namespace eDoxa.Arena.Challenges.Api.IntegrationEvents
         public UserId UserId { get; }
 
         [JsonProperty]
-        public string Email { get; }
-
-        [JsonProperty]
         public string Subject { get; }
 
         [JsonProperty]
         public string HtmlMessage { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.EmailSent;
+        public string Name => IntegrationEventNames.UserEmailSent;
     }
 }

@@ -10,7 +10,7 @@ import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
 
-const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan }) => {
+const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, actions }) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
@@ -76,7 +76,7 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan })
                   {clans.length} clans and counting...
                   {!userClan ? (
                     <Fragment>
-                      <div className="btn-link" onClick={() => modals.showCreateAddressModal()}>
+                      <div className="btn-link" onClick={() => modals.showCreateClanModal(actions)}>
                         or create your own
                       </div>
                       <ClanModal.Create />

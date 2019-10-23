@@ -134,3 +134,17 @@ export interface Match extends Entity<MatchId> {
 }
 
 export interface Stat {}
+
+export type StripePaymentMethodId = string;
+
+export interface StripeAccount {
+  verified: boolean;
+}
+
+export interface StripeCustomer {
+  defaultPaymentMethodId: StripePaymentMethodId;
+}
+
+export interface StripeBankAccount {}
+
+export interface StripePaymentMethod {}

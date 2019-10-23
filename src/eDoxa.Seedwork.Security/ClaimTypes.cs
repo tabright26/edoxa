@@ -13,5 +13,6 @@ namespace eDoxa.Seedwork.Security
         public const string Permission = "permission";
         public const string Games = "games";
         public const string Country = "country";
+        public const string ClanId = "clanId";
     }
 }

@@ -4,12 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services;
 using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services.Abstractions;
 
 using FluentValidation.AspNetCore;

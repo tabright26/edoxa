@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Repositories;
@@ -45,6 +46,13 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 {
                     Individual = individual
                 });
+        }
+
+        public async Task<bool> HasAccountVerifiedAsync(string accountId)
+        {
+            var account = await this.GetAccountAsync(accountId);
+
+            return account != null && !account.Requirements.CurrentlyDue.Any();
         }
 
         public async Task<string> CreateAccountAsync(

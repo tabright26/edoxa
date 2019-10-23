@@ -1,11 +1,12 @@
 ﻿// Filename: ServiceBusPublisherExtensions.cs
-// Date Created: 2019-10-07
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -13,20 +14,17 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishEmailSentIntegrationEventAsync(
+        public static async Task PublishUserTransactionEmailSentIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
-            string email,
-            string subject,
-            string htmlMessage
+            ITransaction transaction
         )
         {
             await publisher.PublishAsync(
-                new EmailSentIntegrationEvent(
+                new UserEmailSentIntegrationEvent(
                     userId,
-                    email,
-                    subject,
-                    htmlMessage));
+                    $"{transaction.GetType().Name} - {transaction.Currency.Type} - {transaction.Status.Name}",
+                    transaction.Description.Text));
         }
 
         public static async Task PublishUserAccountDepositIntegrationEventAsync(

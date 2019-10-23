@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Payment.Api.IntegrationEvents;
+using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
@@ -27,7 +27,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var integrationEvent = new UserTransactionFailedIntegrationEvent(new TransactionId());
+            var integrationEvent = new UserTransactionFailedIntegrationEvent(new UserId(), new TransactionId());
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 

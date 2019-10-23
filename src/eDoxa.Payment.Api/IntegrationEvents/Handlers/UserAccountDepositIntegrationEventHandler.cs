@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.ServiceBus.Abstractions;
@@ -45,6 +46,13 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 var customerId = await _stripeCustomerService.GetCustomerIdAsync(integrationEvent.UserId);
 
+                // GABRIEL: UNIT TEST NEED TO BE UPDATED.
+                if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
+                {
+                    throw new InvalidOperationException(
+                        "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.");
+                }
+
                 await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
                     integrationEvent.TransactionId,
@@ -53,7 +61,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 _logger.LogInformation($"Processed {nameof(UserAccountDepositIntegrationEvent)}.");
 
-                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.TransactionId);
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
@@ -68,7 +76,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
                 }
 
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }

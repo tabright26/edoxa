@@ -6,7 +6,6 @@
 
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Transactions.Responses;
@@ -26,6 +25,8 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Areas.Stripe.Controllers;
@@ -15,8 +14,6 @@ using eDoxa.Payment.TestHelpers.Mocks;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 

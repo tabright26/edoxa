@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.ServiceBus.Abstractions;
@@ -45,6 +46,12 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
 
+                // GABRIEL: UNIT TEST NEED TO BE UPDATED.
+                if (!await _stripeAccountService.HasAccountVerifiedAsync(accountId))
+                {
+                    throw new InvalidOperationException("The user's Stripe Account isn't verified. The user's cannot process a withdrawal transaction.");
+                }
+
                 await _stripeTransferService.CreateTransferAsync(
                     accountId,
                     integrationEvent.TransactionId,
@@ -53,7 +60,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
-                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.TransactionId);
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
@@ -68,7 +75,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
                 }
 
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.TransactionId);
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }

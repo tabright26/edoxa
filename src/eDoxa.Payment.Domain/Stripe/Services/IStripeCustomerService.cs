@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain.Miscs;
 
+using Stripe;
+
 namespace eDoxa.Payment.Domain.Stripe.Services
 {
     public interface IStripeCustomerService
@@ -15,5 +17,11 @@ namespace eDoxa.Payment.Domain.Stripe.Services
         Task<string> GetCustomerIdAsync(UserId userId);
 
         Task<string> CreateCustomerAsync(UserId userId, string email);
+
+        Task<bool> HasDefaultPaymentMethodAsync(string customerId);
+
+        Task<Customer> SetDefaultPaymentMethodAsync(string customerId, string paymentMethodId);
+
+        Task<Customer> FindCustomerAsync(string customerId);
     }
 }

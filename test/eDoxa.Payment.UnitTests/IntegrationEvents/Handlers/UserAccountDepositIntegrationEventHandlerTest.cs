@@ -50,6 +50,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var mockCustomerService = new Mock<IStripeCustomerService>();
 
+            mockCustomerService.Setup(customerService => customerService.HasDefaultPaymentMethodAsync(It.IsAny<string>())).ReturnsAsync(true).Verifiable();
+
             mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("CustomerId").Verifiable();
 
             var handler = new UserAccountDepositIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object, mockCustomerService.Object);
@@ -76,6 +78,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<long>(),
                     It.IsAny<string>()),
                 Times.Once);
+
+            mockCustomerService.Verify(customerService => customerService.HasDefaultPaymentMethodAsync(It.IsAny<string>()), Times.Once);
 
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
         }

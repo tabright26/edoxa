@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
@@ -21,6 +19,8 @@ using Microsoft.AspNetCore.Identity;
 using Moq;
 
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
@@ -47,14 +47,8 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             var integrationEvent = new UserClaimsReplacedIntegrationEvent(
                 new UserId(),
                 1,
-                new Dictionary<string, string>
-                {
-                    ["role"] = "admin"
-                },
-                new Dictionary<string, string>
-                {
-                    ["role"] = "user"
-                });
+                new Claims(new Seedwork.Domain.Miscs.Claim("role", "admin")),
+                new Claims(new Seedwork.Domain.Miscs.Claim("role", "user")));
 
             // Act
             await handler.HandleAsync(integrationEvent);

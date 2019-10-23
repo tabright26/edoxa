@@ -1,5 +1,5 @@
 ﻿// Filename: UserClaimsReplacedIntegrationEventHandler.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -28,15 +28,11 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 
             for (var index = 0; index < integrationEvent.ClaimCount; index++)
             {
-                var (type, value) = integrationEvent.Claims.ElementAt(index);
+                var claim = integrationEvent.Claims.ElementAt(index);
 
-                var claim = new Claim(type, value);
+                var newClaim = integrationEvent.NewClaims.ElementAt(index);
 
-                var (newType, newValue) = integrationEvent.NewClaims.ElementAt(index);
-
-                var newClaim = new Claim(newType, newValue);
-
-                await _userManager.ReplaceClaimAsync(user, claim, newClaim);
+                await _userManager.ReplaceClaimAsync(user, new Claim(claim.Type, claim.Value), new Claim(newClaim.Type, newClaim.Value));
             }
         }
     }

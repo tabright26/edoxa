@@ -1,5 +1,5 @@
 ﻿// Filename: StripePaymentMethodService.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,6 +14,13 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
 {
     public sealed class StripePaymentMethodService : PaymentMethodService, IStripePaymentMethodService
     {
+        private readonly IStripeCustomerService _stripeCustomerService;
+
+        public StripePaymentMethodService(IStripeCustomerService stripeCustomerService)
+        {
+            _stripeCustomerService = stripeCustomerService;
+        }
+
         public async Task<StripeList<PaymentMethod>> FetchPaymentMethodsAsync(string customerId, string type)
         {
             return await this.ListAsync(
@@ -38,14 +45,21 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 });
         }
 
-        public async Task<PaymentMethod> AttachPaymentMethodAsync(string paymentMethodId, string customerId)
+        public async Task<PaymentMethod> AttachPaymentMethodAsync(string paymentMethodId, string customerId, bool defaultPaymentMethod = false)
         {
-            return await this.AttachAsync(
+            var paymentMethod = await this.AttachAsync(
                 paymentMethodId,
                 new PaymentMethodAttachOptions
                 {
                     CustomerId = customerId
                 });
+
+            if (defaultPaymentMethod || !await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
+            {
+                await _stripeCustomerService.SetDefaultPaymentMethodAsync(customerId, paymentMethodId);
+            }
+
+            return paymentMethod;
         }
 
         public async Task<PaymentMethod> DetachPaymentMethodAsync(string paymentMethodId)

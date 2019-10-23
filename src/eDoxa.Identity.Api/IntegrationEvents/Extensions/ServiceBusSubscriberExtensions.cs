@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceBusSubscriberExtensions.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,13 +13,14 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
-            subscriber.Subscribe<RoleClaimAddedIntegrationEvent, RoleClaimAddedIntegrationEventHandler>();
-            subscriber.Subscribe<RoleClaimRemovedIntegrationEvent, RoleClaimRemovedIntegrationEventHandler>();
+            subscriber.Subscribe<RoleClaimsAddedIntegrationEvent, RoleClaimsAddedIntegrationEventHandler>();
+            subscriber.Subscribe<RoleClaimsRemovedIntegrationEvent, RoleClaimsRemovedIntegrationEventHandler>();
             subscriber.Subscribe<RoleCreatedIntegrationEvent, RoleCreatedIntegrationEventHandler>();
             subscriber.Subscribe<RoleDeletedIntegrationEvent, RoleDeletedIntegrationEventHandler>();
             subscriber.Subscribe<UserClaimsAddedIntegrationEvent, UserClaimsAddedIntegrationEventHandler>();
             subscriber.Subscribe<UserClaimsRemovedIntegrationEvent, UserClaimsRemovedIntegrationEventHandler>();
             subscriber.Subscribe<UserClaimsReplacedIntegrationEvent, UserClaimsReplacedIntegrationEventHandler>();
+            subscriber.Subscribe<UserEmailSentIntegrationEvent, UserEmailSentIntegrationEventHandler>();
             subscriber.Subscribe<UserRoleAddedIntegrationEvent, UserRoleAddedIntegrationEventHandler>();
             subscriber.Subscribe<UserRoleRemovedIntegrationEvent, UserRoleRemovedIntegrationEventHandler>();
         }

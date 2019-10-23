@@ -11,7 +11,7 @@ import {
 import { Reducer } from "redux";
 
 export const initialState: StripeBankAccountState = {
-  data: {},
+  data: null,
   error: null,
   loading: false
 };
