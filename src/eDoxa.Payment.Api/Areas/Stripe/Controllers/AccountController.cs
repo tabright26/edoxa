@@ -1,11 +1,14 @@
 ﻿// Filename: AccountController.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Payment.Api.Areas.Stripe.Responses;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 
@@ -25,11 +28,13 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     {
         private readonly IStripeAccountService _stripeAccountService;
         private readonly IStripeReferenceService _stripeReferenceService;
+        private readonly IMapper _mapper;
 
-        public AccountController(IStripeAccountService stripeAccountService, IStripeReferenceService stripeReferenceService)
+        public AccountController(IStripeAccountService stripeAccountService, IStripeReferenceService stripeReferenceService, IMapper mapper)
         {
             _stripeAccountService = stripeAccountService;
             _stripeReferenceService = stripeReferenceService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -48,7 +53,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var account = await _stripeAccountService.GetAccountAsync(accountId);
 
-                return this.Ok(account);
+                return this.Ok(_mapper.Map<AccountResponse>(account));
             }
             catch (StripeException exception)
             {

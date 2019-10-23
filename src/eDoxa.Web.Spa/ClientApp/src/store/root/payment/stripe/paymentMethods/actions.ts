@@ -11,12 +11,11 @@ import {
   UPDATE_STRIPE_PAYMENTMETHOD,
   UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS,
   UPDATE_STRIPE_PAYMENTMETHOD_FAIL,
-  STRIPE_PAYMENTMETHOD_CARD_TYPE,
-  StripePaymentMethodsActionCreators,
-  StripePaymentMethodType
+  StripePaymentMethodsActionCreators
 } from "./types";
+import { StripePaymentMethodType, STRIPE_CARD_TYPE } from "types";
 
-export function loadStripePaymentMethods(type: StripePaymentMethodType = STRIPE_PAYMENTMETHOD_CARD_TYPE): StripePaymentMethodsActionCreators {
+export function loadStripePaymentMethods(type: StripePaymentMethodType = STRIPE_CARD_TYPE): StripePaymentMethodsActionCreators {
   return {
     types: [LOAD_STRIPE_PAYMENTMETHODS, LOAD_STRIPE_PAYMENTMETHODS_SUCCESS, LOAD_STRIPE_PAYMENTMETHODS_FAIL],
     payload: {

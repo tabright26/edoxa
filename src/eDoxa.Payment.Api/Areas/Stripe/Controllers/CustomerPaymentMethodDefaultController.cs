@@ -6,6 +6,9 @@
 
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Payment.Api.Areas.Stripe.Responses;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 
@@ -25,11 +28,17 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
     {
         private readonly IStripeReferenceService _stripeReferenceService;
         private readonly IStripeCustomerService _stripeCustomerService;
+        private readonly IMapper _mapper;
 
-        public CustomerPaymentMethodDefaultController(IStripeReferenceService stripeReferenceService, IStripeCustomerService stripeCustomerService)
+        public CustomerPaymentMethodDefaultController(
+            IStripeReferenceService stripeReferenceService,
+            IStripeCustomerService stripeCustomerService,
+            IMapper mapper
+        )
         {
             _stripeReferenceService = stripeReferenceService;
             _stripeCustomerService = stripeCustomerService;
+            _mapper = mapper;
         }
 
         [HttpPut]
@@ -48,7 +57,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var customer = await _stripeCustomerService.SetDefaultPaymentMethodAsync(customerId, paymentMethodId);
 
-                return this.Ok(customer);
+                return this.Ok(_mapper.Map<CustomerResponse>(customer));
             }
             catch (StripeException exception)
             {

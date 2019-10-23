@@ -52,7 +52,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(new PaymentMethod())
                 .Verifiable();
 
-            var paymentMethodAttachController = new PaymentMethodAttachController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodAttachController = new PaymentMethodAttachController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -78,7 +78,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            var paymentMethodAttachController = new PaymentMethodAttachController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodAttachController = new PaymentMethodAttachController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -106,7 +106,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ThrowsAsync(new StripeException())
                 .Verifiable();
 
-            var paymentMethodAttachController = new PaymentMethodAttachController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodAttachController = new PaymentMethodAttachController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 

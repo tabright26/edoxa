@@ -55,12 +55,12 @@ export interface Balance {
   readonly pending: number;
 }
 
-type Gender = "Male" | "Female" | "Other";
+export type Gender = "Male" | "Female" | "Other";
 
-interface Dob {
-  year: number;
-  month: number;
-  day: number;
+export interface Dob {
+  readonly year: number;
+  readonly month: number;
+  readonly day: number;
 }
 
 export interface Informations {
@@ -98,7 +98,7 @@ export interface Doxatag {
 
 export interface Game {}
 
-type Logo = Stream | null;
+export type Logo = Stream | null;
 
 export interface Clan extends Entity<ClanId> {
   readonly ownerId: UserId;
@@ -135,16 +135,40 @@ export interface Match extends Entity<MatchId> {
 
 export interface Stat {}
 
+// Stripe
+export const STRIPE_CARD_TYPE = "card";
+
+export type StripePaymentMethodType = typeof STRIPE_CARD_TYPE;
+
 export type StripePaymentMethodId = string;
 
-export interface StripeAccount {
-  verified: boolean;
-}
-
 export interface StripeCustomer {
-  defaultPaymentMethodId: StripePaymentMethodId;
+  readonly defaultPaymentMethodId: StripePaymentMethodId;
 }
 
-export interface StripeBankAccount {}
+export interface StripePaymentMethod {
+  readonly id: StripePaymentMethodId;
+  readonly type: StripePaymentMethodType;
+  readonly card: StripeCard;
+}
 
-export interface StripePaymentMethod {}
+export interface StripeCard {
+  readonly brand: string;
+  readonly country: string;
+  readonly expMonth: number;
+  readonly expYear: number;
+  readonly last4: string;
+}
+
+export interface StripeAccount {
+  readonly enabled: boolean;
+}
+
+export interface StripeBankAccount {
+  readonly bankName: string;
+  readonly country: string;
+  readonly currency: string;
+  readonly last4: string;
+  readonly status: string;
+  readonly defaultForCurrency: boolean;
+}

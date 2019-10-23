@@ -2,7 +2,6 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadStripeAccount } from "./actions";
-import { selectHasAccountVerified } from "./selectors";
 
 export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -31,7 +30,7 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
   )(Container);
 };
 
-export const withStripeHasAccountVerified = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeHasAccountEnabled = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       props.loadStripeAccount();
@@ -43,7 +42,7 @@ export const withStripeHasAccountVerified = (HighOrderComponent: FunctionCompone
   const mapStateToProps = (state: RootState) => {
     const { data, error } = state.root.payment.stripe.account;
     return {
-      hasAccountVerified: selectHasAccountVerified(data, error)
+      hasAccountEnabled: (!error && data && data.enabled) || false
     };
   };
 

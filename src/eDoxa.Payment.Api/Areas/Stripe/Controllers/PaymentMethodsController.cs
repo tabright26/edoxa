@@ -1,12 +1,15 @@
 ﻿// Filename: PaymentMethodsController.cs
 // Date Created: 2019-10-10
-//
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Payment.Api.Areas.Stripe.Requests;
+using eDoxa.Payment.Api.Areas.Stripe.Responses;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 
@@ -27,16 +30,19 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         private readonly IStripePaymentMethodService _stripePaymentMethodService;
         private readonly IStripeCustomerService _stripeCustomerService;
         private readonly IStripeReferenceService _stripeReferenceService;
+        private readonly IMapper _mapper;
 
         public PaymentMethodsController(
             IStripePaymentMethodService stripePaymentMethodService,
             IStripeCustomerService stripeCustomerService,
-            IStripeReferenceService stripeReferenceService
+            IStripeReferenceService stripeReferenceService,
+            IMapper mapper
         )
         {
             _stripePaymentMethodService = stripePaymentMethodService;
             _stripeCustomerService = stripeCustomerService;
             _stripeReferenceService = stripeReferenceService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -55,7 +61,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId, type);
 
-                return this.Ok(paymentMethods);
+                return this.Ok(_mapper.Map<PaymentMethodResponse[]>(paymentMethods));
             }
             catch (StripeException exception)
             {
@@ -77,7 +83,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var paymentMethod = await _stripePaymentMethodService.UpdatePaymentMethodAsync(paymentMethodId, request.ExpMonth, request.ExpYear);
 
-                return this.Ok(paymentMethod);
+                return this.Ok(_mapper.Map<PaymentMethodResponse>(paymentMethod));
             }
             catch (StripeException exception)
             {

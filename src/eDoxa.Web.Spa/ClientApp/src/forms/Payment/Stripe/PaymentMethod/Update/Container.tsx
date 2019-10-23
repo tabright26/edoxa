@@ -6,9 +6,7 @@ import Update from "./Update";
 import { throwSubmissionError } from "utils/form/types";
 
 const mapStateToProps = (state: RootState, ownProps: any) => {
-  const {
-    data: { data }
-  } = state.root.payment.stripe.paymentMethods;
+  const { data } = state.root.payment.stripe.paymentMethods;
   const paymentMethod = data.find(paymentMethod => paymentMethod.id === ownProps.paymentMethodId);
   return {
     initialValues: paymentMethod

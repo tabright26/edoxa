@@ -53,7 +53,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                     new StripeList<PaymentMethod>())
                 .Verifiable();
 
-            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -79,7 +79,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -107,7 +107,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ThrowsAsync(new StripeException())
                 .Verifiable();
 
-            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -136,7 +136,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(new PaymentMethod())
                 .Verifiable();
 
-            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -161,7 +161,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -189,7 +189,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ThrowsAsync(new StripeException())
                 .Verifiable();
 
-            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object);
+            var paymentMethodController = new PaymentMethodsController(mockPaymentMethodService.Object, mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 

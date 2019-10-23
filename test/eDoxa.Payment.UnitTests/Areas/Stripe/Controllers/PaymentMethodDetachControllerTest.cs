@@ -46,7 +46,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(new PaymentMethod())
                 .Verifiable();
 
-            var paymentMethodDetachController = new PaymentMethodDetachController(mockPaymentMethodService.Object, mockReferenceService.Object);
+            var paymentMethodDetachController = new PaymentMethodDetachController(mockPaymentMethodService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodDetachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -70,7 +70,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            var paymentMethodDetachController = new PaymentMethodDetachController(mockPaymentMethodService.Object, mockReferenceService.Object);
+            var paymentMethodDetachController = new PaymentMethodDetachController(mockPaymentMethodService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodDetachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -97,7 +97,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ThrowsAsync(new StripeException())
                 .Verifiable();
 
-            var paymentMethodDetachController = new PaymentMethodDetachController(mockPaymentMethodService.Object, mockReferenceService.Object);
+            var paymentMethodDetachController = new PaymentMethodDetachController(mockPaymentMethodService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             paymentMethodDetachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 

@@ -2,7 +2,6 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadStripeCustomer } from "./actions";
-import { selectHasDefaultPaymentMethod } from "./selectors";
 
 export const withStripeCustomer = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -43,7 +42,7 @@ export const withStripeCustomerHasDefaultPaymentMethod = (HighOrderComponent: Fu
   const mapStateToProps = (state: RootState) => {
     const { data, error } = state.root.payment.stripe.customer;
     return {
-      hasDefaultPaymentMethod: selectHasDefaultPaymentMethod(data, error)
+      hasDefaultPaymentMethod: (!error && data && data.defaultPaymentMethodId) || false
     };
   };
 

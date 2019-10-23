@@ -1,12 +1,15 @@
 ﻿// Filename: BankAccountController.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Payment.Api.Areas.Stripe.Requests;
+using eDoxa.Payment.Api.Areas.Stripe.Responses;
 using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 
@@ -27,16 +30,19 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         private readonly IStripeExternalAccountService _externalAccountService;
         private readonly IStripeAccountService _stripeAccountService;
         private readonly IStripeReferenceService _stripeReferenceService;
+        private readonly IMapper _mapper;
 
         public BankAccountController(
             IStripeExternalAccountService externalAccountService,
             IStripeAccountService stripeAccountService,
-            IStripeReferenceService stripeReferenceService
+            IStripeReferenceService stripeReferenceService,
+            IMapper mapper
         )
         {
             _externalAccountService = externalAccountService;
             _stripeAccountService = stripeAccountService;
             _stripeReferenceService = stripeReferenceService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -60,7 +66,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
                     return this.NotFound("Bank account not found.");
                 }
 
-                return this.Ok(bankAccount);
+                return this.Ok(_mapper.Map<BankAccountResponse>(bankAccount));
             }
             catch (StripeException exception)
             {
@@ -84,7 +90,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var bankAccount = await _externalAccountService.UpdateBankAccountAsync(accountId, request.Token);
 
-                return this.Ok(bankAccount);
+                return this.Ok(_mapper.Map<BankAccountResponse>(bankAccount));
             }
             catch (StripeException exception)
             {

@@ -50,7 +50,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(new Account())
                 .Verifiable();
 
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object);
+            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             accountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -75,7 +75,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object);
+            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             accountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
@@ -102,7 +102,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
                 .ThrowsAsync(new StripeException())
                 .Verifiable();
 
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object);
+            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
             accountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 

@@ -17,12 +17,7 @@ import {
 import { Reducer } from "redux";
 
 export const initialState: StripePaymentMethodsState = {
-  data: {
-    object: "list",
-    data: [],
-    has_more: false,
-    url: null
-  },
+  data: [],
   error: null,
   loading: false
 };
