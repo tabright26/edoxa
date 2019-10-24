@@ -6,6 +6,7 @@ import {
   UserAccountWithdrawalBundlesActions
 } from "../types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: UserAccountWithdrawalBundlesState = {
   data: [],
@@ -13,19 +14,23 @@ export const initialState: UserAccountWithdrawalBundlesState = {
   loading: false
 };
 
-export const reducer: Reducer<UserAccountWithdrawalBundlesState, UserAccountWithdrawalBundlesActions> = (state = initialState, action) => {
-  switch (action.type) {
-    case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES: {
-      return { data: state.data, error: null, loading: true };
+export const reducer: Reducer<UserAccountWithdrawalBundlesState, UserAccountWithdrawalBundlesActions> = produce(
+  (draft: Draft<UserAccountWithdrawalBundlesState>, action: UserAccountWithdrawalBundlesActions) => {
+    switch (action.type) {
+      case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS:
+        draft.data = action.payload.data;
+        draft.error = null;
+        draft.loading = false;
+        break;
+      case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
     }
-    case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS: {
-      return { data: action.payload.data, error: null, loading: false };
-    }
-    case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
-  }
-};
+  },
+  initialState
+);

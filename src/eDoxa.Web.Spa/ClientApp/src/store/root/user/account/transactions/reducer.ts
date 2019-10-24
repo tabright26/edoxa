@@ -1,5 +1,6 @@
 import { LOAD_USER_ACCOUNT_TRANSACTIONS, LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS, LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL, UserAccountTransactionsActions, UserAccountTransactionsState } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: UserAccountTransactionsState = {
   data: [],
@@ -7,43 +8,29 @@ export const initialState: UserAccountTransactionsState = {
   loading: false
 };
 
-export const reducer: Reducer<UserAccountTransactionsState, UserAccountTransactionsActions> = (state = initialState, action) => {
+export const reducer: Reducer<UserAccountTransactionsState, UserAccountTransactionsActions> = produce((draft: Draft<UserAccountTransactionsState>, action: UserAccountTransactionsActions) => {
   switch (action.type) {
-    case LOAD_USER_ACCOUNT_TRANSACTIONS: {
-      return {
-        data: state.data,
-        error: null,
-        loading: true
-      };
-    }
-    case LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS: {
+    case LOAD_USER_ACCOUNT_TRANSACTIONS:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return {
-            data: state.data,
-            error: null,
-            loading: false
-          };
-        }
-        default: {
-          return {
-            data: data,
-            error: null,
-            loading: false
-          };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL: {
-      return {
-        data: state.data,
-        error: action.error,
-        loading: false
-      };
-    }
-    default: {
-      return state;
-    }
+      break;
+    case LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

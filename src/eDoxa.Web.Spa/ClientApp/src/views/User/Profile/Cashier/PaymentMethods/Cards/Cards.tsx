@@ -21,7 +21,7 @@ const StripeCardItem: FunctionComponent<any> = ({ hasMore, modals, paymentMethod
         </dd>
         <dd className="col-sm-2 m-0 d-flex">
           <span className="my-auto mr-2 text-muted">Expiration:</span>
-          <CardExpiration className="my-auto" month={paymentMethod.card.exp_month} year={paymentMethod.card.exp_year} />
+          <CardExpiration className="my-auto" month={paymentMethod.card.expMonth} year={paymentMethod.card.expYear} />
         </dd>
         <dd className="col-sm-6 mb-0 d-flex">
           <Button.Link className="p-0 ml-auto my-auto" icon={faTimes} onClick={() => modals.showDeleteStripePaymentMethodModal(paymentMethod)}>

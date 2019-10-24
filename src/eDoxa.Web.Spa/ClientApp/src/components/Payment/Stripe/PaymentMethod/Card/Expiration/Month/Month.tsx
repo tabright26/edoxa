@@ -1,7 +1,7 @@
 import React from "react";
 
 interface CardExpirationMonthProps {
-  month: Number;
+  month: number;
   className?: string;
 }
 

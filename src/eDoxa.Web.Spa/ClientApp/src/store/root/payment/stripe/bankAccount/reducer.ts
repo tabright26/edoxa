@@ -9,6 +9,7 @@ import {
   StripeBankAccountState
 } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: StripeBankAccountState = {
   data: null,
@@ -16,28 +17,33 @@ export const initialState: StripeBankAccountState = {
   loading: false
 };
 
-export const reducer: Reducer<StripeBankAccountState, StripeBankAccountActions> = (state = initialState, action) => {
+export const reducer: Reducer<StripeBankAccountState, StripeBankAccountActions> = produce((draft: Draft<StripeBankAccountState>, action: StripeBankAccountActions) => {
   switch (action.type) {
-    case LOAD_STRIPE_BANKACCOUNT: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_STRIPE_BANKACCOUNT_SUCCESS: {
-      return { data: action.payload.data, error: null, loading: false };
-    }
-    case LOAD_STRIPE_BANKACCOUNT_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case UPDATE_STRIPE_BANKACCOUNT: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case UPDATE_STRIPE_BANKACCOUNT_SUCCESS: {
-      return { data: action.payload.data, error: null, loading: false };
-    }
-    case UPDATE_STRIPE_BANKACCOUNT_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+    case LOAD_STRIPE_BANKACCOUNT:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_STRIPE_BANKACCOUNT_SUCCESS:
+      draft.data = action.payload.data;
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_STRIPE_BANKACCOUNT_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case UPDATE_STRIPE_BANKACCOUNT:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case UPDATE_STRIPE_BANKACCOUNT_SUCCESS:
+      draft.data = action.payload.data;
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case UPDATE_STRIPE_BANKACCOUNT_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

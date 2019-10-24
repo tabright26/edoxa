@@ -100,8 +100,15 @@ export interface Game {}
 
 export type Logo = Stream | null;
 
+export interface ClanOwner {
+  readonly userId: UserId;
+  readonly doxatag?: Doxatag;
+}
+
 export interface Clan extends Entity<ClanId> {
+  readonly name: string;
   readonly ownerId: UserId;
+  readonly owner?: ClanOwner;
   readonly members: Member[];
   readonly logo: Logo;
 }
@@ -109,6 +116,7 @@ export interface Clan extends Entity<ClanId> {
 export interface Member extends Entity<MemberId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
+  readonly doxatag?: Doxatag;
 }
 
 export interface Candidature extends Entity<CandidatureId> {
@@ -122,6 +130,7 @@ export interface Invitation extends Entity<InvitationId> {
 }
 
 export interface Challenge extends Entity<ChallengeId> {
+  readonly timestamp: number;
   readonly participants: Participant[];
 }
 

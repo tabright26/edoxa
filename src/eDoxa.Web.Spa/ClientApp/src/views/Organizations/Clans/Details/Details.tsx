@@ -12,7 +12,7 @@ import { compose } from "recompose";
 
 const ClanDetailsIndex: FunctionComponent<any> = ({
   actions,
-  clans,
+  clans: { data },
   userId,
   userClan,
   match: {
@@ -22,15 +22,15 @@ const ClanDetailsIndex: FunctionComponent<any> = ({
   const [clan, setClan] = useState(null);
 
   useEffect(() => {
-    if (!clans.some(clan => clan.id === clanId)) {
+    if (!data.some(clan => clan.id === clanId)) {
       actions.loadClan(clanId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clanId]);
 
   useEffect(() => {
-    setClan(clans.find(clan => clan.id === clanId));
-  }, [clanId, clans]);
+    setClan(data.find(clan => clan.id === clanId));
+  }, [clanId, data]);
 
   return (
     <ErrorBoundary>

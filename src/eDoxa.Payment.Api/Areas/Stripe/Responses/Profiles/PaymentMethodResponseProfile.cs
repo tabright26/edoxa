@@ -17,7 +17,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Responses.Profiles
             this.CreateMap<PaymentMethod, PaymentMethodResponse>()
                 .ForMember(paymentMethod => paymentMethod.Id, config => config.MapFrom(paymentMethod => paymentMethod.Id))
                 .ForMember(paymentMethod => paymentMethod.Type, config => config.MapFrom(paymentMethod => paymentMethod.Type))
-                .ForMember(paymentMethod => paymentMethod.Card, config => config.MapFrom(paymentMethod => paymentMethod.Card));
+                .ForMember(paymentMethod => paymentMethod.PaymentMethodCard, config => config.MapFrom(paymentMethod => paymentMethod.Card));
         }
     }
 }

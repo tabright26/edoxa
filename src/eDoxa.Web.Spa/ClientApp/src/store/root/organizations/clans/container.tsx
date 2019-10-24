@@ -1,8 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { loadClans, loadClan, createClan } from "store/root/organizations/clans/actions";
+import { ClansState } from "store/root/organizations/clans/types";
 import { downloadClanLogo, uploadClanLogo } from "store/root/organizations/logos/actions";
 import { RootState } from "store/types";
+import produce, { Draft } from "immer";
+import { UserId, ClanId } from "types";
 
 export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -14,19 +17,20 @@ export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState) => {
-    const clans = state.root.organizations.clans.data.map(clan => {
-      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === clan.ownerId);
-
-      clan.ownerDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
-      return clan;
+    const clans: ClansState = produce(state.root.organizations.clans, (draft: Draft<ClansState>) => {
+      draft.data.forEach(clan => {
+        clan.owner = {
+          userId: clan.ownerId,
+          doxatag: state.root.doxatags.data.find(doxatag => doxatag.userId === clan.ownerId) || null
+        };
+      });
     });
-
-    const userId = state.oidc.user.profile.sub;
-
+    const userId: UserId = state.oidc.user.profile["sub"];
+    const clanId: ClanId = state.oidc.user.profile["clanId"];
     return {
       clans,
       userId,
-      userClan: clans.find(clan => clan.members.find(member => member.userId === userId))
+      userClan: clans.data.find(clan => clan.id === clanId || clan.members.some(member => member.userId === userId))
     };
   };
 

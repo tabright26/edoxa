@@ -1,9 +1,10 @@
 ﻿// Filename: PaymentMethodsControllerGetAsyncTest.cs
-// Date Created: 2019-10-11
-//
+// Date Created: 2019-10-15
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -41,41 +42,41 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync($"api/stripe/payment-methods");
+            return await _httpClient.GetAsync("api/stripe/payment-methods");
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeOk()
+        public async Task ShouldBeHttpStatusCodeBadRequest()
         {
             // Arrange
             var userId = new UserId();
+
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
-                .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    var mockStripeReferenceService = new Mock<IStripeReferenceService>();
-                    var mockStripeCustomerService = new Mock<IStripeCustomerService>();
-                    var mockStripePaymentMethodService = new Mock<IStripePaymentMethodService>();
+                .WithWebHostBuilder(
+                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                            var mockStripeCustomerService = new Mock<IStripeCustomerService>();
+                            var mockStripePaymentMethodService = new Mock<IStripePaymentMethodService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
-                    mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerId");
+                            mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()))
+                                .ThrowsAsync(new StripeException());
 
-                    mockStripePaymentMethodService.Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()))
-                        .ReturnsAsync(new StripeList<PaymentMethod>());
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                            container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
+                            container.RegisterInstance(mockStripePaymentMethodService.Object).As<IStripePaymentMethodService>().SingleInstance();
+                        }));
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
-                    container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
-                    container.RegisterInstance(mockStripePaymentMethodService.Object).As<IStripePaymentMethodService>().SingleInstance();
-                }));
             _httpClient = factory.CreateClient();
 
             // Act
             using var response = await this.ExecuteAsync();
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
@@ -83,20 +84,23 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
         {
             // Arrange
             var userId = new UserId();
+
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
-                .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    var mockStripeReferenceService = new Mock<IStripeReferenceService>();
-                    var mockStripeCustomerService = new Mock<IStripeCustomerService>();
-                    var mockStripePaymentMethodService = new Mock<IStripePaymentMethodService>();
+                .WithWebHostBuilder(
+                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                            var mockStripeCustomerService = new Mock<IStripeCustomerService>();
+                            var mockStripePaymentMethodService = new Mock<IStripePaymentMethodService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
-                    container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
-                    container.RegisterInstance(mockStripePaymentMethodService.Object).As<IStripePaymentMethodService>().SingleInstance();
-                }));
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                            container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
+                            container.RegisterInstance(mockStripePaymentMethodService.Object).As<IStripePaymentMethodService>().SingleInstance();
+                        }));
+
             _httpClient = factory.CreateClient();
 
             // Act
@@ -107,34 +111,52 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeBadRequest()
+        public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
             var userId = new UserId();
+
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
-                .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    var mockStripeReferenceService = new Mock<IStripeReferenceService>();
-                    var mockStripeCustomerService = new Mock<IStripeCustomerService>();
-                    var mockStripePaymentMethodService = new Mock<IStripePaymentMethodService>();
+                .WithWebHostBuilder(
+                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                            var mockStripeCustomerService = new Mock<IStripeCustomerService>();
+                            var mockStripePaymentMethodService = new Mock<IStripePaymentMethodService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
-                    mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException());
+                            mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()))
+                                .ReturnsAsync("customerId");
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
-                    container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
-                    container.RegisterInstance(mockStripePaymentMethodService.Object).As<IStripePaymentMethodService>().SingleInstance();
-                }));
+                            mockStripePaymentMethodService
+                                .Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()))
+                                .ReturnsAsync(
+                                    new StripeList<PaymentMethod>
+                                    {
+                                        Data = new List<PaymentMethod>
+                                        {
+                                            new PaymentMethod
+                                            {
+                                                Card = new PaymentMethodCard()
+                                            }
+                                        }
+                                    });
+
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                            container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
+                            container.RegisterInstance(mockStripePaymentMethodService.Object).As<IStripePaymentMethodService>().SingleInstance();
+                        }));
+
             _httpClient = factory.CreateClient();
 
             // Act
             using var response = await this.ExecuteAsync();
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
-
     }
 }

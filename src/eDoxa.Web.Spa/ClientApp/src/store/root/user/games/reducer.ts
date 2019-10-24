@@ -1,5 +1,6 @@
 import { LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL, UserGamesActions, UserGamesState } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: UserGamesState = {
   data: [],
@@ -7,27 +8,29 @@ export const initialState: UserGamesState = {
   loading: false
 };
 
-export const reducer: Reducer<UserGamesState, UserGamesActions> = (state = initialState, action) => {
+export const reducer: Reducer<UserGamesState, UserGamesActions> = produce((draft: Draft<UserGamesState>, action: UserGamesActions) => {
   switch (action.type) {
-    case LOAD_USER_GAMES: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_USER_GAMES_SUCCESS: {
+    case LOAD_USER_GAMES:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_USER_GAMES_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_USER_GAMES_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+      break;
+    case LOAD_USER_GAMES_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

@@ -10,11 +10,11 @@ using Stripe;
 
 namespace eDoxa.Payment.Api.Areas.Stripe.Responses.Profiles
 {
-    internal sealed class CardResponseProfile : Profile
+    internal sealed class PaymentMethodCardResponseProfile : Profile
     {
-        public CardResponseProfile()
+        public PaymentMethodCardResponseProfile()
         {
-            this.CreateMap<Card, CardResponse>()
+            this.CreateMap<PaymentMethodCard, PaymentMethodCardResponse>()
                 .ForMember(card => card.Brand, config => config.MapFrom(card => card.Brand))
                 .ForMember(card => card.Country, config => config.MapFrom(card => card.Country))
                 .ForMember(card => card.ExpMonth, config => config.MapFrom(card => card.ExpMonth))

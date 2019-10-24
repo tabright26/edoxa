@@ -1,5 +1,6 @@
 import { LOAD_STRIPE_ACCOUNT, LOAD_STRIPE_ACCOUNT_SUCCESS, LOAD_STRIPE_ACCOUNT_FAIL, StripeAccountActions, StripeAccountState } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: StripeAccountState = {
   data: null,
@@ -7,19 +8,20 @@ export const initialState: StripeAccountState = {
   loading: false
 };
 
-export const reducer: Reducer<StripeAccountState, StripeAccountActions> = (state = initialState, action) => {
+export const reducer: Reducer<StripeAccountState, StripeAccountActions> = produce((draft: Draft<StripeAccountState>, action: StripeAccountActions) => {
   switch (action.type) {
-    case LOAD_STRIPE_ACCOUNT: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_STRIPE_ACCOUNT_SUCCESS: {
-      return { data: action.payload.data, error: null, loading: false };
-    }
-    case LOAD_STRIPE_ACCOUNT_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+    case LOAD_STRIPE_ACCOUNT:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_STRIPE_ACCOUNT_SUCCESS:
+      draft.data = action.payload.data;
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_STRIPE_ACCOUNT_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

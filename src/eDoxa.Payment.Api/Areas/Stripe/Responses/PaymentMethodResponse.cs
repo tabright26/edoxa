@@ -20,6 +20,6 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Responses
         public string Type { get; set; }
 
         [JsonProperty("card")]
-        public CardResponse Card { get; set; }
+        public PaymentMethodCardResponse PaymentMethodCard { get; set; }
     }
 }

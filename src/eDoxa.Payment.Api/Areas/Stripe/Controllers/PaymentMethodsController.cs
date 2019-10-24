@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -61,7 +63,12 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
                 var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId, type);
 
-                return this.Ok(_mapper.Map<PaymentMethodResponse[]>(paymentMethods));
+                if (!paymentMethods.Any())
+                {
+                    return this.NoContent();
+                }
+
+                return this.Ok(_mapper.Map<IEnumerable<PaymentMethodResponse>>(paymentMethods));
             }
             catch (StripeException exception)
             {

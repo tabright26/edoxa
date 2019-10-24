@@ -18,6 +18,7 @@ import {
   ClanInvitationsState
 } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: ClanInvitationsState = {
   data: [],
@@ -25,63 +26,78 @@ export const initialState: ClanInvitationsState = {
   loading: false
 };
 
-export const reducer: Reducer<ClanInvitationsState, ClanInvitationsActions> = (state = initialState, action) => {
+export const reducer: Reducer<ClanInvitationsState, ClanInvitationsActions> = produce((draft: Draft<ClanInvitationsState>, action: ClanInvitationsActions) => {
   switch (action.type) {
-    case LOAD_CLAN_INVITATIONS: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CLAN_INVITATIONS_SUCCESS: {
+    case LOAD_CLAN_INVITATIONS:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CLAN_INVITATIONS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_CLAN_INVITATIONS_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case LOAD_CLAN_INVITATION: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CLAN_INVITATION_SUCCESS: {
-      return { data: [...state.data, action.payload.data], error: null, loading: false };
-    }
-    case LOAD_CLAN_INVITATION_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case SEND_CLAN_INVITATION: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case SEND_CLAN_INVITATION_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case SEND_CLAN_INVITATION_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case ACCEPT_CLAN_INVITATION: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case ACCEPT_CLAN_INVITATION_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case ACCEPT_CLAN_INVITATION_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case DECLINE_CLAN_INVITATION: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case DECLINE_CLAN_INVITATION_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case DECLINE_CLAN_INVITATION_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+      break;
+    case LOAD_CLAN_INVITATIONS_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case LOAD_CLAN_INVITATION:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CLAN_INVITATION_SUCCESS:
+      draft.data = [...draft.data, action.payload.data];
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_CLAN_INVITATION_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case SEND_CLAN_INVITATION:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case SEND_CLAN_INVITATION_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case SEND_CLAN_INVITATION_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case ACCEPT_CLAN_INVITATION:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case ACCEPT_CLAN_INVITATION_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case ACCEPT_CLAN_INVITATION_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case DECLINE_CLAN_INVITATION:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case DECLINE_CLAN_INVITATION_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case DECLINE_CLAN_INVITATION_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

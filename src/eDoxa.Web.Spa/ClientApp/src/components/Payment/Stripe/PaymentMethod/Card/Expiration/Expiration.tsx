@@ -3,8 +3,8 @@ import CardExpirationMonth from "./Month";
 import CardExpirationYear from "./Year";
 
 interface CardExpirationProps {
-  month: Number;
-  year: Number;
+  month: number;
+  year: number;
   className?: string;
 }
 

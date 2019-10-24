@@ -14,7 +14,7 @@ describe("user games reducer", () => {
   it("should handle LOAD_GAMES_SUCCESS 204", () => {
     const action: any = {
       type: LOAD_USER_GAMES_SUCCESS,
-      payload: { status: 204, data: games204Data }
+      payload: { status: 204, data: initialState.data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
