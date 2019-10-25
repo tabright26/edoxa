@@ -15,6 +15,7 @@ import {
   UserAddressBookState
 } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: UserAddressBookState = {
   data: [],
@@ -22,55 +23,67 @@ export const initialState: UserAddressBookState = {
   loading: false
 };
 
-export const reducer: Reducer<UserAddressBookState, UserAddressBookActions> = (state = initialState, action) => {
+export const reducer: Reducer<UserAddressBookState, UserAddressBookActions> = produce((draft: Draft<UserAddressBookState>, action: UserAddressBookActions) => {
   switch (action.type) {
-    case LOAD_USER_ADDRESSBOOK: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_USER_ADDRESSBOOK_SUCCESS: {
+    case LOAD_USER_ADDRESSBOOK:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_USER_ADDRESSBOOK_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_USER_ADDRESSBOOK_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case CREATE_USER_ADDRESS: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case CREATE_USER_ADDRESS_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case CREATE_USER_ADDRESS_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case UPDATE_USER_ADDRESS: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case UPDATE_USER_ADDRESS_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case UPDATE_USER_ADDRESS_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case DELETE_USER_ADDRESS: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case DELETE_USER_ADDRESS_SUCCESS: {
+      break;
+    case LOAD_USER_ADDRESSBOOK_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case CREATE_USER_ADDRESS:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case CREATE_USER_ADDRESS_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case CREATE_USER_ADDRESS_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case UPDATE_USER_ADDRESS:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case UPDATE_USER_ADDRESS_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case UPDATE_USER_ADDRESS_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case DELETE_USER_ADDRESS:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case DELETE_USER_ADDRESS_SUCCESS:
       const { data: addressId } = action.payload;
-      return { data: state.data.filter(address => address.id !== addressId), error: null, loading: false };
-    }
-    case DELETE_USER_ADDRESS_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+      draft.data = draft.data.filter(address => address.id !== addressId);
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case DELETE_USER_ADDRESS_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

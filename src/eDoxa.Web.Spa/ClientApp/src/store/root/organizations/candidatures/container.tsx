@@ -1,9 +1,16 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { loadClanCandidatures, loadClanCandidature, sendClanCandidature, acceptClanCandidature, declineClanCandidature } from "store/root/organizations/candidatures/actions";
+import { ClanCandidaturesState } from "store/root/organizations/candidatures/types";
 import { RootState } from "store/types";
+import produce, { Draft } from "immer";
 
-interface CandidatureProps {
+interface StateProps {
+  candidatures: ClanCandidaturesState;
+  ownProps: OwnProps;
+}
+
+interface OwnProps {
   type: string;
   id: string;
 }
@@ -13,7 +20,7 @@ export const withCandidatures = (HighOrderComponent: FunctionComponent<any>) => 
     useEffect(() => {
       switch (ownProps.type) {
         case "user":
-          if (!candidatures.some(candidature => candidature.userId === ownProps.id)) {
+          if (!candidatures.data.some(candidature => candidature.userId === ownProps.id)) {
             actions.loadCandidatures();
           }
           break;
@@ -29,23 +36,20 @@ export const withCandidatures = (HighOrderComponent: FunctionComponent<any>) => 
     return <HighOrderComponent actions={actions} candidatures={candidatures} {...attributes} />;
   };
 
-  const mapStateToProps = (state: RootState, ownProps: CandidatureProps) => {
-    const candidatures = state.root.organizations.candidatures.data.map(candidature => {
-      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === candidature.userId);
-      const clan = state.root.organizations.clans.data.find(clan => clan.id === candidature.clanId);
-
-      candidature.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
-      candidature.clanName = clan ? clan.name : null;
-      return candidature;
+  const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (state, ownProps) => {
+    const candidatures = produce(state.root.organizations.candidatures, (draft: Draft<ClanCandidaturesState>) => {
+      draft.data.forEach(candidature => {
+        candidature.doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === candidature.userId) || null;
+        candidature.clan = state.root.organizations.clans.data.find(clan => clan.id === candidature.clanId) || null;
+      });
     });
-
     return {
       candidatures,
-      ownProps
+      ownProps // NOT GOOD
     };
   };
 
-  const mapDispatchToProps = (dispatch: any, ownProps: CandidatureProps) => {
+  const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
     return {
       actions: {
         loadCandidatures: () => dispatch(loadClanCandidatures(ownProps.type, ownProps.id)),

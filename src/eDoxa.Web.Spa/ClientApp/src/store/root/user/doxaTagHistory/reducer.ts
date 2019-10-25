@@ -9,6 +9,7 @@ import {
   UserDoxatagHistoryState
 } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: UserDoxatagHistoryState = {
   data: [],
@@ -16,37 +17,41 @@ export const initialState: UserDoxatagHistoryState = {
   loading: false
 };
 
-export const reducer: Reducer<UserDoxatagHistoryState, UserDoxatagHistoryActions> = (state = initialState, action) => {
+export const reducer: Reducer<UserDoxatagHistoryState, UserDoxatagHistoryActions> = produce((draft: Draft<UserDoxatagHistoryState>, action: UserDoxatagHistoryActions) => {
   switch (action.type) {
-    case LOAD_USER_DOXATAGHISTORY: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_USER_DOXATAGHISTORY_SUCCESS: {
+    case LOAD_USER_DOXATAGHISTORY:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_USER_DOXATAGHISTORY_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_USER_DOXATAGHISTORY_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case UPDATE_USER_DOXATAG: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case UPDATE_USER_DOXATAG_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case UPDATE_USER_DOXATAG_FAIL: {
-      //throwAxiosSubmissionError(action.error);
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+      break;
+    case LOAD_USER_DOXATAGHISTORY_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case UPDATE_USER_DOXATAG:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case UPDATE_USER_DOXATAG_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case UPDATE_USER_DOXATAG_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

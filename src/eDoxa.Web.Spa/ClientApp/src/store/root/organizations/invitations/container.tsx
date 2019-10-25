@@ -1,9 +1,15 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { loadClanInvitations, loadClanInvitation, sendClanInvitation, acceptClanInvitation, declineClanInvitation } from "store/root/organizations/invitations/actions";
+import { ClanInvitationsState } from "store/root/organizations/invitations/types";
 import { RootState } from "store/types";
+import produce, { Draft } from "immer";
 
-interface InvitationProps {
+interface StateProps {
+  invitations: ClanInvitationsState;
+}
+
+interface OwnProps {
   type: string;
   id: string;
 }
@@ -17,22 +23,18 @@ export const withInvitations = (HighOrderComponent: FunctionComponent<any>) => {
     return <HighOrderComponent actions={actions} invitations={invitations} {...attributes} />;
   };
 
-  const mapStateToProps = (state: RootState) => {
-    const invitations = state.root.organizations.invitations.data.map(invitation => {
-      const doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === invitation.userId);
-      const clan = state.root.organizations.clans.data.find(clan => clan.id === invitation.clanId);
-
-      invitation.userDoxatag = doxatag ? doxatag.name + "#" + doxatag.code : null;
-      invitation.clanName = clan ? clan.name : null;
-      return invitation;
-    });
-
+  const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = state => {
     return {
-      invitations
+      invitations: produce(state.root.organizations.invitations, (draft: Draft<ClanInvitationsState>) => {
+        draft.data.forEach(invitation => {
+          invitation.doxatag = state.root.doxatags.data.find(doxatag => doxatag.userId === invitation.userId) || null;
+          invitation.clan = state.root.organizations.clans.data.find(clan => clan.id === invitation.clanId) || null;
+        });
+      })
     };
   };
 
-  const mapDispatchToProps = (dispatch: any, ownProps: InvitationProps) => {
+  const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
     return {
       actions: {
         loadInvitations: () => dispatch(loadClanInvitations(ownProps.type, ownProps.id)),

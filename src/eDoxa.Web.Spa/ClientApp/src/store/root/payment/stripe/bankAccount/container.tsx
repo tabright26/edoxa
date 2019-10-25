@@ -6,7 +6,9 @@ import { RootState } from "store/types";
 export const withStripeBankAccount = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadStripeBankAccount();
+      if (!props.bankAccount.data) {
+        props.loadStripeBankAccount();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;

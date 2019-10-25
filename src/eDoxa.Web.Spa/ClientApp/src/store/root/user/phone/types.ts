@@ -9,20 +9,14 @@ export const UPDATE_USER_PHONE = "UPDATE_USER_PHONE";
 export const UPDATE_USER_PHONE_SUCCESS = "UPDATE_USER_PHONE_SUCCESS";
 export const UPDATE_USER_PHONE_FAIL = "UPDATE_USER_PHONE_FAIL";
 
-type LoadUserPhoneType = typeof LOAD_USER_PHONE | typeof LOAD_USER_PHONE_SUCCESS | typeof LOAD_USER_PHONE_FAIL;
+export type LoadUserPhoneType = typeof LOAD_USER_PHONE | typeof LOAD_USER_PHONE_SUCCESS | typeof LOAD_USER_PHONE_FAIL;
+export type LoadUserPhoneActionCreator = AxiosActionCreator<LoadUserPhoneType>;
+export type LoadUserPhoneAction = AxiosAction<LoadUserPhoneType>;
 
-interface LoadUserPhoneActionCreator extends AxiosActionCreator<LoadUserPhoneType> {}
-
-interface LoadUserPhoneAction extends AxiosAction<LoadUserPhoneType> {}
-
-type UpdateUserPhoneType = typeof UPDATE_USER_PHONE | typeof UPDATE_USER_PHONE_SUCCESS | typeof UPDATE_USER_PHONE_FAIL;
-
-interface UpdateUserPhoneActionCreator extends AxiosActionCreator<UpdateUserPhoneType> {}
-
-interface UpdateUserPhoneAction extends AxiosAction<UpdateUserPhoneType> {}
+export type UpdateUserPhoneType = typeof UPDATE_USER_PHONE | typeof UPDATE_USER_PHONE_SUCCESS | typeof UPDATE_USER_PHONE_FAIL;
+export type UpdateUserPhoneActionCreator = AxiosActionCreator<UpdateUserPhoneType>;
+export type UpdateUserPhoneAction = AxiosAction<UpdateUserPhoneType>;
 
 export type UserPhoneActionCreators = LoadUserPhoneActionCreator | UpdateUserPhoneActionCreator;
-
 export type UserPhoneActions = LoadUserPhoneAction | UpdateUserPhoneAction;
-
 export type UserPhoneState = AxiosState<Phone>;

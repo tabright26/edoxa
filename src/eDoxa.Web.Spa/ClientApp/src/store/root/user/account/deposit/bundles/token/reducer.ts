@@ -6,6 +6,7 @@ import {
   UserAccountDepositBundlesActions
 } from "../types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: UserAccountDepositBundlesState = {
   data: [],
@@ -13,31 +14,20 @@ export const initialState: UserAccountDepositBundlesState = {
   loading: false
 };
 
-export const reducer: Reducer<UserAccountDepositBundlesState, UserAccountDepositBundlesActions> = (state = initialState, action) => {
+export const reducer: Reducer<UserAccountDepositBundlesState, UserAccountDepositBundlesActions> = produce((draft: Draft<UserAccountDepositBundlesState>, action: UserAccountDepositBundlesActions) => {
   switch (action.type) {
-    case LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES: {
-      return {
-        data: state.data,
-        error: null,
-        loading: true
-      };
-    }
-    case LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS: {
-      return {
-        data: action.payload.data,
-        error: null,
-        loading: false
-      };
-    }
-    case LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL: {
-      return {
-        data: state.data,
-        error: action.error,
-        loading: false
-      };
-    }
-    default: {
-      return state;
-    }
+    case LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS:
+      draft.data = action.payload.data;
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

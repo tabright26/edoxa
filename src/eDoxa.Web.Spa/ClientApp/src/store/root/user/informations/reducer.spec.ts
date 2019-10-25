@@ -1,24 +1,12 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
-import {
-  LOAD_USER_INFORMATIONS_SUCCESS,
-  LOAD_USER_INFORMATIONS_FAIL,
-} from "./types";
+import { LOAD_USER_INFORMATIONS_SUCCESS, LOAD_USER_INFORMATIONS_FAIL } from "./types";
 
-const informations204Data = {};
 const informations200Data = { name: "Gabriel", gender: "Male" };
 
 describe("user personal info reducer", () => {
   it("should return the initial state", () => {
     const action: any = {};
-    expect(reducer(initialState, action)).toEqual(initialState);
-  });
-
-  it("should handle LOAD_PERSONAL_INFO_SUCCESS 204", () => {
-    const action: any = {
-      type: LOAD_USER_INFORMATIONS_SUCCESS,
-      payload: { status: 204, data: informations204Data }
-    };
     expect(reducer(initialState, action)).toEqual(initialState);
   });
 

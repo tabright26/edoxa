@@ -27,7 +27,8 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 new PaymentMethodListOptions
                 {
                     CustomerId = customerId,
-                    Type = type
+                    Type = type,
+                    Limit = 100
                 });
         }
 

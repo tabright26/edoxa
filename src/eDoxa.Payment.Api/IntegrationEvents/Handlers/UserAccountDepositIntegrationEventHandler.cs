@@ -7,7 +7,6 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.ServiceBus.Abstractions;

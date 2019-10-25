@@ -16,6 +16,7 @@ namespace eDoxa.Organizations.Clans.Domain.Models
         {
             UserId = userId;
             ClanId = clanId;
+            this.AddDomainEvent(new InvitationCreatedDomainEvent(this));
         }
 #nullable disable
         private Invitation()

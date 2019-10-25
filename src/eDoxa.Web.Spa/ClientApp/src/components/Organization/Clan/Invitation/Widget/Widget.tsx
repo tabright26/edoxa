@@ -4,13 +4,13 @@ import { Col } from "reactstrap";
 
 import InvitationForm from "forms/Organization/Invitation";
 
-const InvitationWidget = ({ actions, invitations, doxatags, clanId }) => {
+const InvitationWidget = ({ actions, invitations: { data }, doxatags, clanId }) => {
   const findDoxatag = (name, code) => {
     return doxatags.find(tag => tag.name === name && tag.code === code);
   };
 
   const handleAddInvitation = data => {
-    var alreadyExist = invitations.some(invitation => invitation.userId === data.userId);
+    var alreadyExist = data.some(invitation => invitation.userId === data.userId);
 
     if (alreadyExist) {
       toastr.error("Error", "Invitation already exist.");
@@ -24,11 +24,7 @@ const InvitationWidget = ({ actions, invitations, doxatags, clanId }) => {
     }
   };
 
-  return (
-    <Col>
-      <InvitationForm.Create initialValues={{ clanId: clanId }} invitations={invitations} onSubmit={data => handleAddInvitation(data)} />
-    </Col>
-  );
+  return <InvitationForm.Create initialValues={{ clanId: clanId }} invitations={data} onSubmit={data => handleAddInvitation(data)} />;
 };
 
 export default InvitationWidget;

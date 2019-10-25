@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { STRIPE_PAYMENTMETHOD_CARD_TYPE } from "store/root/payment/stripe/paymentMethods/types";
+import { STRIPE_CARD_TYPE } from "types";
 import StripePaymentMethodModal from "modals/Payment/Stripe/PaymentMethod";
 import { Elements } from "react-stripe-elements";
 
@@ -17,7 +17,7 @@ const PaymentMethods = () => (
     <Elements>
       <BankAccount className="my-4" />
     </Elements>
-    <Cards className="my-4" paymentMethodType={STRIPE_PAYMENTMETHOD_CARD_TYPE} />
+    <Cards className="my-4" paymentMethodType={STRIPE_CARD_TYPE} />
   </Fragment>
 );
 

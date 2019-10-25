@@ -9,14 +9,15 @@ import ClanModal from "modals/Organization/Clan";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
+import Loading from "components/Shared/Loading";
 
-const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, actions }) => {
+const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, userId, userClan, actions }) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
 
   useEffect(() => {
-    var tempClans = clans.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
+    var tempClans = data.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
     switch (sortValue) {
       case "byNameAsc":
         tempClans = tempClans.sort((clan1, clan2) => (clan1.name > clan2.name ? 1 : -1));
@@ -39,7 +40,7 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, a
     }
     setClanList(tempClans);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clans, sortValue, searchValue]);
+  }, [data, sortValue, searchValue]);
 
   const handleSearchInputChanges = e => {
     setSearchValue(e.target.value);
@@ -53,14 +54,14 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, a
     <ErrorBoundary>
       <Row>
         <Col>
-          <Row>
-            <Col>
-              <InvitationList type="user" id={userId} />
-            </Col>
-            <Col>
-              <CandidatureList type="user" id={userId} />
-            </Col>
-          </Row>
+          <InvitationList type="user" id={userId} />
+        </Col>
+        <Col>
+          <CandidatureList type="user" id={userId} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Card>
             <CardHeader>
               <Row>
@@ -73,7 +74,7 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, a
                   ) : null}
                 </Col>
                 <Col>
-                  {clans.length} clans and counting...
+                  {data.length} clans and counting...
                   {!userClan ? (
                     <Fragment>
                       <div className="btn-link" onClick={() => modals.showCreateClanModal(actions)}>
@@ -105,13 +106,15 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, a
         </Col>
       </Row>
       <Row>
-        {clanList
-          ? clanList.map((clan, index) => (
-              <Col key={index} xs="6" sm="4" md="3">
-                <ClanCard clan={clan} userId={userId} userClan={userClan} />
-              </Col>
-            ))
-          : null}
+        {loading ? (
+          <Loading />
+        ) : clanList ? (
+          clanList.map((clan, index) => (
+            <Col key={index} xs="6" sm="4" md="3">
+              <ClanCard clan={clan} userId={userId} userClan={userClan} />
+            </Col>
+          ))
+        ) : null}
       </Row>
     </ErrorBoundary>
   );

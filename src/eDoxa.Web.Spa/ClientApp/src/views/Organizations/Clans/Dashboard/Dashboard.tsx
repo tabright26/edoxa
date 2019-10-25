@@ -22,7 +22,7 @@ import { compose } from "recompose";
 
 const ClanDashboardIndex: FunctionComponent<any> = ({
   actions,
-  clans,
+  clans: { data },
   userId,
   match: {
     params: { clanId }
@@ -33,14 +33,14 @@ const ClanDashboardIndex: FunctionComponent<any> = ({
   const [isMember, setIsMember] = useState(false);
 
   useEffect(() => {
-    if (!clans.some(clan => clan.id === clanId)) {
+    if (!data.some(clan => clan.id === clanId)) {
       actions.loadClan(clanId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clanId]);
 
   useEffect(() => {
-    setClan(clans.find(clan => clan.id === clanId));
+    setClan(data.find(clan => clan.id === clanId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clanId]);
 

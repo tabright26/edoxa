@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { loadStripePaymentMethods, detachStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
+import { detachStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
 import { DETACH_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethods/types";
 import Delete from "./Delete";
 import { throwSubmissionError } from "utils/form/types";
@@ -11,10 +11,6 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
         switch (action.type) {
           case DETACH_STRIPE_PAYMENTMETHOD_FAIL: {
             throwSubmissionError(action.error);
-            break;
-          }
-          default: {
-            dispatch(loadStripePaymentMethods(ownProps.type));
             break;
           }
         }

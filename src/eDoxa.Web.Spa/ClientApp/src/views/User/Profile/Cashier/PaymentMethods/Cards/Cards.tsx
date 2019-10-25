@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMethods/container";
-import { STRIPE_PAYMENTMETHOD_CARD_TYPE } from "store/root/payment/stripe/paymentMethods/types";
+import { STRIPE_CARD_TYPE } from "types";
 import CardBrandIcon from "components/Payment/Stripe/PaymentMethod/Card/Icon";
 import CardExpiration from "components/Payment/Stripe/PaymentMethod/Card/Expiration";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -21,7 +21,7 @@ const StripeCardItem: FunctionComponent<any> = ({ hasMore, modals, paymentMethod
         </dd>
         <dd className="col-sm-2 m-0 d-flex">
           <span className="my-auto mr-2 text-muted">Expiration:</span>
-          <CardExpiration className="my-auto" month={paymentMethod.card.exp_month} year={paymentMethod.card.exp_year} />
+          <CardExpiration className="my-auto" month={paymentMethod.card.expMonth} year={paymentMethod.card.expYear} />
         </dd>
         <dd className="col-sm-6 mb-0 d-flex">
           <Button.Link className="p-0 ml-auto my-auto" icon={faTimes} onClick={() => modals.showDeleteStripePaymentMethodModal(paymentMethod)}>
@@ -41,7 +41,7 @@ const StripeCards: FunctionComponent<any> = ({ className, modals, paymentMethods
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">CARDS</strong>
-      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => modals.showCreateStripePaymentMethodModal(STRIPE_PAYMENTMETHOD_CARD_TYPE)}>
+      <Button.Link className="p-0 ml-auto my-auto" icon={faPlus} onClick={() => modals.showCreateStripePaymentMethodModal(STRIPE_CARD_TYPE)}>
         ADD A NEW CARD
       </Button.Link>
     </CardHeader>

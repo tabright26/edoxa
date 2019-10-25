@@ -1,5 +1,6 @@
 import { Reducer } from "redux";
 import { LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL, UserEmailActions, UserEmailState } from "./types";
+import produce, { Draft } from "immer";
 
 export const initialState: UserEmailState = {
   data: {
@@ -10,19 +11,20 @@ export const initialState: UserEmailState = {
   loading: false
 };
 
-export const reducer: Reducer<UserEmailState, UserEmailActions> = (state = initialState, action) => {
+export const reducer: Reducer<UserEmailState, UserEmailActions> = produce((draft: Draft<UserEmailState>, action: UserEmailActions) => {
   switch (action.type) {
-    case LOAD_USER_EMAIL: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_USER_EMAIL_SUCCESS: {
-      return { data: action.payload.data, error: null, loading: false };
-    }
-    case LOAD_USER_EMAIL_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+    case LOAD_USER_EMAIL:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_USER_EMAIL_SUCCESS:
+      draft.data = action.payload.data;
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_USER_EMAIL_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

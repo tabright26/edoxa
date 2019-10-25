@@ -1,5 +1,5 @@
 ﻿// Filename: StripeOptions.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,17 +10,22 @@ using System.Collections.Generic;
 
 namespace eDoxa.Payment.Api.Areas.Stripe
 {
-    // TODO: Add securiry attribute like [Required]
     public sealed class StripeOptions
     {
-        public string Country { get; set; }
+        public StripeInvoiceOptions Invoice { get; set; }
 
+        public StripeTransferOptions Transfer { get; set; }
+    }
+
+    public sealed class StripeInvoiceOptions
+    {
         public string Currency { get; set; }
 
-        public string BusinessType { get; set; }
+        public List<string> TaxRates { get; set; }
+    }
 
-        public string AccountType { get; set; }
-
-        public List<string> TaxRateIds { get; set; }
+    public sealed class StripeTransferOptions
+    {
+        public string Currency { get; set; }
     }
 }

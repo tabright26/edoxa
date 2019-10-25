@@ -9,6 +9,7 @@ import {
   StripeCustomerActions
 } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: StripeCustomerState = {
   data: null,
@@ -16,28 +17,33 @@ export const initialState: StripeCustomerState = {
   loading: false
 };
 
-export const reducer: Reducer<StripeCustomerState, StripeCustomerActions> = (state = initialState, action) => {
+export const reducer: Reducer<StripeCustomerState, StripeCustomerActions> = produce((draft: Draft<StripeCustomerState>, action: StripeCustomerActions) => {
   switch (action.type) {
-    case LOAD_STRIPE_CUSTOMER: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_STRIPE_CUSTOMER_SUCCESS: {
-      return { data: action.payload.data, error: null, loading: false };
-    }
-    case LOAD_STRIPE_CUSTOMER_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS: {
-      return { data: action.payload.data, error: null, loading: false };
-    }
-    case UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+    case LOAD_STRIPE_CUSTOMER:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_STRIPE_CUSTOMER_SUCCESS:
+      draft.data = action.payload.data;
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_STRIPE_CUSTOMER_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS:
+      draft.data = action.payload.data;
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);
