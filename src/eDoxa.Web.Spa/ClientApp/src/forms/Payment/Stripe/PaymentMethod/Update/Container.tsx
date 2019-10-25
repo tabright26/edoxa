@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadStripePaymentMethods, updateStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
+import { updateStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
 import { UPDATE_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethods/types";
 import Update from "./Update";
 import { throwSubmissionError } from "utils/form/types";
@@ -20,10 +20,6 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
         switch (action.type) {
           case UPDATE_STRIPE_PAYMENTMETHOD_FAIL: {
             throwSubmissionError(action.error);
-            break;
-          }
-          default: {
-            dispatch(loadStripePaymentMethods(ownProps.type));
             break;
           }
         }

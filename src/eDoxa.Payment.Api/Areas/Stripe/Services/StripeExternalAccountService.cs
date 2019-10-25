@@ -1,5 +1,5 @@
 ﻿// Filename: StripeExternalAccountService.cs
-// Date Created: 2019-10-11
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

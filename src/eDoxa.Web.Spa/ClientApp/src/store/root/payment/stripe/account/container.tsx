@@ -6,7 +6,9 @@ import { loadStripeAccount } from "./actions";
 export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadStripeAccount();
+      if (!props.account.data) {
+        props.loadStripeAccount();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -33,7 +35,9 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
 export const withStripeHasAccountEnabled = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadStripeAccount();
+      if (!props.loaded) {
+        props.loadStripeAccount();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -42,6 +46,7 @@ export const withStripeHasAccountEnabled = (HighOrderComponent: FunctionComponen
   const mapStateToProps = (state: RootState) => {
     const { data, error } = state.root.payment.stripe.account;
     return {
+      loaded: data,
       hasAccountEnabled: (!error && data && data.enabled) || false
     };
   };

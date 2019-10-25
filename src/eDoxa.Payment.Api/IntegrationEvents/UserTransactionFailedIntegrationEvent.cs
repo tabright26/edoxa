@@ -10,7 +10,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Cashier.Api.IntegrationEvents
+namespace eDoxa.Payment.Api.IntegrationEvents
 {
     [JsonObject]
     public sealed class UserTransactionFailedIntegrationEvent : IIntegrationEvent

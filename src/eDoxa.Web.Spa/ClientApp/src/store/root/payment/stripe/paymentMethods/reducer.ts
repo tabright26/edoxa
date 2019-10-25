@@ -51,23 +51,14 @@ export const reducer: Reducer<StripePaymentMethodsState, StripePaymentMethodsAct
       draft.error = null;
       draft.loading = true;
       break;
-    case ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS:
+    case ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
+      const { data } = action.payload;
+      draft.data.push(data);
       draft.error = null;
       draft.loading = false;
       break;
+    }
     case ATTACH_STRIPE_PAYMENTMETHOD_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-    case DETACH_STRIPE_PAYMENTMETHOD:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case DETACH_STRIPE_PAYMENTMETHOD_SUCCESS:
-      draft.error = null;
-      draft.loading = false;
-      break;
-    case DETACH_STRIPE_PAYMENTMETHOD_FAIL:
       draft.error = action.error;
       draft.loading = false;
       break;
@@ -75,11 +66,29 @@ export const reducer: Reducer<StripePaymentMethodsState, StripePaymentMethodsAct
       draft.error = null;
       draft.loading = true;
       break;
-    case UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS:
+    case UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS: {
+      const { data } = action.payload;
+      draft.data[draft.data.findIndex(paymentMethod => paymentMethod.id === data.id)] = data;
       draft.error = null;
       draft.loading = false;
       break;
+    }
     case UPDATE_STRIPE_PAYMENTMETHOD_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case DETACH_STRIPE_PAYMENTMETHOD:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case DETACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
+      const { data } = action.payload;
+      draft.data = draft.data.filter(paymentMethod => paymentMethod.id !== data.id);
+      draft.error = null;
+      draft.loading = false;
+      break;
+    }
+    case DETACH_STRIPE_PAYMENTMETHOD_FAIL:
       draft.error = action.error;
       draft.loading = false;
       break;

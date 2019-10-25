@@ -37,6 +37,7 @@ export const reducer: Reducer<StripeCustomerState, StripeCustomerActions> = prod
       draft.loading = true;
       break;
     case UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS:
+      draft.data = action.payload.data;
       draft.error = null;
       draft.loading = false;
       break;

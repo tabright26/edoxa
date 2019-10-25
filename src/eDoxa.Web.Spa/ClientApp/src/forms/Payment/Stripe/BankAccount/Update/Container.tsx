@@ -27,10 +27,6 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
                   throwSubmissionError(action.error);
                   break;
                 }
-                default: {
-                  dispatch(loadStripeBankAccount());
-                  break;
-                }
               }
             });
           } else {
