@@ -16,6 +16,7 @@ const ArenaChallengeParticipantIndex = ({ challenge }) => {
     return (
       <>
         {challenge.participants
+          .slice()
           .sort((left, right) => (left.averageScore < right.averageScore ? 1 : -1))
           .map((participant, index) => (
             <ArenaChallengeParticipantDetails key={index} participant={participant} position={index + 1} />

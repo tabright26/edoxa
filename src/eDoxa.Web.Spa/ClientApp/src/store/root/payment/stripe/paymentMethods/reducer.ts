@@ -15,66 +15,82 @@ import {
   StripePaymentMethodsState
 } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: StripePaymentMethodsState = {
-  data: {
-    object: "list",
-    data: [],
-    has_more: false,
-    url: null
-  },
+  data: [],
   error: null,
   loading: false
 };
 
-export const reducer: Reducer<StripePaymentMethodsState, StripePaymentMethodsActions> = (state = initialState, action) => {
+export const reducer: Reducer<StripePaymentMethodsState, StripePaymentMethodsActions> = produce((draft: Draft<StripePaymentMethodsState>, action: StripePaymentMethodsActions) => {
   switch (action.type) {
-    case LOAD_STRIPE_PAYMENTMETHODS: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_STRIPE_PAYMENTMETHODS_SUCCESS: {
+    case LOAD_STRIPE_PAYMENTMETHODS:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_STRIPE_PAYMENTMETHODS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_STRIPE_PAYMENTMETHODS_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case ATTACH_STRIPE_PAYMENTMETHOD: {
-      return { data: state.data, error: null, loading: true };
-    }
+      break;
+    case LOAD_STRIPE_PAYMENTMETHODS_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case ATTACH_STRIPE_PAYMENTMETHOD:
+      draft.error = null;
+      draft.loading = true;
+      break;
     case ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
+      const { data } = action.payload;
+      draft.data.push(data);
+      draft.error = null;
+      draft.loading = false;
+      break;
     }
-    case ATTACH_STRIPE_PAYMENTMETHOD_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case DETACH_STRIPE_PAYMENTMETHOD: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case DETACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case DETACH_STRIPE_PAYMENTMETHOD_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case UPDATE_STRIPE_PAYMENTMETHOD: {
-      return { data: state.data, error: null, loading: true };
-    }
+    case ATTACH_STRIPE_PAYMENTMETHOD_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case UPDATE_STRIPE_PAYMENTMETHOD:
+      draft.error = null;
+      draft.loading = true;
+      break;
     case UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
+      const { data } = action.payload;
+      draft.data[draft.data.findIndex(paymentMethod => paymentMethod.id === data.id)] = data;
+      draft.error = null;
+      draft.loading = false;
+      break;
     }
-    case UPDATE_STRIPE_PAYMENTMETHOD_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
+    case UPDATE_STRIPE_PAYMENTMETHOD_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case DETACH_STRIPE_PAYMENTMETHOD:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case DETACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
+      const { data } = action.payload;
+      draft.data = draft.data.filter(paymentMethod => paymentMethod.id !== data.id);
+      draft.error = null;
+      draft.loading = false;
+      break;
     }
-    default: {
-      return state;
-    }
+    case DETACH_STRIPE_PAYMENTMETHOD_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

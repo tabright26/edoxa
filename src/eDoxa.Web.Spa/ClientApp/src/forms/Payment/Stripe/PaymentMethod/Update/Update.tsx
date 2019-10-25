@@ -12,7 +12,7 @@ import FormValidation from "components/Shared/Form/Validation";
 const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
   handleSubmit,
   initialValues: {
-    card: { brand, last4, exp_year }
+    card: { brand, last4, expYear }
   },
   handleCancel,
   error,
@@ -38,7 +38,7 @@ const UpdateStripePaymentMethodForm: FunctionComponent<any> = ({
       <Label className="ml-4 mr-2 text-muted">Expiration:</Label>
       <FormField.Month className="d-inline" name="exp_month" width="55px" />
       <span className="d-inline mx-2">/</span>
-      <FormField.Year className="d-inline" name="exp_year" width="55px" min={exp_year} max={exp_year + 20} descending={false} />
+      <FormField.Year className="d-inline" name="exp_year" width="55px" min={expYear} max={expYear + 20} descending={false} />
     </FormSection>
     <Button.Save />
   </Form>

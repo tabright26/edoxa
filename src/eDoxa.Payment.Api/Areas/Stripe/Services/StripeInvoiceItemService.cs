@@ -1,5 +1,5 @@
 ﻿// Filename: StripeInvoiceItemService.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,10 +20,10 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
     {
         public StripeInvoiceItemService(IOptions<StripeOptions> options)
         {
-            Options = options.Value;
+            Options = options.Value.Invoice;
         }
 
-        private StripeOptions Options { get; }
+        private StripeInvoiceOptions Options { get; }
 
         public async Task CreateInvoiceItemAsync(
             TransactionId transactionId,
@@ -39,10 +39,10 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                     Currency = Options.Currency,
                     Amount = amount,
                     Description = description,
-                    TaxRates = Options.TaxRateIds,
+                    TaxRates = Options.TaxRates,
                     Metadata = new Dictionary<string, string>
                     {
-                        ["transactionId"] = transactionId.ToString()
+                        [nameof(transactionId)] = transactionId.ToString()
                     }
                 });
         }

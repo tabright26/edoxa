@@ -9,6 +9,7 @@ import {
   ChallengesActions
 } from "store/root/arena/challenges/types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: ChallengesState = {
   data: [],
@@ -16,37 +17,42 @@ export const initialState: ChallengesState = {
   loading: false
 };
 
-export const reducer: Reducer<ChallengesState, ChallengesActions> = (state = initialState, action) => {
+export const reducer: Reducer<ChallengesState, ChallengesActions> = produce((draft: Draft<ChallengesState>, action: ChallengesActions) => {
   switch (action.type) {
-    case LOAD_CHALLENGES: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CHALLENGES_SUCCESS: {
+    case LOAD_CHALLENGES:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CHALLENGES_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          // FRANCIS: DATA SHOULD BE SOMETHING LIKE [...state.data, ...action.payload.data].
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_CHALLENGES_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case LOAD_CHALLENGE: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CHALLENGE_SUCCESS: {
-      return { data: [...state.data, action.payload.data], error: null, loading: false };
-    }
-    case LOAD_CHALLENGE_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+      break;
+    case LOAD_CHALLENGES_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case LOAD_CHALLENGE:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CHALLENGE_SUCCESS:
+      draft.data = [...draft.data, action.payload.data];
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_CHALLENGE_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

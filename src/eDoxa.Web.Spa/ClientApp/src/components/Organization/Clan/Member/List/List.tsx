@@ -6,7 +6,7 @@ import { withClanMembers } from "store/root/organizations/members/container";
 
 import Item from "./Item/Item";
 
-const Members = ({ actions, members, userId, clanId, isOwner }) => {
+const Members = ({ actions, members: { data }, userId, clanId, isOwner }) => {
   return (
     <Card>
       <CardHeader className="d-flex">
@@ -24,7 +24,7 @@ const Members = ({ actions, members, userId, clanId, isOwner }) => {
           Leave clan
         </Button>
       </CardHeader>
-      <CardBody>{members && members.map((member, index: number) => <Item key={index} member={member} actions={actions} isOwner={isOwner && userId !== member.userId}></Item>)}</CardBody>
+      <CardBody>{data && data.map((member, index: number) => <Item key={index} member={member} actions={actions} isOwner={isOwner && userId !== member.userId}></Item>)}</CardBody>
     </Card>
   );
 };

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { injectStripe } from "react-stripe-elements";
-import { loadStripePaymentMethods, attachStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
+import { attachStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
 import { ATTACH_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethods/types";
 import Create from "./Create";
 import { compose } from "recompose";
@@ -15,10 +15,6 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
             switch (action.type) {
               case ATTACH_STRIPE_PAYMENTMETHOD_FAIL: {
                 throwSubmissionError(action.error);
-                break;
-              }
-              default: {
-                dispatch(loadStripePaymentMethods(ownProps.type));
                 break;
               }
             }

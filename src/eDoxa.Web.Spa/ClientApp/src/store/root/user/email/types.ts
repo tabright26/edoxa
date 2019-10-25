@@ -9,20 +9,14 @@ export const CONFIRM_USER_EMAIL = "CONFIRM_EMAIL";
 export const CONFIRM_USER_EMAIL_SUCCESS = "CONFIRM_EMAIL_SUCCESS";
 export const CONFIRM_USER_EMAIL_FAIL = "CONFIRM_EMAIL_FAIL";
 
-type LoadUserEmailType = typeof LOAD_USER_EMAIL | typeof LOAD_USER_EMAIL_SUCCESS | typeof LOAD_USER_EMAIL_FAIL;
+export type LoadUserEmailType = typeof LOAD_USER_EMAIL | typeof LOAD_USER_EMAIL_SUCCESS | typeof LOAD_USER_EMAIL_FAIL;
+export type LoadUserEmailActionCreator = AxiosActionCreator<LoadUserEmailType>;
+export type LoadUserEmailAction = AxiosAction<LoadUserEmailType>;
 
-interface LoadUserEmailActionCreator extends AxiosActionCreator<LoadUserEmailType> {}
-
-interface LoadUserEmailAction extends AxiosAction<LoadUserEmailType> {}
-
-type ConfirmUserEmailType = typeof CONFIRM_USER_EMAIL | typeof CONFIRM_USER_EMAIL_SUCCESS | typeof CONFIRM_USER_EMAIL_FAIL;
-
-interface ConfirmUserEmailActionCreator extends AxiosActionCreator<ConfirmUserEmailType> {}
-
-interface ConfirmUserEmailAction extends AxiosAction<ConfirmUserEmailType> {}
+export type ConfirmUserEmailType = typeof CONFIRM_USER_EMAIL | typeof CONFIRM_USER_EMAIL_SUCCESS | typeof CONFIRM_USER_EMAIL_FAIL;
+export type ConfirmUserEmailActionCreator = AxiosActionCreator<ConfirmUserEmailType>;
+export type ConfirmUserEmailAction = AxiosAction<ConfirmUserEmailType>;
 
 export type UserEmailActionCreators = LoadUserEmailActionCreator | ConfirmUserEmailActionCreator;
-
 export type UserEmailActions = LoadUserEmailAction | ConfirmUserEmailAction;
-
 export type UserEmailState = AxiosState<Email>;

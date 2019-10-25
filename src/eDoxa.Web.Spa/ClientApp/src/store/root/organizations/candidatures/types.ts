@@ -20,38 +20,31 @@ export const REFUSE_CLAN_CANDIDATURE = "REFUSE_CLAN_CANDIDATURE";
 export const REFUSE_CLAN_CANDIDATURE_SUCCESS = "REFUSE_CLAN_CANDIDATURE_SUCCESS";
 export const REFUSE_CLAN_CANDIDATURE_FAIL = "REFUSE_CLAN_CANDIDATURE_FAIL";
 
-type LoadClanCandidaturesdType = typeof LOAD_CLAN_CANDIDATURES | typeof LOAD_CLAN_CANDIDATURES_SUCCESS | typeof LOAD_CLAN_CANDIDATURES_FAIL;
+export type LoadClanCandidaturesdType = typeof LOAD_CLAN_CANDIDATURES | typeof LOAD_CLAN_CANDIDATURES_SUCCESS | typeof LOAD_CLAN_CANDIDATURES_FAIL;
+export type LoadClanCandidaturesActionCreator = AxiosActionCreator<LoadClanCandidaturesdType>;
+export type LoadClanCandidaturesAction = AxiosAction<LoadClanCandidaturesdType>;
 
-interface LoadClanCandidaturesActionCreator extends AxiosActionCreator<LoadClanCandidaturesdType> {}
+export type LoadClanCandidatureType = typeof LOAD_CLAN_CANDIDATURE | typeof LOAD_CLAN_CANDIDATURE_SUCCESS | typeof LOAD_CLAN_CANDIDATURE_FAIL;
+export type LoadClanCandidatureActionCreator = AxiosActionCreator<LoadClanCandidatureType>;
+export type LoadClanCandidatureAction = AxiosAction<LoadClanCandidatureType>;
 
-interface LoadClanCandidaturesAction extends AxiosAction<LoadClanCandidaturesdType> {}
+export type SendClanCandidatureType = typeof SEND_CLAN_CANDIDATURE | typeof SEND_CLAN_CANDIDATURE_SUCCESS | typeof SEND_CLAN_CANDIDATURE_FAIL;
+export type SendClanCandidatureActionCreator = AxiosActionCreator<SendClanCandidatureType>;
+export type SendClanCandidatureAction = AxiosAction<SendClanCandidatureType>;
 
-type LoadClanCandidatureType = typeof LOAD_CLAN_CANDIDATURE | typeof LOAD_CLAN_CANDIDATURE_SUCCESS | typeof LOAD_CLAN_CANDIDATURE_FAIL;
+export type AcceptClanCandidatureType = typeof ACCEPT_CLAN_CANDIDATURE | typeof ACCEPT_CLAN_CANDIDATURE_SUCCESS | typeof ACCEPT_CLAN_CANDIDATURE_FAIL;
+export type AcceptClanCandidatureActionCreator = AxiosActionCreator<AcceptClanCandidatureType>;
+export type AcceptClanCandidatureAction = AxiosAction<AcceptClanCandidatureType>;
 
-interface LoadClanCandidatureActionCreator extends AxiosActionCreator<LoadClanCandidatureType> {}
+export type RefuseClanCandidatureType = typeof REFUSE_CLAN_CANDIDATURE | typeof REFUSE_CLAN_CANDIDATURE_SUCCESS | typeof REFUSE_CLAN_CANDIDATURE_FAIL;
+export type RefuseClanCandidatureActionCreator = AxiosActionCreator<RefuseClanCandidatureType>;
+export type RefuseClanCandidatureAction = AxiosAction<RefuseClanCandidatureType>;
 
-interface LoadClanCandidatureAction extends AxiosAction<LoadClanCandidatureType> {}
-
-type SendClanCandidatureType = typeof SEND_CLAN_CANDIDATURE | typeof SEND_CLAN_CANDIDATURE_SUCCESS | typeof SEND_CLAN_CANDIDATURE_FAIL;
-
-interface SendClanCandidatureActionCreator extends AxiosActionCreator<SendClanCandidatureType> {}
-
-interface SendClanCandidatureAction extends AxiosAction<SendClanCandidatureType> {}
-
-type AcceptClanCandidatureType = typeof ACCEPT_CLAN_CANDIDATURE | typeof ACCEPT_CLAN_CANDIDATURE_SUCCESS | typeof ACCEPT_CLAN_CANDIDATURE_FAIL;
-
-interface AcceptClanCandidatureActionCreator extends AxiosActionCreator<AcceptClanCandidatureType> {}
-
-interface AcceptClanCandidatureAction extends AxiosAction<AcceptClanCandidatureType> {}
-
-type RefuseClanCandidatureType = typeof REFUSE_CLAN_CANDIDATURE | typeof REFUSE_CLAN_CANDIDATURE_SUCCESS | typeof REFUSE_CLAN_CANDIDATURE_FAIL;
-
-interface RefuseClanCandidatureActionCreator extends AxiosActionCreator<RefuseClanCandidatureType> {}
-
-interface RefuseClanCandidatureAction extends AxiosAction<RefuseClanCandidatureType> {}
-
-export type ClanCandidaturesActionCreators = LoadClanCandidaturesActionCreator | LoadClanCandidatureActionCreator | SendClanCandidatureActionCreator | AcceptClanCandidatureActionCreator | RefuseClanCandidatureActionCreator;
-
+export type ClanCandidaturesActionCreators =
+  | LoadClanCandidaturesActionCreator
+  | LoadClanCandidatureActionCreator
+  | SendClanCandidatureActionCreator
+  | AcceptClanCandidatureActionCreator
+  | RefuseClanCandidatureActionCreator;
 export type ClanCandidaturesActions = LoadClanCandidaturesAction | LoadClanCandidatureAction | SendClanCandidatureAction | AcceptClanCandidatureAction | RefuseClanCandidatureAction;
-
 export type ClanCandidaturesState = AxiosState;

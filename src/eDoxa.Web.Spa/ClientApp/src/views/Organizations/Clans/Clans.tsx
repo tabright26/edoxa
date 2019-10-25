@@ -10,13 +10,13 @@ import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
 
-const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, actions }) => {
+const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data }, userId, userClan, actions }) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
 
   useEffect(() => {
-    var tempClans = clans.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
+    var tempClans = data.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
     switch (sortValue) {
       case "byNameAsc":
         tempClans = tempClans.sort((clan1, clan2) => (clan1.name > clan2.name ? 1 : -1));
@@ -39,7 +39,7 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, a
     }
     setClanList(tempClans);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clans, sortValue, searchValue]);
+  }, [data, sortValue, searchValue]);
 
   const handleSearchInputChanges = e => {
     setSearchValue(e.target.value);
@@ -73,7 +73,7 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans, userId, userClan, a
                   ) : null}
                 </Col>
                 <Col>
-                  {clans.length} clans and counting...
+                  {data.length} clans and counting...
                   {!userClan ? (
                     <Fragment>
                       <div className="btn-link" onClick={() => modals.showCreateClanModal(actions)}>

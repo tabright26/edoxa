@@ -20,35 +20,25 @@ export const DECLINE_CLAN_INVITATION = "DECLINE_CLAN_INVITATION";
 export const DECLINE_CLAN_INVITATION_SUCCESS = "DECLINE_CLAN_INVITATION_SUCCESS";
 export const DECLINE_CLAN_INVITATION_FAIL = "DECLINE_CLAN_INVITATION_FAIL";
 
-type LoadClanInvitationsType = typeof LOAD_CLAN_INVITATIONS | typeof LOAD_CLAN_INVITATIONS_SUCCESS | typeof LOAD_CLAN_INVITATIONS_FAIL;
+export type LoadClanInvitationsType = typeof LOAD_CLAN_INVITATIONS | typeof LOAD_CLAN_INVITATIONS_SUCCESS | typeof LOAD_CLAN_INVITATIONS_FAIL;
+export type LoadClanInvitationsActionCreator = AxiosActionCreator<LoadClanInvitationsType>;
+export type LoadClanInvitationsAction = AxiosAction<LoadClanInvitationsType>;
 
-interface LoadClanInvitationsActionCreator extends AxiosActionCreator<LoadClanInvitationsType> {}
+export type LoadClanInvitationType = typeof LOAD_CLAN_INVITATION | typeof LOAD_CLAN_INVITATION_SUCCESS | typeof LOAD_CLAN_INVITATION_FAIL;
+export type LoadClanInvitationActionCreator = AxiosActionCreator<LoadClanInvitationType>;
+export type LoadClanInvitationAction = AxiosAction<LoadClanInvitationType>;
 
-interface LoadClanInvitationsAction extends AxiosAction<LoadClanInvitationsType> {}
+export type SendClanInvitationType = typeof SEND_CLAN_INVITATION | typeof SEND_CLAN_INVITATION_SUCCESS | typeof SEND_CLAN_INVITATION_FAIL;
+export type SendClanInvitationActionCreator = AxiosActionCreator<SendClanInvitationType>;
+export type SendClanInvitationAction = AxiosAction<SendClanInvitationType>;
 
-type LoadClanInvitationType = typeof LOAD_CLAN_INVITATION | typeof LOAD_CLAN_INVITATION_SUCCESS | typeof LOAD_CLAN_INVITATION_FAIL;
+export type AcceptClanInvitationType = typeof ACCEPT_CLAN_INVITATION | typeof ACCEPT_CLAN_INVITATION_SUCCESS | typeof ACCEPT_CLAN_INVITATION_FAIL;
+export type AcceptClanInvitationActionCreator = AxiosActionCreator<AcceptClanInvitationType>;
+export type AcceptClanInvitationAction = AxiosAction<AcceptClanInvitationType>;
 
-interface LoadClanInvitationActionCreator extends AxiosActionCreator<LoadClanInvitationType> {}
-
-interface LoadClanInvitationAction extends AxiosAction<LoadClanInvitationType> {}
-
-type SendClanInvitationType = typeof SEND_CLAN_INVITATION | typeof SEND_CLAN_INVITATION_SUCCESS | typeof SEND_CLAN_INVITATION_FAIL;
-
-interface SendClanInvitationActionCreator extends AxiosActionCreator<SendClanInvitationType> {}
-
-interface SendClanInvitationAction extends AxiosAction<SendClanInvitationType> {}
-
-type AcceptClanInvitationType = typeof ACCEPT_CLAN_INVITATION | typeof ACCEPT_CLAN_INVITATION_SUCCESS | typeof ACCEPT_CLAN_INVITATION_FAIL;
-
-interface AcceptClanInvitationActionCreator extends AxiosActionCreator<AcceptClanInvitationType> {}
-
-interface AcceptClanInvitationAction extends AxiosAction<AcceptClanInvitationType> {}
-
-type DeclineClanInvitationType = typeof DECLINE_CLAN_INVITATION | typeof DECLINE_CLAN_INVITATION_SUCCESS | typeof DECLINE_CLAN_INVITATION_FAIL;
-
-interface DeclineClanInvitationActionCreator extends AxiosActionCreator<DeclineClanInvitationType> {}
-
-interface DeclineClanInvitationAction extends AxiosAction<DeclineClanInvitationType> {}
+export type DeclineClanInvitationType = typeof DECLINE_CLAN_INVITATION | typeof DECLINE_CLAN_INVITATION_SUCCESS | typeof DECLINE_CLAN_INVITATION_FAIL;
+export type DeclineClanInvitationActionCreator = AxiosActionCreator<DeclineClanInvitationType>;
+export type DeclineClanInvitationAction = AxiosAction<DeclineClanInvitationType>;
 
 export type ClanInvitationsActionCreators =
   | LoadClanInvitationsActionCreator
@@ -56,7 +46,5 @@ export type ClanInvitationsActionCreators =
   | SendClanInvitationActionCreator
   | AcceptClanInvitationActionCreator
   | DeclineClanInvitationActionCreator;
-
 export type ClanInvitationsActions = LoadClanInvitationsAction | LoadClanInvitationAction | SendClanInvitationAction | AcceptClanInvitationAction | DeclineClanInvitationAction;
-
 export type ClanInvitationsState = AxiosState;

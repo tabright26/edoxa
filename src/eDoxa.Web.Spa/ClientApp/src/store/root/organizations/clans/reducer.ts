@@ -15,6 +15,7 @@ import {
   ClansState,
   ClansActions
 } from "./types";
+import produce, { Draft } from "immer";
 
 export const initialState: ClansState = {
   data: [],
@@ -22,54 +23,66 @@ export const initialState: ClansState = {
   loading: false
 };
 
-export const reducer: Reducer<ClansState, ClansActions> = (state = initialState, action) => {
+export const reducer: Reducer<ClansState, ClansActions> = produce((draft: Draft<ClansState>, action: ClansActions) => {
   switch (action.type) {
-    case LOAD_CLANS: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CLANS_SUCCESS: {
+    case LOAD_CLANS:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CLANS_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_CLANS_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case LOAD_CLAN: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CLAN_SUCCESS: {
-      return { data: [...state.data, action.payload.data], error: null, loading: false };
-    }
-    case LOAD_CLAN_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case LEAVE_CLAN: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LEAVE_CLAN_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case LEAVE_CLAN_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case CREATE_CLAN: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case CREATE_CLAN_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case CREATE_CLAN_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+      break;
+    case LOAD_CLANS_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case LOAD_CLAN:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CLAN_SUCCESS:
+      draft.data = [...draft.data, action.payload.data];
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_CLAN_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case LEAVE_CLAN:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LEAVE_CLAN_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LEAVE_CLAN_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case CREATE_CLAN:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case CREATE_CLAN_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case CREATE_CLAN_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);

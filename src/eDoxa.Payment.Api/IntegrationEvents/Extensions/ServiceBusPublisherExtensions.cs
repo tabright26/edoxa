@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 

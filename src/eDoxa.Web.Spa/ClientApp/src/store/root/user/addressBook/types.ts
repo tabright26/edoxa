@@ -17,32 +17,22 @@ export const DELETE_USER_ADDRESS = "DELETE_USER_ADDRESS";
 export const DELETE_USER_ADDRESS_SUCCESS = "DELETE_USER_ADDRESS_SUCCESS";
 export const DELETE_USER_ADDRESS_FAIL = "DELETE_USER_ADDRESS_FAIL";
 
-type LoadUserAddressBookType = typeof LOAD_USER_ADDRESSBOOK | typeof LOAD_USER_ADDRESSBOOK_SUCCESS | typeof LOAD_USER_ADDRESSBOOK_FAIL;
+export type LoadUserAddressBookType = typeof LOAD_USER_ADDRESSBOOK | typeof LOAD_USER_ADDRESSBOOK_SUCCESS | typeof LOAD_USER_ADDRESSBOOK_FAIL;
+export type LoadUserAddressBookActionCreator = AxiosActionCreator<LoadUserAddressBookType>;
+export type LoadUserAddressBookAction = AxiosAction<LoadUserAddressBookType>;
 
-interface LoadUserAddressBookActionCreator extends AxiosActionCreator<LoadUserAddressBookType> {}
+export type CreateUserAddressType = typeof CREATE_USER_ADDRESS | typeof CREATE_USER_ADDRESS_SUCCESS | typeof CREATE_USER_ADDRESS_FAIL;
+export type CreateUserAddressActionCreator = AxiosActionCreator<CreateUserAddressType>;
+export type CreateUserAddressAction = AxiosAction<CreateUserAddressType>;
 
-interface LoadUserAddressBookAction extends AxiosAction<LoadUserAddressBookType> {}
+export type UpdateUserAddressType = typeof UPDATE_USER_ADDRESS | typeof UPDATE_USER_ADDRESS_SUCCESS | typeof UPDATE_USER_ADDRESS_FAIL;
+export type UpdateUserAddressActionCreator = AxiosActionCreator<UpdateUserAddressType>;
+export type UpdateUserAddressAction = AxiosAction<UpdateUserAddressType>;
 
-type CreateUserAddressType = typeof CREATE_USER_ADDRESS | typeof CREATE_USER_ADDRESS_SUCCESS | typeof CREATE_USER_ADDRESS_FAIL;
-
-interface CreateUserAddressActionCreator extends AxiosActionCreator<CreateUserAddressType> {}
-
-interface CreateUserAddressAction extends AxiosAction<CreateUserAddressType> {}
-
-type UpdateUserAddressType = typeof UPDATE_USER_ADDRESS | typeof UPDATE_USER_ADDRESS_SUCCESS | typeof UPDATE_USER_ADDRESS_FAIL;
-
-interface UpdateUserAddressActionCreator extends AxiosActionCreator<UpdateUserAddressType> {}
-
-interface UpdateUserAddressAction extends AxiosAction<UpdateUserAddressType> {}
-
-type DeleteUserAddressType = typeof DELETE_USER_ADDRESS | typeof DELETE_USER_ADDRESS_SUCCESS | typeof DELETE_USER_ADDRESS_FAIL;
-
-interface DeleteUserAddressActionCreator extends AxiosActionCreator<DeleteUserAddressType> {}
-
-interface DeleteUserAddressAction extends AxiosAction<DeleteUserAddressType> {}
+export type DeleteUserAddressType = typeof DELETE_USER_ADDRESS | typeof DELETE_USER_ADDRESS_SUCCESS | typeof DELETE_USER_ADDRESS_FAIL;
+export type DeleteUserAddressActionCreator = AxiosActionCreator<DeleteUserAddressType>;
+export type DeleteUserAddressAction = AxiosAction<DeleteUserAddressType>;
 
 export type UserAddressBookActionCreators = LoadUserAddressBookActionCreator | CreateUserAddressActionCreator | UpdateUserAddressActionCreator | DeleteUserAddressActionCreator;
-
 export type UserAddressBookActions = LoadUserAddressBookAction | CreateUserAddressAction | UpdateUserAddressAction | DeleteUserAddressAction;
-
 export type UserAddressBookState = AxiosState<Address[]>;

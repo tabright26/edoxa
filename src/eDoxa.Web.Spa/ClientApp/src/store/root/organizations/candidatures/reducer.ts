@@ -18,6 +18,7 @@ import {
   ClanCandidaturesActions
 } from "./types";
 import { Reducer } from "redux";
+import produce, { Draft } from "immer";
 
 export const initialState: ClanCandidaturesState = {
   data: [],
@@ -25,63 +26,78 @@ export const initialState: ClanCandidaturesState = {
   loading: false
 };
 
-export const reducer: Reducer<ClanCandidaturesState, ClanCandidaturesActions> = (state = initialState, action) => {
+export const reducer: Reducer<ClanCandidaturesState, ClanCandidaturesActions> = produce((draft: Draft<ClanCandidaturesState>, action: ClanCandidaturesActions) => {
   switch (action.type) {
-    case LOAD_CLAN_CANDIDATURES: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CLAN_CANDIDATURES_SUCCESS: {
+    case LOAD_CLAN_CANDIDATURES:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CLAN_CANDIDATURES_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
-        case 204: {
-          return { data: state.data, error: null, loading: false };
-        }
-        default: {
-          return { data: data, error: null, loading: false };
-        }
+        case 204:
+          draft.error = null;
+          draft.loading = false;
+          break;
+        default:
+          draft.data = data;
+          draft.error = null;
+          draft.loading = false;
+          break;
       }
-    }
-    case LOAD_CLAN_CANDIDATURES_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case LOAD_CLAN_CANDIDATURE: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case LOAD_CLAN_CANDIDATURE_SUCCESS: {
-      return { data: [...state.data, action.payload.data], error: null, loading: false };
-    }
-    case LOAD_CLAN_CANDIDATURE_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case SEND_CLAN_CANDIDATURE: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case SEND_CLAN_CANDIDATURE_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case SEND_CLAN_CANDIDATURE_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case ACCEPT_CLAN_CANDIDATURE: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case ACCEPT_CLAN_CANDIDATURE_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case ACCEPT_CLAN_CANDIDATURE_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    case REFUSE_CLAN_CANDIDATURE: {
-      return { data: state.data, error: null, loading: true };
-    }
-    case REFUSE_CLAN_CANDIDATURE_SUCCESS: {
-      return { data: state.data, error: null, loading: false };
-    }
-    case REFUSE_CLAN_CANDIDATURE_FAIL: {
-      return { data: state.data, error: action.error, loading: false };
-    }
-    default: {
-      return state;
-    }
+      break;
+    case LOAD_CLAN_CANDIDATURES_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case LOAD_CLAN_CANDIDATURE:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LOAD_CLAN_CANDIDATURE_SUCCESS:
+      draft.data = [...draft.data, action.payload.data];
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LOAD_CLAN_CANDIDATURE_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case SEND_CLAN_CANDIDATURE:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case SEND_CLAN_CANDIDATURE_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case SEND_CLAN_CANDIDATURE_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case ACCEPT_CLAN_CANDIDATURE:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case ACCEPT_CLAN_CANDIDATURE_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case ACCEPT_CLAN_CANDIDATURE_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case REFUSE_CLAN_CANDIDATURE:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case REFUSE_CLAN_CANDIDATURE_SUCCESS:
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case REFUSE_CLAN_CANDIDATURE_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
   }
-};
+}, initialState);
