@@ -21,7 +21,6 @@ const composeEnhancers = (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as type
 export const configureStore = (initialState: RootState) => {
   const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunkMiddleware, axiosMiddleware, signalrMiddleware, routerMiddleware, loggerMiddleware)));
   loadUser(store, userManager);
-  const action: any = loadDoxatags();
-  store.dispatch(action);
+  store.dispatch<any>(loadDoxatags());
   return store;
 };

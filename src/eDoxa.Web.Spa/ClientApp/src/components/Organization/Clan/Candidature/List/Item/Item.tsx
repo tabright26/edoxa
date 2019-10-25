@@ -10,8 +10,8 @@ const Item = ({ candidature, actions, type, isOwner }) => {
         candidature.doxatag
       ) : (
         <LinkContainer to={"/structures/clans/" + candidature.clanId}>
-          <Button className="d-block my-2" color="primary">
-            {candidature.clanName}
+          <Button className="d-block" color="primary">
+            {candidature.clan ? candidature.clan.name : "NOT LOADED"}
           </Button>
         </LinkContainer>
       )}

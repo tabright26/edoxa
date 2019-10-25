@@ -6,11 +6,11 @@ import { withCandidatures } from "store/root/organizations/candidatures/containe
 
 //TODO. LE TRUC C<EST QUE ON FAIT UN RELOAD POUR CHAQUE WIDGE TDANS LA PAGE
 
-const CandidatureWidget = ({ actions, candidatures, clanId, userId }) => {
+const CandidatureWidget = ({ actions, candidatures: { data }, clanId, userId }) => {
   const [candidatureDisabled, setCandidatureDisabled] = useState(false);
 
   useEffect(() => {
-    setCandidatureDisabled(candidatures.some(candidature => candidature.clanId === clanId));
+    setCandidatureDisabled(data.some(candidature => candidature.clanId === clanId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

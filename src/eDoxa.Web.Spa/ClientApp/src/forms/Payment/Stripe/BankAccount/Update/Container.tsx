@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { loadStripeBankAccount, updateStripeBankAccount } from "store/root/payment/stripe/bankAccount/actions";
+import { updateStripeBankAccount } from "store/root/payment/stripe/bankAccount/actions";
 import { UPDATE_STRIPE_BANKACCOUNT_FAIL, StripeBankAccountActions } from "store/root/payment/stripe/bankAccount/types";
 import Update from "./Update";
 import { compose } from "recompose";
