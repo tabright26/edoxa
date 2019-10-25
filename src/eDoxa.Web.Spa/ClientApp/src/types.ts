@@ -122,11 +122,15 @@ export interface Member extends Entity<MemberId> {
 export interface Candidature extends Entity<CandidatureId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
+  readonly doxatag?: Doxatag;
+  readonly clan?: Clan;
 }
 
 export interface Invitation extends Entity<InvitationId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
+  readonly doxatag?: Doxatag;
+  readonly clan?: Clan;
 }
 
 export interface Challenge extends Entity<ChallengeId> {

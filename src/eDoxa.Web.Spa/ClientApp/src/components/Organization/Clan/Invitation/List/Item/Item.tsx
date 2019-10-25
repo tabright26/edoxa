@@ -5,7 +5,7 @@ import { Button } from "reactstrap";
 const InvitationListItem = ({ actions, invitation, type }) => {
   return (
     <Fragment>
-      {type === "user" ? invitation.clanName : invitation.doxatag}
+      {type === "user" ? (invitation.clan ? invitation.clan.name : "NOT LOADED") : invitation.doxatag}
       {type === "user" && (
         <>
           <Button

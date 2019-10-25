@@ -9,8 +9,9 @@ import ClanModal from "modals/Organization/Clan";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
+import Loading from "components/Shared/Loading";
 
-const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data }, userId, userClan, actions }) => {
+const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, userId, userClan, actions }) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
@@ -53,14 +54,14 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data }, userId, u
     <ErrorBoundary>
       <Row>
         <Col>
-          <Row>
-            <Col>
-              <InvitationList type="user" id={userId} />
-            </Col>
-            <Col>
-              <CandidatureList type="user" id={userId} />
-            </Col>
-          </Row>
+          <InvitationList type="user" id={userId} />
+        </Col>
+        <Col>
+          <CandidatureList type="user" id={userId} />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
           <Card>
             <CardHeader>
               <Row>
@@ -105,13 +106,15 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data }, userId, u
         </Col>
       </Row>
       <Row>
-        {clanList
-          ? clanList.map((clan, index) => (
-              <Col key={index} xs="6" sm="4" md="3">
-                <ClanCard clan={clan} userId={userId} userClan={userClan} />
-              </Col>
-            ))
-          : null}
+        {loading ? (
+          <Loading />
+        ) : clanList ? (
+          clanList.map((clan, index) => (
+            <Col key={index} xs="6" sm="4" md="3">
+              <ClanCard clan={clan} userId={userId} userClan={userClan} />
+            </Col>
+          ))
+        ) : null}
       </Row>
     </ErrorBoundary>
   );
