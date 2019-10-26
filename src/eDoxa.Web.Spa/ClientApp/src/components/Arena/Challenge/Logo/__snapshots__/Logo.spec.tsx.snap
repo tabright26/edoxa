@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="bg-dark mx-3 my-4 card"
+>
+  <img
+    className="p-4 card-img"
+    src="small.png"
+  />
+</div>
+`;

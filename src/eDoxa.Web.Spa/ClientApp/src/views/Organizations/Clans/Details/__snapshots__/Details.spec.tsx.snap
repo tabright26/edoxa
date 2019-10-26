@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="card"
+>
+  <div
+    className="card-header"
+  >
+    Name: 
+    Clan 1
+    <br />
+    ID: 
+    <br />
+    Summary: 
+    <br />
+    Members: 
+    1
+    <br />
+    <br />
+    OwnerId: 
+  </div>
+  <div
+    className="card-body"
+  />
+</div>
+`;

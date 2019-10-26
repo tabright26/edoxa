@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="card-accent-primary card"
+>
+  <div
+    className="card-header"
+  >
+    <div
+      className="card-header-actions"
+    >
+      <span
+        className="float-right badge badge-danger badge-pill"
+      />
+    </div>
+  </div>
+  <div
+    className="card-body"
+  >
+    <div
+      className="card-title"
+    >
+      Challenge Details
+    </div>
+    <p
+      className="card-text"
+    >
+      This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+    </p>
+    <p
+      className="card-text"
+    >
+      <small
+        className="text-muted"
+      >
+        <time
+          dateTime={null}
+        >
+          Invalid date
+        </time>
+      </small>
+    </p>
+    <a
+      aria-label={null}
+      className="btn btn-primary"
+      href="/arena/challenges/123"
+      onClick={[Function]}
+      style={
+        Object {
+          "cursor": "pointer",
+        }
+      }
+    >
+      View Details
+    </a>
+  </div>
+</div>
+`;

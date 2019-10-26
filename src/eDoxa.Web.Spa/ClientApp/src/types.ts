@@ -133,8 +133,19 @@ export interface Invitation extends Entity<InvitationId> {
   readonly clan?: Clan;
 }
 
+export interface ChallengeTimeline {
+  readonly createdAt: number;
+  readonly startedAt?: number;
+  readonly endedAt?: number;
+  readonly closedAt?: number;
+}
+
+export type ChallengeScoring = Map<string, string>;
+
 export interface Challenge extends Entity<ChallengeId> {
   readonly timestamp: number;
+  readonly timeline: ChallengeTimeline;
+  readonly scoring?: ChallengeScoring;
   readonly participants: Participant[];
 }
 

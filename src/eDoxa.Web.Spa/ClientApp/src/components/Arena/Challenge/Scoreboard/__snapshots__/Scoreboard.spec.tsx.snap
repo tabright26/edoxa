@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  bg="dark"
+  className="my-2 text-light text-center card"
+>
+  <div
+    as="h5"
+    className="border-0 card-header"
+  >
+    Scoreboard
+  </div>
+</div>
+`;
