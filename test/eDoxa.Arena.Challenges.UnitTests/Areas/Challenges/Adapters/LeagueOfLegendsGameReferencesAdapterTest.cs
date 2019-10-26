@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
         public async Task GetGameReferencesAsync_WhenMatchReferenceTimestampIsBetweenRange_ShouldBeLeagueOfLegends()
         {
             // Arrange
-            var mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsProxy>();
+            var mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsService>();
 
             mockLeagueOfLegendsProxy
                 .Setup(leagueOfLegendsProxy => leagueOfLegendsProxy.GetMatchReferencesAsync(It.IsNotNull<string>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))

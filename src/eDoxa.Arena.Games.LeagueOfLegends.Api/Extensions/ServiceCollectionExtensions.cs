@@ -20,6 +20,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Extensions
             healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
             healthChecks.AddAzureKeyVault(appSettings);
             healthChecks.AddIdentityServer(appSettings);
+            healthChecks.AddRedis(appSettings.ConnectionStrings);
         }
     }
 }

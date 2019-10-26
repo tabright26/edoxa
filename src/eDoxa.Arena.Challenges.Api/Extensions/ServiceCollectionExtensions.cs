@@ -21,7 +21,6 @@ namespace eDoxa.Arena.Challenges.Api.Extensions
             healthChecks.AddAzureKeyVault(appSettings);
             healthChecks.AddIdentityServer(appSettings);
             healthChecks.AddSqlServer(appSettings.ConnectionStrings);
-            healthChecks.AddRedis(appSettings.ConnectionStrings);
         }
     }
 }

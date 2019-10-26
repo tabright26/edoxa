@@ -3,7 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
@@ -57,8 +56,6 @@ using Polly.Extensions.Http;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
-using ConnectionStrings = eDoxa.Seedwork.Infrastructure.ConnectionStrings;
-
 namespace eDoxa.Arena.Challenges.Api
 {
     public sealed class Startup
@@ -101,13 +98,6 @@ namespace eDoxa.Arena.Challenges.Api
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
-
-            services.AddDistributedRedisCache(
-                options =>
-                {
-                    options.Configuration = Configuration.GetConnectionString(ConnectionStrings.Redis);
-                    options.InstanceName = HostingEnvironment.ApplicationName;
-                });
 
             services.AddCors(
                 options =>

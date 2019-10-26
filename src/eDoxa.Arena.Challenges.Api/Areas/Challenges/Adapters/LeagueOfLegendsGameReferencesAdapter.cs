@@ -17,18 +17,18 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
 {
     public sealed class LeagueOfLegendsGameReferencesAdapter : IGameReferencesAdapter
     {
-        private readonly ILeagueOfLegendsProxy _leagueOfLegendsProxy;
+        private readonly ILeagueOfLegendsService _leagueOfLegendsService;
 
-        public LeagueOfLegendsGameReferencesAdapter(ILeagueOfLegendsProxy leagueOfLegendsProxy)
+        public LeagueOfLegendsGameReferencesAdapter(ILeagueOfLegendsService leagueOfLegendsService)
         {
-            _leagueOfLegendsProxy = leagueOfLegendsProxy;
+            _leagueOfLegendsService = leagueOfLegendsService;
         }
 
         public ChallengeGame Game => ChallengeGame.LeagueOfLegends;
 
         public async Task<IEnumerable<GameReference>> GetGameReferencesAsync(GameAccountId gameAccountId, DateTime startedAt, DateTime endedAt)
         {
-            var matchReferences = await _leagueOfLegendsProxy.GetMatchReferencesAsync(gameAccountId.ToString(), startedAt, endedAt);
+            var matchReferences = await _leagueOfLegendsService.GetMatchReferencesAsync(gameAccountId.ToString(), startedAt, endedAt);
 
             return matchReferences.Select(matchReference => new GameReference(matchReference.GameId)).ToList();
         }

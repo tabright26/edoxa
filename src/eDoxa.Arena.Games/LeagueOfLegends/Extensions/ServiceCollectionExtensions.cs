@@ -31,8 +31,6 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Extensions
                     .OrResult(message => message.StatusCode == HttpStatusCode.NotFound)
                     .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
                 .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
-
-            services.AddSingleton<ILeagueOfLegendsProxy, LeagueOfLegendsProxy>();
         }
     }
 }

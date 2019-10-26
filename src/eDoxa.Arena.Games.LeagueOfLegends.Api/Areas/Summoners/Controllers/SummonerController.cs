@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services.Abstractions;
 
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Controllers
+namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Controllers
 {
     [Authorize]
     [ApiController]

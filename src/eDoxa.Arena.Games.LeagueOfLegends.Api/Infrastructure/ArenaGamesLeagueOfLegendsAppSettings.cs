@@ -25,5 +25,14 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure
 
         [Required]
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
+
+        [Required]
+        public ConnectionStrings ConnectionStrings { get; set; }
+    }
+
+    public class ConnectionStrings : IHasRedisConnectionString
+    {
+        [Required]
+        public string Redis { get; set; }
     }
 }

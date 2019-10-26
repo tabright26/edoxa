@@ -6,10 +6,8 @@
 
 using Autofac;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services;
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services.Abstractions;
-
-using Microsoft.Extensions.Caching.Distributed;
+using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services;
+using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services.Abstractions;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure
 {
@@ -19,9 +17,6 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure
         {
             // Service
             builder.RegisterType<SummonerService>().As<ISummonerService>().InstancePerLifetimeScope();
-
-            // Cache
-            builder.RegisterType<MemoryDistributedCache>().As<IDistributedCache>().SingleInstance();
         }
     }
 }

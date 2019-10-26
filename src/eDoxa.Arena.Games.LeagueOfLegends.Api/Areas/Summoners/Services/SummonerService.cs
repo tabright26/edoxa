@@ -7,17 +7,18 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services.Abstractions;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 
 using FluentValidation.Results;
 
-using Microsoft.Extensions.Caching.Distributed;
-
 using RiotSharp;
+using RiotSharp.Endpoints.SummonerEndpoint;
 using RiotSharp.Misc;
 
-namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services
+using StackExchange.Redis.Extensions.Core.Abstractions;
+
+namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services
 {
     public sealed class SummonerService : ISummonerService
     {
@@ -26,15 +27,16 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services
         private const int LEAGUE_VALID_ICON_ENDING_INDEX = 28;
         private const string LEAGUE_API_KEY = "RGAPI-d164a373-c86f-4fbf-b088-1bc8a4a28054";
 
-        private readonly IDistributedCache _cache;
+        private readonly IRedisCacheClient _redisCacheClient;
         private readonly RiotApi _riotApi;
-        public SummonerService(IDistributedCache cache)
+
+        public SummonerService(IRedisCacheClient redisCacheClient)
         {
-            _cache = cache;
+            _redisCacheClient = redisCacheClient;
             _riotApi = RiotApi.GetDevelopmentInstance(LEAGUE_API_KEY);
         }
 
-        public async Task<RiotSharp.Endpoints.SummonerEndpoint.Summoner?> FindSummonerAsync(string summonerName)
+        public async Task<Summoner?> FindSummonerAsync(string summonerName)
         {
             try
             {
@@ -48,19 +50,20 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services
             }
         }
 
-        public async Task<string> GetSummonerValidationIcon(RiotSharp.Endpoints.SummonerEndpoint.Summoner summoner)
+        public async Task<string> GetSummonerValidationIcon(Summoner summoner)
         {
-            var requiredSummonerIconId = this.GetDifferentSummonerIconId(summoner.ProfileIconId);
+            var requiredSummonerIconId = GetDifferentSummonerIconId(summoner.ProfileIconId);
 
-            await _cache.SetAsync(summoner.AccountId, BitConverter.GetBytes(requiredSummonerIconId));
+            await _redisCacheClient.Db0.Database.StringSetAsync(summoner.AccountId, requiredSummonerIconId);
 
             return requiredSummonerIconId.ToString();
         }
 
-        public async Task<ValidationResult> ValidateSummonerAsync(RiotSharp.Endpoints.SummonerEndpoint.Summoner summoner)
+        public async Task<ValidationResult> ValidateSummonerAsync(Summoner summoner)
         {
-            var cacheIconId = (byte[]?) await _cache.GetAsync(summoner.AccountId);
-            await _cache.RemoveAsync(summoner.AccountId);
+            var cacheIconId = (byte[]?) await _redisCacheClient.Db0.Database.StringGetAsync(summoner.AccountId);
+
+            await _redisCacheClient.Db0.RemoveAsync(summoner.AccountId);
 
             if (cacheIconId == null)
             {
@@ -76,7 +79,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services
         }
 
 
-        private int GetDifferentSummonerIconId(int iconId)
+        private static int GetDifferentSummonerIconId(int iconId)
         {
             var randomizer = new Random();
             var requiredIcon = iconId;

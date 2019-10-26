@@ -17,11 +17,11 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
 {
     public sealed class LeagueOfLegendsMatchAdapter : IMatchAdapter
     {
-        private readonly ILeagueOfLegendsProxy _leagueOfLegendsProxy;
+        private readonly ILeagueOfLegendsService _leagueOfLegendsService;
 
-        public LeagueOfLegendsMatchAdapter(ILeagueOfLegendsProxy leagueOfLegendsProxy)
+        public LeagueOfLegendsMatchAdapter(ILeagueOfLegendsService leagueOfLegendsService)
         {
-            _leagueOfLegendsProxy = leagueOfLegendsProxy;
+            _leagueOfLegendsService = leagueOfLegendsService;
         }
 
         public ChallengeGame Game => ChallengeGame.LeagueOfLegends;
@@ -46,7 +46,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
 
         private async Task<IGameStats> GetGameStatsAsync(GameAccountId gameAccountId, GameReference gameReference)
         {
-            var match = await _leagueOfLegendsProxy.GetMatchAsync(gameReference.ToString());
+            var match = await _leagueOfLegendsService.GetMatchAsync(gameReference.ToString());
 
             var participantId = match.ParticipantIdentities.Single(participantIdentity => participantIdentity.Player.AccountId == gameAccountId.ToString())
                 .ParticipantId;

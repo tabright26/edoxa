@@ -33,7 +33,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
         public void CreateInstance_FromDependencyInjection_ShouldBeLeagueOfLegendsGameReferencesAdapter()
         {
             // Arrange
-            var mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsProxy>();
+            var mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsService>();
 
             var leagueOfLegendsGameReferencesAdapter = new LeagueOfLegendsGameReferencesAdapter(mockLeagueOfLegendsProxy.Object);
 

@@ -18,6 +18,7 @@ using eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure;
 using eDoxa.Arena.Games.LeagueOfLegends.Api.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
@@ -76,6 +77,8 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
             services.AddAppSettings<ArenaGamesLeagueOfLegendsAppSettings>(Configuration);
 
             services.AddHealthChecks(AppSettings);
+
+            services.AddRedis(Configuration);
 
             services.AddCors(
                 options =>

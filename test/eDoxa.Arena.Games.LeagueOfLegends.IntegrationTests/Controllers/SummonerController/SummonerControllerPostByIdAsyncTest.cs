@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoner.Services.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
