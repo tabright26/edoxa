@@ -18,7 +18,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
         }}
         placement="bottom"
         isOpen={open}
-        target="moneyPopover"
+        target='moneyPopover'
         trigger="hover"
         delay={{ show: 0, hide: 250 }}
         toggle={() => setOpen(!open)}

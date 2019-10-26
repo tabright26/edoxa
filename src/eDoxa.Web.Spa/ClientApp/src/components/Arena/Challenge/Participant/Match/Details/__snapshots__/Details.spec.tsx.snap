@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="p-0 border border-dark d-flex card-body"
+>
+  <div
+    className="pl-2 py-2 text-center"
+    style={
+      Object {
+        "width": "45px",
+      }
+    }
+  >
+    <span
+      className="badge badge-secondary"
+      variant="light"
+    />
+  </div>
+  <div
+    className="px-3 py-2"
+    style={
+      Object {
+        "width": "350px",
+      }
+    }
+  >
+    <time
+      dateTime={null}
+    >
+      Invalid date
+    </time>
+  </div>
+  <div
+    className="py-2 text-center mx-auto"
+    onClick={[Function]}
+  >
+    <span
+      className="badge badge-secondary"
+      variant="primary"
+    >
+      View details
+    </span>
+  </div>
+  <div
+    className="bg-primary px-3 py-2 text-center ml-5"
+    style={
+      Object {
+        "width": "90px",
+      }
+    }
+  >
+    <span>
+      --
+    </span>
+  </div>
+</div>
+`;

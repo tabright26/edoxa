@@ -7,6 +7,8 @@ import UserAccountModal from "modals/User/Account";
 import MatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
 import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
+import StripePaymentMethodModal from "modals/Payment/Stripe/PaymentMethod";
+import { Elements } from "react-stripe-elements";
 
 const Callback: FunctionComponent<RouteComponentProps> = React.lazy(() => import("utils/oidc/components/Callback"));
 const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/401"));
@@ -25,6 +27,11 @@ const NoneLayout: FunctionComponent<any> = React.lazy(() => import("components/A
 
 const App = () => (
   <>
+    <Elements>
+      <StripePaymentMethodModal.Create />
+    </Elements>
+    <StripePaymentMethodModal.Update />
+    <StripePaymentMethodModal.Delete />
     <UserAccountModal.Deposit />
     <UserAccountModal.Withdrawal />
     <MatchScoreModal />

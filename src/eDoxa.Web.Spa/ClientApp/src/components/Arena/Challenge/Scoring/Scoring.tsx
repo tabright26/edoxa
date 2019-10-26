@@ -13,12 +13,13 @@ const Body = ({ challenge }) => {
   } else {
     return (
       <ListGroup>
-        {Object.entries(challenge.scoring).map((item, index) => (
-          <ListGroupItem key={index} className="px-2 py-1 bg-dark">
-            {item[0]}
-            <span className="float-right">{item[1]}</span>
-          </ListGroupItem>
-        ))}
+        {challenge.scoring &&
+          Object.entries(challenge.scoring).map((item, index) => (
+            <ListGroupItem key={index} className="px-2 py-1 bg-dark">
+              {item[0]}
+              <span className="float-right">{item[1]}</span>
+            </ListGroupItem>
+          ))}
       </ListGroup>
     );
   }

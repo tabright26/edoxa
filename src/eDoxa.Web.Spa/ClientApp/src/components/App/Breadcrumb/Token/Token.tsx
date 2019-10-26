@@ -17,7 +17,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
         }}
         placement="bottom"
         isOpen={open}
-        target="tokenPopover"
+        target={'tokenPopover'}
         trigger="hover"
         delay={{ show: 0, hide: 250 }}
         toggle={() => setOpen(!open)}
