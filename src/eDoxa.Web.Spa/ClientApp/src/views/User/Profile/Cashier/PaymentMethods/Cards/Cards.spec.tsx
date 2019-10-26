@@ -7,41 +7,19 @@ import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMeth
 it("renders without crashing", () => {
   //Arrange
   const paymentMethods: StripePaymentMethodsState = {
-    data: {
-      object: "list",
-      data: [
-        {
-          type: "card",
-          object: "payment_method",
-          metadata: {},
-          livemode: false,
-          id: "testID",
-          customer: "testCustomer",
-          card: {
-            brand: "visa",
-            checks: { address_line1_check: "pass", address_postal_code_check: "pass", cvc_check: "pass" },
-            country: "CA",
-            exp_month: 11,
-            exp_year: 22,
-            fingerprint: "test",
-            funding: "credit",
-            generated_from: null,
-            last4: "4242",
-            three_d_secure_usage: { supported: true },
-            wallet: null
-          },
-          billing_details: {
-            address: { line1: "test address" },
-            email: "gabriel@edoxa.gg",
-            name: "Gabriel Roy",
-            phone: "123456789"
-          },
-          created: 11111111
+    data: [
+      {
+        id: "0",
+        type: "card",
+        card: {
+          brand: "visa",
+          country: "CA",
+          expMonth: 6,
+          expYear: 2015,
+          last4: "4242"
         }
-      ],
-      has_more: false,
-      url: "testURL"
-    },
+      }
+    ],
     loading: false,
     error: null
   };

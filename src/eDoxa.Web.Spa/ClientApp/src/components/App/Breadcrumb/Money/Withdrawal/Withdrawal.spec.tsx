@@ -16,16 +16,7 @@ it("renders without crashing", () => {
 
   const account: StripeAccountState = {
     data: {
-      id: "testID",
-      object: "account",
-      created: 111111111,
-      charges_enabled: false,
-      country: "Canada",
-      details_submitted: false,
-      display_name: "Test Name",
-      payouts_enabled: true,
-      type: "standard",
-      requirements: { currently_due: [], current_deadline: 0 }
+      enabled: true
     },
     loading: false,
     error: null

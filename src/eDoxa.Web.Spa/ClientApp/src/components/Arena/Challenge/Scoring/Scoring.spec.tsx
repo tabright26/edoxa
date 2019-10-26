@@ -9,9 +9,9 @@ it("renders without crashing", () => {
   //Arrange
   const challenges: ChallengesState = {
     data: [
-      { id: "123", participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] },
-      { id: "456", participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] },
-      { id: "789", participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] }
+      { id: "123", timestamp: 1231212313, timeline: { createdAt: 1231231231 }, participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] },
+      { id: "456", timestamp: 1231212313, timeline: { createdAt: 1231231231 }, participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] },
+      { id: "789", timestamp: 1231231223, timeline: { createdAt: 1231231231 }, participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] }
     ],
     loading: false,
     error: null

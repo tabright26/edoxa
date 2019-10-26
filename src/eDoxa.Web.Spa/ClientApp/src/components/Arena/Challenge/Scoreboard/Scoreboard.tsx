@@ -1,9 +1,5 @@
 import React from "react";
-import { Card, CardHeader, Collapse } from "reactstrap";
-
-import Scrollbar from "react-scrollbars-custom";
-
-import ArenaChallengeParticipantIndex from "components/Arena/Challenge/Participant/List/List";
+import { Card, CardHeader } from "reactstrap";
 
 const ArenaChallengeScoreboard = ({ challenge }) => (
   <>
@@ -12,7 +8,7 @@ const ArenaChallengeScoreboard = ({ challenge }) => (
         Scoreboard
       </CardHeader>
     </Card>
-    <Scrollbar
+    {/* <Scrollbar
       style={{
         height: "500px"
       }}
@@ -20,7 +16,7 @@ const ArenaChallengeScoreboard = ({ challenge }) => (
       <Collapse>
         <ArenaChallengeParticipantIndex challenge={challenge} />
       </Collapse>
-    </Scrollbar>
+    </Scrollbar> */}
   </>
 );
 

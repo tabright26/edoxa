@@ -1,28 +1,34 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { Form } from "redux-form";
+import { Form, reduxForm } from "redux-form";
 import { Provider } from "react-redux";
 import Month from "./Month";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const store: any = {
     getState: () => {},
     dispatch: action => {},
     subscribe: () => {}
   };
 
-  //Act
+  const FormWrapper = () => (
+    <Form>
+      <Month />
+    </Form>
+  );
+
+  const ReduxForm = reduxForm({ form: "TEST_FORM" })(FormWrapper);
+
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Form>
-          <Month />
-        </Form>
+        <ReduxForm />
       </Provider>
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

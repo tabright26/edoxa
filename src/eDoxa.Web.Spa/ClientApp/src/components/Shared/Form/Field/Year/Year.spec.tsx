@@ -1,9 +1,8 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { Form } from "redux-form";
+import { Form, reduxForm } from "redux-form";
 import { Provider } from "react-redux";
 import Year from "./Year";
-import { reduxForm } from "redux-form";
 
 it("renders without crashing", () => {
   //Arrange
@@ -13,13 +12,19 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  const FormWrapper = () => (
+    <Form>
+      <Year />
+    </Form>
+  );
+
+  const ReduxForm = reduxForm({ form: "TEST_FORM" })(FormWrapper);
+
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Form>
-          <Year />
-        </Form>
+        <ReduxForm />
       </Provider>
     )
     .toJSON();

@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import { Form } from "redux-form";
+import { Form, reduxForm } from "redux-form";
 import { Provider } from "react-redux";
 import Day from "./Day";
 
@@ -12,13 +12,19 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  const FormWrapper = () => (
+    <Form>
+      <Day />
+    </Form>
+  );
+
+  const ReduxForm = reduxForm({ form: "TEST_FORM" })(FormWrapper);
+
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Form>
-          <Day />
-        </Form>
+        <ReduxForm />
       </Provider>
     )
     .toJSON();

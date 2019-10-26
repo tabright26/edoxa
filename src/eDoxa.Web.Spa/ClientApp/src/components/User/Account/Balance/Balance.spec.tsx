@@ -59,7 +59,7 @@ it("renders without crashing", () => {
           user: {
             account: {
               balance: {
-                money: balanceToken
+                token: balanceToken
               }
             }
           }
