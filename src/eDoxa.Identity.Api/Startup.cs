@@ -27,6 +27,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
@@ -43,6 +44,7 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -92,12 +94,14 @@ namespace eDoxa.Identity.Api
 
             services.AddHealthChecks(AppSettings);
 
+            services.AddDataProtection(Configuration, "identityapi");
+
             //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
             //{
             //    services.AddDataProtection(
             //            options =>
             //            {
-            //                options.ApplicationDiscriminator = typeof(Program).Namespace;;
+            //                options.ApplicationDiscriminator = typeof(Program).Namespace; ;
             //            }
             //        )
             //        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
