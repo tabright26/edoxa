@@ -76,7 +76,7 @@ exports[`renders without crashing 1`] = `
         className="col-sm-9"
       >
         <time
-          dateTime={"1995-08-04T00:00:00.000Z"}
+          dateTime={"1995-08-04T04:00:00.000Z"}
         >
           Aug 4, 1995
         </time>

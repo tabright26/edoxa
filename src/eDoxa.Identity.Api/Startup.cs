@@ -44,7 +44,6 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -94,7 +93,7 @@ namespace eDoxa.Identity.Api
 
             services.AddHealthChecks(AppSettings);
 
-            services.AddDataProtection(Configuration, "identityapi");
+            services.AddDataProtection(Configuration, AppSettings.ApiResource.Name);
 
             //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
             //{

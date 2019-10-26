@@ -49,7 +49,7 @@ namespace eDoxa.Web.Spa
         {
             services.AddHealthChecks(AppSettings);
 
-            services.AddDataProtection(Configuration, "webspa");
+            services.AddDataProtection(Configuration, "edoxa.web.spa");
 
             //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
             //{

@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Security.Extensions;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,20 +30,7 @@ namespace eDoxa.Web.Spa
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .ConfigureServices(services => services.AddApplicationInsightsTelemetry())
-                .ConfigureAppConfiguration(
-                    config =>
-                    {
-                        var configuration = config.Build();
-
-                        var builder = new ConfigurationBuilder();
-
-                        builder.AddAzureKeyVault(
-                            $"https://{configuration["AzureKeyVault:Name"]}.vault.azure.net",
-                            configuration["AzureKeyVault:ClientId"],
-                            configuration["AzureKeyVault:ClientSecret"]);
-
-                        config.AddConfiguration(builder.Build());
-                    })
+                .UseAzureKeyVault()
                 .UseSerilog(
                     (context, config) =>
                     {
