@@ -13,7 +13,6 @@ using eDoxa.Web.Gateway.Infrastructure;
 using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
@@ -29,12 +28,13 @@ namespace eDoxa.Web.Gateway.Extensions
             healthChecks.AddUrlGroup(appSettings.HealthChecks.CashierUrl, "cashier-api", new[] {"api", "cashier" });
             healthChecks.AddUrlGroup(appSettings.HealthChecks.PaymentUrl, "payment-api", new[] {"api", "payment"});
             healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaChallengesUrl, "arena-challenges-api", new[] {"api", "arena", "challenges" });
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaGamesUrl, "arena-games-api", new[] {"api", "arena", "games" });
+            healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaGamesLeagueOfLegendsUrl, "arena-games-leagueoflegends-api", new[] {"api", "arena", "games", "leagueoflegends" });
             healthChecks.AddUrlGroup(appSettings.HealthChecks.OrganizationsClansUrl, "organizations-clans-api", new[] {"api", "organizations", "clans"});
         }
 
         public static void AddAuthentication(
             this IServiceCollection services,
-            IHostingEnvironment environment,
             IHasAuthorityAppSettings appSettings,
             IDictionary<string, ApiResource> apiResources
         )
@@ -49,7 +49,7 @@ namespace eDoxa.Web.Gateway.Extensions
                     {
                         options.ApiName = apiResource.Name;
                         options.Authority = appSettings.Authority.PrivateUrl;
-                        options.RequireHttpsMetadata = environment.IsProduction();
+                        options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     }
                 );

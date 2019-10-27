@@ -30,11 +30,8 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
     }
 
-    public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
+    public class ConnectionStrings : IHasSqlServerConnectionString
     {
-        [Required]
-        public string Redis { get; set; }
-
         [Required]
         public string SqlServer { get; set; }
     }

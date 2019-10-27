@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,16 +8,17 @@ using System;
 
 using Autofac.Extensions.DependencyInjection;
 
+using eDoxa.Seedwork.Security.Extensions;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Api
 {
-    public class Program
+    public sealed class Program
     {
         public static int Main(string[] args)
         {
@@ -57,20 +58,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
                         services.AddApplicationInsightsTelemetry();
                         services.AddAutofac();
                     })
-                .ConfigureAppConfiguration(
-                    config =>
-                    {
-                        var configuration = config.Build();
-
-                        var builder = new ConfigurationBuilder();
-
-                        builder.AddAzureKeyVault(
-                            $"https://{configuration["AzureKeyVault:Name"]}.vault.azure.net",
-                            configuration["AzureKeyVault:ClientId"],
-                            configuration["AzureKeyVault:ClientSecret"]);
-
-                        config.AddConfiguration(builder.Build());
-                    })
+                .UseAzureKeyVault()
                 .UseSerilog(
                     (context, config) =>
                     {

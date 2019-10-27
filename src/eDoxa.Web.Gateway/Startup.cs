@@ -60,7 +60,6 @@ namespace eDoxa.Web.Gateway
             );
 
             services.AddAuthentication(
-                HostingEnvironment,
                 AppSettings,
                 new Dictionary<string, ApiResource>
                 {
@@ -69,6 +68,8 @@ namespace eDoxa.Web.Gateway
                     ["PaymentApiKey"] = PaymentApi,
                     ["NotificationsApiKey"] = NotificationsApi,
                     ["ArenaChallengesApiKey"] = ArenaChallengesApi,
+                    ["ArenaGamesApiKey"] = ArenaGamesApi,
+                    ["ArenaGamesLeagueOfLegendsApiKey"] = ArenaGamesLeagueOfLegendsApi,
                     ["OrganizationsClansApiKey"] = OrganizationsClansApi
                 }
             );

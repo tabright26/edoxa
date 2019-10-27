@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,12 +14,13 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, ArenaGamesLeagueOfLegendsAppSettings appSettings)
+        public static void AddHealthChecks(this IServiceCollection services, LeagueOfLegendsAppSettings appSettings)
         {
             var healthChecks = services.AddHealthChecks();
             healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
             healthChecks.AddAzureKeyVault(appSettings);
             healthChecks.AddIdentityServer(appSettings);
+            healthChecks.AddRedis(appSettings.ConnectionStrings);
         }
     }
 }

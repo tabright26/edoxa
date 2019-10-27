@@ -9,6 +9,7 @@
 // this source code package.
 
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Web.Spa.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
@@ -47,6 +48,8 @@ namespace eDoxa.Web.Spa
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks(AppSettings);
+
+            services.AddDataProtection(Configuration, "edoxa.web.spa");
 
             //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
             //{

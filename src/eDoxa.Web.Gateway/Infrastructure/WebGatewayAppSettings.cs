@@ -37,6 +37,12 @@ namespace eDoxa.Web.Gateway.Infrastructure
         public string ArenaChallengesUrl { get; set; }
 
         [Required]
+        public string ArenaGamesUrl { get; set; }
+
+        [Required]
+        public string ArenaGamesLeagueOfLegendsUrl { get; set; }
+
+        [Required]
         public string OrganizationsClansUrl { get; set; }
     }
 }

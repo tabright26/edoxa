@@ -10,10 +10,10 @@ using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
@@ -64,20 +64,7 @@ namespace eDoxa.Arena.Challenges.Api
                         services.AddApplicationInsightsTelemetry();
                         services.AddAutofac();
                     })
-                .ConfigureAppConfiguration(
-                    config =>
-                    {
-                        var configuration = config.Build();
-
-                        var builder = new ConfigurationBuilder();
-
-                        builder.AddAzureKeyVault(
-                            $"https://{configuration["AzureKeyVault:Name"]}.vault.azure.net",
-                            configuration["AzureKeyVault:ClientId"],
-                            configuration["AzureKeyVault:ClientSecret"]);
-
-                        config.AddConfiguration(builder.Build());
-                    })
+                .UseAzureKeyVault()
                 .UseSerilog(
                     (context, config) =>
                     {

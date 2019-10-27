@@ -98,6 +98,23 @@ services:
       - mssql.test
       - redis.test
 
+  arena.games.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
+      target: unit-tests
+
+  arena.games.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test  
+
   arena.games.leagueoflegends.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.unit-tests:${ACR_TAG:-latest}
     build:

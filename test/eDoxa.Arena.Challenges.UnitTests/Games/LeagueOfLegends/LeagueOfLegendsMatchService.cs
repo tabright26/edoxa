@@ -12,11 +12,11 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends;
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-using eDoxa.Arena.Games.LeagueOfLegends;
-using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
 

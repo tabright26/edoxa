@@ -9,26 +9,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
 {
     public sealed class LeagueOfLegendsGameReferencesAdapter : IGameReferencesAdapter
     {
-        private readonly ILeagueOfLegendsProxy _leagueOfLegendsProxy;
+        private readonly ILeagueOfLegendsService _leagueOfLegendsService;
 
-        public LeagueOfLegendsGameReferencesAdapter(ILeagueOfLegendsProxy leagueOfLegendsProxy)
+        public LeagueOfLegendsGameReferencesAdapter(ILeagueOfLegendsService leagueOfLegendsService)
         {
-            _leagueOfLegendsProxy = leagueOfLegendsProxy;
+            _leagueOfLegendsService = leagueOfLegendsService;
         }
 
         public ChallengeGame Game => ChallengeGame.LeagueOfLegends;
 
         public async Task<IEnumerable<GameReference>> GetGameReferencesAsync(GameAccountId gameAccountId, DateTime startedAt, DateTime endedAt)
         {
-            var matchReferences = await _leagueOfLegendsProxy.GetMatchReferencesAsync(gameAccountId.ToString(), startedAt, endedAt);
+            var matchReferences = await _leagueOfLegendsService.GetMatchReferencesAsync(gameAccountId.ToString(), startedAt, endedAt);
 
             return matchReferences.Select(matchReference => new GameReference(matchReference.GameId)).ToList();
         }

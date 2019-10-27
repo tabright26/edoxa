@@ -4,10 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
-using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies
 {

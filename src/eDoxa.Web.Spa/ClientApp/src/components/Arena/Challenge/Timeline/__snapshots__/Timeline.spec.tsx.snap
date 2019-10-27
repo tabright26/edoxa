@@ -33,7 +33,7 @@ exports[`renders without crashing 1`] = `
     <time
       dateTime={"2009-01-06T08:40:31.000Z"}
     >
-      Jan 6, 2009 8:40 AM
+      Jan 6, 2009 3:40 AM
     </time>
   </span>
   <span

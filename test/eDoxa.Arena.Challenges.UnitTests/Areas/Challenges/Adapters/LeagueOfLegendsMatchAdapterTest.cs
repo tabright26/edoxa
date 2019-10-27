@@ -9,12 +9,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
@@ -29,7 +29,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
     {
         public LeagueOfLegendsMatchAdapterTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
-            _mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsProxy>();
+            _mockLeagueOfLegendsProxy = new Mock<ILeagueOfLegendsService>();
 
             _mockLeagueOfLegendsProxy.Setup(leagueOfLegendsProxy => leagueOfLegendsProxy.GetMatchAsync(It.IsNotNull<string>()))
                 .ReturnsAsync(StubMatch)
@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
         private LeagueOfLegendsMatchDto StubMatch =>
             TestData.FileStorage.DeserializeJsonFile<IEnumerable<LeagueOfLegendsMatchDto>>(@"Stubs/LeagueOfLegends/Matches.json").First();
 
-        private readonly Mock<ILeagueOfLegendsProxy> _mockLeagueOfLegendsProxy;
+        private readonly Mock<ILeagueOfLegendsService> _mockLeagueOfLegendsProxy;
 
         [Fact]
         public async Task GetMatchAsync_WhenGameAccountIdIsParticipant_ShouldBeLeagueOfLegends()

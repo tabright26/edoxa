@@ -38,6 +38,7 @@ services:
       - IdentityServer__CashierUrl=http://${HOST:-localhost}:5002 
       - IdentityServer__NotificationsUrl=http://${HOST:-localhost}:5011
       - IdentityServer__ArenaChallengesUrl=http://${HOST:-localhost}:5003
+      - IdentityServer__ArenaGamesUrl=http://${HOST:-localhost}:5005
       - IdentityServer__ArenaGamesLeagueOfLegendsUrl=http://${HOST:-localhost}:5006
       - IdentityServer__OrganizationsClansUrl=http://${HOST:-localhost}:5010
       - IdentityServer__Web__SpaUrl=http://${HOST:-localhost}:5300
@@ -108,6 +109,21 @@ services:
     ports:
       - "5003:80"
 
+  arena.games.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
+      - ConnectionStrings__SqlServer=${MSSQL_ARENA_GAMES:-Server=mssql;Database=Services.Arena.Games;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
+      - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
+      - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
+      - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
+      - Authority__PrivateUrl=http://identity.api
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000      
+    ports:
+      - "5005:80"
+
   arena.games.leagueoflegends.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -149,6 +165,7 @@ services:
       - HealthChecks__PaymentUrl=http://payment.api/health
       - HealthChecks__NotificationsUrl=http://notifications.api/health
       - HealthChecks__ArenaChallengesUrl=http://arena.challenges.api/health
+      - HealthChecks__ArenaGamesUrl=http://arena.games.api/health
       - HealthChecks__ArenaGamesLeagueOfLegendsUrl=http://arena.games.leagueoflegends.api/health
       - HealthChecks__OrganizationsClansUrl=http://organizations.clans.api/health
       - Authority__PrivateUrl=http://identity.api
@@ -184,7 +201,7 @@ services:
       - REACT_APP_REDIRECT_URI=http://${HOST:-localhost}:5300/callback
       - REACT_APP_CLIENT_ID=edoxa.web.spa
       - REACT_APP_RESPONSE_TYPE=token id_token
-      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api arena.challenges.api arena.games.leagueoflegends.api organizations.clans.api
+      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api arena.challenges.api arena.games.api arena.games.leagueoflegends.api organizations.clans.api
       - REACT_APP_WEB_GATEWAY=http://${HOST:-localhost}:5200
       - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
       - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
@@ -209,14 +226,16 @@ services:
       - HealthChecks__Endpoints__3__Uri=http://notifications.api/health
       - HealthChecks__Endpoints__4__Name=eDoxa Arena Challenges API
       - HealthChecks__Endpoints__4__Uri=http://arena.challenges.api/health
-      - HealthChecks__Endpoints__5__Name=eDoxa Arena Games LeagueOfLegends API
-      - HealthChecks__Endpoints__5__Uri=http://arena.games.leagueoflegends.api/health
-      - HealthChecks__Endpoints__6__Name=eDoxa Organizations Clans API
-      - HealthChecks__Endpoints__6__Uri=http://organizations.clans.api/health
-      - HealthChecks__Endpoints__7__Name=eDoxa Web Gateway
-      - HealthChecks__Endpoints__7__Uri=http://web.gateway/health
-      - HealthChecks__Endpoints__8__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__8__Uri=http://web.spa.proxy/health
+      - HealthChecks__Endpoints__5__Name=eDoxa Arena Games API
+      - HealthChecks__Endpoints__5__Uri=http://arena.games.api/health
+      - HealthChecks__Endpoints__6__Name=eDoxa Arena Games LeagueOfLegends API
+      - HealthChecks__Endpoints__6__Uri=http://arena.games.leagueoflegends.api/health
+      - HealthChecks__Endpoints__7__Name=eDoxa Organizations Clans API
+      - HealthChecks__Endpoints__7__Uri=http://organizations.clans.api/health
+      - HealthChecks__Endpoints__8__Name=eDoxa Web Gateway
+      - HealthChecks__Endpoints__8__Uri=http://web.gateway/health
+      - HealthChecks__Endpoints__9__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__9__Uri=http://web.spa.proxy/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:

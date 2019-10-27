@@ -3,7 +3,6 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
@@ -20,9 +19,9 @@ using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents.Extensions;
+using eDoxa.Arena.Challenges.Api.Temp.Extensions;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Arena.Games.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
@@ -56,8 +55,6 @@ using Polly;
 using Polly.Extensions.Http;
 
 using static eDoxa.Seedwork.Security.ApiResources;
-
-using ConnectionStrings = eDoxa.Seedwork.Infrastructure.ConnectionStrings;
 
 namespace eDoxa.Arena.Challenges.Api
 {
@@ -101,13 +98,6 @@ namespace eDoxa.Arena.Challenges.Api
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
-
-            services.AddDistributedRedisCache(
-                options =>
-                {
-                    options.Configuration = Configuration.GetConnectionString(ConnectionStrings.Redis);
-                    options.InstanceName = HostingEnvironment.ApplicationName;
-                });
 
             services.AddCors(
                 options =>
