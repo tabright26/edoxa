@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Organizations.Clans.Api.Extensions;
 using eDoxa.Organizations.Clans.Domain.Services;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.AspNetCore;

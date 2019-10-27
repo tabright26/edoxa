@@ -7,12 +7,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -50,9 +49,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var responses = await _userManager.GenerateGameResponsesAsync(user);
+            //var responses = await _userManager.GenerateGameResponsesAsync(user);
 
-            return this.Ok(responses);
+            return this.Ok();
         }
 
         [HttpPost("{game}")]

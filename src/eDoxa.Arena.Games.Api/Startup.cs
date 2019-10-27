@@ -81,6 +81,8 @@ namespace eDoxa.Arena.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
+            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
+
             services.AddHealthChecks(AppSettings);
 
             services.AddDbContext<GamesDbContext>(

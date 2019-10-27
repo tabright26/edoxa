@@ -12,9 +12,9 @@ using AutoMapper;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
-using eDoxa.Organizations.Clans.Api.Extensions;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Services;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.AspNetCore;

@@ -1,5 +1,5 @@
 ﻿// Filename: CandidaturesControllerGetAsyncTest.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -79,6 +79,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
                     candidatureRepository.Create(candidature);
                     await candidatureRepository.UnitOfWork.CommitAsync();
@@ -127,6 +131,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
                     candidatureRepository.Create(candidature);
                     await candidatureRepository.UnitOfWork.CommitAsync();
