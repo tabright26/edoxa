@@ -114,7 +114,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=47ce723c-52e7-4714-931a-19e72c037c9a
-      - ConnectionStrings__SqlServer=${MSSQL_ARENA_CHALLENGES:-Server=mssql;Database=Services.Arena.Games;User Id=sa;Password=fnU3Www9TnBDp3MA}      
+      - ConnectionStrings__SqlServer=${MSSQL_ARENA_GAMES:-Server=mssql;Database=Services.Arena.Games;User Id=sa;Password=fnU3Www9TnBDp3MA}      
       - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - AzureKeyVault__Name=${AKV_NAME:-edoxa-dev}
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}

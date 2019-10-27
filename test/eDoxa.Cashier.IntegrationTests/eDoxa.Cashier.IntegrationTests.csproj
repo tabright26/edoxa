@@ -25,7 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.TestHelpers\eDoxa.Cashier.TestHelpers.csproj" />
   </ItemGroup>
