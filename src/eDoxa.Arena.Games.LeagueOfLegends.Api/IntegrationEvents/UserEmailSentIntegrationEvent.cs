@@ -1,5 +1,5 @@
 ﻿// Filename: UserEmailSentIntegrationEvent.cs
-// Date Created: 2019-10-21
+// Date Created: 2019-10-22
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

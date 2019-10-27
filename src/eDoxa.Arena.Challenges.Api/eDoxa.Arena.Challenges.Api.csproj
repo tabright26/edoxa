@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Arena.Challenges.Infrastructure\eDoxa.Arena.Challenges.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Arena.Games\eDoxa.Arena.Games.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>

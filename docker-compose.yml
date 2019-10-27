@@ -63,6 +63,16 @@ services:
       - redis
       - identity.api
 
+  arena.games.api:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.api:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
+    depends_on:
+      - seq
+      - redis
+      - identity.api
+
   arena.games.leagueoflegends.api:
     image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.api:${ACR_TAG:-latest}
     build:

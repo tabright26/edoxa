@@ -9,11 +9,11 @@ using System.Collections.Generic;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 
 using FluentAssertions;
 

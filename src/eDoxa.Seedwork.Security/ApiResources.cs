@@ -16,6 +16,7 @@ namespace eDoxa.Seedwork.Security
         public static readonly ApiResource IdentityApi = new IdentityResource();
         public static readonly ApiResource CashierApi = new CashierResource();
         public static readonly ApiResource ArenaChallengesApi = new ArenaChallengesResource();
+        public static readonly ApiResource ArenaGamesApi = new ArenaGamesResource();
         public static readonly ApiResource ArenaGamesLeagueOfLegendsApi = new ArenaGamesLeagueOfLegendsResource();
         public static readonly ApiResource OrganizationsClansApi = new OrganizationsClansResource();
         public static readonly ApiResource NotificationsApi = new NotificationsResource();
@@ -98,6 +99,20 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Arena Challenges API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
 
+            {
+                ApiSecrets = new HashSet<Secret>
+                {
+                    new Secret("secret".Sha256())
+                };
+            }
+        }
+
+        public sealed class ArenaGamesResource : ApiResource
+        {
+            internal ArenaGamesResource() : base(
+                Security.Scopes.ArenaGamesApi,
+                "eDoxa Arena Games API",
+                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
                 ApiSecrets = new HashSet<Secret>
                 {

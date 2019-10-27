@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,7 +18,7 @@ using Serilog;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Api
 {
-    public class Program
+    public sealed class Program
     {
         public static int Main(string[] args)
         {

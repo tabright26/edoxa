@@ -1,6 +1,6 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-10-04
-//
+// Date Created: 2019-10-10
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -63,18 +63,18 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
-            AppSettings = configuration.GetAppSettings<ArenaGamesLeagueOfLegendsAppSettings>(ArenaGamesLeagueOfLegendsApi);
+            AppSettings = configuration.GetAppSettings<LeagueOfLegendsAppSettings>(ArenaGamesLeagueOfLegendsApi);
         }
 
         public IConfiguration Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
 
-        private ArenaGamesLeagueOfLegendsAppSettings AppSettings { get; }
+        private LeagueOfLegendsAppSettings AppSettings { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAppSettings<ArenaGamesLeagueOfLegendsAppSettings>(Configuration);
+            services.AddAppSettings<LeagueOfLegendsAppSettings>(Configuration);
 
             services.AddHealthChecks(AppSettings);
 
@@ -133,7 +133,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "arena.games.leagueoflegends"));
 
-            builder.RegisterModule<ArenaGamesLeagueOfLegendsApiModule>();
+            builder.RegisterModule<LeagueOfLegendsModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)

@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Api.Services.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -68,7 +68,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.Summone
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var summonerService = scope.GetRequiredService<ISummonerService>();
+                    var summonerService = scope.GetRequiredService<ILeagueOfLegendsSummonerService>();
 
                     var summoner = await summonerService.FindSummonerAsync(summonerName);
                     await summonerService.GetSummonerValidationIcon(summoner!);

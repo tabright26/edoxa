@@ -51,6 +51,8 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.ArenaChallengesApi;
 
+            yield return ApiResources.ArenaGamesApi;
+
             yield return ApiResources.ArenaGamesLeagueOfLegendsApi;
 
             yield return ApiResources.OrganizationsClansApi;
@@ -67,6 +69,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
 
             yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+
+            yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl);
 
             yield return ApiResources.ArenaGamesLeagueOfLegendsApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesLeagueOfLegendsUrl);
 
@@ -115,6 +119,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.PaymentApi,
                     Scopes.CashierApi,
                     Scopes.ArenaChallengesApi,
+                    Scopes.ArenaGamesApi,
                     Scopes.ArenaGamesLeagueOfLegendsApi,
                     Scopes.OrganizationsClansApi
                 }

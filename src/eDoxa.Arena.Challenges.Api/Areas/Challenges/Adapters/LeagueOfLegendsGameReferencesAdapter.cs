@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
 {

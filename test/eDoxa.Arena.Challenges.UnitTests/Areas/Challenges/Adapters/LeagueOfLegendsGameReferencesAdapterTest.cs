@@ -10,12 +10,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
+using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-using eDoxa.Arena.Games.LeagueOfLegends.Abstractions;
-using eDoxa.Arena.Games.LeagueOfLegends.Dtos;
 
 using FluentAssertions;
 
