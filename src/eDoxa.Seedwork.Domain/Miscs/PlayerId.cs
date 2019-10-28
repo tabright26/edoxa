@@ -8,8 +8,8 @@ using System.ComponentModel;
 
 namespace eDoxa.Seedwork.Domain.Miscs
 {
-    [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class PlayerId : EntityId<PlayerId>
+    [TypeConverter(typeof(StringIdTypeConverter))]
+    public sealed class PlayerId : StringId<PlayerId>
     {
     }
 }

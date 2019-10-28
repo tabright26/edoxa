@@ -18,12 +18,16 @@ namespace eDoxa.Arena.Games.Domain.AggregateModels.GameCredentialAggregate
             Game game,
             PlayerId playerId,
             IDateTimeProvider provider
-        )
+        ) : this()
         {
             UserId = userId;
             Game = game;
             PlayerId = playerId;
             Timestamp = provider.DateTime;
+        }
+
+        private GameCredential()
+        {
         }
 
         public UserId UserId { get; private set; }

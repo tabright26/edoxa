@@ -4,107 +4,115 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
+using System.Linq;
+
 using eDoxa.Arena.Games.Domain.AggregateModels.GameCredentialAggregate;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Games.Domain.AggregateModels
 {
-    public sealed class GameInfo
+    public sealed class GameInfo : ValueObject
     {
-        private GameInfo(
-            GameCredential credential,
-            bool enabled,
-            bool displayed,
-            GameChallengeInfo challengeInfo,
-            GameTournamentInfo tournamentInfo
-        ) : this(
-            credential.Game,
-            enabled,
-            true,
-            displayed,
-            challengeInfo,
-            tournamentInfo)
-        {
-        }
-
         public GameInfo(
             Game game,
-            bool enabled,
-            bool displayed,
-            GameChallengeInfo challengeInfo,
-            GameTournamentInfo tournamentInfo
+            string imageName,
+            string reactComponent,
+            Dictionary<string, ServiceInfo> services
         ) : this(
             game.Name,
             game.DisplayName,
-            displayed,
+            imageName,
+            reactComponent,
             false,
-            enabled,
-            challengeInfo,
-            tournamentInfo)
+            services)
+        {
+        }
+
+        private GameInfo(
+            GameCredential credential,
+            string imageName,
+            string reactComponent,
+            Dictionary<string, ServiceInfo> services
+        ) : this(
+            credential.Game,
+            imageName,
+            reactComponent,
+            true,
+            services)
         {
         }
 
         private GameInfo(
             Game game,
-            bool enabled,
+            string imageName,
+            string reactComponent,
             bool linked,
-            bool displayed,
-            GameChallengeInfo challengeInfo,
-            GameTournamentInfo tournamentInfo
+            Dictionary<string, ServiceInfo> services
         ) : this(
             game.Name,
             game.DisplayName,
-            displayed,
+            imageName,
+            reactComponent,
             linked,
-            enabled,
-            challengeInfo,
-            tournamentInfo)
+            services)
         {
         }
 
         private GameInfo(
             string name,
             string displayName,
-            bool displayed,
+            string imageName,
+            string reactComponent,
             bool linked,
-            bool enabled,
-            GameChallengeInfo challengeInfo,
-            GameTournamentInfo tournamentInfo
+            Dictionary<string, ServiceInfo> services
         )
         {
-            Name = name.ToLowerInvariant();
+            Name = name;
             DisplayName = displayName;
-            Enabled = enabled;
             Linked = linked;
-            Displayed = displayed;
-            ChallengeInfo = challengeInfo;
-            TournamentInfo = tournamentInfo;
+            ImageName = imageName;
+            ReactComponent = reactComponent;
+            Services = services;
         }
 
         public string Name { get; }
 
         public string DisplayName { get; }
 
-        public bool Displayed { get; }
+        public string ImageName { get; }
+
+        public string ReactComponent { get; }
 
         public bool Linked { get; }
 
-        public bool Enabled { get; }
+        public IReadOnlyDictionary<string, ServiceInfo> Services { get; }
 
-        public GameChallengeInfo ChallengeInfo { get; }
-
-        public GameTournamentInfo TournamentInfo { get; }
-
-        public GameInfo WithCredential(GameCredential? credential)
+        public GameInfo TryGetGameCredential(GameCredential? credential)
         {
-            return credential == null
-                ? this
-                : new GameInfo(
+            return credential != null
+                ? new GameInfo(
                     credential,
-                    Enabled,
-                    Displayed,
-                    ChallengeInfo,
-                    TournamentInfo);
+                    ImageName,
+                    ReactComponent,
+                    Services.ToDictionary(service => service.Key, service => service.Value))
+                : this;
+        }
+
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return Name;
+            yield return DisplayName;
+            yield return ImageName;
+            yield return ReactComponent;
+            yield return Linked;
+            yield return Services;
         }
     }
 }

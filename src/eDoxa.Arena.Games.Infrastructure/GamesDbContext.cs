@@ -34,27 +34,28 @@ namespace eDoxa.Arena.Games.Infrastructure
             modelBuilder.Entity<GameCredential>(
                 builder =>
                 {
-                    builder.Property(gameCredential => gameCredential.UserId)
-                        .HasConversion<Guid>(userId => userId, value => UserId.FromGuid(value))
-                        .IsRequired();
+                    builder.Property(credential => credential.UserId).HasConversion<Guid>(userId => userId, value => UserId.FromGuid(value)).IsRequired();
 
-                    builder.Property(gameCredential => gameCredential.Game).HasConversion(game => game.Value, value => Game.FromValue(value)).IsRequired();
+                    builder.Property(credential => credential.Game).HasConversion(game => game.Value, value => Game.FromValue(value)).IsRequired();
 
-                    builder.Property(gameCredential => gameCredential.PlayerId)
-                        .HasConversion<Guid>(userId => userId, value => PlayerId.FromGuid(value))
-                        .IsRequired();
+                    builder.Property(credential => credential.PlayerId).HasConversion<string>(userId => userId, value => PlayerId.Parse(value)).IsRequired();
 
-                    builder.Property(gameCredential => gameCredential.Timestamp)
-                        .HasConversion(dateTime => dateTime.Ticks, value => new DateTime(value))
-                        .IsRequired();
+                    builder.Property(credential => credential.Timestamp).HasConversion(dateTime => dateTime.Ticks, value => new DateTime(value)).IsRequired();
 
                     builder.HasKey(
-                        gameCredential => new
+                        credential => new
                         {
-                            gameCredential.UserId,
-                            gameCredential.Game,
-                            gameCredential.PlayerId
+                            credential.UserId,
+                            credential.Game
                         });
+
+                    builder.HasIndex(
+                            credential => new
+                            {
+                                credential.Game,
+                                credential.PlayerId
+                            })
+                        .IsUnique();
 
                     builder.ToTable("GameCredential");
                 });

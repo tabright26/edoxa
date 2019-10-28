@@ -6,7 +6,7 @@
 
 using System.Runtime.Serialization;
 
-namespace eDoxa.Arena.Games.Api.Requests
+namespace eDoxa.Arena.Games.Api.Areas.Games.Requests
 {
     [DataContract]
     public sealed class GamePostRequest

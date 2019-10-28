@@ -10,15 +10,13 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Games.Domain.AggregateModels.GameCredentialAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 
-using FluentValidation.Results;
-
 namespace eDoxa.Arena.Games.Domain.Services
 {
     public interface IGameCredentialService
     {
-        Task<ValidationResult> CreateGameCredentialAsync(UserId userId, Game game, PlayerId playerId);
+        Task CreateGameCredentialAsync(UserId userId, Game game, PlayerId playerId);
 
-        Task<ValidationResult> DeleteGameCredentialAsync(UserId userId, Game game);
+        Task DeleteGameCredentialAsync(UserId userId, Game game);
 
         Task<IReadOnlyCollection<GameCredential>> FetchGameCredentialsAsync(UserId userId);
 

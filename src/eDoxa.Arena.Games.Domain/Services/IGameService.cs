@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Games.Domain.AggregateModels;
@@ -14,8 +14,6 @@ namespace eDoxa.Arena.Games.Domain.Services
 {
     public interface IGameService
     {
-        IImmutableSet<GameInfo> FetchGameInfos();
-
-        Task<IImmutableSet<GameInfo>> FetchGameInfosAsync(UserId userId);
+        Task<IReadOnlyCollection<GameInfo>> FetchGameInfosAsync(UserId? userId);
     }
 }

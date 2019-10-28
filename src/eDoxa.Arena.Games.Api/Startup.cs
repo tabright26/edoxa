@@ -13,6 +13,7 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Arena.Games.Api.Areas.Games;
 using eDoxa.Arena.Games.Api.Extensions;
 using eDoxa.Arena.Games.Api.Infrastructure;
 using eDoxa.Arena.Games.Api.Infrastructure.Data;
