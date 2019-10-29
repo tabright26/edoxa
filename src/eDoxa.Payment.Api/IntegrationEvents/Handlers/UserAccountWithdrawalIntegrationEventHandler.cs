@@ -1,6 +1,6 @@
 ﻿// Filename: UserAccountWithdrawalIntegrationEventHandler.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -45,7 +45,6 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
 
-                // GABRIEL: UNIT TEST NEED TO BE UPDATED.
                 if (!await _stripeAccountService.HasAccountVerifiedAsync(accountId))
                 {
                     throw new InvalidOperationException("The user's Stripe Account isn't verified. The user's cannot process a withdrawal transaction.");
