@@ -1,5 +1,5 @@
-﻿// Filename: ArenaGameResponseProfile.cs
-// Date Created: 2019-10-27
+﻿// Filename: GameProfile.cs
+// Date Created: 2019-10-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,13 +8,14 @@ using System.Linq;
 
 using AutoMapper;
 
+using eDoxa.Arena.Games.Api.Responses;
 using eDoxa.Arena.Games.Domain.AggregateModels;
 
-namespace eDoxa.Arena.Games.Api.Areas.Games.Responses.Profiles
+namespace eDoxa.Arena.Games.Api.Profiles
 {
-    internal sealed class GameResponseProfile : Profile
+    internal sealed class GameProfile : Profile
     {
-        public GameResponseProfile()
+        public GameProfile()
         {
             this.CreateMap<GameInfo, GameResponse>()
                 .ForMember(gameInfo => gameInfo.Name, config => config.MapFrom(gameInfo => gameInfo.Name))

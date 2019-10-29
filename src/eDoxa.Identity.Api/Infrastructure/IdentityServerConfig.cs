@@ -70,7 +70,11 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
 
-            yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl);
+            var client = ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl);
+
+            client.AllowedScopes.Add(Scopes.ArenaGamesLeagueOfLegendsApi);
+
+            yield return client;
 
             yield return ApiResources.ArenaGamesLeagueOfLegendsApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesLeagueOfLegendsUrl);
 

@@ -1,5 +1,5 @@
 ﻿// Filename: GamesOptions.cs
-// Date Created: 2019-10-27
+// Date Created: 2019-10-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,7 @@
 
 using System.Collections.Generic;
 
-namespace eDoxa.Arena.Games.Api.Areas.Games
+namespace eDoxa.Arena.Games.Api.Infrastructure
 {
     public sealed class GamesOptions : Dictionary<string, GameOptions>
     {

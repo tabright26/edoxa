@@ -7,14 +7,10 @@
 using System.IO;
 using System.Reflection;
 
-using Autofac;
-
 using eDoxa.Arena.Games.LeagueOfLegends.Api;
 using eDoxa.Seedwork.Testing;
-using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.Fixtures
@@ -26,12 +22,6 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.Fixtures
             builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFixture)).Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
-
-            builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    container.RegisterModule<MockServiceBusModule>();
-                });
         }
     }
 }

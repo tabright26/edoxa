@@ -1,10 +1,9 @@
 ﻿// Filename: ApiResources.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 
 using IdentityServer4.Models;
@@ -29,10 +28,7 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Payment API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
@@ -43,10 +39,7 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Notifications API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
@@ -57,10 +50,7 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Organizations Clans API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
@@ -71,10 +61,7 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Identity API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
@@ -85,10 +72,7 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Cashier API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
@@ -100,10 +84,7 @@ namespace eDoxa.Seedwork.Security
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
 
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
@@ -114,10 +95,7 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Arena Games API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
@@ -128,10 +106,7 @@ namespace eDoxa.Seedwork.Security
                 "eDoxa Arena Games League Of Legends API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
-                ApiSecrets = new HashSet<Secret>
-                {
-                    new Secret("secret".Sha256())
-                };
+                ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
     }

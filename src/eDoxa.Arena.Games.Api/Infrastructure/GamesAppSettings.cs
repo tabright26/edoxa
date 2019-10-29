@@ -15,10 +15,13 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Arena.Games.Api.Infrastructure
 {
-    public class GamesAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
+    public sealed class GamesAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
     {
         [Required]
         public ConnectionStrings ConnectionStrings { get; set; }
+
+        [Required]
+        public HttpClientsOptions HttpClients { get; set; }
 
         [Required]
         public ApiResource ApiResource { get; set; }
@@ -30,9 +33,21 @@ namespace eDoxa.Arena.Games.Api.Infrastructure
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
     }
 
-    public class ConnectionStrings : IHasSqlServerConnectionString
+    public sealed class ConnectionStrings : IHasSqlServerConnectionString
     {
         [Required]
         public string SqlServer { get; set; }
+    }
+
+    public sealed class HttpClientsOptions
+    {
+        [Required]
+        public WebOptions Web { get; set; }
+    }
+
+    public sealed class WebOptions
+    {
+        [Required]
+        public string GatewayUrl { get; set; }
     }
 }

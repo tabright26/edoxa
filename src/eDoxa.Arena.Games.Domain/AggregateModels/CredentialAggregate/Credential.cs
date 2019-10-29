@@ -9,11 +9,11 @@ using System;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
-namespace eDoxa.Arena.Games.Domain.AggregateModels.GameCredentialAggregate
+namespace eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate
 {
-    public sealed class GameCredential : IAggregateRoot
+    public sealed class Credential : IAggregateRoot
     {
-        public GameCredential(
+        public Credential(
             UserId userId,
             Game game,
             PlayerId playerId,
@@ -26,7 +26,7 @@ namespace eDoxa.Arena.Games.Domain.AggregateModels.GameCredentialAggregate
             Timestamp = provider.DateTime;
         }
 
-        private GameCredential()
+        private Credential()
         {
         }
 

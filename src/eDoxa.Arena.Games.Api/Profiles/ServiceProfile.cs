@@ -1,18 +1,19 @@
-﻿// Filename: ArenaServiceResponseProfile.cs
-// Date Created: 2019-10-27
+﻿// Filename: ServiceProfile.cs
+// Date Created: 2019-10-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using AutoMapper;
 
+using eDoxa.Arena.Games.Api.Responses;
 using eDoxa.Arena.Games.Domain.AggregateModels;
 
-namespace eDoxa.Arena.Games.Api.Areas.Games.Responses.Profiles
+namespace eDoxa.Arena.Games.Api.Profiles
 {
-    internal sealed class ServiceResponseProfile : Profile
+    internal sealed class ServiceProfile : Profile
     {
-        public ServiceResponseProfile()
+        public ServiceProfile()
         {
             this.CreateMap<ServiceInfo, ServiceResponse>()
                 .ForMember(challengeInfo => challengeInfo.Displayed, config => config.MapFrom(challengeInfo => challengeInfo.Displayed))

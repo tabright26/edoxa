@@ -15,13 +15,11 @@ using AutoMapper;
 
 using eDoxa.Arena.Games.LeagueOfLegends.Api.Extensions;
 using eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure;
-using eDoxa.Arena.Games.LeagueOfLegends.Api.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -78,7 +76,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
 
             services.AddHealthChecks(AppSettings);
 
-            services.AddRedis(Configuration);
+            services.AddRedisCache(Configuration);
 
             services.AddCors(
                 options =>
@@ -131,15 +129,11 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "arena.games.leagueoflegends"));
-
             builder.RegisterModule<LeagueOfLegendsModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            subscriber.UseIntegrationEventSubscriptions();
-
             application.UseCustomExceptionHandler();
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);

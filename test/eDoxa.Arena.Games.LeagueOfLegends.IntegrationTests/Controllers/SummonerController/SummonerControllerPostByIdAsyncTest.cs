@@ -69,9 +69,8 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.Summone
                 async scope =>
                 {
                     var summonerService = scope.GetRequiredService<ILeagueOfLegendsSummonerService>();
-
                     var summoner = await summonerService.FindSummonerAsync(summonerName);
-                    await summonerService.GetSummonerValidationIcon(summoner!);
+                    await summonerService.GenerateDifferentProfileIconIdAsync(summoner!);
                 });
 
             // Act

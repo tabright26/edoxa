@@ -16,6 +16,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api.Infrastructure
         protected override void Load(ContainerBuilder builder)
         {
             // Service
+            builder.RegisterType<LeagueOfLegendsCredentialService>().As<ILeagueOfLegendsCredentialService>().InstancePerLifetimeScope();
             builder.RegisterType<LeagueOfLegendsSummonerService>().As<ILeagueOfLegendsSummonerService>().InstancePerLifetimeScope();
         }
     }

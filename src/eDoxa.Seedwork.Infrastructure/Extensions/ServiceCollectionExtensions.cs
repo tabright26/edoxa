@@ -7,17 +7,34 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
+using StackExchange.Redis.Extensions.Core;
+using StackExchange.Redis.Extensions.Core.Abstractions;
+using StackExchange.Redis.Extensions.Core.Configuration;
+using StackExchange.Redis.Extensions.Core.Implementations;
 using StackExchange.Redis.Extensions.Newtonsoft;
-
-using static StackExchange.Redis.ConnectionMultiplexer;
 
 namespace eDoxa.Seedwork.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddRedis(this IServiceCollection services, IConfiguration configuration)
+        public static void AddRedisCache(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddStackExchangeRedisExtensions<NewtonsoftSerializer>(Connect(configuration.GetConnectionString(ConnectionStrings.Redis)));
+            services.AddSingleton(
+                new RedisConfiguration
+                {
+                    Hosts = new[]
+                    {
+                        new RedisHost
+                        {
+                            Host = configuration.GetConnectionString(ConnectionStrings.Redis)
+                        }
+                    }
+                });
+
+            services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
+            services.AddSingleton<IRedisCacheConnectionPoolManager, RedisCacheConnectionPoolManager>();
+            services.AddSingleton<IRedisDefaultCacheClient, RedisDefaultCacheClient>();
+            services.AddSingleton<ISerializer, NewtonsoftSerializer>();
         }
     }
 }

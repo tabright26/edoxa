@@ -120,7 +120,8 @@ services:
       - AzureKeyVault__ClientId=${AKV_CLIENT_ID:-bb6ade30-85d1-4bb7-a90f-047a5ffe9323}
       - AzureKeyVault__ClientSecret=${AKV_CLIENT_SECRET:-j*y+Do-?iwAQjGTCA1DRyT7UT9wj7NN5}
       - Authority__PrivateUrl=http://identity.api
-      - Authority__PublicUrl=http://${HOST:-localhost}:5000      
+      - Authority__PublicUrl=http://${HOST:-localhost}:5000
+      - HttpClients__Web__GatewayUrl=http://web.gateway
     ports:
       - "5005:80"
 

@@ -158,17 +158,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.LeagueOfL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.LeagueOfLegends.TestHelpers", "test\eDoxa.Arena.Games.LeagueOfLegends.TestHelpers\eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.csproj", "{53D9179C-A47C-4FA5-8CCB-CDCB8894059B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.Api", "src\eDoxa.Arena.Games.Api\eDoxa.Arena.Games.Api.csproj", "{325D341D-4E47-4D1C-A814-45602BC70CFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.Api", "src\eDoxa.Arena.Games.Api\eDoxa.Arena.Games.Api.csproj", "{325D341D-4E47-4D1C-A814-45602BC70CFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.IntegrationTests", "test\eDoxa.Arena.Games.IntegrationTests\eDoxa.Arena.Games.IntegrationTests.csproj", "{D8048D90-F121-4DE8-BE76-E86F446097B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.IntegrationTests", "test\eDoxa.Arena.Games.IntegrationTests\eDoxa.Arena.Games.IntegrationTests.csproj", "{D8048D90-F121-4DE8-BE76-E86F446097B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.UnitTests", "test\eDoxa.Arena.Games.UnitTests\eDoxa.Arena.Games.UnitTests.csproj", "{C435FBFF-15AB-43DB-94FD-6A8C9979264D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.UnitTests", "test\eDoxa.Arena.Games.UnitTests\eDoxa.Arena.Games.UnitTests.csproj", "{C435FBFF-15AB-43DB-94FD-6A8C9979264D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.TestHelper", "test\eDoxa.Arena.Games.TestHelper\eDoxa.Arena.Games.TestHelper.csproj", "{96F6C22A-A301-40A9-A058-AF9E53329BD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.TestHelper", "test\eDoxa.Arena.Games.TestHelper\eDoxa.Arena.Games.TestHelper.csproj", "{96F6C22A-A301-40A9-A058-AF9E53329BD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.Domain", "src\eDoxa.Arena.Games.Domain\eDoxa.Arena.Games.Domain.csproj", "{0B1B98D4-10B1-484E-85B2-C280B933534D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.Domain", "src\eDoxa.Arena.Games.Domain\eDoxa.Arena.Games.Domain.csproj", "{0B1B98D4-10B1-484E-85B2-C280B933534D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.Infrastructure", "src\eDoxa.Arena.Games.Infrastructure\eDoxa.Arena.Games.Infrastructure.csproj", "{42CFED65-60E8-4A5B-A95F-2EAAA7AC3CC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.Infrastructure", "src\eDoxa.Arena.Games.Infrastructure\eDoxa.Arena.Games.Infrastructure.csproj", "{42CFED65-60E8-4A5B-A95F-2EAAA7AC3CC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

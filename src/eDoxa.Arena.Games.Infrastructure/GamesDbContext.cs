@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.Domain.AggregateModels.GameCredentialAggregate;
+using eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -22,7 +22,7 @@ namespace eDoxa.Arena.Games.Infrastructure
         {
         }
 
-        public DbSet<GameCredential> GameCredentials => this.Set<GameCredential>();
+        public DbSet<Credential> GameCredentials => this.Set<Credential>();
 
         public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
         {
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Games.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<GameCredential>(
+            modelBuilder.Entity<Credential>(
                 builder =>
                 {
                     builder.Property(credential => credential.UserId).HasConversion<Guid>(userId => userId, value => UserId.FromGuid(value)).IsRequired();
@@ -57,7 +57,7 @@ namespace eDoxa.Arena.Games.Infrastructure
                             })
                         .IsUnique();
 
-                    builder.ToTable("GameCredential");
+                    builder.ToTable("Credential");
                 });
         }
     }

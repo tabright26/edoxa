@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Arena.Games.Domain.AggregateModels.GameCredentialAggregate;
+using eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Games.Domain.AggregateModels
         }
 
         private GameInfo(
-            GameCredential credential,
+            Credential credential,
             string imageName,
             string reactComponent,
             Dictionary<string, ServiceInfo> services
@@ -89,7 +89,7 @@ namespace eDoxa.Arena.Games.Domain.AggregateModels
 
         public IReadOnlyDictionary<string, ServiceInfo> Services { get; }
 
-        public GameInfo TryGetGameCredential(GameCredential? credential)
+        public GameInfo TryGetGameCredential(Credential? credential)
         {
             return credential != null
                 ? new GameInfo(

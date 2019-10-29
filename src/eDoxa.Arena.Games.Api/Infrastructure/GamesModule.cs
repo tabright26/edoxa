@@ -6,7 +6,7 @@
 
 using Autofac;
 
-using eDoxa.Arena.Games.Api.Areas.Games.Services;
+using eDoxa.Arena.Games.Api.Services;
 using eDoxa.Arena.Games.Domain.Repositories;
 using eDoxa.Arena.Games.Domain.Services;
 using eDoxa.Arena.Games.Infrastructure.Repositories;
@@ -18,10 +18,10 @@ namespace eDoxa.Arena.Games.Api.Infrastructure
         protected override void Load(ContainerBuilder builder)
         {
             // Repositories
-            builder.RegisterType<GameCredentialRepository>().As<IGameCredentialRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<CredentialRepository>().As<ICredentialRepository>().InstancePerLifetimeScope();
 
             // Services
-            builder.RegisterType<GameCredentialService>().As<IGameCredentialService>().InstancePerLifetimeScope();
+            builder.RegisterType<CredentialService>().As<ICredentialService>().InstancePerLifetimeScope();
             builder.RegisterType<GameService>().As<IGameService>().InstancePerDependency();
         }
     }

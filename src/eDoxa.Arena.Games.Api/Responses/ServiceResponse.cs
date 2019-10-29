@@ -1,12 +1,12 @@
-﻿// Filename: ArenaServiceResponse.cs
-// Date Created: 2019-10-27
+﻿// Filename: ServiceResponse.cs
+// Date Created: 2019-10-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Arena.Games.Api.Areas.Games.Responses
+namespace eDoxa.Arena.Games.Api.Responses
 {
     [JsonObject]
     public sealed class ServiceResponse
