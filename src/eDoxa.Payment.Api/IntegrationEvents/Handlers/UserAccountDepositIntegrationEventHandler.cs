@@ -1,6 +1,6 @@
 ﻿// Filename: UserAccountDepositIntegrationEventHandler.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -45,7 +45,6 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 var customerId = await _stripeCustomerService.GetCustomerIdAsync(integrationEvent.UserId);
 
-                // GABRIEL: UNIT TEST NEED TO BE UPDATED.
                 if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
                 {
                     throw new InvalidOperationException(

@@ -33,7 +33,7 @@ using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 {
-    public sealed class StripePaymentMethodsControllerPutAsyncTest : IntegrationTest // GABRIEL: INTEGRATION TEST
+    public sealed class StripePaymentMethodsControllerPutAsyncTest : IntegrationTest
     {
         public StripePaymentMethodsControllerPutAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
         {
