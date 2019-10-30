@@ -5,12 +5,10 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using IdentityModel;
 
@@ -56,8 +54,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             await this.GenerateUserClaimsAsync(user);
 
             await this.GenerateRoleClaimsAsync(user);
-
-            await this.GenerateGameClaimsAsync(user);
 
             return new ClaimsPrincipal(Identity);
         }
@@ -229,19 +225,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             if (role != null)
             {
                 Identity!.AddClaims(await RoleManager.GetClaimsAsync(role));
-            }
-        }
-
-        private async Task GenerateGameClaimsAsync(User user)
-        {
-            var games = await UserManager.GetGamesAsync(user);
-
-            var userGames = games.ToDictionary(userGame => Game.FromValue(userGame.Value)!.Name, userGame => userGame.PlayerId);
-
-            if (userGames.Any())
-            {
-                Identity!.AddClaim(
-                    new Claim(ClaimTypes.Games, JsonConvert.SerializeObject(userGames, Formatting.Indented), IdentityServerConstants.ClaimValueTypes.Json));
             }
         }
     }

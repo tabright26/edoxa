@@ -22,8 +22,6 @@ namespace eDoxa.Identity.Api.Infrastructure
         {
         }
 
-        public DbSet<UserGame> UserGames => this.Set<UserGame>();
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -52,7 +50,6 @@ namespace eDoxa.Identity.Api.Infrastructure
 
                     builder.HasMany(user => user.DoxatagHistory).WithOne().HasForeignKey(doxatag => doxatag.UserId).IsRequired();
                     builder.HasMany(user => user.AddressBook).WithOne().HasForeignKey(address => address.UserId).IsRequired();
-                    builder.HasMany<UserGame>().WithOne().HasForeignKey(userGame => userGame.UserId).IsRequired();
                     builder.ToTable("User");
                 });
 
@@ -89,19 +86,6 @@ namespace eDoxa.Identity.Api.Infrastructure
             modelBuilder.Entity<UserRole>().ToTable("UserRole");
             modelBuilder.Entity<Role>().ToTable("Role");
             modelBuilder.Entity<RoleClaim>().ToTable("RoleClaim");
-
-            modelBuilder.Entity<UserGame>(
-                builder =>
-                {
-                    builder.HasKey(
-                        userGame => new
-                        {
-                            userGame.Value,
-                            userGame.PlayerId
-                        });
-
-                    builder.ToTable("UserGame");
-                });
         }
     }
 }

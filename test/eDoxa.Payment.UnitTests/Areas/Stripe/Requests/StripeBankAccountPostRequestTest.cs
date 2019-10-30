@@ -7,7 +7,6 @@
 using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

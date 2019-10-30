@@ -18,14 +18,12 @@ using eDoxa.Arena.Games.Api.Extensions;
 using eDoxa.Arena.Games.Api.HttpClients.Extensions;
 using eDoxa.Arena.Games.Api.Infrastructure;
 using eDoxa.Arena.Games.Api.Infrastructure.Data;
-using eDoxa.Arena.Games.Api.IntegrationEvents.Extensions;
 using eDoxa.Arena.Games.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
-using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
@@ -163,10 +161,8 @@ namespace eDoxa.Arena.Games.Api
             builder.RegisterModule<GamesModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application)
         {
-            subscriber.UseIntegrationEventSubscriptions();
-
             application.UseCustomExceptionHandler();
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
@@ -193,9 +189,9 @@ namespace eDoxa.Arena.Games.Api
                 });
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
+        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
-            this.Configure(application, subscriber);
+            this.Configure(application);
 
             application.UseSwagger(provider, AppSettings);
         }
