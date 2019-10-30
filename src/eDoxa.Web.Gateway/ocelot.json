@@ -156,7 +156,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/game/api/{everything}",
+      "UpstreamPathTemplate": "/games/api/{everything}",
       "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ArenaGamesApiKey",
@@ -165,7 +165,7 @@
     },
     {
       "Priority": 0,
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/api/credential",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -173,7 +173,24 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/leagueoflegends/api/{everything}",
+      "UpstreamPathTemplate": "/games/leagueoflegends/api/credential",
+      "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ArenaGamesLeagueOfLegendsApiKey",
+        "AllowedScopes": []
+      }
+    },
+    {
+      "Priority": 0,
+      "DownstreamPathTemplate": "/api/summoners",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "arena.games.leagueoflegends.api",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/games/leagueoflegends/api/summoners",
       "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ArenaGamesLeagueOfLegendsApiKey",

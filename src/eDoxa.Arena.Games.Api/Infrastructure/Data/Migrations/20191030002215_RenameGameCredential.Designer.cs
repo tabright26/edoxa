@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.Arena.Games.Infrastructure;
 
 namespace eDoxa.Arena.Games.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(GamesDbContext))]
-    internal class GamesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191030002215_RenameGameCredential")]
+    partial class RenameGameCredential
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

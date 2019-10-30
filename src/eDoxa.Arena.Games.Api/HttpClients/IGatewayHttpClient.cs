@@ -14,7 +14,7 @@ namespace eDoxa.Arena.Games.Api.HttpClients
 {
     public interface IGatewayHttpClient
     {
-        [Post("/api/games/{game}/credential")]
+        [Post("/games/{game}/api/credential")]
         Task<CredentialResponse> GetCredentialAsync([AliasAs("game")] string game);
     }
 }

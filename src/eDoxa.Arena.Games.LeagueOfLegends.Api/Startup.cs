@@ -19,7 +19,6 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.ServiceBus.Abstractions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -132,7 +131,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
             builder.RegisterModule<LeagueOfLegendsModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application)
         {
             application.UseCustomExceptionHandler();
 
@@ -160,9 +159,9 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Api
                 });
         }
 
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
+        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
-            this.Configure(application, subscriber);
+            this.Configure(application);
 
             application.UseSwagger(provider, AppSettings);
         }
