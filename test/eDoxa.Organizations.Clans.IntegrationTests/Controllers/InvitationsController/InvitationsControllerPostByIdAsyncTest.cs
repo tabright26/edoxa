@@ -43,10 +43,11 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
         // Do I need to test out all single bad request possible ?
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeBadRequest() //Clan does not exist bad request.
+        public async Task ShouldBeHttpStatusCodeBadRequest()
         {
             // Arrange
-            var invitation = new Invitation(new UserId(), new ClanId());
+            var clan = new Clan("ClanName", new UserId());
+            var invitation = new Invitation(new UserId(), clan.Id);
 
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
@@ -56,6 +57,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+
                     var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
                     invitationRepository.Create(invitation);
                     await invitationRepository.UnitOfWork.CommitAsync();
@@ -100,14 +105,13 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-
-                    invitationRepository.Create(invitation);
-                    await invitationRepository.UnitOfWork.CommitAsync();
-
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
+
+                    var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
+                    invitationRepository.Create(invitation);
+                    await invitationRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act

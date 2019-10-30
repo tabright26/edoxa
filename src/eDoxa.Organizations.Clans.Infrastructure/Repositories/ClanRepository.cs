@@ -1,6 +1,6 @@
 ﻿// Filename: ClanRepository.cs
-// Date Created: 2019-09-29
-//
+// Date Created: 2019-10-06
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -15,6 +15,8 @@ using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Storage.Azure.Extensions;
+
+using LinqKit;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Storage;
@@ -48,17 +50,17 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 
         public async Task<IReadOnlyCollection<Clan>> FetchClansAsync()
         {
-            return await _context.Clans.Include(clan => clan.Members).ToListAsync();
+            return await _context.Clans.Include(clan => clan.Members).AsExpandable().ToListAsync();
         }
 
         public async Task<Clan?> FindClanAsync(ClanId clanId)
         {
-            return await _context.Clans.Include(clan => clan.Members).SingleOrDefaultAsync(clan => clan.Id == clanId);
+            return await _context.Clans.Include(clan => clan.Members).AsExpandable().SingleOrDefaultAsync(clan => clan.Id == clanId);
         }
 
         public async Task<bool> ExistsAsync(string name)
         {
-            return await _context.Clans.AnyAsync(clan => clan.Name == name);
+            return await _context.Clans.AsExpandable().AnyAsync(clan => clan.Name == name);
         }
 
         public async Task<Stream> DownloadLogoAsync(ClanId clanId)
@@ -107,22 +109,22 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 
         public async Task<IReadOnlyCollection<Member>> FetchMembersAsync(ClanId clanId)
         {
-            return await _context.Members.AsNoTracking().Where(member => member.ClanId == clanId).ToListAsync();
+            return await _context.Members.AsExpandable().AsNoTracking().Where(member => member.ClanId == clanId).ToListAsync();
         }
 
         public async Task<Member?> FindMemberAsync(ClanId clanId, MemberId memberId)
         {
-            return await _context.Members.SingleOrDefaultAsync(member => member.ClanId == clanId && member.Id == memberId);
+            return await _context.Members.AsExpandable().SingleOrDefaultAsync(member => member.ClanId == clanId && member.Id == memberId);
         }
 
         public async Task<bool> IsMemberAsync(UserId userId)
         {
-            return await _context.Members.AnyAsync(member => member.UserId == userId);
+            return await _context.Members.AsExpandable().AnyAsync(member => member.UserId == userId);
         }
 
         public async Task<bool> IsOwnerAsync(ClanId clanId, UserId ownerId)
         {
-            return await _context.Clans.AnyAsync(clan => clan.Id == clanId && clan.OwnerId == ownerId);
+            return await _context.Clans.AsExpandable().AnyAsync(clan => clan.Id == clanId && clan.OwnerId == ownerId);
         }
     }
 }

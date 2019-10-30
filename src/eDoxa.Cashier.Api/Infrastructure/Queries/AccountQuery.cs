@@ -14,12 +14,12 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using LinqKit;

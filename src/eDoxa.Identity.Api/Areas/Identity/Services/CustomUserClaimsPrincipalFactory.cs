@@ -10,6 +10,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using IdentityModel;
 
@@ -21,6 +22,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+using Claim = System.Security.Claims.Claim;
 using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services

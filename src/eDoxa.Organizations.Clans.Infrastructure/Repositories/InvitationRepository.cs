@@ -1,5 +1,5 @@
 ﻿// Filename: InvitationRepository.cs
-// Date Created: 2019-09-30
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,6 +12,8 @@ using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
+
+using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -40,22 +42,22 @@ namespace eDoxa.Organizations.Clans.Infrastructure.Repositories
 
         public async Task<IReadOnlyCollection<Invitation>> FetchAsync(UserId userId)
         {
-            return await _context.Invitations.Where(invitation => invitation.UserId == userId).ToListAsync();
+            return await _context.Invitations.AsExpandable().Where(invitation => invitation.UserId == userId).ToListAsync();
         }
 
         public async Task<IReadOnlyCollection<Invitation>> FetchAsync(ClanId clanId)
         {
-            return await _context.Invitations.Where(invitation => invitation.ClanId == clanId).ToListAsync();
+            return await _context.Invitations.AsExpandable().Where(invitation => invitation.ClanId == clanId).ToListAsync();
         }
 
         public async Task<Invitation?> FindAsync(InvitationId invitationId)
         {
-            return await _context.Invitations.SingleOrDefaultAsync(invitation => invitation.Id == invitationId);
+            return await _context.Invitations.AsExpandable().SingleOrDefaultAsync(invitation => invitation.Id == invitationId);
         }
 
         public async Task<bool> ExistsAsync(UserId userId, ClanId clanId)
         {
-            return await _context.Invitations.AnyAsync(invitation => invitation.UserId == userId && invitation.ClanId == clanId);
+            return await _context.Invitations.AsExpandable().AnyAsync(invitation => invitation.UserId == userId && invitation.ClanId == clanId);
         }
     }
 }

@@ -46,7 +46,6 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             // Arrange
             var ownerId = new UserId();
             var clan = new Clan("ClanName", ownerId);
-
             var candidature = new Candidature(new UserId(), clan.Id);
 
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
@@ -57,6 +56,9 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
                     var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
                     candidatureRepository.Create(candidature);
                     await candidatureRepository.UnitOfWork.CommitAsync();
@@ -101,14 +103,13 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.CandidaturesCon
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
-
-                    candidatureRepository.Create(candidature);
-                    await candidatureRepository.UnitOfWork.CommitAsync();
-
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
+
+                    var candidatureRepository = scope.GetRequiredService<ICandidatureRepository>();
+                    candidatureRepository.Create(candidature);
+                    await candidatureRepository.UnitOfWork.CommitAsync();
                 });
 
             // Act

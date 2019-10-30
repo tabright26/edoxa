@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.Domain.Services;
@@ -19,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers

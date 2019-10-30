@@ -73,6 +73,10 @@ namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.InvitationsCont
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
+                    var clanRepository = scope.GetRequiredService<IClanRepository>();
+                    clanRepository.Create(clan);
+                    await clanRepository.UnitOfWork.CommitAsync();
+
                     var invitationRepository = scope.GetRequiredService<IInvitationRepository>();
                     invitationRepository.Create(invitation);
                     await invitationRepository.UnitOfWork.CommitAsync();

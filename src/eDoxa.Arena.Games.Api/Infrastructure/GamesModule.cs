@@ -6,12 +6,23 @@
 
 using Autofac;
 
+using eDoxa.Arena.Games.Api.Services;
+using eDoxa.Arena.Games.Domain.Repositories;
+using eDoxa.Arena.Games.Domain.Services;
+using eDoxa.Arena.Games.Infrastructure.Repositories;
+
 namespace eDoxa.Arena.Games.Api.Infrastructure
 {
     internal sealed class GamesModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Repositories
+            builder.RegisterType<CredentialRepository>().As<ICredentialRepository>().InstancePerLifetimeScope();
+
+            // Services
+            builder.RegisterType<CredentialService>().As<ICredentialService>().InstancePerLifetimeScope();
+            builder.RegisterType<GameService>().As<IGameService>().InstancePerDependency();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.Summone
             return await _httpClient.PostAsync($"api/leagueoflegends/summoners/{summonerName}", new JsonContent(""));
         }
 
-        [Fact]
+        [Fact(Skip = "League of Legends service must be mock.")]
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
@@ -69,9 +69,8 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.Summone
                 async scope =>
                 {
                     var summonerService = scope.GetRequiredService<ILeagueOfLegendsSummonerService>();
-
                     var summoner = await summonerService.FindSummonerAsync(summonerName);
-                    await summonerService.GetSummonerValidationIcon(summoner!);
+                    await summonerService.GenerateDifferentProfileIconIdAsync(summoner!);
                 });
 
             // Act

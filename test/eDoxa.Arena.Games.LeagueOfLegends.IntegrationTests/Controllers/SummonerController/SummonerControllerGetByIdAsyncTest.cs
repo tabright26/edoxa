@@ -35,7 +35,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.Summone
             return await _httpClient.GetAsync($"api/leagueoflegends/summoners/{summonerName}");
         }
 
-        [Fact]
+        [Fact(Skip = "League of Legends service must be mock.")]
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange

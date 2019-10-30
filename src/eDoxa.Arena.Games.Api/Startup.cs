@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
@@ -14,6 +15,7 @@ using Autofac;
 using AutoMapper;
 
 using eDoxa.Arena.Games.Api.Extensions;
+using eDoxa.Arena.Games.Api.HttpClients.Extensions;
 using eDoxa.Arena.Games.Api.Infrastructure;
 using eDoxa.Arena.Games.Api.Infrastructure.Data;
 using eDoxa.Arena.Games.Api.IntegrationEvents.Extensions;
@@ -22,6 +24,7 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
@@ -81,6 +84,8 @@ namespace eDoxa.Arena.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
+            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
+
             services.AddHealthChecks(AppSettings);
 
             services.AddDbContext<GamesDbContext>(
@@ -97,6 +102,8 @@ namespace eDoxa.Arena.Games.Api
                 {
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
+
+            services.AddHttpClients(AppSettings);
 
             services.AddMvc(
                     options =>
@@ -141,7 +148,12 @@ namespace eDoxa.Arena.Games.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            // TODO: Need to be refactored.
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                new KeyValuePair<string, string>(Scopes.ArenaGamesLeagueOfLegendsApi, Scopes.ArenaGamesLeagueOfLegendsApi));
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
