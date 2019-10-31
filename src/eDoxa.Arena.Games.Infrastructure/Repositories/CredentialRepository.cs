@@ -42,21 +42,20 @@ namespace eDoxa.Arena.Games.Infrastructure.Repositories
 
         public async Task<IReadOnlyCollection<Credential>> FetchCredentialsAsync(UserId userId)
         {
-            return await _context.GameCredentials.AsExpandable()
-                .Where(gameCredential => gameCredential.UserId == userId)
-                .OrderBy(gameCredential => gameCredential.Game)
+            return await _context.Credentials.AsExpandable()
+                .Where(credential => credential.UserId == userId)
+                .OrderBy(credential => credential.Game)
                 .ToListAsync();
         }
 
         public async Task<Credential?> FindCredentialAsync(UserId userId, Game game)
         {
-            return await _context.GameCredentials.AsExpandable()
-                .SingleOrDefaultAsync(gameCredential => gameCredential.UserId == userId && gameCredential.Game == game);
+            return await _context.Credentials.AsExpandable().SingleOrDefaultAsync(credential => credential.UserId == userId && credential.Game == game);
         }
 
         public async Task<bool> CredentialExistsAsync(UserId userId, Game game)
         {
-            return await _context.GameCredentials.AsExpandable().AnyAsync(gameCredential => gameCredential.UserId == userId && gameCredential.Game == game);
+            return await _context.Credentials.AsExpandable().AnyAsync(credential => credential.UserId == userId && credential.Game == game);
         }
     }
 }

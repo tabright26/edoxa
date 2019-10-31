@@ -31,6 +31,8 @@ namespace eDoxa.Seedwork.Domain.Miscs
             DisplayName = displayName;
         }
 
+        public string NormalizedName => Name.ToLowerInvariant();
+
         public string DisplayName { get; }
     }
 }

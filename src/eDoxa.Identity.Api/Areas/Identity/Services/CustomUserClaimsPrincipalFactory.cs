@@ -184,22 +184,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             }
         }
 
-        //private async Task TryGenerateAddressesClaimAsync(User user)
-        //{
-        //    var address = await UserManager.GetAddressBookAsync(user);
-
-        //    if (address != null)
-        //    {
-        //        Identity!.AddClaim(
-        //            new Claim(
-        //                AppClaimTypes.Addresses,
-        //                JsonConvert.SerializeObject(new[] {address}, Formatting.Indented),
-        //                IdentityServerConstants.ClaimValueTypes.Json
-        //            )
-        //        );
-        //    }
-        //}
-
         private async Task GenerateRoleClaimsAsync(User user)
         {
             if (UserManager.SupportsUserRole)

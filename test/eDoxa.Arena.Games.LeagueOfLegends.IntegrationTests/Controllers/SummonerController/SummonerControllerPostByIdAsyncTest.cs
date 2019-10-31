@@ -8,7 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.LeagueOfLegends.Api.Services.Abstractions;
+using eDoxa.Arena.Games.LeagueOfLegends.Api.Areas.Summoners.Services.Abstractions;
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers;
 using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -60,8 +60,9 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.Summone
         {
             // Arrange
             const string summonerName = "SWAGYOLOMLG";
+            var userId = new UserId();
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
 
@@ -69,8 +70,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.IntegrationTests.Controllers.Summone
                 async scope =>
                 {
                     var summonerService = scope.GetRequiredService<ILeagueOfLegendsSummonerService>();
-                    var summoner = await summonerService.FindSummonerAsync(summonerName);
-                    await summonerService.GenerateDifferentProfileIconIdAsync(summoner!);
+                    await summonerService.FindPendingSummonerAsync(userId);
                 });
 
             // Act

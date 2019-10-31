@@ -14,8 +14,8 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Arena.Games.Api.Areas.Credentials.RefitClient.Extensions;
 using eDoxa.Arena.Games.Api.Extensions;
-using eDoxa.Arena.Games.Api.HttpClients.Extensions;
 using eDoxa.Arena.Games.Api.Infrastructure;
 using eDoxa.Arena.Games.Api.Infrastructure.Data;
 using eDoxa.Arena.Games.Infrastructure;
@@ -101,7 +101,7 @@ namespace eDoxa.Arena.Games.Api
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
 
-            services.AddHttpClients(AppSettings);
+            services.AddRefitClient(AppSettings);
 
             services.AddMvc(
                     options =>

@@ -165,7 +165,7 @@
     },
     {
       "Priority": 0,
-      "DownstreamPathTemplate": "/api/credential",
+      "DownstreamPathTemplate": "/api/authenticate",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -173,7 +173,7 @@
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/games/leagueoflegends/api/credential",
+      "UpstreamPathTemplate": "/games/leagueoflegends/api/authenticate",
       "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "ArenaGamesLeagueOfLegendsApiKey",

@@ -8,29 +8,25 @@
 
 using System.Collections.Generic;
 
+using Newtonsoft.Json;
+
 namespace eDoxa.Arena.Games.Api.Infrastructure
 {
+    [JsonDictionary]
     public sealed class GamesOptions : Dictionary<string, GameOptions>
     {
     }
 
+    [JsonObject]
     public sealed class GameOptions
     {
-        public string ImageName { get; set; }
+        [JsonProperty("isDisplay")]
+        public bool IsDisplay { get; set; }
 
+        [JsonProperty("reactComponent")]
         public string ReactComponent { get; set; }
 
-        public ServicesOptions Services { get; set; }
-    }
-
-    public sealed class ServicesOptions : Dictionary<string, ServiceOptions>
-    {
-    }
-
-    public sealed class ServiceOptions
-    {
-        public bool Enabled { get; set; }
-
-        public bool Displayed { get; set; }
+        [JsonProperty("services")]
+        public Dictionary<string, bool> Services { get; set; }
     }
 }
