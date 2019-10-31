@@ -31,8 +31,11 @@ namespace eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate
             this.AddDomainEvent(new CredentialCreatedDomainEvent(this));
         }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         private Credential()
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         {
+            // Required by EF Core.
         }
 
         public UserId UserId { get; private set; }

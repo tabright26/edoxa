@@ -8,8 +8,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers;
-using eDoxa.Arena.Games.LeagueOfLegends.TestHelpers.Fixtures;
+using eDoxa.Arena.Games.LeagueOfLegends.TestHelper;
+using eDoxa.Arena.Games.LeagueOfLegends.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;

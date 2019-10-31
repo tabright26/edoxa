@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Identity.TestHelpers;
-using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 
 using FluentAssertions;
 

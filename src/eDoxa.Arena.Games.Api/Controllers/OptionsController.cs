@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
 using eDoxa.Arena.Games.Api.Infrastructure;
 
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +31,7 @@ namespace eDoxa.Arena.Games.Api.Controllers
 
         [HttpGet]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(GamesOptions))]
-        public async Task<IActionResult> GetAsync()
+        public IActionResult GetAsync()
         {
             return this.Ok(Options);
         }

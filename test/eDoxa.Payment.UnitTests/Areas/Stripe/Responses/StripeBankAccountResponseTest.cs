@@ -5,8 +5,8 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Payment.Api.Areas.Stripe.Responses;
-using eDoxa.Payment.TestHelpers;
-using eDoxa.Payment.TestHelpers.Fixtures;
+using eDoxa.Payment.TestHelper;
+using eDoxa.Payment.TestHelper.Fixtures;
 
 using FluentAssertions;
 

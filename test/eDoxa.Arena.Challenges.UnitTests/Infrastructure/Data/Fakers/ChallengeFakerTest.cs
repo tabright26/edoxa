@@ -9,9 +9,9 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.TestHelpers;
-using eDoxa.Arena.Challenges.TestHelpers.Assertions.Extensions;
-using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Arena.Challenges.TestHelper;
+using eDoxa.Arena.Challenges.TestHelper.Assertions.Extensions;
+using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;

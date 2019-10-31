@@ -6,8 +6,8 @@
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.ErrorDescribers;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Validators;
-using eDoxa.Organizations.Clans.TestHelpers;
-using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
+using eDoxa.Organizations.Clans.TestHelper;
+using eDoxa.Organizations.Clans.TestHelper.Fixtures;
 
 using FluentAssertions;
 

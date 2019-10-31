@@ -10,8 +10,8 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.TestHelpers;
-using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Arena.Challenges.TestHelper;
+using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 using FluentAssertions;
 

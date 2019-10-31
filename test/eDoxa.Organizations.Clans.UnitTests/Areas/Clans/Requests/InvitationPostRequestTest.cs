@@ -5,8 +5,8 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Organizations.Clans.TestHelpers;
-using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
+using eDoxa.Organizations.Clans.TestHelper;
+using eDoxa.Organizations.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;

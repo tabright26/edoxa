@@ -4,8 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Notifications.TestHelpers;
-using eDoxa.Notifications.TestHelpers.Fixtures;
+using eDoxa.Notifications.TestHelper;
+using eDoxa.Notifications.TestHelper.Fixtures;
 
 using Xunit;
 

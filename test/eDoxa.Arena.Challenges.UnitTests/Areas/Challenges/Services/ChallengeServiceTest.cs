@@ -16,8 +16,8 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.Domain.Services;
-using eDoxa.Arena.Challenges.TestHelpers;
-using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Arena.Challenges.TestHelper;
+using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 

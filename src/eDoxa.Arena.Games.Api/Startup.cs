@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Reflection;
@@ -146,12 +145,11 @@ namespace eDoxa.Arena.Games.Api
         {
             this.ConfigureServices(services);
 
-            // TODO: Need to be refactored.
             services.AddSwagger(
                 XmlCommentsFilePath,
                 AppSettings,
                 AppSettings,
-                new KeyValuePair<string, string>(Scopes.ArenaGamesLeagueOfLegendsApi, Scopes.ArenaGamesLeagueOfLegendsApi));
+                Scopes.ArenaGamesLeagueOfLegendsApi);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

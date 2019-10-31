@@ -11,9 +11,9 @@ using eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Services;
-using eDoxa.Organizations.Clans.TestHelpers;
-using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
-using eDoxa.Organizations.Clans.TestHelpers.Mocks;
+using eDoxa.Organizations.Clans.TestHelper;
+using eDoxa.Organizations.Clans.TestHelper.Fixtures;
+using eDoxa.Organizations.Clans.TestHelper.Mocks;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 

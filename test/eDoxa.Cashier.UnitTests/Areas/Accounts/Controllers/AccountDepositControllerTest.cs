@@ -11,9 +11,9 @@ using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.TestHelpers;
-using eDoxa.Cashier.TestHelpers.Fixtures;
-using eDoxa.Cashier.TestHelpers.Mocks;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Cashier.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;

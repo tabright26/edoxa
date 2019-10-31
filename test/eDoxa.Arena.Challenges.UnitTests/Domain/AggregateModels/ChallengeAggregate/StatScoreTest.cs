@@ -6,8 +6,8 @@
 
 using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Arena.Challenges.TestHelpers;
-using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Arena.Challenges.TestHelper;
+using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 
 using FluentAssertions;
 

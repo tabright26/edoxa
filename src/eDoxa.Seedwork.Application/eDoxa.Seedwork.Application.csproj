@@ -13,9 +13,9 @@
         <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20191007-181043" />
         <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20191007-181043" />
         <PackageReference Include="eDoxa.ServiceBus.Core" Version="1.0.0-CI-20191007-181043" />
-        <PackageReference Include="eDoxa.Swagger" Version="1.0.0-CI-20190916-031143" />
-        <PackageReference Include="eDoxa.Swagger.Client" Version="1.0.0-CI-20190916-031143" />
-        <PackageReference Include="eDoxa.Swagger.Extensions" Version="1.0.0-CI-20190916-031143" />
+        <PackageReference Include="eDoxa.Swagger" Version="1.0.0-CI-20191031-162416" />
+        <PackageReference Include="eDoxa.Swagger.Client" Version="1.0.0-CI-20191031-162416" />
+        <PackageReference Include="eDoxa.Swagger.Extensions" Version="1.0.0-CI-20191031-162416" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.CookiePolicy" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />

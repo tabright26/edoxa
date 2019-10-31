@@ -12,9 +12,9 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Arena.Challenges.Infrastructure.Repositories;
-using eDoxa.Arena.Challenges.TestHelpers;
-using eDoxa.Arena.Challenges.TestHelpers.Assertions.Extensions;
-using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Arena.Challenges.TestHelper;
+using eDoxa.Arena.Challenges.TestHelper.Assertions.Extensions;
+using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper;
 

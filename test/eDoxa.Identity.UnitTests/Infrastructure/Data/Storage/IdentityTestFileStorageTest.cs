@@ -6,8 +6,8 @@
 
 using System;
 
-using eDoxa.Identity.TestHelpers;
-using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 
 using FluentAssertions;
 

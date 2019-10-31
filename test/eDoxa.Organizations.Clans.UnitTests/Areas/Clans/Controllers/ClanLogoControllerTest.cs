@@ -4,8 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Organizations.Clans.TestHelpers;
-using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
+using eDoxa.Organizations.Clans.TestHelper;
+using eDoxa.Organizations.Clans.TestHelper.Fixtures;
 
 namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 {

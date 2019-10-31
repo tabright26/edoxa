@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>eDoxa.Payment.TestHelper</AssemblyName>
+    <RootNamespace>eDoxa.Payment.TestHelper</RootNamespace>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Seedwork.TestHelper\eDoxa.Seedwork.TestHelper.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Payment.Api\eDoxa.Payment.Api.csproj" />
+  </ItemGroup>
+
+</Project>

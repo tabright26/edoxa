@@ -70,11 +70,7 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
 
-            var client = ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl);
-
-            client.AllowedScopes.Add(Scopes.ArenaGamesLeagueOfLegendsApi);
-
-            yield return client;
+            yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl, Scopes.ArenaGamesLeagueOfLegendsApi);
 
             yield return ApiResources.ArenaGamesLeagueOfLegendsApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesLeagueOfLegendsUrl);
 
@@ -115,17 +111,17 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    Scopes.Country,
-                    Scopes.Roles,
-                    Scopes.Permissions,
-                    Scopes.Games,
-                    Scopes.IdentityApi,
-                    Scopes.PaymentApi,
-                    Scopes.CashierApi,
-                    Scopes.ArenaChallengesApi,
-                    Scopes.ArenaGamesApi,
-                    Scopes.ArenaGamesLeagueOfLegendsApi,
-                    Scopes.OrganizationsClansApi
+                    Scopes.Country.Name,
+                    Scopes.Roles.Name,
+                    Scopes.Permissions.Name,
+                    Scopes.Games.Name,
+                    Scopes.IdentityApi.Name,
+                    Scopes.PaymentApi.Name,
+                    Scopes.CashierApi.Name,
+                    Scopes.ArenaChallengesApi.Name,
+                    Scopes.ArenaGamesApi.Name,
+                    Scopes.ArenaGamesLeagueOfLegendsApi.Name,
+                    Scopes.OrganizationsClansApi.Name
                 }
             };
         }

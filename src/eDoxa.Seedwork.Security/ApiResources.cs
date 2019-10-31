@@ -24,7 +24,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class PaymentResource : ApiResource
         {
             internal PaymentResource() : base(
-                Security.Scopes.PaymentApi,
+                Security.Scopes.PaymentApi.Name,
                 "eDoxa Payment API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
@@ -35,7 +35,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class NotificationsResource : ApiResource
         {
             internal NotificationsResource() : base(
-                Security.Scopes.NotificationsApi,
+                Security.Scopes.NotificationsApi.Name,
                 "eDoxa Notifications API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
@@ -46,7 +46,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class OrganizationsClansResource : ApiResource
         {
             internal OrganizationsClansResource() : base(
-                Security.Scopes.OrganizationsClansApi,
+                Security.Scopes.OrganizationsClansApi.Name,
                 "eDoxa Organizations Clans API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {
@@ -57,7 +57,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class IdentityResource : ApiResource
         {
             internal IdentityResource() : base(
-                Security.Scopes.IdentityApi,
+                Security.Scopes.IdentityApi.Name,
                 "eDoxa Identity API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {
@@ -68,7 +68,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class CashierResource : ApiResource
         {
             internal CashierResource() : base(
-                Security.Scopes.CashierApi,
+                Security.Scopes.CashierApi.Name,
                 "eDoxa Cashier API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
@@ -79,7 +79,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class ArenaChallengesResource : ApiResource
         {
             internal ArenaChallengesResource() : base(
-                Security.Scopes.ArenaChallengesApi,
+                Security.Scopes.ArenaChallengesApi.Name,
                 "eDoxa Arena Challenges API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
 
@@ -91,7 +91,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class ArenaGamesResource : ApiResource
         {
             internal ArenaGamesResource() : base(
-                Security.Scopes.ArenaGamesApi,
+                Security.Scopes.ArenaGamesApi.Name,
                 "eDoxa Arena Games API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
@@ -102,7 +102,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class ArenaGamesLeagueOfLegendsResource : ApiResource
         {
             internal ArenaGamesLeagueOfLegendsResource() : base(
-                Security.Scopes.ArenaGamesLeagueOfLegendsApi,
+                Security.Scopes.ArenaGamesLeagueOfLegendsApi.Name,
                 "eDoxa Arena Games League Of Legends API",
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {

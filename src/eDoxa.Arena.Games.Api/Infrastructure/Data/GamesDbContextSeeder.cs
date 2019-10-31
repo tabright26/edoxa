@@ -23,7 +23,7 @@ namespace eDoxa.Arena.Games.Api.Infrastructure.Data
             _context = context;
         }
 
-        protected override async Task SeedDevelopmentAsync()
+        protected override Task SeedDevelopmentAsync()
         {
             //if (!_context.Challenges.Any())
             //{
@@ -33,6 +33,8 @@ namespace eDoxa.Arena.Games.Api.Infrastructure.Data
 
             //    await _challengeRepository.CommitAsync();
             //}
+
+            return Task.CompletedTask;
         }
     }
 }
