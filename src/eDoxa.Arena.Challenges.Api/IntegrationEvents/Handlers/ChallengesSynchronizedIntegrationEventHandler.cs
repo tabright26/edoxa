@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;

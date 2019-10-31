@@ -7,9 +7,9 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.TestHelper;
 using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;

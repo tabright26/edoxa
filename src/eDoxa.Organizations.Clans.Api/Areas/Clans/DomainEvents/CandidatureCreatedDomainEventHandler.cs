@@ -7,10 +7,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Organizations.Clans.Api.IntegrationEvents.Extensions;
 using eDoxa.Organizations.Clans.Domain.DomainEvents;
 using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.ServiceBus.Abstractions;
 

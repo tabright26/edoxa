@@ -12,7 +12,7 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
-namespace eDoxa.Arena.Games.Domain.Services
+namespace eDoxa.Arena.Games.Api.Areas.Credentials.Services.Abstractions
 {
     public interface ICredentialService
     {

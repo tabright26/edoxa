@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Games.Api.Areas.Games.Responses;
-using eDoxa.Arena.Games.Domain.Services;
+using eDoxa.Arena.Games.Api.Areas.Games.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;

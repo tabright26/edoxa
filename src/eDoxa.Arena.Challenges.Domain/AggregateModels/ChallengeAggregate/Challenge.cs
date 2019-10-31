@@ -1,13 +1,13 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
-using eDoxa.Arena.Challenges.Domain.Validators;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -33,6 +33,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = timeline;
             Scoring = scoring;
         }
+
+        public bool SoldOut => Participants.Count >= Entries;
 
         public ChallengeName Name { get; }
 
@@ -60,11 +62,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             _participants.Add(participant);
-        }
-
-        public bool IsInscriptionCompleted()
-        {
-            return Participants.Count >= Entries;
         }
 
         public void Start(IDateTimeProvider startedAt)
@@ -103,8 +100,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
                 var gameReferences = getGameReferences(
                     participant.GameAccountId,
                     Timeline.StartedAt ?? throw new InvalidOperationException(),
-                    Timeline.EndedAt ?? throw new InvalidOperationException()
-                );
+                    Timeline.EndedAt ?? throw new InvalidOperationException());
 
                 foreach (var gameReference in participant.GetUnsynchronizedGameReferences(gameReferences))
                 {
@@ -122,9 +118,14 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             SynchronizedAt = synchronizedAt.DateTime;
         }
 
+        public bool ParticipantExists(UserId userId)
+        {
+            return Participants.Any(participant => participant.UserId == userId);
+        }
+
         private bool CanRegister(Participant participant)
         {
-            return new RegisterParticipantValidator(participant.UserId).Validate(this).IsValid;
+            return !SoldOut && !this.ParticipantExists(participant.UserId);
         }
 
         private bool CanStart()

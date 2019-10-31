@@ -16,7 +16,7 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
-namespace eDoxa.Organizations.Clans.Domain.Services
+namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services.Abstractions
 {
     public interface IInvitationService
     {

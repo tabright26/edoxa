@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain.Miscs;
 
-namespace eDoxa.Arena.Games.Domain.Services
+namespace eDoxa.Arena.Games.Api.Areas.Games.Services.Abstractions
 {
     public interface IGameService
     {

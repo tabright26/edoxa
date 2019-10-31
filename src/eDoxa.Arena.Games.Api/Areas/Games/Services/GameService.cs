@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Games.Api.Areas.Games.Services.Abstractions;
 using eDoxa.Arena.Games.Domain.Repositories;
-using eDoxa.Arena.Games.Domain.Services;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Games.Api.Areas.Games.Services

@@ -25,6 +25,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 
         ChallengeTimeline Timeline { get; }
 
+        bool SoldOut { get; }
+
         DateTime? SynchronizedAt { get; }
 
         IScoring Scoring { get; }
@@ -47,6 +49,6 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
 
         void Synchronize(IDateTimeProvider synchronizedAt);
 
-        bool IsInscriptionCompleted();
+        bool ParticipantExists(UserId userId);
     }
 }

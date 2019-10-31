@@ -7,13 +7,13 @@
 using Autofac;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Services;
+using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure.Repositories;
 

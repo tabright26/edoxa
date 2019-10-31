@@ -9,9 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.TestHelper;
 using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Arena.Challenges.TestHelper.Mocks;
@@ -19,6 +19,8 @@ using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -199,7 +201,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
                         It.IsAny<UserId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
+                .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);

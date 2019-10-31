@@ -8,7 +8,7 @@ using System.Collections.Immutable;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 
-namespace eDoxa.Cashier.Domain.Services
+namespace eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions
 {
     public interface IBundlesService
     {

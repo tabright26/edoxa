@@ -7,9 +7,10 @@
 using Autofac;
 
 using eDoxa.Arena.Games.Api.Areas.Credentials.Services;
+using eDoxa.Arena.Games.Api.Areas.Credentials.Services.Abstractions;
 using eDoxa.Arena.Games.Api.Areas.Games.Services;
+using eDoxa.Arena.Games.Api.Areas.Games.Services.Abstractions;
 using eDoxa.Arena.Games.Domain.Repositories;
-using eDoxa.Arena.Games.Domain.Services;
 using eDoxa.Arena.Games.Infrastructure.Repositories;
 
 namespace eDoxa.Arena.Games.Api.Infrastructure

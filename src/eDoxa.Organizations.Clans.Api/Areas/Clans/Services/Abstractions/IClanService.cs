@@ -16,7 +16,7 @@ using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Http;
 
-namespace eDoxa.Organizations.Clans.Domain.Services
+namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Services.Abstractions
 {
     public interface IClanService
     {

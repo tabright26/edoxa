@@ -15,11 +15,13 @@ using System.Threading.Tasks;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
-namespace eDoxa.Arena.Challenges.Domain.Services
+using FluentValidation.Results;
+
+namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions
 {
     public interface IChallengeService
     {
-        Task RegisterParticipantAsync(ChallengeId challengeId, UserId userId, IDateTimeProvider registeredAt, CancellationToken cancellationToken = default);
+        Task<ValidationResult> RegisterParticipantAsync(ChallengeId challengeId, UserId userId, IDateTimeProvider registeredAt, CancellationToken cancellationToken = default);
 
         Task SynchronizeAsync(Game game, TimeSpan interval, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
     }

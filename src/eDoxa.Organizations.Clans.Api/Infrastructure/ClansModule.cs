@@ -7,8 +7,8 @@
 using Autofac;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Services;
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Organizations.Clans.Domain.Repositories;
-using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Organizations.Clans.Infrastructure.Repositories;
 
 namespace eDoxa.Organizations.Clans.Api.Infrastructure

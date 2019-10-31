@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
-using eDoxa.Organizations.Clans.Domain.Services;
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 

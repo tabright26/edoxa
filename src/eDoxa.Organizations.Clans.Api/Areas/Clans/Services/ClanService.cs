@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Organizations.Clans.Domain.Models;
 using eDoxa.Organizations.Clans.Domain.Repositories;
-using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 

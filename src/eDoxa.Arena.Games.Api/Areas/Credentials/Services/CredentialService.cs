@@ -9,9 +9,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Games.Api.Areas.Credentials.RefitClient;
+using eDoxa.Arena.Games.Api.Areas.Credentials.Services.Abstractions;
 using eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate;
 using eDoxa.Arena.Games.Domain.Repositories;
-using eDoxa.Arena.Games.Domain.Services;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;

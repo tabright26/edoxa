@@ -15,12 +15,12 @@ using AutoMapper;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.DelegatingHandlers;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Arena.Challenges.Api.Temp.Extensions;
-using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;

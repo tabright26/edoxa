@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Arena.Games.Api.Areas.Credentials.Responses;
-using eDoxa.Arena.Games.Domain.Services;
+using eDoxa.Arena.Games.Api.Areas.Credentials.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 

@@ -9,13 +9,16 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Repositories;
-using eDoxa.Arena.Challenges.Domain.Services;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
+
+using FluentValidation.Results;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Services
 {
@@ -39,7 +42,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Services
             _identityService = identityService;
         }
 
-        public async Task RegisterParticipantAsync(
+        public async Task<ValidationResult> RegisterParticipantAsync(
             ChallengeId challengeId,
             UserId userId,
             IDateTimeProvider registeredAt,
@@ -48,17 +51,29 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Services
         {
             var challenge = await _challengeRepository.FindChallengeAsync(challengeId) ?? throw new InvalidOperationException();
 
+            if (challenge.SoldOut)
+            {
+                return new ValidationFailure("_error", "The challenge was sold out.").ToResult();
+            }
+
+            if (challenge.ParticipantExists(userId))
+            {
+                return new ValidationFailure("_error", "The user already is registered.").ToResult();
+            }
+
             // TODO: Need validation via the resource filter.
             var gameAccountId = await _identityService.GetGameAccountIdAsync(userId, challenge.Game) ?? throw new InvalidOperationException();
 
             challenge.Register(new Participant(userId, gameAccountId, registeredAt));
 
-            if (challenge.IsInscriptionCompleted())
+            if (challenge.SoldOut)
             {
                 challenge.Start(registeredAt);
             }
 
             await _challengeRepository.CommitAsync(cancellationToken);
+
+            return new ValidationResult();
         }
 
         public async Task SynchronizeAsync(

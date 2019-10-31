@@ -13,7 +13,7 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
-namespace eDoxa.Cashier.Domain.Services
+namespace eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions
 {
     public interface IAccountService
     {

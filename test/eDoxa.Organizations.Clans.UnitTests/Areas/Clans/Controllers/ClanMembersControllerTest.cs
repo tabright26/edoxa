@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers;
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Organizations.Clans.TestHelper;
 using eDoxa.Organizations.Clans.TestHelper.Fixtures;
 using eDoxa.Organizations.Clans.TestHelper.Mocks;
