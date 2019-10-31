@@ -11,7 +11,7 @@ using eDoxa.Notifications.Domain.Services;
 
 namespace eDoxa.Notifications.Api.Infrastructure
 {
-    internal sealed class NotificationsApiModule : Module
+    internal sealed class NotificationsModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

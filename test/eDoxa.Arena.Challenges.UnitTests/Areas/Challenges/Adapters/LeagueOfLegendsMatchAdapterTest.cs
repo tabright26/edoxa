@@ -16,7 +16,7 @@ using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain;
-
+using eDoxa.Seedwork.Domain.Miscs;
 using FluentAssertions;
 
 using Moq;
@@ -45,7 +45,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
         public async Task GetMatchAsync_WhenGameAccountIdIsParticipant_ShouldBeLeagueOfLegends()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(24788394, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(24788394, Game.LeagueOfLegends, ChallengeState.InProgress);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -77,7 +77,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
                 gameReference,
                 synchronizedAt);
 
-            matchAdapter.Game.Should().Be(ChallengeGame.LeagueOfLegends);
+            matchAdapter.Game.Should().Be(Game.LeagueOfLegends);
             match.Stats.Should().BeEquivalentTo(expectedMatch.Stats);
             _mockLeagueOfLegendsProxy.Verify(leagueOfLegendsProxy => leagueOfLegendsProxy.GetMatchAsync(It.IsNotNull<string>()), Times.Once);
         }

@@ -11,6 +11,7 @@ using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Assertions.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing;
 
 using Xunit;
@@ -27,7 +28,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         public async Task FetchChallengesAsync_FromRepository_ShouldNotBeNull()
         {
             //Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, Game.LeagueOfLegends);
 
             var fakeChallenges = challengeFaker.FakeChallenges(5);
 
@@ -58,7 +59,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Repositories
         public async Task FindChallengeAsync_FromRepository_ShouldNotBeNull()
         {
             //Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, Game.LeagueOfLegends);
 
             var fakeChallenge = challengeFaker.FakeChallenge();
 

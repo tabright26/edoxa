@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,6 +15,7 @@ using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Assertions.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing;
 
 using IdentityModel;
@@ -37,12 +37,24 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         }
 
-        public static IEnumerable<object[]> DataQueryParameters =>
-            ChallengeGame.GetEnumerations().SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] {game, state})).ToList();
+        public static TheoryData<Game, ChallengeState> DataQueryParameters
+        {
+            get
+            {
+                var data = new TheoryData<Game, ChallengeState>();
+
+                foreach (var state in ChallengeState.GetEnumerations())
+                {
+                    data.Add(Game.LeagueOfLegends, state);
+                }
+
+                return data;
+            }
+        }
 
         [Theory]
         [MemberData(nameof(DataQueryParameters))]
-        public async Task FetchUserChallengeHistoryAsync_WhenChallengeQuery_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
+        public async Task FetchUserChallengeHistoryAsync_WhenChallengeQuery_ShouldBeChallenge(Game game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(84566374, game, state);
@@ -77,10 +89,10 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
         [Theory]
         [MemberData(nameof(DataQueryParameters))]
-        public async Task FetchChallengesAsync_ShouldHaveCount(ChallengeGame game, ChallengeState state)
+        public async Task FetchChallengesAsync_ShouldHaveCount(Game game, ChallengeState state)
         {
             //Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(84936374);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(84936374, game);
 
             var fakeChallenges = challengeFaker.FakeChallenges(4);
 
@@ -109,7 +121,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
         [Theory]
         [MemberData(nameof(DataQueryParameters))]
-        public async Task FindChallengeAsync_ShouldBeChallenge(ChallengeGame game, ChallengeState state)
+        public async Task FindChallengeAsync_ShouldBeChallenge(Game game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(84568994, game, state);

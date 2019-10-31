@@ -6,12 +6,13 @@
 
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Factories
 {
     public sealed class FakerFactory
     {
-        public IChallengeFaker CreateChallengeFaker(int? seed, ChallengeGame? game = null, ChallengeState? state = null)
+        public IChallengeFaker CreateChallengeFaker(int? seed, Game? game = null, ChallengeState? state = null)
         {
             var faker = new ChallengeFaker(game, state);
 

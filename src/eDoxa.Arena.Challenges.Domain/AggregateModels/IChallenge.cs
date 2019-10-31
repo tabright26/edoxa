@@ -17,7 +17,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels
     {
         ChallengeName Name { get; }
 
-        ChallengeGame Game { get; }
+        Game Game { get; }
 
         BestOf BestOf { get; }
 

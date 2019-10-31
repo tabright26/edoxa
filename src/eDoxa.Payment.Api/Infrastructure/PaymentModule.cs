@@ -13,7 +13,7 @@ using eDoxa.Payment.Infrastructure.Repositories;
 
 namespace eDoxa.Payment.Api.Infrastructure
 {
-    internal sealed class PaymentApiModule : Module
+    internal sealed class PaymentModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

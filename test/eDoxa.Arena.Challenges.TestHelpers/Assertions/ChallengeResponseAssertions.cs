@@ -8,6 +8,7 @@ using System;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 using FluentAssertions.Primitives;
@@ -34,9 +35,9 @@ namespace eDoxa.Arena.Challenges.TestHelpers.Assertions
 
             ChallengeResponse.Game.Should().NotBeNullOrWhiteSpace(because, becauseArgs);
 
-            ChallengeResponse.Game.Should().NotBe(new ChallengeGame().Name, because, becauseArgs);
+            ChallengeResponse.Game.Should().NotBe(new Game().Name, because, becauseArgs);
 
-            ChallengeResponse.Game.Should().NotBe(ChallengeGame.All.Name, because, becauseArgs);
+            ChallengeResponse.Game.Should().NotBe(Game.All.Name, because, becauseArgs);
 
             ChallengeResponse.State.Should().NotBeNullOrWhiteSpace(because, becauseArgs);
 

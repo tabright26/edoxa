@@ -38,7 +38,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenStateNotInscription_ShouldThrowInvalidOperationException(ChallengeState state)
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(78536956, state: state);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(78536956, Game.LeagueOfLegends, state);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -54,7 +54,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenInscriptionFulfilled_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(43897896, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(43897896, Game.LeagueOfLegends, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -77,7 +77,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenParticipantIsRegistered_ShouldThrowInvalidOperationException()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(48536956, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(48536956, Game.LeagueOfLegends, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -94,7 +94,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Register_WhenStateInscription_ShouldHaveOneMore()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(85256956, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(85256956, Game.LeagueOfLegends, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 

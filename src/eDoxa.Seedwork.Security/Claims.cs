@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Domain.Miscs
+namespace eDoxa.Seedwork.Security
 {
     [JsonArray]
     public sealed class Claims : HashSet<Claim>

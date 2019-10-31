@@ -5,12 +5,12 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -24,11 +24,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         {
         }
 
-        public static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game});
+        public static TheoryData<Game> GameDataSets =>
+            new TheoryData<Game>
+            {
+                Game.LeagueOfLegends
+            };
 
         [Theory]
         [MemberData(nameof(GameDataSets))]
-        public void Scoring_ShouldBeAssignableToType(ChallengeGame game)
+        public void Scoring_ShouldBeAssignableToType(Game game)
         {
             // Arrange
             var scoring = new ScoringFactory().CreateInstance(game).Scoring;

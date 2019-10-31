@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 
 using Bogus;
@@ -14,6 +13,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -29,11 +29,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
         private static readonly Faker Faker = new Faker();
 
-        public static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game});
+        public static TheoryData<Game> GameDataSets =>
+            new TheoryData<Game>
+            {
+                Game.LeagueOfLegends
+            };
 
         [Theory]
         [MemberData(nameof(GameDataSets))]
-        public void SnapshotMatch_ParticipantMatches_ShouldNotBeEmpty(ChallengeGame game)
+        public void SnapshotMatch_ParticipantMatches_ShouldNotBeEmpty(Game game)
         {
             // Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, game);
@@ -59,7 +63,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         public void Matches_ShouldHaveCountOf()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, Game.LeagueOfLegends, ChallengeState.InProgress);
             var challenge = challengeFaker.FakeChallenge();
 
             // Act

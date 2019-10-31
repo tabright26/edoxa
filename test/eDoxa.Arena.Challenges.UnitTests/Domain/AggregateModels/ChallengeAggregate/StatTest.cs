@@ -1,12 +1,10 @@
 // Filename: StatTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using Bogus;
 
@@ -16,6 +14,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -29,27 +28,32 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         {
         }
 
-        public static IEnumerable<object[]> StatPropsDataSets =>
-            ChallengeGame.GetEnumerations()
-                .SelectMany(
-                    game =>
-                    {
-                        var stats = new Faker().Game().Stats(game);
+        public static TheoryData<StatName, StatValue, StatWeighting> StatPropsDataSets
+        {
+            get
+            {
+                var data = new TheoryData<StatName, StatValue, StatWeighting>();
 
-                        var factory = new ScoringFactory();
+                var stats = new Faker().Game().Stats(Game.LeagueOfLegends);
 
-                        var strategy = factory.CreateInstance(game);
+                var factory = new ScoringFactory();
 
-                        var match = new StatMatch(
-                            strategy.Scoring,
-                            stats,
-                            new GameReference(Guid.NewGuid()),
-                            new UtcNowDateTimeProvider());
+                var strategy = factory.CreateInstance(Game.LeagueOfLegends);
 
-                        return match.Stats;
-                    })
-                .Select(stat => new object[] {stat.Name, stat.Value, stat.Weighting})
-                .ToList();
+                var match = new StatMatch(
+                    strategy.Scoring,
+                    stats,
+                    new GameReference(Guid.NewGuid()),
+                    new UtcNowDateTimeProvider());
+
+                foreach (var stat in match.Stats)
+                {
+                    data.Add(stat.Name, stat.Value, stat.Weighting);
+                }
+
+                return data;
+            }
+        }
 
         [Theory]
         [MemberData(nameof(StatPropsDataSets))]

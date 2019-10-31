@@ -13,6 +13,7 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
 
@@ -60,7 +61,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             // Arrange
             const int count = 5;
 
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000, Game.LeagueOfLegends);
 
             var challenges = challengeFaker.FakeChallenges(count);
 

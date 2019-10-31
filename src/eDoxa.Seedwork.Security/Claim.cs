@@ -4,14 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Domain.Miscs
+namespace eDoxa.Seedwork.Security
 {
     [JsonObject]
-    public sealed class Claim : ValueObject
+    public sealed class Claim
     {
         [JsonConstructor]
         public Claim(string type, string value)
@@ -25,16 +23,5 @@ namespace eDoxa.Seedwork.Domain.Miscs
 
         [JsonProperty]
         public string Value { get; }
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Type;
-            yield return Value;
-        }
-
-        public override string ToString()
-        {
-            return $"{Type}={Value}";
-        }
     }
 }

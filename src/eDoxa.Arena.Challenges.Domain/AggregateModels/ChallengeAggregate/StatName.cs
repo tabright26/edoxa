@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -29,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             _name = name;
         }
 
-        public StatName(ChallengeGame game)
+        public StatName(Game game)
         {
             _name = game.Name;
         }

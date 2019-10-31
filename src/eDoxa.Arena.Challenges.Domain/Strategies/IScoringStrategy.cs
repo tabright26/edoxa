@@ -9,7 +9,7 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Domain.Strategies
 {
@@ -18,7 +18,7 @@ namespace eDoxa.Arena.Challenges.Domain.Strategies
         /// <summary>
         ///     Discriminator.
         /// </summary>
-        ChallengeGame Game { get; }
+        Game Game { get; }
 
         IScoring Scoring { get; }
     }

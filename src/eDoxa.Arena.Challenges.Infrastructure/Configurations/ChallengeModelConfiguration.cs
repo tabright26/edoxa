@@ -37,22 +37,6 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Configurations
                 }
             );
 
-            //builder.OwnsMany(
-            //    challenge => challenge.Buckets,
-            //    challengeStats =>
-            //    {
-            //        challengeStats.ToTable("Bucket");
-
-            //        challengeStats.HasForeignKey("ChallengeId");
-
-            //        challengeStats.Property(bucket => bucket.PrizeAmount).HasColumnType("decimal(11, 2)");
-
-            //        challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
-
-            //        challengeStats.HasKey("ChallengeId", "Id");
-            //    }
-            //);
-
             builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(challenge => challenge.Id);

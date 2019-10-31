@@ -8,15 +8,17 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Domain.Miscs;
+
 namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class GameScore : Score
     {
-        public GameScore(ChallengeGame game, decimal score) : base(score)
+        public GameScore(Game game, decimal score) : base(score)
         {
             Game = game;
         }
 
-        public ChallengeGame Game { get; }
+        public Game Game { get; }
     }
 }

@@ -19,7 +19,7 @@ using eDoxa.Cashier.Infrastructure.Repositories;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
-    internal sealed class CashierApiModule : Module
+    internal sealed class CashierModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

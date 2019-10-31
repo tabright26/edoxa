@@ -11,9 +11,9 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Adapters;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -45,7 +45,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
             var gameReferencesFactory = new GameReferencesFactory(gameReferencesAdapters);
 
             // Act
-            var gameReferencesAdapter = gameReferencesFactory.CreateInstance(ChallengeGame.LeagueOfLegends);
+            var gameReferencesAdapter = gameReferencesFactory.CreateInstance(Game.LeagueOfLegends);
 
             // Assert
             gameReferencesAdapter.Should().Be(leagueOfLegendsGameReferencesAdapter);
@@ -58,7 +58,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Factories
             var gameReferencesFactory = new GameReferencesFactory(Array.Empty<IGameReferencesAdapter>());
 
             // Act
-            var action = new Action(() => gameReferencesFactory.CreateInstance(ChallengeGame.LeagueOfLegends));
+            var action = new Action(() => gameReferencesFactory.CreateInstance(Game.LeagueOfLegends));
 
             // Assert
             action.Should().Throw<NotSupportedException>();

@@ -168,7 +168,7 @@ namespace eDoxa.Arena.Challenges.Api
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "arena.challenges"));
 
-            builder.RegisterModule<ArenaChallengesApiModule>();
+            builder.RegisterModule<ArenaChallengesModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)

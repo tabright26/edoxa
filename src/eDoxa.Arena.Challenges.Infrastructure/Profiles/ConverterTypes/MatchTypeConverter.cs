@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
             {
                 var stat = stats.Single();
 
-                var score = new GameScore(ChallengeGame.FromName(stat.Name)!, new decimal(stat.Value));
+                var score = new GameScore(Game.FromName(stat.Name)!, new decimal(stat.Value));
 
                 return new GameMatch(score, matchModel.GameReference, synchronizedAt);
             }

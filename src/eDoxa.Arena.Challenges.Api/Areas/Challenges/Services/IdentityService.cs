@@ -23,12 +23,12 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Services
             _httpClient = httpClient;
         }
 
-        public Task<bool> HasGameAccountIdAsync(UserId userId, ChallengeGame game)
+        public Task<bool> HasGameAccountIdAsync(UserId userId, Game game)
         {
             throw new NotImplementedException();
         }
 
-        public Task<GameAccountId?> GetGameAccountIdAsync(UserId userId, ChallengeGame game)
+        public Task<GameAccountId?> GetGameAccountIdAsync(UserId userId, Game game)
         {
             throw new NotImplementedException();
         }

@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Arena.Games.Api.Areas.Credentials.Extensions
 {

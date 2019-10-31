@@ -151,7 +151,7 @@ namespace eDoxa.Cashier.Api
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "cashier"));
 
-            builder.RegisterModule<CashierApiModule>();
+            builder.RegisterModule<CashierModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)

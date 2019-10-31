@@ -12,6 +12,7 @@ using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
 {
@@ -24,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
             _leagueOfLegendsService = leagueOfLegendsService;
         }
 
-        public ChallengeGame Game => ChallengeGame.LeagueOfLegends;
+        public Game Game => Game.LeagueOfLegends;
 
         public async Task<IMatch> GetMatchAsync(
             GameAccountId gameAccountId,

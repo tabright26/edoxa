@@ -7,9 +7,9 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Arena.Challenges.Api.IntegrationEvents.Handlers
@@ -25,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(ChallengesSynchronizedIntegrationEvent integrationEvent)
         {
-            await _challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, TimeSpan.FromHours(1), new UtcNowDateTimeProvider());
+            await _challengeService.SynchronizeAsync(Game.LeagueOfLegends, TimeSpan.FromHours(1), new UtcNowDateTimeProvider());
         }
     }
 }

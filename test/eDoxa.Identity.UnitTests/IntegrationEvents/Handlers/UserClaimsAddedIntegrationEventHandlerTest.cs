@@ -14,6 +14,7 @@ using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -49,7 +50,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserClaimsAddedIntegrationEvent(
                 new UserId(),
-                new Claims(new Seedwork.Domain.Miscs.Claim("role", "admin")));
+                new Claims(new Seedwork.Security.Claim("role", "admin")));
 
             // Act
             await handler.HandleAsync(integrationEvent);

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Domain.Adapters
 {
@@ -21,7 +22,7 @@ namespace eDoxa.Arena.Challenges.Domain.Adapters
         /// <summary>
         ///     Discriminator.
         /// </summary>
-        ChallengeGame Game { get; }
+        Game Game { get; }
 
         Task<IEnumerable<GameReference>> GetGameReferencesAsync(GameAccountId gameAccountId, DateTime startedAt, DateTime endedAt);
     }

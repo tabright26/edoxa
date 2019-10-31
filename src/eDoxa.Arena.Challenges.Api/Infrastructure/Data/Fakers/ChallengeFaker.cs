@@ -45,7 +45,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 
                     var name = new ChallengeName(model.Name);
 
-                    var game = ChallengeGame.FromValue(model.Game);
+                    var game = Game.FromValue(model.Game);
 
                     var entries = new Entries(model.Entries);
 
@@ -127,7 +127,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 
     internal sealed partial class ChallengeFaker : Faker<IChallenge>
     {
-        public ChallengeFaker(ChallengeGame? game = null, ChallengeState? state = null)
+        public ChallengeFaker(Game? game = null, ChallengeState? state = null)
         {
             this.CustomInstantiator(
                 faker =>
@@ -222,7 +222,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 
         private sealed class ParticipantFaker : Faker<Participant>
         {
-            public ParticipantFaker(ChallengeGame game, DateTime createdAt, DateTime startedAt)
+            public ParticipantFaker(Game game, DateTime createdAt, DateTime startedAt)
             {
                 this.CustomInstantiator(
                     faker =>
@@ -241,7 +241,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers
 
         private class MatchFaker : Faker<IMatch>
         {
-            public MatchFaker(ChallengeGame game, IScoring scoring, DateTime synchronizedAt)
+            public MatchFaker(Game game, IScoring scoring, DateTime synchronizedAt)
             {
                 this.CustomInstantiator(
                     faker =>

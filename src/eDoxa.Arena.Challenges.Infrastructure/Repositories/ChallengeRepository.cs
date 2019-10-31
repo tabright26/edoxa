@@ -88,7 +88,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Repositories
             _materializedObjects[challenge] = challengeModel;
         }
 
-        public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(ChallengeGame? game = null, ChallengeState? state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null)
         {
             var challenges = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);
 

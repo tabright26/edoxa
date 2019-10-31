@@ -151,7 +151,7 @@ namespace eDoxa.Notifications.Api
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "notifications"));
 
-            builder.RegisterModule<NotificationsApiModule>();
+            builder.RegisterModule<NotificationsModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)

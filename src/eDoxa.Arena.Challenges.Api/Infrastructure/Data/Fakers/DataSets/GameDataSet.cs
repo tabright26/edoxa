@@ -10,6 +10,7 @@ using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
@@ -22,9 +23,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 
         internal Faker Faker { get; }
 
-        public GameReference Reference(ChallengeGame game)
+        public GameReference Reference(Game game)
         {
-            if (game == ChallengeGame.LeagueOfLegends)
+            if (game == Game.LeagueOfLegends)
             {
                 return new GameReference(Faker.Random.Long(1000000000, 9999999999));
             }
@@ -32,9 +33,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
             throw new ArgumentException(nameof(game));
         }
 
-        public IGameStats Stats(ChallengeGame game)
+        public IGameStats Stats(Game game)
         {
-            if (game == ChallengeGame.LeagueOfLegends)
+            if (game == Game.LeagueOfLegends)
             {
                 return new GameStats(
                     new

@@ -7,7 +7,7 @@
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.TestHelpers;
 using eDoxa.Identity.TestHelpers.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Security;
 
 using FluentAssertions;
 
@@ -27,7 +27,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var integrationEvent = new RoleClaimsAddedIntegrationEvent("admin", new Claims(new Seedwork.Domain.Miscs.Claim("test", "allow")));
+            var integrationEvent = new RoleClaimsAddedIntegrationEvent("admin", new Claims(new Claim("test", "allow")));
 
             var integrationEventSerialized = JsonConvert.SerializeObject(integrationEvent);
 

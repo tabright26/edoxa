@@ -10,7 +10,7 @@ using eDoxa.Identity.Api.Areas.Identity.Services;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    internal sealed class IdentityApiModule : Module
+    internal sealed class IdentityModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

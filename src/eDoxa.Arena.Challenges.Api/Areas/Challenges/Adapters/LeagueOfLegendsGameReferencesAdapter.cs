@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Domain.Adapters;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
 {
@@ -24,7 +25,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Adapters
             _leagueOfLegendsService = leagueOfLegendsService;
         }
 
-        public ChallengeGame Game => ChallengeGame.LeagueOfLegends;
+        public Game Game => Game.LeagueOfLegends;
 
         public async Task<IEnumerable<GameReference>> GetGameReferencesAsync(GameAccountId gameAccountId, DateTime startedAt, DateTime endedAt)
         {

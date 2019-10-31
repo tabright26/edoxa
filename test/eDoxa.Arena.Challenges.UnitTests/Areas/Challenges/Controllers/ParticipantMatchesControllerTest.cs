@@ -88,7 +88,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(95632852, null, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(95632852, Game.LeagueOfLegends, ChallengeState.InProgress);
 
             var challenge = challengeFaker.FakeChallenge();
 

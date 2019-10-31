@@ -9,12 +9,12 @@
 // this source code package.
 
 using eDoxa.Arena.Challenges.Domain.Adapters;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {
     public interface IGameReferencesFactory
     {
-        IGameReferencesAdapter CreateInstance(ChallengeGame game);
+        IGameReferencesAdapter CreateInstance(Game game);
     }
 }

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Arena.Games.Api.Areas.Credentials.RefitClient;
-using eDoxa.Arena.Games.Api.Infrastructure;
 using eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate;
 using eDoxa.Arena.Games.Domain.Repositories;
 using eDoxa.Arena.Games.Domain.Services;

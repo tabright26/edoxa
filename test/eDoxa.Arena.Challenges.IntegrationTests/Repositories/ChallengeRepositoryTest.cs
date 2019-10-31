@@ -42,7 +42,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
         {
             // Arrange
             var faker = new Faker();
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, null, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, Game.LeagueOfLegends, ChallengeState.Inscription);
             var fakeChallenge = challengeFaker.FakeChallenge();
 
             TestApi.CreateClient();
@@ -123,7 +123,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Repositories
 
             var match1 = new StatMatch(
                 fakeChallenge.Scoring,
-                faker.Game().Stats(ChallengeGame.LeagueOfLegends),
+                faker.Game().Stats(Game.LeagueOfLegends),
                 new GameReference(Guid.NewGuid()),
                 new UtcNowDateTimeProvider());
 

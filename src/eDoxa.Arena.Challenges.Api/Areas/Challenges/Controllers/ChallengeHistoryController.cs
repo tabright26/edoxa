@@ -12,7 +12,7 @@ using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
-
+using eDoxa.Seedwork.Domain.Miscs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +42,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeResponse>))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> GetAsync(ChallengeGame? game = null, ChallengeState? state = null)
+        public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)
         {
             var responses = await _challengeQuery.FetchUserChallengeHistoryResponsesAsync(game, state);
 

@@ -37,7 +37,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         //    // Arrange
         //    var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-        //    mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+        //    mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
         //        .ReturnsAsync(new Collection<IChallenge>())
         //        .Verifiable();
 
@@ -54,7 +54,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         //    result.Should().BeOfType<BadRequestObjectResult>();
 
         //    mockChallengeQuery.Verify(
-        //        challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()),
+        //        challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
         //        Times.Never);
         //}
 
@@ -64,7 +64,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Arrange
             var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Collection<IChallenge>())
                 .Verifiable();
 
@@ -78,20 +78,20 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()), Times.Once);
+            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()), Times.Once);
         }
 
         [Fact]
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(27852992);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(27852992, Game.LeagueOfLegends);
 
             var challenges = challengeFaker.FakeChallenges(2);
 
             var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()))
+            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(challenges)
                 .Verifiable();
 
@@ -105,31 +105,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<ChallengeGame>(), It.IsAny<ChallengeState>()), Times.Once);
+            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()), Times.Once);
         }
-
-        //[Fact]
-        //public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
-        //{
-        //    // Arrange
-        //    var mockChallengeQuery = new Mock<IChallengeQuery>();
-
-        //    mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
-
-        //    mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
-
-        //    var controller = new ChallengesController(mockChallengeQuery.Object);
-
-        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
-
-        //    // Act
-        //    var result = await controller.GetByIdAsync(new ChallengeId());
-
-        //    // Assert
-        //    result.Should().BeOfType<BadRequestObjectResult>();
-
-        //    mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
-        //}
 
         [Fact]
         public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
@@ -156,7 +133,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         public async Task GetByIdAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(27852992);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(27852992, Game.LeagueOfLegends);
 
             var challenge = challengeFaker.FakeChallenge();
 

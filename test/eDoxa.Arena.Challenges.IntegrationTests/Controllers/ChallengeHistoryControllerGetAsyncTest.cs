@@ -16,6 +16,7 @@ using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 using eDoxa.Seedwork.Testing.Http.Extensions;
 
@@ -38,7 +39,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeGame game = null, ChallengeState state = null)
+        private async Task<HttpResponseMessage> ExecuteAsync(Game game = null, ChallengeState state = null)
         {
             return await _httpClient.GetAsync($"api/challenges/history?game={game}&state={state}");
         }
@@ -47,7 +48,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, state: ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, Game.LeagueOfLegends, ChallengeState.InProgress);
 
             var challenge = challengeFaker.FakeChallenge();
 

@@ -9,21 +9,21 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.Adapters;
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories
 {
     public sealed class MatchFactory : IMatchFactory
     {
-        private readonly IDictionary<ChallengeGame, IMatchAdapter> _adapters;
+        private readonly IDictionary<Game, IMatchAdapter> _adapters;
 
         public MatchFactory(IEnumerable<IMatchAdapter> adapters)
         {
             _adapters = adapters.ToDictionary(adapter => adapter.Game);
         }
 
-        public IMatchAdapter CreateInstance(ChallengeGame game)
+        public IMatchAdapter CreateInstance(Game game)
         {
             if (!_adapters.TryGetValue(game, out var adapter))
             {

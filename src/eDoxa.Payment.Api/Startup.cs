@@ -152,7 +152,7 @@ namespace eDoxa.Payment.Api
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "payment"));
 
-            builder.RegisterModule<PaymentApiModule>();
+            builder.RegisterModule<PaymentModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)

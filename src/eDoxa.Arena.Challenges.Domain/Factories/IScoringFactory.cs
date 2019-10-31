@@ -8,13 +8,13 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Domain.Factories
 {
     public interface IScoringFactory
     {
-        IScoringStrategy CreateInstance(ChallengeGame game);
+        IScoringStrategy CreateInstance(Game game);
     }
 }

@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 
 using Bogus;
 
@@ -13,7 +12,7 @@ using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
-
+using eDoxa.Seedwork.Domain.Miscs;
 using FluentAssertions;
 
 using Xunit;
@@ -26,11 +25,15 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         {
         }
 
-        public static IEnumerable<object[]> GameDataSets => ChallengeGame.GetEnumerations().Select(game => new object[] {game}).ToList();
+        public static TheoryData<Game> GameDataSets =>
+            new TheoryData<Game>
+            {
+                Game.LeagueOfLegends
+            };
 
         [Theory]
         [MemberData(nameof(GameDataSets))]
-        public void Stats_FromGame_ShouldBeAssignableToType(ChallengeGame game)
+        public void Stats_FromGame_ShouldBeAssignableToType(Game game)
         {
             // Arrange
             var stats = new Faker().Game().Stats(game);

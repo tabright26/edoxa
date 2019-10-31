@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,12 +28,24 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
         {
         }
 
-        public static IEnumerable<object[]> DataQueryParameters =>
-            ChallengeGame.GetEnumerations().SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] {game, state})).ToList();
+        public static TheoryData<Game, ChallengeState> DataQueryParameters
+        {
+            get
+            {
+                var data = new TheoryData<Game, ChallengeState>();
+
+                foreach (var state in ChallengeState.GetEnumerations())
+                {
+                    data.Add(Game.LeagueOfLegends, state);
+                }
+
+                return data;
+            }
+        }
 
         [Theory]
         [MemberData(nameof(DataQueryParameters))]
-        public async Task FindChallengeParticipantsAsync_ShouldBeEquivalentToParticipantList(ChallengeGame game, ChallengeState state)
+        public async Task FindChallengeParticipantsAsync_ShouldBeEquivalentToParticipantList(Game game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(68545632, game, state);
@@ -66,7 +77,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Queries
 
         [Theory]
         [MemberData(nameof(DataQueryParameters))]
-        public async Task FindParticipantAsync_EquivalentToParticipant(ChallengeGame game, ChallengeState state)
+        public async Task FindParticipantAsync_EquivalentToParticipant(Game game, ChallengeState state)
         {
             //Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(48956632, game, state);

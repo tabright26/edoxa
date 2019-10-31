@@ -13,7 +13,7 @@ using eDoxa.Organizations.Clans.Infrastructure.Repositories;
 
 namespace eDoxa.Organizations.Clans.Api.Infrastructure
 {
-    public class ClansApiModule : Module
+    public class ClansModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

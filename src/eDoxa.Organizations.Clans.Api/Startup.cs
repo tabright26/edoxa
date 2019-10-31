@@ -151,7 +151,7 @@ namespace eDoxa.Organizations.Clans.Api
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "organizations.clans"));
 
-            builder.RegisterModule<ClansApiModule>();
+            builder.RegisterModule<ClansModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)

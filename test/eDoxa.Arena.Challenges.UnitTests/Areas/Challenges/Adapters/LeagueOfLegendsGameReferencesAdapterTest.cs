@@ -16,6 +16,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -55,7 +56,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Adapters
             var matchReferences = await matchReferencesAdapter.GetGameReferencesAsync(gameAccountId, startedAt, endedAt);
 
             // Assert
-            matchReferencesAdapter.Game.Should().Be(ChallengeGame.LeagueOfLegends);
+            matchReferencesAdapter.Game.Should().Be(Game.LeagueOfLegends);
             matchReferences.Should().BeEquivalentTo(StubMatchReferences.Select(matchReference => new GameReference(matchReference.GameId)));
 
             mockLeagueOfLegendsProxy.Verify(

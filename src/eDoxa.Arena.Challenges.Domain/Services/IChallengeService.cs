@@ -12,7 +12,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -22,6 +21,6 @@ namespace eDoxa.Arena.Challenges.Domain.Services
     {
         Task RegisterParticipantAsync(ChallengeId challengeId, UserId userId, IDateTimeProvider registeredAt, CancellationToken cancellationToken = default);
 
-        Task SynchronizeAsync(ChallengeGame game, TimeSpan interval, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
+        Task SynchronizeAsync(Game game, TimeSpan interval, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
     }
 }

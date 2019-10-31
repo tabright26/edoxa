@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<ChallengeModel>> FetchUserChallengeModelHistoryAsync(
             this IChallengeQuery challengeQuery,
             UserId userId,
-            ChallengeGame? game = null,
+            Game? game = null,
             ChallengeState? state = null
         )
         {
@@ -31,7 +31,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeModel>> FetchUserChallengeModelHistoryAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame? game = null,
+            Game? game = null,
             ChallengeState? state = null
         )
         {
@@ -42,7 +42,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame? game = null,
+            Game? game = null,
             ChallengeState? state = null
         )
         {
@@ -61,7 +61,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
         public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchUserChallengeHistoryResponsesAsync(
             this IChallengeQuery challengeQuery,
             UserId userId,
-            ChallengeGame? game = null,
+            Game? game = null,
             ChallengeState? state = null
         )
         {
@@ -72,7 +72,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchUserChallengeHistoryResponsesAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame? game = null,
+            Game? game = null,
             ChallengeState? state = null
         )
         {
@@ -83,7 +83,7 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions
 
         public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchChallengeResponsesAsync(
             this IChallengeQuery challengeQuery,
-            ChallengeGame? game = null,
+            Game? game = null,
             ChallengeState? state = null
         )
         {

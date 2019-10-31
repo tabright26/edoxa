@@ -21,7 +21,7 @@ using eDoxa.Arena.Challenges.Infrastructure.Repositories;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
-    internal sealed class ArenaChallengesApiModule : Module
+    internal sealed class ArenaChallengesModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {

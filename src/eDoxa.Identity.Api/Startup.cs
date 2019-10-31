@@ -256,7 +256,7 @@ namespace eDoxa.Identity.Api
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "identity"));
 
-            builder.RegisterModule<IdentityApiModule>();
+            builder.RegisterModule<IdentityModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 
 using Bogus;
@@ -13,6 +12,7 @@ using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Assertions.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -28,13 +28,25 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         {
         }
 
-        public static IEnumerable<object[]> ChallengeFakerDataSets =>
-            ChallengeGame.GetEnumerations()
-                .SelectMany(game => ChallengeState.GetEnumerations().Select(state => new object[] {game, state, Faker.Random.Int()}));
+        
+        public static TheoryData<Game, ChallengeState, int> ChallengeFakerDataSets
+        {
+            get
+            {
+                var data = new TheoryData<Game, ChallengeState, int>();
+
+                foreach (var state in ChallengeState.GetEnumerations())
+                {
+                    data.Add(Game.LeagueOfLegends, state, Faker.Random.Int());
+                }
+
+                return data;
+            }
+        }
 
         [Theory]
         [MemberData(nameof(ChallengeFakerDataSets))]
-        public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValid(ChallengeGame game, ChallengeState state, int seed)
+        public void Generate_ChallengesWithAnyStateGeneratedByAnySeed_ShouldBeValid(Game game, ChallengeState state, int seed)
         {
             // Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, game, state);
@@ -55,8 +67,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         public void GenerateTwo_FromDifferentFakerWithSameSeed_ShouldBothBeValid(int seed)
         {
             // Arrange
-            var challengeFaker1 = TestData.FakerFactory.CreateChallengeFaker(seed);
-            var challengeFaker2 = TestData.FakerFactory.CreateChallengeFaker(seed);
+            var challengeFaker1 = TestData.FakerFactory.CreateChallengeFaker(seed, Game.LeagueOfLegends);
+            var challengeFaker2 = TestData.FakerFactory.CreateChallengeFaker(seed, Game.LeagueOfLegends);
 
             // Act
             var challenge1 = challengeFaker1.FakeChallenge();
@@ -77,7 +89,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         public void GenerateTwo_FromSameFakerWithDifferentSeeds_ShouldBothNotBeValid(int seed)
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, Game.LeagueOfLegends);
 
             // Act
             var challenge1 = challengeFaker.FakeChallenge();
@@ -98,7 +110,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         public void Generate_DistinctParticipants_BeValid(int seed)
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, Game.LeagueOfLegends);
             var challenges = challengeFaker.FakeChallenges(10);
 
             // Act
@@ -118,7 +130,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Infrastructure.Data.Fakers
         public void Generate_DistinctUserIds_ShouldBeValid(int seed)
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, Game.LeagueOfLegends);
             var challenges = challengeFaker.FakeChallenges(10);
 
             // Act

@@ -14,6 +14,7 @@ using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Testing.Extensions;
 
 using FluentAssertions;
@@ -36,7 +37,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
         public async Task ShouldHaveCountFive()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, ChallengeGame.LeagueOfLegends, ChallengeState.InProgress);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, Game.LeagueOfLegends, ChallengeState.InProgress);
 
             var challenges = challengeFaker.FakeChallenges(5);
 
@@ -58,7 +59,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Services
                 {
                     var challengeService = scope.GetRequiredService<IChallengeService>();
                     var synchronizedAt = new DateTimeProvider(DateTime.UtcNow);
-                    await challengeService.SynchronizeAsync(ChallengeGame.LeagueOfLegends, TimeSpan.Zero, synchronizedAt);
+                    await challengeService.SynchronizeAsync(Game.LeagueOfLegends, TimeSpan.Zero, synchronizedAt);
                 });
 
             // Arrange

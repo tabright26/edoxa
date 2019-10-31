@@ -31,9 +31,9 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
             return new ChallengeName(Faker.PickRandom("Daily Challenge", "Monthly Challenge", "Weekly Challenge"));
         }
 
-        public ChallengeGame Game(ChallengeGame? game = null)
+        public Game Game(Game? game = null)
         {
-            return game ?? Faker.PickRandom(ChallengeGame.GetEnumerations());
+            return game ?? Faker.PickRandom(Seedwork.Domain.Miscs.Game.GetEnumerations());
         }
 
         public BestOf BestOf()

@@ -62,7 +62,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Services
         }
 
         public async Task SynchronizeAsync(
-            ChallengeGame game,
+            Game game,
             TimeSpan interval,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default

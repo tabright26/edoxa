@@ -8,12 +8,13 @@ using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Strategies;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Strategies
 {
     public sealed class LeagueOfLegendsScoringStrategy : IScoringStrategy
     {
-        public ChallengeGame Game => ChallengeGame.LeagueOfLegends;
+        public Game Game => Game.LeagueOfLegends;
 
         public IScoring Scoring =>
             new Scoring

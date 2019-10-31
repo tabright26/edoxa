@@ -8,6 +8,7 @@ using System.Linq;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 using FluentAssertions.Primitives;
@@ -26,9 +27,9 @@ namespace eDoxa.Arena.Challenges.TestHelpers.Assertions
 
         public AndConstraint<ChallengeAssertions> BeValid(string because = "", params object[] becauseArgs)
         {
-            Challenge.Game.Should().Should().NotBe(ChallengeGame.All, because, becauseArgs);
+            Challenge.Game.Should().Should().NotBe(Game.All, because, becauseArgs);
 
-            Challenge.Game.Should().Should().NotBe(new ChallengeGame(), because, becauseArgs);
+            Challenge.Game.Should().Should().NotBe(new Game(), because, becauseArgs);
 
             Challenge.Timeline.State.Should().NotBe(ChallengeState.All, because, becauseArgs);
 

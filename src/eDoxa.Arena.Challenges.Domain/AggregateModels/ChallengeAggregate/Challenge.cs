@@ -19,7 +19,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public Challenge(
             ChallengeName name,
-            ChallengeGame game,
+            Game game,
             BestOf bestOf,
             Entries entries,
             ChallengeTimeline timeline,
@@ -36,7 +36,7 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public ChallengeName Name { get; }
 
-        public ChallengeGame Game { get; }
+        public Game Game { get; }
 
         public ChallengeTimeline Timeline { get; private set; }
 

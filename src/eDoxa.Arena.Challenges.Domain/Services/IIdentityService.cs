@@ -17,8 +17,8 @@ namespace eDoxa.Arena.Challenges.Domain.Services
 {
     public interface IIdentityService
     {
-        Task<bool> HasGameAccountIdAsync(UserId userId, ChallengeGame game);
+        Task<bool> HasGameAccountIdAsync(UserId userId, Game game);
 
-        Task<GameAccountId?> GetGameAccountIdAsync(UserId userId, ChallengeGame game);
+        Task<GameAccountId?> GetGameAccountIdAsync(UserId userId, Game game);
     }
 }

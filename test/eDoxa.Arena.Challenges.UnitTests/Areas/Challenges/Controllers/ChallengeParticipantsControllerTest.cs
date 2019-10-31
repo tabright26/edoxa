@@ -98,7 +98,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(25392992);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(25392992, Game.LeagueOfLegends);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -126,55 +126,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
         }
-
-        //[Fact]
-        //public async Task PostAsync_ShouldBeNBadRequestObjectResultt()
-        //{
-        //    // Arrange
-        //    var mockParticipantQuery = new Mock<IParticipantQuery>();
-
-        //    var mockChallengeService = new Mock<IChallengeService>();
-
-        //    var mockChallengeQuery = new Mock<IChallengeQuery>();
-
-        //    mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
-
-        //    mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Verifiable();
-
-        //    mockChallengeService.Setup(
-        //            challengeQuery => challengeQuery.RegisterParticipantAsync(
-        //                It.IsAny<ChallengeId>(),
-        //                It.IsAny<UserId>(),
-        //                It.IsAny<UtcNowDateTimeProvider>(),
-        //                It.IsAny<CancellationToken>()))
-        //        .Verifiable();
-
-        //    var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
-
-        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
-
-        //    // Act
-        //    var result = await controller.PostAsync(new ChallengeId());
-
-        //    // Assert
-        //    result.Should().BeOfType<BadRequestObjectResult>();
-
-        //    mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
-
-        //    mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Never);
-
-        //    mockChallengeService.Verify(
-        //        challengeQuery => challengeQuery.RegisterParticipantAsync(
-        //            It.IsAny<ChallengeId>(),
-        //            It.IsAny<UserId>(),
-        //            It.IsAny<UtcNowDateTimeProvider>(),
-        //            It.IsAny<CancellationToken>()),
-        //        Times.Never);
-        //}
 
         [Fact]
         public async Task PostAsync_ShouldBeNotFoundObjectResult()
@@ -227,7 +178,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
         public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000, Game.LeagueOfLegends);
 
             var challenge = challengeFaker.FakeChallenge();
 

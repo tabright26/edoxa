@@ -9,15 +9,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Factories;
 using eDoxa.Arena.Challenges.Domain.Strategies;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories
 {
     public sealed class ScoringFactory : IScoringFactory
     {
-        private readonly IDictionary<ChallengeGame, IScoringStrategy> _strategies;
+        private readonly IDictionary<Game, IScoringStrategy> _strategies;
 
         public ScoringFactory(IEnumerable<IScoringStrategy>? strategies = null)
         {
@@ -30,7 +30,7 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories
                               .ToDictionary(strategy => strategy.Game);
         }
 
-        public IScoringStrategy CreateInstance(ChallengeGame game)
+        public IScoringStrategy CreateInstance(Game game)
         {
             if (!_strategies.TryGetValue(game, out var strategie))
             {

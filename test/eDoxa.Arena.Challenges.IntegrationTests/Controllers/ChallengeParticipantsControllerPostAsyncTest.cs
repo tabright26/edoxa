@@ -54,7 +54,7 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, ChallengeGame.LeagueOfLegends, ChallengeState.Inscription);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1, Game.LeagueOfLegends, ChallengeState.Inscription);
 
             var challenge = challengeFaker.FakeChallenge();
 
@@ -68,10 +68,10 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
                         {
                             var mock = new Mock<IIdentityService>();
 
-                            mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
+                            mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                                 .ReturnsAsync(true);
 
-                            mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<ChallengeGame>()))
+                            mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                                 .ReturnsAsync(gameAccountId);
 
                             container.RegisterInstance(mock.Object).As<IIdentityService>();
