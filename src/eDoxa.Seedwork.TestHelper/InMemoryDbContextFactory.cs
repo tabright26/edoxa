@@ -10,7 +10,7 @@ using System.Data.Common;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Seedwork.Testing
+namespace eDoxa.Seedwork.TestHelper
 {
     public sealed class InMemoryDbContextFactory<TDbContext> : IDisposable
     where TDbContext : DbContext

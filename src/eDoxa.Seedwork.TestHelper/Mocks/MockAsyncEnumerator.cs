@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace eDoxa.Seedwork.Testing.Mocks
+namespace eDoxa.Seedwork.TestHelper.Mocks
 {
     public class MockAsyncEnumerator<T> : IAsyncEnumerator<T>
     {

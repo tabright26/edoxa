@@ -8,7 +8,7 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Arena.Games.LeagueOfLegends.Api;
-using eDoxa.Seedwork.Testing;
+using eDoxa.Seedwork.TestHelper;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

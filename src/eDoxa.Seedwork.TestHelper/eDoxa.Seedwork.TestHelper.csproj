@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>eDoxa.Seedwork.Testing</AssemblyName>
-    <RootNamespace>eDoxa.Seedwork.Testing</RootNamespace>
+    <AssemblyName>eDoxa.Seedwork.TestHelper</AssemblyName>
+    <RootNamespace>eDoxa.Seedwork.TestHelper</RootNamespace>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>

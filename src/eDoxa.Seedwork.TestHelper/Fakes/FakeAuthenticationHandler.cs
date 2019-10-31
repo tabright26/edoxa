@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Seedwork.Testing.Fakes
+namespace eDoxa.Seedwork.TestHelper.Fakes
 {
     public class FakeAuthenticationHandler : AuthenticationHandler<FakeAuthenticationOptions>
     {

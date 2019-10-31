@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Testing.Http.Extensions
+namespace eDoxa.Seedwork.TestHelper.Http.Extensions
 {
     public static class HttpResponseMessageExtensions
     {

@@ -6,12 +6,12 @@
 
 using System.Security.Claims;
 
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.TestHelper.Extensions;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 
-namespace eDoxa.Seedwork.Testing
+namespace eDoxa.Seedwork.TestHelper
 {
     public abstract class IdentityApiFactory<TStartup> : WebApiFactory<TStartup>
     where TStartup : class

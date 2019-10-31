@@ -6,9 +6,9 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Testing.Mocks;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
-namespace eDoxa.Seedwork.Testing.Extensions
+namespace eDoxa.Seedwork.TestHelper.Extensions
 {
     public static class EnumerableExtensions
     {

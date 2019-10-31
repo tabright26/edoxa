@@ -14,7 +14,7 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelpers;
 using eDoxa.Payment.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Testing.Http;
+using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 

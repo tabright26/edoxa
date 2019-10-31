@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging.Internal;
 
 using Moq;
 
-namespace eDoxa.Seedwork.Testing.Mocks
+namespace eDoxa.Seedwork.TestHelper.Mocks
 {
     public sealed class MockLogger<T> : Mock<ILogger<T>>
     {

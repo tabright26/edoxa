@@ -11,8 +11,8 @@ using Autofac;
 
 using eDoxa.Notifications.Api;
 using eDoxa.Notifications.Infrastructure;
-using eDoxa.Seedwork.Testing;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.TestHelper;
+using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
@@ -21,7 +21,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace eDoxa.Notifications.TestHelpers.Fixtures
 {
-    public sealed class TestApiFixture : IdentityApiFactory<Startup>
+    public sealed class TestApiFixture : WebApiFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {

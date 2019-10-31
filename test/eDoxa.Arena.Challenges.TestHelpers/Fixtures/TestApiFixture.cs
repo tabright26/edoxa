@@ -14,8 +14,8 @@ using eDoxa.Arena.Challenges.Api;
 using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Abstractions;
 using eDoxa.Arena.Challenges.Api.Temp.LeagueOfLegends.Dtos;
 using eDoxa.Arena.Challenges.Infrastructure;
-using eDoxa.Seedwork.Testing;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.TestHelper;
+using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;

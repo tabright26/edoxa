@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Testing.Extensions
+namespace eDoxa.Seedwork.TestHelper.Extensions
 {
     public static class WebHostExtensions
     {

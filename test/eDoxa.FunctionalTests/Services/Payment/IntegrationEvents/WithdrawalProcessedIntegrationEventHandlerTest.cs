@@ -16,7 +16,7 @@ using eDoxa.FunctionalTests.Services.Cashier;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 
 using FluentAssertions;

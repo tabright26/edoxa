@@ -11,8 +11,8 @@ using Autofac;
 
 using eDoxa.Organizations.Clans.Api;
 using eDoxa.Organizations.Clans.Infrastructure;
-using eDoxa.Seedwork.Testing;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.TestHelper;
+using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;

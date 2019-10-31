@@ -9,8 +9,8 @@ using System.Reflection;
 
 using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Testing;
-using eDoxa.Seedwork.Testing.Extensions;
+using eDoxa.Seedwork.TestHelper;
+using eDoxa.Seedwork.TestHelper.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;

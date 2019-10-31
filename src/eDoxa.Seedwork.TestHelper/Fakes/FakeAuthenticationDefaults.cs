@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-namespace eDoxa.Seedwork.Testing.Fakes
+namespace eDoxa.Seedwork.TestHelper.Fakes
 {
     public class FakeAuthenticationDefaults
     {

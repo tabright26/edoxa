@@ -9,15 +9,15 @@ using System.Security.Claims;
 
 using Autofac;
 
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Modules;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Modules;
 
 using IdentityModel;
 
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 
-namespace eDoxa.Seedwork.Testing
+namespace eDoxa.Seedwork.TestHelper
 {
     public abstract class WebApiFactory<TStartup> : WebApplicationFactory<TStartup>
     where TStartup : class

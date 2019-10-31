@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace eDoxa.Seedwork.Testing.Mocks
+namespace eDoxa.Seedwork.TestHelper.Mocks
 {
     public class MockAsyncEnumerable<T> : EnumerableQuery<T>, IAsyncEnumerable<T>, IQueryable<T>
     {

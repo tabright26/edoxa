@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-namespace eDoxa.Seedwork.Testing.Mocks
+namespace eDoxa.Seedwork.TestHelper.Mocks
 {
     public class MockAsyncQueryProvider<TEntity> : IAsyncQueryProvider
     {

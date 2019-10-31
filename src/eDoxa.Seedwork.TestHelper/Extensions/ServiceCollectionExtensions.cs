@@ -7,12 +7,12 @@
 using System;
 using System.Security.Claims;
 
-using eDoxa.Seedwork.Testing.Fakes;
+using eDoxa.Seedwork.TestHelper.Fakes;
 
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Testing.Extensions
+namespace eDoxa.Seedwork.TestHelper.Extensions
 {
     public static class ServiceCollectionExtensions
     {

@@ -12,7 +12,7 @@ using eDoxa.Arena.Challenges.TestHelpers;
 using eDoxa.Arena.Challenges.TestHelpers.Assertions.Extensions;
 using eDoxa.Arena.Challenges.TestHelpers.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Testing;
+using eDoxa.Seedwork.TestHelper;
 
 using Xunit;
 

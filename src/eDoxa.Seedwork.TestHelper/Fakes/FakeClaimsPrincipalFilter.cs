@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace eDoxa.Seedwork.Testing.Fakes
+namespace eDoxa.Seedwork.TestHelper.Fakes
 {
     internal sealed class FakeClaimsPrincipalFilter : IAsyncActionFilter
     {

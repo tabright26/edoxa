@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Http;
 
 using Moq;
 
-namespace eDoxa.Seedwork.Testing.Modules
+namespace eDoxa.Seedwork.TestHelper.Modules
 {
     public sealed class MockHttpContextAccessorModule : Module
     {

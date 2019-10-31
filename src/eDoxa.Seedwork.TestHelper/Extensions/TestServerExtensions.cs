@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Seedwork.Testing.Extensions
+namespace eDoxa.Seedwork.TestHelper.Extensions
 {
     public static class TestServerExtensions
     {
