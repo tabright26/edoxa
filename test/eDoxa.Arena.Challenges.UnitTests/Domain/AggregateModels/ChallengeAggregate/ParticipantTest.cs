@@ -43,8 +43,8 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, game);
             var challenge = challengeFaker.FakeChallenge();
             var participant = challenge.Participants.First();
-            var gameReference = Faker.Game().Reference(game);
-            var stats = Faker.Game().Stats(game);
+            var gameReference = Faker.Game().Reference();
+            var stats = Faker.Game().Stats();
 
             var match = new StatMatch(
                 challenge.Scoring,

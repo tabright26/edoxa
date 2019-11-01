@@ -22,7 +22,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Profiles.ConverterTypes
         {
             var participant = new Participant(
                 UserId.FromGuid(source.UserId),
-                new GameAccountId(source.GameAccountId),
+                PlayerId.Parse(source.PlayerId),
                 new DateTimeProvider(source.RegisteredAt)
             );
 

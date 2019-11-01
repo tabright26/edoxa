@@ -6,13 +6,11 @@
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelper;
 using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -26,26 +24,26 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         {
         }
 
-        public static TheoryData<Game> GameDataSets =>
-            new TheoryData<Game>
-            {
-                Game.LeagueOfLegends
-            };
-
-        [Theory]
-        [MemberData(nameof(GameDataSets))]
-        public void StatMatch_FromGame_ShouldHaveCountOfScoring(Game game)
+        [Fact]
+        public void StatMatch_FromGame_ShouldHaveCountOfScoring()
         {
             // Arrange
             var faker = new Faker();
-            var scoring = new ScoringFactory().CreateInstance(game).Scoring;
-            var stats = faker.Game().Stats(game);
+            var scoring = new Scoring
+            {
+                [new StatName("StatName1")] = new StatWeighting(0.00015F),
+                [new StatName("StatName2")] = new StatWeighting(1),
+                [new StatName("StatName3")] = new StatWeighting(0.77F),
+                [new StatName("StatName4")] = new StatWeighting(100),
+                [new StatName("StatName5")] = new StatWeighting(-3)
+            };
+            var stats = faker.Game().Stats();
 
             // Act
             var match = new StatMatch(
                 scoring,
                 stats,
-                faker.Game().Reference(game),
+                faker.Game().Reference(),
                 new UtcNowDateTimeProvider());
 
             // Assert

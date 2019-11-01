@@ -44,7 +44,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
             // Act
             var action = new Action(
-                () => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+                () => challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -62,12 +62,12 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
 
             for (var index = 0; index < participantCount; index++)
             {
-                challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+                challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
             }
 
             // Act
             var action = new Action(
-                () => challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+                () => challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -84,7 +84,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             // Act
             var action = new Action(
                 () => challenge.Register(
-                    new Participant(challenge.Participants.First().UserId, new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+                    new Participant(challenge.Participants.First().UserId, PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -101,7 +101,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
             var participantCount = challenge.Participants.Count;
 
             // Act
-            challenge.Register(new Participant(new UserId(), new GameAccountId(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+            challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
 
             // Assert
             challenge.Participants.Should().HaveCount(participantCount + 1);

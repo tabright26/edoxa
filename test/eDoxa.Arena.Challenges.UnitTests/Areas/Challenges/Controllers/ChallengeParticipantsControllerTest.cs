@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Queries;
 using eDoxa.Arena.Challenges.TestHelper;
@@ -42,8 +43,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Arrange
             var mockChallengeService = new Mock<IChallengeService>();
 
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
-
             var mockParticipantQuery = new Mock<IParticipantQuery>();
 
             mockParticipantQuery.Setup(queries => queries.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
@@ -52,7 +51,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
+            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
 
             controller.ControllerContext.ModelState.AddModelError("error", "error");
 
@@ -73,8 +72,6 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Arrange
             var mockChallengeService = new Mock<IChallengeService>();
 
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
-
             var mockParticipantQuery = new Mock<IParticipantQuery>();
 
             mockParticipantQuery.Setup(queries => queries.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
@@ -83,7 +80,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
+            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
 
             // Act
             var result = await controller.GetAsync(new ChallengeId());
@@ -108,15 +105,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             var mockChallengeService = new Mock<IChallengeService>();
 
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
-
             mockParticipantQuery.Setup(participantQuery => participantQuery.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(challenge.Participants)
                 .Verifiable();
 
             mockParticipantQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper);
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
+            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
 
             // Act
             var result = await controller.GetAsync(new ChallengeId());
@@ -137,21 +132,18 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             var mockChallengeService = new Mock<IChallengeService>();
 
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
-
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
-
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Verifiable();
+            mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
             mockChallengeService.Setup(
                     challengeQuery => challengeQuery.RegisterParticipantAsync(
-                        It.IsAny<ChallengeId>(),
+                        It.IsAny<IChallenge>(),
                         It.IsAny<UserId>(),
+                        It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
+            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
@@ -163,14 +155,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
-
-            mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Never);
+            mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockChallengeService.Verify(
                 challengeQuery => challengeQuery.RegisterParticipantAsync(
-                    It.IsAny<ChallengeId>(),
+                    It.IsAny<IChallenge>(),
                     It.IsAny<UserId>(),
+                    It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),
                     It.IsAny<CancellationToken>()),
                 Times.Never);
@@ -188,23 +179,20 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
 
             var mockChallengeService = new Mock<IChallengeService>();
 
-            var mockChallengeQuery = new Mock<IChallengeQuery>();
-
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
-
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Verifiable();
+            mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             mockChallengeService
                 .Setup(
                     challengeQuery => challengeQuery.RegisterParticipantAsync(
-                        It.IsAny<ChallengeId>(),
+                        It.IsAny<IChallenge>(),
                         It.IsAny<UserId>(),
+                        It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeQuery.Object, mockChallengeService.Object);
+            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
@@ -216,14 +204,13 @@ namespace eDoxa.Arena.Challenges.UnitTests.Areas.Challenges.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
-
-            mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Never);
+            mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockChallengeService.Verify(
                 challengeQuery => challengeQuery.RegisterParticipantAsync(
-                    It.IsAny<ChallengeId>(),
+                    It.IsAny<IChallenge>(),
                     It.IsAny<UserId>(),
+                    It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),
                     It.IsAny<CancellationToken>()),
                 Times.Once);

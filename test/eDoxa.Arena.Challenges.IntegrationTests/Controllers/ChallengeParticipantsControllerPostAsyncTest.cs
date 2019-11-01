@@ -1,17 +1,19 @@
 ﻿// Filename: ChallengeParticipantsControllerPostAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.RefitClients;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
 using eDoxa.Arena.Challenges.TestHelper;
@@ -30,7 +32,7 @@ using Moq;
 
 using Xunit;
 
-using Claim = System.Security.Claims.Claim;
+using Match = eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
@@ -59,23 +61,24 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
             var challenge = challengeFaker.FakeChallenge();
 
             var userId = new UserId();
-            var gameAccountId = new GameAccountId(Guid.NewGuid().ToString());
+            var playerId = PlayerId.Parse(Guid.NewGuid().ToString());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            // Need extension methods for complex claims.
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim($"games/{challenge.Game.NormalizedName}", playerId))
                 .WithWebHostBuilder(
-                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                        container =>
-                        {
-                            var mock = new Mock<IIdentityService>();
+                    x =>
+                    {
+                        x.ConfigureTestContainer<ContainerBuilder>(
+                            t =>
+                            {
+                                var mock = new Mock<IGamesApiRefitClient>();
 
-                            mock.Setup(identityService => identityService.HasGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                                .ReturnsAsync(true);
+                                mock.Setup(g => g.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                                    .ReturnsAsync(new List<Match>());
 
-                            mock.Setup(identityService => identityService.GetGameAccountIdAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                                .ReturnsAsync(gameAccountId);
-
-                            container.RegisterInstance(mock.Object).As<IIdentityService>();
-                        }));
+                                t.RegisterInstance(mock.Object).As<IGamesApiRefitClient>().SingleInstance();
+                            });
+                    });
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;

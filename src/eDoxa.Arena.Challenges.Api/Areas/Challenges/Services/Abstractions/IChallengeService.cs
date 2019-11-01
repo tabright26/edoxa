@@ -12,6 +12,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -21,7 +22,15 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions
 {
     public interface IChallengeService
     {
-        Task<ValidationResult> RegisterParticipantAsync(ChallengeId challengeId, UserId userId, IDateTimeProvider registeredAt, CancellationToken cancellationToken = default);
+        Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
+
+        Task<ValidationResult> RegisterParticipantAsync(
+            IChallenge challenge,
+            UserId userId,
+            PlayerId playerId,
+            IDateTimeProvider registeredAt,
+            CancellationToken cancellationToken = default
+        );
 
         Task SynchronizeAsync(Game game, TimeSpan interval, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
     }

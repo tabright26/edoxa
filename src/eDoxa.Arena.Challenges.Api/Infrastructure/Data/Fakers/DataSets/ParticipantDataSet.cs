@@ -32,11 +32,11 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
             return state != ChallengeState.Inscription ? Faker.Date.Recent(1, startedAt) : Faker.Date.Soon(1, DateTime.UtcNow.Date);
         }
 
-        public GameAccountId GameAccountId(Game game)
+        public PlayerId PlayerId(Game game)
         {
             if (game == Game.LeagueOfLegends)
             {
-                return new GameAccountId(Faker.Random.Replace("*******_******************_*_*****************"));
+                return Seedwork.Domain.Miscs.PlayerId.Parse(Faker.Random.Replace("*******_******************_*_*****************"));
             }
 
             throw new ArgumentNullException(nameof(game));

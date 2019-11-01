@@ -85,8 +85,8 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
         }
 
         public void Synchronize(
-            Func<GameAccountId, DateTime, DateTime, IEnumerable<GameReference>> getGameReferences,
-            Func<GameAccountId, GameReference, IScoring, IMatch> getMatch,
+            Func<PlayerId, DateTime, DateTime, IEnumerable<GameReference>> getGameReferences,
+            Func<PlayerId, GameReference, IScoring, IMatch> getMatch,
             IDateTimeProvider synchronizedAt
         )
         {
@@ -98,13 +98,13 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
             foreach (var participant in Participants)
             {
                 var gameReferences = getGameReferences(
-                    participant.GameAccountId,
+                    participant.PlayerId,
                     Timeline.StartedAt ?? throw new InvalidOperationException(),
                     Timeline.EndedAt ?? throw new InvalidOperationException());
 
                 foreach (var gameReference in participant.GetUnsynchronizedGameReferences(gameReferences))
                 {
-                    var match = getMatch(participant.GameAccountId, gameReference, Scoring);
+                    var match = getMatch(participant.PlayerId, gameReference, Scoring);
 
                     participant.Snapshot(match);
                 }

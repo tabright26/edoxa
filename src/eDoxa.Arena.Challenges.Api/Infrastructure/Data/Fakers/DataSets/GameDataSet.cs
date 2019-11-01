@@ -1,16 +1,13 @@
 ﻿// Filename: GameDataSet.cs
-// Date Created: 2019-09-28
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System;
 
 using Bogus;
 
 using eDoxa.Arena.Challenges.Domain.AggregateModels;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
@@ -23,32 +20,22 @@ namespace eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 
         internal Faker Faker { get; }
 
-        public GameReference Reference(Game game)
+        public GameReference Reference()
         {
-            if (game == Game.LeagueOfLegends)
-            {
-                return new GameReference(Faker.Random.Long(1000000000, 9999999999));
-            }
-
-            throw new ArgumentException(nameof(game));
+            return new GameReference(Faker.Random.Long(1000000000, 9999999999));
         }
 
-        public IGameStats Stats(Game game)
+        public IGameStats Stats()
         {
-            if (game == Game.LeagueOfLegends)
-            {
-                return new GameStats(
-                    new
-                    {
-                        Kills = Faker.Random.Int(0, 40),
-                        Deaths = Faker.Random.Int(0, 15),
-                        Assists = Faker.Random.Int(0, 50),
-                        TotalDamageDealtToChampions = Faker.Random.Int(10000, 500000),
-                        TotalHeal = Faker.Random.Int(10000, 350000)
-                    });
-            }
-
-            throw new ArgumentException(nameof(game));
+            return new GameStats(
+                new
+                {
+                    StatName1 = Faker.Random.Int(0, 40),
+                    StatName2 = Faker.Random.Int(0, 15),
+                    StatName3 = Faker.Random.Int(0, 50),
+                    StatName4 = Faker.Random.Int(10000, 500000),
+                    StatName5 = Faker.Random.Int(10000, 350000)
+                });
         }
     }
 }

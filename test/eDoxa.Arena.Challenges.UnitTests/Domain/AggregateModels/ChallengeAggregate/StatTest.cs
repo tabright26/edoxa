@@ -8,13 +8,10 @@ using System;
 
 using Bogus;
 
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Factories;
-using eDoxa.Arena.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.TestHelper;
 using eDoxa.Arena.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -28,20 +25,35 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         {
         }
 
-        public static TheoryData<StatName, StatValue, StatWeighting> StatPropsDataSets
+        public static TheoryData<StatName, StatValue, StatWeighting> StatTestData
         {
             get
             {
+                var faker = new Faker();
+
                 var data = new TheoryData<StatName, StatValue, StatWeighting>();
 
-                var stats = new Faker().Game().Stats(Game.LeagueOfLegends);
+                var scoring = new Scoring
+                {
+                    [new StatName("StatName1")] = new StatWeighting(0.00015F),
+                    [new StatName("StatName2")] = new StatWeighting(1),
+                    [new StatName("StatName3")] = new StatWeighting(0.77F),
+                    [new StatName("StatName4")] = new StatWeighting(100),
+                    [new StatName("StatName5")] = new StatWeighting(-3)
+                };
 
-                var factory = new ScoringFactory();
-
-                var strategy = factory.CreateInstance(Game.LeagueOfLegends);
+                var stats = new GameStats(
+                    new
+                    {
+                        StatName1 = faker.Random.Int(0, 40),
+                        StatName2 = faker.Random.Int(0, 15),
+                        StatName3 = faker.Random.Int(0, 50),
+                        StatName4 = faker.Random.Int(10000, 500000),
+                        StatName5 = faker.Random.Int(10000, 350000)
+                    });
 
                 var match = new StatMatch(
-                    strategy.Scoring,
+                    scoring,
                     stats,
                     new GameReference(Guid.NewGuid()),
                     new UtcNowDateTimeProvider());
@@ -56,7 +68,7 @@ namespace eDoxa.Arena.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggre
         }
 
         [Theory]
-        [MemberData(nameof(StatPropsDataSets))]
+        [MemberData(nameof(StatTestData))]
         public void Contructor_Tests(StatName name, StatValue value, StatWeighting weighting)
         {
             // Act

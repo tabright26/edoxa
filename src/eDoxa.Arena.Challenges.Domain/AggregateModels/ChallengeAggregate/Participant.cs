@@ -21,16 +21,16 @@ namespace eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly HashSet<IMatch> _matches = new HashSet<IMatch>();
 
-        public Participant(UserId userId, GameAccountId gameAccountId, IDateTimeProvider registeredAt)
+        public Participant(UserId userId, PlayerId playerId, IDateTimeProvider registeredAt)
         {
             UserId = userId;
-            GameAccountId = gameAccountId;
+            PlayerId = playerId;
             RegisteredAt = registeredAt.DateTime;
         }
 
         public UserId UserId { get; }
 
-        public GameAccountId GameAccountId { get; }
+        public PlayerId PlayerId { get; }
 
         public DateTime RegisteredAt { get; }
 

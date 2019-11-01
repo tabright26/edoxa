@@ -6,21 +6,16 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Net;
 using System.Reflection;
 
 using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.DelegatingHandlers;
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services;
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents.Extensions;
-using eDoxa.Arena.Challenges.Api.Temp.Extensions;
 using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -50,9 +45,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
-
-using Polly;
-using Polly.Extensions.Http;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -142,19 +134,6 @@ namespace eDoxa.Arena.Challenges.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-
-            // TODO: Use claims instead.
-            services.AddTransient<IdentityDelegatingHandler>();
-
-            services.AddHttpClient<IIdentityService, IdentityService>()
-                .AddHttpMessageHandler<IdentityDelegatingHandler>()
-                .AddPolicyHandler(
-                    HttpPolicyExtensions.HandleTransientHttpError()
-                        .OrResult(message => message.StatusCode == HttpStatusCode.NotFound)
-                        .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))))
-                .AddPolicyHandler(HttpPolicyExtensions.HandleTransientHttpError().CircuitBreakerAsync(5, TimeSpan.FromSeconds(30)));
-
-            services.AddArenaGames(Configuration);
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)

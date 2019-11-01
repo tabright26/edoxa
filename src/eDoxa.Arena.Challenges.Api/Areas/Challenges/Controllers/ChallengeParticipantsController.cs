@@ -1,25 +1,26 @@
 ﻿// Filename: ChallengeParticipantsController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Arena.Challenges.Domain.Queries;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using eDoxa.Arena.Challenges.Api.Areas.Challenges.Services.Abstractions;
-using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
 {
@@ -31,13 +32,11 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
     public class ChallengeParticipantsController : ControllerBase
     {
         private readonly IParticipantQuery _participantQuery;
-        private readonly IChallengeQuery _challengeQuery;
         private readonly IChallengeService _challengeService;
 
-        public ChallengeParticipantsController(IParticipantQuery participantQuery, IChallengeQuery challengeQuery, IChallengeService challengeService)
+        public ChallengeParticipantsController(IParticipantQuery participantQuery, IChallengeService challengeService)
         {
             _participantQuery = participantQuery;
-            _challengeQuery = challengeQuery;
             _challengeService = challengeService;
         }
 
@@ -74,16 +73,18 @@ namespace eDoxa.Arena.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ChallengeId challengeId)
         {
-            var userId = HttpContext.GetUserId();
-
-            var challenge = await _challengeQuery.FindChallengeAsync(challengeId);
+            var challenge = await _challengeService.FindChallengeAsync(challengeId);
 
             if (challenge == null)
             {
                 return this.NotFound("Challenge not found.");
             }
 
-            await _challengeService.RegisterParticipantAsync(challengeId, userId, new UtcNowDateTimeProvider());
+            await _challengeService.RegisterParticipantAsync(
+                challenge,
+                HttpContext.GetUserId(),
+                HttpContext.GetPlayerId(challenge.Game),
+                new UtcNowDateTimeProvider());
 
             return this.Ok("Participant as been registered.");
         }

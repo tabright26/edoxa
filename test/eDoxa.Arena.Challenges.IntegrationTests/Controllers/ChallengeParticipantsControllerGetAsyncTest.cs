@@ -4,10 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using Autofac;
+
+using eDoxa.Arena.Challenges.Api.Areas.Challenges.RefitClients;
 using eDoxa.Arena.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Arena.Challenges.Domain.Repositories;
@@ -20,7 +25,13 @@ using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
+using Microsoft.AspNetCore.TestHost;
+
+using Moq;
+
 using Xunit;
+
+using Match = eDoxa.Arena.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 {
@@ -48,7 +59,19 @@ namespace eDoxa.Arena.Challenges.IntegrationTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
-            var factory = TestApi.WithClaims();
+            var factory = TestApi.WithClaims().WithWebHostBuilder(
+                x =>
+                {
+                    x.ConfigureTestContainer<ContainerBuilder>(
+                        y =>
+                        {
+                            var mock = new Mock<IGamesApiRefitClient>();
+
+                            mock.Setup(t => t.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>())).ReturnsAsync(new List<Match>());
+
+                            y.RegisterInstance(mock.Object).As<IGamesApiRefitClient>().SingleInstance();
+                        });
+                });
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

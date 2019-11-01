@@ -20,7 +20,7 @@ namespace eDoxa.Arena.Challenges.Infrastructure.Models
 
         public DateTime RegisteredAt { get; set; }
 
-        public string GameAccountId { get; set; }
+        public string PlayerId { get; set; }
 
         public Guid UserId { get; set; }
 
