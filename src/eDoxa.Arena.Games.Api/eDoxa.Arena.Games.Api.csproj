@@ -34,7 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Arena.Games.Infrastructure\eDoxa.Arena.Games.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Games.LeagueOfLegends\eDoxa.Arena.Games.LeagueOfLegends.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Games\eDoxa.Arena.Games.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 

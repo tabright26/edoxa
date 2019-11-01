@@ -69,7 +69,6 @@ namespace eDoxa.Web.Gateway
                     ["NotificationsApiKey"] = NotificationsApi,
                     ["ArenaChallengesApiKey"] = ArenaChallengesApi,
                     ["ArenaGamesApiKey"] = ArenaGamesApi,
-                    ["ArenaGamesLeagueOfLegendsApiKey"] = ArenaGamesLeagueOfLegendsApi,
                     ["OrganizationsClansApiKey"] = OrganizationsClansApi
                 }
             );

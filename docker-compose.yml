@@ -62,6 +62,8 @@ services:
       - mssql
       - redis
       - identity.api
+      - cashier.api
+      - arena.games.api
 
   arena.games.api:
     image: ${ACR_REGISTRY:-edoxa}/arena.games.api:${ACR_TAG:-latest}
@@ -70,16 +72,7 @@ services:
       dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
     depends_on:
       - seq
-      - redis
-      - identity.api
-
-  arena.games.leagueoflegends.api:
-    image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Arena.Games.LeagueOfLegends.Api/Dockerfile
-    depends_on:
-      - seq
+      - mssql
       - redis
       - identity.api
 
@@ -102,11 +95,11 @@ services:
     depends_on:
       - seq
       - identity.api
-      - payment.api
       - cashier.api
+      - payment.api
       - notifications.api
+      - arena.games.api
       - arena.challenges.api
-      - arena.games.leagueoflegends.api
       - organizations.clans.api
 
   web.spa.proxy:

@@ -1,4 +1,4 @@
-﻿// Filename: IGameCredentialRepository.cs
+﻿// Filename: ICredentialRepository.cs
 // Date Created: 2019-10-27
 // 
 // ================================================

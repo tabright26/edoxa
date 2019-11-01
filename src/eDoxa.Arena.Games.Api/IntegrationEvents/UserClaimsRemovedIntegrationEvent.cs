@@ -1,5 +1,5 @@
 ﻿// Filename: UserClaimsRemovedIntegrationEvent.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

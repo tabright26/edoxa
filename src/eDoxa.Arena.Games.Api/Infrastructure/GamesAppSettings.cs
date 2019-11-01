@@ -33,8 +33,11 @@ namespace eDoxa.Arena.Games.Api.Infrastructure
         public AzureKeyVaultOptions AzureKeyVault { get; set; }
     }
 
-    public sealed class ConnectionStrings : IHasSqlServerConnectionString
+    public sealed class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
     {
+        [Required]
+        public string Redis { get; set; }
+
         [Required]
         public string SqlServer { get; set; }
     }

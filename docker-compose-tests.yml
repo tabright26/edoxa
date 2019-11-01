@@ -113,24 +113,7 @@ services:
       target: integration-tests
     depends_on:
       - mssql.test
-      - redis.test  
-
-  arena.games.leagueoflegends.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.unit-tests:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Arena.Games.LeagueOfLegends.Api/Dockerfile
-      target: unit-tests
-
-  arena.games.leagueoflegends.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/arena.games.leagueoflegends.integration-tests:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Arena.Games.LeagueOfLegends.Api/Dockerfile
-      target: integration-tests
-    depends_on:
-      - mssql.test
-      - redis.test  
+      - redis.test 
 
   organizations.clans.unit-tests:
     image: ${ACR_REGISTRY:-edoxa}/organizations.clans.unit-tests:${ACR_TAG:-latest}

@@ -53,8 +53,6 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.ArenaGamesApi;
 
-            yield return ApiResources.ArenaGamesLeagueOfLegendsApi;
-
             yield return ApiResources.OrganizationsClansApi;
         }
 
@@ -64,15 +62,13 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.IdentityServer.PaymentUrl);
 
-            yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl);
+            yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl, Scopes.PaymentApi);
 
             yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
 
-            yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+            yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl, Scopes.CashierApi, Scopes.ArenaGamesApi);
 
-            yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl, Scopes.ArenaGamesLeagueOfLegendsApi);
-
-            yield return ApiResources.ArenaGamesLeagueOfLegendsApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesLeagueOfLegendsUrl);
+            yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl);
 
             yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
 
@@ -120,7 +116,6 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.CashierApi.Name,
                     Scopes.ArenaChallengesApi.Name,
                     Scopes.ArenaGamesApi.Name,
-                    Scopes.ArenaGamesLeagueOfLegendsApi.Name,
                     Scopes.OrganizationsClansApi.Name
                 }
             };

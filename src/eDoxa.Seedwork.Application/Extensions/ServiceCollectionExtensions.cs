@@ -43,7 +43,6 @@ namespace eDoxa.Seedwork.Application.Extensions
                             Scopes.CashierApi,
                             Scopes.ArenaChallengesApi,
                             Scopes.ArenaGamesApi,
-                            Scopes.ArenaGamesLeagueOfLegendsApi,
                             Scopes.OrganizationsClansApi));
                 },
                 scopes);

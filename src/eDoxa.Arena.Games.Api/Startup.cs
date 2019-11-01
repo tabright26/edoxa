@@ -13,7 +13,6 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Arena.Games.Api.Areas.Credentials.RefitClient.Extensions;
 using eDoxa.Arena.Games.Api.Extensions;
 using eDoxa.Arena.Games.Api.Infrastructure;
 using eDoxa.Arena.Games.Api.Infrastructure.Data;
@@ -21,8 +20,8 @@ using eDoxa.Arena.Games.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
@@ -81,7 +80,7 @@ namespace eDoxa.Arena.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
-            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
+            services.Configure<GameOptions>(Configuration);
 
             services.AddHealthChecks(AppSettings);
 
@@ -94,13 +93,13 @@ namespace eDoxa.Arena.Games.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
+            services.AddRedisCache(Configuration);
+
             services.AddCors(
                 options =>
                 {
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
-
-            services.AddRefitClient(AppSettings);
 
             services.AddMvc(
                     options =>
@@ -145,11 +144,7 @@ namespace eDoxa.Arena.Games.Api
         {
             this.ConfigureServices(services);
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
-                Scopes.ArenaGamesLeagueOfLegendsApi);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

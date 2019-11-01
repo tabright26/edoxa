@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Arena.Games.Api.Areas.Credentials.Extensions;
 using eDoxa.Arena.Games.Domain.AggregateModels.CredentialAggregate;
+using eDoxa.Arena.Games.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 
