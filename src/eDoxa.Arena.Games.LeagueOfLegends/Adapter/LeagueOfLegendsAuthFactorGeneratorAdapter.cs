@@ -48,12 +48,12 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Adapter
 
             if (summoner == null)
             {
-                return new ValidationFailure("", "").ToResult();
+                return new ValidationFailure(string.Empty, $"{Game} summoner's name doesn't exists. Note: Only NA server is supported for the moment").ToResult();
             }
 
             if (await _authFactorRepository.AuthFactorExistsAsync(userId, Game))
             {
-                return new ValidationFailure("", "").ToResult();
+                await _authFactorRepository.RemoveAuthFactorAsync(userId, Game);
             }
 
             await _authFactorRepository.AddAuthFactorAsync(userId, Game, GenerateAuthFactor(summoner));
@@ -75,7 +75,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Adapter
                 profileIconId = random.Next(ProfileIconIdMinIndex, ProfileIconIdMaxIndex);
             }
 
-            return new LeagueOfLegendsAuthFactor(profileIconId, PlayerId.Parse(summoner.AccountId));
+            return new AuthFactor(PlayerId.Parse(summoner.AccountId), profileIconId);
         }
     }
 }

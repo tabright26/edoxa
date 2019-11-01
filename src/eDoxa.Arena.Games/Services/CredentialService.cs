@@ -39,7 +39,7 @@ namespace eDoxa.Arena.Games.Services
 
             if (!await _authFactorService.AuthFactorExistsAsync(userId, game))
             {
-                return new ValidationFailure(string.Empty, $"{game} auth factor doesn't exists.").ToResult();
+                return new ValidationFailure(string.Empty, $"{game} authentication process not started.").ToResult();
             }
 
             var authFactor = await _authFactorService.FindAuthFactorAsync(userId, game);

@@ -48,7 +48,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Adapter
 
             if (summoner.ProfileIconId != Convert.ToInt32(authFactor.Key))
             {
-                return new ValidationFailure("", "").ToResult();
+                return new ValidationFailure("_error", $"{Game} authentication process failed.").ToResult();
             }
 
             return new ValidationResult();

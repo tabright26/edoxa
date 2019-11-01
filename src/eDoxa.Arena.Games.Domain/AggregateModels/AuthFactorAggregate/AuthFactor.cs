@@ -4,26 +4,34 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Domain.Miscs;
+using System.Collections.Generic;
 
-using Newtonsoft.Json;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Arena.Games.Domain.AggregateModels.AuthFactorAggregate
 {
-    [JsonObject]
-    public class AuthFactor
+    public class AuthFactor : ValueObject
     {
-        [JsonConstructor]
-        protected AuthFactor(PlayerId playerId, object key)
+        public AuthFactor(PlayerId playerId, object key)
         {
             PlayerId = playerId;
             Key = key;
         }
 
-        [JsonProperty]
         public PlayerId PlayerId { get; }
 
-        [JsonProperty]
         public object Key { get; }
+
+        protected override IEnumerable<object> GetAtomicValues()
+        {
+            yield return PlayerId;
+            yield return Key;
+        }
+
+        public override string ToString()
+        {
+            return PlayerId;
+        }
     }
 }
