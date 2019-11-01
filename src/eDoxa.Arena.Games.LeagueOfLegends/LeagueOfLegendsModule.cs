@@ -7,7 +7,9 @@
 using Autofac;
 
 using eDoxa.Arena.Games.Abstractions.Adapter;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Arena.Games.LeagueOfLegends.Adapter;
+using eDoxa.Arena.Games.LeagueOfLegends.Services;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends
 {
@@ -15,6 +17,9 @@ namespace eDoxa.Arena.Games.LeagueOfLegends
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Services
+            builder.RegisterType<LeagueOfLegendsService>().As<ILeagueOfLegendsService>().SingleInstance();
+
             // Adapters
             builder.RegisterType<LeagueOfLegendsAuthFactorGeneratorAdapter>().As<IAuthFactorGeneratorAdapter>().InstancePerDependency();
             builder.RegisterType<LeagueOfLegendsAuthFactorValidatorAdapter>().As<IAuthFactorValidatorAdapter>().InstancePerDependency();

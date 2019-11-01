@@ -17,6 +17,7 @@ using eDoxa.Arena.Games.Api.Extensions;
 using eDoxa.Arena.Games.Api.Infrastructure;
 using eDoxa.Arena.Games.Api.Infrastructure.Data;
 using eDoxa.Arena.Games.Infrastructure;
+using eDoxa.Arena.Games.LeagueOfLegends;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
@@ -80,7 +81,9 @@ namespace eDoxa.Arena.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
-            services.Configure<GameOptions>(Configuration);
+            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
+
+            services.Configure<LeagueOfLegendsOptions>(Configuration.GetSection("Games:LeagueOfLegends"));
 
             services.AddHealthChecks(AppSettings);
 

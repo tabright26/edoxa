@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Games.Abstractions.Adapter;
 using eDoxa.Arena.Games.Domain.AggregateModels.AuthFactorAggregate;
 using eDoxa.Arena.Games.Domain.Repositories;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Arena.Games.LeagueOfLegends.Requests;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
-using RiotSharp;
 using RiotSharp.Endpoints.SummonerEndpoint;
 using RiotSharp.Misc;
 
@@ -24,19 +24,12 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Adapter
 {
     public sealed class LeagueOfLegendsAuthFactorGeneratorAdapter : AuthFactorGeneratorAdapter<LeagueOfLegendsRequest>
     {
-        private const string ApiKey = "RGAPI-5ed57054-6ce4-4882-b51f-f609545f30a0";
-
-        private static readonly RiotApi RiotApi;
-
+        private readonly ILeagueOfLegendsService _leagueOfLegendsService;
         private readonly IAuthFactorRepository _authFactorRepository;
 
-        static LeagueOfLegendsAuthFactorGeneratorAdapter()
+        public LeagueOfLegendsAuthFactorGeneratorAdapter(ILeagueOfLegendsService leagueOfLegendsService, IAuthFactorRepository authFactorRepository)
         {
-            RiotApi = RiotApi.GetDevelopmentInstance(ApiKey);
-        }
-
-        public LeagueOfLegendsAuthFactorGeneratorAdapter(IAuthFactorRepository authFactorRepository)
-        {
+            _leagueOfLegendsService = leagueOfLegendsService;
             _authFactorRepository = authFactorRepository;
         }
 
@@ -44,7 +37,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Adapter
 
         public override async Task<ValidationResult> GenerateAuthFactorAsync(UserId userId, LeagueOfLegendsRequest request)
         {
-            var summoner = await RiotApi.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
+            var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
 
             if (summoner == null)
             {

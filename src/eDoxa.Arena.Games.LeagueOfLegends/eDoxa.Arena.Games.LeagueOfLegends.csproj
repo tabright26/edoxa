@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Arena.Games.Abstractions\eDoxa.Arena.Games.Abstractions.csproj" />
+    <ProjectReference Include="..\eDoxa.Arena.Games\eDoxa.Arena.Games.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,16 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-
 using eDoxa.Arena.Games.Api.Infrastructure;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Arena.Games.Api.Controllers
 {
@@ -24,18 +19,17 @@ namespace eDoxa.Arena.Games.Api.Controllers
     [ApiExplorerSettings(GroupName = "Game Options")]
     public sealed class GameOptionsController : ControllerBase
     {
-        public GameOptionsController(IOptions<GameOptions> options)
+        public GameOptionsController(IOptions<GamesOptions> options)
         {
             Options = options.Value;
         }
 
-        private GameOptions Options { get; }
+        private GamesOptions Options { get; }
 
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Dictionary<string, GameConfig>))]
         public IActionResult GetAsync()
         {
-            return this.Ok(Options.Games);
+            return this.Ok(Options);
         }
     }
 }

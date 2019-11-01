@@ -10,31 +10,24 @@ using System.Threading.Tasks;
 using eDoxa.Arena.Games.Abstractions.Adapter;
 using eDoxa.Arena.Games.Domain.AggregateModels.AuthFactorAggregate;
 using eDoxa.Arena.Games.Domain.Repositories;
+using eDoxa.Arena.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
-using RiotSharp;
 using RiotSharp.Misc;
 
 namespace eDoxa.Arena.Games.LeagueOfLegends.Adapter
 {
     public sealed class LeagueOfLegendsAuthFactorValidatorAdapter : IAuthFactorValidatorAdapter
     {
-        private const string ApiKey = "RGAPI-5ed57054-6ce4-4882-b51f-f609545f30a0";
-
-        private static readonly RiotApi RiotApi;
-
+        private readonly ILeagueOfLegendsService _leagueOfLegendsService;
         private readonly IAuthFactorRepository _authFactorRepository;
 
-        static LeagueOfLegendsAuthFactorValidatorAdapter()
+        public LeagueOfLegendsAuthFactorValidatorAdapter(ILeagueOfLegendsService leagueOfLegendsService, IAuthFactorRepository authFactorRepository)
         {
-            RiotApi = RiotApi.GetDevelopmentInstance(ApiKey);
-        }
-
-        public LeagueOfLegendsAuthFactorValidatorAdapter(IAuthFactorRepository authFactorRepository)
-        {
+            _leagueOfLegendsService = leagueOfLegendsService;
             _authFactorRepository = authFactorRepository;
         }
 
@@ -44,7 +37,7 @@ namespace eDoxa.Arena.Games.LeagueOfLegends.Adapter
         {
             await _authFactorRepository.RemoveAuthFactorAsync(userId, Game);
 
-            var summoner = await RiotApi.Summoner.GetSummonerByAccountIdAsync(Region.Na, authFactor.PlayerId);
+            var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByAccountIdAsync(Region.Na, authFactor.PlayerId);
 
             if (summoner.ProfileIconId != Convert.ToInt32(authFactor.Key))
             {
