@@ -27,7 +27,7 @@ namespace eDoxa.Arena.Games.Api.Controllers
         private GamesOptions Options { get; }
 
         [HttpGet]
-        public IActionResult GetAsync()
+        public IActionResult Get()
         {
             return this.Ok(Options);
         }
