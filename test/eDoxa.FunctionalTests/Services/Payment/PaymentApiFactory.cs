@@ -7,6 +7,8 @@
 using System.IO;
 using System.Reflection;
 
+using Autofac;
+
 using eDoxa.Payment.Api;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
@@ -15,6 +17,7 @@ using eDoxa.Seedwork.TestHelper.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.FunctionalTests.Services.Payment
 {
@@ -25,6 +28,16 @@ namespace eDoxa.FunctionalTests.Services.Payment
             builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PaymentApiFactory)).Location), "Services/Payment"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
+
+            base.ConfigureWebHost(builder);
+        }
+
+        protected override void ConfigureTestServices(IServiceCollection services)
+        {
+        }
+
+        protected override void ContainerTestBuilder(ContainerBuilder builder)
+        {
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

@@ -18,6 +18,7 @@ using eDoxa.ServiceBus.Moq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Notifications.TestHelper.Fixtures
 {
@@ -29,11 +30,16 @@ namespace eDoxa.Notifications.TestHelper.Fixtures
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
-            builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    container.RegisterModule<MockServiceBusModule>();
-                });
+            base.ConfigureWebHost(builder);
+        }
+
+        protected override void ConfigureTestServices(IServiceCollection services)
+        {
+        }
+
+        protected override void ContainerTestBuilder(ContainerBuilder builder)
+        {
+            builder.RegisterModule<MockServiceBusModule>();
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

@@ -7,6 +7,8 @@
 using System.IO;
 using System.Reflection;
 
+using Autofac;
+
 using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
@@ -15,6 +17,7 @@ using eDoxa.Seedwork.TestHelper.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.FunctionalTests.Services.Cashier
 {
@@ -25,6 +28,16 @@ namespace eDoxa.FunctionalTests.Services.Cashier
             builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierApiFactory)).Location), "Services/Cashier"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
+
+            base.ConfigureWebHost(builder);
+        }
+
+        protected override void ConfigureTestServices(IServiceCollection services)
+        {
+        }
+
+        protected override void ContainerTestBuilder(ContainerBuilder builder)
+        {
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

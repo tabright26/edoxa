@@ -1,5 +1,5 @@
-﻿// Filename: TestApiFactory.cs
-// Date Created: 2019-09-27
+﻿// Filename: TestApiFixture.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,6 +18,7 @@ using eDoxa.ServiceBus.Moq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.TestHelper.Fixtures
 {
@@ -29,11 +30,7 @@ namespace eDoxa.Cashier.TestHelper.Fixtures
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
-            builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    container.RegisterModule<MockServiceBusModule>();
-                });
+            base.ConfigureWebHost(builder);
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)
@@ -43,6 +40,15 @@ namespace eDoxa.Cashier.TestHelper.Fixtures
             server.EnsureCreatedDbContext<CashierDbContext>();
 
             return server;
+        }
+
+        protected override void ConfigureTestServices(IServiceCollection services)
+        {
+        }
+
+        protected override void ContainerTestBuilder(ContainerBuilder builder)
+        {
+            builder.RegisterModule<MockServiceBusModule>();
         }
     }
 }

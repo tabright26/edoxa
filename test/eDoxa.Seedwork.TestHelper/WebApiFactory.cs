@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Security.Claims;
 
 using Autofac;
@@ -12,19 +11,21 @@ using Autofac;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.Seedwork.TestHelper.Modules;
 
-using IdentityModel;
-
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.TestHelper
 {
     public abstract class WebApiFactory<TStartup> : WebApplicationFactory<TStartup>
     where TStartup : class
     {
-        public WebApplicationFactory<TStartup> WithDefaultClaims()
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            return this.WithClaims(new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()));
+            builder.ConfigureTestServices(this.ConfigureTestServices);
+            
+            builder.ConfigureTestContainer<ContainerBuilder>(this.ContainerTestBuilder);
         }
 
         public virtual WebApplicationFactory<TStartup> WithClaims(params Claim[] claims)
@@ -38,5 +39,9 @@ namespace eDoxa.Seedwork.TestHelper
                 }
             );
         }
+
+        protected abstract void ConfigureTestServices(IServiceCollection services);
+
+        protected abstract void ContainerTestBuilder(ContainerBuilder builder);
     }
 }
