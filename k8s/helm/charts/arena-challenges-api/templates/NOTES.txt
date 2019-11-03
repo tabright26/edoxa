@@ -1,2 +1,0 @@
-eDoxa Arena Challenges API installed.
--------------------------------------

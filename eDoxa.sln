@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EEA9BD6B-DDFF-4580-99D3-0FBBC644FC4D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{41C25D4F-945B-4C32-99B7-E8F8F92CF28F}"
+	ProjectSection(SolutionItems) = preProject
+		test\docker-compose.test.yml = test\docker-compose.test.yml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Seedworks", "Seedworks", "{1307B4CE-04FF-4315-BC01-0371760D5C26}"
 EndProject
@@ -93,25 +96,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Organizations.Clans.IntegrationTests", "test\eDoxa.Organizations.Clans.IntegrationTests\eDoxa.Organizations.Clans.IntegrationTests.csproj", "{3BEE276D-6B31-4572-93E1-28F21E69C29C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "azure", "azure", "{16C384AF-AC4B-4A3E-BE4D-81F7D27AFBD7}"
-	ProjectSection(SolutionItems) = preProject
-		cli\azure\az-acr-login.ps1 = cli\azure\az-acr-login.ps1
-		cli\azure\az-login.ps1 = cli\azure\az-login.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{C90B3D4F-F4F6-4769-99DD-21DE11589792}"
-	ProjectSection(SolutionItems) = preProject
-		cli\docker\docker-firewall-rule.ps1 = cli\docker\docker-firewall-rule.ps1
-		cli\docker\docker-remove-containers.ps1 = cli\docker\docker-remove-containers.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "compose", "compose", "{5A5DFE02-CDBD-4B57-AB44-5F8E0489C9D9}"
-	ProjectSection(SolutionItems) = preProject
-		cli\docker\compose\docker-compose-pull.ps1 = cli\docker\compose\docker-compose-pull.ps1
-		cli\docker\compose\docker-compose-testing.ps1 = cli\docker\compose\docker-compose-testing.ps1
-		cli\docker\compose\docker-compose-up.ps1 = cli\docker\compose\docker-compose-up.ps1
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notifications", "Notifications", "{24E16D8E-A0C5-4B26-BF36-EBBE730FF234}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Notifications.Api", "src\eDoxa.Notifications.Api\eDoxa.Notifications.Api.csproj", "{093F7F63-BC13-4892-978A-3142887B3AA5}"
@@ -156,11 +140,26 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Payment.TestHelper", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Seedwork.TestHelper", "test\eDoxa.Seedwork.TestHelper\eDoxa.Seedwork.TestHelper.csproj", "{36A49358-2002-4278-923E-45D4BDD3469F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.LeagueOfLegends", "src\eDoxa.Arena.Games.LeagueOfLegends\eDoxa.Arena.Games.LeagueOfLegends.csproj", "{3BB1313E-0FD5-49D3-8154-B590B8BB6E2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.LeagueOfLegends", "src\eDoxa.Arena.Games.LeagueOfLegends\eDoxa.Arena.Games.LeagueOfLegends.csproj", "{3BB1313E-0FD5-49D3-8154-B590B8BB6E2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games.Abstractions", "src\eDoxa.Arena.Games.Abstractions\eDoxa.Arena.Games.Abstractions.csproj", "{C48F4B2B-6FC5-4F25-BA17-240F005DE5B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games.Abstractions", "src\eDoxa.Arena.Games.Abstractions\eDoxa.Arena.Games.Abstractions.csproj", "{C48F4B2B-6FC5-4F25-BA17-240F005DE5B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Arena.Games", "src\eDoxa.Arena.Games\eDoxa.Arena.Games.csproj", "{E15462CF-AD7B-4AC3-9642-4C5C076A37E2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Arena.Games", "src\eDoxa.Arena.Games\eDoxa.Arena.Games.csproj", "{E15462CF-AD7B-4AC3-9642-4C5C076A37E2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{63922276-5615-4A61-8A84-B57E676C6D47}"
+	ProjectSection(SolutionItems) = preProject
+		build\.env = build\.env
+		build\docker-compose.ci.test.yml = build\docker-compose.ci.test.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "powershell", "powershell", "{EDC9E143-7B40-40BE-9AB8-10EE8A346EB9}"
+	ProjectSection(SolutionItems) = preProject
+		powershell\az-acr-login.ps1 = powershell\az-acr-login.ps1
+		powershell\az-login.ps1 = powershell\az-login.ps1
+		powershell\docker-compose.test-up.ps1 = powershell\docker-compose.test-up.ps1
+		powershell\docker-container-rm.ps1 = powershell\docker-container-rm.ps1
+		powershell\firewall-rule.ps1 = powershell\firewall-rule.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -432,9 +431,6 @@ Global
 		{D371B7DD-38C3-42B5-896C-F317A68CD25E} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 		{E88CBFB1-9133-429F-8E68-F69724C34277} = {77BF035E-3B62-4A95-A525-90E94E48038B}
 		{3BEE276D-6B31-4572-93E1-28F21E69C29C} = {77BF035E-3B62-4A95-A525-90E94E48038B}
-		{16C384AF-AC4B-4A3E-BE4D-81F7D27AFBD7} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
-		{C90B3D4F-F4F6-4769-99DD-21DE11589792} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
-		{5A5DFE02-CDBD-4B57-AB44-5F8E0489C9D9} = {C90B3D4F-F4F6-4769-99DD-21DE11589792}
 		{24E16D8E-A0C5-4B26-BF36-EBBE730FF234} = {7942CE31-3804-446A-845B-0451884BB6B7}
 		{093F7F63-BC13-4892-978A-3142887B3AA5} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
 		{B015B2B4-C5D1-4EE8-B7BB-661D3073C1FE} = {24E16D8E-A0C5-4B26-BF36-EBBE730FF234}
@@ -460,6 +456,8 @@ Global
 		{3BB1313E-0FD5-49D3-8154-B590B8BB6E2F} = {B2B5AC31-D0E2-402C-87C6-2DFFBAA690D5}
 		{C48F4B2B-6FC5-4F25-BA17-240F005DE5B5} = {B2B5AC31-D0E2-402C-87C6-2DFFBAA690D5}
 		{E15462CF-AD7B-4AC3-9642-4C5C076A37E2} = {B2B5AC31-D0E2-402C-87C6-2DFFBAA690D5}
+		{63922276-5615-4A61-8A84-B57E676C6D47} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
+		{EDC9E143-7B40-40BE-9AB8-10EE8A346EB9} = {6320F9AE-AC74-456A-869F-5A570C3467AB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

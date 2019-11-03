@@ -1,0 +1,262 @@
+version: '3.7'
+
+services:
+  mssql.test:
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
+    environment:
+      - SA_PASSWORD=fnU3Www9TnBDp3MA
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - "5433:1433"
+
+  rabbitmq.test:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "19672:15672"
+      - "9672:5672"
+
+  redis.test:
+    image: redis:5.0.5
+    ports:
+      - "10379:6379"
+
+  seedwork.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/seedwork.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: test/eDoxa.Seedwork.UnitTests/Dockerfile
+
+  identity.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
+      target: unit-tests
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Identity.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+      
+  identity.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Identity.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - WebSpaProxyUrl=http://${HOST:-localhost}:5300
+      - Endpoints__IdentityUrl=http://identity.api
+      - Swagger__Enabled=false
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  payment.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/payment.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+      target: unit-tests
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Payment.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  payment.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/payment.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Payment.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  cashier.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+      target: unit-tests
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Cashier.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  cashier.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Cashier.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__PaymentUrl=http://payment.api
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  notifications.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+      target: unit-tests
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Notifications.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  notifications.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Notifications.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000  
+      - Endpoints__IdentityUrl=http://identity.api   
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+      
+  arena.challenges.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
+      target: unit-tests
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  arena.challenges.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__CashierUrl=http://cashier.api
+      - Endpoints__GamesUrl=http://arena.games.api
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  arena.games.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
+      target: unit-tests
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Games.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  arena.games.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/arena.games.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test 
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Games.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  organizations.clans.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/organizations.clans.unit-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Organizations.Clans.Api/Dockerfile
+      target: unit-tests
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Organizations.Clans.UnitTests.trx"
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
+
+  organizations.clans.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/organizations.clans.integration-tests:${ACR_TAG:-latest}
+    build:
+      context: ../
+      dockerfile: src/eDoxa.Organizations.Clans.Api/Dockerfile
+      target: integration-tests
+    depends_on:
+      - mssql.test
+      - redis.test
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Organizations.Clans.IntegrationTests.trx"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+    volumes:
+      - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
