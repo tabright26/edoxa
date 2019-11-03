@@ -1,5 +1,5 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandlerTest.cs
-// Date Created: 2019-10-06
+﻿// Filename: DepositProcessedIntegrationEventHandlerTest.cs
+// Date Created: 2019-11-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,7 +12,7 @@ using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.FunctionalTests.Services.Cashier;
+using eDoxa.FunctionalTests.Cashier;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
@@ -31,11 +31,11 @@ using Xunit;
 
 using Account = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account;
 
-namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
+namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
 {
-    public sealed class WithdrawalProcessedIntegrationEventHandlerTest : IClassFixture<CashierApiFactory>
+    public sealed class DepositProcessedIntegrationEventHandlerTest : IClassFixture<CashierApiFactory>
     {
-        public WithdrawalProcessedIntegrationEventHandlerTest(CashierApiFactory cashierApiFactory)
+        public DepositProcessedIntegrationEventHandlerTest(CashierApiFactory cashierApiFactory)
         {
             cashierApiFactory.CreateClient();
             _testServer = cashierApiFactory.Server;
@@ -74,31 +74,33 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
             return null;
         }
 
-        // TODO: The method name must be written as a test scenario.
         [Fact]
+
+        // TODO: The method name must be written as a test scenario.
         public async Task TransactionStatus_ShouldBeFailed()
         {
             using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
-                        var mockStripeCustomerSerivce = new Mock<IStripeAccountService>();
+                        var mockStripeCustomerSerivce = new Mock<IStripeCustomerService>();
 
-                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId");
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<UserId>()))
+                            .ReturnsAsync("CustomerId");
 
-                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeAccountService>();
+                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
-                        var mockStripeService = new Mock<IStripeTransferService>();
+                        var mockStripeService = new Mock<IStripeInvoiceService>();
 
                         mockStripeService.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
+                                stripeService => stripeService.CreateInvoiceAsync(
                                     It.IsAny<string>(),
                                     It.IsAny<TransactionId>(),
                                     It.IsAny<long>(),
                                     It.IsAny<string>()))
                             .Throws<StripeException>();
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeInvoiceService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())
@@ -121,7 +123,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
                         await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(
+                            new UserAccountDepositIntegrationEvent(
                                 account.UserId,
                                 "noreply@edoxa.gg",
                                 moneyDepositTransaction.Id,
@@ -137,33 +139,36 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
             }
         }
 
-        // TODO: The method name must be written as a test scenario.
         [Fact]
+
+        // TODO: The method name must be written as a test scenario.
         public async Task TransactionStatus_ShouldBeSucceded()
         {
             using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
-                        var mockStripeAccountSerivce = new Mock<IStripeAccountService>();
+                        var mockStripeCustomerSerivce = new Mock<IStripeCustomerService>();
 
-                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.HasAccountVerifiedAsync(It.IsAny<string>())).ReturnsAsync(true);
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetCustomerIdAsync(It.IsAny<UserId>()))
+                            .ReturnsAsync("CustomerId");
 
-                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("AccountId");
+                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.HasDefaultPaymentMethodAsync(It.IsAny<string>()))
+                            .ReturnsAsync(true);
 
-                        container.RegisterInstance(mockStripeAccountSerivce.Object).As<IStripeAccountService>();
+                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeCustomerService>();
 
-                        var mockStripeService = new Mock<IStripeTransferService>();
+                        var mockStripeService = new Mock<IStripeInvoiceService>();
 
                         mockStripeService.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
+                                stripeService => stripeService.CreateInvoiceAsync(
                                     It.IsAny<string>(),
                                     It.IsAny<TransactionId>(),
                                     It.IsAny<long>(),
                                     It.IsAny<string>()))
                             .Returns(Task.CompletedTask);
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
+                        container.RegisterInstance(mockStripeService.Object).As<IStripeInvoiceService>();
                     }));
 
             using (paymentWebApplicationFactory.CreateClient())
@@ -186,7 +191,7 @@ namespace eDoxa.FunctionalTests.Services.Payment.IntegrationEvents
                         var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
                         await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(
+                            new UserAccountDepositIntegrationEvent(
                                 account.UserId,
                                 "noreply@edoxa.gg",
                                 moneyDepositTransaction.Id,

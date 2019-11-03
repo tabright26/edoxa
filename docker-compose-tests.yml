@@ -4,6 +4,9 @@ services:
   mssql.test:
     image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
 
+  rabbitmq.test:
+    image: rabbitmq:3-management-alpine
+
   redis.test:
     image: redis:5.0.5
 

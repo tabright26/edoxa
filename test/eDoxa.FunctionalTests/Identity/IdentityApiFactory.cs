@@ -1,5 +1,5 @@
-﻿// Filename: PaymentWebApiFactory.cs
-// Date Created: 2019-08-18
+﻿// Filename: IdentityApiFactory.cs
+// Date Created: 2019-11-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,8 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Payment.Api;
-using eDoxa.Payment.Infrastructure;
+using eDoxa.Identity.Api;
+using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
@@ -19,13 +19,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.FunctionalTests.Services.Payment
+namespace eDoxa.FunctionalTests.Identity
 {
-    public sealed class PaymentApiFactory : WebApiFactory<Startup>
+    public sealed class IdentityApiFactory : IdentityApiFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(PaymentApiFactory)).Location), "Services/Payment"));
+            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityApiFactory)).Location), "Identity"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
@@ -44,7 +44,7 @@ namespace eDoxa.FunctionalTests.Services.Payment
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<PaymentDbContext>();
+            server.EnsureCreatedDbContext<IdentityDbContext>();
 
             return server;
         }

@@ -9,6 +9,11 @@ services:
     ports:
       - "5433:1433"
 
+  rabbitmq.test:
+    ports:
+      - "19672:15672"
+      - "9672:5672"
+
   redis.test:
     ports:
       - "10379:6379"

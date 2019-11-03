@@ -31,10 +31,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Services\Arena\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Services\Cashier\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Services\Identity\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Services\Payment\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Cashier\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Identity\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Payment\appsettings.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

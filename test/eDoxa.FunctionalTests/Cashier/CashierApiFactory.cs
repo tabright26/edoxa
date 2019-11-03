@@ -1,5 +1,5 @@
-﻿// Filename: ArenaChallengesWebApiFactory.cs
-// Date Created: 2019-08-18
+﻿// Filename: CashierApiFactory.cs
+// Date Created: 2019-11-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,8 +9,8 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Cashier.Api;
+using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
@@ -19,15 +19,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.FunctionalTests.Services.Arena.Challenges
+namespace eDoxa.FunctionalTests.Cashier
 {
-    public sealed class ArenaChallengesApiFactory : WebApiFactory<Startup>
+    public sealed class CashierApiFactory : WebApiFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(
-                Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ArenaChallengesApiFactory)).Location), "Services/Arena/Challenges")
-            );
+            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(CashierApiFactory)).Location), "Cashier"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
@@ -46,7 +44,7 @@ namespace eDoxa.FunctionalTests.Services.Arena.Challenges
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
+            server.EnsureCreatedDbContext<CashierDbContext>();
 
             return server;
         }
