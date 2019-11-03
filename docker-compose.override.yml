@@ -29,11 +29,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${MSSQL_IDENTITY:-Server=mssql;Database=Services.Identity;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__Redis=${REDIS:-redis}
-      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaProxyUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity.api
@@ -53,9 +52,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${MSSQL_PAYMENT:-Server=mssql;Database=Services.Payment;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
     ports:
@@ -66,9 +65,9 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${MSSQL_CASHIER:-Server=mssql;Database=Services.Cashier;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME} 
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
       - Endpoints__PaymentUrl=http://payment.api
@@ -80,10 +79,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${MSSQL_NOTIFICATIONS:-Server=mssql;Database=Services.Notifications;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
-      - ConnectionStrings__AzureBlobStorage=${AS_NOTIFICATIONS:-DefaultEndpointsProtocol=https;AccountName=edoxa;AccountKey=KjL1k5kHKwVPRPGMSCbvI4w9kx/ql11p+P86u3XnsohS6kGTS2E8f/sqxnEEykJ5lblC3LrHo1KmujXs5cGN/Q==;EndpointSuffix=core.windows.net;BlobEndpoint=https://edoxa.blob.core.windows.net/dev/}
+      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000  
       - Endpoints__IdentityUrl=http://identity.api    
     ports:
@@ -94,10 +93,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${MSSQL_ARENA_CHALLENGES:-Server=mssql;Database=Services.Arena.Challenges;User Id=sa;Password=fnU3Www9TnBDp3MA}      
-      - ConnectionStrings__Redis=${REDIS:-redis}
-      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
       - Endpoints__CashierUrl=http://cashier.api
@@ -110,10 +109,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${MSSQL_ARENA_GAMES:-Server=mssql;Database=Services.Arena.Games;User Id=sa;Password=fnU3Www9TnBDp3MA}      
-      - ConnectionStrings__Redis=${REDIS:-redis}
-      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
     ports:
@@ -124,10 +123,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${MSSQL_ORGANIZATIONS_CLANS:-Server=mssql;Database=Services.Organizations.Clans;User Id=sa;Password=fnU3Www9TnBDp3MA}
-      - ConnectionStrings__AzureServiceBus=${ASB_HOSTNAME}
-      - ConnectionStrings__AzureBlobStorage=${AS_ORGANIZATIONS_CLANS:-DefaultEndpointsProtocol=https;AccountName=edoxa;AccountKey=KjL1k5kHKwVPRPGMSCbvI4w9kx/ql11p+P86u3XnsohS6kGTS2E8f/sqxnEEykJ5lblC3LrHo1KmujXs5cGN/Q==;EndpointSuffix=core.windows.net;BlobEndpoint=https://edoxa.blob.core.windows.net/dev/}
+      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
     ports:
@@ -156,9 +155,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__Redis=${REDIS:-redis}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - AzureKubernetesServiceEnabled=${AKS_ENABLE:-false}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaClientUrl=http://${HOST:-localhost}:3000
       - WebGatewayUrl=http://web.gateway
