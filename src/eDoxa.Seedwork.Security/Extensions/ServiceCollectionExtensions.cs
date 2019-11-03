@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-10-25
+// Date Created: 2019-10-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,12 +18,14 @@ namespace eDoxa.Seedwork.Security.Extensions
         {
             if (configuration.GetValue<bool>("AzureKubernetesServiceEnabled"))
             {
+                var connectionString = new KeyVaultConnectionStringBuilder(configuration.GetConnectionString("AzureKeyVault"));
+
                 services.AddDataProtection(options => options.ApplicationDiscriminator = discriminator)
                     .PersistKeysToRedis(Connect(configuration.GetConnectionString("Redis")), "DataProtection-Keys")
                     .ProtectKeysWithAzureKeyVault(
-                        $"https://{configuration["AzureKeyVault:Name"]}.vault.azure.net/keys/dataprotection/",
-                        configuration["AzureKeyVault:ClientId"],
-                        configuration["AzureKeyVault:ClientSecret"]);
+                        $"https://{connectionString.Name}.vault.azure.net/keys/dataprotection/",
+                        connectionString.ClientId,
+                        connectionString.ClientSecret);
             }
         }
     }

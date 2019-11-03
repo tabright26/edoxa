@@ -7,6 +7,9 @@ services:
   redis:
     image: redis:5.0.5
 
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
   seq:
     image: datalust/seq:latest
 

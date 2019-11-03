@@ -58,7 +58,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= _redirectService.RedirectToWebSpa();
+            returnUrl ??= _redirectService.RedirectToWebSpaProxy();
 
             if (ModelState.IsValid)
             {
@@ -81,7 +81,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
+                    var callbackUrl = $"{_redirectService.RedirectToWebSpaProxy("/email/confirm")}?userId={user.Id}&code={code}";
 
                     await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
                         UserId.FromGuid(user.Id),

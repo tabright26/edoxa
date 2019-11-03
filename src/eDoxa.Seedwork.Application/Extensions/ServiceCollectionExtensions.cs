@@ -27,7 +27,7 @@ namespace eDoxa.Seedwork.Application.Extensions
         )
         {
             services.AddSwagger(
-                authorityAppSettings.Authority.PublicUrl,
+                authorityAppSettings.Authority,
                 apiResourceAppSettings.ApiResource.Name,
                 apiResourceAppSettings.ApiResource.DisplayName,
                 apiResourceAppSettings.ApiResource.Description,
@@ -41,6 +41,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                             Scopes.IdentityApi,
                             Scopes.PaymentApi,
                             Scopes.CashierApi,
+                            Scopes.NotificationsApi,
                             Scopes.ArenaChallengesApi,
                             Scopes.ArenaGamesApi,
                             Scopes.OrganizationsClansApi));

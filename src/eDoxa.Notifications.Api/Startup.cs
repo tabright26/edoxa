@@ -13,7 +13,6 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Notifications.Api.Extensions;
 using eDoxa.Notifications.Api.Infrastructure;
 using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
@@ -21,6 +20,7 @@ using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
@@ -45,6 +45,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
 
@@ -54,6 +55,8 @@ namespace eDoxa.Notifications.Api
 {
     public class Startup
     {
+        private const string AzureServiceBusDiscriminator = "notifications";
+
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -82,18 +85,24 @@ namespace eDoxa.Notifications.Api
         {
             services.AddAppSettings<NotificationsAppSettings>(Configuration);
 
-            services.AddHealthChecks(AppSettings);
+            services.AddHealthChecks()
+                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddIdentityServer(AppSettings)
+                .AddAzureKeyVault(Configuration)
+                .AddSqlServer(Configuration)
+                .AddAzureBlobStorage(Configuration)
+                .AddAzureServiceBusTopic(Configuration);
 
             services.AddDbContext<NotificationsDbContext>(
                 options => options.UseSqlServer(
-                    AppSettings.ConnectionStrings.SqlServer,
+                    Configuration.GetSqlServerConnectionString()!,
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
-            services.AddAzureStorage(Configuration.GetConnectionString("AzureStorage"));
+            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
 
             services.AddCors(
                 options =>
@@ -134,7 +143,7 @@ namespace eDoxa.Notifications.Api
                     options =>
                     {
                         options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.Authority = AppSettings.Endpoints.IdentityUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -149,7 +158,7 @@ namespace eDoxa.Notifications.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "notifications"));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
 
             builder.RegisterModule<NotificationsModule>();
         }

@@ -12,7 +12,6 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Arena.Challenges.Api.Extensions;
 using eDoxa.Arena.Challenges.Api.Infrastructure;
 using eDoxa.Arena.Challenges.Api.Infrastructure.Data;
 using eDoxa.Arena.Challenges.Api.IntegrationEvents.Extensions;
@@ -20,6 +19,7 @@ using eDoxa.Arena.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
@@ -44,6 +44,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
 
@@ -53,6 +54,8 @@ namespace eDoxa.Arena.Challenges.Api
 {
     public sealed class Startup
     {
+        private const string AzureServiceBusDiscriminator = "challenges";
+
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -81,11 +84,19 @@ namespace eDoxa.Arena.Challenges.Api
         {
             services.AddAppSettings<ArenaChallengesAppSettings>(Configuration);
 
-            services.AddHealthChecks(AppSettings);
+            services.AddHealthChecks()
+                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddIdentityServer(AppSettings)
+                .AddAzureKeyVault(Configuration)
+                .AddSqlServer(Configuration)
+                .AddRedis(Configuration)
+                .AddAzureServiceBusTopic(Configuration)
+                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, "cashierapi")
+                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, "gamesapi");
 
             services.AddDbContext<ArenaChallengesDbContext>(
                 options => options.UseSqlServer(
-                    AppSettings.ConnectionStrings.SqlServer,
+                    Configuration.GetSqlServerConnectionString(),
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
@@ -131,7 +142,7 @@ namespace eDoxa.Arena.Challenges.Api
                     options =>
                     {
                         options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.Authority = AppSettings.Endpoints.IdentityUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -146,7 +157,7 @@ namespace eDoxa.Arena.Challenges.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "arena.challenges"));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
 
             builder.RegisterModule<ArenaChallengesModule>();
         }

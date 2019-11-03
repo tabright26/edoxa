@@ -7,8 +7,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public interface IRedirectService
     {
-        string RedirectToWebSpa(string url = "/");
+        string RedirectToWebSpaProxy(string url = "/");
 
-        string RedirectToIdentity(string url = "/");
+        string RedirectToAuthority(string url = "/");
     }
 }

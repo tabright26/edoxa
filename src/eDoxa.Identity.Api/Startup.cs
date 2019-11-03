@@ -25,6 +25,7 @@ using eDoxa.Identity.Api.Services;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
@@ -54,6 +55,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
 
@@ -63,6 +65,8 @@ namespace eDoxa.Identity.Api
 {
     public sealed class Startup
     {
+        private const string AzureServiceBusDiscriminator = "identity";
+
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -91,24 +95,18 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
-            services.AddHealthChecks(AppSettings);
+            services.AddHealthChecks()
+                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddAzureKeyVault(Configuration)
+                .AddSqlServer(Configuration)
+                .AddRedis(Configuration)
+                .AddAzureServiceBusTopic(Configuration);
 
             services.AddDataProtection(Configuration, AppSettings.ApiResource.Name);
 
-            //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
-            //{
-            //    services.AddDataProtection(
-            //            options =>
-            //            {
-            //                options.ApplicationDiscriminator = typeof(Program).Namespace; ;
-            //            }
-            //        )
-            //        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
-            //}
-
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
-                    AppSettings.ConnectionStrings.SqlServer,
+                    Configuration.GetSqlServerConnectionString()!,
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
@@ -212,7 +210,7 @@ namespace eDoxa.Identity.Api
             services.AddIdentityServer(
                     options =>
                     {
-                        options.IssuerUri = AppSettings.Authority.PrivateUrl;
+                        options.IssuerUri = AppSettings.Endpoints.IdentityUrl;
                         options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
                         options.Events.RaiseInformationEvents = true;
                         options.Events.RaiseSuccessEvents = true;
@@ -239,7 +237,7 @@ namespace eDoxa.Identity.Api
                     options =>
                     {
                         options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.Authority = AppSettings.Endpoints.IdentityUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
@@ -254,7 +252,7 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "identity"));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
 
             builder.RegisterModule<IdentityModule>();
         }

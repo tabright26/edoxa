@@ -15,57 +15,54 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public class IdentityAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
+    public class IdentityAppSettings : IHasApiResourceAppSettings<AuthorityEndpointsOptions>
     {
-        [Required]
-        public IdentityServerOptions IdentityServer { get; set; }
-
-        [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
-
         [Required]
         public ApiResource ApiResource { get; set; }
 
         [Required]
-        public AuthorityOptions Authority { get; set; }
+        public string Authority { get; set; }
 
         [Required]
-        public AzureKeyVaultOptions AzureKeyVault { get; set; }
+        public string WebSpaProxyUrl { get; set; }
+
+        [Required]
+        public AuthorityEndpointsOptions Endpoints { get; set; }
+
+        [Required]
+        public SwaggerOptions Swagger { get; set; }
     }
 
-    public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
+    public sealed class SwaggerOptions
     {
         [Required]
-        public string Redis { get; set; }
+        public bool Enabled { get; set; }
 
         [Required]
-        public string SqlServer { get; set; }
+        public SwaggerEndpointsOptions Endpoints { get; set; }
     }
 
-    public class IdentityServerOptions
+    public sealed class SwaggerEndpointsOptions
     {
+        [Required]
         public string IdentityUrl { get; set; }
 
+        [Required]
         public string PaymentUrl { get; set; }
 
+        [Required]
         public string CashierUrl { get; set; }
 
+        [Required]
         public string NotificationsUrl { get; set; }
 
-        public string ArenaChallengesUrl { get; set; }
-
-        public string ArenaGamesUrl { get; set; }
-
-        public string ArenaGamesLeagueOfLegendsUrl { get; set; }
-
-        public string OrganizationsClansUrl { get; set; }
-
-        public WebOptions Web { get; set; }
-    }
-
-    public class WebOptions
-    {
         [Required]
-        public string SpaUrl { get; set; }
+        public string ChallengesUrl { get; set; }
+
+        [Required]
+        public string GamesUrl { get; set; }
+        
+        [Required]
+        public string ClansUrl { get; set; }
     }
 }

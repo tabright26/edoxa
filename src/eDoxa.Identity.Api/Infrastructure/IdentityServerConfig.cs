@@ -58,19 +58,22 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
         {
-            yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.IdentityServer.IdentityUrl);
+            if (appSettings.Swagger.Enabled)
+            {
+                yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.Swagger.Endpoints.IdentityUrl);
 
-            yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.IdentityServer.PaymentUrl);
+                yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Swagger.Endpoints.PaymentUrl);
 
-            yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl, Scopes.PaymentApi);
+                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl, Scopes.PaymentApi);
 
-            yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
+                yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
 
-            yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl, Scopes.CashierApi, Scopes.ArenaGamesApi);
+                yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl, Scopes.CashierApi, Scopes.ArenaGamesApi);
 
-            yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl);
+                yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
 
-            yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
+                yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl); 
+            }
 
             yield return new Client
             {
@@ -78,22 +81,22 @@ namespace eDoxa.Identity.Api.Infrastructure
                 ClientName = "eDoxa Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    appSettings.IdentityServer.Web.SpaUrl,
+                    appSettings.WebSpaProxyUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    appSettings.IdentityServer.Web.SpaUrl,
+                    appSettings.WebSpaProxyUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.IdentityServer.Web.SpaUrl}/callback",
+                    $"{appSettings.WebSpaProxyUrl}/callback",
                     "http://localhost:5300/callback",
                     "http://127.0.0.1:5300/callback",
-                    $"{appSettings.IdentityServer.Web.SpaUrl}/silent_renew.html",
+                    $"{appSettings.WebSpaProxyUrl}/silent_renew.html",
                     "http://localhost:5300/silent_renew.html",
                     "http://127.0.0.1:5300/silent_renew.html"
                 },

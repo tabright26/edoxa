@@ -1,5 +1,5 @@
 ﻿// Filename: WebSpaAppSettings.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,42 +13,18 @@ using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
 namespace eDoxa.Web.Spa.Infrastructure
 {
-    public class WebSpaAppSettings : IHasAzureKeyVaultAppSettings, IHasAuthorityAppSettings
+    public class WebSpaAppSettings : IHasAuthorityAppSettings, IHasEndpointsAppSettings<AuthorityEndpointsOptions>
     {
         [Required]
-        public HealthChecksOptions HealthChecks { get; set; }
+        public string Authority { get; set; }
 
         [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
+        public string WebGatewayUrl { get; set; }
 
         [Required]
-        public WebOptions Web { get; set; }
+        public string WebSpaClientUrl { get; set; }
 
         [Required]
-        public AuthorityOptions Authority { get; set; }
-
-        [Required]
-        public AzureKeyVaultOptions AzureKeyVault { get; set; }
-    }
-
-    public class HealthChecksOptions
-    {
-        [Required]
-        public WebOptions Web { get; set; }
-    }
-
-    public class ConnectionStrings : IHasRedisConnectionString
-    {
-        [Required]
-        public string Redis { get; set; }
-    }
-
-    public class WebOptions
-    {
-        [Required]
-        public string GatewayUrl { get; set; }
-
-        [Required]
-        public string ClientUrl { get; set; }
+        public AuthorityEndpointsOptions Endpoints { get; set; }
     }
 }

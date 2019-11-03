@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-06-28
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,37 +7,23 @@
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Web.Gateway.Infrastructure;
+using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
 using IdentityServer4.Models;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace eDoxa.Web.Gateway.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddHealthChecks(this IServiceCollection services, WebGatewayAppSettings appSettings)
-        {
-            var healthChecks = services.AddHealthChecks();
-            healthChecks.AddCheck("liveness", () => HealthCheckResult.Healthy());
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.IdentityUrl, "identity-api", new[] {"api", "identity"});
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.CashierUrl, "cashier-api", new[] {"api", "cashier" });
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.PaymentUrl, "payment-api", new[] {"api", "payment"});
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaChallengesUrl, "arena-challenges-api", new[] {"api", "arena", "challenges" });
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaGamesUrl, "arena-games-api", new[] {"api", "arena", "games" });
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.ArenaGamesLeagueOfLegendsUrl, "arena-games-leagueoflegends-api", new[] {"api", "arena", "games", "leagueoflegends" });
-            healthChecks.AddUrlGroup(appSettings.HealthChecks.OrganizationsClansUrl, "organizations-clans-api", new[] {"api", "organizations", "clans"});
-        }
-
-        public static void AddAuthentication(
+        public static void AddAuthentication<TEndpointsOptions>(
             this IServiceCollection services,
-            IHasAuthorityAppSettings appSettings,
+            IHasEndpointsAppSettings<TEndpointsOptions> appSettings,
             IDictionary<string, ApiResource> apiResources
         )
+        where TEndpointsOptions : AuthorityEndpointsOptions
         {
             var builder = services.AddAuthentication();
 
@@ -48,11 +34,10 @@ namespace eDoxa.Web.Gateway.Extensions
                     options =>
                     {
                         options.ApiName = apiResource.Name;
-                        options.Authority = appSettings.Authority.PrivateUrl;
+                        options.Authority = appSettings.Endpoints.IdentityUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
-                    }
-                );
+                    });
             }
         }
     }

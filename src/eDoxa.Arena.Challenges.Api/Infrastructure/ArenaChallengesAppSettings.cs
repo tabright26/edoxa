@@ -15,24 +15,24 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Arena.Challenges.Api.Infrastructure
 {
-    public class ArenaChallengesAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
+    public class ArenaChallengesAppSettings : IHasApiResourceAppSettings<EndpointsOptions>
     {
-        [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
-
         [Required]
         public ApiResource ApiResource { get; set; }
 
         [Required]
-        public AuthorityOptions Authority { get; set; }
+        public string Authority { get; set; }
 
         [Required]
-        public AzureKeyVaultOptions AzureKeyVault { get; set; }
+        public EndpointsOptions Endpoints { get; set; }
     }
 
-    public class ConnectionStrings : IHasSqlServerConnectionString
+    public class EndpointsOptions : AuthorityEndpointsOptions
     {
         [Required]
-        public string SqlServer { get; set; }
+        public string CashierUrl { get; set; }
+
+        [Required]
+        public string GamesUrl { get; set; }
     }
 }

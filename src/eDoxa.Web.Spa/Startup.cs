@@ -10,7 +10,6 @@
 
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Web.Spa.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
 using HealthChecks.UI.Client;
@@ -22,6 +21,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace eDoxa.Web.Spa
 {
@@ -47,20 +47,13 @@ namespace eDoxa.Web.Spa
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks(AppSettings);
+            services.AddHealthChecks()
+                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddIdentityServer(AppSettings)
+                .AddAzureKeyVault(Configuration)
+                .AddUrlGroup(AppSettings.WebGatewayUrl, "webgateway");
 
             services.AddDataProtection(Configuration, "edoxa.web.spa");
-
-            //if (Configuration.GetValue<bool>("AzureKubernetesService:Enable"))
-            //{
-            //    services.AddDataProtection(
-            //            options =>
-            //            {
-            //                options.ApplicationDiscriminator = typeof(Program).Namespace;
-            //            }
-            //        )
-            //        .PersistKeysToRedis(ConnectionMultiplexer.Connect(Configuration.GetConnectionString(CustomConnectionStrings.Redis)), "data-protection");
-            //}
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -115,7 +108,7 @@ namespace eDoxa.Web.Spa
 
                     if (HostingEnvironment.IsDevelopment())
                     {
-                        builder.UseProxyToSpaDevelopmentServer(AppSettings.Web.ClientUrl);
+                        builder.UseProxyToSpaDevelopmentServer(AppSettings.WebSpaClientUrl);
                     }
                 }
             );

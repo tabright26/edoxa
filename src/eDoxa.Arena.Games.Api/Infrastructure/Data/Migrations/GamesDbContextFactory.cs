@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Arena.Games.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -27,7 +28,7 @@ namespace eDoxa.Arena.Games.Api.Infrastructure.Data.Migrations
         {
             return new GamesDbContext(
                 new DbContextOptionsBuilder<GamesDbContext>().UseSqlServer(
-                        Configuration.GetConnectionString(Seedwork.Infrastructure.ConnectionStrings.SqlServer),
+                        Configuration.GetSqlServerConnectionString(),
                         builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name))
                     .Options);
         }
