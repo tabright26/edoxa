@@ -1,10 +1,8 @@
 ﻿// Filename: AddressPutRequestValidatorTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Collections.Generic;
 
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
@@ -81,6 +79,18 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
                 "H4P1K8"
             };
 
+        public static TheoryData<string> ValidLine1Address =>
+            new TheoryData<string>
+            {
+                "4140 Av. Kindersley, ap 13"
+            };
+
+        public static TheoryData<string, string> InvalidLine2Address =>
+            new TheoryData<string, string>
+            {
+                {"This_is_an_adress", AddressBookErrorDescriber.Line2Invalid()}
+            };
+
         [Theory]
         [MemberData(nameof(ValidLine1Address))]
         public void Validate_WhenLine1IsValid_ShouldNotHaveValidationErrorFor(string line1)
@@ -90,11 +100,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Line1, line1);
-        }
-
-        public static IEnumerable<object[]> ValidLine1Address()
-        {
-            yield return new object[] {"4140 Av. Kindersley, ap 13"};
         }
 
         [Theory]
@@ -130,11 +135,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Line2, line2);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }
-
-        public static IEnumerable<object[]> InvalidLine2Address()
-        {
-            yield return new object[] {"This_is_an_adress", AddressBookErrorDescriber.Line2Invalid()};
         }
 
         [Theory]

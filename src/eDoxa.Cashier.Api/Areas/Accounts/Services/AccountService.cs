@@ -10,12 +10,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Domain.Validators;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
@@ -60,25 +59,28 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                     var moneyAccount = new MoneyAccount(account);
 
-                    var validator = new WithdrawalMoneyValidator(money);
-
-                    var result = validator.Validate(moneyAccount);
-
-                    if (result.IsValid)
+                    if (!moneyAccount.HaveSufficientMoney(money))
                     {
-                        var transaction = moneyAccount.Withdrawal(money, bundles);
-
-                        await _accountRepository.CommitAsync(cancellationToken);
-
-                        await _serviceBusPublisher.PublishUserAccountWithdrawalIntegrationEventAsync(
-                            account.UserId,
-                            email,
-                            transaction.Id,
-                            transaction.Description.Text,
-                            transaction.Price.ToCents());
+                        return new ValidationFailure("_error", "Insufficient funds.").ToResult();
                     }
 
-                    return result;
+                    if (!moneyAccount.IsWithdrawalAvailable())
+                    {
+                        return new ValidationFailure("_error", $"Withdrawal unavailable until {moneyAccount.LastWithdraw?.AddDays(7)}").ToResult();
+                    }
+
+                    var transaction = moneyAccount.Withdrawal(money, bundles);
+
+                    await _accountRepository.CommitAsync(cancellationToken);
+
+                    await _serviceBusPublisher.PublishUserAccountWithdrawalIntegrationEventAsync(
+                        account.UserId,
+                        email,
+                        transaction.Id,
+                        transaction.Description.Text,
+                        transaction.Price.ToCents());
+
+                    return new ValidationResult();
                 }
 
                 case Token _:
@@ -123,22 +125,20 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                     var moneyAccount = new MoneyAccount(account);
 
-                    var validator = new DepositMoneyValidator();
-
-                    var result = validator.Validate(moneyAccount);
-
-                    if (result.IsValid)
+                    if (!moneyAccount.IsDepositAvailable())
                     {
-                        await this.DepositAsync(
-                            account.UserId,
-                            moneyAccount,
-                            money,
-                            bundles,
-                            email,
-                            cancellationToken);
+                        return new ValidationFailure("_error", $"Deposit unavailable until {moneyAccount.LastDeposit?.AddDays(1)}").ToResult();
                     }
 
-                    return result;
+                    await this.DepositAsync(
+                        account.UserId,
+                        moneyAccount,
+                        money,
+                        bundles,
+                        email,
+                        cancellationToken);
+
+                    return new ValidationResult();
                 }
 
                 case Token token:
@@ -155,22 +155,20 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                     var tokenAccount = new TokenAccount(account);
 
-                    var validator = new DepositTokenValidator();
-
-                    var result = validator.Validate(tokenAccount);
-
-                    if (result.IsValid)
+                    if (!tokenAccount.IsDepositAvailable())
                     {
-                        await this.DepositAsync(
-                            account.UserId,
-                            tokenAccount,
-                            token,
-                            bundles,
-                            email,
-                            cancellationToken);
+                        return new ValidationFailure("_error", $"Deposit unavailable until {tokenAccount.LastDeposit?.AddDays(1)}").ToResult();
                     }
 
-                    return result;
+                    await this.DepositAsync(
+                        account.UserId,
+                        tokenAccount,
+                        token,
+                        bundles,
+                        email,
+                        cancellationToken);
+
+                    return new ValidationResult();
                 }
 
                 default:

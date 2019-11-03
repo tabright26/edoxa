@@ -187,21 +187,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserDoxatag");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserGame", b =>
-                {
-                    b.Property<int>("Value");
-
-                    b.Property<string>("PlayerId");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Value", "PlayerId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserGame");
-                });
-
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserLogin", b =>
                 {
                     b.Property<string>("LoginProvider");
@@ -323,14 +308,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 {
                     b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
                         .WithMany("DoxatagHistory")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserGame", b =>
-                {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

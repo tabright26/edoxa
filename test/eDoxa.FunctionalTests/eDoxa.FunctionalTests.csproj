@@ -23,18 +23,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\eDoxa.Arena.Challenges.Api\eDoxa.Arena.Challenges.Api.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.TestHelper\eDoxa.Seedwork.TestHelper.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Payment.Api\eDoxa.Payment.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Seedwork.Testing\eDoxa.Seedwork.Testing.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Api\eDoxa.Challenges.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Services\Arena\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Services\Cashier\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Services\Identity\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Services\Payment\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Cashier\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Identity\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Payment\appsettings.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

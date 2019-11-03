@@ -17,7 +17,7 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static string? GetClaimOrDefault(this HttpContext httpContext, string claimType)
+        private static string? GetClaimOrDefault(this HttpContext httpContext, string claimType)
         {
             return httpContext.User?.Claims?.SingleOrDefault(claim => claim.Type == claimType)?.Value;
         }
@@ -30,6 +30,11 @@ namespace eDoxa.Seedwork.Application.Extensions
         public static string GetEmail(this HttpContext httpContext)
         {
             return httpContext.GetClaimOrDefault(JwtClaimTypes.Email) ?? throw new ArgumentNullException(JwtClaimTypes.Email);
+        }
+
+        public static PlayerId GetPlayerId(this HttpContext httpContext, Game game)
+        {
+            return PlayerId.Parse(httpContext.GetClaimOrDefault($"games/{game.NormalizedName}") ?? throw new ArgumentNullException(nameof(Game)));
         }
     }
 }

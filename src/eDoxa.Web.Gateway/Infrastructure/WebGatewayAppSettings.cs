@@ -13,20 +13,17 @@ using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
 namespace eDoxa.Web.Gateway.Infrastructure
 {
-    public class WebGatewayAppSettings : IHasAuthorityAppSettings
+    public class WebGatewayAppSettings : IHasAuthorityAppSettings, IHasEndpointsAppSettings<EndpointsOptions>
     {
         [Required]
-        public HealthChecksOptions HealthChecks { get; set; }
+        public EndpointsOptions Endpoints { get; set; }
 
         [Required]
-        public AuthorityOptions Authority { get; set; }
+        public string Authority { get; set; }
     }
 
-    public class HealthChecksOptions
+    public sealed class EndpointsOptions : AuthorityEndpointsOptions
     {
-        [Required]
-        public string IdentityUrl { get; set; }
-
         [Required]
         public string CashierUrl { get; set; }
 
@@ -34,15 +31,15 @@ namespace eDoxa.Web.Gateway.Infrastructure
         public string PaymentUrl { get; set; }
 
         [Required]
-        public string ArenaChallengesUrl { get; set; }
+        public string ChallengesUrl { get; set; }
 
         [Required]
-        public string ArenaGamesUrl { get; set; }
+        public string GamesUrl { get; set; }
 
         [Required]
-        public string ArenaGamesLeagueOfLegendsUrl { get; set; }
+        public string ClansUrl { get; set; }
 
         [Required]
-        public string OrganizationsClansUrl { get; set; }
+        public string NotificationsUrl { get; set; }
     }
 }

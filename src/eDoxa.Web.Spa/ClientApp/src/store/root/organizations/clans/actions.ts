@@ -20,7 +20,7 @@ export function loadClans(): ClansActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: "/organizations/clans/api/clans"
+        url: "/clans/api/clans"
       }
     }
   };
@@ -32,7 +32,7 @@ export function loadClan(clanId: string): ClansActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/clans/${clanId}`
+        url: `/clans/api/clans/${clanId}`
       }
     }
   };

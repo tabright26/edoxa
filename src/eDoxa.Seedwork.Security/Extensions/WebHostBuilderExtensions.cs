@@ -18,11 +18,13 @@ namespace eDoxa.Seedwork.Security.Extensions
                 {
                     var configurationRoot = configurationBuilder.Build();
 
+                    var connectionString = new KeyVaultConnectionStringBuilder(configurationRoot.GetConnectionString("AzureKeyVault"));
+
                     configurationBuilder.AddConfiguration(
                         new ConfigurationBuilder().AddAzureKeyVault(
-                                $"https://{configurationRoot["AzureKeyVault:Name"]}.vault.azure.net",
-                                configurationRoot["AzureKeyVault:ClientId"],
-                                configurationRoot["AzureKeyVault:ClientSecret"])
+                                $"https://{connectionString.Name}.vault.azure.net",
+                                connectionString.ClientId,
+                                connectionString.ClientSecret)
                             .Build());
                 });
         }

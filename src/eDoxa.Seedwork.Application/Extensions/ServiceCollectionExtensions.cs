@@ -1,16 +1,16 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-09-02
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Collections.Generic;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Security;
 using eDoxa.Swagger.Extensions;
 using eDoxa.Swagger.Filters;
 using eDoxa.Swagger.Options;
+
+using IdentityServer4.Models;
 
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,11 +23,11 @@ namespace eDoxa.Seedwork.Application.Extensions
             string xmlCommentsFilePath,
             IHasApiResourceAppSettings apiResourceAppSettings,
             IHasAuthorityAppSettings authorityAppSettings,
-            params KeyValuePair<string, string>[] scopes
+            params Scope[] scopes
         )
         {
             services.AddSwagger(
-                authorityAppSettings.Authority.PublicUrl,
+                authorityAppSettings.Authority,
                 apiResourceAppSettings.ApiResource.Name,
                 apiResourceAppSettings.ApiResource.DisplayName,
                 apiResourceAppSettings.ApiResource.Description,
@@ -37,7 +37,14 @@ namespace eDoxa.Seedwork.Application.Extensions
                     options.DescribeAllEnumerationsAsStrings();
 
                     options.OperationFilter<SwaggerOperationFilter>(
-                        new SwaggerOperationOptions(Scopes.IdentityApi, Scopes.CashierApi, Scopes.ArenaChallengesApi));
+                        new SwaggerOperationOptions(
+                            Scopes.IdentityApi,
+                            Scopes.PaymentApi,
+                            Scopes.CashierApi,
+                            Scopes.NotificationsApi,
+                            Scopes.ChallengesApi,
+                            Scopes.GamesApi,
+                            Scopes.ClansApi));
                 },
                 scopes);
         }

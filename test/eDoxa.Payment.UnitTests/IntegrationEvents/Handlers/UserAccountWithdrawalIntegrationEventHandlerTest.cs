@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.TestHelpers;
-using eDoxa.Payment.TestHelpers.Fixtures;
+using eDoxa.Payment.TestHelper;
+using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Testing.Mocks;
+using eDoxa.Seedwork.TestHelper.Mocks;
 using eDoxa.ServiceBus.Abstractions;
 
 using Moq;

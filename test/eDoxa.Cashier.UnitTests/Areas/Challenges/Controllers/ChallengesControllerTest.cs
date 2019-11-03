@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Challenges.Controllers;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.TestHelpers;
-using eDoxa.Cashier.TestHelpers.Fixtures;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;

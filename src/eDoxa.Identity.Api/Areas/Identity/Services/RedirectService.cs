@@ -19,14 +19,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private IdentityAppSettings AppSettings { get; }
 
-        public string RedirectToWebSpa(string url = "/")
+        public string RedirectToWebSpaProxy(string url = "/")
         {
-            return $"{AppSettings.IdentityServer.Web.SpaUrl}{url}";
+            return $"{AppSettings.WebSpaProxyUrl}{url}";
         }
 
-        public string RedirectToIdentity(string url = "/")
+        public string RedirectToAuthority(string url = "/")
         {
-            return $"{AppSettings.IdentityServer.IdentityUrl}{url}";
+            return $"{AppSettings.Authority}{url}";
         }
     }
 }

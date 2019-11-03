@@ -15,7 +15,7 @@ export function loadClanMembers(clanId: string): ClanMembersActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/clans/${clanId}/members`
+        url: `/clans/api/clans/${clanId}/members`
       }
     }
   };
@@ -27,7 +27,7 @@ export function kickClanMember(clanId: string, memberId: string): ClanMembersAct
     payload: {
       request: {
         method: "DELETE",
-        url: `/organizations/clans/api/clans/${clanId}/members/${memberId}`
+        url: `/clans/api/clans/${clanId}/members/${memberId}`
       }
     }
   };

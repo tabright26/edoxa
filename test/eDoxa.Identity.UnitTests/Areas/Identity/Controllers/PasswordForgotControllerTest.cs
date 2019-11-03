@@ -12,8 +12,8 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
-using eDoxa.Identity.TestHelpers;
-using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.ServiceBus.Abstractions;
 
 using FluentAssertions;
@@ -46,7 +46,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var mockRedirectService = new Mock<IRedirectService>();
 
-            mockRedirectService.Setup(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>())).Verifiable();
+            mockRedirectService.Setup(redirectService => redirectService.RedirectToWebSpaProxy(It.IsAny<string>())).Verifiable();
 
             var controller = new PasswordForgotController(mockUserManager.Object, mockServiceBusPublisher.Object, mockRedirectService.Object);
 
@@ -66,7 +66,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()), Times.Never);
 
-            mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>()), Times.Never);
+            mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpaProxy(It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var mockRedirectService = new Mock<IRedirectService>();
 
-            mockRedirectService.Setup(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>())).Returns("https://edoxa.gg/").Verifiable();
+            mockRedirectService.Setup(redirectService => redirectService.RedirectToWebSpaProxy(It.IsAny<string>())).Returns("https://edoxa.gg/").Verifiable();
 
             var controller = new PasswordForgotController(mockUserManager.Object, mockServiceBusPublisher.Object, mockRedirectService.Object);
 
@@ -110,7 +110,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()), Times.Once);
 
-            mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>()), Times.Once);
+            mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpaProxy(It.IsAny<string>()), Times.Once);
         }
 
         public PasswordForgotControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)

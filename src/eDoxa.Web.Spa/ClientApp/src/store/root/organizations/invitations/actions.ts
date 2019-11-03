@@ -23,7 +23,7 @@ export function loadClanInvitations(type: string, id: string): ClanInvitationsAc
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/invitations?${type}Id=${id}`
+        url: `/clans/api/invitations?${type}Id=${id}`
       }
     }
   };
@@ -35,7 +35,7 @@ export function loadClanInvitation(invitationId: string): ClanInvitationsActionC
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/invitations/${invitationId}`
+        url: `/clans/api/invitations/${invitationId}`
       }
     }
   };
@@ -47,7 +47,7 @@ export function sendClanInvitation(clanId, userId): ClanInvitationsActionCreator
     payload: {
       request: {
         method: "POST",
-        url: "/organizations/clans/api/invitations",
+        url: "/clans/api/invitations",
         data: {
           clanId,
           userId
@@ -63,7 +63,7 @@ export function acceptClanInvitation(invitationId: string): ClanInvitationsActio
     payload: {
       request: {
         method: "POST",
-        url: `/organizations/clans/api/invitations/${invitationId}`
+        url: `/clans/api/invitations/${invitationId}`
       }
     }
   };
@@ -75,7 +75,7 @@ export function declineClanInvitation(invitationId: string): ClanInvitationsActi
     payload: {
       request: {
         method: "DELETE",
-        url: `/organizations/clans/api/invitations/${invitationId}`
+        url: `/clans/api/invitations/${invitationId}`
       }
     }
   };

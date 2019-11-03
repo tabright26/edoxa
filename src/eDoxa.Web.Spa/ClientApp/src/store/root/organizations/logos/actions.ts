@@ -6,7 +6,7 @@ export function downloadClanLogo(clanId: string): ClanLogosActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/clans/${clanId}/logo`
+        url: `/clans/api/clans/${clanId}/logo`
       }
     }
   };
@@ -18,7 +18,7 @@ export function uploadClanLogo(clanId: string, data: any): ClanLogosActionCreato
     payload: {
       request: {
         method: "POST",
-        url: `/organizations/clans/api/clans/${clanId}/logo`,
+        url: `/clans/api/clans/${clanId}/logo`,
         data
       }
     }

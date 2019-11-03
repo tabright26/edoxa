@@ -1,5 +1,5 @@
 ﻿// Filename: StripeReference.cs
-// Date Created: 2019-10-07
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,9 @@ namespace eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate
             AccountId = accountId;
         }
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         private StripeReference()
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         {
             // Required by EF Core.
         }

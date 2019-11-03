@@ -1,2 +1,0 @@
-eDoxa Cashier API installed.
-----------------------------

@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -50,7 +51,15 @@ namespace eDoxa.Web.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks(AppSettings);
+            services.AddHealthChecks()
+                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, "identityapi")
+                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, "cashierapi")
+                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, "paymentapi")
+                .AddUrlGroup(AppSettings.Endpoints.NotificationsUrl, "notificationsapi")
+                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, "challengesapi")
+                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, "gamesapi")
+                .AddUrlGroup(AppSettings.Endpoints.ClansUrl, "clansapi");
 
             services.AddCors(
                 options =>
@@ -67,10 +76,9 @@ namespace eDoxa.Web.Gateway
                     ["CashierApiKey"] = CashierApi,
                     ["PaymentApiKey"] = PaymentApi,
                     ["NotificationsApiKey"] = NotificationsApi,
-                    ["ArenaChallengesApiKey"] = ArenaChallengesApi,
-                    ["ArenaGamesApiKey"] = ArenaGamesApi,
-                    ["ArenaGamesLeagueOfLegendsApiKey"] = ArenaGamesLeagueOfLegendsApi,
-                    ["OrganizationsClansApiKey"] = OrganizationsClansApi
+                    ["ChallengesApiKey"] = ChallengesApi,
+                    ["GamesApiKey"] = GamesApi,
+                    ["ClansApiKey"] = ClansApi
                 }
             );
 

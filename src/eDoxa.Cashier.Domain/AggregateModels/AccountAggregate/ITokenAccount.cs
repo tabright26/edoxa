@@ -11,5 +11,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     public interface ITokenAccount : IAccount<Token>
     {
         ITransaction Reward(Token amount);
+
+        bool IsDepositAvailable();
+
+        bool HaveSufficientMoney(Token token);
     }
 }

@@ -22,7 +22,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class CountryIdentityResource : IdentityResource
         {
             internal CountryIdentityResource() : base(
-                Scopes.Country,
+                Scopes.Country.Name,
                 "Your legal country",
                 new HashSet<string>
                 {
@@ -35,7 +35,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class GameIdentityResource : IdentityResource
         {
             internal GameIdentityResource() : base(
-                Scopes.Games,
+                Scopes.Games.Name,
                 "Your game(s)",
                 new HashSet<string>
                 {
@@ -48,7 +48,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class RoleIdentityResource : IdentityResource
         {
             internal RoleIdentityResource() : base(
-                Scopes.Roles,
+                Scopes.Roles.Name,
                 "Your role(s)",
                 new HashSet<string>
                 {
@@ -61,7 +61,7 @@ namespace eDoxa.Seedwork.Security
         public sealed class PermissionIdentityResource : IdentityResource
         {
             internal PermissionIdentityResource() : base(
-                Scopes.Permissions,
+                Scopes.Permissions.Name,
                 "Your permission(s)",
                 new HashSet<string>
                 {
