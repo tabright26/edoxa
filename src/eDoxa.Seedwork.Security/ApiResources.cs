@@ -14,9 +14,9 @@ namespace eDoxa.Seedwork.Security
     {
         public static readonly ApiResource IdentityApi = new IdentityResource();
         public static readonly ApiResource CashierApi = new CashierResource();
-        public static readonly ApiResource ArenaChallengesApi = new ArenaChallengesResource();
-        public static readonly ApiResource ArenaGamesApi = new ArenaGamesResource();
-        public static readonly ApiResource OrganizationsClansApi = new OrganizationsClansResource();
+        public static readonly ApiResource ChallengesApi = new ChallengesResource();
+        public static readonly ApiResource GamesApi = new GamesResource();
+        public static readonly ApiResource ClansApi = new ClansResource();
         public static readonly ApiResource NotificationsApi = new NotificationsResource();
         public static readonly ApiResource PaymentApi = new PaymentResource();
 
@@ -24,7 +24,7 @@ namespace eDoxa.Seedwork.Security
         {
             internal PaymentResource() : base(
                 Security.Scopes.PaymentApi.Name,
-                "eDoxa Payment API",
+                Security.Scopes.PaymentApi.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));
@@ -35,18 +35,18 @@ namespace eDoxa.Seedwork.Security
         {
             internal NotificationsResource() : base(
                 Security.Scopes.NotificationsApi.Name,
-                "eDoxa Notifications API",
+                Security.Scopes.NotificationsApi.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
-        public sealed class OrganizationsClansResource : ApiResource
+        public sealed class ClansResource : ApiResource
         {
-            internal OrganizationsClansResource() : base(
-                Security.Scopes.OrganizationsClansApi.Name,
-                "eDoxa Organizations Clans API",
+            internal ClansResource() : base(
+                Security.Scopes.ClansApi.Name,
+                Security.Scopes.ClansApi.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));
@@ -57,7 +57,7 @@ namespace eDoxa.Seedwork.Security
         {
             internal IdentityResource() : base(
                 Security.Scopes.IdentityApi.Name,
-                "eDoxa Identity API",
+                Security.Scopes.IdentityApi.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims).Union(IdentityResources.Games.UserClaims))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));
@@ -68,18 +68,18 @@ namespace eDoxa.Seedwork.Security
         {
             internal CashierResource() : base(
                 Security.Scopes.CashierApi.Name,
-                "eDoxa Cashier API",
+                Security.Scopes.CashierApi.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));
             }
         }
 
-        public sealed class ArenaChallengesResource : ApiResource
+        public sealed class ChallengesResource : ApiResource
         {
-            internal ArenaChallengesResource() : base(
-                Security.Scopes.ArenaChallengesApi.Name,
-                "eDoxa Arena Challenges API",
+            internal ChallengesResource() : base(
+                Security.Scopes.ChallengesApi.Name,
+                Security.Scopes.ChallengesApi.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
 
             {
@@ -87,11 +87,11 @@ namespace eDoxa.Seedwork.Security
             }
         }
 
-        public sealed class ArenaGamesResource : ApiResource
+        public sealed class GamesResource : ApiResource
         {
-            internal ArenaGamesResource() : base(
-                Security.Scopes.ArenaGamesApi.Name,
-                "eDoxa Arena Games API",
+            internal GamesResource() : base(
+                Security.Scopes.GamesApi.Name,
+                Security.Scopes.GamesApi.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));

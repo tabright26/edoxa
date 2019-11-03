@@ -23,7 +23,7 @@ export function loadClanCandidatures(type: string, id: string): ClanCandidatures
     payload: {
       request: {
         method: "GET",
-        url: `/organizations/clans/api/candidatures?${type}Id=${id}` // FRANCIS: This is wrong.
+        url: `/clans/api/candidatures?${type}Id=${id}` // FRANCIS: This is wrong.
       }
     }
   };

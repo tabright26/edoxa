@@ -49,11 +49,11 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.NotificationsApi;
 
-            yield return ApiResources.ArenaChallengesApi;
+            yield return ApiResources.ChallengesApi;
 
-            yield return ApiResources.ArenaGamesApi;
+            yield return ApiResources.GamesApi;
 
-            yield return ApiResources.OrganizationsClansApi;
+            yield return ApiResources.ClansApi;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
@@ -68,11 +68,11 @@ namespace eDoxa.Identity.Api.Infrastructure
 
                 yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
 
-                yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl, Scopes.CashierApi, Scopes.ArenaGamesApi);
+                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl, Scopes.CashierApi, Scopes.GamesApi);
 
-                yield return ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
+                yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
 
-                yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl); 
+                yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl); 
             }
 
             yield return new Client
@@ -117,9 +117,9 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.IdentityApi.Name,
                     Scopes.PaymentApi.Name,
                     Scopes.CashierApi.Name,
-                    Scopes.ArenaChallengesApi.Name,
-                    Scopes.ArenaGamesApi.Name,
-                    Scopes.OrganizationsClansApi.Name
+                    Scopes.ChallengesApi.Name,
+                    Scopes.GamesApi.Name,
+                    Scopes.ClansApi.Name
                 }
             };
         }

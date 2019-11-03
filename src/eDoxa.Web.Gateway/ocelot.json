@@ -122,14 +122,14 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "arena.challenges.api",
+          "Host": "challenges.api",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/arena/challenge/api/{everything}",
+      "UpstreamPathTemplate": "/challenge/api/{everything}",
       "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ArenaChallengesApiKey",
+        "AuthenticationProviderKey": "ChallengesApiKey",
         "AllowedScopes": []
       }
     },
@@ -139,11 +139,11 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "arena.challenges.api",
+          "Host": "challenges.api",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/arena/challenge/api/challenges",
+      "UpstreamPathTemplate": "/challenge/api/challenges",
       "UpstreamHttpMethod": [ "GET" ]
     },
     {
@@ -152,14 +152,14 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "arena.games.api",
+          "Host": "games.api",
           "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/games/api/{everything}",
       "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ArenaGamesApiKey",
+        "AuthenticationProviderKey": "GamesApiKey",
         "AllowedScopes": []
       }
     },
@@ -169,14 +169,14 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "organizations.clans.api",
+          "Host": "clans.api",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/organizations/clans/api/{everything}",
+      "UpstreamPathTemplate": "/clans/api/{everything}",
       "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "OrganizationsClansApiKey",
+        "AuthenticationProviderKey": "ClansApiKey",
         "AllowedScopes": []
       }
     }

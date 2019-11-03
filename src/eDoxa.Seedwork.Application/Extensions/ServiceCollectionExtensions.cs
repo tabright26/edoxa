@@ -42,9 +42,9 @@ namespace eDoxa.Seedwork.Application.Extensions
                             Scopes.PaymentApi,
                             Scopes.CashierApi,
                             Scopes.NotificationsApi,
-                            Scopes.ArenaChallengesApi,
-                            Scopes.ArenaGamesApi,
-                            Scopes.OrganizationsClansApi));
+                            Scopes.ChallengesApi,
+                            Scopes.GamesApi,
+                            Scopes.ClansApi));
                 },
                 scopes);
         }

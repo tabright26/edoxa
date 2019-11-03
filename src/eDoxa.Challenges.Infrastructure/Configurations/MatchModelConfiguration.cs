@@ -1,0 +1,43 @@
+﻿// Filename: MatchModelConfiguration.cs
+// Date Created: 2019-06-25
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
+
+using eDoxa.Challenges.Infrastructure.Models;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace eDoxa.Challenges.Infrastructure.Configurations
+{
+    internal sealed class MatchModelConfiguration : IEntityTypeConfiguration<MatchModel>
+    {
+        public void Configure( EntityTypeBuilder<MatchModel> builder)
+        {
+            builder.ToTable("Match");
+
+            builder.Property(match => match.Id);
+
+            builder.OwnsMany(
+                match => match.Stats,
+                matchStats =>
+                {
+                    matchStats.ToTable("Stat");
+
+                    matchStats.HasForeignKey("MatchId");
+
+                    matchStats.Property<Guid>("Id").ValueGeneratedOnAdd();
+
+                    matchStats.HasKey("MatchId", "Id");
+                }
+            );
+
+            builder.HasKey(match => match.Id);
+
+            builder.HasIndex(match => match.GameReference).IsUnique();
+        }
+    }
+}

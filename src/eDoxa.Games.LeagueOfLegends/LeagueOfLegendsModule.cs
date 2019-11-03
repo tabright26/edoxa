@@ -1,0 +1,28 @@
+﻿// Filename: LeagueOfLegendsModule.cs
+// Date Created: 2019-11-01
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using Autofac;
+
+using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.LeagueOfLegends.Abstactions;
+using eDoxa.Games.LeagueOfLegends.Adapter;
+using eDoxa.Games.LeagueOfLegends.Services;
+
+namespace eDoxa.Games.LeagueOfLegends
+{
+    public sealed class LeagueOfLegendsModule : Module
+    {
+        protected override void Load(ContainerBuilder builder)
+        {
+            // Services
+            builder.RegisterType<LeagueOfLegendsService>().As<ILeagueOfLegendsService>().SingleInstance();
+
+            // Adapters
+            builder.RegisterType<LeagueOfLegendsAuthFactorGeneratorAdapter>().As<IAuthFactorGeneratorAdapter>().InstancePerDependency();
+            builder.RegisterType<LeagueOfLegendsAuthFactorValidatorAdapter>().As<IAuthFactorValidatorAdapter>().InstancePerDependency();
+        }
+    }
+}

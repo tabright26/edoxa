@@ -9,8 +9,8 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Arena.Challenges.Api;
-using eDoxa.Arena.Challenges.Infrastructure;
+using eDoxa.Challenges.Api;
+using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
@@ -44,7 +44,7 @@ namespace eDoxa.FunctionalTests.Challenges
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ArenaChallengesDbContext>();
+            server.EnsureCreatedDbContext<ChallengesDbContext>();
 
             return server;
         }

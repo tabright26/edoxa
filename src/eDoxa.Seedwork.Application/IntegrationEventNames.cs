@@ -34,7 +34,7 @@ namespace eDoxa.Seedwork.Application
         public const string UserRoleRemoved = "user.role.removed";
         public const string UserEmailSent = "user.email.sent";
 
-        // Arena Challenges integration events.
-        public const string ArenaChallengesSynchronized = "arena.challenges.synchronized";
+        // Challenges integration events.
+        public const string ChallengesSynchronized = "challenges.synchronized";
     }
 }

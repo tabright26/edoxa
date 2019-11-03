@@ -160,26 +160,26 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
       
-  arena.challenges.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.unit-tests:${ACR_TAG:-latest}
+  challenges.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
-      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
       target: unit-tests
-    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.UnitTests.trx"
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Challenges.UnitTests.trx"
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  arena.challenges.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/arena.challenges.integration-tests:${ACR_TAG:-latest}
+  challenges.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
-      dockerfile: src/eDoxa.Arena.Challenges.Api/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
       target: integration-tests
     depends_on:
       - mssql.test
       - redis.test
-    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Challenges.IntegrationTests.trx"
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Challenges.IntegrationTests.trx"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -191,30 +191,30 @@ services:
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
       - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__GamesUrl=http://arena.games.api
+      - Endpoints__GamesUrl=http://games.api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  arena.games.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/arena.games.unit-tests:${ACR_TAG:-latest}
+  games.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/games.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
-      dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
+      dockerfile: src/eDoxa.Games.Api/Dockerfile
       target: unit-tests
-    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Games.UnitTests.trx"
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Games.UnitTests.trx"
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  arena.games.integration-tests:
+  games.integration-tests:
     image: ${ACR_REGISTRY:-edoxa}/arena.games.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
-      dockerfile: src/eDoxa.Arena.Games.Api/Dockerfile
+      dockerfile: src/eDoxa.Games.Api/Dockerfile
       target: integration-tests
     depends_on:
       - mssql.test
       - redis.test 
-    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Arena.Games.IntegrationTests.trx"
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Games.IntegrationTests.trx"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -228,26 +228,26 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  organizations.clans.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/organizations.clans.unit-tests:${ACR_TAG:-latest}
+  clans.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/clans.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
-      dockerfile: src/eDoxa.Organizations.Clans.Api/Dockerfile
+      dockerfile: src/eDoxa.Clans.Api/Dockerfile
       target: unit-tests
-    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Organizations.Clans.UnitTests.trx"
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Clans.UnitTests.trx"
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  organizations.clans.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/organizations.clans.integration-tests:${ACR_TAG:-latest}
+  clans.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/clans.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
-      dockerfile: src/eDoxa.Organizations.Clans.Api/Dockerfile
+      dockerfile: src/eDoxa.Clans.Api/Dockerfile
       target: integration-tests
     depends_on:
       - mssql.test
       - redis.test
-    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Organizations.Clans.IntegrationTests.trx"
+    entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Clans.IntegrationTests.trx"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80

@@ -88,7 +88,7 @@ services:
     ports:
       - "5011:80"
 
-  arena.challenges.api:
+  challenges.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -100,11 +100,11 @@ services:
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
       - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__GamesUrl=http://arena.games.api
+      - Endpoints__GamesUrl=http://games.api
     ports:
       - "5003:80"
 
-  arena.games.api:
+  games.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -118,7 +118,7 @@ services:
     ports:
       - "5005:80"
 
-  organizations.clans.api:
+  clans.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -142,9 +142,9 @@ services:
       - Endpoints__CashierUrl=http://cashier.api
       - Endpoints__PaymentUrl=http://payment.api
       - Endpoints__NotificationsUrl=http://notifications.api
-      - Endpoints__ChallengesUrl=http://arena.challenges.api
-      - Endpoints__GamesUrl=http://arena.games.api
-      - Endpoints__ClansUrl=http://organizations.clans.api
+      - Endpoints__ChallengesUrl=http://challenges.api
+      - Endpoints__GamesUrl=http://games.api
+      - Endpoints__ClansUrl=http://clans.api
     ports:
       - "5200:80"
     volumes:
@@ -172,7 +172,7 @@ services:
       - REACT_APP_REDIRECT_URI=http://${HOST:-localhost}:5300/callback
       - REACT_APP_CLIENT_ID=edoxa.web.spa
       - REACT_APP_RESPONSE_TYPE=token id_token
-      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api arena.challenges.api arena.games.api organizations.clans.api
+      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api challenges.api games.api clans.api
       - REACT_APP_WEB_GATEWAY=http://${HOST:-localhost}:5200
       - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
       - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
@@ -196,11 +196,11 @@ services:
       - HealthChecks__Endpoints__3__Name=eDoxa Notifications API
       - HealthChecks__Endpoints__3__Uri=http://notifications.api/health
       - HealthChecks__Endpoints__4__Name=eDoxa Challenges API
-      - HealthChecks__Endpoints__4__Uri=http://arena.challenges.api/health
+      - HealthChecks__Endpoints__4__Uri=http://challenges.api/health
       - HealthChecks__Endpoints__5__Name=eDoxa Games API
-      - HealthChecks__Endpoints__5__Uri=http://arena.games.api/health
+      - HealthChecks__Endpoints__5__Uri=http://games.api/health
       - HealthChecks__Endpoints__6__Name=eDoxa Clans API
-      - HealthChecks__Endpoints__6__Uri=http://organizations.clans.api/health
+      - HealthChecks__Endpoints__6__Uri=http://clans.api/health
       - HealthChecks__Endpoints__7__Name=eDoxa Web Gateway
       - HealthChecks__Endpoints__7__Uri=http://web.gateway/health
       - HealthChecks__Endpoints__8__Name=eDoxa Web Spa
