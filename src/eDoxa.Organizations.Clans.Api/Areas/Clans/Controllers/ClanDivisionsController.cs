@@ -1,5 +1,5 @@
-﻿// Filename: ClanMembersController.cs
-// Date Created: 2019-09-30
+﻿// Filename: ClanDivisionsController.cs
+// Date Created: 2019-10-31
 //
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Organizations.Clans.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
@@ -24,47 +25,40 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
     [ApiController]
-    [Route("api/clans/{clanId}/members")]
+    [Route("api/clans/{clanId}/divisions")]
     [ApiExplorerSettings(GroupName = "Clans")]
-    public class ClanMembersController : ControllerBase
+    public class ClanDivisionsController : ControllerBase
     {
         private readonly IClanService _clanService;
         private readonly IMapper _mapper;
 
-        public ClanMembersController(IClanService clanService, IMapper mapper)
+        public ClanDivisionsController(IClanService clanService, IMapper mapper)
         {
             _clanService = clanService;
             _mapper = mapper;
         }
 
         /// <summary>
-        ///     Get all members of a specific clan.
+        ///     Get all divisions of a specific clan.
         /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
-            var clan = await _clanService.FindClanAsync(clanId);
+            var divisions = await _clanService.FetchDivisionsAsync(clanId);
 
-            if (clan == null)
-            {
-                return this.NotFound("Clan not found.");
-            }
-
-            var members = await _clanService.FetchMembersAsync(clan);
-
-            if (!members.Any())
+            if (!divisions.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<MemberResponse>>(members));
+            return this.Ok(_mapper.Map<IEnumerable<DivisionResponse>>(divisions));
         }
 
         /// <summary>
-        ///     User leave the clan.
+        ///     Create a division.
         /// </summary>
-        [HttpDelete]
-        public async Task<IActionResult> DeleteAsync(ClanId clanId)
+        [HttpPost]
+        public async Task<IActionResult> PostAsync(ClanId clanId, DivisionPostRequest request)
         {
             var userId = HttpContext.GetUserId();
 
@@ -75,11 +69,11 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan does not exist.");
             }
 
-            var result = await _clanService.LeaveClanAsync(clan, userId);
+            var result = await _clanService.CreateDivisionAsync(clan, userId, request.Name, request.Description);
 
             if (result.IsValid)
             {
-                return this.Ok("The user has left his clan.");
+                return this.Ok("Division created.");
             }
 
             result.AddToModelState(ModelState, null);
@@ -88,10 +82,10 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
         }
 
         /// <summary>
-        ///     Kick a specific member from the clan.
+        ///     Remove a specific division.
         /// </summary>
-        [HttpDelete("{memberId}")]
-        public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, MemberId memberId)
+        [HttpDelete("{divisionId}")]
+        public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, DivisionId divisionId)
         {
             var userId = HttpContext.GetUserId();
 
@@ -102,16 +96,44 @@ namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan does not exist.");
             }
 
-            var result = await _clanService.KickMemberFromClanAsync(clan, userId, memberId);
+            var result = await _clanService.DeleteDivisionAsync(clan, userId, divisionId);
 
             if (result.IsValid)
             {
-                return this.Ok("The user has been kicked from this clan.");
+                return this.Ok("The division has been removed.");
             }
 
             result.AddToModelState(ModelState, null);
 
             return this.ValidationProblem(ModelState);
         }
+
+        /// <summary>
+        ///     Update a division.
+        /// </summary>
+        [HttpPost("{divisionId}")]
+        public async Task<IActionResult> UpdateByIdAsync(ClanId clanId, DivisionId divisionId, DivisionPostRequest request)
+        {
+            var userId = HttpContext.GetUserId();
+
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
+            {
+                return this.NotFound("Clan does not exist.");
+            }
+
+            var result = await _clanService.UpdateDivisionAsync(clan, userId, divisionId, request.Name, request.Description);
+
+            if (result.IsValid)
+            {
+                return this.Ok("Division Updated.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 // Filename: ClanMembersControllerTest.cs
 // Date Created: 2019-10-02
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -129,7 +129,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
 
-            mockClanService.Setup(clanService => clanService.KickMemberFromClanAsync(It.IsAny<UserId>(), It.IsAny<Clan>(), It.IsAny<MemberId>()))
+            mockClanService.Setup(clanService => clanService.KickMemberFromClanAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<MemberId>()))
                 .ReturnsAsync(new ValidationFailure(string.Empty, "Error").ToResult())
                 .Verifiable();
 
@@ -147,7 +147,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockClanService.Verify(clanService => clanService.KickMemberFromClanAsync(It.IsAny<UserId>(), It.IsAny<Clan>(), It.IsAny<MemberId>()), Times.Once);
+            mockClanService.Verify(clanService => clanService.KickMemberFromClanAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<MemberId>()), Times.Once);
         }
 
         [Fact]
@@ -157,7 +157,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
             var mockClanService = new Mock<IClanService>();
             mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync((Clan) null).Verifiable();
 
-            mockClanService.Setup(clanService => clanService.KickMemberFromClanAsync(It.IsAny<UserId>(), It.IsAny<Clan>(), It.IsAny<MemberId>()))
+            mockClanService.Setup(clanService => clanService.KickMemberFromClanAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<MemberId>()))
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
@@ -175,7 +175,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockClanService.Verify(clanService => clanService.KickMemberFromClanAsync(It.IsAny<UserId>(), It.IsAny<Clan>(), It.IsAny<MemberId>()), Times.Never);
+            mockClanService.Verify(clanService => clanService.KickMemberFromClanAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<MemberId>()), Times.Never);
         }
 
         [Fact]
@@ -186,7 +186,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
 
-            mockClanService.Setup(clanService => clanService.KickMemberFromClanAsync(It.IsAny<UserId>(), It.IsAny<Clan>(), It.IsAny<MemberId>()))
+            mockClanService.Setup(clanService => clanService.KickMemberFromClanAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<MemberId>()))
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
@@ -204,7 +204,7 @@ namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockClanService.Verify(clanService => clanService.KickMemberFromClanAsync(It.IsAny<UserId>(), It.IsAny<Clan>(), It.IsAny<MemberId>()), Times.Once);
+            mockClanService.Verify(clanService => clanService.KickMemberFromClanAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<MemberId>()), Times.Once);
         }
 
         [Fact]

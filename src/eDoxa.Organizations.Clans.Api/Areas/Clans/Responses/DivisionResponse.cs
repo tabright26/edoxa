@@ -1,5 +1,5 @@
-﻿// Filename: ClanResponse.cs
-// Date Created: 2019-08-28
+﻿// Filename: DivisionResponse.cs
+// Date Created: 2019-10-31
 //
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,24 +14,23 @@ using Newtonsoft.Json;
 namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Responses
 {
     [JsonObject]
-    public class ClanResponse
+    public class DivisionResponse
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }
 
+        [JsonProperty("clanId")]
+        public Guid ClanId { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("summary")]
-        public string Summary { get; set; }
-
-        [JsonProperty("ownerId")]
-        public Guid OwnerId { get; set; }
+        [JsonProperty("description")]
+        public string Description { get; set; }
 
         [JsonProperty("members")]
         public ICollection<MemberResponse> Members { get; set; }
 
-        [JsonProperty("divisions")]
-        public ICollection<MemberResponse> Divisions { get; set; }
+
     }
 }

@@ -43,5 +43,9 @@ namespace eDoxa.Organizations.Clans.Domain.Repositories
         Task<bool> IsMemberAsync(UserId userId);
 
         Task<bool> IsOwnerAsync(ClanId clanId, UserId ownerId);
+
+        Task<IReadOnlyCollection<Division>> FetchDivisionsAsync(ClanId clanId);
+
+        Task<Division?> FindDivisionAsync(DivisionId divisionId);
     }
 }
