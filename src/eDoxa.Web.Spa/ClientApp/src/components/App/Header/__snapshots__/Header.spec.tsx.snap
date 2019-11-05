@@ -17,9 +17,9 @@ Array [
     full={
       Object {
         "alt": "eDoxa Logo",
-        "height": 25,
-        "src": "logo.svg",
-        "width": 89,
+        "height": 30,
+        "src": "logo.png",
+        "width": 85,
       }
     }
     href="/"
@@ -27,7 +27,7 @@ Array [
       Object {
         "alt": "eDoxa Logo",
         "height": 30,
-        "src": "sygnet.svg",
+        "src": "sygnet.png",
         "width": 30,
       }
     }
@@ -37,15 +37,15 @@ Array [
     <img
       alt="eDoxa Logo"
       className="navbar-brand-full"
-      height={25}
-      src="logo.svg"
-      width={89}
+      height={30}
+      src="logo.png"
+      width={85}
     />
     <img
       alt="eDoxa Logo"
       className="navbar-brand-minimized"
       height={30}
-      src="sygnet.svg"
+      src="sygnet.png"
       width={30}
     />
   </a>,

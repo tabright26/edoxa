@@ -13,6 +13,8 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Challenges.Api.Areas.Challenges;
+using eDoxa.Challenges.Api.HttpClients.Extensions;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
@@ -85,6 +87,8 @@ namespace eDoxa.Challenges.Api
         {
             services.AddAppSettings<ChallengesAppSettings>(Configuration);
 
+            services.Configure<ChallengeOptions>(Configuration.GetSection("Challenge"));
+
             services.AddHealthChecks()
                 .AddCheck("liveness", () => HealthCheckResult.Healthy())
                 .AddIdentityServer(AppSettings)
@@ -147,6 +151,8 @@ namespace eDoxa.Challenges.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
+
+            services.AddHttpClients(AppSettings);
         }
 
         public void ConfigureDevelopmentServices(IServiceCollection services)

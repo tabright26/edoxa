@@ -23,6 +23,8 @@ namespace eDoxa.Games.LeagueOfLegends
             // Adapters
             builder.RegisterType<LeagueOfLegendsAuthFactorGeneratorAdapter>().As<IAuthFactorGeneratorAdapter>().InstancePerDependency();
             builder.RegisterType<LeagueOfLegendsAuthFactorValidatorAdapter>().As<IAuthFactorValidatorAdapter>().InstancePerDependency();
+            builder.RegisterType<LeagueOfLegendsChallengeScoringAdapter>().As<IChallengeScoringAdapter>().InstancePerDependency();
+            builder.RegisterType<LeagueOfLegendsChallengeMatchesAdapter>().As<IChallengeMatchesAdapter>().InstancePerDependency();
         }
     }
 }

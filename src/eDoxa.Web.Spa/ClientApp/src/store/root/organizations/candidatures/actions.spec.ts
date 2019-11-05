@@ -24,7 +24,7 @@ describe("candidatures", () => {
 
     const expectedType = [LOAD_CLAN_CANDIDATURES, LOAD_CLAN_CANDIDATURES_SUCCESS, LOAD_CLAN_CANDIDATURES_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/candidatures?${type}Id=${id}`;
+    const expectedUrl = `/clans/api/candidatures?${type}Id=${id}`;
 
     const actionCreator = loadClanCandidatures(type, id);
 
@@ -39,7 +39,7 @@ describe("candidatures", () => {
 
     const expectedType = [LOAD_CLAN_CANDIDATURES, LOAD_CLAN_CANDIDATURES_SUCCESS, LOAD_CLAN_CANDIDATURES_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/candidatures?${type}Id=${id}`;
+    const expectedUrl = `/clans/api/candidatures?${type}Id=${id}`;
 
     const actionCreator = loadClanCandidatures(type, id);
 
@@ -53,7 +53,7 @@ describe("candidatures", () => {
 
     const expectedType = [LOAD_CLAN_CANDIDATURE, LOAD_CLAN_CANDIDATURE_SUCCESS, LOAD_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
+    const expectedUrl = `/clans/api/candidatures/${candidatureId}`;
 
     const actionCreator = loadClanCandidature(candidatureId);
 
@@ -68,7 +68,7 @@ describe("candidatures", () => {
 
     const expectedType = [SEND_CLAN_CANDIDATURE, SEND_CLAN_CANDIDATURE_SUCCESS, SEND_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "POST";
-    const expectedUrl = "/organizations/clans/api/candidatures";
+    const expectedUrl = "/clans/api/candidatures";
 
     const actionCreator = sendClanCandidature(clanId, userId);
 
@@ -83,7 +83,7 @@ describe("candidatures", () => {
 
     const expectedType = [ACCEPT_CLAN_CANDIDATURE, ACCEPT_CLAN_CANDIDATURE_SUCCESS, ACCEPT_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "POST";
-    const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
+    const expectedUrl = `/clans/api/candidatures/${candidatureId}`;
 
     const actionCreator = acceptClanCandidature(candidatureId);
 
@@ -97,7 +97,7 @@ describe("candidatures", () => {
 
     const expectedType = [REFUSE_CLAN_CANDIDATURE, REFUSE_CLAN_CANDIDATURE_SUCCESS, REFUSE_CLAN_CANDIDATURE_FAIL];
     const expectedMethod = "DELETE";
-    const expectedUrl = `/organizations/clans/api/candidatures/${candidatureId}`;
+    const expectedUrl = `/clans/api/candidatures/${candidatureId}`;
 
     const actionCreator = declineClanCandidature(candidatureId);
 

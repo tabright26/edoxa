@@ -1,5 +1,5 @@
 ﻿// Filename: Scoring.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,6 +11,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoring : Dictionary<StatName, StatWeighting>, IScoring
     {
+        public Scoring(IDictionary<string, float> stats) : base(stats.ToDictionary(stat => new StatName(stat.Key), stat => new StatWeighting(stat.Value)))
+        {
+        }
+
         public Scoring(IEnumerable<Stat> stats) : base(stats.ToDictionary(stat => stat.Name, stat => stat.Weighting))
         {
         }

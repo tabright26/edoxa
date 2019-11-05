@@ -10,12 +10,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.RefitClients;
 using eDoxa.Challenges.Api.Areas.Challenges.Services;
+using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
+using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -24,8 +25,6 @@ using FluentAssertions;
 using Moq;
 
 using Xunit;
-
-using Match = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 {
@@ -50,7 +49,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             }
 
             var _mockChallengeRepository = new Mock<IChallengeRepository>();
-            var _mockGamesApiRefitClient = new Mock<IGamesApiRefitClient>();
+            var _mockGamesApiRefitClient = new Mock<IGamesHttpClient>();
 
             _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(challenge)
@@ -61,11 +60,11 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 .Verifiable();
 
             _mockGamesApiRefitClient
-                .Setup(challengeRepository => challengeRepository.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                .Setup(challengeRepository => challengeRepository.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
                 .ReturnsAsync(
-                    new List<Match>
+                    new List<MatchDto>
                     {
-                        new GameMatch(new GameScore(challenge.Game, 100M), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider())
+                        new MatchDto(string.Empty, DateTime.UtcNow, new Dictionary<string, double>())
                     })
                 .Verifiable();
 
@@ -100,7 +99,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             }
 
             var _mockChallengeRepository = new Mock<IChallengeRepository>();
-            var _mockGamesApiRefitClient = new Mock<IGamesApiRefitClient>();
+            var _mockGamesApiRefitClient = new Mock<IGamesHttpClient>();
 
             _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(challenges)
@@ -111,8 +110,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 .Verifiable();
 
             _mockGamesApiRefitClient
-                .Setup(challengeRepository => challengeRepository.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
-                .ReturnsAsync(new List<Match>())
+                .Setup(challengeRepository => challengeRepository.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                .ReturnsAsync(new List<MatchDto>())
                 .Verifiable();
 
             var challengeService = new ChallengeService(_mockChallengeRepository.Object, _mockGamesApiRefitClient.Object);

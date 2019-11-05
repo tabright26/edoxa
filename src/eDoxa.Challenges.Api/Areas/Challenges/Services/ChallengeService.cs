@@ -8,8 +8,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.RefitClients;
 using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
+using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
@@ -24,17 +24,38 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
     public sealed class ChallengeService : IChallengeService
     {
         private readonly IChallengeRepository _challengeRepository;
-        private readonly IGamesApiRefitClient _gamesApiRefitClient;
+        private readonly IGamesHttpClient _gamesHttpClient;
 
-        public ChallengeService(IChallengeRepository challengeRepository, IGamesApiRefitClient gamesApiRefitClient)
+        public ChallengeService(IChallengeRepository challengeRepository, IGamesHttpClient gamesHttpClient)
         {
             _challengeRepository = challengeRepository;
-            _gamesApiRefitClient = gamesApiRefitClient;
+            _gamesHttpClient = gamesHttpClient;
         }
 
         public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
         {
             return await _challengeRepository.FindChallengeAsync(challengeId);
+        }
+
+        public async Task<ValidationResult> CreateChallengeAsync(
+            ChallengeName name,
+            Game game,
+            BestOf bestOf,
+            Entries entries,
+            ChallengeDuration duration,
+            IDateTimeProvider createAt,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var scoring = await _gamesHttpClient.GetChallengeScoringAsync(game);
+
+            var challenge = new Challenge(name, game, bestOf, entries, new ChallengeTimeline(createAt, duration), new Scoring(scoring));
+
+            _challengeRepository.Create(challenge);
+
+            await _challengeRepository.CommitAsync(cancellationToken);
+
+            return new ValidationResult();
         }
 
         public async Task<ValidationResult> RegisterParticipantAsync(
@@ -78,16 +99,18 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
             {
                 foreach (var participant in challenge.Participants)
                 {
-                    try
+                    foreach (var match in await _gamesHttpClient.GetChallengeMatchesAsync(
+                        game,
+                        participant.PlayerId,
+                        challenge.Timeline.StartedAt,
+                        challenge.Timeline.EndedAt))
                     {
-                        foreach (var match in await _gamesApiRefitClient.GetMatchesAsync(participant.PlayerId, challenge.Timeline.StartedAt, challenge.Timeline.EndedAt))
-                        {
-                            participant.Snapshot(match);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        // TODO: When failed.
+                        participant.Snapshot(
+                            new StatMatch(
+                                challenge.Scoring,
+                                new GameStats(match.Stats),
+                                new GameReference(match.Reference),
+                                synchronizedAt));
                     }
 
                     await _challengeRepository.CommitAsync(cancellationToken);

@@ -13,11 +13,12 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.Areas.Challenges.RefitClients;
+using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
+using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -31,8 +32,6 @@ using Microsoft.AspNetCore.TestHost;
 using Moq;
 
 using Xunit;
-
-using Match = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
@@ -71,12 +70,12 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
                         x.ConfigureTestContainer<ContainerBuilder>(
                             t =>
                             {
-                                var mock = new Mock<IGamesApiRefitClient>();
+                                var mock = new Mock<IGamesHttpClient>();
 
-                                mock.Setup(g => g.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
-                                    .ReturnsAsync(new List<Match>());
+                                mock.Setup(g => g.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                                    .ReturnsAsync(new List<MatchDto>());
 
-                                t.RegisterInstance(mock.Object).As<IGamesApiRefitClient>().SingleInstance();
+                                t.RegisterInstance(mock.Object).As<IGamesHttpClient>().SingleInstance();
                             });
                     });
 
