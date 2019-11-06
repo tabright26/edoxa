@@ -10,7 +10,6 @@ using eDoxa.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 

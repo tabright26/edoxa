@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         }
 
         /// <summary>
-        ///     Get challenges.
+        ///     Fetch challenges.
         /// </summary>
         [AllowAnonymous]
         [HttpGet]
@@ -65,15 +65,18 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         }
 
         /// <summary>
-        ///     Create challenge.
+        ///     Create a challenge.
         /// </summary>
-        [HttpPost]
+        [HttpPost(Name = "CreateChallenge")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] ChallengePostRequest request)
         {
+            var challengeId = new ChallengeId();
+
             var result = await _challengeService.CreateChallengeAsync(
+                challengeId,
                 new ChallengeName(request.Name),
                 request.Game,
                 new BestOf(request.BestOf),
@@ -83,7 +86,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok("Challenge created.");
+                var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+
+                return this.Created(Url.Link("CreateChallenge", null), response);
             }
 
             result.AddToModelState(ModelState, null);
@@ -109,6 +114,36 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             }
 
             return this.Ok(response);
+        }
+
+        /// <summary>
+        ///     Synchronize a challenge.
+        /// </summary>
+        [HttpPost("{challengeId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        public async Task<IActionResult> PostByIdAsync(ChallengeId challengeId)
+        {
+            var challenge = await _challengeService.FindChallengeAsync(challengeId);
+
+            if (challenge == null)
+            {
+                return this.NotFound("Challenge not found.");
+            }
+
+            var result = await _challengeService.SynchronizeChallengeAsync(challenge, new UtcNowDateTimeProvider());
+
+            if (result.IsValid)
+            {
+                var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+
+                return this.Ok(response);
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

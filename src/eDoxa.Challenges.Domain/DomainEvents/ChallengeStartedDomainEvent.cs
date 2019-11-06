@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeCreatedDomainEvent.cs
+﻿// Filename: ChallengeStartedDomainEvent.cs
 // Date Created: 2019-10-06
 // 
 // ================================================
@@ -9,9 +9,9 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Challenges.Domain.DomainEvents
 {
-    public sealed class ChallengeCreatedDomainEvent : IDomainEvent
+    public sealed class ChallengeStartedDomainEvent : IDomainEvent
     {
-        public ChallengeCreatedDomainEvent(IChallenge challenge)
+        public ChallengeStartedDomainEvent(IChallenge challenge)
         {
             Challenge = challenge;
         }

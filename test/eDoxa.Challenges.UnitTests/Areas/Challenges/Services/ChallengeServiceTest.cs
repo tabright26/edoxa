@@ -73,7 +73,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
 
             // Act
-            await challengeService.RegisterParticipantAsync(
+            await challengeService.RegisterChallengeParticipantAsync(
                 challenge,
                 new UserId(),
                 new PlayerId(),
@@ -120,7 +120,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
 
             // Act
-            await challengeService.SynchronizeAsync(Game.LeagueOfLegends, synchronizedAt);
+            await challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, synchronizedAt);
 
             // Assert
             challenges.Should().OnlyContain(challenge => challenge.Timeline == ChallengeState.InProgress);

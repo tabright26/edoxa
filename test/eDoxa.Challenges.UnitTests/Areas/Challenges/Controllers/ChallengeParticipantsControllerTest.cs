@@ -135,7 +135,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
             mockChallengeService.Setup(
-                    challengeQuery => challengeQuery.RegisterParticipantAsync(
+                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
                         It.IsAny<UserId>(),
                         It.IsAny<PlayerId>(),
@@ -158,7 +158,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterParticipantAsync(
+                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
                     It.IsAny<UserId>(),
                     It.IsAny<PlayerId>(),
@@ -183,7 +183,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockChallengeService
                 .Setup(
-                    challengeQuery => challengeQuery.RegisterParticipantAsync(
+                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
                         It.IsAny<UserId>(),
                         It.IsAny<PlayerId>(),
@@ -207,7 +207,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterParticipantAsync(
+                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
                     It.IsAny<UserId>(),
                     It.IsAny<PlayerId>(),

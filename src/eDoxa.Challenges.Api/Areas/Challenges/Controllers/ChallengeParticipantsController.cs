@@ -80,7 +80,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 return this.NotFound("Challenge not found.");
             }
 
-            await _challengeService.RegisterParticipantAsync(
+            await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
                 HttpContext.GetUserId(),
                 HttpContext.GetPlayerId(challenge.Game),

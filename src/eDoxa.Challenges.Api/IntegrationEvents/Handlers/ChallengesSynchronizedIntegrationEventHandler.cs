@@ -24,7 +24,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(ChallengesSynchronizedIntegrationEvent integrationEvent)
         {
-            await _challengeService.SynchronizeAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
+            await _challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
         }
     }
 }

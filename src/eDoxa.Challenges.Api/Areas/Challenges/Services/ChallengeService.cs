@@ -44,6 +44,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
         }
 
         public async Task<ValidationResult> CreateChallengeAsync(
+            ChallengeId challengeId,
             ChallengeName name,
             Game game,
             BestOf bestOf,
@@ -63,6 +64,8 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
                 new ChallengeTimeline(createAt, duration),
                 new Scoring(scoring));
 
+            challenge.SetEntityId(challengeId);
+
             _challengeRepository.Create(challenge);
 
             await _challengeRepository.CommitAsync(cancellationToken);
@@ -70,7 +73,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
             return new ValidationResult();
         }
 
-        public async Task<ValidationResult> RegisterParticipantAsync(
+        public async Task<ValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             UserId userId,
             PlayerId playerId,
@@ -100,45 +103,62 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
             return new ValidationResult();
         }
 
-        public async Task SynchronizeAsync(
-            Game game,
+        public async Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default)
+        {
+            foreach (var challenge in await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress))
+            {
+                var result = await this.SynchronizeChallengeAsync(challenge, synchronizedAt, cancellationToken);
+
+                if (!result.IsValid)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        _logger.LogError(error.ErrorMessage);
+                    }
+                }
+            }
+        }
+
+        public async Task<ValidationResult> SynchronizeChallengeAsync(
+            IChallenge challenge,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default
         )
         {
-            foreach (var challenge in await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress))
+            if (!challenge.CanSynchronize())
             {
-                if (challenge.CanSynchronize())
+                return new ValidationFailure("_error", "Challenge wasn't synchronized due to is current state.").ToResult();
+            }
+
+            challenge.Synchronize(synchronizedAt);
+
+            foreach (var participant in challenge.Participants)
+            {
+                try
                 {
-                    challenge.Synchronize(synchronizedAt);
+                    var matches = await _gamesHttpClient.GetChallengeMatchesAsync(
+                        challenge.Game,
+                        participant.PlayerId,
+                        participant.SynchronizedAt ?? challenge.Timeline.StartedAt,
+                        challenge.Timeline.EndedAt);
 
-                    foreach (var participant in challenge.Participants)
-                    {
-                        try
-                        {
-                            var matches = await _gamesHttpClient.GetChallengeMatchesAsync(
-                                game,
-                                participant.PlayerId,
-                                participant.SynchronizedAt ?? challenge.Timeline.StartedAt,
-                                challenge.Timeline.EndedAt);
-
-                            participant.Snapshot(
-                                matches.Select(match => new Match(challenge.Scoring.Map(match.Stats), new GameUuid(match.GameUuid))).ToList(),
-                                synchronizedAt);
-
-                            await _challengeRepository.CommitAsync(cancellationToken);
-                        }
-                        catch (ApiException exception)
-                        {
-                            _logger.LogCritical(
-                                exception,
-                                $"Synchronize challenge ({challenge}) thrown an exception when fetching participant ({participant}) matches.");
-                        }
-                    }
+                    participant.Snapshot(
+                        matches.Select(match => new Match(challenge.Scoring.Map(match.Stats), new GameUuid(match.GameUuid))).ToList(),
+                        synchronizedAt);
 
                     await _challengeRepository.CommitAsync(cancellationToken);
                 }
+                catch (ApiException exception)
+                {
+                    _logger.LogError(
+                        exception,
+                        $"Synchronize challenge ({challenge}) thrown an exception when fetching participant ({participant}) matches.");
+                }
             }
+
+            await _challengeRepository.CommitAsync(cancellationToken);
+
+            return new ValidationResult();
         }
     }
 }

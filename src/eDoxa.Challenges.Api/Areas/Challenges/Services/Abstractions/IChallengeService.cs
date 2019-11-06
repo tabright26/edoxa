@@ -21,6 +21,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
 
         Task<ValidationResult> CreateChallengeAsync(
+            ChallengeId challengeId,
             ChallengeName name,
             Game game,
             BestOf bestOf,
@@ -30,7 +31,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
             CancellationToken cancellationToken = default
         );
 
-        Task<ValidationResult> RegisterParticipantAsync(
+        Task<ValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             UserId userId,
             PlayerId playerId,
@@ -38,10 +39,8 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
             CancellationToken cancellationToken = default
         );
 
-        Task SynchronizeAsync(
-            Game game,
-            IDateTimeProvider synchronizedAt,
-            CancellationToken cancellationToken = default
-        );
+        Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
+
+        Task<ValidationResult> SynchronizeChallengeAsync(IChallenge challenge, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
     }
 }

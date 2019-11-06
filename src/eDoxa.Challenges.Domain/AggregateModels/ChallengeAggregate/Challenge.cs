@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using eDoxa.Challenges.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -32,6 +33,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             Entries = entries;
             Timeline = timeline;
             Scoring = scoring;
+            this.AddDomainEvent(new ChallengeCreatedDomainEvent(this));
         }
 
         public bool SoldOut => _participants.Count >= Entries;

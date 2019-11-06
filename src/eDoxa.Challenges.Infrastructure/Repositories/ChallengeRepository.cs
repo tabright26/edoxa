@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -102,8 +102,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
                         _materializedIds[challenge.Id] = challenge;
 
                         return challenge;
-                    }
-                )
+                    })
                 .ToList();
         }
 
@@ -142,7 +141,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
                 this.CopyChanges(challenge, challengeModel);
             }
 
-            await _context.SaveChangesAsync(cancellationToken);
+            await _context.CommitAsync(cancellationToken: cancellationToken);
 
             foreach (var (challenge, challengeModel) in _materializedObjects)
             {
@@ -152,6 +151,10 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         private void CopyChanges(IChallenge challenge, ChallengeModel challengeModel)
         {
+            challengeModel.DomainEvents = challenge.DomainEvents.ToList();
+
+            challenge.ClearDomainEvents();
+
             challengeModel.State = challenge.Timeline.State.Value;
 
             challengeModel.SynchronizedAt = challenge.SynchronizedAt;
@@ -165,7 +168,8 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
                 this.CopyChanges(challenge.Participants.Single(participant => participant.Id == participantModel.Id), participantModel);
             }
 
-            var participants = challenge.Participants.Where(participant => challengeModel.Participants.All(participantModel => participantModel.Id != participant.Id));
+            var participants =
+                challenge.Participants.Where(participant => challengeModel.Participants.All(participantModel => participantModel.Id != participant.Id));
 
             foreach (var participant in _mapper.Map<ICollection<ParticipantModel>>(participants))
             {
@@ -175,7 +179,16 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         private void CopyChanges(Participant participant, ParticipantModel participantModel)
         {
+            participantModel.DomainEvents = participant.DomainEvents.ToList();
+
+            participant.ClearDomainEvents();
+
             participantModel.SynchronizedAt = participant.SynchronizedAt;
+
+            foreach (var matchModel in participantModel.Matches)
+            {
+                this.CopyChanges(participant.Matches.Single(match => match.Id == matchModel.Id), matchModel);
+            }
 
             var matches = participant.Matches.Where(match => participantModel.Matches.All(matchModel => matchModel.Id != match.Id));
 
@@ -183,6 +196,13 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             {
                 participantModel.Matches.Add(match);
             }
+        }
+
+        private void CopyChanges(IMatch match, MatchModel matchModel)
+        {
+            matchModel.DomainEvents = match.DomainEvents.ToList();
+
+            match.ClearDomainEvents();
         }
     }
 }
