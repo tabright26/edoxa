@@ -26,15 +26,6 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
             builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant).OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(participant => participant.Id);
-
-            builder.HasIndex(
-                    participant => new
-                    {
-                        participant.Id,
-                        participant.UserId
-                    }
-                )
-                .IsUnique();
         }
     }
 }

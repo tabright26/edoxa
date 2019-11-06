@@ -165,8 +165,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
                 this.CopyChanges(challenge.Participants.Single(participant => participant.Id == participantModel.Id), participantModel);
             }
 
-            var participants =
-                challenge.Participants.Where(participant => challengeModel.Participants.All(participantModel => participantModel.Id != participant.Id));
+            var participants = challenge.Participants.Where(participant => challengeModel.Participants.All(participantModel => participantModel.Id != participant.Id));
 
             foreach (var participant in _mapper.Map<ICollection<ParticipantModel>>(participants))
             {
@@ -176,6 +175,8 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         private void CopyChanges(Participant participant, ParticipantModel participantModel)
         {
+            participantModel.SynchronizedAt = participant.SynchronizedAt;
+
             var matches = participant.Matches.Where(match => participantModel.Matches.All(matchModel => matchModel.Id != match.Id));
 
             foreach (var match in _mapper.Map<ICollection<MatchModel>>(matches))

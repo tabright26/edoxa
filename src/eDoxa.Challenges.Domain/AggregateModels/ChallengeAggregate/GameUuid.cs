@@ -16,11 +16,11 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class GameReference : ValueObject
+    public sealed class GameUuid : ValueObject
     {
         private readonly string _gameReference;
 
-        public GameReference(string gameReference)
+        public GameUuid(string gameReference)
         {
             if (string.IsNullOrWhiteSpace(gameReference) || !gameReference.All(c => char.IsLetterOrDigit(c) || c == '-' || c == '_'))
             {
@@ -30,7 +30,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _gameReference = gameReference;
         }
 
-        public GameReference(long gameReference)
+        public GameUuid(long gameReference)
         {
             if (gameReference < 0)
             {
@@ -40,7 +40,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _gameReference = gameReference.ToString();
         }
 
-        public GameReference(Guid gameReference)
+        public GameUuid(Guid gameReference)
         {
             if (gameReference == Guid.Empty)
             {
@@ -50,24 +50,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             _gameReference = gameReference.ToString();
         }
 
-        public static implicit operator GameReference(string gameReference)
+        public static implicit operator GameUuid(string gameReference)
         {
-            return new GameReference(gameReference);
+            return new GameUuid(gameReference);
         }
 
-        public static implicit operator GameReference(long gameReference)
+        public static implicit operator GameUuid(long gameReference)
         {
-            return new GameReference(gameReference);
+            return new GameUuid(gameReference);
         }
 
-        public static implicit operator GameReference(Guid gameReference)
+        public static implicit operator GameUuid(Guid gameReference)
         {
-            return new GameReference(gameReference);
+            return new GameUuid(gameReference);
         }
 
-        public static implicit operator string(GameReference gameReference)
+        public static implicit operator string(GameUuid gameUuid)
         {
-            return gameReference._gameReference;
+            return gameUuid._gameReference;
         }
 
         protected override IEnumerable<object> GetAtomicValues()

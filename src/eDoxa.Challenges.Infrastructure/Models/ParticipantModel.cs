@@ -20,6 +20,8 @@ namespace eDoxa.Challenges.Infrastructure.Models
 
         public DateTime RegisteredAt { get; set; }
 
+        public DateTime? SynchronizedAt { get; set; }
+
         public string PlayerId { get; set; }
 
         public Guid UserId { get; set; }

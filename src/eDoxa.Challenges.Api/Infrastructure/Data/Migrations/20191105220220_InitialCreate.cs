@@ -34,6 +34,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     RegisteredAt = table.Column<DateTime>(nullable: false),
+                    SynchronizedAt = table.Column<DateTime>(nullable: true),
                     PlayerId = table.Column<string>(nullable: true),
                     UserId = table.Column<Guid>(nullable: false),
                     ChallengeId = table.Column<Guid>(nullable: true)
@@ -74,8 +75,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    SynchronizedAt = table.Column<DateTime>(nullable: false),
-                    GameReference = table.Column<string>(nullable: true),
+                    GameUuid = table.Column<string>(nullable: true),
                     ParticipantId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -111,13 +111,6 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Match_GameReference",
-                table: "Match",
-                column: "GameReference",
-                unique: true,
-                filter: "[GameReference] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Match_ParticipantId",
                 table: "Match",
                 column: "ParticipantId");
@@ -126,12 +119,6 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 name: "IX_Participant_ChallengeId",
                 table: "Participant",
                 column: "ChallengeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Participant_Id_UserId",
-                table: "Participant",
-                columns: new[] { "Id", "UserId" },
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

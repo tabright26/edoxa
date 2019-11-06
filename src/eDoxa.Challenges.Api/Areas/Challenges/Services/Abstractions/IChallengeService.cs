@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,7 +40,6 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
 
         Task SynchronizeAsync(
             Game game,
-            TimeSpan interval,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default
         );

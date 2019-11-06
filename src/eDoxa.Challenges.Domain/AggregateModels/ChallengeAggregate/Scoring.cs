@@ -23,7 +23,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         {
         }
 
-        public IEnumerable<Stat> Map(IGameStats stats)
+        public IEnumerable<Stat> Map(IDictionary<string, double> stats)
         {
             for (var index = 0; index < Count; index++)
             {
@@ -36,13 +36,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
                     continue;
                 }
 
-                var value = stats[name];
+                var value = new StatValue(stats[name]);
 
                 var weighting = item.Value;
 
-                var stat = new Stat(name, value, weighting);
-
-                yield return stat;
+                yield return new Stat(name, value, weighting);
             }
         }
     }

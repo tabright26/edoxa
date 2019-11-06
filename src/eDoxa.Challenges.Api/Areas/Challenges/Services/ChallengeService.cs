@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,17 +19,23 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
+using Microsoft.Extensions.Logging;
+
+using Refit;
+
 namespace eDoxa.Challenges.Api.Areas.Challenges.Services
 {
     public sealed class ChallengeService : IChallengeService
     {
         private readonly IChallengeRepository _challengeRepository;
         private readonly IGamesHttpClient _gamesHttpClient;
+        private readonly ILogger _logger;
 
-        public ChallengeService(IChallengeRepository challengeRepository, IGamesHttpClient gamesHttpClient)
+        public ChallengeService(IChallengeRepository challengeRepository, IGamesHttpClient gamesHttpClient, ILogger<ChallengeService> logger)
         {
             _challengeRepository = challengeRepository;
             _gamesHttpClient = gamesHttpClient;
+            _logger = logger;
         }
 
         public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
@@ -49,7 +55,13 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
         {
             var scoring = await _gamesHttpClient.GetChallengeScoringAsync(game);
 
-            var challenge = new Challenge(name, game, bestOf, entries, new ChallengeTimeline(createAt, duration), new Scoring(scoring));
+            var challenge = new Challenge(
+                name,
+                game,
+                bestOf,
+                entries,
+                new ChallengeTimeline(createAt, duration),
+                new Scoring(scoring));
 
             _challengeRepository.Create(challenge);
 
@@ -90,46 +102,43 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
 
         public async Task SynchronizeAsync(
             Game game,
-            TimeSpan interval,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default
         )
         {
             foreach (var challenge in await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress))
             {
-                foreach (var participant in challenge.Participants)
+                if (challenge.CanSynchronize())
                 {
-                    foreach (var match in await _gamesHttpClient.GetChallengeMatchesAsync(
-                        game,
-                        participant.PlayerId,
-                        challenge.Timeline.StartedAt,
-                        challenge.Timeline.EndedAt))
+                    challenge.Synchronize(synchronizedAt);
+
+                    foreach (var participant in challenge.Participants)
                     {
-                        participant.Snapshot(
-                            new StatMatch(
-                                challenge.Scoring,
-                                new GameStats(match.Stats),
-                                new GameReference(match.Reference),
-                                synchronizedAt));
+                        try
+                        {
+                            var matches = await _gamesHttpClient.GetChallengeMatchesAsync(
+                                game,
+                                participant.PlayerId,
+                                participant.SynchronizedAt ?? challenge.Timeline.StartedAt,
+                                challenge.Timeline.EndedAt);
+
+                            participant.Snapshot(
+                                matches.Select(match => new Match(challenge.Scoring.Map(match.Stats), new GameUuid(match.GameUuid))).ToList(),
+                                synchronizedAt);
+
+                            await _challengeRepository.CommitAsync(cancellationToken);
+                        }
+                        catch (ApiException exception)
+                        {
+                            _logger.LogCritical(
+                                exception,
+                                $"Synchronize challenge ({challenge}) thrown an exception when fetching participant ({participant}) matches.");
+                        }
                     }
 
                     await _challengeRepository.CommitAsync(cancellationToken);
                 }
             }
         }
-
-        //private async Task CloseAsync(IDateTimeProvider closedAt, CancellationToken cancellationToken = default)
-        //{
-        //    var challenges = await _challengeRepository.FetchChallengesAsync(null, ChallengeState.Ended);
-
-        //    foreach (var challenge in challenges.OrderByDescending(challenge => challenge.Timeline.EndedAt))
-        //    {
-        //        await this.Synchronize(challenge);
-
-        //        challenge.Close(closedAt);
-
-        //        await _challengeRepository.CommitAsync(cancellationToken);
-        //    }
-        //}
     }
 }

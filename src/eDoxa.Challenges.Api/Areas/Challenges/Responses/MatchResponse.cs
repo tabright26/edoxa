@@ -9,7 +9,6 @@
 using System;
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace eDoxa.Challenges.Api.Areas.Challenges.Responses
 {
@@ -18,10 +17,6 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Responses
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }
-
-        [JsonProperty("synchronizedAt")]
-        [JsonConverter(typeof(UnixDateTimeConverter))]
-        public DateTime SynchronizedAt { get; set; }
 
         [JsonProperty("score")]
         public decimal Score { get; set; }

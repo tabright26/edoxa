@@ -26,8 +26,7 @@ namespace eDoxa.Challenges.Infrastructure.Profiles
 
             this.CreateMap<IMatch, MatchModel>()
                 .ForMember(match => match.Id, config => config.MapFrom<Guid>(match => match.Id))
-                .ForMember(match => match.SynchronizedAt, config => config.MapFrom(match => match.SynchronizedAt))
-                .ForMember(match => match.GameReference, config => config.MapFrom<string>(match => match.GameReference))
+                .ForMember(match => match.GameUuid, config => config.MapFrom<string>(match => match.GameUuid))
                 .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats))
                 .ForMember(match => match.Participant, config => config.Ignore());
         }

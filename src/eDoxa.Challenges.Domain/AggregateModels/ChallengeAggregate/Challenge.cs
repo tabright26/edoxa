@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             Scoring = scoring;
         }
 
-        public bool SoldOut => Participants.Count >= Entries;
+        public bool SoldOut => _participants.Count >= Entries;
 
         public ChallengeName Name { get; }
 
@@ -84,37 +84,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = Timeline.Close(closedAt);
         }
 
-        public void Synchronize(
-            Func<PlayerId, DateTime, DateTime, IEnumerable<GameReference>> getGameReferences,
-            Func<PlayerId, GameReference, IScoring, IMatch> getMatch,
-            IDateTimeProvider synchronizedAt
-        )
+        public void Synchronize(IDateTimeProvider synchronizedAt)
         {
             if (!this.CanSynchronize())
             {
                 throw new InvalidOperationException();
             }
 
-            foreach (var participant in Participants)
-            {
-                var gameReferences = getGameReferences(
-                    participant.PlayerId,
-                    Timeline.StartedAt ?? throw new InvalidOperationException(),
-                    Timeline.EndedAt ?? throw new InvalidOperationException());
-
-                foreach (var gameReference in participant.GetUnsynchronizedGameReferences(gameReferences))
-                {
-                    var match = getMatch(participant.PlayerId, gameReference, Scoring);
-
-                    participant.Snapshot(match);
-                }
-            }
-
-            this.Synchronize(synchronizedAt);
-        }
-
-        public void Synchronize(IDateTimeProvider synchronizedAt)
-        {
             SynchronizedAt = synchronizedAt.DateTime;
         }
 
@@ -138,10 +114,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return Timeline == ChallengeState.Ended;
         }
 
-        // TODO: Must be verified.
-        private bool CanSynchronize()
+        public bool CanSynchronize()
         {
-            return Timeline != ChallengeState.Inscription && Timeline != ChallengeState.Closed;
+            return Timeline != ChallengeState.Inscription && Timeline != ChallengeState.Closed && Timeline.StartedAt.HasValue && Timeline.EndedAt.HasValue;
         }
     }
 

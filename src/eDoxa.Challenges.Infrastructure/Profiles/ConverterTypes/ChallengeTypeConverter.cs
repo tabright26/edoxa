@@ -28,7 +28,7 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
         {
             var challenge = new Challenge(
                 new ChallengeName(source.Name),
-                Game.FromValue(source.Game)!,
+                Game.FromValue(source.Game),
                 new BestOf(source.BestOf),
                 new Entries(source.Entries),
                 new ChallengeTimeline(new DateTimeProvider(source.Timeline.CreatedAt), new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration))),

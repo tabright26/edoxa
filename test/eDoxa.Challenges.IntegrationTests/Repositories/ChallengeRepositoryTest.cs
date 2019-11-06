@@ -1,16 +1,18 @@
 ﻿// Filename: ChallengeRepositoryTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Bogus;
 
 using eDoxa.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
+using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.TestHelper;
@@ -121,11 +123,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     challenge?.Timeline.State.Should().Be(ChallengeState.InProgress);
                 });
 
-            var match1 = new StatMatch(
-                fakeChallenge.Scoring,
-                faker.Game().Stats(),
-                new GameReference(Guid.NewGuid()),
-                new UtcNowDateTimeProvider());
+            var match1 = new Match(fakeChallenge.Scoring.Map(faker.Game().Stats()), new GameUuid(Guid.NewGuid()));
 
             // Act
             await testServer.UsingScopeAsync(
@@ -135,7 +133,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);
-                    participant?.Snapshot(match1);
+                    participant?.Snapshot(new List<IMatch> {match1}, new UtcNowDateTimeProvider());
                     await challengeRepository.CommitAsync();
                 });
 
@@ -152,7 +150,12 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     challenge?.Timeline.State.Should().Be(ChallengeState.InProgress);
                 });
 
-            var match2 = new GameMatch(new GameScore(fakeChallenge.Game, 23847883M), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider());
+            var match2 = new Match(
+                new List<Stat>
+                {
+                    new Stat(new StatName(fakeChallenge.Game.Name), new StatValue(23847883M), new StatWeighting(1))
+                },
+                new GameUuid(Guid.NewGuid()));
 
             // Act
             await testServer.UsingScopeAsync(
@@ -162,7 +165,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);
-                    participant?.Snapshot(match2);
+                    participant?.Snapshot(new List<IMatch> {match2}, new UtcNowDateTimeProvider());
                     await challengeRepository.CommitAsync();
                 });
 

@@ -36,8 +36,6 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
             );
 
             builder.HasKey(match => match.Id);
-
-            builder.HasIndex(match => match.GameReference).IsUnique();
         }
     }
 }

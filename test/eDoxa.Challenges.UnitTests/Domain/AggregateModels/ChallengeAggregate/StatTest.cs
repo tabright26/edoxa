@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 
 using Bogus;
 
@@ -42,21 +43,17 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
                     [new StatName("StatName5")] = new StatWeighting(-3)
                 };
 
-                var stats = new GameStats(
-                    new
-                    {
-                        StatName1 = faker.Random.Int(0, 40),
-                        StatName2 = faker.Random.Int(0, 15),
-                        StatName3 = faker.Random.Int(0, 50),
-                        StatName4 = faker.Random.Int(10000, 500000),
-                        StatName5 = faker.Random.Int(10000, 350000)
-                    });
+                var stats = new Dictionary<string, double>  {
+                    ["StatName1"] = faker.Random.Int(0, 40),
+                    ["StatName2"] = faker.Random.Int(0, 15),
+                    ["StatName3"] = faker.Random.Int(0, 50),
+                    ["StatName4"] = faker.Random.Int(10000, 500000),
+                    ["StatName5"] = faker.Random.Int(10000, 350000)
+                };
 
-                var match = new StatMatch(
-                    scoring,
-                    stats,
-                    new GameReference(Guid.NewGuid()),
-                    new UtcNowDateTimeProvider());
+                var match = new Match(
+                    scoring.Map(stats),
+                    new GameUuid(Guid.NewGuid()));
 
                 foreach (var stat in match.Stats)
                 {

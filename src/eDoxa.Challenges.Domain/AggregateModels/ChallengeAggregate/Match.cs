@@ -12,39 +12,36 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
-    public abstract partial class Match : Entity<MatchId>, IMatch
+    public sealed partial class Match : Entity<MatchId>, IMatch
     {
         private readonly HashSet<Stat> _stats;
 
-        protected Match(IEnumerable<Stat> stats, GameReference gameReference, IDateTimeProvider synchronizedAt)
+        public Match(IEnumerable<Stat> stats, GameUuid gameUuid)
         {
             _stats = new HashSet<Stat>(stats);
-            SynchronizedAt = synchronizedAt.DateTime;
-            GameReference = gameReference;
+            GameUuid = gameUuid;
         }
 
-        public DateTime SynchronizedAt { get; }
-
-        public GameReference GameReference { get; }
+        public GameUuid GameUuid { get; }
 
         public Score Score => new MatchScore(this);
 
         public IReadOnlyCollection<Stat> Stats => _stats;
     }
 
-    public abstract partial class Match : IEquatable<IMatch?>
+    public sealed partial class Match : IEquatable<IMatch?>
     {
         public bool Equals(IMatch? match)
         {
             return Id.Equals(match?.Id);
         }
 
-        public sealed override bool Equals(object? obj)
+        public override bool Equals(object? obj)
         {
             return this.Equals(obj as IMatch);
         }
 
-        public sealed override int GetHashCode()
+        public override int GetHashCode()
         {
             return base.GetHashCode();
         }

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
@@ -25,7 +24,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(ChallengesSynchronizedIntegrationEvent integrationEvent)
         {
-            await _challengeService.SynchronizeAsync(Game.LeagueOfLegends, TimeSpan.FromHours(1), new UtcNowDateTimeProvider());
+            await _challengeService.SynchronizeAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
         }
     }
 }

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 
 using Newtonsoft.Json;
@@ -15,18 +14,14 @@ namespace eDoxa.Seedwork.Application.Dtos
     public sealed class MatchDto
     {
         [JsonConstructor]
-        public MatchDto(string reference, DateTime timestamp, IDictionary<string, double> stats)
+        public MatchDto(string gameUuid, IDictionary<string, double> stats)
         {
-            Reference = reference;
-            Timestamp = timestamp;
+            GameUuid = gameUuid;
             Stats = stats;
         }
 
-        [JsonProperty("reference")]
-        public string Reference { get; }
-
-        [JsonProperty("timestamp")]
-        public DateTime Timestamp { get; }
+        [JsonProperty("gameUuid")]
+        public string GameUuid { get; }
 
         [JsonProperty("stats")]
         public IDictionary<string, double> Stats { get; }

@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 
 using AutoMapper;
 
@@ -24,27 +23,11 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
         {
             var stats = context.Mapper.Map<ICollection<Stat>>(matchModel.Stats);
 
-            var match = Convert(matchModel, stats);
+            var match = new Match(stats, matchModel.GameUuid);
 
             match.SetEntityId(MatchId.FromGuid(matchModel.Id));
 
             return match;
-        }
-
-        private static IMatch Convert(MatchModel matchModel, ICollection<Stat> stats)
-        {
-            var synchronizedAt = new DateTimeProvider(matchModel.SynchronizedAt);
-
-            if (stats.Count == 1)
-            {
-                var stat = stats.Single();
-
-                var score = new GameScore(Game.FromName(stat.Name)!, new decimal(stat.Value));
-
-                return new GameMatch(score, matchModel.GameReference, synchronizedAt);
-            }
-
-            return new StatMatch(new Scoring(stats), new GameStats(stats), matchModel.GameReference, synchronizedAt);
         }
     }
 }

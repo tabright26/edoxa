@@ -17,10 +17,8 @@ namespace eDoxa.Challenges.Infrastructure.Models
     public class MatchModel
     {
         public Guid Id { get; set; }
-
-        public DateTime SynchronizedAt { get; set; }
-
-        public string GameReference { get; set; }
+        
+        public string GameUuid { get; set; }
 
         public ParticipantModel Participant { get; set; }
 

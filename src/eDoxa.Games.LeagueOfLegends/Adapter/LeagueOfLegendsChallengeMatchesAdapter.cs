@@ -51,7 +51,6 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
                 matches.Add(
                     new MatchDto(
                         match.GameId.ToString(),
-                        match.GameCreation,
                         stats.GetType().GetProperties().ToDictionary(property => property.Name, property => Convert.ToDouble(property.GetValue(stats)))));
             }
 
