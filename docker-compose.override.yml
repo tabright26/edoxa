@@ -44,6 +44,7 @@ services:
       - Swagger__Endpoints__ChallengesUrl=http://${HOST:-localhost}:5003
       - Swagger__Endpoints__GamesUrl=http://${HOST:-localhost}:5005
       - Swagger__Endpoints__ClansUrl=http://${HOST:-localhost}:5010
+      - Swagger__Endpoints__WebAggregatorUrl=http://${HOST:-localhost}:5401
     ports:
       - "5000:80"
 
@@ -145,10 +146,28 @@ services:
       - Endpoints__ChallengesUrl=http://challenges.api
       - Endpoints__GamesUrl=http://games.api
       - Endpoints__ClansUrl=http://clans.api
+      - Endpoints__WebAggregatorUrl=http://web.aggregator
     ports:
       - "5200:80"
     volumes:
       - ./src/eDoxa.Web.Gateway:/app
+
+  web.aggregator:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__CashierUrl=http://cashier.api
+      - Endpoints__PaymentUrl=http://payment.api
+      - Endpoints__NotificationsUrl=http://notifications.api
+      - Endpoints__ChallengesUrl=http://challenges.api
+      - Endpoints__GamesUrl=http://games.api
+      - Endpoints__ClansUrl=http://clans.api
+    ports:
+      - "5401:80"
 
   web.spa.proxy:
     environment:

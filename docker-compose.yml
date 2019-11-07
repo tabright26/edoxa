@@ -105,6 +105,21 @@ services:
       - challenges.api
       - clans.api
 
+  web.aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/web.aggregator:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Aggregator/Dockerfile
+    depends_on:
+      - seq   
+      - identity.api
+      - cashier.api
+      - payment.api
+      - notifications.api
+      - games.api
+      - challenges.api
+      - clans.api
+
   web.spa.proxy:
     image: ${ACR_REGISTRY:-edoxa}/web.spa.proxy:${ACR_TAG:-latest}
     build:

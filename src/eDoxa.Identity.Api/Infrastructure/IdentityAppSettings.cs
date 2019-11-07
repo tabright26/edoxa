@@ -57,5 +57,7 @@ namespace eDoxa.Identity.Api.Infrastructure
         public string GamesUrl { get; set; }
         
         public string ClansUrl { get; set; }
+
+        public string WebAggregatorUrl { get; set; }
     }
 }

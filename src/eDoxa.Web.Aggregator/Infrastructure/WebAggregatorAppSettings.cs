@@ -1,5 +1,5 @@
-﻿// Filename: WebGatewayAppSettings.cs
-// Date Created: 2019-07-24
+﻿// Filename: ChallengesAppSettings.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,18 +11,23 @@ using System.ComponentModel.DataAnnotations;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
-namespace eDoxa.Web.Gateway.Infrastructure
+using IdentityServer4.Models;
+
+namespace eDoxa.Web.Aggregator.Infrastructure
 {
-    public class WebGatewayAppSettings : IHasAuthorityAppSettings, IHasEndpointsAppSettings<EndpointsOptions>
+    public class WebAggregatorAppSettings : IHasApiResourceAppSettings<EndpointsOptions>
     {
         [Required]
-        public EndpointsOptions Endpoints { get; set; }
+        public ApiResource ApiResource { get; set; }
 
         [Required]
         public string Authority { get; set; }
+
+        [Required]
+        public EndpointsOptions Endpoints { get; set; }
     }
 
-    public sealed class EndpointsOptions : AuthorityEndpointsOptions
+    public class EndpointsOptions : AuthorityEndpointsOptions
     {
         [Required]
         public string CashierUrl { get; set; }
@@ -41,8 +46,5 @@ namespace eDoxa.Web.Gateway.Infrastructure
 
         [Required]
         public string NotificationsUrl { get; set; }
-
-        [Required]
-        public string WebAggregatorUrl { get; set; }
     }
 }
