@@ -8,8 +8,8 @@ using Autofac;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Services;
 using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
-using eDoxa.Cashier.Api.Areas.Challenges.Factories;
-using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
+using eDoxa.Cashier.Api.Areas.Payouts.Factories;
+using eDoxa.Cashier.Api.Areas.Payouts.Strategies;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;

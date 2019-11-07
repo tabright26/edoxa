@@ -8,13 +8,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
+
+using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -80,13 +82,20 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 return this.NotFound("Challenge not found.");
             }
 
-            await _challengeService.RegisterChallengeParticipantAsync(
+            var result = await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
                 HttpContext.GetUserId(),
                 HttpContext.GetPlayerId(challenge.Game),
                 new UtcNowDateTimeProvider());
 
-            return this.Ok("Participant as been registered.");
+            if (result.IsValid)
+            {
+                return this.Ok("Participant as been registered.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

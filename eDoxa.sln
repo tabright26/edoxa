@@ -163,6 +163,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Games.UnitTests", "te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Web.Aggregator", "src\eDoxa.Web.Aggregator\eDoxa.Web.Aggregator.csproj", "{1CFB8754-9F9F-455B-A973-67ABE158E857}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Responses", "src\eDoxa.Challenges.Responses\eDoxa.Challenges.Responses.csproj", "{0E3F9574-2C48-48E2-BE37-C5179CB79363}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Cashier.Responses", "src\eDoxa.Cashier.Responses\eDoxa.Cashier.Responses.csproj", "{292621D8-090A-4A7D-81BF-611793E26FE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Identity.Responses", "src\eDoxa.Identity.Responses\eDoxa.Identity.Responses.csproj", "{8E20C535-D5E0-4E9F-81AA-4EB4A6465BB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Challenges.Requests", "src\eDoxa.Challenges.Requests\eDoxa.Challenges.Requests.csproj", "{503C8CEE-42C5-4A37-8FDF-5900D846B599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -393,6 +401,22 @@ Global
 		{1CFB8754-9F9F-455B-A973-67ABE158E857}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CFB8754-9F9F-455B-A973-67ABE158E857}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CFB8754-9F9F-455B-A973-67ABE158E857}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E3F9574-2C48-48E2-BE37-C5179CB79363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E3F9574-2C48-48E2-BE37-C5179CB79363}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E3F9574-2C48-48E2-BE37-C5179CB79363}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E3F9574-2C48-48E2-BE37-C5179CB79363}.Release|Any CPU.Build.0 = Release|Any CPU
+		{292621D8-090A-4A7D-81BF-611793E26FE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{292621D8-090A-4A7D-81BF-611793E26FE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{292621D8-090A-4A7D-81BF-611793E26FE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{292621D8-090A-4A7D-81BF-611793E26FE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E20C535-D5E0-4E9F-81AA-4EB4A6465BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E20C535-D5E0-4E9F-81AA-4EB4A6465BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E20C535-D5E0-4E9F-81AA-4EB4A6465BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E20C535-D5E0-4E9F-81AA-4EB4A6465BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{503C8CEE-42C5-4A37-8FDF-5900D846B599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{503C8CEE-42C5-4A37-8FDF-5900D846B599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{503C8CEE-42C5-4A37-8FDF-5900D846B599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{503C8CEE-42C5-4A37-8FDF-5900D846B599}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -465,6 +489,10 @@ Global
 		{36A007D3-F1E5-4325-A86A-AB3B222F9408} = {B2B5AC31-D0E2-402C-87C6-2DFFBAA690D5}
 		{755982BA-536E-4C99-BA90-F65D79197D2F} = {B2B5AC31-D0E2-402C-87C6-2DFFBAA690D5}
 		{1CFB8754-9F9F-455B-A973-67ABE158E857} = {E8C72A66-8993-427D-A2BA-73B170309B32}
+		{0E3F9574-2C48-48E2-BE37-C5179CB79363} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
+		{292621D8-090A-4A7D-81BF-611793E26FE5} = {9F1CD6C1-8419-4262-B7AE-F66C530B9EC7}
+		{8E20C535-D5E0-4E9F-81AA-4EB4A6465BB2} = {3799662A-7D24-4FE0-B23F-38281CA1D84E}
+		{503C8CEE-42C5-4A37-8FDF-5900D846B599} = {7C414564-DB04-47D4-88B1-7C7B24C7904F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

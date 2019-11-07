@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Challenges.Responses;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Dtos;

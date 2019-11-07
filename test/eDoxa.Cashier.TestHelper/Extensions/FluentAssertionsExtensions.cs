@@ -6,9 +6,8 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Responses;
-using eDoxa.Cashier.Api.Areas.Transactions.Responses;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Responses;
 
 using FluentAssertions;
 

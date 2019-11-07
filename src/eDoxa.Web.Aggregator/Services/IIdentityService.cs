@@ -4,9 +4,20 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Refit;
+
+using UserDoxatagResponseFromIdentityService = eDoxa.Identity.Responses.UserDoxatagResponse;
+
 namespace eDoxa.Web.Aggregator.Services
 {
     public interface IIdentityService
     {
+        [Get("/api/doxatags")]
+        Task<IReadOnlyCollection<UserDoxatagResponseFromIdentityService>> FetchDoxatagsAsync();
     }
 }

@@ -14,8 +14,9 @@ namespace eDoxa.Challenges.Api.DomainEvents.Handlers
 {
     public sealed class ChallengeClosedDomainEventHandler : IDomainEventHandler<ChallengeClosedDomainEvent>
     {
-        public async Task Handle(ChallengeClosedDomainEvent domainEvent, CancellationToken cancellationToken)
+        public Task Handle(ChallengeClosedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
+            return Task.CompletedTask;
         }
     }
 }

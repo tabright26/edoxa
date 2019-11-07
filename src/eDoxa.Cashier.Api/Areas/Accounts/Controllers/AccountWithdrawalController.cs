@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 
 using FluentValidation.AspNetCore;

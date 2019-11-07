@@ -42,6 +42,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 using Polly;
 using Polly.Extensions.Http;
@@ -152,43 +153,52 @@ namespace eDoxa.Web.Aggregator
 
             services.AddTransient<AccessTokenDelegatingHandler>();
 
-            services.AddRefitClient<ICashierService>()
+            var refitSettings = new RefitSettings
+            {
+                ContentSerializer = new JsonContentSerializer(
+                    new JsonSerializerSettings
+                    {
+                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                    })
+            };
+
+            services.AddRefitClient<ICashierService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.CashierUrl))
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddRefitClient<IChallengesService>()
+            services.AddRefitClient<IChallengesService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.ChallengesUrl))
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddRefitClient<IClansService>()
+            services.AddRefitClient<IClansService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.ClansUrl))
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddRefitClient<IGamesService>()
+            services.AddRefitClient<IGamesService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.GamesUrl))
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddRefitClient<IIdentityService>()
+            services.AddRefitClient<IIdentityService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.IdentityUrl))
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddRefitClient<INotificationsService>()
+            services.AddRefitClient<INotificationsService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.NotificationsUrl))
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddRefitClient<IPaymentService>()
+            services.AddRefitClient<IPaymentService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.PaymentUrl))
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
@@ -204,14 +214,15 @@ namespace eDoxa.Web.Aggregator
                 AppSettings,
                 AppSettings,
                 Scopes.CashierApi,
-                Scopes.GamesApi);
+                Scopes.GamesApi,
+                Scopes.ChallengesApi);
         }
 
         public void Configure(IApplicationBuilder application)
         {
             if (HostingEnvironment.IsDevelopment())
             {
-                application.UseDeveloperExceptionPage();
+                //application.UseDeveloperExceptionPage();
             }
             else
             {
