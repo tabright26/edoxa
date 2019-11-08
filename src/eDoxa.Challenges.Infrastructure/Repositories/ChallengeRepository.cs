@@ -88,6 +88,17 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             _materializedObjects[challenge] = challengeModel;
         }
 
+        public void Delete(IChallenge challenge)
+        {
+            var challengeModel = _materializedObjects[challenge];
+
+            _materializedObjects.Remove(challenge);
+
+            _materializedIds.Remove(challenge.Id);
+
+            _context.Challenges.Remove(challengeModel);
+        }
+
         public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null)
         {
             var challenges = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);

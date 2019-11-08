@@ -1,5 +1,5 @@
-﻿// Filename: CashierApiModule.cs
-// Date Created: 2019-08-18
+﻿// Filename: CashierModule.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,8 @@ using Autofac;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Services;
 using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
+using eDoxa.Cashier.Api.Areas.Challenges.Services;
+using eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Cashier.Api.Areas.Payouts.Factories;
 using eDoxa.Cashier.Api.Areas.Payouts.Strategies;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
@@ -34,6 +36,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<TransactionQuery>().As<ITransactionQuery>().InstancePerLifetimeScope();
 
             // Services
+            builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
             builder.RegisterType<BundlesService>().As<IBundlesService>().InstancePerLifetimeScope();
 

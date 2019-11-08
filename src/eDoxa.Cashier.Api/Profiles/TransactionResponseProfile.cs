@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Api.Profiles
                 .ForMember(transaction => transaction.Currency, config => config.MapFrom(transaction => transaction.Currency.Type.Name))
                 .ForMember(transaction => transaction.Amount, config => config.MapFrom(transaction => transaction.Currency.Amount))
                 .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type.Name))
-                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status))
+                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status.Name))
                 .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description));
         }
     }

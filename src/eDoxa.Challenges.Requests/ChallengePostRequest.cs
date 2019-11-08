@@ -1,9 +1,10 @@
 ﻿// Filename: ChallengePostRequest.cs
-// Date Created: 2019-11-05
+// Date Created: 2019-11-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Runtime.Serialization;
 
 namespace eDoxa.Challenges.Requests
@@ -12,6 +13,7 @@ namespace eDoxa.Challenges.Requests
     public sealed class ChallengePostRequest
     {
         public ChallengePostRequest(
+            Guid challengeId,
             string name,
             string game,
             int bestOf,
@@ -19,6 +21,7 @@ namespace eDoxa.Challenges.Requests
             int duration
         )
         {
+            ChallengeId = challengeId;
             Name = name;
             Game = game;
             BestOf = bestOf;
@@ -26,11 +29,14 @@ namespace eDoxa.Challenges.Requests
             Duration = duration;
         }
 
+        [DataMember(Name = "challengeId")]
+        public Guid ChallengeId { get; private set; }
+
         [DataMember(Name = "name")]
         public string Name { get; private set; }
 
         [DataMember(Name = "game")]
-        public string Game { get;  private set; }
+        public string Game { get; private set; }
 
         [DataMember(Name = "bestOf")]
         public int BestOf { get; private set; }

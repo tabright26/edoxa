@@ -160,5 +160,12 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
 
             return new ValidationResult();
         }
+
+        public async Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
+        {
+            _challengeRepository.Delete(challenge);
+
+            await _challengeRepository.CommitAsync(cancellationToken);
+        }
     }
 }

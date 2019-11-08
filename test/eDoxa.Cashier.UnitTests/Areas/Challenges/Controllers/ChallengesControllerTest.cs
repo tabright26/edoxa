@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Challenges.Controllers;
+using eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
@@ -60,12 +61,13 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
         {
             // Arrange
             var mockAccountQuery = new Mock<IChallengeQuery>();
+            var challengeService = new Mock<IChallengeService>();
 
             mockAccountQuery.Setup(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
             mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockAccountQuery.Object);
+            var controller = new ChallengesController(mockAccountQuery.Object, challengeService.Object);
 
             // Act
             var result = await controller.GetByIdAsync(new ChallengeId());
@@ -86,11 +88,13 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 
             var mockAccountQuery = new Mock<IChallengeQuery>();
 
+            var challengeService = new Mock<IChallengeService>();
+
             mockAccountQuery.Setup(accountQuery => accountQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockAccountQuery.Object);
+            var controller = new ChallengesController(mockAccountQuery.Object, challengeService.Object);
 
             // Act
             var result = await controller.GetByIdAsync(new ChallengeId());

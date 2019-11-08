@@ -60,7 +60,7 @@ namespace eDoxa.Web.Gateway
                 .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, "challengesapi")
                 .AddUrlGroup(AppSettings.Endpoints.GamesUrl, "gamesapi")
                 .AddUrlGroup(AppSettings.Endpoints.ClansUrl, "clansapi")
-                .AddUrlGroup(AppSettings.Endpoints.WebAggregatorUrl, "webaggregator");
+                .AddUrlGroup(AppSettings.Endpoints.ChallengesAggregatorUrl, "challengesaggregator");
 
             services.AddCors(
                 options =>
@@ -80,7 +80,7 @@ namespace eDoxa.Web.Gateway
                     ["ChallengesApiKey"] = ChallengesApi,
                     ["GamesApiKey"] = GamesApi,
                     ["ClansApiKey"] = ClansApi,
-                    ["WebAggregatorKey"] = WebAggregator
+                    ["ChallengesAggregatorKey"] = ChallengesAggregator
                 }
             );
 

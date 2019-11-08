@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Transactions;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -35,6 +34,6 @@ namespace eDoxa.Cashier.Responses
         public string Type { get; set; }
 
         [JsonProperty("status")]
-        public TransactionStatus Status { get; set; }
+        public string Status { get; set; }
     }
 }

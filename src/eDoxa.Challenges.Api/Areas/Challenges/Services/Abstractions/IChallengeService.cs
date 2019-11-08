@@ -42,5 +42,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
         Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
 
         Task<ValidationResult> SynchronizeChallengeAsync(IChallenge challenge, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
+
+        Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
     }
 }
