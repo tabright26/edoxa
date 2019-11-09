@@ -11,8 +11,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public class MoneyWithdrawTransaction : Transaction
     {
-        public MoneyWithdrawTransaction(TransactionId transactionId, Money amount) : base(
-            transactionId,
+        public MoneyWithdrawTransaction(Money amount) : base(
             -amount,
             new TransactionDescription(nameof(MoneyWithdrawTransaction)),
             TransactionType.Withdrawal,

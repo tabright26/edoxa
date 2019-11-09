@@ -33,10 +33,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         DateTime? LastDeposit { get; }
 
-        ITransaction Deposit(TransactionId transactionId, TCurrency amount, IImmutableSet<Bundle> bundles);
+        ITransaction Deposit(TCurrency amount, IImmutableSet<Bundle> bundles);
 
-        ITransaction Charge(TransactionId transactionId, TCurrency amount);
+        ITransaction Charge(TCurrency amount);
 
-        ITransaction Payout(TransactionId transactionId, TCurrency amount);
+        ITransaction Payout(TCurrency amount);
     }
 }

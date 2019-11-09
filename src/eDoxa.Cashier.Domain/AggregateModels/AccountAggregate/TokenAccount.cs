@@ -35,46 +35,46 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(TransactionId transactionId, Token amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Deposit(Token amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanDeposit())
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenDepositTransaction(transactionId, amount);
+            var transaction = new TokenDepositTransaction(amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Charge(TransactionId transactionId, Token amount)
+        public ITransaction Charge(Token amount)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenChargeTransaction(transactionId, amount);
+            var transaction = new TokenChargeTransaction(amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Payout(TransactionId transactionId, Token amount)
+        public ITransaction Payout(Token amount)
         {
-            var transaction = new TokenPayoutTransaction(transactionId, amount);
+            var transaction = new TokenPayoutTransaction(amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Reward(TransactionId transactionId, Token amount)
+        public ITransaction Reward(Token amount)
         {
-            var transaction = new TokenRewardTransaction(transactionId, amount);
+            var transaction = new TokenRewardTransaction(amount);
 
             _account.CreateTransaction(transaction);
 

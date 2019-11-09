@@ -46,51 +46,51 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(TransactionId transactionId, Money amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Deposit(Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanDeposit())
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyDepositTransaction(transactionId, amount);
+            var transaction = new MoneyDepositTransaction(amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Charge(TransactionId transactionId, Money amount)
+        public ITransaction Charge(Money amount)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyChargeTransaction(transactionId,amount);
+            var transaction = new MoneyChargeTransaction(amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Payout(TransactionId transactionId, Money amount)
+        public ITransaction Payout(Money amount)
         {
-            var transaction = new MoneyPayoutTransaction(transactionId, amount);
+            var transaction = new MoneyPayoutTransaction(amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Withdrawal(TransactionId transactionId, Money amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanWithdraw(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyWithdrawTransaction(transactionId, amount);
+            var transaction = new MoneyWithdrawTransaction(amount);
 
             _account.CreateTransaction(transaction);
 

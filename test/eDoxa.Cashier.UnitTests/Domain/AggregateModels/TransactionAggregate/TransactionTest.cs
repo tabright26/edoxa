@@ -35,7 +35,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             var provider = new UtcNowDateTimeProvider();
 
             var transaction = new Transaction(
-                new TransactionId(),
                 currency,
                 description,
                 type,
@@ -58,7 +57,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             var provider = new UtcNowDateTimeProvider();
 
             var transaction = new Transaction(
-                new TransactionId(),
                 currency,
                 description,
                 type,
@@ -83,7 +81,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             var provider = new UtcNowDateTimeProvider();
 
             var transaction = new Transaction(
-                new TransactionId(),
                 currency,
                 description,
                 type,
@@ -106,7 +103,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             var provider = new UtcNowDateTimeProvider();
 
             var transaction = new Transaction(
-                new TransactionId(),
                 currency,
                 description,
                 type,
@@ -132,7 +128,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
 
             // Act
             var transaction = new Transaction(
-                new TransactionId(),
                 currency,
                 description,
                 type,

@@ -11,8 +11,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class MoneyDepositTransaction : Transaction
     {
-        public MoneyDepositTransaction(TransactionId transactionId, Money currency) : base(
-            transactionId,
+        public MoneyDepositTransaction(Money currency) : base(
             currency,
             new TransactionDescription(nameof(MoneyDepositTransaction)),
             TransactionType.Deposit,

@@ -31,7 +31,6 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
         }
 
         [Theory]
-        [InlineData(1)]
         [InlineData(10)]
         [InlineData(100)]
         [InlineData(1000)]
@@ -64,7 +63,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     account?.Transactions.Should().NotContain(transaction => transaction.Status == TransactionStatus.Pending);
                 });
 
-            var moneyDepositTransaction = new MoneyDepositTransaction(new TransactionId(), Money.Fifty);
+            var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
 
             await testServer.UsingScopeAsync(
                 async scope =>

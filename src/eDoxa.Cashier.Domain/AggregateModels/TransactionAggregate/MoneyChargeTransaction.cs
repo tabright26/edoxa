@@ -11,8 +11,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class MoneyChargeTransaction : Transaction
     {
-        public MoneyChargeTransaction(TransactionId transactionId, Money currency) : base(
-            transactionId,
+        public MoneyChargeTransaction(Money currency) : base(
             -currency,
             new TransactionDescription(nameof(MoneyChargeTransaction)),
             TransactionType.Charge,

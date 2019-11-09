@@ -11,8 +11,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class TokenPayoutTransaction : Transaction
     {
-        public TokenPayoutTransaction(TransactionId transactionId, Token currency) : base(
-            transactionId,
+        public TokenPayoutTransaction(Token currency) : base(
             currency,
             new TransactionDescription(nameof(TokenPayoutTransaction)),
             TransactionType.Payout,

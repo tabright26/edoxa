@@ -106,7 +106,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
             using (paymentWebApplicationFactory.CreateClient())
             {
                 var account = new Account(new UserId());
-                var moneyDepositTransaction = new MoneyDepositTransaction(new TransactionId(), Money.Fifty);
+                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                 account.CreateTransaction(moneyDepositTransaction);
 
                 await _testServer.UsingScopeAsync(
@@ -174,7 +174,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
             using (paymentWebApplicationFactory.CreateClient())
             {
                 var account = new Account(new UserId());
-                var moneyDepositTransaction = new MoneyDepositTransaction(new TransactionId(), Money.Fifty);
+                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
                 account.CreateTransaction(moneyDepositTransaction);
 
                 await _testServer.UsingScopeAsync(

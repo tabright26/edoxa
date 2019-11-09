@@ -11,8 +11,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class TokenChargeTransaction : Transaction
     {
-        public TokenChargeTransaction(TransactionId transactionId, Token amount) : base(
-            transactionId,
+        public TokenChargeTransaction(Token amount) : base(
             -amount,
             new TransactionDescription(nameof(TokenChargeTransaction)),
             TransactionType.Charge,

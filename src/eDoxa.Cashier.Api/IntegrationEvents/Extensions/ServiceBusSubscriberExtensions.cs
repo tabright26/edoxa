@@ -18,10 +18,11 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
             subscriber.Subscribe<UserTransactionSuccededIntegrationEvent, UserTransactionSuccededIntegrationEventHandler>();
             subscriber.Subscribe<UserTransactionFailedIntegrationEvent, UserTransactionFailedIntegrationEventHandler>();
 
+            // Cashier service integration events.
+            subscriber.Subscribe<TransactionCanceledIntegrationEvent, TransactionCanceledIntegrationEventHandler>();
+
             // Challenge service integration events.
-            subscriber.Subscribe<ParticipantRegisteredIntegrationEvent, ParticipantRegisteredIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeCreationFailedIntegrationEvent, ChallengeCreationFailedIntegrationEventHandler>();
-            subscriber.Subscribe<ParticipantRegistrationFailedIntegrationEvent, ParticipantRegistrationFailedIntegrationEventHandler>();
         }
     }
 }

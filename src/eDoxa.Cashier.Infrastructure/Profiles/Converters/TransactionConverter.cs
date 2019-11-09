@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Linq;
+
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -19,11 +21,13 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
         public ITransaction Convert(TransactionModel source, ITransaction destination, ResolutionContext context)
         {
             var transaction = new Transaction(
-                TransactionId.FromGuid(source.Id),
                 Convert(source.Amount, Currency.FromValue(source.Currency)!),
                 new TransactionDescription(source.Description),
                 TransactionType.FromValue(source.Type)!,
-                new DateTimeProvider(source.Timestamp));
+                new DateTimeProvider(source.Timestamp),
+                new TransactionMetadata(source.Metadata.ToDictionary(metadata => metadata.Key, metadata => metadata.Value)));
+
+            transaction.SetEntityId(TransactionId.FromGuid(source.Id));
 
             var status = TransactionStatus.FromValue(source.Status);
 

@@ -8,7 +8,6 @@ using System;
 using System.Collections.Immutable;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -16,7 +15,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     {
         DateTime? LastWithdraw { get; }
 
-        ITransaction Withdrawal(TransactionId transactionId, Money amount, IImmutableSet<Bundle> bundles);
+        ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles);
 
         bool HaveSufficientMoney(Money money);
 

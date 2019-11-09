@@ -30,7 +30,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         {
             // Arrange
             var transaction = new Transaction(
-                new TransactionId(), 
                 Money.Ten,
                 new TransactionDescription("Description"),
                 TransactionType.Deposit,

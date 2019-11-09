@@ -25,6 +25,7 @@ namespace eDoxa.Challenges.Aggregator.Transformers
         {
             return new ParticipantModel
             {
+                Id = participantFromChallengesService.Id,
                 User = new UserModel
                 {
                     Id = participantFromChallengesService.UserId,
@@ -37,10 +38,23 @@ namespace eDoxa.Challenges.Aggregator.Transformers
                             })
                         .Single()
                 },
+                Score = participantFromChallengesService.Score,
+                ChallengeId = participantFromChallengesService.ChallengeId,
                 Matches = participantFromChallengesService.Matches.Select(
                         match => new MatchModel
                         {
-                            Stats = match.Stats.Select(stat => new StatModel()).ToArray()
+                            Id = match.Id,
+                            Score = match.Score,
+                            ParticipantId = match.ParticipantId,
+                            Stats = match.Stats.Select(
+                                    stat => new StatModel
+                                    {
+                                        Name = stat.Name,
+                                        Value = stat.Value,
+                                        Weighting = stat.Weighting,
+                                        Score = stat.Score
+                                    })
+                                .ToArray()
                         })
                     .ToArray()
             };
@@ -56,6 +70,16 @@ namespace eDoxa.Challenges.Aggregator.Transformers
             {
                 Id = challengeFromChallengesService.Id,
                 Name = challengeFromChallengesService.Name,
+                Game = challengeFromChallengesService.Game,
+                State = challengeFromChallengesService.State,
+                BestOf = challengeFromChallengesService.BestOf,
+                Entries = challengeFromChallengesService.Entries,
+                EntryFee = new EntryFeeModel
+                {
+                    Amount = challengeFromCashierService.EntryFee.Amount,
+                    Currency = challengeFromCashierService.EntryFee.Currency
+                },
+                Scoring = challengeFromChallengesService.Scoring,
                 Payout = new PayoutModel
                 {
                     PrizePool = new PrizePoolModel

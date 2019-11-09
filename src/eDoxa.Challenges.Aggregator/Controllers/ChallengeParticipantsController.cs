@@ -7,7 +7,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Challenges.Aggregator.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Aggregator.Services;
 using eDoxa.Challenges.Aggregator.Transformers;
@@ -66,16 +65,18 @@ namespace eDoxa.Challenges.Aggregator.Controllers
 
             var participantId = new ParticipantId();
 
+            var metadata = new Dictionary<string, string>
+            {
+                [nameof(ChallengeId)] = challengeId.ToString(),
+                [nameof(ParticipantId)] = participantId.ToString()
+            };
+
             await _cashierService.CreateTransactionAsync(
                 new CreateTransactionRequestFromCashierService(
                     TransactionType.Charge.Name,
                     challenge.EntryFee.Currency,
                     challenge.EntryFee.Amount,
-                    new Dictionary<string, string>
-                    {
-                        [nameof(ChallengeId)] = challengeId.ToString(),
-                        [nameof(ParticipantId)] = participantId.ToString()
-                    }));
+                    metadata));
 
             try
             {
@@ -87,7 +88,7 @@ namespace eDoxa.Challenges.Aggregator.Controllers
             }
             catch (ApiException exception)
             {
-                await _serviceBusPublisher.PublishParticipantRegistrationFailedIntegrationEventAsync(challengeId, participantId);
+                await _serviceBusPublisher.PublishTransactionCanceledIntegrationEventAsync(metadata);
 
                 return this.BadRequest(exception.Content);
             }

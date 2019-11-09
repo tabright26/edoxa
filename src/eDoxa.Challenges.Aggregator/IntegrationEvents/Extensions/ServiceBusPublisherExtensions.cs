@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain.Miscs;
@@ -13,13 +14,9 @@ namespace eDoxa.Challenges.Aggregator.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishParticipantRegistrationFailedIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            ChallengeId challengeId,
-            ParticipantId participantId
-        )
+        public static async Task PublishTransactionCanceledIntegrationEventAsync(this IServiceBusPublisher publisher, IDictionary<string, string> metadata)
         {
-            await publisher.PublishAsync(new ParticipantRegistrationFailedIntegrationEvent(challengeId, participantId));
+            await publisher.PublishAsync(new TransactionCanceledIntegrationEvent(metadata));
         }
 
         public static async Task PublishChallengeCreationFailedIntegrationEventAsync(this IServiceBusPublisher publisher, ChallengeId challengeId)

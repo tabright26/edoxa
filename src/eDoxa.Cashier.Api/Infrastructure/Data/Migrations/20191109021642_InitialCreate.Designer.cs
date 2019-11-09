@@ -10,7 +10,7 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20190711194145_InitialCreate")]
+    [Migration("20191109021642_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,6 +109,27 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.TransactionMetadataModel", "Metadata", b1 =>
+                        {
+                            b1.Property<Guid>("TransactionId");
+
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<string>("Key");
+
+                            b1.Property<string>("Value");
+
+                            b1.HasKey("TransactionId", "Id");
+
+                            b1.ToTable("TransactionMetadata");
+
+                            b1.HasOne("eDoxa.Cashier.Infrastructure.Models.TransactionModel")
+                                .WithMany("Metadata")
+                                .HasForeignKey("TransactionId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 #pragma warning restore 612, 618
         }
