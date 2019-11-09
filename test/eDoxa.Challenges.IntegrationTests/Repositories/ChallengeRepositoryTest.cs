@@ -70,7 +70,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     challenge?.Timeline.State.Should().Be(ChallengeState.Inscription);
                 });
 
-            var participant1 = new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
+            var participant1 = new Participant(new ParticipantId(), new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider());
 
             // Act
             await testServer.UsingScopeAsync(
@@ -105,7 +105,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
 
                     for (var index = 0; index < entries; index++)
                     {
-                        challenge?.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+                        challenge?.Register(new Participant(new ParticipantId(), new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
                     }
 
                     challenge?.Start(new UtcNowDateTimeProvider());

@@ -10,9 +10,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Challenges.Requests
 {
     [DataContract]
-    public sealed class ChallengePostRequest
+    public sealed class CreateChallengeRequest
     {
-        public ChallengePostRequest(
+        public CreateChallengeRequest(
             Guid challengeId,
             string name,
             string game,

@@ -8,10 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Requests;
+using eDoxa.Challenges.Responses;
+
 using Refit;
 
 using ChallengeResponseFromChallengesService = eDoxa.Challenges.Responses.ChallengeResponse;
-using ChallengePostRequestFromChallengesService = eDoxa.Challenges.Requests.ChallengePostRequest;
+using RegisterChallengeParticipantRequestFromChallengesService = eDoxa.Challenges.Requests.RegisterChallengeParticipantRequest;
 
 namespace eDoxa.Challenges.Aggregator.Services
 {
@@ -21,7 +24,7 @@ namespace eDoxa.Challenges.Aggregator.Services
         Task<IReadOnlyCollection<ChallengeResponseFromChallengesService>> FetchChallengesAsync();
 
         [Post("/api/challenges")]
-        Task<ChallengeResponseFromChallengesService> CreateChallengeAsync([Body] ChallengePostRequestFromChallengesService request);
+        Task<ChallengeResponseFromChallengesService> CreateChallengeAsync([Body] CreateChallengeRequest request);
 
         [Get("/api/challenges/{challengeId}")]
         Task<ChallengeResponseFromChallengesService> FindChallengeAsync(
@@ -36,9 +39,10 @@ namespace eDoxa.Challenges.Aggregator.Services
         );
 
         [Post("/api/challenges/{challengeId}/participants")]
-        Task<string> RegisterChallengeParticipantAsync(
+        Task<ParticipantResponse> RegisterChallengeParticipantAsync(
             [AliasAs("challengeId")]
-            Guid challengeId
+            Guid challengeId,
+            [Body] RegisterChallengeParticipantRequestFromChallengesService request
         );
     }
 }

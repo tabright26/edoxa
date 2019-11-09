@@ -5,12 +5,14 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class MoneyChargeTransaction : Transaction
     {
-        public MoneyChargeTransaction(Money currency) : base(
+        public MoneyChargeTransaction(TransactionId transactionId, Money currency) : base(
+            transactionId,
             -currency,
             new TransactionDescription(nameof(MoneyChargeTransaction)),
             TransactionType.Charge,

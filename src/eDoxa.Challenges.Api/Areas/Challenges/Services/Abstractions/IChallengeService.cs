@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
 
         Task<ValidationResult> CreateChallengeAsync(
-            ChallengeId challengeId,
+            ChallengeId id,
             ChallengeName name,
             Game game,
             BestOf bestOf,
@@ -33,6 +33,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
 
         Task<ValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
+            ParticipantId participantId,
             UserId userId,
             PlayerId playerId,
             IDateTimeProvider registeredAt,

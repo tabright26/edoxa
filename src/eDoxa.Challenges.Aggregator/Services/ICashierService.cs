@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 using Refit;
 
 using ChallengeResponseFromCashierService = eDoxa.Cashier.Responses.ChallengeResponse;
+using TransactionResponseFromCashierService = eDoxa.Cashier.Responses.TransactionResponse;
 using CreateChallengeRequestFromCashierService = eDoxa.Cashier.Requests.CreateChallengeRequest;
+using CreateTransactionRequestFromCashierService = eDoxa.Cashier.Requests.CreateTransactionRequest;
 
 namespace eDoxa.Challenges.Aggregator.Services
 {
@@ -28,5 +30,8 @@ namespace eDoxa.Challenges.Aggregator.Services
             [AliasAs("challengeId")]
             Guid challengeId
         );
+
+        [Post("/api/transactions")]
+        Task<TransactionResponseFromCashierService> CreateTransactionAsync([Body] CreateTransactionRequestFromCashierService request);
     }
 }

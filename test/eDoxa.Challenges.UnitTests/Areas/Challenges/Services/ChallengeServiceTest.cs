@@ -46,7 +46,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 
             for (var index = 0; index < participantCount; index++)
             {
-                challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+                challenge.Register(new Participant(new ParticipantId(), new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
             }
 
             var mockChallengeRepository = new Mock<IChallengeRepository>();
@@ -75,6 +75,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             // Act
             await challengeService.RegisterChallengeParticipantAsync(
                 challenge,
+                new ParticipantId(),
                 new UserId(),
                 new PlayerId(),
                 new UtcNowDateTimeProvider());

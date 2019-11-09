@@ -12,6 +12,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -37,7 +38,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
         {
             var accountFaker = TestData.FakerFactory.CreateAccountFaker(seed);
             var fakeAccount = accountFaker.FakeAccount();
-            var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
+            var moneyDepositTransaction = new MoneyDepositTransaction(new TransactionId(), Money.Fifty);
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 
             TestApi.CreateClient();
@@ -95,7 +96,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
 
             var fakeAccount = accountFaker.FakeAccount();
 
-            var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
+            var moneyDepositTransaction = new MoneyDepositTransaction(new TransactionId(), Money.Fifty);
 
             fakeAccount?.CreateTransaction(moneyDepositTransaction);
 

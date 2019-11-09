@@ -69,7 +69,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                         return new ValidationFailure("_error", $"Withdrawal unavailable until {moneyAccount.LastWithdraw?.AddDays(7)}").ToResult();
                     }
 
-                    var transaction = moneyAccount.Withdrawal(money, bundles);
+                    var transaction = moneyAccount.Withdrawal(new TransactionId(), money, bundles);
 
                     await _accountRepository.CommitAsync(cancellationToken);
 
@@ -188,7 +188,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
         )
         where TCurrency : ICurrency
         {
-            var transaction = account.Deposit(currency, bundles);
+            var transaction = account.Deposit(new TransactionId(), currency, bundles);
 
             await _accountRepository.CommitAsync(cancellationToken);
 

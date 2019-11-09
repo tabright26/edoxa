@@ -20,9 +20,11 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
     {
         public Participant Convert(ParticipantModel source, Participant destination, ResolutionContext context)
         {
-            var participant = new Participant(UserId.FromGuid(source.UserId), PlayerId.Parse(source.PlayerId), new DateTimeProvider(source.RegisteredAt));
-
-            participant.SetEntityId(ParticipantId.FromGuid(source.Id));
+            var participant = new Participant(
+                ParticipantId.FromGuid(source.Id),
+                UserId.FromGuid(source.UserId),
+                PlayerId.Parse(source.PlayerId),
+                new DateTimeProvider(source.RegisteredAt));
 
             if (source.SynchronizedAt.HasValue)
             {

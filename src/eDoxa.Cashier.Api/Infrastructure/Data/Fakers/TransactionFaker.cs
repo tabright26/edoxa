@@ -76,12 +76,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                             types.Remove(TransactionType.Withdrawal);
 
                             var transaction = new Transaction(
+                                TransactionId.FromGuid(faker.Random.Guid()),
                                 currency,
                                 new TransactionDescription(faker.Lorem.Sentence()),
                                 faker.PickRandom(types),
                                 new DateTimeProvider(faker.Date.Recent()));
-
-                            transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
 
                             var statuses = TransactionStatus.GetEnumerations().ToList();
 
@@ -126,12 +125,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                             types.Remove(TransactionType.Payout);
 
                             var transaction = new Transaction(
+                                TransactionId.FromGuid(faker.Random.Guid()),
                                 currency,
                                 new TransactionDescription(faker.Lorem.Sentence()),
                                 faker.PickRandom(types),
                                 new DateTimeProvider(faker.Date.Recent()));
-
-                            transaction.SetEntityId(TransactionId.FromGuid(faker.Random.Guid()));
 
                             var statuses = TransactionStatus.GetEnumerations().ToList();
 

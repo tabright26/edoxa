@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserTransactionSuccededIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var transaction = new Transaction(
+            var transaction = new Transaction(     new TransactionId(), 
                 Money.Ten,
                 new TransactionDescription("Description"),
                 TransactionType.Deposit,

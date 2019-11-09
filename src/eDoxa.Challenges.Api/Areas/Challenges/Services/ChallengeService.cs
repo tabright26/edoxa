@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
         }
 
         public async Task<ValidationResult> CreateChallengeAsync(
-            ChallengeId challengeId,
+            ChallengeId id,
             ChallengeName name,
             Game game,
             BestOf bestOf,
@@ -57,14 +57,13 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
             var scoring = await _gamesHttpClient.GetChallengeScoringAsync(game);
 
             var challenge = new Challenge(
+                id,
                 name,
                 game,
                 bestOf,
                 entries,
                 new ChallengeTimeline(createAt, duration),
                 new Scoring(scoring));
-
-            challenge.SetEntityId(challengeId);
 
             _challengeRepository.Create(challenge);
 
@@ -75,6 +74,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
 
         public async Task<ValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
+            ParticipantId participantId,
             UserId userId,
             PlayerId playerId,
             IDateTimeProvider registeredAt,
@@ -91,7 +91,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
                 return new ValidationFailure("_error", "The user already is registered.").ToResult();
             }
 
-            challenge.Register(new Participant(userId, playerId, registeredAt));
+            var participant = new Participant(participantId, userId, playerId, registeredAt);
+
+            challenge.Register(participant);
 
             if (challenge.SoldOut)
             {

@@ -19,6 +19,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         private readonly HashSet<Participant> _participants = new HashSet<Participant>();
 
         public Challenge(
+            ChallengeId challengeId,
             ChallengeName name,
             Game game,
             BestOf bestOf,
@@ -27,6 +28,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             IScoring scoring
         )
         {
+            this.SetEntityId(challengeId);
             Name = name;
             Game = game;
             BestOf = bestOf;

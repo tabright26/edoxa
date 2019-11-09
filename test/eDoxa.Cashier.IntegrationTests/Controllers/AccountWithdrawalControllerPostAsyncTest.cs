@@ -99,7 +99,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            ITransaction transaction = new MoneyDepositTransaction(Money.Fifty);
+            ITransaction transaction = new MoneyDepositTransaction(new TransactionId(), Money.Fifty);
 
             account.CreateTransaction(transaction);
 

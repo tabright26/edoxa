@@ -9,6 +9,7 @@ using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -34,46 +35,46 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(Token amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Deposit(TransactionId transactionId, Token amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanDeposit())
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenDepositTransaction(amount);
+            var transaction = new TokenDepositTransaction(transactionId, amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Charge(Token amount)
+        public ITransaction Charge(TransactionId transactionId, Token amount)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenChargeTransaction(amount);
+            var transaction = new TokenChargeTransaction(transactionId, amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Payout(Token amount)
+        public ITransaction Payout(TransactionId transactionId, Token amount)
         {
-            var transaction = new TokenPayoutTransaction(amount);
+            var transaction = new TokenPayoutTransaction(transactionId, amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Reward(Token amount)
+        public ITransaction Reward(TransactionId transactionId, Token amount)
         {
-            var transaction = new TokenRewardTransaction(amount);
+            var transaction = new TokenRewardTransaction(transactionId, amount);
 
             _account.CreateTransaction(transaction);
 

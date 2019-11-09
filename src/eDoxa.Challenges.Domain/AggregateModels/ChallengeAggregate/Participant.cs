@@ -17,8 +17,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly HashSet<IMatch> _matches = new HashSet<IMatch>();
 
-        public Participant(UserId userId, PlayerId playerId, IDateTimeProvider registeredAt)
+        public Participant(ParticipantId participantId, UserId userId, PlayerId playerId, IDateTimeProvider registeredAt)
         {
+            this.SetEntityId(participantId);
             UserId = userId;
             PlayerId = playerId;
             RegisteredAt = registeredAt.DateTime;

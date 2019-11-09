@@ -52,9 +52,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services
                 return new ValidationFailure("", "Invalid payout structure. Payout entries doesn't match the chart.").ToResult();
             }
 
-            var challenge = new Challenge(entryFee, payout);
-
-            challenge.SetEntityId(challengeId);
+            var challenge = new Challenge(challengeId, entryFee, payout);
 
             _challengeRepository.Create(challenge);
 

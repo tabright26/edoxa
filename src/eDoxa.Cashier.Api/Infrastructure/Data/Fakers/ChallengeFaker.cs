@@ -39,11 +39,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 
                     var payout = new PayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
 
-                    var challenge = new Challenge(entryFee, payout);
-
-                    challenge.SetEntityId(faker.Challenge().Id());
-
-                    return challenge;
+                    return new Challenge(faker.Challenge().Id(), entryFee, payout);
                 });
         }
     }

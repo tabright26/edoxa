@@ -1,5 +1,5 @@
 ﻿// Filename: BalanceTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,6 +12,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -27,18 +28,18 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
         private static IEnumerable<ITransaction> CreateTransactions()
         {
-            yield return new MoneyDepositTransaction(Money.Ten);
-            yield return MarkAsSucceded(new MoneyDepositTransaction(Money.Fifty));
-            yield return MarkAsFailed(new MoneyDepositTransaction(Money.FiveHundred));
-            yield return MarkAsSucceded(new MoneyChargeTransaction(Money.Fifty));
-            yield return MarkAsSucceded(new MoneyPayoutTransaction(Money.OneHundred));
-            yield return MarkAsSucceded(new MoneyWithdrawTransaction(Money.Fifty));
-            yield return MarkAsFailed(new TokenChargeTransaction(Token.FiveHundredThousand));
-            yield return MarkAsSucceded(new TokenDepositTransaction(Token.OneHundredThousand));
-            yield return MarkAsSucceded(new TokenPayoutTransaction(Token.TwoHundredFiftyThousand));
-            yield return MarkAsSucceded(new TokenChargeTransaction(Token.OneHundredThousand));
-            yield return MarkAsSucceded(new TokenChargeTransaction(Token.TwoHundredFiftyThousand));
-            yield return MarkAsSucceded(new TokenRewardTransaction(Token.FiftyThousand));
+            yield return new MoneyDepositTransaction(new TransactionId(), Money.Ten);
+            yield return MarkAsSucceded(new MoneyDepositTransaction(new TransactionId(), Money.Fifty));
+            yield return MarkAsFailed(new MoneyDepositTransaction(new TransactionId(), Money.FiveHundred));
+            yield return MarkAsSucceded(new MoneyChargeTransaction(new TransactionId(), Money.Fifty));
+            yield return MarkAsSucceded(new MoneyPayoutTransaction(new TransactionId(), Money.OneHundred));
+            yield return MarkAsSucceded(new MoneyWithdrawTransaction(new TransactionId(), Money.Fifty));
+            yield return MarkAsFailed(new TokenChargeTransaction(new TransactionId(), Token.FiveHundredThousand));
+            yield return MarkAsSucceded(new TokenDepositTransaction(new TransactionId(), Token.OneHundredThousand));
+            yield return MarkAsSucceded(new TokenPayoutTransaction(new TransactionId(), Token.TwoHundredFiftyThousand));
+            yield return MarkAsSucceded(new TokenChargeTransaction(new TransactionId(), Token.OneHundredThousand));
+            yield return MarkAsSucceded(new TokenChargeTransaction(new TransactionId(), Token.TwoHundredFiftyThousand));
+            yield return MarkAsSucceded(new TokenRewardTransaction(new TransactionId(), Token.FiftyThousand));
         }
 
         private static ITransaction MarkAsSucceded(ITransaction transaction)

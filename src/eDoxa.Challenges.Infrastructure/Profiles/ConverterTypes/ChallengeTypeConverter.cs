@@ -22,14 +22,13 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
         public IChallenge Convert(ChallengeModel source, IChallenge destination, ResolutionContext context)
         {
             var challenge = new Challenge(
+                ChallengeId.FromGuid(source.Id),
                 new ChallengeName(source.Name),
                 Game.FromValue(source.Game),
                 new BestOf(source.BestOf),
                 new Entries(source.Entries),
                 new ChallengeTimeline(new DateTimeProvider(source.Timeline.CreatedAt), new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration))),
                 context.Mapper.Map<IScoring>(source.ScoringItems));
-
-            challenge.SetEntityId(ChallengeId.FromGuid(source.Id));
 
             var participants = context.Mapper.Map<ICollection<Participant>>(source.Participants);
 

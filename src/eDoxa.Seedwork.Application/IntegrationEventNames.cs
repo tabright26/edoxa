@@ -37,5 +37,9 @@ namespace eDoxa.Seedwork.Application
         // Challenges integration events.
         public const string ChallengesSynchronized = "challenges.synchronized";
         public const string ChallengeCreationFailed = "challenge.creation.failed";
+        public const string ChallengeParticipantRegistered = "challenge.participant.registered";
+        public const string ChallengeParticipantRegistrationFailed = "challenge.participant.registration.failed";
+
+
     }
 }

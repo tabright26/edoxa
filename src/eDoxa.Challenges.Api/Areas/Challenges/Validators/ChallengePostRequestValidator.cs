@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Challenges.Api.Areas.Challenges.Validators
 {
-    public class ChallengePostRequestValidator : AbstractValidator<ChallengePostRequest>
+    public class ChallengePostRequestValidator : AbstractValidator<CreateChallengeRequest>
     {
         public ChallengePostRequestValidator(IOptions<ChallengeOptions> options)
         {

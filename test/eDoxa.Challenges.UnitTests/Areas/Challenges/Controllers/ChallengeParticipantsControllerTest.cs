@@ -13,6 +13,7 @@ using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Challenges.TestHelper.Mocks;
@@ -137,6 +138,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Setup(
                     challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
+                        It.IsAny<ParticipantId>(),
                         It.IsAny<UserId>(),
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
@@ -150,7 +152,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(new ChallengeId());
+            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -160,6 +162,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(
                 challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
+                    It.IsAny<ParticipantId>(),
                     It.IsAny<UserId>(),
                     It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),
@@ -185,6 +188,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                 .Setup(
                     challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
+                        It.IsAny<ParticipantId>(),
                         It.IsAny<UserId>(),
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
@@ -199,7 +203,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(new ChallengeId());
+            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -209,6 +213,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(
                 challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
+                    It.IsAny<ParticipantId>(),
                     It.IsAny<UserId>(),
                     It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),

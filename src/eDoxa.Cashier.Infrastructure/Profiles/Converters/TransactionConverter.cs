@@ -19,12 +19,11 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
         public ITransaction Convert(TransactionModel source, ITransaction destination, ResolutionContext context)
         {
             var transaction = new Transaction(
+                TransactionId.FromGuid(source.Id),
                 Convert(source.Amount, Currency.FromValue(source.Currency)!),
                 new TransactionDescription(source.Description),
                 TransactionType.FromValue(source.Type)!,
                 new DateTimeProvider(source.Timestamp));
-
-            transaction.SetEntityId(TransactionId.FromGuid(source.Id));
 
             var status = TransactionStatus.FromValue(source.Status);
 

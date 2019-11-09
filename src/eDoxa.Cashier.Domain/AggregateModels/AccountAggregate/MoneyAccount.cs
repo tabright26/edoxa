@@ -9,6 +9,7 @@ using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -45,51 +46,51 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(Money amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Deposit(TransactionId transactionId, Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanDeposit())
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyDepositTransaction(amount);
+            var transaction = new MoneyDepositTransaction(transactionId, amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Charge(Money amount)
+        public ITransaction Charge(TransactionId transactionId, Money amount)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyChargeTransaction(amount);
+            var transaction = new MoneyChargeTransaction(transactionId,amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Payout(Money amount)
+        public ITransaction Payout(TransactionId transactionId, Money amount)
         {
-            var transaction = new MoneyPayoutTransaction(amount);
+            var transaction = new MoneyPayoutTransaction(transactionId, amount);
 
             _account.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Withdrawal(TransactionId transactionId, Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanWithdraw(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyWithdrawTransaction(amount);
+            var transaction = new MoneyWithdrawTransaction(transactionId, amount);
 
             _account.CreateTransaction(transaction);
 

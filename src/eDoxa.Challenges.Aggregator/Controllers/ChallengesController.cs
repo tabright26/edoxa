@@ -20,7 +20,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Refit;
 
-using CreateChallengeRequestFromChallengesService = eDoxa.Challenges.Requests.ChallengePostRequest;
+using CreateChallengeRequestFromChallengesService = eDoxa.Challenges.Requests.CreateChallengeRequest;
 using CreateChallengeRequestFromCashierService = eDoxa.Cashier.Requests.CreateChallengeRequest;
 
 namespace eDoxa.Challenges.Aggregator.Controllers

@@ -13,10 +13,15 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
+            // Identity service integration events.
             subscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
             subscriber.Subscribe<UserTransactionSuccededIntegrationEvent, UserTransactionSuccededIntegrationEventHandler>();
             subscriber.Subscribe<UserTransactionFailedIntegrationEvent, UserTransactionFailedIntegrationEventHandler>();
+
+            // Challenge service integration events.
+            subscriber.Subscribe<ParticipantRegisteredIntegrationEvent, ParticipantRegisteredIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeCreationFailedIntegrationEvent, ChallengeCreationFailedIntegrationEventHandler>();
+            subscriber.Subscribe<ParticipantRegistrationFailedIntegrationEvent, ParticipantRegistrationFailedIntegrationEventHandler>();
         }
     }
 }

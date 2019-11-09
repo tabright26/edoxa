@@ -5,12 +5,14 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class MoneyDepositTransaction : Transaction
     {
-        public MoneyDepositTransaction(Money currency) : base(
+        public MoneyDepositTransaction(TransactionId transactionId, Money currency) : base(
+            transactionId,
             currency,
             new TransactionDescription(nameof(MoneyDepositTransaction)),
             TransactionType.Deposit,

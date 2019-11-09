@@ -5,12 +5,14 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class TokenChargeTransaction : Transaction
     {
-        public TokenChargeTransaction(Token amount) : base(
+        public TokenChargeTransaction(TransactionId transactionId, Token amount) : base(
+            transactionId,
             -amount,
             new TransactionDescription(nameof(TokenChargeTransaction)),
             TransactionType.Charge,

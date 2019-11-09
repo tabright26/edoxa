@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
@@ -73,7 +74,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync(ChallengeId challengeId)
+        public async Task<IActionResult> PostAsync(ChallengeId challengeId, [FromBody] RegisterChallengeParticipantRequest request)
         {
             var challenge = await _challengeService.FindChallengeAsync(challengeId);
 
@@ -84,6 +85,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 
             var result = await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
+                ParticipantId.FromGuid(request.ParticipantId),
                 HttpContext.GetUserId(),
                 HttpContext.GetPlayerId(challenge.Game),
                 new UtcNowDateTimeProvider());

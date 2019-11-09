@@ -13,6 +13,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -63,7 +64,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                     account?.Transactions.Should().NotContain(transaction => transaction.Status == TransactionStatus.Pending);
                 });
 
-            var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
+            var moneyDepositTransaction = new MoneyDepositTransaction(new TransactionId(), Money.Fifty);
 
             await testServer.UsingScopeAsync(
                 async scope =>

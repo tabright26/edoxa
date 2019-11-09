@@ -71,7 +71,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] ChallengePostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] CreateChallengeRequest request)
         {
             var challengeId = ChallengeId.FromGuid(request.ChallengeId);
 

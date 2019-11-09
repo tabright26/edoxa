@@ -16,12 +16,14 @@ using Autofac;
 using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -46,9 +48,9 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
+        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId, RegisterChallengeParticipantRequest request)
         {
-            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", null);
+            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", new JsonContent(request));
         }
 
         [Fact]
@@ -59,6 +61,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
+            var participantId = new ParticipantId();
             var userId = new UserId();
             var playerId = PlayerId.Parse(Guid.NewGuid().ToString());
 
@@ -92,7 +95,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));
+            using var response = await this.ExecuteAsync(challenge.Id, new RegisterChallengeParticipantRequest(participantId));
 
             // Assert
             response.EnsureSuccessStatusCode();
