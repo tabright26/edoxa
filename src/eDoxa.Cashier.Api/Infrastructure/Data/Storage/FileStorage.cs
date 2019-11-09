@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Cashier.Api.Areas.Payouts.Factories;
+using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                         .Select(
                             record =>
                             {
-                                var payoutStrategy = new PayoutFactory().CreateInstance();
+                                var payoutStrategy = new ChallengePayoutFactory().CreateInstance();
 
                                 var payoutEntries = new PayoutEntries(record.PayoutEntries);
 

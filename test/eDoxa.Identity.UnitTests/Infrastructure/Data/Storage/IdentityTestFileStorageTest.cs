@@ -31,7 +31,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
             var userClaims = storage.GetUserClaims();
 
             // Assert
-            userClaims.Should().HaveCount(2);
+            userClaims.Should().HaveCount(3);
         }
 
         [Fact]

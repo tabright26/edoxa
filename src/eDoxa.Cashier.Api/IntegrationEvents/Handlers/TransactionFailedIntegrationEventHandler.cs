@@ -6,32 +6,27 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Api.Areas.Transactions.Services.Abstractions;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {
     public sealed class TransactionFailedIntegrationEventHandler : IIntegrationEventHandler<TransactionFailedIntegrationEvent>
     {
-        private readonly ITransactionRepository _transactionRepository;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionFailedIntegrationEventHandler(ITransactionRepository transactionRepository)
+        public TransactionFailedIntegrationEventHandler(ITransactionService transactionService)
         {
-            _transactionRepository = transactionRepository;
+            _transactionService = transactionService;
         }
 
         public async Task HandleAsync(TransactionFailedIntegrationEvent integrationEvent)
         {
-            var metadata = new TransactionMetadata(integrationEvent.Metadata);
-
-            var transaction = await _transactionRepository.FindTransactionAsync(metadata);
+            var transaction = await _transactionService.FindTransactionAsync(integrationEvent.TransactionId);
 
             if (transaction != null)
             {
-                transaction.MarkAsFailed();
-
-                await _transactionRepository.CommitAsync();
+                await _transactionService.MaskTransactionAsFailedAsync(transaction);
             }
         }
     }

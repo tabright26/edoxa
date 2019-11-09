@@ -20,12 +20,12 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services
 {
     public sealed class ChallengeService : IChallengeService
     {
-        private readonly IPayoutFactory _payoutFactory;
+        private readonly IChallengePayoutFactory _challengePayoutFactory;
         private readonly IChallengeRepository _challengeRepository;
 
-        public ChallengeService(IPayoutFactory payoutFactory, IChallengeRepository challengeRepository)
+        public ChallengeService(IChallengePayoutFactory challengePayoutFactory, IChallengeRepository challengeRepository)
         {
-            _payoutFactory = payoutFactory;
+            _challengePayoutFactory = challengePayoutFactory;
             _challengeRepository = challengeRepository;
         }
 
@@ -41,9 +41,9 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services
             await _challengeRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task<ValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee)
+        public async Task<ValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee, CancellationToken cancellationToken = default)
         {
-            var strategy = _payoutFactory.CreateInstance();
+            var strategy = _challengePayoutFactory.CreateInstance();
 
             var payout = strategy.GetPayout(payoutEntries, entryFee);
 
@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services
 
             _challengeRepository.Create(challenge);
 
-            await _challengeRepository.CommitAsync();
+            await _challengeRepository.CommitAsync(cancellationToken);
 
             return new ValidationResult();
         }

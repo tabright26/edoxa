@@ -12,7 +12,7 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Cashier.Domain.Strategies
 {
-    public interface IPayoutStrategy
+    public interface IChallengePayoutStrategy
     {
         IPayout GetPayout(PayoutEntries entries, EntryFee entryFee);
     }

@@ -12,8 +12,8 @@ using eDoxa.Cashier.Domain.Strategies;
 
 namespace eDoxa.Cashier.Domain.Factories
 {
-    public interface IPayoutFactory
+    public interface IChallengePayoutFactory
     {
-        IPayoutStrategy CreateInstance();
+        IChallengePayoutStrategy CreateInstance();
     }
 }

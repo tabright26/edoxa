@@ -14,9 +14,9 @@ namespace eDoxa.Challenges.Aggregator.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishTransactionCanceledIntegrationEventAsync(this IServiceBusPublisher publisher, IDictionary<string, string> metadata)
+        public static async Task PublishTransactionCanceledIntegrationEventAsync(this IServiceBusPublisher publisher, TransactionId transactionId)
         {
-            await publisher.PublishAsync(new TransactionCanceledIntegrationEvent(metadata));
+            await publisher.PublishAsync(new TransactionCanceledIntegrationEvent(transactionId));
         }
 
         public static async Task PublishChallengeCreationFailedIntegrationEventAsync(this IServiceBusPublisher publisher, ChallengeId challengeId)

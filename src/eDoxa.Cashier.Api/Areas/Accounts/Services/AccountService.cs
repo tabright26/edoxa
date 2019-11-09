@@ -144,6 +144,15 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             return await _accountRepository.FindUserAccountAsync(userId);
         }
 
+        public async Task CreateAccountAsync(UserId userId)
+        {
+            var account = new Account(userId);
+
+            _accountRepository.Create(account);
+
+            await _accountRepository.CommitAsync();
+        }
+
         public async Task<ValidationResult> DepositAsync(
             IAccount account,
             ICurrency currency,

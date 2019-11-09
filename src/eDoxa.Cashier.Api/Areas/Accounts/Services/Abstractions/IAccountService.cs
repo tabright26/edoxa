@@ -18,6 +18,8 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions
 {
     public interface IAccountService
     {
+        Task CreateAccountAsync(UserId userId);
+
         Task<ValidationResult> DepositAsync(
             IAccount account,
             ICurrency currency,

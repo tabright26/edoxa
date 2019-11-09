@@ -180,6 +180,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
 
             var mockParticipantQuery = new Mock<IParticipantQuery>();
 
+            mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
+
             var mockChallengeService = new Mock<IChallengeService>();
 
             mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
@@ -207,6 +209,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
+
+            mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
 
             mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 

@@ -20,6 +20,6 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions
 
         Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
 
-        Task<ValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee);
+        Task<ValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee, CancellationToken cancellationToken = default);
     }
 }

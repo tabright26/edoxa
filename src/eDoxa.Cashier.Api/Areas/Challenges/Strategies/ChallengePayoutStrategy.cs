@@ -13,9 +13,9 @@ using eDoxa.Cashier.Domain.Strategies;
 
 using IdentityServer4.Extensions;
 
-namespace eDoxa.Cashier.Api.Areas.Payouts.Strategies
+namespace eDoxa.Cashier.Api.Areas.Challenges.Strategies
 {
-    public sealed class PayoutStrategy : IPayoutStrategy
+    public sealed class ChallengePayoutStrategy : IChallengePayoutStrategy
     {
         public IPayout GetPayout(PayoutEntries entries, EntryFee entryFee)
         {
