@@ -49,14 +49,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Charge(Token amount)
+        public ITransaction Charge(TransactionId transactionId, Token amount, TransactionMetadata? metadata = null)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenChargeTransaction(amount);
+            var transaction = new TokenChargeTransaction(amount, metadata);
+
+            transaction.SetEntityId(transactionId);
 
             _account.CreateTransaction(transaction);
 

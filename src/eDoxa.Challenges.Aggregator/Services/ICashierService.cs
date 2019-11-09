@@ -10,28 +10,26 @@ using System.Threading.Tasks;
 
 using Refit;
 
-using ChallengeResponseFromCashierService = eDoxa.Cashier.Responses.ChallengeResponse;
-using TransactionResponseFromCashierService = eDoxa.Cashier.Responses.TransactionResponse;
-using CreateChallengeRequestFromCashierService = eDoxa.Cashier.Requests.CreateChallengeRequest;
-using CreateTransactionRequestFromCashierService = eDoxa.Cashier.Requests.CreateTransactionRequest;
+using CashierResponses = eDoxa.Cashier.Responses;
+using CashierRequests = eDoxa.Cashier.Requests;
 
 namespace eDoxa.Challenges.Aggregator.Services
 {
     public interface ICashierService
     {
         [Get("/api/challenges")]
-        Task<IReadOnlyCollection<ChallengeResponseFromCashierService>> FetchChallengesAsync();
+        Task<IReadOnlyCollection<CashierResponses.ChallengeResponse>> FetchChallengesAsync();
 
         [Post("/api/challenges")]
-        Task<ChallengeResponseFromCashierService> CreateChallengeAsync([Body] CreateChallengeRequestFromCashierService request);
+        Task<CashierResponses.ChallengeResponse> CreateChallengeAsync([Body] CashierRequests.CreateChallengeRequest request);
 
         [Get("/api/challenges/{challengeId}")]
-        Task<ChallengeResponseFromCashierService> FindChallengeAsync(
+        Task<CashierResponses.ChallengeResponse> FindChallengeAsync(
             [AliasAs("challengeId")]
             Guid challengeId
         );
 
         [Post("/api/transactions")]
-        Task<TransactionResponseFromCashierService> CreateTransactionAsync([Body] CreateTransactionRequestFromCashierService request);
+        Task<CashierResponses.TransactionResponse> CreateTransactionAsync([Body] CashierRequests.CreateTransactionRequest request);
     }
 }

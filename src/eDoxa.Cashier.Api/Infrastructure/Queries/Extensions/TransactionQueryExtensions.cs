@@ -1,12 +1,8 @@
 ﻿// Filename: TransactionQueryExtensions.cs
-// Date Created: 2019-07-02
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,7 +17,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 {
     public static class TransactionQueryExtensions
     {
-        public static async Task<IReadOnlyCollection<TransactionModel>> FindUserTransactionModelsAsync(
+        public static async Task<IReadOnlyCollection<TransactionModel>> FetchUserTransactionModelsAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
             Currency? currency = null,
@@ -29,24 +25,28 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             TransactionStatus? status = null
         )
         {
-            var transactions = await transactionQuery.FindUserTransactionsAsync(userId, currency, type, status);
+            var transactions = await transactionQuery.FetchUserTransactionsAsync(
+                userId,
+                currency,
+                type,
+                status);
 
             return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionModel>>(transactions);
         }
 
-        public static async Task<IReadOnlyCollection<TransactionModel>> FindUserTransactionModelsAsync(
+        public static async Task<IReadOnlyCollection<TransactionModel>> FetchUserTransactionModelsAsync(
             this ITransactionQuery transactionQuery,
             Currency? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
         )
         {
-            var transactions = await transactionQuery.FindUserTransactionsAsync(currency, type, status);
+            var transactions = await transactionQuery.FetchUserTransactionsAsync(currency, type, status);
 
             return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionModel>>(transactions);
         }
 
-        public static async Task<IReadOnlyCollection<TransactionResponse>> FindUserTransactionResponsesAsync(
+        public static async Task<IReadOnlyCollection<TransactionResponse>> FetchUserTransactionResponsesAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
             Currency? currency = null,
@@ -54,21 +54,39 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             TransactionStatus? status = null
         )
         {
-            var transactions = await transactionQuery.FindUserTransactionsAsync(userId, currency, type, status);
+            var transactions = await transactionQuery.FetchUserTransactionsAsync(
+                userId,
+                currency,
+                type,
+                status);
 
             return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionResponse>>(transactions);
         }
 
-        public static async Task<IReadOnlyCollection<TransactionResponse>> FindUserTransactionResponsesAsync(
+        public static async Task<IReadOnlyCollection<TransactionResponse>> FetchUserTransactionResponsesAsync(
             this ITransactionQuery transactionQuery,
             Currency? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
         )
         {
-            var transactions = await transactionQuery.FindUserTransactionsAsync(currency, type, status);
+            var transactions = await transactionQuery.FetchUserTransactionsAsync(currency, type, status);
 
             return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionResponse>>(transactions);
+        }
+
+        public static async Task<TransactionModel?> FindTransactionModelAsync(this ITransactionQuery transactionQuery, TransactionId transactionId)
+        {
+            var transactions = await transactionQuery.FindTransactionAsync(transactionId);
+
+            return transactionQuery.Mapper.Map<TransactionModel?>(transactions);
+        }
+
+        public static async Task<TransactionResponse?> FindTransactionResponseAsync(this ITransactionQuery transactionQuery, TransactionId transactionId)
+        {
+            var transactions = await transactionQuery.FindTransactionAsync(transactionId);
+
+            return transactionQuery.Mapper.Map<TransactionResponse?>(transactions);
         }
     }
 }

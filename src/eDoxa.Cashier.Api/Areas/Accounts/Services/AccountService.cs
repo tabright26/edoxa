@@ -14,6 +14,7 @@ using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
@@ -83,18 +84,59 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                     return new ValidationResult();
                 }
 
-                case Token _:
-                {
-                    var result = new ValidationFailure(string.Empty, "The withdrawal of token is not supported.");
-
-                    return result.ToResult();
-                }
-
                 default:
                 {
-                    throw new InvalidOperationException();
+                    return new ValidationFailure(string.Empty, "The withdrawal of token is not supported.").ToResult();
                 }
             }
+        }
+
+        public async Task<ValidationResult> CreateTransactionAsync(
+            IAccount account,
+            decimal amount,
+            Currency currency,
+            TransactionId transactionId,
+            TransactionType transactionType,
+            TransactionMetadata? transactionMetadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = TryGetCurrency(currency, amount, out var value);
+
+            if (result.IsValid)
+            {
+                switch (value)
+                {
+                    case Money money:
+                    {
+                        return await this.CreateTransactionAsync(
+                            new MoneyAccount(account),
+                            money,
+                            transactionId,
+                            transactionType,
+                            transactionMetadata,
+                            cancellationToken);
+                    }
+
+                    case Token token:
+                    {
+                        return await this.CreateTransactionAsync(
+                            new TokenAccount(account),
+                            token,
+                            transactionId,
+                            transactionType,
+                            transactionMetadata,
+                            cancellationToken);
+                    }
+
+                    case null:
+                    {
+                        return new ValidationFailure("_error", "Invalid currency.").ToResult();
+                    }
+                }
+            }
+
+            return result;
         }
 
         public async Task<IAccount?> FindUserAccountAsync(UserId userId)
@@ -176,6 +218,79 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                     throw new InvalidOperationException();
                 }
             }
+        }
+
+        public async Task<ValidationResult> CreateTransactionAsync(
+            IMoneyAccount account,
+            Money money,
+            TransactionId transactionId,
+            TransactionType transactionType,
+            TransactionMetadata? transactionMetadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            if (transactionType == TransactionType.Charge)
+            {
+                if (!account.HaveSufficientMoney(money))
+                {
+                    return new ValidationFailure("_error", "Insufficient funds.").ToResult();
+                }
+
+                account.Charge(transactionId, money, transactionMetadata);
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                return new ValidationResult();
+            }
+
+            return new ValidationFailure("_error", "Unsupported transaction type for money.").ToResult();
+        }
+
+        public async Task<ValidationResult> CreateTransactionAsync(
+            ITokenAccount account,
+            Token token,
+            TransactionId transactionId,
+            TransactionType transactionType,
+            TransactionMetadata? transactionMetadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            if (transactionType == TransactionType.Charge)
+            {
+                if (!account.HaveSufficientMoney(token))
+                {
+                    return new ValidationFailure("_error", "Insufficient funds.").ToResult();
+                }
+
+                account.Charge(transactionId, token, transactionMetadata);
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                return new ValidationResult();
+            }
+
+            return new ValidationFailure("_error", "Unsupported transaction type for money.").ToResult();
+        }
+
+        private static ValidationResult TryGetCurrency(Currency currency, decimal amount, out ICurrency? result)
+        {
+            result = null;
+
+            if (currency == Currency.Money)
+            {
+                // TODO: Validation.
+
+                result = new Money(amount);
+            }
+
+            if (currency == Currency.Token)
+            {
+                // TODO: Validation.
+
+                result = new Token(amount);
+            }
+
+            return new ValidationResult();
         }
 
         private async Task DepositAsync<TCurrency>(

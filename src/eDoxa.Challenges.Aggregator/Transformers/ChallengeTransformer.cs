@@ -4,23 +4,24 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Challenges.Aggregator.Models;
 
-using ChallengeResponseFromChallengesService = eDoxa.Challenges.Responses.ChallengeResponse;
-using ParticipantResponseFromChallengesService = eDoxa.Challenges.Responses.ParticipantResponse;
-using ChallengeResponseFromCashierService = eDoxa.Cashier.Responses.ChallengeResponse;
-using UserDoxatagResponseFromIdentityService = eDoxa.Identity.Responses.UserDoxatagResponse;
+using ChallengeResponses = eDoxa.Challenges.Responses;
+using CashierResponses = eDoxa.Cashier.Responses;
+using IdentityResponses = eDoxa.Identity.Responses;
 
 namespace eDoxa.Challenges.Aggregator.Transformers
 {
     public static class ChallengeTransformer
     {
         public static ParticipantModel Transform(
-            ParticipantResponseFromChallengesService participantFromChallengesService,
-            IEnumerable<UserDoxatagResponseFromIdentityService> doxatagsFromIdentityService
+            Guid challengeId,
+            ChallengeResponses.ParticipantResponse participantFromChallengesService,
+            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatagsFromIdentityService
         )
         {
             return new ParticipantModel
@@ -39,7 +40,7 @@ namespace eDoxa.Challenges.Aggregator.Transformers
                         .Single()
                 },
                 Score = participantFromChallengesService.Score,
-                ChallengeId = participantFromChallengesService.ChallengeId,
+                ChallengeId = challengeId,
                 Matches = participantFromChallengesService.Matches.Select(
                         match => new MatchModel
                         {
@@ -61,9 +62,9 @@ namespace eDoxa.Challenges.Aggregator.Transformers
         }
 
         public static ChallengeModel Transform(
-            ChallengeResponseFromChallengesService challengeFromChallengesService,
-            ChallengeResponseFromCashierService challengeFromCashierService,
-            IEnumerable<UserDoxatagResponseFromIdentityService> doxatagsFromIdentityService
+            ChallengeResponses.ChallengeResponse challengeFromChallengesService,
+            CashierResponses.ChallengeResponse challengeFromCashierService,
+            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatagsFromIdentityService
         )
         {
             return new ChallengeModel
@@ -78,6 +79,13 @@ namespace eDoxa.Challenges.Aggregator.Transformers
                 {
                     Amount = challengeFromCashierService.EntryFee.Amount,
                     Currency = challengeFromCashierService.EntryFee.Currency
+                },
+                Timeline = new TimelineModel
+                {
+                    CreatedAt = challengeFromChallengesService.Timeline.CreatedAt.Ticks,
+                    StartedAt = challengeFromChallengesService.Timeline.StartedAt?.Ticks,
+                    EndedAt = challengeFromChallengesService.Timeline.EndedAt?.Ticks,
+                    ClosedAt = challengeFromChallengesService.Timeline.ClosedAt?.Ticks
                 },
                 Scoring = challengeFromChallengesService.Scoring,
                 Payout = new PayoutModel
@@ -95,14 +103,16 @@ namespace eDoxa.Challenges.Aggregator.Transformers
                             })
                         .ToArray()
                 },
-                Participants = challengeFromChallengesService.Participants.Select(participant => Transform(participant, doxatagsFromIdentityService)).ToArray()
+                Participants = challengeFromChallengesService.Participants
+                    .Select(participant => Transform(challengeFromChallengesService.Id, participant, doxatagsFromIdentityService))
+                    .ToArray()
             };
         }
 
         public static IReadOnlyCollection<ChallengeModel> Transform(
-            IReadOnlyCollection<ChallengeResponseFromChallengesService> challengesFromChallengesService,
-            IReadOnlyCollection<ChallengeResponseFromCashierService> challengesFromCashierService,
-            IReadOnlyCollection<UserDoxatagResponseFromIdentityService> doxatagsFromIdentityService
+            IReadOnlyCollection<ChallengeResponses.ChallengeResponse> challengesFromChallengesService,
+            IReadOnlyCollection<CashierResponses.ChallengeResponse> challengesFromCashierService,
+            IReadOnlyCollection<IdentityResponses.UserDoxatagResponse> doxatagsFromIdentityService
         )
         {
             var challengeModels = from challengeFromChallengesService in challengesFromChallengesService

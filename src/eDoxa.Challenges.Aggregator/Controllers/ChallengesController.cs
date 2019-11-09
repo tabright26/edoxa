@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Aggregator.IntegrationEvents.Extensions;
+using eDoxa.Challenges.Aggregator.Models;
 using eDoxa.Challenges.Aggregator.Requests;
 using eDoxa.Challenges.Aggregator.Services;
 using eDoxa.Challenges.Aggregator.Transformers;
@@ -16,12 +17,17 @@ using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Newtonsoft.Json;
 
 using Refit;
 
-using CreateChallengeRequestFromChallengesService = eDoxa.Challenges.Requests.CreateChallengeRequest;
-using CreateChallengeRequestFromCashierService = eDoxa.Cashier.Requests.CreateChallengeRequest;
+using Swashbuckle.AspNetCore.Annotations;
+
+using CashierRequests = eDoxa.Cashier.Requests;
+using ChallengeRequests = eDoxa.Challenges.Requests;
 
 namespace eDoxa.Challenges.Aggregator.Controllers
 {
@@ -51,6 +57,8 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         }
 
         [HttpGet]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel[]))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FetchChallengesAsync()
         {
             var doxatagsFromIdentityService = await _identityService.FetchDoxatagsAsync();
@@ -63,6 +71,8 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         }
 
         [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallengeRequest request)
         {
             var challengeId = new ChallengeId();
@@ -70,7 +80,7 @@ namespace eDoxa.Challenges.Aggregator.Controllers
             try
             {
                 var challengeFromChallengesService = await _challengesService.CreateChallengeAsync(
-                    new CreateChallengeRequestFromChallengesService(
+                    new ChallengeRequests.CreateChallengeRequest(
                         challengeId,
                         request.Name,
                         request.Game,
@@ -79,7 +89,7 @@ namespace eDoxa.Challenges.Aggregator.Controllers
                         request.Duration));
 
                 var challengeFromCashierService = await _cashierService.CreateChallengeAsync(
-                    new CreateChallengeRequestFromCashierService(
+                    new CashierRequests.CreateChallengeRequest(
                         challengeId,
                         challengeFromChallengesService.Entries / 2,
                         request.EntryFeeAmount,
@@ -92,11 +102,13 @@ namespace eDoxa.Challenges.Aggregator.Controllers
             {
                 await _serviceBusPublisher.PublishChallengeCreationFailedIntegrationEventAsync(challengeId);
 
-                return this.BadRequest(exception.Content);
+                return this.BadRequest(JsonConvert.DeserializeObject<ValidationProblemDetails>(exception.Content));
             }
         }
 
         [HttpGet("{challengeId}")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FindChallengeAsync(Guid challengeId)
         {
             var doxatagsFromIdentityService = await _identityService.FetchDoxatagsAsync();
@@ -109,6 +121,8 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         }
 
         //[HttpPost("{challengeId}")]
+        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         //public async Task<IActionResult> SynchronizeChallengeAsync(Guid challengeId)
         //{
         //    var doxatagsFromIdentityService = await _identityService.FetchDoxatagsAsync();

@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
@@ -12,13 +13,17 @@ namespace eDoxa.Cashier.Requests
     [DataContract]
     public sealed class CreateTransactionRequest
     {
-        public CreateTransactionRequest(string type, string currency, decimal amount, IDictionary<string, string> metadata = null)
+        public CreateTransactionRequest(Guid id, string type, string currency, decimal amount, IDictionary<string, string> metadata = null)
         {
+            Id = id;
             Type = type;
             Currency = currency;
             Amount = amount;
             Metadata = metadata ?? new Dictionary<string, string>();
         }
+
+        [DataMember(Name = "id")]
+        public Guid Id { get; private set; }
 
         [DataMember(Name = "type")]
         public string Type { get; private set; }

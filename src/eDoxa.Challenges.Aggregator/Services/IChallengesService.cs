@@ -8,41 +8,38 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Requests;
-using eDoxa.Challenges.Responses;
-
 using Refit;
 
-using ChallengeResponseFromChallengesService = eDoxa.Challenges.Responses.ChallengeResponse;
-using RegisterChallengeParticipantRequestFromChallengesService = eDoxa.Challenges.Requests.RegisterChallengeParticipantRequest;
+using ChallengeResponses = eDoxa.Challenges.Responses;
+using ChallengeRequests = eDoxa.Challenges.Requests;
 
 namespace eDoxa.Challenges.Aggregator.Services
 {
     public interface IChallengesService
     {
         [Get("/api/challenges")]
-        Task<IReadOnlyCollection<ChallengeResponseFromChallengesService>> FetchChallengesAsync();
+        Task<IReadOnlyCollection<ChallengeResponses.ChallengeResponse>> FetchChallengesAsync();
 
         [Post("/api/challenges")]
-        Task<ChallengeResponseFromChallengesService> CreateChallengeAsync([Body] CreateChallengeRequest request);
+        Task<ChallengeResponses.ChallengeResponse> CreateChallengeAsync([Body] ChallengeRequests.CreateChallengeRequest request);
 
         [Get("/api/challenges/{challengeId}")]
-        Task<ChallengeResponseFromChallengesService> FindChallengeAsync(
+        Task<ChallengeResponses.ChallengeResponse> FindChallengeAsync(
             [AliasAs("challengeId")]
             Guid challengeId
         );
 
         [Post("/api/challenges/{challengeId}")]
-        Task<ChallengeResponseFromChallengesService> SynchronizeChallengeAsync(
+        Task<ChallengeResponses.ChallengeResponse> SynchronizeChallengeAsync(
             [AliasAs("challengeId")]
             Guid challengeId
         );
 
         [Post("/api/challenges/{challengeId}/participants")]
-        Task<ParticipantResponse> RegisterChallengeParticipantAsync(
+        Task<ChallengeResponses.ParticipantResponse> RegisterChallengeParticipantAsync(
             [AliasAs("challengeId")]
             Guid challengeId,
-            [Body] RegisterChallengeParticipantRequestFromChallengesService request
+            [Body] ChallengeRequests.RegisterChallengeParticipantRequest request
         );
     }
 }

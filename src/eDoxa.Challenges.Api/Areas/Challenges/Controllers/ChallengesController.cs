@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,7 +48,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)

@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,11 +8,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.Responses;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
+
+using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -30,10 +36,12 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionQuery _transactionQuery;
+        private readonly IAccountService _accountService;
 
-        public TransactionsController(ITransactionQuery transactionQuery)
+        public TransactionsController(ITransactionQuery transactionQuery, IAccountService accountService)
         {
             _transactionQuery = transactionQuery;
+            _accountService = accountService;
         }
 
         /// <summary>
@@ -45,7 +53,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(Currency? currency = null, TransactionType? type = null, TransactionStatus? status = null)
         {
-            var responses = await _transactionQuery.FindUserTransactionResponsesAsync(currency, type, status);
+            var responses = await _transactionQuery.FetchUserTransactionResponsesAsync(currency, type, status);
 
             if (!responses.Any())
             {
@@ -53,6 +61,44 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
             }
 
             return this.Ok(responses);
+        }
+
+        /// <summary>
+        ///     Create a transaction.
+        /// </summary>
+        [HttpPost]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        public async Task<IActionResult> PostAsync([FromBody] CreateTransactionRequest request)
+        {
+            var transactionId = TransactionId.FromGuid(request.Id);
+
+            var account = await _accountService.FindUserAccountAsync(HttpContext.GetUserId());
+
+            if (account == null)
+            {
+                return this.NotFound("User account not found.");
+            }
+
+            var result = await _accountService.CreateTransactionAsync(
+                account,
+                request.Amount,
+                Currency.FromName(request.Currency),
+                transactionId,
+                TransactionType.FromName(request.Type),
+                new TransactionMetadata(request.Metadata));
+
+            if (result.IsValid)
+            {
+                var response = await _transactionQuery.FindTransactionResponseAsync(transactionId);
+
+                return this.Ok(response);
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

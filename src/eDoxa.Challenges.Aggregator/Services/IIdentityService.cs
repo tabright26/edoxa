@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 using Refit;
 
-using UserDoxatagResponseFromIdentityService = eDoxa.Identity.Responses.UserDoxatagResponse;
+using IdentityResponses = eDoxa.Identity.Responses;
 
 namespace eDoxa.Challenges.Aggregator.Services
 {
     public interface IIdentityService
     {
         [Get("/api/doxatags")]
-        Task<IReadOnlyCollection<UserDoxatagResponseFromIdentityService>> FetchDoxatagsAsync();
+        Task<IReadOnlyCollection<IdentityResponses.UserDoxatagResponse>> FetchDoxatagsAsync();
     }
 }

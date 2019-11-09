@@ -23,17 +23,19 @@ namespace eDoxa.Cashier.Domain.Queries
     {
         IMapper Mapper { get; }
 
-        Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
+        Task<IReadOnlyCollection<ITransaction>> FetchUserTransactionsAsync(
             UserId userId,
             Currency? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
         );
 
-        Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
+        Task<IReadOnlyCollection<ITransaction>> FetchUserTransactionsAsync(
             Currency? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
         );
+
+        Task<ITransaction?> FindTransactionAsync(TransactionId transactionId);
     }
 }

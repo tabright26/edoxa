@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Aggregator.IntegrationEvents.Extensions;
+using eDoxa.Challenges.Aggregator.Models;
 using eDoxa.Challenges.Aggregator.Services;
 using eDoxa.Challenges.Aggregator.Transformers;
 using eDoxa.Seedwork.Domain.Miscs;
@@ -16,12 +17,14 @@ using eDoxa.ServiceBus.Abstractions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using Newtonsoft.Json;
+
 using Refit;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-using CreateTransactionRequestFromCashierService = eDoxa.Cashier.Requests.CreateTransactionRequest;
-using RegisterChallengeParticipantRequestFromChallengesService = eDoxa.Challenges.Requests.RegisterChallengeParticipantRequest;
+using CashierRequests = eDoxa.Cashier.Requests;
+using ChallengeRequests = eDoxa.Challenges.Requests;
 
 namespace eDoxa.Challenges.Aggregator.Controllers
 {
@@ -54,9 +57,8 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         ///     Register a participant to a challenge.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId)
         {
             var doxatags = await _identityService.FetchDoxatagsAsync();
@@ -71,8 +73,11 @@ namespace eDoxa.Challenges.Aggregator.Controllers
                 [nameof(ParticipantId)] = participantId.ToString()
             };
 
+            var transactionId = new TransactionId();
+
             await _cashierService.CreateTransactionAsync(
-                new CreateTransactionRequestFromCashierService(
+                new CashierRequests.CreateTransactionRequest(
+                    transactionId,
                     TransactionType.Charge.Name,
                     challenge.EntryFee.Currency,
                     challenge.EntryFee.Amount,
@@ -82,15 +87,15 @@ namespace eDoxa.Challenges.Aggregator.Controllers
             {
                 var participant = await _challengesService.RegisterChallengeParticipantAsync(
                     challengeId,
-                    new RegisterChallengeParticipantRequestFromChallengesService(participantId));
+                    new ChallengeRequests.RegisterChallengeParticipantRequest(participantId));
 
-                return this.Ok(ChallengeTransformer.Transform(participant, doxatags));
+                return this.Ok(ChallengeTransformer.Transform(challenge.Id, participant, doxatags));
             }
             catch (ApiException exception)
             {
                 await _serviceBusPublisher.PublishTransactionCanceledIntegrationEventAsync(metadata);
 
-                return this.BadRequest(exception.Content);
+                return this.BadRequest(JsonConvert.DeserializeObject<ValidationProblemDetails>(exception.Content));
             }
         }
     }

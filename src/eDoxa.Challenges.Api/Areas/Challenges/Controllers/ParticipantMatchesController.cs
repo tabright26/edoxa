@@ -1,10 +1,9 @@
 ﻿// Filename: ParticipantMatchesController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,7 +38,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         ///     Find the matches of a participant.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatchResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(ParticipantId participantId)
