@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Aggregator.Transformers
         public static ParticipantModel Transform(
             Guid challengeId,
             ChallengeResponses.ParticipantResponse participantFromChallengesService,
-            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatagsFromIdentityService
+            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatags
         )
         {
             return new ParticipantModel
@@ -30,7 +30,7 @@ namespace eDoxa.Challenges.Aggregator.Transformers
                 User = new UserModel
                 {
                     Id = participantFromChallengesService.UserId,
-                    Doxatag = doxatagsFromIdentityService.Where(doxatag => doxatag.UserId == participantFromChallengesService.UserId)
+                    Doxatag = doxatags.Where(doxatag => doxatag.UserId == participantFromChallengesService.UserId)
                         .Select(
                             doxatag => new DoxatagModel
                             {
@@ -62,40 +62,47 @@ namespace eDoxa.Challenges.Aggregator.Transformers
         }
 
         public static ChallengeModel Transform(
-            ChallengeResponses.ChallengeResponse challengeFromChallengesService,
-            CashierResponses.ChallengeResponse challengeFromCashierService,
-            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatagsFromIdentityService
+            ChallengeResponses.ChallengeResponse challenge,
+            CashierResponses.ChallengeResponse challengeFromCashier,
+            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatags
         )
         {
             return new ChallengeModel
             {
-                Id = challengeFromChallengesService.Id,
-                Name = challengeFromChallengesService.Name,
-                Game = challengeFromChallengesService.Game,
-                State = challengeFromChallengesService.State,
-                BestOf = challengeFromChallengesService.BestOf,
-                Entries = challengeFromChallengesService.Entries,
+                Id = challenge.Id,
+                Name = challenge.Name,
+                Game = challenge.Game,
+                State = challenge.State,
+                BestOf = challenge.BestOf,
+                Entries = challenge.Entries,
                 EntryFee = new EntryFeeModel
                 {
-                    Amount = challengeFromCashierService.EntryFee.Amount,
-                    Currency = challengeFromCashierService.EntryFee.Currency
+                    Amount = challengeFromCashier.EntryFee.Amount,
+                    Currency = challengeFromCashier.EntryFee.Currency
                 },
                 Timeline = new TimelineModel
                 {
-                    CreatedAt = challengeFromChallengesService.Timeline.CreatedAt.Ticks,
-                    StartedAt = challengeFromChallengesService.Timeline.StartedAt?.Ticks,
-                    EndedAt = challengeFromChallengesService.Timeline.EndedAt?.Ticks,
-                    ClosedAt = challengeFromChallengesService.Timeline.ClosedAt?.Ticks
+                    CreatedAt = new DateTimeOffset(challenge.Timeline.CreatedAt).ToUnixTimeSeconds(),
+                    StartedAt = challenge.Timeline.StartedAt.HasValue
+                        ? new DateTimeOffset(challenge.Timeline.StartedAt.Value).ToUnixTimeSeconds()
+                        : (long?) null,
+                    EndedAt =
+                        challenge.Timeline.EndedAt.HasValue ? new DateTimeOffset(challenge.Timeline.EndedAt.Value).ToUnixTimeSeconds() : (long?) null,
+                    ClosedAt = challenge.Timeline.ClosedAt.HasValue
+                        ? new DateTimeOffset(challenge.Timeline.ClosedAt.Value).ToUnixTimeSeconds()
+                        : (long?) null
                 },
-                Scoring = challengeFromChallengesService.Scoring,
+                PayoutEntries = challengeFromCashier.Payout.Buckets.Sum(bucket => bucket.Size),
+                SynchronizedAt = challenge.SynchronizedAt.HasValue ? new DateTimeOffset(challenge.SynchronizedAt.Value).ToUnixTimeSeconds() : (long?) null,
+                Scoring = challenge.Scoring,
                 Payout = new PayoutModel
                 {
                     PrizePool = new PrizePoolModel
                     {
-                        Currency = challengeFromCashierService.Payout.PrizePool.Currency,
-                        Amount = challengeFromCashierService.Payout.PrizePool.Amount
+                        Currency = challengeFromCashier.Payout.PrizePool.Currency,
+                        Amount = challengeFromCashier.Payout.PrizePool.Amount
                     },
-                    Buckets = challengeFromCashierService.Payout.Buckets.Select(
+                    Buckets = challengeFromCashier.Payout.Buckets.Select(
                             bucket => new BucketModel
                             {
                                 Prize = bucket.Prize,
@@ -103,9 +110,7 @@ namespace eDoxa.Challenges.Aggregator.Transformers
                             })
                         .ToArray()
                 },
-                Participants = challengeFromChallengesService.Participants
-                    .Select(participant => Transform(challengeFromChallengesService.Id, participant, doxatagsFromIdentityService))
-                    .ToArray()
+                Participants = challenge.Participants.Select(participant => Transform(challenge.Id, participant, doxatags)).ToArray()
             };
         }
 

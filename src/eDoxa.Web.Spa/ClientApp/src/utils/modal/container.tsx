@@ -11,7 +11,7 @@ import {
   DEPOSIT_MODAL,
   WITHDRAWAL_MODAL
 } from "modals";
-import { Currency, Bundle, Stat } from "types";
+import { Currency, Bundle, ChallengeParticipantMatchStat } from "types";
 
 export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
@@ -20,7 +20,7 @@ export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
     return {
       modals: {
         showCreateUserAddressModal: () => dispatch(show(CREATE_USER_ADDRESS_MODAL)),
-        showChallengeMatchScoreModal: (stats: Stat[]) => dispatch(show(CHALLENGE_MATCH_SCORE_MODAL, { stats })),
+        showChallengeMatchScoreModal: (stats: ChallengeParticipantMatchStat[]) => dispatch(show(CHALLENGE_MATCH_SCORE_MODAL, { stats })),
         showCreateClanModal: actions => dispatch(show(CREATE_CLAN_MODAL, { actions })),
         showDepositModal: (currency: Currency, bundles: Bundle[]) => dispatch(show(DEPOSIT_MODAL, { currency, bundles })),
         showWithdrawalModal: (currency: Currency, bundles: Bundle[]) => dispatch(show(WITHDRAWAL_MODAL, { currency, bundles })),

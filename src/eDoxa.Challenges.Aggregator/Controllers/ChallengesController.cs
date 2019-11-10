@@ -17,6 +17,7 @@ using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -57,6 +58,7 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel[]))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FetchChallengesAsync()
@@ -107,6 +109,7 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         }
 
         [HttpGet("{challengeId}")]
+        [AllowAnonymous]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FindChallengeAsync(Guid challengeId)

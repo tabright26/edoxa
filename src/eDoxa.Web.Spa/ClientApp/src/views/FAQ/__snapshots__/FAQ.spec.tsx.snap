@@ -2,15 +2,19 @@
 
 exports[`renders without crashing 1`] = `
 <div
-  className="mt-4 card"
+  className="container"
 >
   <div
-    className="text-justify p-5 card-body"
+    className="mt-4 card"
   >
-    <h1>
-      F. A. Q.
-    </h1>
-    <section />
+    <div
+      className="text-justify p-5 card-body"
+    >
+      <h1>
+        F. A. Q.
+      </h1>
+      <section />
+    </div>
   </div>
 </div>
 `;

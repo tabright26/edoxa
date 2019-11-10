@@ -23,6 +23,8 @@ namespace eDoxa.Challenges.Aggregator.Models
 
         public int Entries { get; set; }
 
+        public int PayoutEntries { get; set; }
+
         public long? SynchronizedAt { get; set; }
 
         public IDictionary<string, float> Scoring { get; set; }
