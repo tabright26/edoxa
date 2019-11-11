@@ -33,9 +33,9 @@ exports[`renders without crashing 1`] = `
     title="Inscription"
   >
     <time
-      dateTime={"+051830-07-11T06:22:48.000Z"}
+      dateTime={"+051832-03-15T10:20:26.000Z"}
     >
-      Jul 11, 51830 2:22 AM
+      Mar 15, 51832 6:20 AM
     </time>
   </span>
   <span

@@ -8,7 +8,7 @@ it("renders without crashing", () => {
 
   const state: string = "";
   const timeline: ChallengeTimeline = {
-    createdAt: Date.now(),
+    createdAt: new Date(2000, 1, 1).getMilliseconds(),
     startedAt: null,
     endedAt: null,
     closedAt: null

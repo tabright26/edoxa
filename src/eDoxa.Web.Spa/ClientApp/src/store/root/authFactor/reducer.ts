@@ -1,21 +1,21 @@
-import { LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL, GamesActions, GamesState } from "./types";
+import { GENERATE_GAME_AUTH_FACTOR, GENERATE_GAME_AUTH_FACTOR_SUCCESS, GENERATE_GAME_AUTH_FACTOR_FAIL, GameAuthFactorActions, GameAuthFactorState } from "./types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { Game, GameOption } from "types";
 
-export const initialState: GamesState = {
+export const initialState: GameAuthFactorState = {
   data: new Map<Game, GameOption>(),
   error: null,
   loading: false
 };
 
-export const reducer: Reducer<GamesState, GamesActions> = produce((draft: Draft<GamesState>, action: GamesActions) => {
+export const reducer: Reducer<GameAuthFactorState, GameAuthFactorActions> = produce((draft: Draft<GameAuthFactorState>, action: GameAuthFactorActions) => {
   switch (action.type) {
-    case LOAD_GAMES:
+    case GENERATE_GAME_AUTH_FACTOR:
       draft.error = null;
       draft.loading = true;
       break;
-    case LOAD_GAMES_SUCCESS:
+    case GENERATE_GAME_AUTH_FACTOR_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -29,7 +29,7 @@ export const reducer: Reducer<GamesState, GamesActions> = produce((draft: Draft<
           break;
       }
       break;
-    case LOAD_GAMES_FAIL:
+    case GENERATE_GAME_AUTH_FACTOR_FAIL:
       draft.error = action.error;
       draft.loading = false;
       break;
