@@ -24,7 +24,7 @@ describe("invitations", () => {
 
     const expectedType = [LOAD_CLAN_INVITATIONS, LOAD_CLAN_INVITATIONS_SUCCESS, LOAD_CLAN_INVITATIONS_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/invitations?${type}Id=${id}`;
+    const expectedUrl = `/clans/api/invitations?${type}Id=${id}`;
 
     const actionCreator = loadClanInvitations(type, id);
 
@@ -39,7 +39,7 @@ describe("invitations", () => {
 
     const expectedType = [LOAD_CLAN_INVITATIONS, LOAD_CLAN_INVITATIONS_SUCCESS, LOAD_CLAN_INVITATIONS_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/invitations?${type}Id=${id}`;
+    const expectedUrl = `/clans/api/invitations?${type}Id=${id}`;
 
     const actionCreator = loadClanInvitations(type, id);
 
@@ -53,7 +53,7 @@ describe("invitations", () => {
 
     const expectedType = [LOAD_CLAN_INVITATION, LOAD_CLAN_INVITATION_SUCCESS, LOAD_CLAN_INVITATION_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/invitations/${invitationId}`;
+    const expectedUrl = `/clans/api/invitations/${invitationId}`;
 
     const actionCreator = loadClanInvitation(invitationId);
 
@@ -68,7 +68,7 @@ describe("invitations", () => {
 
     const expectedType = [SEND_CLAN_INVITATION, SEND_CLAN_INVITATION_SUCCESS, SEND_CLAN_INVITATION_FAIL];
     const expectedMethod = "POST";
-    const expectedUrl = "/organizations/clans/api/invitations";
+    const expectedUrl = "/clans/api/invitations";
 
     const actionCreator = sendClanInvitation(clanId, userId);
 
@@ -83,7 +83,7 @@ describe("invitations", () => {
 
     const expectedType = [ACCEPT_CLAN_INVITATION, ACCEPT_CLAN_INVITATION_SUCCESS, ACCEPT_CLAN_INVITATION_FAIL];
     const expectedMethod = "POST";
-    const expectedUrl = `/organizations/clans/api/invitations/${invitationId}`;
+    const expectedUrl = `/clans/api/invitations/${invitationId}`;
 
     const actionCreator = acceptClanInvitation(invitationId);
 
@@ -97,7 +97,7 @@ describe("invitations", () => {
 
     const expectedType = [DECLINE_CLAN_INVITATION, DECLINE_CLAN_INVITATION_SUCCESS, DECLINE_CLAN_INVITATION_FAIL];
     const expectedMethod = "DELETE";
-    const expectedUrl = `/organizations/clans/api/invitations/${invitationId}`;
+    const expectedUrl = `/clans/api/invitations/${invitationId}`;
 
     const actionCreator = declineClanInvitation(invitationId);
 

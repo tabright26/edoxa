@@ -6,14 +6,12 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Cashier.Domain.AggregateModels;
-
 namespace eDoxa.Cashier.Api.Areas.Accounts.Requests
 {
     [DataContract]
     public sealed class AccountDepositPostRequest
     {
-        public AccountDepositPostRequest(Currency currency, decimal amount)
+        public AccountDepositPostRequest(string currency, decimal amount)
         {
             Currency = currency;
             Amount = amount;
@@ -27,7 +25,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Requests
 #nullable restore
 
         [DataMember(Name = "currency")]
-        public Currency Currency { get; private set; }
+        public string Currency { get; private set; }
 
         [DataMember(Name = "amount")]
         public decimal Amount { get; private set; }

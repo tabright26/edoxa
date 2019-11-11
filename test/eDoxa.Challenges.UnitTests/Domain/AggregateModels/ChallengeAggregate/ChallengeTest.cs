@@ -1,5 +1,5 @@
 // Filename: ChallengeTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -44,7 +44,12 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 
             // Act
             var action = new Action(
-                () => challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+                () => challenge.Register(
+                    new Participant(
+                        new ParticipantId(),
+                        new UserId(),
+                        PlayerId.Parse(Guid.NewGuid().ToString()),
+                        new UtcNowDateTimeProvider())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -62,12 +67,22 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 
             for (var index = 0; index < participantCount; index++)
             {
-                challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+                challenge.Register(
+                    new Participant(
+                        new ParticipantId(),
+                        new UserId(),
+                        PlayerId.Parse(Guid.NewGuid().ToString()),
+                        new UtcNowDateTimeProvider()));
             }
 
             // Act
             var action = new Action(
-                () => challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+                () => challenge.Register(
+                    new Participant(
+                        new ParticipantId(),
+                        new UserId(),
+                        PlayerId.Parse(Guid.NewGuid().ToString()),
+                        new UtcNowDateTimeProvider())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -84,7 +99,11 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
             // Act
             var action = new Action(
                 () => challenge.Register(
-                    new Participant(challenge.Participants.First().UserId, PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider())));
+                    new Participant(
+                        new ParticipantId(),
+                        challenge.Participants.First().UserId,
+                        PlayerId.Parse(Guid.NewGuid().ToString()),
+                        new UtcNowDateTimeProvider())));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -101,7 +120,12 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
             var participantCount = challenge.Participants.Count;
 
             // Act
-            challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+            challenge.Register(
+                new Participant(
+                    new ParticipantId(),
+                    new UserId(),
+                    PlayerId.Parse(Guid.NewGuid().ToString()),
+                    new UtcNowDateTimeProvider()));
 
             // Assert
             challenge.Participants.Should().HaveCount(participantCount + 1);

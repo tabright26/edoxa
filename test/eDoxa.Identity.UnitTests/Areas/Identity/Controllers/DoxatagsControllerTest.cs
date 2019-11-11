@@ -10,9 +10,9 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 

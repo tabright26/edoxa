@@ -107,6 +107,27 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.TransactionMetadataModel", "Metadata", b1 =>
+                        {
+                            b1.Property<Guid>("TransactionId");
+
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd();
+
+                            b1.Property<string>("Key");
+
+                            b1.Property<string>("Value");
+
+                            b1.HasKey("TransactionId", "Id");
+
+                            b1.ToTable("TransactionMetadata");
+
+                            b1.HasOne("eDoxa.Cashier.Infrastructure.Models.TransactionModel")
+                                .WithMany("Metadata")
+                                .HasForeignKey("TransactionId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
                 });
 #pragma warning restore 612, 618
         }

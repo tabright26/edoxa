@@ -6,6 +6,9 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Games.Abstractions.Services;
+using eDoxa.Seedwork.Domain.Miscs;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,10 +21,19 @@ namespace eDoxa.Games.Api.Areas.Challenge.Controllers
     [ApiExplorerSettings(GroupName = "Challenge")]
     public sealed class ChallengeGameScoringController : ControllerBase
     {
-        [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        private readonly IChallengeService _challengeService;
+
+        public ChallengeGameScoringController(IChallengeService challengeService)
         {
-            return this.Ok();
+            _challengeService = challengeService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAsync(Game game)
+        {
+            var scoring = await _challengeService.GetScoringAsync(game);
+
+            return this.Ok(scoring);
         }
     }
 }

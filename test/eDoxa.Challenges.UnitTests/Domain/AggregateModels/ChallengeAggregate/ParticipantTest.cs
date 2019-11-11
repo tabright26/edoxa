@@ -1,14 +1,16 @@
 // Filename: ParticipantTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 
 using Bogus;
 
 using eDoxa.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
+using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
@@ -43,17 +45,18 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, game);
             var challenge = challengeFaker.FakeChallenge();
             var participant = challenge.Participants.First();
-            var gameReference = Faker.Game().Reference();
+            var gameReference = Faker.Game().Uuid();
             var stats = Faker.Game().Stats();
 
-            var match = new StatMatch(
-                challenge.Scoring,
-                stats,
-                gameReference,
-                new UtcNowDateTimeProvider());
+            var match = new Match(challenge.Scoring.Map(stats), gameReference);
 
             // Act
-            participant.Snapshot(match);
+            participant.Snapshot(
+                new List<IMatch>
+                {
+                    match
+                },
+                new UtcNowDateTimeProvider());
 
             // Assert
             participant.Matches.Should().NotBeEmpty();

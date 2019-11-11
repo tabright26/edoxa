@@ -2,11 +2,11 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import List from "./List";
-import { UserGamesState } from "store/root/user/games/types";
+import { GameCredentialsState } from "store/root/user/games/types";
 
 it("renders without crashing", () => {
   //Arrange
-  const games: UserGamesState = {
+  const games: GameCredentialsState = {
     data: [{ name: "League of legends", id: "accountID" }],
     loading: false,
     error: null

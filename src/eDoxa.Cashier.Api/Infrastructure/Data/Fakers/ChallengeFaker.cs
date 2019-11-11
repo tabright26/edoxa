@@ -37,13 +37,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                 {
                     var entryFee = MoneyEntryFee.Five;
 
-                    var payout = new PayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
+                    var payout = new ChallengePayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
 
-                    var challenge = new Challenge(entryFee, payout);
-
-                    challenge.SetEntityId(faker.Challenge().Id());
-
-                    return challenge;
+                    return new Challenge(faker.Challenge().Id(), entryFee, payout);
                 });
         }
     }

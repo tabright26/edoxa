@@ -1,8 +1,10 @@
 ﻿// Filename: TransactionModelConfiguration.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
+
+using System;
 
 using eDoxa.Cashier.Infrastructure.Models;
 
@@ -13,7 +15,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 {
     internal sealed class TransactionModelConfiguration : IEntityTypeConfiguration<TransactionModel>
     {
-        public void Configure( EntityTypeBuilder<TransactionModel> builder)
+        public void Configure(EntityTypeBuilder<TransactionModel> builder)
         {
             builder.ToTable("Transaction");
 
@@ -30,6 +32,19 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
             builder.Property(transaction => transaction.Status).IsRequired();
 
             builder.Property(transaction => transaction.Description).IsRequired();
+
+            builder.OwnsMany(
+                transaction => transaction.Metadata,
+                transactionMetadata =>
+                {
+                    transactionMetadata.ToTable("TransactionMetadata");
+
+                    transactionMetadata.HasForeignKey("TransactionId");
+
+                    transactionMetadata.Property<Guid>("Id").ValueGeneratedOnAdd();
+
+                    transactionMetadata.HasKey("TransactionId", "Id");
+                });
 
             builder.HasKey(transaction => transaction.Id);
         }

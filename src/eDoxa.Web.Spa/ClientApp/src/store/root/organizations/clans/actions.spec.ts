@@ -18,7 +18,7 @@ describe("clans", () => {
   it("should create an action to get all clans", () => {
     const expectedType = [LOAD_CLANS, LOAD_CLANS_SUCCESS, LOAD_CLANS_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = "/organizations/clans/api/clans";
+    const expectedUrl = "/clans/api/clans";
 
     const actionCreator = loadClans();
 
@@ -32,7 +32,7 @@ describe("clans", () => {
 
     const expectedType = [LOAD_CLAN, LOAD_CLAN_SUCCESS, LOAD_CLAN_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}`;
+    const expectedUrl = `/clans/api/clans/${clanId}`;
 
     const actionCreator = loadClan(clanId);
 
@@ -46,7 +46,7 @@ describe("clans", () => {
 
     const expectedType = [CREATE_CLAN, CREATE_CLAN_SUCCESS, CREATE_CLAN_FAIL];
     const expectedMethod = "POST";
-    const expectedUrl = "/organizations/clans/api/clans";
+    const expectedUrl = "/clans/api/clans";
 
     const actionCreator = createClan(data);
 
@@ -61,7 +61,7 @@ describe("clans", () => {
 
     const expectedType = [LEAVE_CLAN, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL];
     const expectedMethod = "DELETE";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}/members`;
+    const expectedUrl = `/clans/api/clans/${clanId}/members`;
 
     const actionCreator = leaveClan(clanId);
 

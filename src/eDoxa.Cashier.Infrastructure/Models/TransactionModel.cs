@@ -7,6 +7,7 @@
 #nullable disable
 
 using System;
+using System.Collections.Generic;
 
 namespace eDoxa.Cashier.Infrastructure.Models
 {
@@ -30,5 +31,7 @@ namespace eDoxa.Cashier.Infrastructure.Models
         public string Description { get; set; }
 
         public AccountModel Account { get; set; }
+
+        public ICollection<TransactionMetadataModel> Metadata { get; set; }
     }
 }

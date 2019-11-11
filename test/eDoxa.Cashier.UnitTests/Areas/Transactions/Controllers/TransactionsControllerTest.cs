@@ -7,6 +7,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.Areas.Transactions.Controllers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -14,6 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -36,10 +38,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
         {
             // Arrange
             var mockTransactionQuery = new Mock<ITransactionQuery>();
+            var mockAccountService = new Mock<IAccountService>();
 
             mockTransactionQuery
                 .Setup(
-                    transactionQuery => transactionQuery.FindUserTransactionsAsync(
+                    transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                         It.IsAny<Currency>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()))
@@ -48,7 +51,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
 
-            var controller = new TransactionsController(mockTransactionQuery.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -58,7 +61,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             mockTransactionQuery.Verify(
                 transactionQuery =>
-                    transactionQuery.FindUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
+                    transactionQuery.FetchUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
                 Times.Once);
 
             mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
@@ -71,10 +74,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
             var faker = TestData.FakerFactory.CreateTransactionFaker(null);
 
             var mockTransactionQuery = new Mock<ITransactionQuery>();
+            var mockAccountService = new Mock<IAccountService>();
 
             mockTransactionQuery
                 .Setup(
-                    transactionQuery => transactionQuery.FindUserTransactionsAsync(
+                    transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                         It.IsAny<Currency>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()))
@@ -83,7 +87,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
 
-            var controller = new TransactionsController(mockTransactionQuery.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -93,7 +97,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             mockTransactionQuery.Verify(
                 transactionQuery =>
-                    transactionQuery.FindUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
+                    transactionQuery.FetchUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
                 Times.Once);
 
             mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);

@@ -22,11 +22,7 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 
             var payout = context.Mapper.Map<IPayout>(source.Buckets);
 
-            var challenge = new Challenge(entryFee, payout);
-
-            challenge.SetEntityId(ChallengeId.FromGuid(source.Id));
-
-            return challenge;
+            return new Challenge(ChallengeId.FromGuid(source.Id), entryFee, payout);
         }
     }
 }

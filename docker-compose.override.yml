@@ -44,6 +44,7 @@ services:
       - Swagger__Endpoints__ChallengesUrl=http://${HOST:-localhost}:5003
       - Swagger__Endpoints__GamesUrl=http://${HOST:-localhost}:5005
       - Swagger__Endpoints__ClansUrl=http://${HOST:-localhost}:5010
+      - Swagger__Endpoints__ChallengesAggregatorUrl=http://${HOST:-localhost}:5303
     ports:
       - "5000:80"
 
@@ -132,6 +133,34 @@ services:
     ports:
       - "5010:80"
 
+  challenges.aggregator:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__CashierUrl=http://cashier.api
+      - Endpoints__PaymentUrl=http://payment.api
+      - Endpoints__NotificationsUrl=http://notifications.api
+      - Endpoints__ChallengesUrl=http://challenges.api
+      - Endpoints__GamesUrl=http://games.api
+      - Endpoints__ClansUrl=http://clans.api
+    ports:
+      - "5303:80"
+
+  challenges.backgroundtasks:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+    ports:
+      - "5403:80"
+
   web.gateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -145,6 +174,7 @@ services:
       - Endpoints__ChallengesUrl=http://challenges.api
       - Endpoints__GamesUrl=http://games.api
       - Endpoints__ClansUrl=http://clans.api
+      - Endpoints__ChallengesAggregatorUrl=http://challenges.aggregator
     ports:
       - "5200:80"
     volumes:
@@ -172,7 +202,7 @@ services:
       - REACT_APP_REDIRECT_URI=http://${HOST:-localhost}:5300/callback
       - REACT_APP_CLIENT_ID=edoxa.web.spa
       - REACT_APP_RESPONSE_TYPE=token id_token
-      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api challenges.api games.api clans.api
+      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api challenges.api challenges.aggregator games.api clans.api
       - REACT_APP_WEB_GATEWAY=http://${HOST:-localhost}:5200
       - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
       - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
@@ -195,16 +225,20 @@ services:
       - HealthChecks__Endpoints__2__Uri=http://cashier.api/health
       - HealthChecks__Endpoints__3__Name=eDoxa Notifications API
       - HealthChecks__Endpoints__3__Uri=http://notifications.api/health
-      - HealthChecks__Endpoints__4__Name=eDoxa Challenges API
-      - HealthChecks__Endpoints__4__Uri=http://challenges.api/health
-      - HealthChecks__Endpoints__5__Name=eDoxa Games API
-      - HealthChecks__Endpoints__5__Uri=http://games.api/health
-      - HealthChecks__Endpoints__6__Name=eDoxa Clans API
-      - HealthChecks__Endpoints__6__Uri=http://clans.api/health
-      - HealthChecks__Endpoints__7__Name=eDoxa Web Gateway
-      - HealthChecks__Endpoints__7__Uri=http://web.gateway/health
-      - HealthChecks__Endpoints__8__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__8__Uri=http://web.spa.proxy/health
+      - HealthChecks__Endpoints__4__Name=eDoxa Games API
+      - HealthChecks__Endpoints__4__Uri=http://games.api/health
+      - HealthChecks__Endpoints__5__Name=eDoxa Clans API
+      - HealthChecks__Endpoints__5__Uri=http://clans.api/health
+      - HealthChecks__Endpoints__6__Name=eDoxa Challenges API
+      - HealthChecks__Endpoints__6__Uri=http://challenges.api/health
+      - HealthChecks__Endpoints__7__Name=eDoxa Challenges Aggregator
+      - HealthChecks__Endpoints__7__Uri=http://challenges.aggregator/health
+      - HealthChecks__Endpoints__8__Name=eDoxa Challenges Background Tasks
+      - HealthChecks__Endpoints__8__Uri=http://challenges.backgroundtasks/health
+      - HealthChecks__Endpoints__9__Name=eDoxa Web Gateway
+      - HealthChecks__Endpoints__9__Uri=http://web.gateway/health
+      - HealthChecks__Endpoints__10__Name=eDoxa Web Spa
+      - HealthChecks__Endpoints__10__Uri=http://web.spa.proxy/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:

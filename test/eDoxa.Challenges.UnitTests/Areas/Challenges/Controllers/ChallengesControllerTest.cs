@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Areas.Challenges.Controllers;
+using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
@@ -63,6 +64,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
         {
             // Arrange
             var mockChallengeQuery = new Mock<IChallengeQuery>();
+            var mockChallengeService = new Mock<IChallengeService>();
 
             mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Collection<IChallenge>())
@@ -70,7 +72,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockChallengeQuery.Object);
+            var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -86,6 +88,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
         {
             // Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(27852992, Game.LeagueOfLegends);
+            var mockChallengeService = new Mock<IChallengeService>();
 
             var challenges = challengeFaker.FakeChallenges(2);
 
@@ -97,7 +100,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
 
             mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockChallengeQuery.Object);
+            var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 
             // Act
             var result = await controller.GetAsync();
@@ -113,12 +116,13 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
         {
             // Arrange
             var mockChallengeQuery = new Mock<IChallengeQuery>();
+            var mockChallengeService = new Mock<IChallengeService>();
 
             mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
             mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockChallengeQuery.Object);
+            var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 
             // Act
             var result = await controller.GetByIdAsync(new ChallengeId());
@@ -138,12 +142,13 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             var challenge = challengeFaker.FakeChallenge();
 
             var mockChallengeQuery = new Mock<IChallengeQuery>();
+            var mockChallengeService = new Mock<IChallengeService>();
 
             mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new ChallengesController(mockChallengeQuery.Object);
+            var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 
             // Act
             var result = await controller.GetByIdAsync(new ChallengeId());

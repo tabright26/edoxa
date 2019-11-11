@@ -1,5 +1,5 @@
 ﻿// Filename: IChallengeRepository.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,6 +18,8 @@ namespace eDoxa.Cashier.Domain.Repositories
         void Create(IEnumerable<IChallenge> challenges);
 
         void Create(IChallenge challenge);
+
+        void Delete(IChallenge challenge);
 
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
 

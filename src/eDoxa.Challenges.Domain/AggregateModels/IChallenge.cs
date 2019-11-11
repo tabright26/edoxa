@@ -41,14 +41,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels
 
         void Close(IDateTimeProvider closedAt);
 
-        void Synchronize(
-            Func<PlayerId, DateTime, DateTime, IEnumerable<GameReference>> getGameReferences,
-            Func<PlayerId, GameReference, IScoring, IMatch> getMatch,
-            IDateTimeProvider synchronizedAt
-        );
-
         void Synchronize(IDateTimeProvider synchronizedAt);
 
         bool ParticipantExists(UserId userId);
+
+        bool CanSynchronize();
     }
 }

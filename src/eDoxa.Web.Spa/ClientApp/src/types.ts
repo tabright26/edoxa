@@ -96,7 +96,7 @@ export interface Doxatag {
   readonly timestamp: number;
 }
 
-export interface Game {}
+export type Game = "LeagueOfLegends";
 
 export type Logo = Stream | null;
 
@@ -133,6 +133,39 @@ export interface Invitation extends Entity<InvitationId> {
   readonly clan?: Clan;
 }
 
+// Game
+export type Games = Map<Game, GameOption>;
+
+export type GameServiceName = "manager" | "challenge" | "tournament";
+
+export interface GameOption {
+  readonly name: string;
+  readonly displayName: string;
+  readonly displayed: boolean;
+  readonly services: Map<GameServiceName, boolean>;
+}
+
+export interface GameCredential {
+  readonly userId: UserId;
+  readonly game: Game;
+}
+
+// Challenge
+export interface Challenge extends Entity<ChallengeId> {
+  readonly name: string;
+  readonly game: Game;
+  readonly state: string;
+  readonly bestOf: number;
+  readonly entries: number;
+  readonly payoutEntries: number;
+  readonly synchronizedAt?: number;
+  readonly timeline: ChallengeTimeline;
+  readonly entryFee: ChallengeEntryFee;
+  readonly scoring: ChallengeScoring;
+  readonly payout: ChallengePayout;
+  readonly participants: ChallengeParticipant[];
+}
+
 export interface ChallengeTimeline {
   readonly createdAt: number;
   readonly startedAt?: number;
@@ -140,24 +173,58 @@ export interface ChallengeTimeline {
   readonly closedAt?: number;
 }
 
+export interface ChallengeEntryFee {
+  readonly currency: Currency;
+  readonly amount: number;
+}
+
 export type ChallengeScoring = Map<string, string>;
 
-export interface Challenge extends Entity<ChallengeId> {
-  readonly timestamp: number;
-  readonly timeline: ChallengeTimeline;
-  readonly scoring?: ChallengeScoring;
-  readonly participants: Participant[];
+export interface ChallengePayout {
+  readonly prizePool: ChallengePayoutPrizePool;
+  readonly buckets: ChallengePayoutBucket[];
 }
 
-export interface Participant extends Entity<ParticipantId> {
-  readonly matches: Match[];
+export interface ChallengePayoutPrizePool {
+  readonly currency: Currency;
+  readonly amount: number;
 }
 
-export interface Match extends Entity<MatchId> {
-  readonly stats: Stat[];
+export interface ChallengePayoutBucket {
+  readonly size: number;
+  readonly prize: number;
 }
 
-export interface Stat {}
+export interface ChallengeParticipant extends Entity<ParticipantId> {
+  readonly score: number;
+  readonly challengeId: ChallengeId;
+  readonly user: ChallengeParticipantUser;
+  readonly matches: ChallengeParticipantMatch[];
+}
+
+export interface ChallengeParticipantUser {
+  readonly id: UserId;
+  readonly doxatag: ChallengeParticipantUserDoxatag;
+}
+
+export interface ChallengeParticipantUserDoxatag {
+  readonly name: string;
+  readonly code: number;
+}
+
+export interface ChallengeParticipantMatch extends Entity<MatchId> {
+  readonly score: number;
+  readonly participantId: ParticipantId;
+  readonly challengeId: ChallengeId;
+  readonly stats: ChallengeParticipantMatchStat[];
+}
+
+export interface ChallengeParticipantMatchStat {
+  readonly name: string;
+  readonly value: number;
+  readonly weighting: number;
+  readonly score: number;
+}
 
 // Stripe
 export const STRIPE_CARD_TYPE = "card";

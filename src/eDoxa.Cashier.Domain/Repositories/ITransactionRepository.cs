@@ -20,6 +20,8 @@ namespace eDoxa.Cashier.Domain.Repositories
     {
         Task<ITransaction?> FindTransactionAsync(TransactionId transactionId);
 
+        Task<ITransaction?> FindTransactionAsync(TransactionMetadata metadata);
+
         Task CommitAsync(CancellationToken cancellationToken = default);
     }
 }

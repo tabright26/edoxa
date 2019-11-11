@@ -10,22 +10,22 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.RefitClients;
 using eDoxa.Challenges.Api.Areas.Challenges.Services;
+using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
+using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
 using Moq;
 
 using Xunit;
-
-using Match = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 {
@@ -46,42 +46,44 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 
             for (var index = 0; index < participantCount; index++)
             {
-                challenge.Register(new Participant(new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
+                challenge.Register(new Participant(new ParticipantId(), new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
             }
 
-            var _mockChallengeRepository = new Mock<IChallengeRepository>();
-            var _mockGamesApiRefitClient = new Mock<IGamesApiRefitClient>();
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
 
-            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(challenge)
                 .Verifiable();
 
-            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            _mockGamesApiRefitClient
-                .Setup(challengeRepository => challengeRepository.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+            mockGamesHttpClient
+                .Setup(challengeRepository => challengeRepository.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
                 .ReturnsAsync(
-                    new List<Match>
+                    new List<MatchDto>
                     {
-                        new GameMatch(new GameScore(challenge.Game, 100M), new GameReference(Guid.NewGuid()), new UtcNowDateTimeProvider())
+                        new MatchDto(string.Empty, new Dictionary<string, double>())
                     })
                 .Verifiable();
 
-            var challengeService = new ChallengeService(_mockChallengeRepository.Object, _mockGamesApiRefitClient.Object);
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
 
             // Act
-            await challengeService.RegisterParticipantAsync(
+            await challengeService.RegisterChallengeParticipantAsync(
                 challenge,
+                new ParticipantId(),
                 new UserId(),
                 new PlayerId(),
                 new UtcNowDateTimeProvider());
 
             // Assert
             challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
-            _mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
-            _mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -99,38 +101,39 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 challenge.Synchronize(synchronizedAt);
             }
 
-            var _mockChallengeRepository = new Mock<IChallengeRepository>();
-            var _mockGamesApiRefitClient = new Mock<IGamesApiRefitClient>();
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
 
-            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(challenges)
                 .Verifiable();
 
-            _mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            _mockGamesApiRefitClient
-                .Setup(challengeRepository => challengeRepository.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
-                .ReturnsAsync(new List<Match>())
+            mockGamesHttpClient
+                .Setup(challengeRepository => challengeRepository.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                .ReturnsAsync(new List<MatchDto>())
                 .Verifiable();
 
-            var challengeService = new ChallengeService(_mockChallengeRepository.Object, _mockGamesApiRefitClient.Object);
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
 
             // Act
-            await challengeService.SynchronizeAsync(Game.LeagueOfLegends, TimeSpan.Zero, synchronizedAt);
+            await challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, synchronizedAt);
 
             // Assert
             challenges.Should().OnlyContain(challenge => challenge.Timeline == ChallengeState.InProgress);
             challenges.Should().OnlyContain(challenge => challenge.SynchronizedAt.Value == synchronizedAt.DateTime);
 
-            _mockChallengeRepository.Verify(
+            mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
                 Times.Once);
 
-            _mockChallengeRepository.Verify(
+            mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()),
-                Times.Exactly(challenges.SelectMany(x => x.Participants).Count()));
+                Times.Exactly(challenges.SelectMany(x => x.Participants).Count() + challenges.Count));
         }
     }
 }

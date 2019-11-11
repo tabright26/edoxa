@@ -76,14 +76,13 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                     };
 
                     var challenge = new Challenge(
+                        ChallengeId.FromGuid(model.Id),
                         name,
                         game,
                         bestOf,
                         entries,
                         timeline,
                         scoring);
-
-                    challenge.SetEntityId(ChallengeId.FromGuid(model.Id));
 
                     var participantFaker = new ParticipantFaker(game, createdAt, startedAt);
 
@@ -100,13 +99,13 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                         participants.ForEach(
                             participant =>
                             {
-                                var matchFaker = new MatchFaker(challenge.Scoring, synchronizedAt);
+                                var matchFaker = new MatchFaker(challenge.Scoring);
 
                                 matchFaker.UseSeed(faker.Random.Int());
 
                                 var matches = matchFaker.Generate(this.MatchCount(state, challenge.BestOf));
 
-                                matches.ForEach(participant.Snapshot);
+                                participant.Snapshot(matches, new DateTimeProvider(synchronizedAt));
                             });
 
                         challenge.Synchronize(new DateTimeProvider(synchronizedAt));
@@ -164,14 +163,13 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                     var synchronizedAt = faker.Date.Between(startedAt, closedAt);
 
                     var challenge = new Challenge(
+                        faker.Challenge().Id(),
                         faker.Challenge().Name(),
                         fakeGame,
                         faker.Challenge().BestOf(),
                         faker.Challenge().Entries(),
                         new ChallengeTimeline(new DateTimeProvider(createdAt), duration),
                         scoring);
-
-                    challenge.SetEntityId(faker.Challenge().Id());
 
                     var participantFaker = new ParticipantFaker(fakeGame, createdAt, startedAt);
 
@@ -188,13 +186,13 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                         participants.ForEach(
                             participant =>
                             {
-                                var matchFaker = new MatchFaker(scoring, synchronizedAt);
+                                var matchFaker = new MatchFaker(scoring);
 
                                 matchFaker.UseSeed(faker.Random.Int());
 
                                 var matches = matchFaker.Generate(this.MatchCount(fakeState, challenge.BestOf));
 
-                                matches.ForEach(participant.Snapshot);
+                                participant.Snapshot(matches, new DateTimeProvider(synchronizedAt));
                             });
 
                         challenge.Synchronize(new DateTimeProvider(synchronizedAt));
@@ -236,32 +234,22 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
             public ParticipantFaker(Game game, DateTime createdAt, DateTime startedAt)
             {
                 this.CustomInstantiator(
-                    faker =>
-                    {
-                        var participant = new Participant(
-                            faker.User().Id(),
-                            faker.Participant().PlayerId(game),
-                            new DateTimeProvider(FakerHub.Date.Between(createdAt, startedAt)));
-
-                        participant.SetEntityId(faker.Participant().Id());
-
-                        return participant;
-                    });
+                    faker => new Participant(
+                        faker.Participant().Id(),
+                        faker.User().Id(),
+                        faker.Participant().PlayerId(game),
+                        new DateTimeProvider(FakerHub.Date.Between(createdAt, startedAt))));
             }
         }
 
         private class MatchFaker : Faker<IMatch>
         {
-            public MatchFaker(IScoring scoring, DateTime synchronizedAt)
+            public MatchFaker(IScoring scoring)
             {
                 this.CustomInstantiator(
                     faker =>
                     {
-                        var match = new StatMatch(
-                            scoring,
-                            faker.Game().Stats(),
-                            faker.Game().Reference(),
-                            new DateTimeProvider(synchronizedAt));
+                        var match = new Match(scoring.Map(faker.Game().Stats()), faker.Game().Uuid());
 
                         match.SetEntityId(faker.Match().Id());
 

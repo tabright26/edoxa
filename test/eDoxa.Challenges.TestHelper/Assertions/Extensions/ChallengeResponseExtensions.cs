@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
+using eDoxa.Challenges.Responses;
 
 namespace eDoxa.Challenges.TestHelper.Assertions.Extensions
 {

@@ -31,6 +31,7 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+    <PackageReference Include="Refit.HttpClientFactory" Version="4.7.51" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
@@ -40,6 +41,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Challenges.Infrastructure\eDoxa.Challenges.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.Requests\eDoxa.Challenges.Requests.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.Responses\eDoxa.Challenges.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>

@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Moq" Version="4.13.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eDoxa.Challenges.Domain\eDoxa.Challenges.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
   </ItemGroup>

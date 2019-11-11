@@ -49,15 +49,6 @@ namespace eDoxa.Challenges.TestHelper.Assertions
                 {
                     participant.Matches.Should().NotBeNullOrEmpty(because, becauseArgs);
                 }
-
-                foreach (var match in participant.Matches)
-                {
-                    Challenge.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt, because, becauseArgs);
-
-                    participant.SynchronizedAt?.Should().BeOnOrAfter(match.SynchronizedAt, because, becauseArgs);
-
-                    match.SynchronizedAt.Should().BeAfter(participant.RegisteredAt, because, becauseArgs);
-                }
             }
 
             Challenge.Participants.Select(participant => participant.Id).Distinct().Should().HaveCount(Challenge.Participants.Count, because, becauseArgs);
@@ -71,7 +62,7 @@ namespace eDoxa.Challenges.TestHelper.Assertions
                 .HaveCount(Challenge.Participants.SelectMany(participant => participant.Matches).Count(), because, becauseArgs);
 
             Challenge.Participants.SelectMany(participant => participant.Matches)
-                .Select(match => match.GameReference)
+                .Select(match => match.GameUuid)
                 .Distinct()
                 .Should()
                 .HaveCount(Challenge.Participants.SelectMany(participant => participant.Matches).Count(), because, becauseArgs);

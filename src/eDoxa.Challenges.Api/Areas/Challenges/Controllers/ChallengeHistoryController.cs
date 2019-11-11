@@ -1,17 +1,16 @@
 ﻿// Filename: ChallengeHistoryController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;
@@ -40,7 +39,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         ///     Find the challenge history of a user.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ChallengeResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)

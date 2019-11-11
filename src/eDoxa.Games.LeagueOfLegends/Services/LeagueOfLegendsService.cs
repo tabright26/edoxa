@@ -17,11 +17,13 @@ namespace eDoxa.Games.LeagueOfLegends.Services
     {
         public LeagueOfLegendsService(IOptions<LeagueOfLegendsOptions> options)
         {
-            RiotApi = RiotApi.GetDevelopmentInstance(options.Value.ApiKey);
+            RiotApi = RiotApi.GetInstance(options.Value.ApiKey, 500, 30000);
         }
 
         private RiotApi RiotApi { get; }
 
         public ISummonerEndpoint Summoner => RiotApi.Summoner;
+
+        public IMatchEndpoint Match => RiotApi.Match;
     }
 }

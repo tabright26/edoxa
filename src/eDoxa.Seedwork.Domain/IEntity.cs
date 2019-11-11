@@ -12,6 +12,8 @@ namespace eDoxa.Seedwork.Domain
     {
         IReadOnlyCollection<IDomainEvent> DomainEvents { get; }
 
+        void AddDomainEvent(IDomainEvent domainEvent);
+
         void ClearDomainEvents();
     }
 
