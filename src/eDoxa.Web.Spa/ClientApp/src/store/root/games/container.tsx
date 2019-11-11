@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadGameCredential } from "store/root/user/games/actions";
+import { loadGames } from "store/root/games/actions";
 import { RootState } from "store/types";
 
-export const withUserGames = (HighOrderComponent: FunctionComponent<any>) => {
+export const withGames = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadUserGames();
+      props.loadGames();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -14,13 +14,13 @@ export const withUserGames = (HighOrderComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     return {
-      games: state.root.user.games
+      games: state.root.games
     };
   };
 
-  const mapDispatchToProps = (dispatch: any, ownProps: any) => {
+  const mapDispatchToProps = (dispatch: any) => {
     return {
-      loadUserGames: () => dispatch(loadGameCredential(ownProps.game))
+      loadGames: () => dispatch(loadGames())
     };
   };
 

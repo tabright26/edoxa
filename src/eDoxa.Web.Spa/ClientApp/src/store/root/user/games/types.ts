@@ -1,14 +1,30 @@
 import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
-import { Game } from "types";
+import { GameCredential } from "types";
 
-export const LOAD_USER_GAMES = "LOAD_USER_GAMES";
-export const LOAD_USER_GAMES_SUCCESS = "LOAD_USER_GAMES_SUCCESS";
-export const LOAD_USER_GAMES_FAIL = "LOAD_USER_GAMES_FAIL";
+export const LOAD_GAME_CREDENTIAL = "LOAD_GAME_CREDENTIAL";
+export const LOAD_GAME_CREDENTIAL_SUCCESS = "LOAD_GAME_CREDENTIAL_SUCCESS";
+export const LOAD_GAME_CREDENTIAL_FAIL = "LOAD_GAME_CREDENTIAL_FAIL";
 
-export type LoadUserGamesType = typeof LOAD_USER_GAMES | typeof LOAD_USER_GAMES_SUCCESS | typeof LOAD_USER_GAMES_FAIL;
-export type LoadUserGamesActionCreator = AxiosActionCreator<LoadUserGamesType>;
-export type LoadUserGamesAction = AxiosAction<LoadUserGamesType>;
+export const LINK_GAME_CREDENTIAL = "LINK_GAME_CREDENTIAL";
+export const LINK_GAME_CREDENTIAL_SUCCESS = "LINK_GAME_CREDENTIAL_SUCCESS";
+export const LINK_GAME_CREDENTIAL_FAIL = "LINK_GAME_CREDENTIAL_FAIL";
 
-export type UserGamesActionCreators = LoadUserGamesActionCreator;
-export type UserGamesActions = LoadUserGamesAction;
-export type UserGamesState = AxiosState<Game[]>;
+export const UNLINK_GAME_CREDENTIAL = "UNLINK_GAME_CREDENTIAL";
+export const UNLINK_GAME_CREDENTIAL_SUCCESS = "UNLINK_GAME_CREDENTIAL_SUCCESS";
+export const UNLINK_GAME_CREDENTIAL_FAIL = "UNLINK_GAME_CREDENTIAL_FAIL";
+
+export type LoadGameCredentialType = typeof LOAD_GAME_CREDENTIAL | typeof LOAD_GAME_CREDENTIAL_SUCCESS | typeof LOAD_GAME_CREDENTIAL_FAIL;
+export type LoadGameCredentialActionCreator = AxiosActionCreator<LoadGameCredentialType>;
+export type LoadGameCredentialAction = AxiosAction<LoadGameCredentialType>;
+
+export type LinkGameCredentialType = typeof LINK_GAME_CREDENTIAL | typeof LINK_GAME_CREDENTIAL_SUCCESS | typeof LINK_GAME_CREDENTIAL_FAIL;
+export type LinkGameCredentialActionCreator = AxiosActionCreator<LinkGameCredentialType>;
+export type LinkGameCredentialAction = AxiosAction<LinkGameCredentialType>;
+
+export type UnlinkGameCredentialType = typeof UNLINK_GAME_CREDENTIAL | typeof UNLINK_GAME_CREDENTIAL_SUCCESS | typeof UNLINK_GAME_CREDENTIAL_FAIL;
+export type UnlinkGameCredentialActionCreator = AxiosActionCreator<UnlinkGameCredentialType>;
+export type UnlinkGameCredentialAction = AxiosAction<UnlinkGameCredentialType>;
+
+export type GameCredentialsActionCreators = LoadGameCredentialActionCreator | LinkGameCredentialActionCreator | UnlinkGameCredentialActionCreator;
+export type GameCredentialsActions = LoadGameCredentialAction | LinkGameCredentialAction | UnlinkGameCredentialAction;
+export type GameCredentialsState = AxiosState<GameCredential[]>;

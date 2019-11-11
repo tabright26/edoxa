@@ -133,6 +133,23 @@ export interface Invitation extends Entity<InvitationId> {
   readonly clan?: Clan;
 }
 
+// Game
+export type Games = Map<Game, GameOption>;
+
+export type GameServiceName = "manager" | "challenge" | "tournament";
+
+export interface GameOption {
+  readonly name: string;
+  readonly displayName: string;
+  readonly displayed: boolean;
+  readonly services: Map<GameServiceName, boolean>;
+}
+
+export interface GameCredential {
+  readonly userId: UserId;
+  readonly game: Game;
+}
+
 // Challenge
 export interface Challenge extends Entity<ChallengeId> {
   readonly name: string;
