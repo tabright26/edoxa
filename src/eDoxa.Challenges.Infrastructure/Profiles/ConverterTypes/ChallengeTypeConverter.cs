@@ -1,12 +1,8 @@
 ﻿// Filename: ChallengeTypeConverter.cs
-// Date Created: 2019-06-21
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -23,19 +19,16 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
 {
     internal sealed class ChallengeTypeConverter : ITypeConverter<ChallengeModel, IChallenge>
     {
-        
-        public IChallenge Convert( ChallengeModel source,  IChallenge destination,  ResolutionContext context)
+        public IChallenge Convert(ChallengeModel source, IChallenge destination, ResolutionContext context)
         {
             var challenge = new Challenge(
+                ChallengeId.FromGuid(source.Id),
                 new ChallengeName(source.Name),
-                Game.FromValue(source.Game)!,
+                Game.FromValue(source.Game),
                 new BestOf(source.BestOf),
                 new Entries(source.Entries),
                 new ChallengeTimeline(new DateTimeProvider(source.Timeline.CreatedAt), new ChallengeDuration(TimeSpan.FromTicks(source.Timeline.Duration))),
-                context.Mapper.Map<IScoring>(source.ScoringItems)
-            );
-
-            challenge.SetEntityId(ChallengeId.FromGuid(source.Id));
+                context.Mapper.Map<IScoring>(source.ScoringItems));
 
             var participants = context.Mapper.Map<ICollection<Participant>>(source.Participants);
 

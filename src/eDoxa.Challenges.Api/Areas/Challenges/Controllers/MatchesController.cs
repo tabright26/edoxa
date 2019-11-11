@@ -6,9 +6,9 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;

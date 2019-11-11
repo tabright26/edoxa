@@ -6,7 +6,7 @@ import Profile from "./Profile";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
 import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethods/types";
 import { UserAccountTransactionsState } from "store/root/user/account/transactions/types";
-import { UserGamesState } from "store/root/user/games/types";
+import { GameCredentialsState } from "store/root/user/games/types";
 import { UserAddressBookState } from "store/root/user/addressBook/types";
 import { UserEmailState } from "store/root/user/email/types";
 import { UserInformationsState } from "store/root/user/informations/types";
@@ -109,7 +109,7 @@ it("renders without crashing", () => {
     error: null
   };
 
-  const games: UserGamesState = {
+  const games: GameCredentialsState = {
     data: [{ name: "League of legends", id: "accountID" }],
     loading: false,
     error: null

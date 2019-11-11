@@ -1,7 +1,7 @@
 import React from "react";
 
-import ArenaChallengeIndex from "components/Arena/Challenge/List/List";
+import ChallengeList from "components/Challenge/List/List";
 
-const Challenges = () => <ArenaChallengeIndex />;
+const Challenges = () => <ChallengeList />;
 
 export default Challenges;

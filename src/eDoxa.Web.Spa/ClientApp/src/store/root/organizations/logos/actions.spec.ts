@@ -7,7 +7,7 @@ describe("clans", () => {
 
     const expectedType = [DOWNLOAD_CLAN_LOGO, DOWNLOAD_CLAN_LOGO_SUCCESS, DOWNLOAD_CLAN_LOGO_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}/logo`;
+    const expectedUrl = `/clans/api/clans/${clanId}/logo`;
 
     const actionCreator = downloadClanLogo(clanId);
 
@@ -22,7 +22,7 @@ describe("clans", () => {
 
     const expectedType = [UPLOAD_CLAN_LOGO, UPLOAD_CLAN_LOGO_SUCCESS, UPLOAD_CLAN_LOGO_FAIL];
     const expectedMethod = "POST";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}/logo`;
+    const expectedUrl = `/clans/api/clans/${clanId}/logo`;
 
     const actionCreator = uploadClanLogo(clanId, data);
 

@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantTypeConverter.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,18 +21,16 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
         public Participant Convert(ParticipantModel source, Participant destination, ResolutionContext context)
         {
             var participant = new Participant(
+                ParticipantId.FromGuid(source.Id),
                 UserId.FromGuid(source.UserId),
                 PlayerId.Parse(source.PlayerId),
-                new DateTimeProvider(source.RegisteredAt)
-            );
+                new DateTimeProvider(source.RegisteredAt));
 
-            participant.SetEntityId(ParticipantId.FromGuid(source.Id));
-
-            var matches = context.Mapper.Map<ICollection<IMatch>>(source.Matches);
-
-            foreach (var match in matches)
+            if (source.SynchronizedAt.HasValue)
             {
-                participant.Snapshot(match);
+                var matches = context.Mapper.Map<ICollection<IMatch>>(source.Matches);
+
+                participant.Snapshot(matches, new DateTimeProvider(source.SynchronizedAt.Value));
             }
 
             return participant;

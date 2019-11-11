@@ -2,6 +2,8 @@ import React from "react";
 import { RouteConfig } from "./types";
 
 const Home = React.lazy(() => import("../../views/Home/Home"));
+const TermsOfServices = React.lazy(() => import("views/TermsOfServices"));
+const FAQ = React.lazy(() => import("views/FAQ"));
 const Arena = React.lazy(() => import("../../views/Arena/Arena"));
 const ArenaChallenges = React.lazy(() => import("../../views/Arena/Challenges/Challenges"));
 const ArenaChallengeDetails = React.lazy(() => import("../../views/Arena/Challenges/Details/Details"));
@@ -29,6 +31,8 @@ const StructureTeamMarketplace = React.lazy(() => import("../../views/Organizati
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 export const routes: RouteConfig[] = [
   { path: "/", name: "Home", component: Home, exact: true, allowAnonymous: true, disabled: false, scopes: [] },
+  { path: "/terms-of-services", name: "Terms of Services", component: TermsOfServices, exact: true, allowAnonymous: true, disabled: false, scopes: [] },
+  { path: "/faq", name: "FAQ", component: FAQ, exact: true, allowAnonymous: true, disabled: false, scopes: [] },
   { path: "/arena", name: "Arena", component: Arena, exact: true, allowAnonymous: true, disabled: false, scopes: [] },
   { path: "/arena/challenges", name: "Challenges", component: ArenaChallenges, exact: true, allowAnonymous: false, disabled: false, scopes: [] },
   { path: "/arena/challenges/:challengeId", name: "Challenge Details", component: ArenaChallengeDetails, exact: true, allowAnonymous: true, disabled: false, scopes: [] },

@@ -1,9 +1,10 @@
 ﻿// Filename: ServiceBusSubscriberExtensions.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-10-10
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Challenges.Api.IntegrationEvents.Handlers;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
@@ -12,6 +13,8 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
+            subscriber.Subscribe<ChallengeCreationFailedIntegrationEvent, ChallengeCreationFailedIntegrationEventHandler>();
+            subscriber.Subscribe<ChallengesSynchronizedIntegrationEvent, ChallengesSynchronizedIntegrationEventHandler>();
         }
     }
 }

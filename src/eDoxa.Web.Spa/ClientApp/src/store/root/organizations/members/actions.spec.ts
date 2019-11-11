@@ -14,7 +14,7 @@ describe("members", () => {
 
     const expectedType = [LOAD_CLAN_MEMBERS, LOAD_CLAN_MEMBERS_SUCCESS, LOAD_CLAN_MEMBERS_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}/members`;
+    const expectedUrl = `/clans/api/clans/${clanId}/members`;
 
     const actionCreator = loadClanMembers(clanId);
 
@@ -29,7 +29,7 @@ describe("members", () => {
 
     const expectedType = [KICK_CLAN_MEMBER, KICK_CLAN_MEMBER_SUCCESS, KICK_CLAN_MEMBER_FAIL];
     const expectedMethod = "DELETE";
-    const expectedUrl = `/organizations/clans/api/clans/${clanId}/members/${memberId}`;
+    const expectedUrl = `/clans/api/clans/${clanId}/members/${memberId}`;
 
     const actionCreator = kickClanMember(clanId, memberId);
 

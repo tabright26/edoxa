@@ -1,34 +1,28 @@
 ﻿// Filename: UserCreatedIntegrationEventHandler.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {
     public sealed class UserCreatedIntegrationEventHandler : IIntegrationEventHandler<UserCreatedIntegrationEvent>
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly IAccountService _accountService;
 
-        public UserCreatedIntegrationEventHandler(IAccountRepository accountRepository)
+        public UserCreatedIntegrationEventHandler(IAccountService accountService)
         {
-            _accountRepository = accountRepository;
+            _accountService = accountService;
         }
 
         public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
-            var account = new Account(UserId.FromGuid(integrationEvent.UserId));
-
-            _accountRepository.Create(account);
-
-            await _accountRepository.CommitAsync();
+            await _accountService.CreateAccountAsync(integrationEvent.UserId);
         }
     }
 }

@@ -1,20 +1,32 @@
-import { LOAD_USER_GAMES, LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL, UserGamesActions, UserGamesState } from "./types";
+import {
+  LOAD_GAME_CREDENTIAL,
+  LOAD_GAME_CREDENTIAL_SUCCESS,
+  LOAD_GAME_CREDENTIAL_FAIL,
+  LINK_GAME_CREDENTIAL,
+  LINK_GAME_CREDENTIAL_SUCCESS,
+  LINK_GAME_CREDENTIAL_FAIL,
+  UNLINK_GAME_CREDENTIAL,
+  UNLINK_GAME_CREDENTIAL_SUCCESS,
+  UNLINK_GAME_CREDENTIAL_FAIL,
+  GameCredentialsActions,
+  GameCredentialsState
+} from "./types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 
-export const initialState: UserGamesState = {
+export const initialState: GameCredentialsState = {
   data: [],
   error: null,
   loading: false
 };
 
-export const reducer: Reducer<UserGamesState, UserGamesActions> = produce((draft: Draft<UserGamesState>, action: UserGamesActions) => {
+export const reducer: Reducer<GameCredentialsState, GameCredentialsActions> = produce((draft: Draft<GameCredentialsState>, action: GameCredentialsActions) => {
   switch (action.type) {
-    case LOAD_USER_GAMES:
+    case LOAD_GAME_CREDENTIAL:
       draft.error = null;
       draft.loading = true;
       break;
-    case LOAD_USER_GAMES_SUCCESS:
+    case LOAD_GAME_CREDENTIAL_SUCCESS:
       const { status, data } = action.payload;
       switch (status) {
         case 204:
@@ -28,7 +40,33 @@ export const reducer: Reducer<UserGamesState, UserGamesActions> = produce((draft
           break;
       }
       break;
-    case LOAD_USER_GAMES_FAIL:
+    case LOAD_GAME_CREDENTIAL_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case LINK_GAME_CREDENTIAL:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case LINK_GAME_CREDENTIAL_SUCCESS:
+      draft.data.push(action.payload.data);
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case LINK_GAME_CREDENTIAL_FAIL:
+      draft.error = action.error;
+      draft.loading = false;
+      break;
+    case UNLINK_GAME_CREDENTIAL:
+      draft.error = null;
+      draft.loading = true;
+      break;
+    case UNLINK_GAME_CREDENTIAL_SUCCESS:
+      draft.data = draft.data.filter(credential => credential.game !== action.payload.data.game);
+      draft.error = null;
+      draft.loading = false;
+      break;
+    case UNLINK_GAME_CREDENTIAL_FAIL:
       draft.error = action.error;
       draft.loading = false;
       break;

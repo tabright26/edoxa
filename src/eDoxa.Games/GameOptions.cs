@@ -24,6 +24,7 @@ namespace eDoxa.Games
                 ["manager"] = false,
                 ["tournament"] = false
             };
+            Scoring = new Dictionary<string, float>();
         }
 
         [JsonProperty("name")]
@@ -37,6 +38,9 @@ namespace eDoxa.Games
 
         [JsonProperty("services")]
         public IDictionary<string, bool> Services { get; set; }
+
+        [JsonProperty("scoring")]
+        public IDictionary<string, float> Scoring { get; set; }
 
         [JsonIgnore]
         public string ApiKey { get; set; }

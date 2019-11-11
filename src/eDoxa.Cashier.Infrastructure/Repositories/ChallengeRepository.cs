@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-07-11
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -63,6 +63,17 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _context.Challenges.Add(challengeModel);
 
             _materializedObjects[challenge] = challengeModel;
+        }
+
+        public void Delete(IChallenge challenge)
+        {
+            var challengeModel = _materializedObjects[challenge];
+
+            _materializedObjects.Remove(challenge);
+
+            _materializedIds.Remove(challenge.Id);
+
+            _context.Challenges.Remove(challengeModel);
         }
 
         public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)

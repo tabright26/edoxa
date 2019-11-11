@@ -41,5 +41,8 @@ namespace eDoxa.Web.Gateway.Infrastructure
 
         [Required]
         public string NotificationsUrl { get; set; }
+
+        [Required]
+        public string ChallengesAggregatorUrl { get; set; }
     }
 }

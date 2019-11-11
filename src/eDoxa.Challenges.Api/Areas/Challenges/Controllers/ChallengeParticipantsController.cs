@@ -4,17 +4,19 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Requests;
+using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
+
+using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -44,7 +46,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         ///     Find the participants of a challenge.
         /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<ParticipantResponse>))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(ChallengeId challengeId)
@@ -68,11 +70,13 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         ///     Register a participant to a challenge.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync(ChallengeId challengeId)
+        public async Task<IActionResult> PostAsync(ChallengeId challengeId, [FromBody] RegisterChallengeParticipantRequest request)
         {
+            var participantId = ParticipantId.FromGuid(request.ParticipantId);
+
             var challenge = await _challengeService.FindChallengeAsync(challengeId);
 
             if (challenge == null)
@@ -80,13 +84,23 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 return this.NotFound("Challenge not found.");
             }
 
-            await _challengeService.RegisterParticipantAsync(
+            var result = await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
+                participantId,
                 HttpContext.GetUserId(),
                 HttpContext.GetPlayerId(challenge.Game),
                 new UtcNowDateTimeProvider());
 
-            return this.Ok("Participant as been registered.");
+            if (result.IsValid)
+            {
+                var response = await _participantQuery.FindParticipantResponseAsync(participantId);
+
+                return this.Ok(response);
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
         }
     }
 }

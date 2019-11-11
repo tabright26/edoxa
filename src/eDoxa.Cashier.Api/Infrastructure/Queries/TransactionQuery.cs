@@ -1,12 +1,8 @@
 ﻿// Filename: TransactionQuery.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -40,11 +36,12 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
             Mapper = mapper;
             Transactions = cashierDbContext.Transactions.AsNoTracking();
         }
-        public IMapper Mapper { get; }
 
         private IQueryable<TransactionModel> Transactions { get; }
 
-        private async Task<IReadOnlyCollection<TransactionModel>> FindTransactionModelAsync(
+        public IMapper Mapper { get; }
+
+        private async Task<IReadOnlyCollection<TransactionModel>> FetchTransactionModelsAsync(
             Guid userId,
             int? currency = null,
             int? type = null,
@@ -61,11 +58,20 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
 
             return await transactions.ToListAsync();
         }
+
+        private async Task<TransactionModel?> FindTransactionModelAsync(Guid transactionId)
+        {
+            var transactions = from transaction in Transactions.AsExpandable()
+                               where transaction.Id == transactionId
+                               select transaction;
+
+            return await transactions.SingleOrDefaultAsync();
+        }
     }
 
     public sealed partial class TransactionQuery : ITransactionQuery
     {
-        public async Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
+        public async Task<IReadOnlyCollection<ITransaction>> FetchUserTransactionsAsync(
             Currency? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
@@ -73,19 +79,34 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
         {
             var userId = _httpContextAccessor.GetUserId();
 
-            return await this.FindUserTransactionsAsync(userId, currency, type, status);
+            return await this.FetchUserTransactionsAsync(
+                userId,
+                currency,
+                type,
+                status);
         }
 
-        public async Task<IReadOnlyCollection<ITransaction>> FindUserTransactionsAsync(
+        public async Task<IReadOnlyCollection<ITransaction>> FetchUserTransactionsAsync(
             UserId userId,
             Currency? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
         )
         {
-            var transactionModels = await this.FindTransactionModelAsync(userId, currency?.Value, type?.Value, status?.Value);
+            var transactionModels = await this.FetchTransactionModelsAsync(
+                userId,
+                currency?.Value,
+                type?.Value,
+                status?.Value);
 
             return Mapper.Map<IReadOnlyCollection<ITransaction>>(transactionModels);
+        }
+
+        public async Task<ITransaction?> FindTransactionAsync(TransactionId transactionId)
+        {
+            var transactionModel = await this.FindTransactionModelAsync(transactionId);
+
+            return Mapper.Map<ITransaction?>(transactionModel);
         }
     }
 }

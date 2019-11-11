@@ -13,6 +13,7 @@ using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Challenges.TestHelper.Mocks;
@@ -135,8 +136,9 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
             mockChallengeService.Setup(
-                    challengeQuery => challengeQuery.RegisterParticipantAsync(
+                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
+                        It.IsAny<ParticipantId>(),
                         It.IsAny<UserId>(),
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
@@ -150,7 +152,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(new ChallengeId());
+            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -158,8 +160,9 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterParticipantAsync(
+                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
+                    It.IsAny<ParticipantId>(),
                     It.IsAny<UserId>(),
                     It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),
@@ -177,14 +180,17 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
 
             var mockParticipantQuery = new Mock<IParticipantQuery>();
 
+            mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
+
             var mockChallengeService = new Mock<IChallengeService>();
 
             mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             mockChallengeService
                 .Setup(
-                    challengeQuery => challengeQuery.RegisterParticipantAsync(
+                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
+                        It.IsAny<ParticipantId>(),
                         It.IsAny<UserId>(),
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
@@ -199,16 +205,19 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(new ChallengeId());
+            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
+            mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
+
             mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterParticipantAsync(
+                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
+                    It.IsAny<ParticipantId>(),
                     It.IsAny<UserId>(),
                     It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),

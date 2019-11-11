@@ -1,6 +1,6 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
-import { LOAD_USER_GAMES_SUCCESS, LOAD_USER_GAMES_FAIL } from "./types";
+import { LOAD_GAME_CREDENTIAL_SUCCESS, LOAD_GAME_CREDENTIAL_FAIL } from "./types";
 
 const games204Data = [];
 const games200Data = [{ gameId: "League" }, { gameId: "Overwatch" }, { gameId: "CSGO" }];
@@ -13,7 +13,7 @@ describe("user games reducer", () => {
 
   it("should handle LOAD_GAMES_SUCCESS 204", () => {
     const action: any = {
-      type: LOAD_USER_GAMES_SUCCESS,
+      type: LOAD_GAME_CREDENTIAL_SUCCESS,
       payload: { status: 204, data: initialState.data }
     };
     expect(reducer(initialState, action)).toEqual(initialState);
@@ -21,7 +21,7 @@ describe("user games reducer", () => {
 
   it("should handle LOAD_GAMES_SUCCESS 200", () => {
     const action: any = {
-      type: LOAD_USER_GAMES_SUCCESS,
+      type: LOAD_GAME_CREDENTIAL_SUCCESS,
       payload: { status: 200, data: games200Data }
     };
     const state = {
@@ -40,7 +40,7 @@ describe("user games reducer", () => {
       message: ""
     };
     const action: any = {
-      type: LOAD_USER_GAMES_FAIL,
+      type: LOAD_GAME_CREDENTIAL_FAIL,
       error
     };
     const state = {

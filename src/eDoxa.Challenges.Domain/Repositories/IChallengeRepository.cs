@@ -24,6 +24,8 @@ namespace eDoxa.Challenges.Domain.Repositories
 
         void Create(IChallenge challenge);
 
+        void Delete(IChallenge challenge);
+
         Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null);
 
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);

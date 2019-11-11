@@ -12,6 +12,9 @@ namespace eDoxa.Seedwork.Application
         public const string EmailSent = "email.sent";
 
         // Cashier integration events.
+        public const string TransactionSucceded = "transaction.succeded";
+        public const string TransactionFailed = "transaction.failed";
+        public const string TransactionCanceled = "transaction.canceled";
         public const string UserAccountDeposit = "user.account.deposit";
         public const string UserAccountWithdrawal = "user.account.withdrawal";
         public const string UserTransactionSucceded = "user.transaction.succeded";
@@ -36,5 +39,6 @@ namespace eDoxa.Seedwork.Application
 
         // Challenges integration events.
         public const string ChallengesSynchronized = "challenges.synchronized";
+        public const string ChallengeCreationFailed = "challenge.creation.failed";
     }
 }

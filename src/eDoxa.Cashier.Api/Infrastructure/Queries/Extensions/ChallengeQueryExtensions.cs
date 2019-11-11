@@ -4,17 +4,32 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Responses;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 {
     public static class ChallengeQueryExtensions
     {
+        public static async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync(this IChallengeQuery challengeQuery)
+        {
+            var challenges = await challengeQuery.FetchChallengesAsync();
+
+            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeModel>>(challenges);
+        }
+
+        public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchChallengeResponsesAsync(this IChallengeQuery challengeQuery)
+        {
+            var challenges = await challengeQuery.FetchChallengesAsync();
+
+            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeResponse>>(challenges);
+        }
+
         public static async Task<ChallengeModel?> FindChallengeModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
         {
             var challenge = await challengeQuery.FindChallengeAsync(challengeId);

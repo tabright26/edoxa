@@ -46,17 +46,11 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GameReference");
+                    b.Property<string>("GameUuid");
 
                     b.Property<Guid?>("ParticipantId");
 
-                    b.Property<DateTime>("SynchronizedAt");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("GameReference")
-                        .IsUnique()
-                        .HasFilter("[GameReference] IS NOT NULL");
 
                     b.HasIndex("ParticipantId");
 
@@ -74,14 +68,13 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
 
                     b.Property<DateTime>("RegisteredAt");
 
+                    b.Property<DateTime?>("SynchronizedAt");
+
                     b.Property<Guid>("UserId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ChallengeId");
-
-                    b.HasIndex("Id", "UserId")
-                        .IsUnique();
 
                     b.ToTable("Participant");
                 });

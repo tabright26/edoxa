@@ -1,12 +1,8 @@
 ﻿// Filename: Participant.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -21,11 +17,13 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly HashSet<IMatch> _matches = new HashSet<IMatch>();
 
-        public Participant(UserId userId, PlayerId playerId, IDateTimeProvider registeredAt)
+        public Participant(ParticipantId participantId, UserId userId, PlayerId playerId, IDateTimeProvider registeredAt)
         {
+            this.SetEntityId(participantId);
             UserId = userId;
             PlayerId = playerId;
             RegisteredAt = registeredAt.DateTime;
+            SynchronizedAt = null;
         }
 
         public UserId UserId { get; }
@@ -34,23 +32,41 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public DateTime RegisteredAt { get; }
 
-        public DateTime? SynchronizedAt => _matches.Select(match => match.SynchronizedAt).Cast<DateTime?>().DefaultIfEmpty().Max();
+        public DateTime? SynchronizedAt { get; private set; }
 
         public IReadOnlyCollection<IMatch> Matches => _matches;
 
-        public void Snapshot(IMatch match)
+        public void Snapshot(IEnumerable<IMatch> matches, IDateTimeProvider synchronizedAt)
         {
-            _matches.Add(match);
+            foreach (var match in matches)
+            {
+                this.Snapshot(match);
+            }
+
+            this.Synchronize(synchronizedAt);
+        }
+
+        private void Snapshot(IMatch match)
+        {
+            if (!this.MatchExists(match))
+            {
+                _matches.Add(match);
+            }
+        }
+
+        private void Synchronize(IDateTimeProvider synchronizedAt)
+        {
+            SynchronizedAt = synchronizedAt.DateTime;
+        }
+
+        private bool MatchExists(IMatch match)
+        {
+            return _matches.Any(x => x.GameUuid == match.GameUuid);
         }
 
         public Score? ComputeScore(BestOf bestOf)
         {
             return Matches.Count >= bestOf ? new ParticipantScore(this, bestOf) : null;
-        }
-
-        internal IEnumerable<GameReference> GetUnsynchronizedGameReferences(IEnumerable<GameReference> gameReferences)
-        {
-            return gameReferences.Where(gameReference => Matches.All(match => match.GameReference != gameReference));
         }
     }
 

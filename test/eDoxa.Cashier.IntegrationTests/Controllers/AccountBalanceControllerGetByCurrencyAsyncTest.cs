@@ -9,9 +9,9 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Responses;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -99,7 +99,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var balanceResponse = await response.DeserializeAsync<BalanceResponse>();
             balanceResponse.Should().NotBeNull();
-            balanceResponse?.Currency.Should().Be(currency);
+            balanceResponse?.Currency.Should().Be(currency.Name);
             balanceResponse?.Available.Should().Be(balance.Available);
             balanceResponse?.Pending.Should().Be(balance.Pending);
         }

@@ -9,6 +9,7 @@ using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -59,14 +60,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Charge(Money amount)
+        public ITransaction Charge(TransactionId transactionId, Money amount, TransactionMetadata? metadata = null)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyChargeTransaction(amount);
+            var transaction = new MoneyChargeTransaction(amount, metadata);
+
+            transaction.SetEntityId(transactionId);
 
             _account.CreateTransaction(transaction);
 

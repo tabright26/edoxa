@@ -1,5 +1,5 @@
-﻿// Filename: CashierApiModule.cs
-// Date Created: 2019-08-18
+﻿// Filename: CashierModule.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,7 +9,11 @@ using Autofac;
 using eDoxa.Cashier.Api.Areas.Accounts.Services;
 using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.Areas.Challenges.Factories;
+using eDoxa.Cashier.Api.Areas.Challenges.Services;
+using eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
+using eDoxa.Cashier.Api.Areas.Transactions.Services;
+using eDoxa.Cashier.Api.Areas.Transactions.Services.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
@@ -34,14 +38,16 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<TransactionQuery>().As<ITransactionQuery>().InstancePerLifetimeScope();
 
             // Services
+            builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
             builder.RegisterType<BundlesService>().As<IBundlesService>().InstancePerLifetimeScope();
+            builder.RegisterType<TransactionService>().As<ITransactionService>().InstancePerLifetimeScope();
 
             // Strategies
-            builder.RegisterType<PayoutStrategy>().As<IPayoutStrategy>().SingleInstance();
+            builder.RegisterType<ChallengePayoutStrategy>().As<IChallengePayoutStrategy>().SingleInstance();
 
             // Factories
-            builder.RegisterType<PayoutFactory>().As<IPayoutFactory>().SingleInstance();
+            builder.RegisterType<ChallengePayoutFactory>().As<IChallengePayoutFactory>().SingleInstance();
         }
     }
 }

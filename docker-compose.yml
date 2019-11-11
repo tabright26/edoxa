@@ -90,6 +90,30 @@ services:
       - redis
       - identity.api
 
+  challenges.aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.aggregator:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Aggregator/Dockerfile
+    depends_on:
+      - seq   
+      - identity.api
+      - cashier.api
+      - payment.api
+      - notifications.api
+      - games.api
+      - challenges.api
+      - clans.api
+
+  challenges.backgroundtasks:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.backgroundtasks:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.BackgroundTasks/Dockerfile
+    depends_on:
+      - seq
+      - challenges.api
+
   web.gateway:
     image: ${ACR_REGISTRY:-edoxa}/web.gateway:${ACR_TAG:-latest}
     build:

@@ -1,12 +1,11 @@
 ﻿// Filename: EntryFee.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 using eDoxa.Seedwork.Domain;
 
@@ -59,11 +58,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
         public static implicit operator decimal(EntryFee entryFee)
         {
             return entryFee.Amount;
-        }
-
-        public static IEnumerable<EntryFee> GetValues()
-        {
-            return GetValues<MoneyEntryFee>().Cast<EntryFee>().Union(GetValues<TokenEntryFee>()).ToList();
         }
 
         protected override IEnumerable<object> GetAtomicValues()

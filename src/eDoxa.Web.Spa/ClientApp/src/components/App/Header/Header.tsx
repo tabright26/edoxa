@@ -2,8 +2,8 @@ import React, { Fragment, FunctionComponent } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Button, Form, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown, Nav, NavItem, NavLink } from "reactstrap";
 import { AppNavbarBrand, AppSidebarToggler, AppAsideToggler } from "@coreui/react";
-import logo from "assets/img/brand/logo.svg";
-import sygnet from "assets/img/brand/sygnet.svg";
+import logo from "assets/img/brand/logo.png";
+import sygnet from "assets/img/brand/sygnet.png";
 import { withUser, withUserIsAuthenticated } from "store/root/user/container";
 import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/userManager";
 import { compose } from "recompose";
@@ -49,7 +49,7 @@ const Header: FunctionComponent<any> = ({ isAuthenticated, user, balance, childr
     <Fragment>
       <AppSidebarToggler className="d-lg-none" display="md" mobile />
       <LinkContainer to="/">
-        <AppNavbarBrand full={{ src: logo, width: 89, height: 25, alt: "eDoxa Logo" }} minimized={{ src: sygnet, width: 30, height: 30, alt: "eDoxa Logo" }} />
+        <AppNavbarBrand full={{ src: logo, width: 85, height: 30, alt: "eDoxa Logo" }} minimized={{ src: sygnet, width: 30, height: 30, alt: "eDoxa Logo" }} />
       </LinkContainer>
       <AppSidebarToggler className="d-md-down-none" display="lg" hidden />
       <Nav className="d-md-down-none" navbar>

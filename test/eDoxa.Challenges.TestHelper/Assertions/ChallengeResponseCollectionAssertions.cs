@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
+using eDoxa.Challenges.Responses;
 using eDoxa.Challenges.TestHelper.Assertions.Extensions;
 
 using FluentAssertions;

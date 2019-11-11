@@ -13,14 +13,17 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.Areas.Challenges.RefitClients;
+using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
+using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -31,8 +34,6 @@ using Microsoft.AspNetCore.TestHost;
 using Moq;
 
 using Xunit;
-
-using Match = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Match;
 
 namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
@@ -47,9 +48,9 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId)
+        private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId, RegisterChallengeParticipantRequest request)
         {
-            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", null);
+            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", new JsonContent(request));
         }
 
         [Fact]
@@ -60,6 +61,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
+            var participantId = new ParticipantId();
             var userId = new UserId();
             var playerId = PlayerId.Parse(Guid.NewGuid().ToString());
 
@@ -71,12 +73,12 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
                         x.ConfigureTestContainer<ContainerBuilder>(
                             t =>
                             {
-                                var mock = new Mock<IGamesApiRefitClient>();
+                                var mock = new Mock<IGamesHttpClient>();
 
-                                mock.Setup(g => g.GetMatchesAsync(It.IsAny<PlayerId>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
-                                    .ReturnsAsync(new List<Match>());
+                                mock.Setup(g => g.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                                    .ReturnsAsync(new List<MatchDto>());
 
-                                t.RegisterInstance(mock.Object).As<IGamesApiRefitClient>().SingleInstance();
+                                t.RegisterInstance(mock.Object).As<IGamesHttpClient>().SingleInstance();
                             });
                     });
 
@@ -93,7 +95,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(ChallengeId.FromGuid(challenge.Id));
+            using var response = await this.ExecuteAsync(challenge.Id, new RegisterChallengeParticipantRequest(participantId));
 
             // Assert
             response.EnsureSuccessStatusCode();

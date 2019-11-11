@@ -1,12 +1,8 @@
 ﻿// Filename: ChallengeProfile.cs
-// Date Created: 2019-06-19
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Collections.Generic;
@@ -36,9 +32,13 @@ namespace eDoxa.Challenges.Infrastructure.Profiles
                 .ForMember(challenge => challenge.BestOf, config => config.MapFrom<int>(challenge => challenge.BestOf))
                 .ForMember(challenge => challenge.Entries, config => config.MapFrom<int>(challenge => challenge.Entries))
                 .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt))
-                .ForMember(challenge => challenge.Timeline, config => config.ConvertUsing(new ChallengeTimelineModelConverter(), challenge => challenge.Timeline))
+                .ForMember(
+                    challenge => challenge.Timeline,
+                    config => config.ConvertUsing(new ChallengeTimelineModelConverter(), challenge => challenge.Timeline))
                 .ForMember(challenge => challenge.ScoringItems, config => config.ConvertUsing(new ScoringItemModelsConverter(), challenge => challenge.Scoring))
-                .ForMember(challenge => challenge.Participants, config => config.MapFrom<ParticipantModelsResolver, IReadOnlyCollection<Participant>>(challenge => challenge.Participants));
+                .ForMember(
+                    challenge => challenge.Participants,
+                    config => config.MapFrom<ParticipantModelsResolver, IReadOnlyCollection<Participant>>(challenge => challenge.Participants));
         }
     }
 }

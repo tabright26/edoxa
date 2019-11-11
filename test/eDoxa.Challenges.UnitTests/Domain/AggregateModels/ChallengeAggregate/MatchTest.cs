@@ -10,7 +10,6 @@ using eDoxa.Challenges.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 
@@ -40,11 +39,9 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
             var stats = faker.Game().Stats();
 
             // Act
-            var match = new StatMatch(
-                scoring,
-                stats,
-                faker.Game().Reference(),
-                new UtcNowDateTimeProvider());
+            var match = new Match(
+                scoring.Map(stats),
+                faker.Game().Uuid());
 
             // Assert
             match.Stats.Should().HaveCount(scoring.Count);

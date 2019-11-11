@@ -11,5 +11,7 @@ namespace eDoxa.Games.LeagueOfLegends.Abstactions
     public interface ILeagueOfLegendsService
     {
         ISummonerEndpoint Summoner { get; }
+
+        IMatchEndpoint Match { get; }
     }
 }

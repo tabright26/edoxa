@@ -40,9 +40,10 @@ export const withChallenge = (HighOrderComponent: FunctionComponent<any>) => {
   };
 
   const mapStateToProps = (state: RootState, ownProps: any) => {
-    const { data } = state.root.arena.challenges;
+    const { data, loading } = state.root.arena.challenges;
     return {
-      challenge: data.find(challenge => challenge.id === ownProps.match.params.challengeId)
+      challenge: data.find(challenge => challenge.id === ownProps.match.params.challengeId),
+      loading
     };
   };
 

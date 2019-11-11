@@ -1,8 +1,10 @@
 ﻿// Filename: TransactionConverter.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
+
+using System.Linq;
 
 using AutoMapper;
 
@@ -16,15 +18,14 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 {
     internal sealed class TransactionConverter : ITypeConverter<TransactionModel, ITransaction>
     {
-        
-        public ITransaction Convert( TransactionModel source,  ITransaction destination,  ResolutionContext context)
+        public ITransaction Convert(TransactionModel source, ITransaction destination, ResolutionContext context)
         {
             var transaction = new Transaction(
                 Convert(source.Amount, Currency.FromValue(source.Currency)!),
                 new TransactionDescription(source.Description),
                 TransactionType.FromValue(source.Type)!,
-                new DateTimeProvider(source.Timestamp)
-            );
+                new DateTimeProvider(source.Timestamp),
+                new TransactionMetadata(source.Metadata.ToDictionary(metadata => metadata.Key, metadata => metadata.Value)));
 
             transaction.SetEntityId(TransactionId.FromGuid(source.Id));
 

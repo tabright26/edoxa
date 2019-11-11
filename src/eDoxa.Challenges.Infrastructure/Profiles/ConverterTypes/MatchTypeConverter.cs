@@ -1,50 +1,31 @@
 ﻿// Filename: MatchTypeConverter.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 
 using AutoMapper;
 
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
 {
     internal sealed class MatchTypeConverter : ITypeConverter<MatchModel, IMatch>
     {
-        
-        public IMatch Convert( MatchModel matchModel,  IMatch destination,  ResolutionContext context)
+        public IMatch Convert(MatchModel matchModel, IMatch destination, ResolutionContext context)
         {
             var stats = context.Mapper.Map<ICollection<Stat>>(matchModel.Stats);
 
-            var match = Convert(matchModel, stats);
+            var match = new Match(stats, matchModel.GameUuid);
 
             match.SetEntityId(MatchId.FromGuid(matchModel.Id));
 
             return match;
-        }
-
-        private static IMatch Convert(MatchModel matchModel, ICollection<Stat> stats)
-        {
-            var synchronizedAt = new DateTimeProvider(matchModel.SynchronizedAt);
-
-            if (stats.Count == 1)
-            {
-                var stat = stats.Single();
-
-                var score = new GameScore(Game.FromName(stat.Name)!, new decimal(stat.Value));
-
-                return new GameMatch(score, matchModel.GameReference, synchronizedAt);
-            }
-
-            return new StatMatch(new Scoring(stats), new GameStats(stats), matchModel.GameReference, synchronizedAt);
         }
     }
 }

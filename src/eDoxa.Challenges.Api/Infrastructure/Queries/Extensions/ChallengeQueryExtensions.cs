@@ -7,10 +7,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Responses;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Infrastructure.Models;
+using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Queries.Extensions

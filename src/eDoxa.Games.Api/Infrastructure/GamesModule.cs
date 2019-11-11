@@ -27,10 +27,13 @@ namespace eDoxa.Games.Api.Infrastructure
             // Services
             builder.RegisterType<CredentialService>().As<ICredentialService>().InstancePerLifetimeScope();
             builder.RegisterType<AuthFactorService>().As<IAuthFactorService>().InstancePerLifetimeScope();
+            builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
 
             // Factories
             builder.RegisterType<AuthFactorGeneratorFactory>().As<IAuthFactorGeneratorFactory>().SingleInstance();
             builder.RegisterType<AuthFactorValidatorFactory>().As<IAuthFactorValidatorFactory>().SingleInstance();
+            builder.RegisterType<ChallengeScoringFactory>().As<IChallengeScoringFactory>().SingleInstance();
+            builder.RegisterType<ChallengeMatchesFactory>().As<IChallengeMatchesFactory>().SingleInstance();
 
             // Games
             builder.RegisterModule<LeagueOfLegendsModule>();

@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                         .Select(
                             record =>
                             {
-                                var payoutStrategy = new PayoutFactory().CreateInstance();
+                                var payoutStrategy = new ChallengePayoutFactory().CreateInstance();
 
                                 var payoutEntries = new PayoutEntries(record.PayoutEntries);
 
@@ -52,11 +52,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 
                                 var payout = payoutStrategy.GetPayout(payoutEntries, entryFee);
 
-                                var challenge = new Challenge(entryFee, payout);
-
-                                challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
-
-                                return challenge;
+                                return new Challenge(ChallengeId.FromGuid(record.Id), entryFee, payout);
                             })
                         .Cast<IChallenge>()
                         .ToImmutableHashSet();

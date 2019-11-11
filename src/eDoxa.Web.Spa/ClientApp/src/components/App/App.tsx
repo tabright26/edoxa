@@ -15,14 +15,11 @@ const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() => im
 const ErrorPage403: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/403"));
 const ErrorPage404: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/404"));
 const ErrorPage500: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/500"));
-const TermsOfServices: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/TermsOfServices"));
-const FAQ: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/FAQ"));
 const EmailConfirm: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/User/Email/Comfirm"));
 const PasswordForgot: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/User/Password/Forgot"));
 const PasswordReset: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/User/Password/Reset"));
 
 const DefaultLayout: FunctionComponent<any> = React.lazy(() => import("components/App/Layout/Default"));
-const PartialLayout: FunctionComponent<any> = React.lazy(() => import("components/App/Layout/Partial"));
 const NoneLayout: FunctionComponent<any> = React.lazy(() => import("components/App/Layout/None"));
 
 const App = () => (
@@ -43,30 +40,6 @@ const App = () => (
           <Route<RouteProps> exact path="/errors/403" name="Error 403" render={props => <ErrorPage403 {...props} />} />
           <Route<RouteProps> exact path="/errors/404" name="Error 404" render={props => <ErrorPage404 {...props} />} />
           <Route<RouteProps> exact path="/errors/500" name="Error 500" render={props => <ErrorPage500 {...props} />} />
-          <Route<RouteProps>
-            exact
-            path="/terms-of-services"
-            name="Terms of Services"
-            render={props => (
-              <Suspense fallback={<Loading />}>
-                <PartialLayout>
-                  <TermsOfServices {...props} />
-                </PartialLayout>
-              </Suspense>
-            )}
-          />
-          <Route<RouteProps>
-            exact
-            path="/faq"
-            name="FAQ"
-            render={props => (
-              <Suspense fallback={<Loading />}>
-                <PartialLayout>
-                  <FAQ {...props} />
-                </PartialLayout>
-              </Suspense>
-            )}
-          />
           <Route<RouteProps>
             exact
             path="/email/confirm"
