@@ -1,18 +1,48 @@
 ﻿// Filename: ChallengeGameMatchesControllerTest.cs
 // Date Created: 2019-11-01
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Threading.Tasks;
+
+using eDoxa.Games.Api.Areas.Challenge.Controllers;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
+using eDoxa.Games.TestHelper.Mocks;
+using eDoxa.Seedwork.Domain.Miscs;
+
+using FluentAssertions;
+
+using Microsoft.AspNetCore.Mvc;
+
+using Moq;
+
+using Xunit;
 
 namespace eDoxa.Games.UnitTests.Areas.Challenge.Controllers
 {
-    public sealed class ChallengeGameMatchesControllerTest : UnitTest // GABRIEL: Unit tests
+    public sealed class ChallengeGameMatchesControllerTest : UnitTest
     {
         public ChallengeGameMatchesControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
+        }
+
+        [Fact]
+        public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var challengeGameMatchesController = new ChallengeGameMatchesController();
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            challengeGameMatchesController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await challengeGameMatchesController.GetAsync();
+
+            // Assert
+            result.Should().BeOfType<OkResult>();
         }
     }
 }

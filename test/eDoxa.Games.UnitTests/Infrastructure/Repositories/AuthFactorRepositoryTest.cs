@@ -9,7 +9,7 @@ using eDoxa.Games.TestHelper.Fixtures;
 
 namespace eDoxa.Games.UnitTests.Infrastructure.Repositories
 {
-    public sealed class AuthFactorRepositoryTest : UnitTest // GABRIEL: Unit tests
+    public sealed class AuthFactorRepositoryTest : UnitTest // GABRIEL: TODO DURING REFACTOR
     {
         public AuthFactorRepositoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
