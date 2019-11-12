@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 .ReturnsAsync(challenge)
                 .Verifiable();
 
-            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -83,7 +83,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             // Assert
             challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
             mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
-            mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -109,7 +109,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 .ReturnsAsync(challenges)
                 .Verifiable();
 
-            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -132,7 +132,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 Times.Once);
 
             mockChallengeRepository.Verify(
-                challengeRepository => challengeRepository.CommitAsync(It.IsAny<CancellationToken>()),
+                challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
                 Times.Exactly(challenges.SelectMany(x => x.Participants).Count() + challenges.Count));
         }
     }

@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Scoring: FunctionComponent<Props> = ({ scoring }) => (
-  <Card className="my-2">
+  <Card>
     <CardHeader className="text-center bg-gray-900">
       <strong className="text-uppercase">Scoring</strong>
     </CardHeader>

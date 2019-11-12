@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<form
+  className="h-100"
+  onSubmit={[Function]}
+>
+  <button
+    aria-label={null}
+    className="text-uppercase undefined btn btn-primary btn-lg"
+    onClick={[Function]}
+    style={
+      Object {
+        "width": "75px",
+      }
+    }
+    type="submit"
+  >
+    REGISTER
+  </button>
+</form>
+`;

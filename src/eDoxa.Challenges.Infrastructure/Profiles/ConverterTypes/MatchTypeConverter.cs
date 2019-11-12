@@ -25,6 +25,8 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
 
             match.SetEntityId(MatchId.FromGuid(matchModel.Id));
 
+            match.ClearDomainEvents();
+
             return match;
         }
     }

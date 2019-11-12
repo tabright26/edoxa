@@ -33,6 +33,8 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
                 participant.Snapshot(matches, new DateTimeProvider(source.SynchronizedAt.Value));
             }
 
+            participant.ClearDomainEvents();
+
             return participant;
         }
     }

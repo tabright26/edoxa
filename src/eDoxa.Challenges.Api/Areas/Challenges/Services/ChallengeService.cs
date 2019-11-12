@@ -67,7 +67,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
 
             _challengeRepository.Create(challenge);
 
-            await _challengeRepository.CommitAsync(cancellationToken);
+            await _challengeRepository.CommitAsync(true, cancellationToken);
 
             return new ValidationResult();
         }
@@ -100,7 +100,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
                 challenge.Start(registeredAt);
             }
 
-            await _challengeRepository.CommitAsync(cancellationToken);
+            await _challengeRepository.CommitAsync(true, cancellationToken);
 
             return new ValidationResult();
         }
@@ -148,7 +148,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
                         matches.Select(match => new Match(challenge.Scoring.Map(match.Stats), new GameUuid(match.GameUuid))).ToList(),
                         synchronizedAt);
 
-                    await _challengeRepository.CommitAsync(cancellationToken);
+                    await _challengeRepository.CommitAsync(true, cancellationToken);
                 }
                 catch (ApiException exception)
                 {
@@ -158,7 +158,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
                 }
             }
 
-            await _challengeRepository.CommitAsync(cancellationToken);
+            await _challengeRepository.CommitAsync(true, cancellationToken);
 
             return new ValidationResult();
         }
@@ -167,7 +167,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
         {
             _challengeRepository.Delete(challenge);
 
-            await _challengeRepository.CommitAsync(cancellationToken);
+            await _challengeRepository.CommitAsync(true, cancellationToken);
         }
     }
 }

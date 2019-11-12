@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                 {
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(fakeChallenge);
-                    await challengeRepository.CommitAsync();
+                    await challengeRepository.CommitAsync(false);
                 });
 
             // Assert
@@ -80,7 +80,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     var challenge = await challengeRepository.FindChallengeAsync(fakeChallenge.Id);
                     challenge.Should().NotBeNull();
                     challenge?.Register(participant1);
-                    await challengeRepository.CommitAsync();
+                    await challengeRepository.CommitAsync(false);
                 });
 
             // Assert
@@ -109,7 +109,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     }
 
                     challenge?.Start(new UtcNowDateTimeProvider());
-                    await challengeRepository.CommitAsync();
+                    await challengeRepository.CommitAsync(false);
                 });
 
             // Assert
@@ -134,7 +134,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);
                     participant?.Snapshot(new List<IMatch> {match1}, new UtcNowDateTimeProvider());
-                    await challengeRepository.CommitAsync();
+                    await challengeRepository.CommitAsync(false);
                 });
 
             // Assert
@@ -166,7 +166,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
                     challenge.Should().NotBeNull();
                     var participant = challenge?.Participants.Single(p => p == participant1);
                     participant?.Snapshot(new List<IMatch> {match2}, new UtcNowDateTimeProvider());
-                    await challengeRepository.CommitAsync();
+                    await challengeRepository.CommitAsync(false);
                 });
 
             // Assert

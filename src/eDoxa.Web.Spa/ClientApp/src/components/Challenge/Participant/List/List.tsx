@@ -7,10 +7,16 @@ interface Props {
   participants: ChallengeParticipant[];
 }
 
-const ChallengeParticipantList: FunctionComponent<Props> = ({ participants }) => (
+const ChallengeParticipantList: FunctionComponent<Props> = ({
+  participants
+}) => (
   <>
     {participants.map((participant, index) => (
-      <ChallengeParticipantItem key={index} participant={participant} position={index + 1} />
+      <ChallengeParticipantItem
+        key={index}
+        participant={participant}
+        position={index + 1}
+      />
     ))}
   </>
 );
