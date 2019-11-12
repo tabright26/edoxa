@@ -4,27 +4,14 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
-using eDoxa.Games.Abstractions.Factories;
-using eDoxa.Games.Api.IntegrationEvents;
-using eDoxa.Games.Domain.AggregateModels.AuthFactorAggregate;
-using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Services;
-using eDoxa.Games.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Security;
 
 using FluentAssertions;
 
 using Microsoft.Extensions.Options;
-
-using Moq;
-
-using Newtonsoft.Json;
 
 using Xunit;
 

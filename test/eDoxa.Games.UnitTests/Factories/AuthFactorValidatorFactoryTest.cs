@@ -1,6 +1,6 @@
 ﻿// Filename: AuthFactorValidatorFactoryTest.cs
-// Date Created: 2019-11-01
-//
+// Date Created: 2019-11-11
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.Factories;
+using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -32,19 +34,14 @@ namespace eDoxa.Games.UnitTests.Factories
         public void CreateInstance_ShouldBeOfTypeGameAdapter()
         {
             // Arrange
-            var mockAuthFactorValidatorAdapters = new Mock<IDictionary<Game, IAuthFactorValidatorAdapter>>();
+            var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
+            var mockAuthFactorRepository = new Mock<IAuthFactorRepository>();
 
-            var mockAuthFactorValidatorAdapter = new Mock<List<IAuthFactorValidatorAdapter>>();
-
-            mockAuthFactorValidatorAdapters
-                .Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthFactorValidatorAdapter>.IsAny))
-                .Returns(true)
-                .Verifiable();
-
-            var authFactorValidatorFactory = new AuthFactorValidatorFactory(mockAuthFactorValidatorAdapter.Object);
+            var factory = new AuthFactorValidatorFactory(
+                new[] {new LeagueOfLegendsAuthFactorValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object)});
 
             // Act
-            var result = authFactorValidatorFactory.CreateInstance(Game.LeagueOfLegends);
+            var result = factory.CreateInstance(Game.LeagueOfLegends);
 
             // Assert
             result.Should().BeOfType<LeagueOfLegendsAuthFactorValidatorAdapter>();
@@ -58,8 +55,7 @@ namespace eDoxa.Games.UnitTests.Factories
 
             var mockAuthFactorValidatorAdapter = new Mock<List<IAuthFactorValidatorAdapter>>();
 
-            mockAuthFactorValidatorAdapters
-                .Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthFactorValidatorAdapter>.IsAny))
+            mockAuthFactorValidatorAdapters.Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthFactorValidatorAdapter>.IsAny))
                 .Returns(false)
                 .Verifiable();
 

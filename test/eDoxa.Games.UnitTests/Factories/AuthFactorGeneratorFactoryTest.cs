@@ -1,23 +1,19 @@
 ﻿// Filename: AuthFactorGeneratorFactoryTest.cs
-// Date Created: 2019-11-01
-//
+// Date Created: 2019-11-11
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 
 using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.Factories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
-using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
@@ -38,16 +34,11 @@ namespace eDoxa.Games.UnitTests.Factories
         public void CreateInstance_ShouldBeOfTypeGameAdapter()
         {
             // Arrange
-            var mockAuthFactorGeneratorAdapters = new Mock<IDictionary<Game, IAuthFactorGeneratorAdapter>>();
+            var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
+            var mockAuthFactorRepository = new Mock<IAuthFactorRepository>();
 
-            var mockAuthFactorGeneratorAdapter = new Mock<List<IAuthFactorGeneratorAdapter>>();
-
-            mockAuthFactorGeneratorAdapters
-                .Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthFactorGeneratorAdapter>.IsAny))
-                .Returns(true)
-                .Verifiable();
-
-            var authFactorGeneratorFactory = new AuthFactorGeneratorFactory(mockAuthFactorGeneratorAdapter.Object);
+            var authFactorGeneratorFactory = new AuthFactorGeneratorFactory(
+                new[] {new LeagueOfLegendsAuthFactorGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object)});
 
             // Act
             var result = authFactorGeneratorFactory.CreateInstance(Game.LeagueOfLegends);
@@ -64,8 +55,7 @@ namespace eDoxa.Games.UnitTests.Factories
 
             var mockAuthFactorGeneratorAdapter = new Mock<List<IAuthFactorGeneratorAdapter>>();
 
-            mockAuthFactorGeneratorAdapters
-                .Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthFactorGeneratorAdapter>.IsAny))
+            mockAuthFactorGeneratorAdapters.Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthFactorGeneratorAdapter>.IsAny))
                 .Returns(false)
                 .Verifiable();
 

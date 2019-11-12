@@ -4,25 +4,18 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
-using Bogus;
-
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels.AuthFactorAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
 using eDoxa.Games.LeagueOfLegends.Requests;
-using eDoxa.Games.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
-
-using Microsoft.AspNetCore.Mvc;
 
 using Moq;
 

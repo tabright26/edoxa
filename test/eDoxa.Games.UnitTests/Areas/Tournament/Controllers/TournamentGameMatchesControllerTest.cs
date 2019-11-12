@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Api.Areas.Challenge.Controllers;
 using eDoxa.Games.Api.Areas.Tournament.Controllers;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;

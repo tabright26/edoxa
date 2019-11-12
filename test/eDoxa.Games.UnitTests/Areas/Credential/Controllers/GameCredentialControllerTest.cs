@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Games.Abstractions.Services;
-using eDoxa.Games.Api.Areas.AuthFactor.Controllers;
 using eDoxa.Games.Api.Areas.Credential.Controllers;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;

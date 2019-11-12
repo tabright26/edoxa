@@ -4,15 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
-using eDoxa.Games.Api.Areas.Challenge.Controllers;
 using eDoxa.Games.Api.Controllers;
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Games.TestHelper.Mocks;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 

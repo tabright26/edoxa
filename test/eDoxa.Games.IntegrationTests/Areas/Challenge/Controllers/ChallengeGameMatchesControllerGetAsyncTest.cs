@@ -4,34 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-using Autofac;
-
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.TestHelper.Http;
-
-using FluentAssertions;
-
-using FluentValidation.Results;
-
-using IdentityModel;
-
-using Microsoft.AspNetCore.TestHost;
-
-using Moq;
-
-using Xunit;
 
 namespace eDoxa.Games.IntegrationTests.Areas.Challenge.Controllers
 {
-    public sealed class ChallengeGameMatchesControllerGetAsyncTest : IntegrationTest
+    public sealed class ChallengeGameMatchesControllerGetAsyncTest : IntegrationTest // TODO: Integration test
     {
         public ChallengeGameMatchesControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testApi,
@@ -40,27 +18,27 @@ namespace eDoxa.Games.IntegrationTests.Areas.Challenge.Controllers
         {
         }
 
-        private HttpClient _httpClient;
+        //private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Game game)
-        {
-            return await _httpClient.GetAsync($"api/challenge/games/{game}/matches");
-        }
+        //private async Task<HttpResponseMessage> ExecuteAsync(Game game)
+        //{
+        //    return await _httpClient.GetAsync($"api/challenge/games/{game}/matches");
+        //}
 
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeOk()
-        {
-            // Arrange
-            var userId = new UserId();
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
-            _httpClient = factory.CreateClient();
+        //[Fact]
+        //public async Task ShouldBeHttpStatusCodeOk()
+        //{
+        //    // Arrange
+        //    var userId = new UserId();
+        //    var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+        //    _httpClient = factory.CreateClient();
 
-            // Act
-            using var response = await this.ExecuteAsync(Game.LeagueOfLegends);
+        //    // Act
+        //    using var response = await this.ExecuteAsync(Game.LeagueOfLegends);
 
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
+        //    // Assert
+        //    response.EnsureSuccessStatusCode();
+        //    response.StatusCode.Should().Be(HttpStatusCode.OK);
+        //}
     }
 }

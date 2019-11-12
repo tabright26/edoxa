@@ -5,11 +5,9 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels.AuthFactorAggregate;
 using eDoxa.Games.Domain.AggregateModels.CredentialAggregate;

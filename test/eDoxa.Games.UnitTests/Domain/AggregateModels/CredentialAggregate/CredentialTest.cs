@@ -4,9 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
-using eDoxa.Games.Domain.AggregateModels.AuthFactorAggregate;
 using eDoxa.Games.Domain.AggregateModels.CredentialAggregate;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
