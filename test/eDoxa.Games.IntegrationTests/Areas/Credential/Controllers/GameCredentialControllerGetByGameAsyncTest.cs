@@ -10,13 +10,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using Autofac;
-
-using AutoMapper;
-
-using Bogus.DataSets;
-
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -24,17 +17,10 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
-using FluentValidation.Results;
-
 using IdentityModel;
-
-using Microsoft.AspNetCore.TestHost;
-
-using Moq;
 
 using Xunit;
 

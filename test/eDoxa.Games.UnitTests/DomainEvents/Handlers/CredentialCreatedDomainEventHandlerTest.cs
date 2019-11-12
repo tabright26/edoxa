@@ -7,21 +7,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Api.DomainEvents.Handlers;
-using eDoxa.Games.Api.IntegrationEvents.Extensions;
-using eDoxa.Games.Domain.AggregateModels.AuthFactorAggregate;
 using eDoxa.Games.Domain.AggregateModels.CredentialAggregate;
 using eDoxa.Games.Domain.DomainEvents;
-using eDoxa.Games.Domain.Repositories;
-using eDoxa.Games.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
-
-using FluentValidation.Validators;
 
 using Moq;
 

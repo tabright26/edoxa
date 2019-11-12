@@ -1,11 +1,12 @@
 ﻿// Filename: ChallengeGameMatchesControllerTest.cs
-// Date Created: 2019-11-01
-//
+// Date Created: 2019-11-11
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
+using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Areas.Challenge.Controllers;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -32,17 +33,23 @@ namespace eDoxa.Games.UnitTests.Areas.Challenge.Controllers
         public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var challengeGameMatchesController = new ChallengeGameMatchesController();
+            var mockChallengeService = new Mock<IChallengeService>();
+
+            var challengeGameMatchesController = new ChallengeGameMatchesController(mockChallengeService.Object);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             challengeGameMatchesController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await challengeGameMatchesController.GetAsync();
+            var result = await challengeGameMatchesController.GetAsync(
+                Game.LeagueOfLegends,
+                new PlayerId(),
+                null,
+                null);
 
             // Assert
-            result.Should().BeOfType<OkResult>();
+            result.Should().BeOfType<OkObjectResult>();
         }
     }
 }

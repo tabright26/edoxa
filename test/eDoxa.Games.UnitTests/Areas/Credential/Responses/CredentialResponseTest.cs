@@ -5,11 +5,9 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Games.Api.Areas.Credential.Responses;
-using eDoxa.Games.Api.IntegrationEvents;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Security;
 
 using FluentAssertions;
 
