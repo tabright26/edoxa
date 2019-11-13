@@ -1,6 +1,16 @@
 import React, { Suspense, FunctionComponent } from "react";
 import { Container } from "reactstrap";
-import { AppFooter, AppAside, AppHeader, AppSidebar, AppSidebarFooter, AppSidebarForm, AppSidebarHeader, AppSidebarMinimizer, AppSidebarNav } from "@coreui/react";
+import {
+  AppFooter,
+  AppAside,
+  AppHeader,
+  AppSidebar,
+  AppSidebarFooter,
+  AppSidebarForm,
+  AppSidebarHeader,
+  AppSidebarMinimizer,
+  AppSidebarNav
+} from "@coreui/react";
 // sidebar nav config
 import navigation from "./_nav";
 // routes config
@@ -44,7 +54,7 @@ const Layout: FunctionComponent<any> = ({ ...props }) => {
           </Suspense>
         </AppAside>
       </div>
-      <AppFooter>
+      <AppFooter className="mt-4">
         <Suspense fallback={<Loading />}>
           <Footer />
         </Suspense>

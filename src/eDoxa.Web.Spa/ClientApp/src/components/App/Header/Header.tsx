@@ -52,7 +52,7 @@ const Header: FunctionComponent<any> = ({ isAuthenticated, user, balance, childr
         <AppNavbarBrand full={{ src: logo, width: 85, height: 30, alt: "eDoxa Logo" }} minimized={{ src: sygnet, width: 30, height: 30, alt: "eDoxa Logo" }} />
       </LinkContainer>
       <AppSidebarToggler className="d-md-down-none" display="lg" hidden />
-      <Nav className="d-md-down-none" navbar>
+      {/* <Nav className="d-md-down-none" navbar>
         <NavItem className="px-3">
           <LinkContainer to="/marketplace">
             <NavLink className="nav-link">Marketplace</NavLink>
@@ -63,7 +63,7 @@ const Header: FunctionComponent<any> = ({ isAuthenticated, user, balance, childr
             <NavLink className="nav-link">News Feeds</NavLink>
           </LinkContainer>
         </NavItem>
-      </Nav>
+      </Nav> */}
       {isAuthenticated ? (
         <Nav className="ml-auto mr-3" navbar>
           <HeaderDropdown user={user} />

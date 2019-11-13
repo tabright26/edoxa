@@ -20,18 +20,18 @@ const items = [
     name: "Games",
     url: "/arena/games",
     icon: "fa fa-gamepad",
-    show: true
+    show: false
   },
   {
     title: true,
     name: "Organizations",
-    show: true
+    show: false
   },
   {
     name: "Clans",
     url: "/structures/clans",
     icon: "fa fa-users",
-    show: true
+    show: false
   },
   {
     name: "Teams",
@@ -48,14 +48,14 @@ const items = [
   {
     divider: true,
     class: "mt-auto",
-    show: true
+    show: false
   },
   {
     name: "F. A. Q.",
     url: "/faq",
     icon: "fa fa-question-circle",
     variant: "primary",
-    show: true
+    show: false
   }
 ];
 
