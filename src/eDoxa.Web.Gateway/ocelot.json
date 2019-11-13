@@ -195,7 +195,7 @@
     }
   ],
   "GlobalConfiguration": {
-    "RequestIdKey": "OcRequestId",
+    "RequestIdKey": "X-Correlation-Id",
     "AdministrationPath": "/administration"
   }
 }
