@@ -1,5 +1,5 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-11-07
+// Date Created: 2019-11-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,6 +8,7 @@ using System;
 
 using Autofac.Extensions.DependencyInjection;
 
+using eDoxa.Challenges.BackgroundTasks.Infrastructure;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
@@ -29,6 +30,12 @@ namespace eDoxa.Challenges.BackgroundTasks
                 Log.Information("Building {Application} host...");
 
                 var host = builder.Build();
+
+                Log.Information("Applying {Application} context migrations...");
+
+                var context = host.Services.GetRequiredService<HangfireDbContext>();
+
+                context.Database.EnsureCreated();
 
                 Log.Information("Starting {Application} host...");
 
