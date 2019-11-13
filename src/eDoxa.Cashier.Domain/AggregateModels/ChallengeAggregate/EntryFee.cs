@@ -78,6 +78,19 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
         public Prize GetLowestPrize()
         {
+            if (Amount == 0)
+            {
+                if (Currency == Currency.Money)
+                {
+                    return new Prize(Money.MinValue, Currency); 
+                }
+
+                if (Currency == Currency.Token)
+                {
+                    return new Prize(Token.MinValue, Currency); 
+                }
+            }
+
             return new Prize(Amount, Currency);
         }
     }

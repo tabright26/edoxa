@@ -6,6 +6,9 @@
 
 using System.Linq;
 
+using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 
@@ -31,7 +34,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
             var payoutStructures = storage.GetChallengePayouts();
 
             // Assert
-            payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(56);
+            payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(55);
         }
     }
 }
