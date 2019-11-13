@@ -179,7 +179,7 @@ services:
     ports:
       - "5200:80"
     volumes:
-      - ./src/eDoxa.Web.Gateway:/app
+      - ./src/eDoxa.Gateway:/app
 
   web.spa.proxy:
     environment:

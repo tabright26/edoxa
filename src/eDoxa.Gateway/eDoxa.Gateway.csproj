@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <AssemblyName>eDoxa.Web.Gateway</AssemblyName>
-    <RootNamespace>eDoxa.Web.Gateway</RootNamespace>
+    <AssemblyName>eDoxa.Gateway</AssemblyName>
+    <RootNamespace>eDoxa.Gateway</RootNamespace>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <UserSecretsId>cb2a9c58-902e-458e-b33a-9f3eefb5438c</UserSecretsId>

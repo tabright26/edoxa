@@ -118,7 +118,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/web.gateway:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Web.Gateway/Dockerfile
+      dockerfile: src/eDoxa.Gateway/Dockerfile
     depends_on:
       - seq
       - identity.api

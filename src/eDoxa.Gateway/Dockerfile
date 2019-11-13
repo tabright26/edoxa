@@ -4,7 +4,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /tmp
 COPY . .
-WORKDIR /tmp/src/eDoxa.Web.Gateway
+WORKDIR /tmp/src/eDoxa.Gateway
 
 FROM build AS publish
 RUN dotnet publish -c Release -o /app
@@ -12,6 +12,6 @@ RUN dotnet publish -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "eDoxa.Web.Gateway.dll"]
+ENTRYPOINT ["dotnet", "eDoxa.Gateway.dll"]
 
 EXPOSE 80
