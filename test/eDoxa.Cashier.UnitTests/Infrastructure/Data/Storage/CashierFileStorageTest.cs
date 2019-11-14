@@ -6,9 +6,6 @@
 
 using System.Linq;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 

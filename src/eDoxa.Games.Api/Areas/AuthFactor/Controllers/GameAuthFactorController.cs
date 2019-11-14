@@ -24,11 +24,11 @@ namespace eDoxa.Games.Api.Areas.AuthFactor.Controllers
     [ApiExplorerSettings(GroupName = "Game")]
     public sealed class GameAuthFactorController : ControllerBase
     {
-        private readonly IAuthFactorService _authFactorService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public GameAuthFactorController(IAuthFactorService authFactorService)
+        public GameAuthFactorController(IAuthenticationService authenticationService)
         {
-            _authFactorService = authFactorService;
+            _authenticationService = authenticationService;
         }
 
         [HttpPost]
@@ -36,13 +36,13 @@ namespace eDoxa.Games.Api.Areas.AuthFactor.Controllers
         {
             var userId = HttpContext.GetUserId();
 
-            var result = await _authFactorService.GenerateAuthFactorAsync(userId, game, request);
+            var result = await _authenticationService.GenerateAuthenticationAsync(userId, game, request);
 
             if (result.IsValid)
             {
-                var authFactor = await _authFactorService.FindAuthFactorAsync(userId, game);
+                var authentication = await _authenticationService.FindAuthenticationAsync(userId, game);
 
-                return this.Ok(authFactor);
+                return this.Ok(authentication.Factor);
             }
 
             result.AddToModelState(ModelState, null);

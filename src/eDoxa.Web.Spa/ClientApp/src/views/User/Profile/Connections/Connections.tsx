@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 
 import UserGameList from "components/User/Game/List";
-import GenerateGameAuthFactorModal from "components/User/Game/AuthFactor/Modal/Generate/Generate";
+import GenerateGameAuthFactorModal from "components/User/Game/AuthFactor/Modal/Authenticate/Authenticate";
 
 const ProfileConnections = () => {
   return (

@@ -18,6 +18,8 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
+using Microsoft.Azure.Storage;
+
 using Moq;
 
 using Xunit;
@@ -35,16 +37,17 @@ namespace eDoxa.Games.UnitTests.Factories
         {
             // Arrange
             var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
-            var mockAuthFactorRepository = new Mock<IAuthFactorRepository>();
+            var mockAuthFactorRepository = new Mock<IAuthenticationRepository>();
+            var mockCloudStorageAccount = new Mock<CloudStorageAccount>();
 
-            var authFactorGeneratorFactory = new AuthFactorGeneratorFactory(
-                new[] {new LeagueOfLegendsAuthFactorGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object)});
+            var authFactorGeneratorFactory = new AuthenticationGeneratorFactory(
+                new[] {new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object, mockCloudStorageAccount.Object)});
 
             // Act
             var result = authFactorGeneratorFactory.CreateInstance(Game.LeagueOfLegends);
 
             // Assert
-            result.Should().BeOfType<LeagueOfLegendsAuthFactorGeneratorAdapter>();
+            result.Should().BeOfType<LeagueOfLegendsAuthenticationGeneratorAdapter>();
         }
 
         [Fact]
@@ -59,7 +62,7 @@ namespace eDoxa.Games.UnitTests.Factories
                 .Returns(false)
                 .Verifiable();
 
-            var authFactorGeneratorFactory = new AuthFactorGeneratorFactory(mockAuthFactorGeneratorAdapter.Object);
+            var authFactorGeneratorFactory = new AuthenticationGeneratorFactory(mockAuthFactorGeneratorAdapter.Object);
 
             try
             {

@@ -1,4 +1,4 @@
-﻿// Filename: AuthFactorValidatorFactory.cs
+﻿// Filename: AuthFactorGeneratorFactory.cs
 // Date Created: 2019-11-01
 // 
 // ================================================
@@ -14,16 +14,16 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Games.Factories
 {
-    public sealed class AuthFactorValidatorFactory : IAuthFactorValidatorFactory
+    public sealed class AuthenticationGeneratorFactory : IAuthenticationGeneratorFactory
     {
-        private readonly IDictionary<Game, IAuthFactorValidatorAdapter> _adapters;
+        private readonly IDictionary<Game, IAuthFactorGeneratorAdapter> _adapters;
 
-        public AuthFactorValidatorFactory(IEnumerable<IAuthFactorValidatorAdapter> adapters)
+        public AuthenticationGeneratorFactory(IEnumerable<IAuthFactorGeneratorAdapter> adapters)
         {
             _adapters = adapters.ToDictionary(adapter => adapter.Game, adapter => adapter);
         }
 
-        public IAuthFactorValidatorAdapter CreateInstance(Game game)
+        public IAuthFactorGeneratorAdapter CreateInstance(Game game)
         {
             if (_adapters.TryGetValue(game, out var adapter))
             {

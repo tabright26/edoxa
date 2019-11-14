@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Abstractions.Services;
+using eDoxa.Games.Domain.AggregateModels;
 using eDoxa.Games.Domain.AggregateModels.CredentialAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Seedwork.Application.Validations.Extensions;
@@ -22,12 +23,12 @@ namespace eDoxa.Games.Services
     public sealed class CredentialService : ICredentialService
     {
         private readonly ICredentialRepository _credentialRepository;
-        private readonly IAuthFactorService _authFactorService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public CredentialService(ICredentialRepository credentialRepository, IAuthFactorService authFactorService)
+        public CredentialService(ICredentialRepository credentialRepository, IAuthenticationService authenticationService)
         {
             _credentialRepository = credentialRepository;
-            _authFactorService = authFactorService;
+            _authenticationService = authenticationService;
         }
 
         public async Task<ValidationResult> LinkCredentialAsync(UserId userId, Game game)
@@ -37,14 +38,14 @@ namespace eDoxa.Games.Services
                 return new ValidationFailure(string.Empty, $"{game} credential are already linked.").ToResult();
             }
 
-            if (!await _authFactorService.AuthFactorExistsAsync(userId, game))
+            if (!await _authenticationService.AuthenticationExistsAsync(userId, game))
             {
                 return new ValidationFailure(string.Empty, $"{game} authentication process not started.").ToResult();
             }
 
-            var authFactor = await _authFactorService.FindAuthFactorAsync(userId, game);
+            var authFactor = await _authenticationService.FindAuthenticationAsync(userId, game);
 
-            var result = await _authFactorService.ValidateAuthFactorAsync(userId, game, authFactor);
+            var result = await _authenticationService.ValidateAuthenticationAsync(userId, game, authFactor);
 
             if (result.IsValid)
             {

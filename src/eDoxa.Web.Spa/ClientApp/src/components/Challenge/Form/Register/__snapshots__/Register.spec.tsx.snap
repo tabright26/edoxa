@@ -9,11 +9,6 @@ exports[`renders correctly 1`] = `
     aria-label={null}
     className="text-uppercase undefined btn btn-primary btn-lg"
     onClick={[Function]}
-    style={
-      Object {
-        "width": "75px",
-      }
-    }
     type="submit"
   >
     REGISTER

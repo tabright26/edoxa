@@ -76,6 +76,7 @@ namespace eDoxa.Clans.Infrastructure.Repositories
             if (blobList.Any())
             {
                 var blobItem = blobList.OrderByDescending(item => long.Parse(Path.GetFileNameWithoutExtension(item.Uri.ToString()))).First();
+                
                 var blockBlob = directory.GetBlockBlobReference(Path.GetFileName(blobItem.Uri.ToString()));
 
                 await blockBlob.DownloadToStreamAsync(memoryStream);

@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
-namespace eDoxa.Web.Gateway.Infrastructure
+namespace eDoxa.Gateway.Infrastructure
 {
     public class WebGatewayAppSettings : IHasAuthorityAppSettings, IHasEndpointsAppSettings<EndpointsOptions>
     {

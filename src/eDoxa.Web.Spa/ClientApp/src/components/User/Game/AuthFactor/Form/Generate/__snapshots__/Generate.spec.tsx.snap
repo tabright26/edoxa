@@ -8,6 +8,9 @@ exports[`renders correctly 1`] = `
   <div
     className="form-group"
   >
+    <label>
+      Summoner name
+    </label>
     <input
       className="form-control-sm form-control"
       name="summonerName"
@@ -16,7 +19,7 @@ exports[`renders correctly 1`] = `
       onDragStart={[Function]}
       onDrop={[Function]}
       onFocus={[Function]}
-      placeholder="Summoner name"
+      placeholder={null}
       type="text"
       value=""
     />
@@ -24,18 +27,37 @@ exports[`renders correctly 1`] = `
       className="invalid-feedback"
     />
   </div>
+  <div
+    className="form-group"
+  >
+    <label>
+      Region
+    </label>
+    <select
+      className="form-control-sm form-control"
+      disabled={true}
+      name="region"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      value=""
+    >
+      <option
+        value="NA"
+      >
+        North America
+      </option>
+    </select>
+  </div>
   <button
     aria-label={null}
     className="btn btn-primary btn-sm"
     onClick={[Function]}
-    style={
-      Object {
-        "width": "75px",
-      }
-    }
     type="submit"
   >
-    Save
+    Search
   </button>
 </form>
 `;

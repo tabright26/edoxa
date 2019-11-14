@@ -6,9 +6,9 @@
 
 using System.Collections.Generic;
 
+using eDoxa.Gateway.Extensions;
+using eDoxa.Gateway.Infrastructure;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Web.Gateway.Extensions;
-using eDoxa.Web.Gateway.Infrastructure;
 
 using HealthChecks.UI.Client;
 
@@ -27,7 +27,7 @@ using Ocelot.Middleware;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
-namespace eDoxa.Web.Gateway
+namespace eDoxa.Gateway
 {
     public class Startup
     {

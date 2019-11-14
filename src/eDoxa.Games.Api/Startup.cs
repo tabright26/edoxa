@@ -23,6 +23,7 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -103,6 +104,8 @@ namespace eDoxa.Games.Api
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
+
+            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
 
             services.AddRedisCache(Configuration);
 

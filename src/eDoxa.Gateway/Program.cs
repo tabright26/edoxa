@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
-namespace eDoxa.Web.Gateway
+namespace eDoxa.Gateway
 {
     public static class Program
     {

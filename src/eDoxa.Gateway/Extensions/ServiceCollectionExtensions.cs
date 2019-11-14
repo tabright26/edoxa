@@ -14,7 +14,7 @@ using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Web.Gateway.Extensions
+namespace eDoxa.Gateway.Extensions
 {
     public static class ServiceCollectionExtensions
     {

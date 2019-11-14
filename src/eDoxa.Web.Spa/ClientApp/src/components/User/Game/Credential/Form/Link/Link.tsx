@@ -4,15 +4,18 @@ import { reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import { LINK_GAME_CREDENTIAL_FORM } from "forms";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
 
-const LinkGameCredentialForm: FunctionComponent<any> = ({ handleSubmit, linkGameCredential, error }) => (
+const LinkGameCredentialForm: FunctionComponent<any> = ({
+  handleSubmit,
+  linkGameCredential
+}) => (
   <Form onSubmit={handleSubmit(() => linkGameCredential())}>
-    {error && <FormValidation error={error} />}
-    <Button.Save />
+    <Button.Submit>Validate</Button.Submit>
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm({ form: LINK_GAME_CREDENTIAL_FORM }));
+const enhance = compose<any, any>(
+  reduxForm({ form: LINK_GAME_CREDENTIAL_FORM })
+);
 
 export default enhance(LinkGameCredentialForm);

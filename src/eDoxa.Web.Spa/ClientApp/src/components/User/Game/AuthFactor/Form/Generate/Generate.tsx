@@ -8,14 +8,41 @@ import { compose } from "recompose";
 import { validate } from "./validate";
 import FormValidation from "components/Shared/Form/Validation";
 
-const GenerateGameAuthFactorForm: FunctionComponent<any> = ({ handleSubmit, generateGameAuthFactor, error }) => (
-  <Form onSubmit={handleSubmit((data: any) => generateGameAuthFactor(data))}>
+const GenerateGameAuthFactorForm: FunctionComponent<any> = ({
+  handleSubmit,
+  generateGameAuthFactor,
+  error,
+  setAuthFactor
+}) => (
+  <Form
+    onSubmit={handleSubmit((data: any) =>
+      generateGameAuthFactor(data).then(action => {
+        console.log(action);
+        return setAuthFactor(action.payload.data);
+      })
+    )}
+  >
     {error && <FormValidation error={error} />}
-    <Field name="summonerName" label="Summoner name" formGroup={FormGroup} component={Input.Text} />
-    <Button.Save />
+    <FormGroup>
+      <label>Summoner name</label>
+      <Field name="summonerName" component={Input.Text} />
+    </FormGroup>
+    <FormGroup>
+      <label>Region</label>
+      <Field
+        name="region"
+        component={Input.Select}
+        disabled={true}
+      >
+        <option value="NA">North America</option>
+      </Field>
+    </FormGroup>
+    <Button.Submit size="sm">Search</Button.Submit>
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm({ form: GENERATE_GAME_AUTH_FACTOR_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm({ form: GENERATE_GAME_AUTH_FACTOR_FORM, validate })
+);
 
 export default enhance(GenerateGameAuthFactorForm);

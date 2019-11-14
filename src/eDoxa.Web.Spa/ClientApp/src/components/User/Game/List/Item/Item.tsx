@@ -4,7 +4,9 @@ import { compose } from "recompose";
 import { GameOption } from "types";
 import { withModals } from "utils/modal/container";
 
-const style = { filter: "brightness(50%)" };
+const style: React.CSSProperties = {
+  filter: "brightness(50%)"
+};
 
 interface Props {
   option: GameOption;
@@ -14,15 +16,25 @@ interface Props {
 const Item: FunctionComponent<Props> = ({ option, modals }) => {
   const [hover, setHover] = useState(false);
   return (
-    <Card className={`p-0 col-6`} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-      <CardImg src={require(`assets/img/arena/games/${option.name.toLowerCase()}/panel.jpg`)} style={!hover ? style : null} />
+    <Card
+      className={`p-0 col-6`}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={() => modals.showGenerateGameAuthFactorModal(option.name)}
+      style={hover ? { cursor: "pointer" } : null}
+    >
+      <CardImg
+        src={require(`assets/img/arena/games/${option.name.toLowerCase()}/panel.jpg`)}
+        style={hover ? style : null}
+      />
       <CardImgOverlay className="d-flex">
         {hover ? (
-          <Button color="primary" className="m-auto" size="lg" onClick={() => modals.showGenerateGameAuthFactorModal(option.name)}>
-            LINK GAME CREDENTIAL
-          </Button>
+          <strong className="m-auto">LINK MY GAME ACCOUNT...</strong>
         ) : (
-          <img src={require(`assets/img/arena/games/${option.name.toLowerCase()}/large.png`)} className="m-auto" />
+          <img
+            src={require(`assets/img/arena/games/${option.name.toLowerCase()}/large.png`)}
+            className="m-auto"
+          />
         )}
       </CardImgOverlay>
     </Card>

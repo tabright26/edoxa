@@ -9,8 +9,8 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Games.Abstractions.Factories
 {
-    public interface IAuthFactorValidatorFactory
+    public interface IAuthenticationValidatorFactory
     {
-        IAuthFactorValidatorAdapter CreateInstance(Game game);
+        IAuthenticationValidatorAdapter CreateInstance(Game game);
     }
 }

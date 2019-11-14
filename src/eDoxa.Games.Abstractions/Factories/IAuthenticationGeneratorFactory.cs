@@ -9,7 +9,7 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Games.Abstractions.Factories
 {
-    public interface IAuthFactorGeneratorFactory
+    public interface IAuthenticationGeneratorFactory
     {
         IAuthFactorGeneratorAdapter CreateInstance(Game game);
     }

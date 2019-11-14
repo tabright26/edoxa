@@ -14,16 +14,16 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Games.Abstractions.Adapter
 {
-    public abstract class AuthFactorGeneratorAdapter<TRequest> : IAuthFactorGeneratorAdapter<TRequest>
+    public abstract class AuthenticationGeneratorAdapter<TRequest> : IAuthenticationGeneratorAdapter<TRequest>
     where TRequest : class
     {
         public abstract Game Game { get; }
 
-        public abstract Task<ValidationResult> GenerateAuthFactorAsync(UserId userId, TRequest request);
+        public abstract Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
 
-        public async Task<ValidationResult> GenerateAuthFactorAsync(UserId userId, object request)
+        public async Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, object request)
         {
-            return await this.GenerateAuthFactorAsync(userId, JsonConvert.DeserializeObject<TRequest>(request.ToString()));
+            return await this.GenerateAuthenticationAsync(userId, JsonConvert.DeserializeObject<TRequest>(request.ToString()));
         }
     }
 }
