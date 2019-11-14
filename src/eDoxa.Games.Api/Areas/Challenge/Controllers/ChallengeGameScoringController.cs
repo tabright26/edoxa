@@ -29,6 +29,7 @@ namespace eDoxa.Games.Api.Areas.Challenge.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous] // TODO: Quick fix.
         public async Task<IActionResult> GetAsync(Game game)
         {
             var scoring = await _challengeService.GetScoringAsync(game);

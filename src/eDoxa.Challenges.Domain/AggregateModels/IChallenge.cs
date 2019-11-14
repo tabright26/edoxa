@@ -45,6 +45,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels
 
         bool ParticipantExists(UserId userId);
 
+        bool CanSynchronize(Participant participant);
+
         bool CanSynchronize();
+
+        bool CanClose();
     }
 }

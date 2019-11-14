@@ -105,6 +105,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return Participants.Any(participant => participant.UserId == userId);
         }
 
+        public bool CanSynchronize(Participant participant)
+        {
+            return participant.SynchronizedAt < Timeline.EndedAt;
+        }
+
         private bool CanRegister(Participant participant)
         {
             return !SoldOut && !this.ParticipantExists(participant.UserId);
@@ -115,9 +120,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return Participants.Count == Entries;
         }
 
-        private bool CanClose()
+        public bool CanClose()
         {
-            return Timeline == ChallengeState.Ended;
+            return Timeline == ChallengeState.Ended && Participants.All(participant => !this.CanSynchronize(participant));
         }
 
         public bool CanSynchronize()
