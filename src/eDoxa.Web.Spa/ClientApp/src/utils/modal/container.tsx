@@ -8,16 +8,13 @@ import {
   CREATE_STRIPE_PAYMENTMETHOD_MODAL,
   UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
   DELETE_STRIPE_PAYMENTMETHOD_MODAL,
-  LINK_GAME_ACCOUNT_CREDENTIAL_MODAL,
-  UNLINK_GAME_ACCOUNT_CREDENTIAL_MODAL,
   DEPOSIT_MODAL,
   WITHDRAWAL_MODAL
 } from "modals";
 import {
   Currency,
   Bundle,
-  ChallengeParticipantMatchStat,
-  GameOption
+  ChallengeParticipantMatchStat
 } from "types";
 
 export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
@@ -28,10 +25,6 @@ export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
   const mapDispatchToProps = (dispatch: any) => {
     return {
       modals: {
-        showLinkGameAccountCredentialModal: (gameOption: GameOption) =>
-          dispatch(show(LINK_GAME_ACCOUNT_CREDENTIAL_MODAL, { gameOption })),
-        showUnlinkGameAccountCredentialModal: (gameOption: GameOption) =>
-          dispatch(show(UNLINK_GAME_ACCOUNT_CREDENTIAL_MODAL, { gameOption })),
         showCreateUserAddressModal: () =>
           dispatch(show(CREATE_USER_ADDRESS_MODAL)),
         showChallengeMatchScoreModal: (

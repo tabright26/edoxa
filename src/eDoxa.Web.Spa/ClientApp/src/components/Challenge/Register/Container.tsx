@@ -24,7 +24,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   state,
   ownProps
 ) => {
-  const { data } = state.root.arena.challenges;
+  const { data } = state.root.challenge;
   const challenge = data.find(
     challenge => challenge.id === ownProps.match.params.challengeId
   );

@@ -1,3 +1,3 @@
-import UserGameList from "./List";
+import List from "./List";
 
-export default UserGameList;
+export default List;

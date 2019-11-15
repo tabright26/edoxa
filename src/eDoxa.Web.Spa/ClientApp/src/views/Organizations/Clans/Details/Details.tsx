@@ -1,6 +1,6 @@
 import React, { useEffect, useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { withClans } from "store/root/organizations/clans/container";
+import { withClans } from "store/root/organization/clan/container";
 import CandidatureWidget from "components/Clan/Candidature/Widget/Widget";
 import ClanInfo from "components/Clan/Summary/Summary";
 import ErrorBoundary from "components/Shared/ErrorBoundary";

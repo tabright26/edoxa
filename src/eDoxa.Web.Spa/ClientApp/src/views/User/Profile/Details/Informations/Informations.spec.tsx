@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Informations from "./Informations";
-import { UserInformationsState } from "store/root/user/informations/types";
+import { UserInformationsState } from "store/root/user/information/types";
 
 it("renders without crashing", () => {
   //Arrange

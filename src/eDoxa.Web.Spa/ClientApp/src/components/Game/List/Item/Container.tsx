@@ -1,7 +1,7 @@
 import { connect, MapDispatchToProps } from "react-redux";
 import {
-  LINK_GAME_ACCOUNT_CREDENTIAL_MODAL,
-  UNLINK_GAME_ACCOUNT_CREDENTIAL_MODAL
+  LINK_GAME_CREDENTIAL_MODAL,
+  UNLINK_GAME_CREDENTIAL_MODAL
 } from "modals";
 import Item from "./Item";
 import { show } from "redux-modal";
@@ -20,9 +20,9 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
 ) => {
   return {
     showLinkGameAccountCredentialModal: (gameOption: GameOption) =>
-      dispatch(show(LINK_GAME_ACCOUNT_CREDENTIAL_MODAL, { gameOption })),
+      dispatch(show(LINK_GAME_CREDENTIAL_MODAL, { gameOption })),
     showUnlinkGameAccountCredentialModal: (gameOption: GameOption) =>
-      dispatch(show(UNLINK_GAME_ACCOUNT_CREDENTIAL_MODAL, { gameOption }))
+      dispatch(show(UNLINK_GAME_CREDENTIAL_MODAL, { gameOption }))
   };
 };
 

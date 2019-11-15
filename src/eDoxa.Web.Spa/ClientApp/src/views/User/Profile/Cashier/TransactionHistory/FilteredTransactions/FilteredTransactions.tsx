@@ -1,10 +1,10 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Card, CardHeader } from "reactstrap";
-import { withUserAccountTransactions } from "store/root/user/account/transactions/container";
+import { withUserAccountTransactions } from "store/root/user/account/transaction/container";
 import TransactionList from "components/User/Account/Transaction/List";
 import Paginate from "components/Shared/Paginate";
 import { compose } from "recompose";
-import { UserAccountTransactionsState } from "store/root/user/account/transactions/types";
+import { UserAccountTransactionsState } from "store/root/user/account/transaction/types";
 import { Currency, TransactionType, TransactionStatus } from "types";
 import Loading from "components/Shared/Loading";
 

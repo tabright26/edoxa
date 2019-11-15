@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import List from "./List";
-import { UserAccountTransactionsState } from "store/root/user/account/transactions/types";
+import { UserAccountTransactionsState } from "store/root/user/account/transaction/types";
 
 it("renders without crashing", () => {
   //Arrange

@@ -4,12 +4,12 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Profile from "./Profile";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
-import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethods/types";
+import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethod/types";
 import { UserAccountTransactionsState } from "store/root/user/account/transactions/types";
-import { GameCredentialsState } from "store/root/user/games/types";
+import { GameAccountCredentialState } from "store/root/user/game/credential/types";
 import { UserAddressBookState } from "store/root/user/addressBook/types";
 import { UserEmailState } from "store/root/user/email/types";
-import { UserInformationsState } from "store/root/user/informations/types";
+import { UserInformationsState } from "store/root/user/information/types";
 import { UserPhoneState } from "store/root/user/phone/types";
 
 it("renders without crashing", () => {
@@ -109,7 +109,7 @@ it("renders without crashing", () => {
     error: null
   };
 
-  const games: GameCredentialsState = {
+  const games: GameAccountCredentialState = {
     data: [{ name: "League of legends", id: "accountID" }],
     loading: false,
     error: null

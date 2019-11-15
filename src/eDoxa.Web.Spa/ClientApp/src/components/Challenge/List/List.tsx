@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from "react";
 import { Row, Col, Card, CardImg, CardImgOverlay } from "reactstrap";
-import { withChallenges } from "store/root/arena/challenges/container";
+import { withChallenges } from "store/root/challenge/container";
 import ChallengeItem from "./Item";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import Loading from "components/Shared/Loading";
-import { ChallengesState } from "store/root/arena/challenges/types";
+import { ChallengesState } from "store/root/challenge/types";
 
 interface Props {
   challenges: ChallengesState;

@@ -7,7 +7,7 @@ import ChallengeScoring from "components/Challenge/Scoring";
 import ChallengePayout from "components/Challenge/Payout";
 import ChallengeTimeline from "components/Challenge/Timeline";
 import ChallengeRegister from "components/Challenge/Register";
-import { withChallenge } from "store/root/arena/challenges/container";
+import { withChallenge } from "store/root/challenge/container";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import Loading from "components/Shared/Loading";
 import { Challenge } from "types";

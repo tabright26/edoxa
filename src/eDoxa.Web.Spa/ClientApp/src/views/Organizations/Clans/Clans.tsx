@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, Button } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { withClans } from "store/root/organizations/clans/container";
+import { withClans } from "store/root/organization/clan/container";
 import ClanCard from "components/Clan/Card/Card";
 import CandidatureList from "components/Clan/Candidature/List/List";
 import InvitationList from "components/Clan/Invitation/List/List";

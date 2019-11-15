@@ -2,7 +2,7 @@ import React, { useState, FunctionComponent } from "react";
 import Moment from "react-moment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { withtUserInformations } from "store/root/user/informations/container";
+import { withtUserInformations } from "store/root/user/information/container";
 import UserInformationForm from "forms/User/Information";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";

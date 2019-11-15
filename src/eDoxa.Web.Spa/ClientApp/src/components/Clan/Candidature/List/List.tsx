@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardBody, CardHeader } from "reactstrap";
-import { withCandidatures } from "store/root/organizations/candidatures/container";
+import { withCandidatures } from "store/root/organization/candidature/container";
 import Item from "./Item/Item";
 import { Candidature } from "types";
 import Loading from "components/Shared/Loading";
