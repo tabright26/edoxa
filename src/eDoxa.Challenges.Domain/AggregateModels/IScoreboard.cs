@@ -16,8 +16,5 @@ namespace eDoxa.Challenges.Domain.AggregateModels
 {
     public interface IScoreboard : IReadOnlyDictionary<UserId, Score?>
     {
-        UserId UserIdAt(int index);
-
-        bool IsValidScore(int index);
     }
 }

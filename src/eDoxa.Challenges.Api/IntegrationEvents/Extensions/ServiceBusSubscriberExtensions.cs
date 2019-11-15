@@ -13,7 +13,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
     {
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
-            subscriber.Subscribe<ChallengeCreationFailedIntegrationEvent, ChallengeCreationFailedIntegrationEventHandler>();
+            subscriber.Subscribe<ChallengeDeletedIntegrationEvent, ChallengeDeletedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengesSynchronizedIntegrationEvent, ChallengesSynchronizedIntegrationEventHandler>();
         }
     }

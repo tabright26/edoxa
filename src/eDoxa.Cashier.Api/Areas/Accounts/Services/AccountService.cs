@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -14,6 +15,7 @@ using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Application.Validations.Extensions;
@@ -144,6 +146,55 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             return await _accountRepository.FindUserAccountAsync(userId);
         }
 
+        // TODO: Need to be refactored.
+        public async Task PayoutChallengeAsync(IChallenge challenge, /*TODO: Create object Scoreboard*/ IDictionary<UserId, decimal?> scoreboard, CancellationToken cancellationToken = default)
+        {
+            var payout = challenge.Payout;
+
+            var winners = new Queue<UserId>(scoreboard.OrderByDescending(item => item.Value).Select(item => item.Key).Take(payout.Entries));
+
+            var losers = new List<UserId>(scoreboard.OrderByDescending(item => item.Value).Select(item => item.Key).Skip(payout.Entries));
+
+            foreach (var bucket in payout.Buckets)
+            {
+                for (var index = 0; index < bucket.Size; index++)
+                {
+                    var user = winners.Dequeue();
+
+                    var score = scoreboard[user];
+
+                    if (score == null)
+                    {
+                        // TODO: Need to be refactored.
+                        await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, 0);
+                    }
+                    else
+                    {
+                        // TODO: Need to be refactored.
+                        await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, bucket.Prize);
+                    }
+                }
+            }
+
+            foreach (var user in losers)
+            {
+                var score = scoreboard[user];
+
+                if (score == null)
+                {
+                    // TODO: Need to be refactored.
+                    await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, 0);
+                }
+                else
+                {
+                    // TODO: Need to be refactored.
+                    await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, Token.MinValue);
+                }
+            }
+
+            await _accountRepository.CommitAsync(cancellationToken);
+        }
+
         public async Task CreateAccountAsync(UserId userId)
         {
             var account = new Account(userId);
@@ -229,6 +280,25 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             }
         }
 
+        private async Task PayoutChallengeAsync(UserId userId, Currency currency, decimal amount)
+        {
+            var account = await _accountRepository.FindUserAccountAsync(userId);
+
+            if (currency == Currency.Money)
+            {
+                var moneyAccount = new MoneyAccount(account!);
+
+                moneyAccount.Payout(new Money(amount));
+            }
+
+            if (currency == Currency.Token)
+            {
+                var tokenAccount = new TokenAccount(account!);
+
+                tokenAccount.Payout(new Token(amount));
+            }
+        }
+
         public async Task<ValidationResult> CreateTransactionAsync(
             IMoneyAccount account,
             Money money,
@@ -281,6 +351,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             return new ValidationFailure("_error", "Unsupported transaction type for money.").ToResult();
         }
 
+        // TODO: Need to be refactored.
         private static ValidationResult TryGetCurrency(Currency currency, decimal amount, out ICurrency? result)
         {
             result = null;
@@ -316,6 +387,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
             await _accountRepository.CommitAsync(cancellationToken);
 
+            // TODO: Need to be refactored as DomainEvent
             await _serviceBusPublisher.PublishUserAccountDepositIntegrationEventAsync(
                 userId,
                 email,

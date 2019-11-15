@@ -13,10 +13,10 @@ using Newtonsoft.Json;
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
     [JsonObject]
-    public sealed class ChallengeCreationFailedIntegrationEvent : IIntegrationEvent
+    public sealed class ChallengeDeletedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public ChallengeCreationFailedIntegrationEvent(ChallengeId challengeId)
+        public ChallengeDeletedIntegrationEvent(ChallengeId challengeId)
         {
             ChallengeId = challengeId;
         }
@@ -24,6 +24,6 @@ namespace eDoxa.Cashier.Api.IntegrationEvents
         [JsonProperty]
         public ChallengeId ChallengeId { get; }
 
-        public string Name => IntegrationEventNames.ChallengeCreationFailed;
+        public string Name => IntegrationEventNames.ChallengeDeleted;
     }
 }

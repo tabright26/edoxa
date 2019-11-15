@@ -102,7 +102,7 @@ namespace eDoxa.Challenges.Aggregator.Controllers
             }
             catch (ApiException exception)
             {
-                await _serviceBusPublisher.PublishChallengeCreationFailedIntegrationEventAsync(challengeId);
+                await _serviceBusPublisher.PublishChallengeDeletedIntegrationEventAsync(challengeId);
 
                 return this.BadRequest(JsonConvert.DeserializeObject<ValidationProblemDetails>(exception.Content));
             }

@@ -24,7 +24,8 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
             subscriber.Subscribe<TransactionSuccededIntegrationEvent, TransactionSuccededIntegrationEventHandler>();
 
             // Challenge service integration events.
-            subscriber.Subscribe<ChallengeCreationFailedIntegrationEvent, ChallengeCreationFailedIntegrationEventHandler>();
+            subscriber.Subscribe<ChallengeDeletedIntegrationEvent, ChallengeDeletedIntegrationEventHandler>();
+            subscriber.Subscribe<ChallengeClosedIntegrationEvent, ChallengeClosedIntegrationEventHandler>();
         }
     }
 }

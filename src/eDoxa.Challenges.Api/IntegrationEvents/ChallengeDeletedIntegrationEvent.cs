@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeCreationFailedIntegrationEvent.cs
-// Date Created: 2019-11-08
+// Date Created: 2019-11-07
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,13 +10,13 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Challenges.Aggregator.IntegrationEvents
+namespace eDoxa.Challenges.Api.IntegrationEvents
 {
     [JsonObject]
-    public sealed class ChallengeCreationFailedIntegrationEvent : IIntegrationEvent
+    public sealed class ChallengeDeletedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public ChallengeCreationFailedIntegrationEvent(ChallengeId challengeId)
+        public ChallengeDeletedIntegrationEvent(ChallengeId challengeId)
         {
             ChallengeId = challengeId;
         }
@@ -24,6 +24,6 @@ namespace eDoxa.Challenges.Aggregator.IntegrationEvents
         [JsonProperty]
         public ChallengeId ChallengeId { get; }
 
-        public string Name => IntegrationEventNames.ChallengeCreationFailed;
+        public string Name => IntegrationEventNames.ChallengeDeleted;
     }
 }
