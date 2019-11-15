@@ -147,11 +147,6 @@ namespace eDoxa.Clans.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-        }
-
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
@@ -163,7 +158,7 @@ namespace eDoxa.Clans.Api
             builder.RegisterModule<ClansModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
             subscriber.UseIntegrationEventSubscriptions();
 
@@ -191,11 +186,6 @@ namespace eDoxa.Clans.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

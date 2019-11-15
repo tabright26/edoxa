@@ -6,9 +6,7 @@ import {
 } from "./types";
 import { Game } from "types";
 
-export function unlinkGameAccountCredential(
-  game: Game
-): GameCredentialActionCreators {
+export function unlinkGameCredential(game: Game): GameCredentialActionCreators {
   return {
     types: [
       UNLINK_GAME_CREDENTIAL,
@@ -18,7 +16,7 @@ export function unlinkGameAccountCredential(
     payload: {
       request: {
         method: "DELETE",
-        url: `games/api/${game}/credential`
+        url: `games/api/games/${game}/credentials`
       }
     }
   };

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -33,13 +34,13 @@ namespace eDoxa.Games.Services
             _authenticationRepository = authenticationRepository;
         }
         
-        public async Task<Authentication> FindAuthenticationAsync(UserId userId, Game game)
+        public async Task<GameAuthentication> FindAuthenticationAsync(UserId userId, Game game)
         {
             return await _authenticationRepository.GetAuthenticationAsync(userId, game);
         }
 
-        public async Task<Authentication<TAuthenticationFactor>> FindAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
-        where TAuthenticationFactor :class, IAuthenticationFactor
+        public async Task<GameAuthentication<TAuthenticationFactor>> FindAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
+        where TAuthenticationFactor :class, IGameAuthenticationFactor
         {
             return await _authenticationRepository.GetAuthenticationAsync<TAuthenticationFactor>(userId, game);
         }
@@ -56,11 +57,11 @@ namespace eDoxa.Games.Services
             return await adapter.GenerateAuthenticationAsync(userId, request);
         }
 
-        public async Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, Authentication authentication)
+        public async Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication)
         {
             var adapter = _authenticationValidatorFactory.CreateInstance(game);
 
-            return await adapter.ValidateAuthenticationAsync(userId, authentication);
+            return await adapter.ValidateAuthenticationAsync(userId, gameAuthentication);
         }
     }
 }

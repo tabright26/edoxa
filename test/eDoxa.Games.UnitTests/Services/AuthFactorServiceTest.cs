@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
@@ -67,23 +68,23 @@ namespace eDoxa.Games.UnitTests.Services
             // Arrange
             var userId = new UserId();
 
-            var authFactor = new Authentication<LeagueOfLegendsAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsAuthenticationFactor(1, string.Empty, 2, string.Empty));
+            var authFactor = new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty));
 
             var mockAuthFactorGenerator = new Mock<IAuthenticationGeneratorFactory>();
             var mockAuthFactorValidator = new Mock<IAuthenticationValidatorFactory>();
             var mockAuthFactorRepository = new Mock<IAuthenticationRepository>();
 
-            mockAuthFactorRepository.Setup(repository => repository.GetAuthenticationAsync<LeagueOfLegendsAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()))
+            mockAuthFactorRepository.Setup(repository => repository.GetAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(authFactor)
                 .Verifiable();
 
             var authFactorService = new AuthenticationService(mockAuthFactorGenerator.Object, mockAuthFactorValidator.Object, mockAuthFactorRepository.Object);
 
             // Act
-            await authFactorService.FindAuthenticationAsync<LeagueOfLegendsAuthenticationFactor>(userId, Game.LeagueOfLegends);
+            await authFactorService.FindAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(userId, Game.LeagueOfLegends);
 
             // Assert
-            mockAuthFactorRepository.Verify(repository => repository.GetAuthenticationAsync<LeagueOfLegendsAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            mockAuthFactorRepository.Verify(repository => repository.GetAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
@@ -130,7 +131,7 @@ namespace eDoxa.Games.UnitTests.Services
             // Arrange
             var profileIcon = 1;
 
-            var authFactor = new Authentication<LeagueOfLegendsAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsAuthenticationFactor(1, string.Empty, 2, string.Empty));
+            var authFactor = new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty));
 
             var mockAuthFactorGenerator = new Mock<IAuthenticationGeneratorFactory>();
             var mockAuthFactorValidator = new Mock<IAuthenticationValidatorFactory>();

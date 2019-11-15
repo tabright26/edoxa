@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
-import { validateGameAccountAuthentication } from "store/root/user/game/authentication/actions";
+import { validateGameAuthentication } from "store/root/user/game/authentication/actions";
+import { loadGames } from "store/root/game/actions";
 import {
   VALIDATE_GAME_AUTHENTICATION_SUCCESS,
   VALIDATE_GAME_AUTHENTICATION_FAIL,
@@ -7,27 +8,30 @@ import {
 } from "store/root/user/game/authentication/types";
 import Link from "./Validate";
 import { Game } from "types";
+import { toastr } from "react-redux-toastr";
 
 interface OwnProps {
   game: Game;
-  setAuthFactor: (data: any) => any;
+  handleCancel: () => any;
+  setAuthenticationFactor: (data: any) => any;
 }
 
 const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
   return {
-    validateGameAccountAuthentication: () =>
-      dispatch(validateGameAccountAuthentication(ownProps.game)).then(
+    validateGameAuthentication: () =>
+      dispatch(validateGameAuthentication(ownProps.game)).then(
         (action: GameAuthenticationActions) => {
           switch (action.type) {
             case VALIDATE_GAME_AUTHENTICATION_SUCCESS: {
-              ownProps.setAuthFactor(null);
-              break;
+              return dispatch(loadGames()).then(() => ownProps.handleCancel());
             }
             case VALIDATE_GAME_AUTHENTICATION_FAIL: {
-              ownProps.setAuthFactor(null);
+              toastr.error("Error", "Validating game authentication failed.");
+              ownProps.setAuthenticationFactor(null);
               break;
             }
           }
+          return Promise.resolve(action);
         }
       )
   };

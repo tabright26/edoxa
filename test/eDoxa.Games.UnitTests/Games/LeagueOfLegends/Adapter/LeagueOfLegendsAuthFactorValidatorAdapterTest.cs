@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
@@ -62,7 +63,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             var authFactorService = new LeagueOfLegendsAuthenticationValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
 
             // Act
-            var result = await authFactorService.ValidateAuthenticationAsync(userId, new Authentication<LeagueOfLegendsAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsAuthenticationFactor(1, string.Empty, 2, string.Empty)));
+            var result = await authFactorService.ValidateAuthenticationAsync(userId, new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty)));
 
             // Assert
             result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
@@ -107,7 +108,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             var authFactorService = new LeagueOfLegendsAuthenticationValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
 
             // Act
-            var result = await authFactorService.ValidateAuthenticationAsync(userId, new Authentication<LeagueOfLegendsAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsAuthenticationFactor(1, string.Empty, 2, string.Empty)));
+            var result = await authFactorService.ValidateAuthenticationAsync(userId, new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty)));
 
             // Assert
             result.Should().BeOfType<FluentValidation.Results.ValidationResult>();

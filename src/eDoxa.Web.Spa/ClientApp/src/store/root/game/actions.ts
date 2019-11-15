@@ -1,4 +1,9 @@
-import { LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL, GamesActionCreators } from "./types";
+import {
+  LOAD_GAMES,
+  LOAD_GAMES_SUCCESS,
+  LOAD_GAMES_FAIL,
+  GamesActionCreators
+} from "./types";
 
 export function loadGames(): GamesActionCreators {
   return {
@@ -6,7 +11,7 @@ export function loadGames(): GamesActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: `games/api/game/options`
+        url: `games/api/games`
       }
     }
   };

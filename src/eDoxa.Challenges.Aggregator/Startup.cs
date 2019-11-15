@@ -157,6 +157,14 @@ namespace eDoxa.Challenges.Aggregator
                         options.ApiSecret = "secret";
                     });
 
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.CashierApi,
+                Scopes.GamesApi,
+                Scopes.ChallengesApi);
+
             services.AddHttpContextAccessor();
 
             services.AddTransient<AccessTokenDelegatingHandler>();
@@ -213,35 +221,14 @@ namespace eDoxa.Challenges.Aggregator
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
         }
 
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
-
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
-                Scopes.CashierApi,
-                Scopes.GamesApi,
-                Scopes.ChallengesApi);
-        }
-
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
-            //if (HostingEnvironment.IsDevelopment())
-            //{
-            //    //application.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
-            //    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            //    application.UseHsts();
-            //}
+            application.UseCustomExceptionHandler();
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
@@ -267,11 +254,6 @@ namespace eDoxa.Challenges.Aggregator
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application);
 
             application.UseSwagger(provider, AppSettings);
         }

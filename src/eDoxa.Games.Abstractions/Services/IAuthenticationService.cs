@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
@@ -15,15 +16,15 @@ namespace eDoxa.Games.Abstractions.Services
 {
     public interface IAuthenticationService
     {
-        Task<Authentication> FindAuthenticationAsync(UserId userId, Game game);
+        Task<GameAuthentication> FindAuthenticationAsync(UserId userId, Game game);
 
-        Task<Authentication<TAuthenticationFactor>> FindAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
-        where TAuthenticationFactor :class, IAuthenticationFactor;
+        Task<GameAuthentication<TAuthenticationFactor>> FindAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
+        where TAuthenticationFactor :class, IGameAuthenticationFactor;
 
         Task<bool> AuthenticationExistsAsync(UserId userId, Game game);
 
         Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request);
 
-        Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, Authentication authentication);
+        Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication);
     }
 }

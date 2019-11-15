@@ -65,7 +65,7 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
             return new ValidationResult();
         }
 
-        private async Task<LeagueOfLegendsAuthentication> GenerateAuthFactor(Summoner summoner)
+        private async Task<LeagueOfLegendsGameAuthentication> GenerateAuthFactor(Summoner summoner)
         {
             const int ProfileIconIdMinIndex = 0;
             const int ProfileIconIdMaxIndex = 28;
@@ -84,9 +84,9 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
             var t = await this.DownloadSummonerProfileIconIdAsync(currentSummonerProfileIconId);
             var y = await this.DownloadSummonerProfileIconIdAsync(expectedSummonerProfileIconId);
 
-            return new LeagueOfLegendsAuthentication(
+            return new LeagueOfLegendsGameAuthentication(
                 PlayerId.Parse(summoner.AccountId),
-                new LeagueOfLegendsAuthenticationFactor(
+                new LeagueOfLegendsGameAuthenticationFactor(
                     currentSummonerProfileIconId,
                     t,
                     expectedSummonerProfileIconId,

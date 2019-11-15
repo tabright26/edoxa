@@ -152,14 +152,9 @@ namespace eDoxa.Challenges.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddHttpClients(AppSettings);
-        }
-
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
-
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings, Scopes.CashierApi, Scopes.GamesApi);
+
+            services.AddHttpClients(AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -169,7 +164,7 @@ namespace eDoxa.Challenges.Api
             builder.RegisterModule<ChallengesModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
             subscriber.UseIntegrationEventSubscriptions();
 
@@ -197,11 +192,6 @@ namespace eDoxa.Challenges.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

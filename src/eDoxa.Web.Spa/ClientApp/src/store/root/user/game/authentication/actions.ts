@@ -9,7 +9,7 @@ import {
 } from "./types";
 import { Game } from "types";
 
-export function generateGameAccountAuthentication(
+export function generateGameAuthentication(
   game: Game,
   data: any
 ): GameAuthenticationActionCreators {
@@ -22,14 +22,14 @@ export function generateGameAccountAuthentication(
     payload: {
       request: {
         method: "POST",
-        url: `games/api/${game}/auth-factor`,
+        url: `games/api/games/${game}/authentications`,
         data
       }
     }
   };
 }
 
-export function validateGameAccountAuthentication(
+export function validateGameAuthentication(
   game: Game
 ): GameAuthenticationActionCreators {
   return {
@@ -40,8 +40,8 @@ export function validateGameAccountAuthentication(
     ],
     payload: {
       request: {
-        method: "POST",
-        url: `games/api/${game}/credential`
+        method: "PUT",
+        url: `games/api/games/${game}/authentications`
       }
     }
   };

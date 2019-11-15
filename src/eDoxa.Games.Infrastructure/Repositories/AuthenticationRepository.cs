@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -24,10 +25,10 @@ namespace eDoxa.Games.Infrastructure.Repositories
             _redisCacheClient = redisCacheClient;
         }
 
-        public async Task AddAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game, Authentication<TAuthenticationFactor> authentication)
-        where TAuthenticationFactor : class, IAuthenticationFactor
+        public async Task AddAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game, GameAuthentication<TAuthenticationFactor> gameAuthentication)
+        where TAuthenticationFactor : class, IGameAuthenticationFactor
         {
-            await _redisCacheClient.Db5.AddAsync(GenerateKey(userId, game), authentication, TimeSpan.FromMinutes(15));
+            await _redisCacheClient.Db5.AddAsync(GenerateKey(userId, game), gameAuthentication, TimeSpan.FromMinutes(15));
         }
 
         public async Task RemoveAuthenticationAsync(UserId userId, Game game)
@@ -35,15 +36,15 @@ namespace eDoxa.Games.Infrastructure.Repositories
             await _redisCacheClient.Db5.RemoveAsync(GenerateKey(userId, game));
         }
 
-        public async Task<Authentication<TAuthenticationFactor>> GetAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
-        where TAuthenticationFactor : class, IAuthenticationFactor
+        public async Task<GameAuthentication<TAuthenticationFactor>> GetAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
+        where TAuthenticationFactor : class, IGameAuthenticationFactor
         {
-            return await _redisCacheClient.Db5.GetAsync<Authentication<TAuthenticationFactor>>(GenerateKey(userId, game));
+            return await _redisCacheClient.Db5.GetAsync<GameAuthentication<TAuthenticationFactor>>(GenerateKey(userId, game));
         }
 
-        public async Task<Authentication> GetAuthenticationAsync(UserId userId, Game game)
+        public async Task<GameAuthentication> GetAuthenticationAsync(UserId userId, Game game)
         {
-            return await _redisCacheClient.Db5.GetAsync<Authentication>(GenerateKey(userId, game));
+            return await _redisCacheClient.Db5.GetAsync<GameAuthentication>(GenerateKey(userId, game));
         }
 
         public async Task<bool> AuthenticationExistsAsync(UserId userId, Game game)

@@ -18,7 +18,7 @@ using RiotSharp.Misc;
 
 namespace eDoxa.Games.LeagueOfLegends.Adapter
 {
-    public sealed class LeagueOfLegendsAuthenticationValidatorAdapter : AuthenticationValidatorAdapter<LeagueOfLegendsAuthentication>
+    public sealed class LeagueOfLegendsAuthenticationValidatorAdapter : AuthenticationValidatorAdapter<LeagueOfLegendsGameAuthentication>
     {
         private readonly ILeagueOfLegendsService _leagueOfLegendsService;
         private readonly IAuthenticationRepository _authenticationRepository;
@@ -31,13 +31,13 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsAuthentication authentication)
+        public override async Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
         {
             await _authenticationRepository.RemoveAuthenticationAsync(userId, Game);
 
-            var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByAccountIdAsync(Region.Na, authentication.PlayerId);
+            var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByAccountIdAsync(Region.Na, gameAuthentication.PlayerId);
             
-            if (summoner.ProfileIconId != authentication.Factor.ExpectedSummonerProfileIconId)
+            if (summoner.ProfileIconId != gameAuthentication.Factor.ExpectedSummonerProfileIconId)
             {
                 return new ValidationFailure("_error", $"{Game} authentication process failed.").ToResult();
             }

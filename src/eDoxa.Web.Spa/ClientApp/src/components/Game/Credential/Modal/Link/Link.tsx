@@ -6,17 +6,17 @@ import GameAuthenticationFrom from "components/Game/Authentication/Form";
 import { compose } from "recompose";
 
 const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
-  const [authFactor, setAuthFactor] = useState(null);
+  const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
     <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
       <ModalHeader toggle={handleHide}>
         <strong>{gameOption.displayName} Authentications</strong>
       </ModalHeader>
       <ModalBody>
-        {!authFactor ? (
+        {!authenticationFactor ? (
           <GameAuthenticationFrom.Generate
             game={gameOption.name}
-            setAuthFactor={setAuthFactor}
+            setAuthenticationFactor={setAuthenticationFactor}
           />
         ) : (
           <>
@@ -29,7 +29,7 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
               <div className="text-center">
                 <h5>Current</h5>
                 <img
-                  src={authFactor.currentSummonerProfileIconBase64}
+                  src={authenticationFactor.currentSummonerProfileIconBase64}
                   alt="current"
                   height={100}
                   width={100}
@@ -38,7 +38,7 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
               <div className="text-center">
                 <h5>Expected</h5>
                 <img
-                  src={authFactor.expectedSummonerProfileIconBase64}
+                  src={authenticationFactor.expectedSummonerProfileIconBase64}
                   alt="expected"
                   height={100}
                   width={100}
@@ -53,7 +53,8 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
             <div className="d-flex justify-content-center mt-3">
               <GameAuthenticationFrom.Validate
                 game={gameOption.name}
-                setAuthFactor={setAuthFactor}
+                handleCancel={handleHide}
+                setAuthenticationFactor={setAuthenticationFactor}
               />
             </div>
           </>

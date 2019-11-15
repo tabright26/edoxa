@@ -3,23 +3,22 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { GENERATE_GAME_AUTH_FACTOR_FORM } from "forms";
+import { GENERATE_GAME_AUTHENTICATION_FORM } from "forms";
 import { compose } from "recompose";
 import { validate } from "./validate";
 import FormValidation from "components/Shared/Form/Validation";
 
 const GenerateGameAuthenticationForm: FunctionComponent<any> = ({
   handleSubmit,
-  generateGameAuthFactor,
+  generateGameAuthentication,
   error,
-  setAuthFactor
+  setAuthenticationFactor
 }) => (
   <Form
     onSubmit={handleSubmit((data: any) =>
-      generateGameAuthFactor(data).then(action => {
-        console.log(action);
-        return setAuthFactor(action.payload.data);
-      })
+      generateGameAuthentication(data).then(action =>
+        setAuthenticationFactor(action.payload.data)
+      )
     )}
   >
     {error && <FormValidation error={error} />}
@@ -29,11 +28,7 @@ const GenerateGameAuthenticationForm: FunctionComponent<any> = ({
     </FormGroup>
     <FormGroup>
       <label>Region</label>
-      <Field
-        name="region"
-        component={Input.Select}
-        disabled={true}
-      >
+      <Field name="region" component={Input.Select} disabled={true}>
         <option value="NA">North America</option>
       </Field>
     </FormGroup>
@@ -42,7 +37,7 @@ const GenerateGameAuthenticationForm: FunctionComponent<any> = ({
 );
 
 const enhance = compose<any, any>(
-  reduxForm({ form: GENERATE_GAME_AUTH_FACTOR_FORM, validate })
+  reduxForm({ form: GENERATE_GAME_AUTHENTICATION_FORM, validate })
 );
 
 export default enhance(GenerateGameAuthenticationForm);

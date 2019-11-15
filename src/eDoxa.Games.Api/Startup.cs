@@ -152,11 +152,6 @@ namespace eDoxa.Games.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-        }
-
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
@@ -168,7 +163,7 @@ namespace eDoxa.Games.Api
             builder.RegisterModule<GamesModule>();
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application , IApiVersionDescriptionProvider provider)
         {
             application.UseCustomExceptionHandler();
 
@@ -194,11 +189,6 @@ namespace eDoxa.Games.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application);
 
             application.UseSwagger(provider, AppSettings);
         }

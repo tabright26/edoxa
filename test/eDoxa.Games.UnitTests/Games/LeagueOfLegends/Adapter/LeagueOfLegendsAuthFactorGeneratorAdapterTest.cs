@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
@@ -69,7 +70,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
                 .Verifiable();
 
             mockAuthFactorRepository
-                .Setup(repository => repository.AddAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<Authentication<LeagueOfLegendsAuthenticationFactor>>()))
+                .Setup(repository => repository.AddAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -94,7 +95,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
                 Times.Once);
 
             mockAuthFactorRepository.Verify(
-                repository => repository.AddAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<Authentication<LeagueOfLegendsAuthenticationFactor>>()),
+                repository => repository.AddAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>>()),
                 Times.Once);
         }
 

@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -26,11 +27,11 @@ namespace eDoxa.Games.UnitTests.Domain.AggregateModels.AuthFactorAggregate
         public void Contructor_Tests()
         {
             // Arrange
-            var authenticationFactor =  new LeagueOfLegendsAuthenticationFactor(1, string.Empty, 2, string.Empty);
+            var authenticationFactor =  new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty);
             var playerId = new PlayerId();
 
             // Act
-            var authFactor = new Authentication<LeagueOfLegendsAuthenticationFactor>(playerId, authenticationFactor);
+            var authFactor = new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(playerId, authenticationFactor);
 
             // Assert
             authFactor.PlayerId.Should().Be(playerId);

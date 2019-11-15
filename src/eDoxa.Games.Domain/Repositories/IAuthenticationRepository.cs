@@ -7,21 +7,22 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Games.Domain.Repositories
 {
     public interface IAuthenticationRepository
     {
-        Task AddAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game, Authentication<TAuthenticationFactor> authentication)
-        where TAuthenticationFactor : class, IAuthenticationFactor;
+        Task AddAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game, GameAuthentication<TAuthenticationFactor> gameAuthentication)
+        where TAuthenticationFactor : class, IGameAuthenticationFactor;
 
         Task RemoveAuthenticationAsync(UserId userId, Game game);
 
-        Task<Authentication<TAuthenticationFactor>> GetAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
-        where TAuthenticationFactor : class, IAuthenticationFactor;
+        Task<GameAuthentication<TAuthenticationFactor>> GetAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
+        where TAuthenticationFactor : class, IGameAuthenticationFactor;
 
-        Task<Authentication> GetAuthenticationAsync(UserId userId, Game game);
+        Task<GameAuthentication> GetAuthenticationAsync(UserId userId, Game game);
 
         Task<bool> AuthenticationExistsAsync(UserId userId, Game game);
     }

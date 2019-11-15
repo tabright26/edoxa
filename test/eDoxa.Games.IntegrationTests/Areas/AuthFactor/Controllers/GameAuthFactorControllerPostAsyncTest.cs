@@ -13,6 +13,7 @@ using Autofac;
 
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;
@@ -56,7 +57,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.AuthFactor.Controllers
             // Arrange
             var userId = new UserId();
 
-            var authFactor = new Authentication<LeagueOfLegendsAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsAuthenticationFactor(1, string.Empty, 2, string.Empty));
+            var authFactor = new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty));
 
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
@@ -70,7 +71,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.AuthFactor.Controllers
                             .Verifiable();
 
                         mockAuthFactorService
-                            .Setup(authFactorService => authFactorService.FindAuthenticationAsync<LeagueOfLegendsAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()))
+                            .Setup(authFactorService => authFactorService.FindAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()))
                             .ReturnsAsync(authFactor)
                             .Verifiable();
 
