@@ -33,21 +33,21 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Services
             return await _transactionRepository.FindTransactionAsync(metadata);
         }
 
-        public async Task MaskTransactionAsSuccededAsync(ITransaction transaction, CancellationToken cancellationToken = default)
+        public async Task MarkTransactionAsSuccededAsync(ITransaction transaction, CancellationToken cancellationToken = default)
         {
             transaction.MarkAsSucceded();
 
             await _transactionRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task MaskTransactionAsFailedAsync(ITransaction transaction, CancellationToken cancellationToken = default)
+        public async Task MarkTransactionAsFailedAsync(ITransaction transaction, CancellationToken cancellationToken = default)
         {
             transaction.MarkAsFailed();
 
             await _transactionRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task MaskTransactionAsCanceledAsync(ITransaction transaction, CancellationToken cancellationToken = default)
+        public async Task MarkTransactionAsCanceledAsync(ITransaction transaction, CancellationToken cancellationToken = default)
         {
             transaction.MarkAsCanceled();
 

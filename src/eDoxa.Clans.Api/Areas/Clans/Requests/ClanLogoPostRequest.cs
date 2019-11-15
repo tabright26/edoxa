@@ -1,6 +1,6 @@
 ﻿// Filename: ClanLogoPostRequest.cs
 // Date Created: 2019-09-30
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -19,7 +19,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Requests
         }
 
 #nullable disable
-        public ClanLogoPostRequest()
+        public ClanLogoPostRequest() //Todo: Why is this never used.
         {
             // Required by Fluent Validation.
         }

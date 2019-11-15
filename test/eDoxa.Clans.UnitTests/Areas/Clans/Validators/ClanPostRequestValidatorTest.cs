@@ -1,6 +1,6 @@
 ﻿// Filename: ClanPostRequestValidatorTest.cs
 // Date Created: 2019-10-02
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -73,30 +73,6 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Name, name);
-
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        }
-
-        [Theory]
-        [MemberData(nameof(ValidSummaries))]
-        public void Validate_WhenSummaryIsValid_ShouldNotHaveValidationErrorFor(string summary)
-        {
-            // Arrange
-            var validator = new ClanPostRequestValidator();
-
-            // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Summary, summary);
-        }
-
-        [Theory]
-        [MemberData(nameof(InvalidSummaries))]
-        public void Validate_WhenSummaryIsInvalid_ShouldHaveValidationErrorFor(string summary, string errorMessage)
-        {
-            // Arrange
-            var validator = new ClanPostRequestValidator();
-
-            // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Summary, summary);
 
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }

@@ -1,6 +1,6 @@
 ﻿// Filename: AccountDepositPostRequestTest.cs
 // Date Created: 2019-09-16
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Requests
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             //Arrange
-            var request = new AccountDepositPostRequest();
+            var request = new AccountDepositPostRequest("50", 10);
 
             var requestSerialized = JsonConvert.SerializeObject(request);
 

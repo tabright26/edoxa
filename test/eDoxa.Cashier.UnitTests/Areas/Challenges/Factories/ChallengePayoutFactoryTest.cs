@@ -1,6 +1,6 @@
 ﻿// Filename: PayoutFactoryTest.cs
 // Date Created: 2019-09-16
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -17,9 +17,9 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Factories
 {
-    public sealed class PayoutFactoryTest : UnitTest
+    public sealed class ChallengePayoutFactoryTest : UnitTest
     {
-        public PayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ChallengePayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

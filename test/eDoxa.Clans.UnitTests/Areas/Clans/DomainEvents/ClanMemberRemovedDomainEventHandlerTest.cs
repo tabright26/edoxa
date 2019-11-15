@@ -1,0 +1,55 @@
+﻿// Filename: CandidatureAcceptedDomainEventHandler.cs
+// Date Created: 2019-10-01
+//
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System.Threading;
+using System.Threading.Tasks;
+
+using eDoxa.Clans.Api.Areas.Clans.DomainEvents;
+using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
+using eDoxa.Clans.Domain.DomainEvents;
+using eDoxa.Clans.Domain.Models;
+using eDoxa.Clans.TestHelper;
+using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.ServiceBus.Abstractions;
+
+using FluentAssertions.Equivalency;
+
+using Moq;
+
+using Xunit;
+
+using IMemberInfo = eDoxa.Clans.Domain.Models.IMemberInfo;
+
+namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
+{
+    public class ClanMemberRemovedDomainEventHandlerTest : UnitTest
+    {
+        public ClanMemberRemovedDomainEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
+        {
+        }
+
+        [Fact]
+        public async Task Handle()
+        {
+            // Arrange
+            var mockServiceBus = new Mock<IServiceBusPublisher>();
+
+            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var domainEventHandler = new ClanMemberRemovedDomainEventHandler(mockServiceBus.Object);
+
+            // Act
+            await domainEventHandler.Handle(new ClanMemberRemovedDomainEvent(new UserId(), new ClanId()), CancellationToken.None);
+
+            // Assert
+            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()), Times.Once);
+        }
+    }
+}

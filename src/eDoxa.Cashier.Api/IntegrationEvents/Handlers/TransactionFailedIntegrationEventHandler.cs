@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
             if (transaction != null)
             {
-                await _transactionService.MaskTransactionAsFailedAsync(transaction);
+                await _transactionService.MarkTransactionAsFailedAsync(transaction);
             }
         }
     }

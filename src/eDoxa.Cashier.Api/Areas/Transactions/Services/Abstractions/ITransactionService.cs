@@ -18,10 +18,10 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Services.Abstractions
 
         Task<ITransaction?> FindTransactionAsync(TransactionMetadata metadata);
 
-        Task MaskTransactionAsSuccededAsync(ITransaction transaction, CancellationToken cancellationToken = default);
+        Task MarkTransactionAsSuccededAsync(ITransaction transaction, CancellationToken cancellationToken = default);
 
-        Task MaskTransactionAsFailedAsync(ITransaction transaction, CancellationToken cancellationToken = default);
+        Task MarkTransactionAsFailedAsync(ITransaction transaction, CancellationToken cancellationToken = default);
 
-        Task MaskTransactionAsCanceledAsync(ITransaction transaction, CancellationToken cancellationToken = default);
+        Task MarkTransactionAsCanceledAsync(ITransaction transaction, CancellationToken cancellationToken = default);
     }
 }

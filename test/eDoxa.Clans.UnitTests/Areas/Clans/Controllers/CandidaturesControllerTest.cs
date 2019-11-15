@@ -1,6 +1,6 @@
 // Filename: CandidaturesControllerTest.cs
 // Date Created: 2019-10-02
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -259,6 +259,36 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             mockCandidatureService.Verify(clanService => clanService.FetchCandidaturesAsync(It.IsAny<UserId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByUserIdAsync_WithNullParameters_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockCandidatureService = new Mock<ICandidatureService>();
+
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
+
+            // Act
+            var result = await candidatureController.GetAsync(null, null);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task GetByUserIdAsync_WithAllParameters_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockCandidatureService = new Mock<ICandidatureService>();
+
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
+
+            // Act
+            var result = await candidatureController.GetAsync(new ClanId(), new UserId());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
 
         [Fact]
