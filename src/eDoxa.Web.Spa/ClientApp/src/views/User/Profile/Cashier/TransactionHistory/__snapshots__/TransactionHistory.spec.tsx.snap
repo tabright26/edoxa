@@ -3,7 +3,7 @@
 exports[`renders without crashing 1`] = `
 Array [
   <h5
-    className="text-uppercase mb-4"
+    className="text-uppercase my-4"
   >
     TRANSACTION HISTORY
   </h5>,

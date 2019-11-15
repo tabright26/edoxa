@@ -1,14 +1,15 @@
 import React, { Fragment } from "react";
 
-import UserGameList from "components/User/Game/List";
-import GenerateGameAuthFactorModal from "components/User/Game/AuthFactor/Modal/Authenticate/Authenticate";
+import GameList from "components/Game/List";
+import GameAccountCredentialModal from "components/Game/Account/Credential/Modal";
 
 const ProfileConnections = () => {
   return (
     <Fragment>
-      <h5>GAME CONNECTIONS</h5>
-      <UserGameList />
-      <GenerateGameAuthFactorModal />
+      <h5 className="text-uppercase my-4">GAME CONNECTIONS</h5>
+      <GameList />
+      <GameAccountCredentialModal.Link />
+      <GameAccountCredentialModal.Unlink />
     </Fragment>
   );
 };

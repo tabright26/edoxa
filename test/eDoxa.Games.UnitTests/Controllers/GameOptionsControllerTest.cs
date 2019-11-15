@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Controllers;
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.TestHelper;
@@ -31,16 +32,16 @@ namespace eDoxa.Games.UnitTests.Controllers
         public void GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockGameOoptions = new Mock<IOptions<GamesOptions>>();
+            var serviceCredential = new Mock<ICredentialService>();
 
-            var gameOptionsController = new GameOptionsController(mockGameOoptions.Object);
+            var gameOptionsController = new GameOptionsController(serviceCredential.Object, new OptionsWrapper<GamesOptions>(new GamesOptions()));
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             gameOptionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = gameOptionsController.Get();
+            var result = gameOptionsController.GetAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

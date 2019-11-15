@@ -7,13 +7,21 @@ import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";
 
-const Doxatag: FunctionComponent<any> = ({ className, doxatag: { data, error, loading } }) => {
+const Doxatag: FunctionComponent<any> = ({
+  className,
+  doxatag: { data, error, loading }
+}) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">DOXATAG</strong>
-        <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} disabled={buttonDisabled} onClick={() => setButtonDisabled(true)}>
+        <Button.Link
+          className="p-0 ml-auto my-auto"
+          icon={faEdit}
+          disabled={buttonDisabled}
+          onClick={() => setButtonDisabled(true)}
+        >
           UPDATE
         </Button.Link>
       </CardHeader>
@@ -29,7 +37,9 @@ const Doxatag: FunctionComponent<any> = ({ className, doxatag: { data, error, lo
                   {data.name}#{data.code}
                 </span>
               ) : (
-                <DoxatagForm.Update handleCancel={() => setButtonDisabled(false)} />
+                <DoxatagForm.Update
+                  handleCancel={() => setButtonDisabled(false)}
+                />
               )}
             </dd>
           </dl>

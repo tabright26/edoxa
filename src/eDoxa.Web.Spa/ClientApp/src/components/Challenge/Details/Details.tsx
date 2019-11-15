@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Row, Col, CardDeck, Card, Button, CardBody } from "reactstrap";
+import { Row, Col, CardDeck, Card, CardBody } from "reactstrap";
 import ChallengeLogo from "components/Challenge/Logo/Logo";
 import ChallengeSummary from "components/Challenge/Summary";
 import ChallengeScoreboard from "components/Challenge/Scoreboard";
@@ -25,7 +25,7 @@ const ChallengeDetails: FunctionComponent<Props> = ({ challenge }) => {
         <>
           <Row>
             <Col xs={{ size: 10, order: 1 }}>
-              <CardDeck>
+              <CardDeck className="mt-4">
                 <ChallengeLogo className="col-2 bg-gray-900" />
                 <Card className="col-10">
                   <CardBody className="d-flex">
@@ -36,7 +36,7 @@ const ChallengeDetails: FunctionComponent<Props> = ({ challenge }) => {
               </CardDeck>
             </Col>
             <Col xs={{ size: 2, order: 2 }}>
-              <ChallengeScoring />
+              <ChallengeScoring className="mt-4" />
             </Col>
             <Col xs={{ size: 2, order: 4 }}>
               <ChallengePayout />

@@ -8,7 +8,7 @@ exports[`renders without crashing 1`] = `
     className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2"
   >
     <div
-      className="card"
+      className="mt-4 card"
     >
       <div
         className="card-header"

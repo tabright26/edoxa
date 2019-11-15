@@ -15,7 +15,7 @@ type Props = InnerProps & OutterProps;
 
 const AppBreadcrumb: FunctionComponent<Props> = ({ isAuthenticated }) =>
   isAuthenticated && (
-    <Breadcrumb>
+    <Breadcrumb listClassName="m-0">
       <li className="breadcrumb-menu">
         <div className="btn-group" role="group">
           <MoneyBreadcrumb />

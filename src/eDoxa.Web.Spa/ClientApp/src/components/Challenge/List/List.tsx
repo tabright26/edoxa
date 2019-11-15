@@ -21,7 +21,7 @@ const ChallengeList: FunctionComponent<Props> = ({
         <>
           <Row>
             <Col>
-              <Card>
+              <Card className="my-4">
                 <CardImg
                   src="https://via.placeholder.com/1680x200"
                   height="200"

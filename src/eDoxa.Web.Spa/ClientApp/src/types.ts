@@ -150,6 +150,7 @@ export interface GameOption {
   readonly name: string;
   readonly displayName: string;
   readonly displayed: boolean;
+  readonly verified: boolean;
   readonly services: Map<GameServiceName, boolean>;
 }
 
