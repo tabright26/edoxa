@@ -21,7 +21,6 @@ namespace eDoxa.Web.Spa.Infrastructure
         [Required]
         public string WebGatewayUrl { get; set; }
 
-        [Required]
         public string WebSpaClientUrl { get; set; }
 
         [Required]

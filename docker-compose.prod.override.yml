@@ -26,7 +26,7 @@ services:
 
   identity.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -50,7 +50,7 @@ services:
 
   payment.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -63,7 +63,7 @@ services:
 
   cashier.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -77,7 +77,7 @@ services:
 
   notifications.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
@@ -91,7 +91,7 @@ services:
 
   challenges.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -107,7 +107,7 @@ services:
 
   games.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -122,7 +122,7 @@ services:
 
   clans.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
@@ -136,7 +136,7 @@ services:
 
   challenges.aggregator:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -154,7 +154,7 @@ services:
 
   challenges.backgroundtasks:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__SqlServer=${CHALLENGES_BACKGROUNDTASKS_SQLSERVER_CONNECTIONSTRING}
@@ -165,7 +165,7 @@ services:
 
   web.gateway:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - Authority=http://${HOST:-localhost}:5000
@@ -182,41 +182,25 @@ services:
     volumes:
       - ./src/eDoxa.Gateway:/app
 
-  web.spa.proxy:
+  web.spa:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - WebSpaClientUrl=http://${HOST:-localhost}:3000
       - WebGatewayUrl=http://web.gateway
       - Endpoints__IdentityUrl=http://identity.api
+    volumes:
+      - './src/eDoxa.Web.Spa/ClientApp:/app/ClientApp'
+      - '/app/ClientApp/node_modules'
     ports:
       - "5300:80"
 
-  web.spa.client:
-    environment:
-      - NODE_ENV=${ENVIRONMENT}
-      - CHOKIDAR_USEPOLLING=true
-      - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
-      - REACT_APP_REDIRECT_URI=http://${HOST:-localhost}:5300/callback
-      - REACT_APP_CLIENT_ID=edoxa.web.spa
-      - REACT_APP_RESPONSE_TYPE=token id_token
-      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api challenges.api challenges.aggregator games.api clans.api
-      - REACT_APP_WEB_GATEWAY=http://${HOST:-localhost}:5200
-      - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
-      - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
-    volumes:
-      - './src/eDoxa.Web.Spa/ClientApp:/app'
-      - '/app/node_modules'
-    ports:
-      - '3000:3000'
-
   web.status:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - HealthChecks__Endpoints__0__Name=eDoxa Identity API
@@ -240,7 +224,7 @@ services:
       - HealthChecks__Endpoints__9__Name=eDoxa Web Gateway
       - HealthChecks__Endpoints__9__Uri=http://web.gateway/health
       - HealthChecks__Endpoints__10__Name=eDoxa Web Spa
-      - HealthChecks__Endpoints__10__Uri=http://web.spa.proxy/health
+      - HealthChecks__Endpoints__10__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:

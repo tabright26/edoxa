@@ -1,0 +1,149 @@
+version: '3.7'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
+
+  redis:
+    image: redis:5.0.5
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  seq:
+    image: datalust/seq:latest
+
+  identity.api:
+    image: ${ACR_REGISTRY:-edoxa}/identity.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
+    depends_on:
+      - seq
+      - mssql
+      - redis
+
+  cashier.api:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+    depends_on:
+      - seq
+      - mssql
+      - identity.api
+      - payment.api
+
+  payment.api:
+    image: ${ACR_REGISTRY:-edoxa}/payment.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+    depends_on:
+      - seq
+      - mssql
+      - identity.api
+
+  notifications.api:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+    depends_on:
+      - seq      
+      - mssql
+      - redis
+      - identity.api
+
+  challenges.api:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+    depends_on:
+      - seq   
+      - mssql
+      - redis
+      - identity.api
+      - cashier.api
+      - games.api
+
+  games.api:
+    image: ${ACR_REGISTRY:-edoxa}/games.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Games.Api/Dockerfile
+    depends_on:
+      - seq
+      - mssql
+      - redis
+      - identity.api
+
+  clans.api:
+    image: ${ACR_REGISTRY:-edoxa}/clans.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Clans.Api/Dockerfile
+    depends_on:
+      - seq
+      - mssql
+      - redis
+      - identity.api
+
+  challenges.aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.aggregator:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Aggregator/Dockerfile
+    depends_on:
+      - seq   
+      - identity.api
+      - cashier.api
+      - payment.api
+      - notifications.api
+      - games.api
+      - challenges.api
+      - clans.api
+
+  challenges.backgroundtasks:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.backgroundtasks:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.BackgroundTasks/Dockerfile
+    depends_on:
+      - seq
+      - challenges.api
+
+  web.gateway:
+    image: ${ACR_REGISTRY:-edoxa}/web.gateway:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Gateway/Dockerfile
+    depends_on:
+      - seq
+      - identity.api
+      - cashier.api
+      - payment.api
+      - notifications.api
+      - games.api
+      - challenges.api
+      - clans.api
+
+  web.spa:
+    image: ${ACR_REGISTRY:-edoxa}/web.spa:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Spa/Dockerfile-prod
+    depends_on:
+      - seq
+      - redis
+#      - identity.api
+#      - web.gateway
+
+  web.status:
+    image: ${ACR_REGISTRY:-edoxa}/web.status:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Status/Dockerfile
+    depends_on:
+      - seq
