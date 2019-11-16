@@ -5,6 +5,8 @@ import ChallengeItem from "./Item";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import Loading from "components/Shared/Loading";
 import { ChallengesState } from "store/root/challenge/types";
+import banner from "assets/img/arena/games/leagueoflegends/banner.jpg";
+import large from "assets/img/arena/games/leagueoflegends/large.png";
 
 interface Props {
   challenges: ChallengesState;
@@ -22,12 +24,15 @@ const ChallengeList: FunctionComponent<Props> = ({
           <Row>
             <Col>
               <Card className="my-4">
-                <CardImg
-                  src="https://via.placeholder.com/1680x200"
-                  height="200"
-                />
-                <CardImgOverlay>
-                  <h5>League of Legends</h5>
+                <CardImg src={banner} height="200" />
+                <CardImgOverlay className="d-flex">
+                  <img
+                    className="m-auto"
+                    alt="leagueoflegends"
+                    src={large}
+                    width={320}
+                    height={125}
+                  />
                 </CardImgOverlay>
               </Card>
             </Col>
