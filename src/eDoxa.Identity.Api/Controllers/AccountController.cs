@@ -371,7 +371,7 @@ namespace eDoxa.Identity.Api.Controllers
             var vm = new LoggedOutViewModel
             {
                 AutomaticRedirectAfterSignOut = AccountOptions.AutomaticRedirectAfterSignOut,
-                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? _appSettings.WebSpaProxyUrl,
+                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? _appSettings.WebSpaUrl,
                 ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl,
                 LogoutId = logoutId

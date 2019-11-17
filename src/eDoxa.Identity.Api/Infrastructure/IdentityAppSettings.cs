@@ -24,7 +24,7 @@ namespace eDoxa.Identity.Api.Infrastructure
         public string Authority { get; set; }
 
         [Required]
-        public string WebSpaProxyUrl { get; set; }
+        public string WebSpaUrl { get; set; }
 
         [Required]
         public AuthorityEndpointsOptions Endpoints { get; set; }

@@ -129,8 +129,8 @@ services:
       - challenges.api
       - clans.api
 
-  web.spa.proxy:
-    image: ${ACR_REGISTRY:-edoxa}/dev/web.spa.proxy:${ACR_TAG:-latest}
+  web.spa:
+    image: ${ACR_REGISTRY:-edoxa}/dev/web.spa:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Spa/Dockerfile
