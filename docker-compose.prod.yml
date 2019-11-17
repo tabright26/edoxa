@@ -14,73 +14,73 @@ services:
     image: datalust/seq:latest
 
   identity.api:
-    image: ${ACR_REGISTRY:-edoxa}/identity.api:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/identity.api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Identity.Api/Dockerfile
 
   cashier.api:
-    image: ${ACR_REGISTRY:-edoxa}/cashier.api:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/cashier.api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
 
   payment.api:
-    image: ${ACR_REGISTRY:-edoxa}/payment.api:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/payment.api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Payment.Api/Dockerfile
 
   notifications.api:
-    image: ${ACR_REGISTRY:-edoxa}/notifications.api:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/notifications.api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Notifications.Api/Dockerfile
 
   games.api:
-    image: ${ACR_REGISTRY:-edoxa}/games.api:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/games.api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Games.Api/Dockerfile
 
   clans.api:
-    image: ${ACR_REGISTRY:-edoxa}/clans.api:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/clans.api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Clans.Api/Dockerfile
 
   challenges.api:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.api:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
 
   challenges.web.aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.web.aggregator:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.aggregator:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
 
   challenges.web.gateway:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.web.gateway:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.gateway:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Gateway/Dockerfile
 
   challenges.web.jobs:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.web.jobs:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.jobs:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
 
   web.spa:
-    image: ${ACR_REGISTRY:-edoxa}/web.spa:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/web.spa:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Spa/Dockerfile-prod
 
   web.status:
-    image: ${ACR_REGISTRY:-edoxa}/web.status:prod
+    image: ${ACR_REGISTRY:-edoxa}/prod/web.status:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Status/Dockerfile
