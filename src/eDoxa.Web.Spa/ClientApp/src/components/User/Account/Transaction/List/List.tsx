@@ -20,6 +20,7 @@ const TransactionList: FunctionComponent<Props> = ({ transactions }) => (
     </thead>
     <tbody>
       {transactions
+        .slice()
         .sort((left, right) => (left.timestamp < right.timestamp ? -1 : 1))
         .map((transaction, index) => (
           <tr key={index}>

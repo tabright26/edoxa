@@ -8,7 +8,9 @@ import { compose } from "recompose";
 const UnlinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => (
   <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
     <ModalHeader toggle={handleHide}>
-      <strong>{gameOption.displayName} Authentications</strong>
+      <strong>
+        Are you sure to unlink {gameOption.displayName} credential?
+      </strong>
     </ModalHeader>
     <ModalBody>
       <GameCredentialFrom.Unlink

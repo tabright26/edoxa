@@ -5,6 +5,8 @@ import { LINK_GAME_CREDENTIAL_MODAL } from "modals";
 import GameAuthenticationFrom from "components/Game/Authentication/Form";
 import { compose } from "recompose";
 
+// TODO: FRANCIS NEED PROCESS DETAILS.
+
 const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
@@ -20,11 +22,11 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
           />
         ) : (
           <>
-            <p className="text-justify">
+            {/* <p className="text-justify">
               weqw ewqe qwe qwen iqwneinwq ienijwq nenwq einw ijneiqjw neijwqn
               ienqwi jeqwje niqjw neiwqjne iqjwneinqwie jnqwiej
               nqijwenqijwneijqwn eijqnweij nqijwne
-            </p>
+            </p> */}
             <div className="d-flex justify-content-around">
               <div className="text-center">
                 <h5>Current</h5>
@@ -45,11 +47,11 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
                 />
               </div>
             </div>
-            <p className="text-justify mt-3">
+            {/* <p className="text-justify mt-3">
               weqw ewqe qwe qwen iqwneinwq ienijwq nenwq einw ijneiqjw neijwqn
               ienqwi jeqwje niqjw neiwqjne iqjwneinqwie jnqwiej nqijwe nqijwn
               eijqwn eijqnweij nqijwne
-            </p>
+            </p> */}
             <div className="d-flex justify-content-center mt-3">
               <GameAuthenticationFrom.Validate
                 game={gameOption.name}

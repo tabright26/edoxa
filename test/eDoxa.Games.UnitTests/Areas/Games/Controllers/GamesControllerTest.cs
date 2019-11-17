@@ -4,12 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Threading.Tasks;
+
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Areas.Games.Controllers;
 using eDoxa.Games.Api.Infrastructure;
+using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Games.TestHelper.Mocks;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -29,19 +33,21 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         }
 
         [Fact]
-        public void GetAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var serviceCredential = new Mock<ICredentialService>();
 
-            var gameOptionsController = new GamesController(serviceCredential.Object, new OptionsWrapper<GamesOptions>(new GamesOptions()));
+            serviceCredential.Setup(x => x.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>())).ReturnsAsync(true).Verifiable(); // TODO: Verify.
+
+            var gameOptionsController = new GamesController(serviceCredential.Object, new OptionsWrapper<GamesOptions>(new GamesOptions {LeagueOfLegends = new LeagueOfLegendsOptions()}));
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             gameOptionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = gameOptionsController.GetAsync();
+            var result = await gameOptionsController.GetAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

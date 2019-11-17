@@ -18,20 +18,37 @@ import { loadUser } from "redux-oidc";
 const composeEnhancers =
   (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as typeof compose) || compose;
 
-export const configureStore = (initialState: RootState) => {
-  const store = createStore(
-    rootReducer,
-    initialState,
-    composeEnhancers(
+const createReduxStore = (initialState: RootState) => {
+  if (process.env.NODE_ENV === "production") {
+    return createStore(
+      rootReducer,
+      initialState,
       applyMiddleware(
         thunkMiddleware,
         axiosMiddleware,
         signalrMiddleware,
-        routerMiddleware,
-        loggerMiddleware
+        routerMiddleware
       )
-    )
-  );
+    );
+  } else {
+    return createStore(
+      rootReducer,
+      initialState,
+      composeEnhancers(
+        applyMiddleware(
+          thunkMiddleware,
+          axiosMiddleware,
+          signalrMiddleware,
+          routerMiddleware,
+          loggerMiddleware
+        )
+      )
+    );
+  }
+};
+
+export const configureStore = (initialState: RootState) => {
+  const store = createReduxStore(initialState);
   loadUser(store, userManager);
   return store;
 };

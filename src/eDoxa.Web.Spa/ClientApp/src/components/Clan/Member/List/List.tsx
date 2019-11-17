@@ -17,12 +17,9 @@ const Members = ({ actions, members: { data }, userId, clanId, isOwner }) => {
           onClick={() =>
             actions
               .leaveClan(clanId)
-              .then(toastr.success("SUCCESS", "Why so salty."))
-              .catch(
-                toastr.error(
-                  "WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM",
-                  "Member was not kicked in the butt."
-                )
+              .then(() => toastr.success("SUCCESS", "Why so salty."))
+              .catch(() =>
+                toastr.error("ERROR", "Member was not kicked in the butt.")
               )
           }
         >

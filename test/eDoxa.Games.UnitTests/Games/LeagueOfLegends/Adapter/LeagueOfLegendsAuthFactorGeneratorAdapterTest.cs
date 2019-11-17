@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends;
@@ -18,6 +17,8 @@ using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
+
+using FluentValidation.Results;
 
 using Microsoft.Azure.Storage;
 
@@ -80,10 +81,10 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             var result = await authFactorService.GenerateAuthenticationAsync(userId, new LeagueOfLegendsRequest("testSummoner"));
 
             // Assert
-            result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
+            result.Should().BeOfType<ValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
-                leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()),
+                leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()),
                 Times.Once);
 
             mockAuthFactorRepository.Verify(
@@ -110,7 +111,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             var mockCloudStorageAccount = new Mock<CloudStorageAccount>();
 
             mockLeagueOfLegendsService
-                .Setup(leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()))
+                .Setup(leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()))
                 .Verifiable();
 
             var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object, mockCloudStorageAccount.Object);
@@ -119,10 +120,10 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             var result = await authFactorService.GenerateAuthenticationAsync(userId, new LeagueOfLegendsRequest("testSummoner"));
 
             // Assert
-            result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
+            result.Should().BeOfType<ValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
-                leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()),
+                leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()),
                 Times.Once);
         }
     }

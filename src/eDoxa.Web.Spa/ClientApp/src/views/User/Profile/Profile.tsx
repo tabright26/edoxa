@@ -45,9 +45,11 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
           <LinkContainer to={`${match.url}/details`}>
             <ListGroupItem>Details</ListGroupItem>
           </LinkContainer>
-          <LinkContainer to={`${match.url}/security`}>
-            <ListGroupItem>Security</ListGroupItem>
-          </LinkContainer>
+          {process.env.NODE_ENV !== "production" && (
+            <LinkContainer to={`${match.url}/security`}>
+              <ListGroupItem>Security</ListGroupItem>
+            </LinkContainer>
+          )}
         </ListGroup>
       </Card>
       <Card>
@@ -55,9 +57,11 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
           <strong>Cashier</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={`${match.url}/cashier/payment-methods`}>
-            <ListGroupItem>Payment Methods</ListGroupItem>
-          </LinkContainer>
+          {process.env.NODE_ENV !== "production" && (
+            <LinkContainer to={`${match.url}/cashier/payment-methods`}>
+              <ListGroupItem>Payment Methods</ListGroupItem>
+            </LinkContainer>
+          )}
           <LinkContainer to={`${match.url}/cashier/transaction-history`}>
             <ListGroupItem>Transaction History</ListGroupItem>
           </LinkContainer>
@@ -89,24 +93,28 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
             name="Profile Details"
             render={props => <ProfileDetails {...props} />}
           />
-          <Route<RouteProps>
-            path={`${match.url}/security`}
-            exact
-            name="Security"
-            render={props => <ProfileSecurity {...props} />}
-          />
+          {process.env.NODE_ENV !== "production" && (
+            <Route<RouteProps>
+              path={`${match.url}/security`}
+              exact
+              name="Security"
+              render={props => <ProfileSecurity {...props} />}
+            />
+          )}
           <Route<RouteProps>
             path={`${match.url}/connections/games`}
             exact
             name="Connections"
             render={props => <ProfileConnections {...props} />}
           />
-          <Route<RouteProps>
-            path={`${match.url}/cashier/payment-methods`}
-            exact
-            name="Payment Methods"
-            render={props => <ProfilePaymentMethods {...props} />}
-          />
+          {process.env.NODE_ENV !== "production" && (
+            <Route<RouteProps>
+              path={`${match.url}/cashier/payment-methods`}
+              exact
+              name="Payment Methods"
+              render={props => <ProfilePaymentMethods {...props} />}
+            />
+          )}
           <Route<RouteProps>
             path={`${match.url}/cashier/transaction-history`}
             exact

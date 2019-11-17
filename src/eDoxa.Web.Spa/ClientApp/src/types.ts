@@ -106,7 +106,7 @@ export interface Doxatag {
 
 export type Game = "LeagueOfLegends";
 
-export type Logo = Stream | null;
+export type Logo = Stream | string | null;
 
 export interface ClanOwner {
   readonly userId: UserId;
@@ -218,7 +218,7 @@ export interface ChallengePayoutBucket {
 export interface ChallengeParticipant extends Entity<ParticipantId> {
   readonly score: number;
   readonly challengeId: ChallengeId;
-  readonly user: ChallengeParticipantUser;
+  readonly user?: ChallengeParticipantUser;
   readonly matches: ChallengeParticipantMatch[];
 }
 

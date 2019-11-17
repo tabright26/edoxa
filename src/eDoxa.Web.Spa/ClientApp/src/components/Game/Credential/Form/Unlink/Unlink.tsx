@@ -1,16 +1,14 @@
 import React, { FunctionComponent } from "react";
-import { Label, FormGroup, Form } from "reactstrap";
+import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import { UNLINK_GAME_CREDENTIAL_FORM } from "forms";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
 
 const UnlinkGameCredentialForm: FunctionComponent<any> = ({
   unlinkGameCredential,
   handleSubmit,
-  handleCancel,
-  error
+  handleCancel
 }) => (
   <Form
     onSubmit={handleSubmit(() =>
@@ -18,13 +16,10 @@ const UnlinkGameCredentialForm: FunctionComponent<any> = ({
         handleCancel();
       })
     )}
-    className="mt-3"
   >
-    {error && <FormValidation error={error} />}
-    <Label>Are you sure you want to unlink this game account?</Label>
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel onClick={handleCancel} />
+      <Button.Yes type="submit" className="mr-2" />
+      <Button.No onClick={handleCancel} />
     </FormGroup>
   </Form>
 );

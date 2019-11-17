@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 

@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends;
@@ -51,7 +50,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             };
 
             mockLeagueOfLegendsService
-                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()))
+                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()))
                 .ReturnsAsync(summoner)
                 .Verifiable();
 
@@ -69,7 +68,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
-                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()),
+                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),
                 Times.Once);
 
             mockAuthFactorRepository.Verify(
@@ -96,7 +95,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             };
 
             mockLeagueOfLegendsService
-                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()))
+                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()))
                 .ReturnsAsync(summoner)
                 .Verifiable();
 
@@ -114,7 +113,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
-                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()),
+                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),
                 Times.Once);
 
             mockAuthFactorRepository.Verify(

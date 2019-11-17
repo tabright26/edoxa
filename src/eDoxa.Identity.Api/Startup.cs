@@ -13,6 +13,7 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Areas.Identity;
 using eDoxa.Identity.Api.Areas.Identity.Constants;
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
@@ -95,6 +96,8 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
+            services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
+
             services.AddHealthChecks()
                 .AddCheck("liveness", () => HealthCheckResult.Healthy())
                 .AddAzureKeyVault(Configuration)
@@ -142,7 +145,7 @@ namespace eDoxa.Identity.Api
                         options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
 
                         options.SignIn.RequireConfirmedPhoneNumber = false;
-                        options.SignIn.RequireConfirmedEmail = HostingEnvironment.IsProduction();
+                        options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
 
                         options.Tokens.AuthenticatorTokenProvider = CustomTokenProviders.Authenticator;
                         options.Tokens.ChangeEmailTokenProvider = CustomTokenProviders.ChangeEmail;

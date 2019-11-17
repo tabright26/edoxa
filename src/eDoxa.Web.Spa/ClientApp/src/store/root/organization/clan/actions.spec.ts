@@ -46,7 +46,7 @@ describe("clans", () => {
 
     const expectedType = [CREATE_CLAN, CREATE_CLAN_SUCCESS, CREATE_CLAN_FAIL];
     const expectedMethod = "POST";
-    const expectedUrl = "/clans/api/clans";
+    const expectedUrl = "/organizations/clans/api/clans";
 
     const actionCreator = createClan(data);
 
@@ -61,7 +61,7 @@ describe("clans", () => {
 
     const expectedType = [LEAVE_CLAN, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL];
     const expectedMethod = "DELETE";
-    const expectedUrl = `/clans/api/clans/${clanId}/members`;
+    const expectedUrl = `/organizations/clans/api/clans/${clanId}/members`;
 
     const actionCreator = leaveClan(clanId);
 

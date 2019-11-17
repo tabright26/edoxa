@@ -1,13 +1,23 @@
-import { loadGameCredential } from "./actions";
-import { LOAD_GAME_CREDENTIAL, LOAD_GAME_CREDENTIAL_SUCCESS, LOAD_GAME_CREDENTIAL_FAIL } from "./types";
+import { loadGames } from "./actions";
+import {
+  LOAD_GAMES,
+  LOAD_GAMES_SUCCESS,
+  LOAD_GAMES_FAIL,
+  LoadGamesType,
+  GamesActionCreators
+} from "./types";
 
 describe("identity actions", () => {
   it("should create an action to get user games id", () => {
-    const expectedType = [LOAD_GAME_CREDENTIAL, LOAD_GAME_CREDENTIAL_SUCCESS, LOAD_GAME_CREDENTIAL_FAIL];
+    const expectedType: LoadGamesType[] = [
+      LOAD_GAMES,
+      LOAD_GAMES_SUCCESS,
+      LOAD_GAMES_FAIL
+    ];
     const expectedMethod = "GET";
-    const expectedUrl = "/identity/api/games";
+    const expectedUrl = "games/api/games";
 
-    const object = loadGameCredential();
+    const object: GamesActionCreators = loadGames();
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);

@@ -15,6 +15,7 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Security;
 
 using FluentValidation.AspNetCore;
 
@@ -66,6 +67,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
         ///     Create a challenge.
         /// </summary>
         [HttpPost]
+        [Authorize(Roles = AppRoles.Admin)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]

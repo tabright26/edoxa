@@ -7,7 +7,12 @@ import { UserInformationsState } from "store/root/user/information/types";
 it("renders without crashing", () => {
   //Arrange
   const informations: UserInformationsState = {
-    data: { firstName: "Gabriel", lastName: "Roy", gender: "Male", dob: { year: 1995, month: 8, day: 4 } },
+    data: {
+      firstName: "Gabriel",
+      lastName: "Roy",
+      gender: "Male",
+      dob: { year: 1995, month: 8, day: 4 }
+    },
     loading: false,
     error: null
   };
@@ -17,7 +22,7 @@ it("renders without crashing", () => {
       return {
         root: {
           user: {
-            informations
+            information: informations
           }
         }
       };

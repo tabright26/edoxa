@@ -43,8 +43,12 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
               <Balance currency={MONEY} attribute="pending" alignment="right" />
             </dd>
           </dl>
-          <DepositMoney currency={MONEY} />
-          <WithdrawalMoney currency={MONEY} />
+          {process.env.NODE_ENV !== "production" && (
+            <DepositMoney currency={MONEY} />
+          )}
+          {process.env.NODE_ENV !== "production" && (
+            <WithdrawalMoney currency={MONEY} />
+          )}
         </PopoverBody>
       </Popover>
     </div>

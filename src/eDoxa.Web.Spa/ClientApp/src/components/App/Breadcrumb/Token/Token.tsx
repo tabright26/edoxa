@@ -42,7 +42,9 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
               <Balance currency={TOKEN} attribute="pending" alignment="right" />
             </dd>
           </dl>
-          <BuyToken currency={TOKEN} />
+          {process.env.NODE_ENV !== "production" && (
+            <BuyToken currency={TOKEN} />
+          )}
         </PopoverBody>
       </Popover>
     </div>

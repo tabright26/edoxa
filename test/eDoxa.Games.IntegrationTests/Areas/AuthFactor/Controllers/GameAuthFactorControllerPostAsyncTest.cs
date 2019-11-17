@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using Autofac;
 
 using eDoxa.Games.Abstractions.Services;
-using eDoxa.Games.Domain.AggregateModels;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Requests;

@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Aggregator.IntegrationEvents.Extensions;
@@ -15,7 +16,10 @@ using eDoxa.Challenges.Aggregator.Services;
 using eDoxa.Challenges.Aggregator.Transformers;
 using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
+
+using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -73,12 +77,13 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         }
 
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize(Roles = AppRoles.Admin)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallengeRequest request)
         {
             var challengeId = new ChallengeId();
-
+            
             try
             {
                 var challengeFromChallengesService = await _challengesService.CreateChallengeAsync(
@@ -124,6 +129,7 @@ namespace eDoxa.Challenges.Aggregator.Controllers
         }
 
         //[HttpPost("{challengeId}")]
+        //[Microsoft.AspNetCore.Authorization.Authorize(Roles = AppRoles.Admin)]
         //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
         //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         //public async Task<IActionResult> SynchronizeChallengeAsync(Guid challengeId)

@@ -8,14 +8,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -50,9 +49,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
         {
             if (!_context.Accounts.Any())
             {
-                IAccountFaker accountFaker = new AccountFaker();
-
-                var adminAccount = accountFaker.FakeAccount(AccountFaker.AdminAccount);
+                var adminAccount = new Account(UserId.FromGuid(AppAdmin.Id));
 
                 foreach (var user in Users)
                 {
@@ -142,6 +139,32 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             else
             {
                 Logger.LogInformation("The challenge's already populated.");
+            }
+        }
+
+        protected override async Task SeedProductionAsync()
+        {
+            if (!_context.Accounts.Any(account => account.UserId == UserId.FromGuid(AppAdmin.Id)))
+            {
+                var account = new Account(UserId.FromGuid(AppAdmin.Id));
+
+                var moneyAccount = new MoneyAccount(account);
+
+                moneyAccount.Deposit(Money.FiveHundred, _bundlesService.FetchDepositMoneyBundles()).MarkAsSucceded();
+
+                var tokenAccount = new TokenAccount(account);
+
+                tokenAccount.Deposit(Token.FiveMillions, _bundlesService.FetchDepositTokenBundles()).MarkAsSucceded();
+
+                _accountRepository.Create(account);
+
+                await _accountRepository.CommitAsync();
+
+                Logger.LogInformation("The admin account being populated.");
+            }
+            else
+            {
+                Logger.LogInformation("The admin account already populated.");
             }
         }
     }

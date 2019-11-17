@@ -16,6 +16,7 @@ using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Security;
 
 using FluentValidation.AspNetCore;
 
@@ -48,6 +49,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpGet]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -66,7 +68,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         /// <summary>
         ///     Create a challenge.
         /// </summary>
+        [Authorize(Roles = AppRoles.Admin)]
         [HttpPost(Name = "CreateChallenge")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -100,6 +104,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         /// </summary>
         [AllowAnonymous]
         [HttpGet("{challengeId}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
@@ -118,7 +123,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         /// <summary>
         ///     Synchronize a challenge.
         /// </summary>
+        [Authorize(Roles = AppRoles.Admin)]
         [HttpPost("{challengeId}")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]

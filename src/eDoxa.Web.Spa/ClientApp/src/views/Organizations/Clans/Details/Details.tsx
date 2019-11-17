@@ -30,14 +30,23 @@ const ClanDetailsIndex: FunctionComponent<any> = ({
 
   return (
     <ErrorBoundary>
-      {clan && (
+      {clan ? (
         <Card>
           <CardHeader>
             <ClanInfo clan={clan} />
           </CardHeader>
-          <CardBody>{!userClan ? <CandidatureWidget type="user" id={userId} clanId={clanId} userId={userId} /> : null}</CardBody>
+          <CardBody>
+            {!userClan ? (
+              <CandidatureWidget
+                type="user"
+                id={userId}
+                clanId={clanId}
+                userId={userId}
+              />
+            ) : null}
+          </CardBody>
         </Card>
-      )}
+      ) : null}
     </ErrorBoundary>
   );
 };
