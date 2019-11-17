@@ -34,7 +34,7 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - WebSpaProxyUrl=http://${HOST:-localhost}:5300
+      - WebSpaUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity.api
       - Swagger__Enabled=true
       - Swagger__Endpoints__IdentityUrl=http://${HOST:-localhost}:5000
@@ -89,22 +89,6 @@ services:
     ports:
       - "5011:80"
 
-  challenges.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
-      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
-      - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__GamesUrl=http://games.api
-    ports:
-      - "5003:80"
-
   games.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
@@ -134,6 +118,33 @@ services:
     ports:
       - "5010:80"
 
+  challenges.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__CashierUrl=http://cashier.api
+      - Endpoints__GamesUrl=http://games.api
+    ports:
+      - "5003:80"
+
+  challenges.web.jobs:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+    ports:
+      - "5403:80"
+
   challenges.web.aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
@@ -151,17 +162,6 @@ services:
       - Endpoints__ClansUrl=http://clans.api
     ports:
       - "5303:80"
-
-  challenges.web.jobs:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
-      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
-    ports:
-      - "5403:80"
 
   challenges.web.gateway:
     environment:

@@ -90,6 +90,15 @@ services:
       - cashier.api
       - games.api
 
+  challenges.web.jobs:
+    image: ${ACR_REGISTRY:-edoxa}/dev/challenges.web.jobs:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
+    depends_on:
+      - seq
+      - challenges.api
+
   challenges.web.aggregator:
     image: ${ACR_REGISTRY:-edoxa}/dev/challenges.web.aggregator:${ACR_TAG:-latest}
     build:
@@ -104,15 +113,6 @@ services:
       - games.api
       - challenges.api
       - clans.api
-
-  challenges.web.jobs:
-    image: ${ACR_REGISTRY:-edoxa}/dev/challenges.web.jobs:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
-    depends_on:
-      - seq
-      - challenges.api
 
   challenges.web.gateway:
     image: ${ACR_REGISTRY:-edoxa}/dev/challenges.web.gateway:${ACR_TAG:-latest}
@@ -129,8 +129,8 @@ services:
       - challenges.api
       - clans.api
 
-  web.spa.proxy:
-    image: ${ACR_REGISTRY:-edoxa}/dev/web.spa.proxy:${ACR_TAG:-latest}
+  web.spa:
+    image: ${ACR_REGISTRY:-edoxa}/dev/web.spa:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Spa/Dockerfile

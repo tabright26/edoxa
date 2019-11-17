@@ -81,26 +81,26 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return new Client
             {
-                ClientId = "edoxa.web.spa",
-                ClientName = "eDoxa Web Spa",
+                ClientId = "web.spa",
+                ClientName = "Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    appSettings.WebSpaProxyUrl,
+                    appSettings.WebSpaUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    appSettings.WebSpaProxyUrl,
+                    appSettings.WebSpaUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.WebSpaProxyUrl}/callback",
+                    $"{appSettings.WebSpaUrl}/callback",
                     "http://localhost:5300/callback",
                     "http://127.0.0.1:5300/callback",
-                    $"{appSettings.WebSpaProxyUrl}/silent_renew.html",
+                    $"{appSettings.WebSpaUrl}/silent_renew.html",
                     "http://localhost:5300/silent_renew.html",
                     "http://127.0.0.1:5300/silent_renew.html"
                 },

@@ -54,7 +54,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     // visit https://go.microsoft.com/fwlink/?LinkID=532713
                     var code = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-                    var callbackUrl = $"{_redirectService.RedirectToWebSpaProxy("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
+                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
 
                     await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
                         UserId.FromGuid(user.Id),

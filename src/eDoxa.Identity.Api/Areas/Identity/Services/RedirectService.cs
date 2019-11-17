@@ -19,9 +19,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private IdentityAppSettings AppSettings { get; }
 
-        public string RedirectToWebSpaProxy(string url = "/")
+        public string RedirectToWebSpa(string url = "/")
         {
-            return $"{AppSettings.WebSpaProxyUrl}{url}";
+            return $"{AppSettings.WebSpaUrl}{url}";
         }
 
         public string RedirectToAuthority(string url = "/")
