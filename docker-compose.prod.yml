@@ -55,6 +55,12 @@ services:
       context: .
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
 
+  challenges.web.jobs:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.jobs:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
+
   challenges.web.aggregator:
     image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.aggregator:${ACR_TAG:-latest}
     build:
@@ -66,12 +72,6 @@ services:
     build:
       context: .
       dockerfile: src/eDoxa.Gateway/Dockerfile
-
-  challenges.web.jobs:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.jobs:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
 
   web.spa:
     image: ${ACR_REGISTRY:-edoxa}/prod/web.spa:${ACR_TAG:-latest}

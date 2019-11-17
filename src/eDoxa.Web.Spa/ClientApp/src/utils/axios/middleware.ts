@@ -3,7 +3,7 @@ import axiosMiddleware from "redux-axios-middleware";
 
 export const middleware = axiosMiddleware(
   axios.create({
-    baseURL: process.env.REACT_APP_CHALLENGES_WEB_GATEWAY,
+    baseURL: process.env.REACT_APP_CHALLENGES_WEB_GATEWAY_URL,
     responseType: "json"
   }),
   {

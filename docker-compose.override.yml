@@ -134,6 +134,17 @@ services:
     ports:
       - "5010:80"
 
+  challenges.web.jobs:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
+    ports:
+      - "5403:80"
+
   challenges.web.aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -151,17 +162,6 @@ services:
       - Endpoints__ClansUrl=http://clans.api
     ports:
       - "5303:80"
-
-  challenges.web.jobs:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
-      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
-    ports:
-      - "5403:80"
 
   challenges.web.gateway:
     environment:
@@ -203,7 +203,7 @@ services:
       - REACT_APP_CLIENT_ID=web.spa
       - REACT_APP_RESPONSE_TYPE=token id_token
       - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api challenges.api challenges.web.aggregator games.api clans.api
-      - REACT_APP_CHALLENGES_WEB_GATEWAY=http://${HOST:-localhost}:5200
+      - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5200
       - REACT_APP_SILENT_REFRESH_URI=http://${HOST:-localhost}:5300/silent-refresh
       - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
     volumes:
