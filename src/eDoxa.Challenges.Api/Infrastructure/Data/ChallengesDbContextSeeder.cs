@@ -41,7 +41,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
 
                 _challengeRepository.Create(challenges);
 
-                await _challengeRepository.CommitAsync();
+                await _challengeRepository.CommitAsync(false);
             }
         }
     }

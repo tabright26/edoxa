@@ -21,8 +21,10 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -53,8 +55,6 @@ namespace eDoxa.Games.Api
 {
     public sealed class Startup
     {
-        private const string AzureServiceBusDiscriminator = "games";
-
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -104,6 +104,8 @@ namespace eDoxa.Games.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
+            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+
             services.AddRedisCache(Configuration);
 
             services.AddCors(
@@ -149,23 +151,18 @@ namespace eDoxa.Games.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-        }
-
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.GamesApi));
 
             builder.RegisterModule<GamesModule>();
         }
 
-        public void Configure(IApplicationBuilder application)
+        public void Configure(IApplicationBuilder application , IApiVersionDescriptionProvider provider)
         {
             application.UseCustomExceptionHandler();
 
@@ -191,11 +188,6 @@ namespace eDoxa.Games.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application);
 
             application.UseSwagger(provider, AppSettings);
         }

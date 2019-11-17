@@ -61,32 +61,6 @@ Array [
     />
   </button>,
   <ul
-    className="d-md-down-none navbar-nav"
-  >
-    <li
-      className="px-3 nav-item"
-    >
-      <a
-        className="nav-link nav-link"
-        href="/marketplace"
-        onClick={[Function]}
-      >
-        Marketplace
-      </a>
-    </li>
-    <li
-      className="px-3 nav-item"
-    >
-      <a
-        className="nav-link nav-link"
-        href="/news-feeds"
-        onClick={[Function]}
-      >
-        News Feeds
-      </a>
-    </li>
-  </ul>,
-  <ul
     className="ml-auto mr-3 navbar-nav"
   >
     <li

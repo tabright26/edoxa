@@ -145,14 +145,14 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             return await this.AnyChallengeModelAsync(challengeId);
         }
 
-        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
         {
             foreach (var (challenge, challengeModel) in _materializedObjects)
             {
                 this.CopyChanges(challenge, challengeModel);
             }
 
-            await _context.CommitAsync(cancellationToken: cancellationToken);
+            await _context.CommitAsync(dispatchDomainEvents, cancellationToken);
 
             foreach (var (challenge, challengeModel) in _materializedObjects)
             {

@@ -57,7 +57,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Credential.Controllers
             // Arrange
             var userId = new UserId();
 
-            var credential = new Domain.AggregateModels.CredentialAggregate.Credential(
+            var credential = new Domain.AggregateModels.GameAggregate.Credential(
                 userId,
                 Game.LeagueOfLegends,
                 new PlayerId(),
@@ -110,7 +110,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Credential.Controllers
             // Arrange
             var userId = new UserId();
 
-            var credential = new Domain.AggregateModels.CredentialAggregate.Credential(
+            var credential = new Domain.AggregateModels.GameAggregate.Credential(
                 userId,
                 Game.LeagueOfLegends,
                 new PlayerId(),
@@ -132,7 +132,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Credential.Controllers
                             .Verifiable();
 
                         mockCredentialService
-                            .Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Domain.AggregateModels.CredentialAggregate.Credential>()))
+                            .Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Domain.AggregateModels.GameAggregate.Credential>()))
                             .ReturnsAsync(validationFailure)
                             .Verifiable();
 

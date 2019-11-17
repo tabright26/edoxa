@@ -19,15 +19,5 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
         )
         {
         }
-
-        public UserId UserIdAt(int index)
-        {
-            return this.ElementAt(index).Key;
-        }
-
-        public bool IsValidScore(int index)
-        {
-            return this.ElementAtOrDefault(index).Value != null;
-        }
     }
 }

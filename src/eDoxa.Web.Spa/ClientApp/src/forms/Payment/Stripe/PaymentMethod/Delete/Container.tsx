@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import { detachStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
-import { DETACH_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethods/types";
+import { detachStripePaymentMethod } from "store/root/payment/stripe/paymentMethod/actions";
+import { DETACH_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethod/types";
 import Delete from "./Delete";
 import { throwSubmissionError } from "utils/form/types";
 

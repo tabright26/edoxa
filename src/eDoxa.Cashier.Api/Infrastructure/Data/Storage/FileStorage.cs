@@ -1,5 +1,5 @@
 ﻿// Filename: FileStorage.cs
-// Date Created: 2019-09-30
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,6 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 {

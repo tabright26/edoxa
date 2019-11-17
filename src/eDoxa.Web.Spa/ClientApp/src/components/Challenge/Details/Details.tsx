@@ -1,12 +1,13 @@
 import React, { FunctionComponent } from "react";
-import { Row, Col, CardDeck, Card, Button, CardBody } from "reactstrap";
+import { Row, Col, CardDeck, Card, CardBody } from "reactstrap";
 import ChallengeLogo from "components/Challenge/Logo/Logo";
 import ChallengeSummary from "components/Challenge/Summary";
 import ChallengeScoreboard from "components/Challenge/Scoreboard";
 import ChallengeScoring from "components/Challenge/Scoring";
 import ChallengePayout from "components/Challenge/Payout";
 import ChallengeTimeline from "components/Challenge/Timeline";
-import { withChallenge } from "store/root/arena/challenges/container";
+import ChallengeRegister from "components/Challenge/Register";
+import { withChallenge } from "store/root/challenge/container";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import Loading from "components/Shared/Loading";
 import { Challenge } from "types";
@@ -22,36 +23,27 @@ const ChallengeDetails: FunctionComponent<Props> = ({ challenge }) => {
         <Loading />
       ) : (
         <>
-          <CardDeck className="my-4">
-            <ChallengeLogo className="col-2 bg-gray-900" />
-            <Card className="col-7">
-              <CardBody className="d-flex">
-                <ChallengeTimeline />
-                <ChallengeSummary />
-              </CardBody>
-            </Card>
-
-            <Card className="col-3 p-0">
-              <Button className="h-100 bg-gray-900" size="lg">
-                <strong className="text-uppercase" style={{ fontSize: "30px" }}>
-                  REGISTER
-                </strong>
-              </Button>
-            </Card>
-          </CardDeck>
           <Row>
-            <Col xs={10}>
-              <ChallengeScoreboard />
+            <Col xs={{ size: 10, order: 1 }}>
+              <CardDeck className="mt-4">
+                <ChallengeLogo className="col-2 bg-gray-900" />
+                <Card className="col-10">
+                  <CardBody className="d-flex">
+                    <ChallengeTimeline />
+                    <ChallengeSummary />
+                  </CardBody>
+                </Card>
+              </CardDeck>
             </Col>
-            <Col xs={2}>
-              <Row>
-                <Col xs={12}>
-                  <ChallengeScoring />
-                </Col>
-                <Col xs={12}>
-                  <ChallengePayout />
-                </Col>
-              </Row>
+            <Col xs={{ size: 2, order: 2 }}>
+              <ChallengeScoring className="mt-4" />
+            </Col>
+            <Col xs={{ size: 2, order: 4 }}>
+              <ChallengePayout />
+              <ChallengeRegister />
+            </Col>
+            <Col xs={{ size: 10, order: 3 }}>
+              <ChallengeScoreboard />
             </Col>
           </Row>
         </>

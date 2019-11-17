@@ -6,8 +6,9 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels.AuthFactorAggregate;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
+using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
 using eDoxa.Games.TestHelper;
@@ -37,7 +38,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             // Arrange
             var userId = new UserId();
 
-            var mockAuthFactorRepository = new Mock<IAuthFactorRepository>();
+            var mockAuthFactorRepository = new Mock<IAuthenticationRepository>();
             var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
 
             var summoner = new Summoner()
@@ -49,29 +50,29 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             };
 
             mockLeagueOfLegendsService
-                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()))
+                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()))
                 .ReturnsAsync(summoner)
                 .Verifiable();
 
             mockAuthFactorRepository
-                .Setup(repository => repository.RemoveAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+                .Setup(repository => repository.RemoveAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var authFactorService = new LeagueOfLegendsAuthFactorValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
+            var authFactorService = new LeagueOfLegendsAuthenticationValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
 
             // Act
-            var result = await authFactorService.ValidateAuthFactorAsync(userId, new AuthFactor(new PlayerId(), "0"));
+            var result = await authFactorService.ValidateAuthenticationAsync(userId, new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty)));
 
             // Assert
             result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
-                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()),
+                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),
                 Times.Once);
 
             mockAuthFactorRepository.Verify(
-                repository => repository.RemoveAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
+                repository => repository.RemoveAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
                 Times.Once);
 
         }
@@ -82,7 +83,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             // Arrange
             var userId = new UserId();
 
-            var mockAuthFactorRepository = new Mock<IAuthFactorRepository>();
+            var mockAuthFactorRepository = new Mock<IAuthenticationRepository>();
             var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
 
             var summoner = new Summoner()
@@ -94,29 +95,29 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             };
 
             mockLeagueOfLegendsService
-                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()))
+                .Setup(leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()))
                 .ReturnsAsync(summoner)
                 .Verifiable();
 
             mockAuthFactorRepository
-                .Setup(repository => repository.RemoveAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+                .Setup(repository => repository.RemoveAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var authFactorService = new LeagueOfLegendsAuthFactorValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
+            var authFactorService = new LeagueOfLegendsAuthenticationValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
 
             // Act
-            var result = await authFactorService.ValidateAuthFactorAsync(userId, new AuthFactor(new PlayerId(), "1"));
+            var result = await authFactorService.ValidateAuthenticationAsync(userId, new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty)));
 
             // Assert
             result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
-                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<RiotSharp.Misc.Region>(), It.IsAny<string>()),
+                leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),
                 Times.Once);
 
             mockAuthFactorRepository.Verify(
-                repository => repository.RemoveAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
+                repository => repository.RemoveAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
                 Times.Once);
         }
     }

@@ -3,10 +3,14 @@ import { connect } from "react-redux";
 import { loadUserAccountWithdrawalBundlesFor } from "./actions";
 import { RootState } from "store/types";
 
-export const withUserAccountWithdrawalBundles = (HighOrderComponent: FunctionComponent<any>) => {
+export const withUserAccountWithdrawalBundles = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadUserAccountWithdrawalBundles();
+      if (!props.bundles.data.length) {
+        props.loadUserAccountWithdrawalBundles();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -20,12 +24,10 @@ export const withUserAccountWithdrawalBundles = (HighOrderComponent: FunctionCom
 
   const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     return {
-      loadUserAccountWithdrawalBundles: () => dispatch(loadUserAccountWithdrawalBundlesFor(ownProps.currency))
+      loadUserAccountWithdrawalBundles: () =>
+        dispatch(loadUserAccountWithdrawalBundlesFor(ownProps.currency))
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

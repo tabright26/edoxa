@@ -13,29 +13,38 @@ interface UserAccountBalanceOwnProps {
   currency: Currency;
 }
 
-export const withUserAccountBalance = (HighOrderComponent: FunctionComponent<any>) => {
+export const withUserAccountBalance = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadUserAccountBalance();
+      if (!props.balance) {
+        props.loadUserAccountBalance();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
   };
 
-  const mapStateToProps: MapStateToProps<UserAccountBalanceStateProps, UserAccountBalanceOwnProps, RootState> = (state, ownProps) => {
+  const mapStateToProps: MapStateToProps<
+    UserAccountBalanceStateProps,
+    UserAccountBalanceOwnProps,
+    RootState
+  > = (state, ownProps) => {
     return {
       balance: state.root.user.account.balance[ownProps.currency]
     };
   };
 
-  const mapDispatchToProps = (dispatch: any, ownProps: UserAccountBalanceOwnProps) => {
+  const mapDispatchToProps = (
+    dispatch: any,
+    ownProps: UserAccountBalanceOwnProps
+  ) => {
     return {
-      loadUserAccountBalance: () => dispatch(loadUserAccountBalance(ownProps.currency))
+      loadUserAccountBalance: () =>
+        dispatch(loadUserAccountBalance(ownProps.currency))
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

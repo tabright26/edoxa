@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { injectStripe } from "react-stripe-elements";
-import { attachStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
-import { ATTACH_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethods/types";
+import { attachStripePaymentMethod } from "store/root/payment/stripe/paymentMethod/actions";
+import { ATTACH_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethod/types";
 import Create from "./Create";
 import { compose } from "recompose";
 import { throwSubmissionError } from "utils/form/types";

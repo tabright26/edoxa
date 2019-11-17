@@ -48,7 +48,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Credential.Controllers
             // Arrange
             var userId = new UserId();
 
-            var credential = new Domain.AggregateModels.CredentialAggregate.Credential(
+            var credential = new Domain.AggregateModels.GameAggregate.Credential(
                 userId,
                 Game.LeagueOfLegends,
                 new PlayerId(),

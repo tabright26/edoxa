@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Transactions.Services.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -149,24 +150,33 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
         [Fact]
         public async Task TransactionScenario()
         {
-            var chanllengeId = new ChallengeId();
-            var participantId = new ParticipantId();
             var account = new Account(new UserId());
 
-            var metadata = new TransactionMetadata
-            {
-                ["ChallengeId"] = chanllengeId.ToString(),
-                ["ParticipantId"] = participantId.ToString()
-            };
-
-            var transaction = new Transaction(
+            var transaction1 = new Transaction(
                 Money.Fifty,
                 new TransactionDescription("Test"),
                 TransactionType.Charge,
                 new UtcNowDateTimeProvider(),
-                metadata);
+                new TransactionMetadata
+                {
+                    ["ChallengeId"] = new ChallengeId().ToString(),
+                    ["ParticipantId"] = new ParticipantId().ToString()
+                });
 
-            account.CreateTransaction(transaction);
+            var transaction2 = new Transaction(
+                Money.Fifty,
+                new TransactionDescription("Test"),
+                TransactionType.Charge,
+                new UtcNowDateTimeProvider(),
+                new TransactionMetadata
+                {
+                    ["ChallengeId"] = new ChallengeId().ToString(),
+                    ["ParticipantId"] = new ParticipantId().ToString()
+                });
+
+            account.CreateTransaction(transaction1);
+
+            account.CreateTransaction(transaction2);
 
             TestApi.CreateClient();
             var testServer = TestApi.Server;
@@ -183,10 +193,39 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transactionQuery = await accountRepository.FindTransactionAsync(metadata);
+                    var accountRepository = scope.GetRequiredService<ITransactionService>();
+                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
                     transactionQuery.Should().NotBeNull();
-                    transactionQuery.Should().Be(transaction);
+                    transactionQuery.Should().Be(transaction1);
+                    transactionQuery?.Status.Should().Be(TransactionStatus.Pending);
+                });
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var accountRepository = scope.GetRequiredService<ITransactionService>();
+                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
+                    await accountRepository.MaskTransactionAsSuccededAsync(transactionQuery);
+                    transactionQuery.Status.Should().Be(TransactionStatus.Succeded);
+                });
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var accountRepository = scope.GetRequiredService<ITransactionService>();
+                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
+                    transactionQuery.Should().NotBeNull();
+                    transactionQuery.Should().Be(transaction1);
+                    transactionQuery?.Status.Should().Be(TransactionStatus.Succeded);
+                });
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var accountRepository = scope.GetRequiredService<ITransactionService>();
+                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction2.Metadata);
+                    transactionQuery.Should().NotBeNull();
+                    transactionQuery.Should().Be(transaction2);
                     transactionQuery?.Status.Should().Be(TransactionStatus.Pending);
                 });
         }

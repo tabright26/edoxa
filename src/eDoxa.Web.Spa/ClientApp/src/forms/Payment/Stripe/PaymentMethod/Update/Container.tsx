@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { updateStripePaymentMethod } from "store/root/payment/stripe/paymentMethods/actions";
-import { UPDATE_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethods/types";
+import { updateStripePaymentMethod } from "store/root/payment/stripe/paymentMethod/actions";
+import { UPDATE_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethod/types";
 import Update from "./Update";
 import { throwSubmissionError } from "utils/form/types";
 

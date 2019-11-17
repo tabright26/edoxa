@@ -1,7 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, CardBody } from "reactstrap";
 import { toastr } from "react-redux-toastr";
-import { withClans } from "store/root/organizations/clans/container";
+import { withClans } from "store/root/organization/clan/container";
 import ClanInfo from "components/Clan/Summary/Summary";
 import CandidatureList from "components/Clan/Candidature/List/List";
 import InvitationList from "components/Clan/Invitation/List/List";

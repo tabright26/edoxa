@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
         public async Task<TransactionModel?> FindTransactionModelAsync(IDictionary<string, string> metadata)
         {
             var transactionModels = from transaction in _context.Transactions.AsExpandable()
-                                    where transaction.Metadata.All(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value)))
+                                    where transaction.Metadata.Any(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value)))
                                     select transaction;
 
             return await transactionModels.SingleOrDefaultAsync();
@@ -83,7 +83,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
         public async Task<ITransaction?> FindTransactionAsync(TransactionMetadata metadata)
         {
             var transaction = _materializedIds.Values.SingleOrDefault(
-                x => x.Metadata.All(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value))));
+                x => x.Metadata.Any(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value))));
 
             if (transaction != null)
             {

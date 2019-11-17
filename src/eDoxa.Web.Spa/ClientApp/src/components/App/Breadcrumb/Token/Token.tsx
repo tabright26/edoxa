@@ -8,7 +8,11 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className={className}>
-      <Badge id="tokenPopover" color="dark" style={{ width: "100px" }}>
+      <Badge
+        id="tokenPopover"
+        className="bg-gray-900"
+        style={{ width: "100px" }}
+      >
         <Balance currency={TOKEN} attribute="available" />
       </Badge>
       <Popover
@@ -17,7 +21,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
         }}
         placement="bottom"
         isOpen={open}
-        target={'tokenPopover'}
+        target={"tokenPopover"}
         trigger="hover"
         delay={{ show: 0, hide: 250 }}
         toggle={() => setOpen(!open)}
@@ -27,14 +31,20 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
           <dl className="row mb-0">
             <dt className="col-6">Available</dt>
             <dd className="col-6">
-              <Balance currency={TOKEN} attribute="available" alignment="right" />
+              <Balance
+                currency={TOKEN}
+                attribute="available"
+                alignment="right"
+              />
             </dd>
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
               <Balance currency={TOKEN} attribute="pending" alignment="right" />
             </dd>
           </dl>
-          <BuyToken currency={TOKEN} />
+          {process.env.NODE_ENV !== "production" && (
+            <BuyToken currency={TOKEN} />
+          )}
         </PopoverBody>
       </Popover>
     </div>

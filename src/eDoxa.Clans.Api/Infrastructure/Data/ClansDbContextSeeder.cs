@@ -1,6 +1,6 @@
 ﻿// Filename: ClansDbContextSeeder.cs
-// Date Created: 2019-09-15
-//
+// Date Created: 2019-11-11
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -39,6 +39,8 @@ namespace eDoxa.Clans.Api.Infrastructure.Data
             {
                 foreach (var clan in FileStorage.Clans)
                 {
+                    clan.ClearDomainEvents();
+
                     _clanRepository.Create(clan);
                 }
 

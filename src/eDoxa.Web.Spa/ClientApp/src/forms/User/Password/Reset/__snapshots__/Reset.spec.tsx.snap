@@ -94,11 +94,6 @@ exports[`renders without crashing 1`] = `
       aria-label={null}
       className="btn btn-primary btn-block"
       onClick={[Function]}
-      style={
-        Object {
-          "width": "75px",
-        }
-      }
       type="submit"
     >
       Reset

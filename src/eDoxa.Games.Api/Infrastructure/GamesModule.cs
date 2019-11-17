@@ -22,16 +22,16 @@ namespace eDoxa.Games.Api.Infrastructure
         {
             // Repositories
             builder.RegisterType<CredentialRepository>().As<ICredentialRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<AuthFactorRepository>().As<IAuthFactorRepository>().SingleInstance();
+            builder.RegisterType<AuthenticationRepository>().As<IAuthenticationRepository>().SingleInstance();
 
             // Services
             builder.RegisterType<CredentialService>().As<ICredentialService>().InstancePerLifetimeScope();
-            builder.RegisterType<AuthFactorService>().As<IAuthFactorService>().InstancePerLifetimeScope();
+            builder.RegisterType<AuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
 
             // Factories
-            builder.RegisterType<AuthFactorGeneratorFactory>().As<IAuthFactorGeneratorFactory>().SingleInstance();
-            builder.RegisterType<AuthFactorValidatorFactory>().As<IAuthFactorValidatorFactory>().SingleInstance();
+            builder.RegisterType<AuthenticationGeneratorFactory>().As<IAuthenticationGeneratorFactory>().SingleInstance();
+            builder.RegisterType<AuthenticationValidatorFactory>().As<IAuthenticationValidatorFactory>().SingleInstance();
             builder.RegisterType<ChallengeScoringFactory>().As<IChallengeScoringFactory>().SingleInstance();
             builder.RegisterType<ChallengeMatchesFactory>().As<IChallengeMatchesFactory>().SingleInstance();
 

@@ -2,7 +2,7 @@ import { connect, MapStateToProps } from "react-redux";
 import Summary from "./Summary";
 import { RootState } from "store/types";
 import { RouteChildrenProps } from "react-router";
-import { ChallengeId, Game, ChallengeEntryFee } from "types";
+import { ChallengeId, Game, ChallengeEntryFee, ChallengeState } from "types";
 import { compose } from "recompose";
 import { withRouter } from "react-router-dom";
 
@@ -17,6 +17,7 @@ interface OwnProps extends RouteChildrenProps<Params> {
 interface StateProps {
   readonly name: string;
   readonly game: Game;
+  readonly state: ChallengeState;
   readonly bestOf: number;
   readonly entries: number;
   readonly entryFee: ChallengeEntryFee;
@@ -24,12 +25,22 @@ interface StateProps {
   readonly participantCount: number;
 }
 
-const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (state, ownProps) => {
-  const { data } = state.root.arena.challenges;
-  const challenge = data.find(challenge => challenge.id === (ownProps.match ? ownProps.match.params.challengeId : ownProps.challengeId));
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  state,
+  ownProps
+) => {
+  const { data } = state.root.challenge;
+  const challenge = data.find(
+    challenge =>
+      challenge.id ===
+      (ownProps.match
+        ? ownProps.match.params.challengeId
+        : ownProps.challengeId)
+  );
   return {
     name: challenge.name,
     game: challenge.game,
+    state: challenge.state,
     bestOf: challenge.bestOf,
     entries: challenge.entries,
     entryFee: challenge.entryFee,
@@ -38,9 +49,6 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (state
   };
 };
 
-const enhance = compose<any, any>(
-  withRouter,
-  connect(mapStateToProps)
-);
+const enhance = compose<any, any>(withRouter, connect(mapStateToProps));
 
 export default enhance(Summary);

@@ -18,6 +18,7 @@ namespace eDoxa.Games
         protected GameOptions()
         {
             Displayed = false;
+            Verified = false;
             Services = new Dictionary<string, bool>
             {
                 ["challenge"] = false,
@@ -35,6 +36,9 @@ namespace eDoxa.Games
 
         [JsonProperty("displayed")]
         public bool Displayed { get; set; }
+
+        [JsonProperty("verified")]
+        public bool Verified { get; set; }
 
         [JsonProperty("services")]
         public IDictionary<string, bool> Services { get; set; }

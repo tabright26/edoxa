@@ -32,11 +32,9 @@ exports[`renders without crashing 1`] = `
     }
     title="Inscription"
   >
-    <time
-      dateTime={"+051832-03-15T10:20:26.000Z"}
-    >
-      Mar 15, 51832 6:20 AM
-    </time>
+    <span>
+      ...
+    </span>
   </span>
   <span
     className="btn bg-secondary btn-sm text-light mt-2 rounded-0"

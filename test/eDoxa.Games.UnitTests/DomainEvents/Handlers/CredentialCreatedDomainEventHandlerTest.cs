@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Api.DomainEvents.Handlers;
-using eDoxa.Games.Domain.AggregateModels.CredentialAggregate;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.DomainEvents;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;

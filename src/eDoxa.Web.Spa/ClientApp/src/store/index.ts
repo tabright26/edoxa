@@ -13,14 +13,42 @@ import { middleware as loggerMiddleware } from "utils/logger/middleware";
 import userManager from "utils/oidc/userManager";
 
 import { loadUser } from "redux-oidc";
-import { loadDoxatags } from "store/root/doxatags/actions";
 
 // This enables the webpack development tools such as the Hot Module Replacement.
-const composeEnhancers = (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as typeof compose) || compose;
+const composeEnhancers =
+  (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as typeof compose) || compose;
+
+const createReduxStore = (initialState: RootState) => {
+  if (process.env.NODE_ENV === "production") {
+    return createStore(
+      rootReducer,
+      initialState,
+      applyMiddleware(
+        thunkMiddleware,
+        axiosMiddleware,
+        signalrMiddleware,
+        routerMiddleware
+      )
+    );
+  } else {
+    return createStore(
+      rootReducer,
+      initialState,
+      composeEnhancers(
+        applyMiddleware(
+          thunkMiddleware,
+          axiosMiddleware,
+          signalrMiddleware,
+          routerMiddleware,
+          loggerMiddleware
+        )
+      )
+    );
+  }
+};
 
 export const configureStore = (initialState: RootState) => {
-  const store = createStore(rootReducer, initialState, composeEnhancers(applyMiddleware(thunkMiddleware, axiosMiddleware, signalrMiddleware, routerMiddleware, loggerMiddleware)));
+  const store = createReduxStore(initialState);
   loadUser(store, userManager);
-  store.dispatch<any>(loadDoxatags());
   return store;
 };

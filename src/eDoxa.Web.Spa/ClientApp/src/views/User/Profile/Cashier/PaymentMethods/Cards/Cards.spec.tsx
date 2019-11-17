@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Cards from "./Cards";
-import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethods/types";
+import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethod/types";
 
 it("renders without crashing", () => {
   //Arrange

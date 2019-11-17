@@ -1,13 +1,16 @@
 // Filename: Startup.cs
-// Date Created: 2019-04-14
+// Date Created: 2019-10-06
 // 
-// ============================================================
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
 // Copyright © 2019, Francis Quenneville
 // All rights reserved.
 // 
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
@@ -51,20 +54,15 @@ namespace eDoxa.Web.Spa
                 .AddCheck("liveness", () => HealthCheckResult.Healthy())
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
-                .AddUrlGroup(AppSettings.WebGatewayUrl, "webgateway");
+                .AddUrlGroup(AppSettings.ChallengesWebGatewayUrl, AppNames.ChallengesWebGateway);
 
-            services.AddDataProtection(Configuration, "edoxa.web.spa");
+            services.AddDataProtection(Configuration, AppNames.WebSpa);
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSpaStaticFiles(
-                configuration =>
-                {
-                    configuration.RootPath = "ClientApp/build";
-                }
-            );
+            services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/build");
         }
 
         public void Configure(IApplicationBuilder application)
@@ -98,8 +96,7 @@ namespace eDoxa.Web.Spa
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                }
-            );
+                });
 
             application.UseSpa(
                 builder =>
@@ -110,8 +107,7 @@ namespace eDoxa.Web.Spa
                     {
                         builder.UseProxyToSpaDevelopmentServer(AppSettings.WebSpaClientUrl);
                     }
-                }
-            );
+                });
         }
     }
 }

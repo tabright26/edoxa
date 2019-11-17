@@ -1,0 +1,32 @@
+# https://mherman.org/blog/dockerizing-a-react-app/
+# build environment
+FROM mcr.microsoft.com/dotnet/core/aspnet:2.2-stretch-slim AS base
+WORKDIR /app
+
+FROM node:12.2.0-alpine as react-build
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY /src/eDoxa.Web.Spa/ClientApp/package.json /app/package.json
+RUN npm install npm -g --silent
+RUN npm install react-scripts -g --silent
+RUN npm install typesync -g --silent
+RUN typesync
+RUN npm install --silent
+COPY /src/eDoxa.Web.Spa/ClientApp /app
+RUN npm run build
+
+FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
+WORKDIR /tmp
+COPY . .
+WORKDIR /tmp/src/eDoxa.Web.Spa
+RUN dotnet publish -c Release -o /app
+
+FROM build AS publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+COPY --from=react-build /app/build /app/ClientApp/build
+ENTRYPOINT ["dotnet", "eDoxa.Web.Spa.dll"]
+
+EXPOSE 80

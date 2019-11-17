@@ -4,7 +4,9 @@ import { RootState } from "store/types";
 import { ClaimType } from "utils/oidc/types";
 
 export const withUser = (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
+  const Container: FunctionComponent<any> = props => (
+    <HighOrderComponent {...props} />
+  );
 
   const mapStateToProps = (state: RootState) => {
     return {
@@ -15,8 +17,12 @@ export const withUser = (HighOrderComponent: FunctionComponent<any>) => {
   return connect(mapStateToProps)(Container);
 };
 
-export const withUserIsAuthenticated = (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
+export const withUserIsAuthenticated = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
+  const Container: FunctionComponent<any> = props => (
+    <HighOrderComponent {...props} />
+  );
 
   const mapStateToProps = (state: RootState) => {
     const isAuthenticated: boolean = !!state.oidc.user;
@@ -28,12 +34,16 @@ export const withUserIsAuthenticated = (HighOrderComponent: FunctionComponent<an
   return connect(mapStateToProps)(Container);
 };
 
-export const withtUserProfile = (claimType: ClaimType) => (HighOrderComponent: FunctionComponent<any>) => {
-  const Container: FunctionComponent<any> = props => <HighOrderComponent {...props} />;
+export const withtUserProfile = (claimType: ClaimType, transform?: string) => (
+  HighOrderComponent: FunctionComponent<any>
+) => {
+  const Container: FunctionComponent<any> = props => (
+    <HighOrderComponent {...props} />
+  );
 
   const mapStateToProps = (state: RootState) => {
     return {
-      [claimType]: state.oidc.user.profile[claimType] || null
+      [transform || claimType]: state.oidc.user.profile[claimType] || null
     };
   };
 
