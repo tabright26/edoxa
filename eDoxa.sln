@@ -105,8 +105,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{63922276-5615-4A61-8A84-B57E676C6D47}"
 	ProjectSection(SolutionItems) = preProject
 		build\.env = build\.env
-		build\docker-compose.ci.prod.override.yml = build\docker-compose.ci.prod.override.yml
-		build\docker-compose.ci.prod.yml = build\docker-compose.ci.prod.yml
 		build\docker-compose.ci.test.yml = build\docker-compose.ci.test.yml
 	EndProjectSection
 EndProject

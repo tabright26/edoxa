@@ -24,7 +24,7 @@ namespace eDoxa.Notifications.Api.Areas.Email.Services
 
         public EmailService(IConfiguration configuration, ILogger<EmailService> logger)
         {
-            _client = new SendGridClient(configuration["SendGrid:ApiKey"] ?? throw new InvalidOperationException());
+            _client = new SendGridClient(configuration["Notifications:SendGrid:ApiKey"] ?? throw new InvalidOperationException());
             _logger = logger;
         }
 

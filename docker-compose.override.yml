@@ -26,7 +26,7 @@ services:
 
   identity.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -50,7 +50,7 @@ services:
 
   payment.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -63,7 +63,7 @@ services:
 
   cashier.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -77,7 +77,7 @@ services:
 
   notifications.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
@@ -91,7 +91,7 @@ services:
 
   challenges.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -107,7 +107,7 @@ services:
 
   games.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -122,7 +122,7 @@ services:
 
   clans.api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
@@ -136,7 +136,7 @@ services:
 
   challenges.web.aggregator:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -154,7 +154,7 @@ services:
 
   challenges.web.jobs:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
@@ -165,7 +165,7 @@ services:
 
   challenges.web.gateway:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - Authority=http://${HOST:-localhost}:5000
@@ -214,7 +214,7 @@ services:
 
   web.status:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - HealthChecks__Endpoints__0__Name=Identity API
