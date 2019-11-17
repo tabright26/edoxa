@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Overview from "./Overview";
-import { UserDoxatagHistoryState } from "store/root/user/doxaTagHistory/types";
+import { UserDoxatagHistoryState } from "store/root/user/doxatagHistory/types";
 
 it("renders without crashing", () => {
   //Arrange
