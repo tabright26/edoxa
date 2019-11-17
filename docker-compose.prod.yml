@@ -55,23 +55,23 @@ services:
       context: .
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
 
-  challenges.aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.aggregator:prod
+  challenges.web.aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.web.aggregator:prod
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.Aggregator/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
 
-  web.gateway:
-    image: ${ACR_REGISTRY:-edoxa}/web.gateway:prod
+  challenges.web.gateway:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.web.gateway:prod
     build:
       context: .
       dockerfile: src/eDoxa.Gateway/Dockerfile
 
-  challenges.backgroundtasks:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.backgroundtasks:prod
+  challenges.web.jobs:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.web.jobs:prod
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.BackgroundTasks/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
 
   web.spa:
     image: ${ACR_REGISTRY:-edoxa}/web.spa:prod

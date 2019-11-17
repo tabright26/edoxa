@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -22,6 +22,7 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
@@ -56,8 +57,6 @@ namespace eDoxa.Cashier.Api
 {
     public sealed class Startup
     {
-        private const string AzureServiceBusDiscriminator = "cashier";
-
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -149,12 +148,16 @@ namespace eDoxa.Cashier.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings, Scopes.PaymentApi);
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.PaymentApi);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.CashierApi));
 
             builder.RegisterModule<CashierModule>();
         }

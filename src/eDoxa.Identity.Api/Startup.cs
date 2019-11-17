@@ -27,6 +27,7 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
@@ -66,8 +67,6 @@ namespace eDoxa.Identity.Api
 {
     public sealed class Startup
     {
-        private const string AzureServiceBusDiscriminator = "identity";
-
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -105,7 +104,7 @@ namespace eDoxa.Identity.Api
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
 
-            services.AddDataProtection(Configuration, AppSettings.ApiResource.Name);
+            services.AddDataProtection(Configuration, AppNames.IdentityApi);
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
@@ -250,7 +249,7 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.IdentityApi));
 
             builder.RegisterModule<IdentityModule>();
         }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 using eDoxa.Gateway.Extensions;
 using eDoxa.Gateway.Infrastructure;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 
 using HealthChecks.UI.Client;
@@ -40,27 +41,27 @@ namespace eDoxa.Gateway
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
-            AppSettings = configuration.GetAppSettings<WebGatewayAppSettings>();
+            AppSettings = configuration.GetAppSettings<GatewayAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
 
         public IHostingEnvironment HostingEnvironment { get; }
 
-        public WebGatewayAppSettings AppSettings { get; set; }
+        public GatewayAppSettings AppSettings { get; set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks()
                 .AddCheck("liveness", () => HealthCheckResult.Healthy())
-                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, "identityapi")
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, "cashierapi")
-                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, "paymentapi")
-                .AddUrlGroup(AppSettings.Endpoints.NotificationsUrl, "notificationsapi")
-                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, "challengesapi")
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, "gamesapi")
-                .AddUrlGroup(AppSettings.Endpoints.ClansUrl, "clansapi")
-                .AddUrlGroup(AppSettings.Endpoints.ChallengesAggregatorUrl, "challengesaggregator");
+                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
+                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
+                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppNames.PaymentApi)
+                .AddUrlGroup(AppSettings.Endpoints.NotificationsUrl, AppNames.NotificationsApi)
+                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppNames.ChallengesApi)
+                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi)
+                .AddUrlGroup(AppSettings.Endpoints.ClansUrl, AppNames.ClansApi)
+                .AddUrlGroup(AppSettings.Endpoints.ChallengesWebAggregatorUrl, AppNames.ChallengesWebAggregator);
 
             services.AddCors(
                 options =>
@@ -80,7 +81,7 @@ namespace eDoxa.Gateway
                     ["ChallengesApiKey"] = ChallengesApi,
                     ["GamesApiKey"] = GamesApi,
                     ["ClansApiKey"] = ClansApi,
-                    ["ChallengesAggregatorKey"] = ChallengesAggregator
+                    ["ChallengesWebAggregatorKey"] = ChallengesWebAggregator
                 }
             );
 

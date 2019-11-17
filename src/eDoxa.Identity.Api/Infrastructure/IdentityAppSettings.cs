@@ -58,6 +58,6 @@ namespace eDoxa.Identity.Api.Infrastructure
         
         public string ClansUrl { get; set; }
 
-        public string ChallengesAggregatorUrl { get; set; }
+        public string ChallengesWebAggregatorUrl { get; set; }
     }
 }

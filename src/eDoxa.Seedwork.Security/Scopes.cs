@@ -21,6 +21,6 @@ namespace eDoxa.Seedwork.Security
         public static readonly Scope GamesApi = new Scope("games.api", "eDoxa Games API");
         public static readonly Scope ClansApi = new Scope("clans.api", "eDoxa Clans API");
         public static readonly Scope ChallengesApi = new Scope("challenges.api", "eDoxa Challenges API");
-        public static readonly Scope ChallengesAggregator = new Scope("challenges.aggregator", "eDoxa Chalenges Aggregator");
+        public static readonly Scope ChallengesWebAggregator = new Scope("challenges.web.aggregator", "eDoxa Challenges Web Aggregator");
     }
 }

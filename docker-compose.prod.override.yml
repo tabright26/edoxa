@@ -44,7 +44,7 @@ services:
       - Swagger__Endpoints__ChallengesUrl=http://${HOST:-localhost}:5003
       - Swagger__Endpoints__GamesUrl=http://${HOST:-localhost}:5005
       - Swagger__Endpoints__ClansUrl=http://${HOST:-localhost}:5010
-      - Swagger__Endpoints__ChallengesAggregatorUrl=http://${HOST:-localhost}:5303
+      - Swagger__Endpoints__ChallengesWebAggregatorUrl=http://${HOST:-localhost}:5303
     ports:
       - "5000:80"
 
@@ -134,7 +134,7 @@ services:
     ports:
       - "5010:80"
 
-  challenges.aggregator:
+  challenges.web.aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
@@ -152,18 +152,18 @@ services:
     ports:
       - "5303:80"
 
-  challenges.backgroundtasks:
+  challenges.web.jobs:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${CHALLENGES_BACKGROUNDTASKS_SQLSERVER_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
     ports:
       - "5403:80"
 
-  web.gateway:
+  challenges.web.gateway:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
@@ -176,7 +176,7 @@ services:
       - Endpoints__ChallengesUrl=http://challenges.api
       - Endpoints__GamesUrl=http://games.api
       - Endpoints__ClansUrl=http://clans.api
-      - Endpoints__ChallengesAggregatorUrl=http://challenges.aggregator
+      - Endpoints__ChallengesWebAggregatorUrl=http://challenges.web.aggregator
     ports:
       - "5200:80"
 
@@ -188,7 +188,7 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - WebGatewayUrl=http://web.gateway
+      - ChallengesWebGatewayUrl=http://challenges.web.gateway
       - Endpoints__IdentityUrl=http://identity.api
     ports:
       - "5300:80"
@@ -213,11 +213,11 @@ services:
       - HealthChecks__Endpoints__6__Name=Challenges API
       - HealthChecks__Endpoints__6__Uri=http://challenges.api/health
       - HealthChecks__Endpoints__7__Name=Challenges Web Aggregator
-      - HealthChecks__Endpoints__7__Uri=http://challenges.aggregator/health
+      - HealthChecks__Endpoints__7__Uri=http://challenges.web.aggregator/health
       - HealthChecks__Endpoints__8__Name=Challenges Web Gateway
-      - HealthChecks__Endpoints__8__Uri=http://web.gateway/health
+      - HealthChecks__Endpoints__8__Uri=http://challenges.web.gateway/health
       - HealthChecks__Endpoints__9__Name=Challenges Web Jobs
-      - HealthChecks__Endpoints__9__Uri=http://challenges.backgroundtasks/health
+      - HealthChecks__Endpoints__9__Uri=http://challenges.web.jobs/health
       - HealthChecks__Endpoints__10__Name=Web Spa
       - HealthChecks__Endpoints__10__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=60

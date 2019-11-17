@@ -21,6 +21,7 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.Storage.Azure.Extensions;
@@ -54,8 +55,6 @@ namespace eDoxa.Games.Api
 {
     public sealed class Startup
     {
-        private const string AzureServiceBusDiscriminator = "games";
-
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -158,7 +157,7 @@ namespace eDoxa.Games.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.GamesApi));
 
             builder.RegisterModule<GamesModule>();
         }

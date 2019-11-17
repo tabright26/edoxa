@@ -109,14 +109,14 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "challenges.aggregator",
+          "Host": "challenges.web.aggregator",
           "Port": 80
         }
       ],
       "UpstreamPathTemplate": "/challenge/api/{everything}",
       "UpstreamHttpMethod": [ "DELETE", "POST", "PUT", "GET", "PATCH" ],
       "AuthenticationOptions": {
-        "AuthenticationProviderKey": "ChallengesAggregatorKey",
+        "AuthenticationProviderKey": "ChallengesWebAggregatorKey",
         "AllowedScopes": []
       }
     },
@@ -126,7 +126,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "challenges.aggregator",
+          "Host": "challenges.web.aggregator",
           "Port": 80
         }
       ],
@@ -139,7 +139,7 @@
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "challenges.aggregator",
+          "Host": "challenges.web.aggregator",
           "Port": 80
         }
       ],
