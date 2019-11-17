@@ -1,51 +1,46 @@
 ﻿// Filename: AddressBookControllerGetAsyncTest.cs
-// Date Created: 2019-08-13
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Responses;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressBookControllerGetAsyncTest : IClassFixture<IdentityWebApiFactory>
+    public sealed class AddressBookControllerGetAsyncTest : IntegrationTest
     {
-        public AddressBookControllerGetAsyncTest(IdentityWebApiFactory identityWebApiFactory)
+        public AddressBookControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            User = new HashSet<User>(IdentityStorage.TestUsers).First();
-            var factory = identityWebApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
-
-        private User User { get; }
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
@@ -53,61 +48,24 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeStatus200OK()
+        public async Task ShouldBeHttpStatusCodeNoContent()
         {
-            await _testServer.UsingScopeAsync(
+            var users = TestData.FileStorage.GetUsers();
+            var user = users.First();
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
-
-                    result = await userManager.AddAddressAsync(
-                        User,
-                        "Test",
-                        "Test",
-                        null,
-                        "Test",
-                        "Test",
-                        "Test"
-                    );
-
-                    result.Succeeded.Should().BeTrue();
-
-                    var addressBook = await userManager.GetAddressBookAsync(User);
-
-                    // Act
-                    using var response = await this.ExecuteAsync();
-
-                    // Assert
-                    response.EnsureSuccessStatusCode();
-
-                    response.StatusCode.Should().Be(StatusCodes.Status200OK);
-
-                    var mapper = scope.GetRequiredService<IMapper>();
-
-                    var addressResponse = await response.DeserializeAsync<ICollection<AddressResponse>>();
-
-                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
-                }
-            );
-        }
-
-        [Fact]
-        public async Task GetAsync_ShouldBeStatus204NoContent()
-        {
-            await _testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var userManager = scope.GetRequiredService<UserManager>();
-
-                    var result = await userManager.CreateAsync(User);
-
-                    result.Succeeded.Should().BeTrue();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
@@ -115,7 +73,55 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
 
-            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        }
+
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeOK()
+        {
+            var users = TestData.FileStorage.GetUsers();
+            var user = users.First();
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
+                async scope =>
+                {
+                    var userManager = scope.GetRequiredService<UserManager>();
+
+                    var result = await userManager.CreateAsync(user);
+
+                    result.Succeeded.Should().BeTrue();
+
+                    result = await userManager.AddAddressAsync(
+                        user,
+                        Country.Canada,
+                        "1234 Test Street",
+                        null,
+                        "Toronto",
+                        "Ontario",
+                        "A1A1A1");
+
+                    result.Succeeded.Should().BeTrue();
+
+                    var addressBook = await userManager.GetAddressBookAsync(user);
+
+                    // Act
+                    using var response = await this.ExecuteAsync();
+
+                    // Assert
+                    response.EnsureSuccessStatusCode();
+
+                    response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+                    var mapper = scope.GetRequiredService<IMapper>();
+
+                    var addressResponse = await response.DeserializeAsync<ICollection<UserAddressResponse>>();
+
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<UserAddressResponse>>(addressBook));
+                });
         }
     }
 }

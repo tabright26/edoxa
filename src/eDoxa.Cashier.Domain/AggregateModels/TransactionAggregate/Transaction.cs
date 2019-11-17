@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,7 @@
 using System;
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
@@ -16,7 +17,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
             ICurrency currency,
             TransactionDescription description,
             TransactionType type,
-            IDateTimeProvider provider
+            IDateTimeProvider provider,
+            TransactionMetadata? metadata = null
         )
         {
             Timestamp = provider.DateTime;
@@ -24,6 +26,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
             Description = description;
             Type = type;
             Status = TransactionStatus.Pending;
+            Metadata = metadata ?? new TransactionMetadata();
         }
 
         public DateTime Timestamp { get; }
@@ -34,24 +37,40 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 
         public TransactionDescription Description { get; }
 
+        public TransactionMetadata Metadata { get; }
+
         public TransactionType Type { get; }
 
         public TransactionStatus Status { get; private set; }
 
         public void MarkAsSucceded()
         {
-            if (Status == TransactionStatus.Pending)
+            if (Status != TransactionStatus.Pending)
             {
-                Status = TransactionStatus.Succeded;
+                throw new InvalidOperationException();
             }
+
+            Status = TransactionStatus.Succeded;
         }
 
         public void MarkAsFailed()
         {
-            if (Status == TransactionStatus.Pending)
+            if (Status != TransactionStatus.Pending)
             {
-                Status = TransactionStatus.Failed;
+                throw new InvalidOperationException();
             }
+
+            Status = TransactionStatus.Failed;
+        }
+
+        public void MarkAsCanceled()
+        {
+            if (Status != TransactionStatus.Pending)
+            {
+                throw new InvalidOperationException();
+            }
+
+            Status = TransactionStatus.Canceled;
         }
     }
 

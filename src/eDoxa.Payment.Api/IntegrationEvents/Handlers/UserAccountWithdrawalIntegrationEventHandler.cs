@@ -1,17 +1,14 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandler.cs
-// Date Created: 2019-07-02
-// 
+﻿// Filename: UserAccountWithdrawalIntegrationEventHandler.cs
+// Date Created: 2019-10-06
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Payment.Api.IntegrationEvents.Extensions;
+using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -20,21 +17,24 @@ using Stripe;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserAccountWithdrawalIntegrationEventHandler : IIntegrationEventHandler<UserAccountWithdrawalIntegrationEvent>
+    public sealed class UserAccountWithdrawalIntegrationEventHandler : IIntegrationEventHandler<UserAccountWithdrawalIntegrationEvent>
     {
         private readonly ILogger<UserAccountWithdrawalIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IStripeService _stripeService;
+        private readonly IStripeTransferService _stripeTransferService;
+        private readonly IStripeAccountService _stripeAccountService;
 
         public UserAccountWithdrawalIntegrationEventHandler(
             ILogger<UserAccountWithdrawalIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeService stripeService
+            IStripeTransferService stripeTransferService,
+            IStripeAccountService stripeAccountService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
-            _stripeService = stripeService;
+            _stripeTransferService = stripeTransferService;
+            _stripeAccountService = stripeAccountService;
         }
 
         public async Task HandleAsync(UserAccountWithdrawalIntegrationEvent integrationEvent)
@@ -43,32 +43,37 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
-                await _stripeService.CreateTransferAsync(
+                var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
+
+                if (!await _stripeAccountService.HasAccountVerifiedAsync(accountId))
+                {
+                    throw new InvalidOperationException("The user's Stripe Account isn't verified. The user's cannot process a withdrawal transaction.");
+                }
+
+                await _stripeTransferService.CreateTransferAsync(
+                    accountId,
                     integrationEvent.TransactionId,
-                    integrationEvent.TransactionDescription,
-                    integrationEvent.ConnectAccountId,
-                    integrationEvent.Amount
-                );
+                    integrationEvent.Amount,
+                    integrationEvent.Description);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
-            catch (StripeException exception)
-            {
-                _logger.LogError(exception, exception.StripeError?.ToJson());
-
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
-
-                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
-            }
             catch (Exception exception)
             {
-                _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                if (exception is StripeException stripeException)
+                {
+                    _logger.LogCritical(stripeException, stripeException.StripeError?.ToJson());
+                }
+                else
+                {
+                    _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                }
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }

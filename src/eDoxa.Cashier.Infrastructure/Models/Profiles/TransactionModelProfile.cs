@@ -1,10 +1,11 @@
 ﻿// Filename: TransactionModelProfile.cs
-// Date Created: 2019-07-11
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Linq;
 
 using AutoMapper;
 
@@ -17,14 +18,24 @@ namespace eDoxa.Cashier.Infrastructure.Models.Profiles
         public TransactionModelProfile()
         {
             this.CreateMap<ITransaction, TransactionModel>()
-                .ForMember(user => user.Id, config => config.MapFrom<Guid>(user => user.Id))
-                .ForMember(user => user.Timestamp, config => config.MapFrom(user => user.Timestamp))
-                .ForMember(user => user.Description, config => config.MapFrom(user => user.Description.Text))
-                .ForMember(user => user.Amount, config => config.MapFrom(user => user.Currency.Amount))
-                .ForMember(user => user.Currency, config => config.MapFrom(user => user.Currency.Type.Value))
-                .ForMember(user => user.Type, config => config.MapFrom(user => user.Type.Value))
-                .ForMember(user => user.Status, config => config.MapFrom(user => user.Status.Value))
-                .ForMember(user => user.Account, config => config.Ignore());
+                .ForMember(transaction => transaction.Id, config => config.MapFrom<Guid>(transaction => transaction.Id))
+                .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp))
+                .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description.Text))
+                .ForMember(transaction => transaction.Amount, config => config.MapFrom(transaction => transaction.Currency.Amount))
+                .ForMember(transaction => transaction.Currency, config => config.MapFrom(transaction => transaction.Currency.Type.Value))
+                .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type.Value))
+                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status.Value))
+                .ForMember(
+                    transaction => transaction.Metadata,
+                    config => config.MapFrom(
+                        transaction => transaction.Metadata.Select(
+                                metadata => new TransactionMetadataModel
+                                {
+                                    Key = metadata.Key,
+                                    Value = metadata.Value
+                                })
+                            .ToList()))
+                .ForMember(transaction => transaction.Account, config => config.Ignore());
         }
     }
 }

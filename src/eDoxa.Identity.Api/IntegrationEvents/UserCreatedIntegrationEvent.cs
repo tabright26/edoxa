@@ -1,12 +1,11 @@
 ﻿// Filename: UserCreatedIntegrationEvent.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -14,16 +13,24 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserCreatedIntegrationEvent : IIntegrationEvent
+    public sealed class UserCreatedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserCreatedIntegrationEvent(Guid userId)
+        public UserCreatedIntegrationEvent(UserId userId, string email, Country country)
         {
             UserId = userId;
+            Email = email;
+            Country = country;
         }
 
         [JsonProperty]
-        public Guid UserId { get; }
+        public UserId UserId { get; }
+
+        [JsonProperty]
+        public string Email { get; }
+
+        [JsonProperty]
+        public Country Country { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserCreated;

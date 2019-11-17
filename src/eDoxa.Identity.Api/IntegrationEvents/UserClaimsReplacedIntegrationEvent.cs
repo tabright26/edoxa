@@ -4,10 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -15,14 +14,14 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserClaimsReplacedIntegrationEvent : IIntegrationEvent
+    public sealed class UserClaimsReplacedIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
         public UserClaimsReplacedIntegrationEvent(
-            Guid userId,
+            UserId userId,
             int claimCount,
-            IDictionary<string, string> claims,
-            IDictionary<string, string> newClaims
+            Claims claims,
+            Claims newClaims
         )
         {
             UserId = userId;
@@ -32,16 +31,16 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         }
 
         [JsonProperty]
-        public Guid UserId { get; }
+        public UserId UserId { get; }
 
         [JsonProperty]
         public int ClaimCount { get; }
 
         [JsonProperty]
-        public IDictionary<string, string> Claims { get; }
+        public Claims Claims { get; }
 
         [JsonProperty]
-        public IDictionary<string, string> NewClaims { get; }
+        public Claims NewClaims { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserClaimsReplaced;

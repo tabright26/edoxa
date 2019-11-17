@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<ul
+  className="pagination"
+>
+  <li
+    className="page-item disabled"
+  >
+    <a
+      aria-disabled="true"
+      className="page-link"
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      role="button"
+      tabIndex="0"
+    >
+      previous
+    </a>
+  </li>
+  <li
+    className="page-item active"
+  >
+    <a
+      aria-current="page"
+      aria-label="Page 1 is your current page"
+      className="page-link"
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      role="button"
+      tabIndex="0"
+    >
+      1
+    </a>
+  </li>
+  <li
+    className="page-item disabled"
+  >
+    <a
+      aria-disabled="true"
+      className="page-link"
+      onClick={[Function]}
+      onKeyPress={[Function]}
+      role="button"
+      tabIndex="0"
+    >
+      next
+    </a>
+  </li>
+</ul>
+`;

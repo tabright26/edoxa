@@ -8,16 +8,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using MediatR;
-
 namespace eDoxa.Seedwork.Domain
 {
     public interface IUnitOfWork : IDisposable
     {
-        IMediator Mediator { get; }
-
-        Task CommitAsync(CancellationToken cancellationToken = default);
-
-        Task CommitAndDispatchDomainEventsAsync(CancellationToken cancellationToken = default);
+        Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default);
     }
 }

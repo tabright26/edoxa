@@ -1,44 +1,41 @@
 ﻿// Filename: AddressBookControllerPostAsyncTest.cs
-// Date Created: 2019-08-13
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Data.Storage;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http;
+using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.TestHost;
-
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class AddressBookControllerPostAsyncTest : IClassFixture<IdentityWebApiFactory>
+    public sealed class AddressBookControllerPostAsyncTest : IntegrationTest
     {
-        public AddressBookControllerPostAsyncTest(IdentityWebApiFactory identityWebApiFactory)
+        public AddressBookControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            User = new HashSet<User>(IdentityStorage.TestUsers).First();
-            var factory = identityWebApiFactory.WithClaims(new Claim(JwtClaimTypes.Subject, User.Id.ToString()));
-            _httpClient = factory.CreateClient();
-            _testServer = factory.Server;
-            _testServer.CleanupDbContext();
         }
 
         private async Task<HttpResponseMessage> ExecuteAsync(AddressPostRequest request)
@@ -46,45 +43,46 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             return await _httpClient.PostAsync("api/address-book", new JsonContent(request));
         }
 
-        private readonly TestServer _testServer;
-        private readonly HttpClient _httpClient;
-
-        private User User { get; }
+        private HttpClient _httpClient;
 
         [Fact]
-        public async Task PostAsync_ShouldBeStatus200OK()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
-            await _testServer.UsingScopeAsync(
+            var users = TestData.FileStorage.GetUsers();
+            var user = users.First();
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var userManager = scope.GetRequiredService<UserManager>();
 
-                    var result = await userManager.CreateAsync(User);
+                    var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
 
                     // Act
                     using var response = await this.ExecuteAsync(
                         new AddressPostRequest(
-                            "New",
-                            "New",
-                            "New",
-                            "New",
-                            "New",
-                            "New"
-                        )
-                    );
+                            Country.Canada,
+                            "1234 Test Street",
+                            null,
+                            "Toronto",
+                            "Ontario",
+                            "A1A1A1"));
 
                     // Assert
                     response.EnsureSuccessStatusCode();
 
-                    response.StatusCode.Should().Be(StatusCodes.Status200OK);
+                    response.StatusCode.Should().Be(HttpStatusCode.OK);
 
                     var message = await response.DeserializeAsync<string>();
 
                     message.Should().NotBeNullOrWhiteSpace();
-                }
-            );
+                });
         }
     }
 }

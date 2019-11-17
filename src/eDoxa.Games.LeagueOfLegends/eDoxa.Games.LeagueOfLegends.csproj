@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>eDoxa.Games.LeagueOfLegends</AssemblyName>
+    <RootNamespace>eDoxa.Games.LeagueOfLegends</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RiotSharp" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Games\eDoxa.Games.csproj" />
+    <ProjectReference Include="..\eDoxa.Games.Abstractions\eDoxa.Games.Abstractions.csproj" />
+  </ItemGroup>
+
+</Project>

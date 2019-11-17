@@ -5,16 +5,18 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
     public sealed class MoneyChargeTransaction : Transaction
     {
-        public MoneyChargeTransaction(Money currency) : base(
+        public MoneyChargeTransaction(Money currency, TransactionMetadata? metadata = null) : base(
             -currency,
             new TransactionDescription(nameof(MoneyChargeTransaction)),
             TransactionType.Charge,
-            new UtcNowDateTimeProvider()
+            new UtcNowDateTimeProvider(),
+            metadata
         )
         {
         }

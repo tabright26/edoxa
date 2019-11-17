@@ -13,11 +13,11 @@ using System.Linq.Expressions;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Specifications;
+using eDoxa.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
 {
-    public sealed class InsufficientMoneySpecification : Specification<MoneyAccount>
+    public sealed class InsufficientMoneySpecification : Specification<IMoneyAccount>
     {
         private readonly Money _money;
 
@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.Domain.Specifications
             _money = money;
         }
 
-        public override Expression<Func<MoneyAccount, bool>> ToExpression()
+        public override Expression<Func<IMoneyAccount, bool>> ToExpression()
         {
             return account => account.Balance.Available < _money;
         }

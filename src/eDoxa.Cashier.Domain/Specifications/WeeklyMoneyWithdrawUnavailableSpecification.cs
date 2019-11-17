@@ -12,13 +12,13 @@ using System;
 using System.Linq.Expressions;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Seedwork.Domain.Specifications;
+using eDoxa.Specifications;
 
 namespace eDoxa.Cashier.Domain.Specifications
 {
-    public sealed class WeeklyMoneyWithdrawUnavailableSpecification : Specification<MoneyAccount>
+    public sealed class WeeklyMoneyWithdrawUnavailableSpecification : Specification<IMoneyAccount>
     {
-        public override Expression<Func<MoneyAccount, bool>> ToExpression()
+        public override Expression<Func<IMoneyAccount, bool>> ToExpression()
         {
             return account => account.LastWithdraw.HasValue && account.LastWithdraw.Value.AddDays(7) >= DateTime.UtcNow;
         }

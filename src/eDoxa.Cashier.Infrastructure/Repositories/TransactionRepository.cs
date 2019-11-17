@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionRepository.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -15,6 +15,7 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using LinqKit;
 
@@ -43,6 +44,15 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
             return await transactionModels.SingleOrDefaultAsync();
         }
+
+        public async Task<TransactionModel?> FindTransactionModelAsync(IDictionary<string, string> metadata)
+        {
+            var transactionModels = from transaction in _context.Transactions.AsExpandable()
+                                    where transaction.Metadata.Any(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value)))
+                                    select transaction;
+
+            return await transactionModels.SingleOrDefaultAsync();
+        }
     }
 
     public sealed partial class TransactionRepository : ITransactionRepository
@@ -55,6 +65,32 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             }
 
             var transactionModel = await this.FindTransactionModelAsync(transactionId);
+
+            if (transactionModel == null)
+            {
+                return null;
+            }
+
+            transaction = _mapper.Map<ITransaction>(transactionModel);
+
+            _materializedObjects[transaction] = transactionModel;
+
+            _materializedIds[transactionModel.Id] = transaction;
+
+            return transaction;
+        }
+
+        public async Task<ITransaction?> FindTransactionAsync(TransactionMetadata metadata)
+        {
+            var transaction = _materializedIds.Values.SingleOrDefault(
+                x => x.Metadata.Any(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value))));
+
+            if (transaction != null)
+            {
+                return transaction;
+            }
+
+            var transactionModel = await this.FindTransactionModelAsync(metadata);
 
             if (transactionModel == null)
             {

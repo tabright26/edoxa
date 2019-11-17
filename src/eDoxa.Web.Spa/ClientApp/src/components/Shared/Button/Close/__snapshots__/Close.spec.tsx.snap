@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<button
+  aria-label={null}
+  className="btn btn-primary btn-sm"
+  onClick={[Function]}
+  style={
+    Object {
+      "width": "75px",
+    }
+  }
+  type="button"
+>
+  Close
+</button>
+`;

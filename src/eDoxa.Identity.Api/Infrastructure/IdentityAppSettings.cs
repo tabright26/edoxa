@@ -10,49 +10,54 @@ using System.ComponentModel.DataAnnotations;
 
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
-using eDoxa.ServiceBus.Abstractions;
 
 using IdentityServer4.Models;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
-    public class IdentityAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings, IHasServiceBusAppSettings
+    public class IdentityAppSettings : IHasApiResourceAppSettings<AuthorityEndpointsOptions>
     {
-        [Required]
-        public IdentityServerOptions IdentityServer { get; set; }
-
-        [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
-
         [Required]
         public ApiResource ApiResource { get; set; }
 
         [Required]
-        public AuthorityOptions Authority { get; set; }
+        public string Authority { get; set; }
 
         [Required]
-        public AzureKeyVaultOptions AzureKeyVault { get; set; }
+        public string WebSpaProxyUrl { get; set; }
 
-        public bool AzureServiceBusEnabled { get; set; }
+        [Required]
+        public AuthorityEndpointsOptions Endpoints { get; set; }
+
+        [Required]
+        public SwaggerOptions Swagger { get; set; }
     }
 
-    public class ConnectionStrings : IHasSqlServerConnectionString, IHasRedisConnectionString
+    public sealed class SwaggerOptions
     {
         [Required]
-        public string Redis { get; set; }
+        public bool Enabled { get; set; }
 
         [Required]
-        public string SqlServer { get; set; }
+        public SwaggerEndpointsOptions Endpoints { get; set; }
     }
 
-    public class IdentityServerOptions
+    public sealed class SwaggerEndpointsOptions
     {
         public string IdentityUrl { get; set; }
 
+        public string PaymentUrl { get; set; }
+
         public string CashierUrl { get; set; }
 
-        public string ArenaChallengesUrl { get; set; }
+        public string NotificationsUrl { get; set; }
 
-        public WebOptions Web { get; set; }
+        public string ChallengesUrl { get; set; }
+
+        public string GamesUrl { get; set; }
+        
+        public string ClansUrl { get; set; }
+
+        public string ChallengesWebAggregatorUrl { get; set; }
     }
 }

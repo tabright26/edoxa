@@ -1,60 +1,31 @@
 ﻿// Filename: TransactionTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
 {
-    [TestClass]
-    public sealed class TransactionTest
+    public sealed class TransactionTest : UnitTest
     {
-        [TestMethod]
-        public void Constructor_Tests()
+        public TransactionTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
-            // Arrange
-            var currency = Money.Fifty;
-            var description = new TransactionDescription("Test");
-            var type = TransactionType.Deposit;
-            var provider = new UtcNowDateTimeProvider();
-
-            // Act
-            var transaction = new Transaction(currency, description, type, provider);
-
-            // Assert
-            transaction.Timestamp.Should().Be(provider.DateTime);
-            transaction.Currency.Should().Be(currency);
-            transaction.Description.Should().Be(description);
-            transaction.Type.Should().Be(type);
-            transaction.Status.Should().Be(TransactionStatus.Pending);
         }
 
-        [TestMethod]
-        public void MarkAsSucceded_StatusPending_ShouldBeStatusSucceded()
-        {
-            // Arrange
-            var currency = Money.Fifty;
-            var description = new TransactionDescription("Test");
-            var type = TransactionType.Deposit;
-            var provider = new UtcNowDateTimeProvider();
-            var transaction = new Transaction(currency, description, type, provider);
-
-            // Act
-            transaction.MarkAsSucceded();
-
-            // Assert
-            transaction.Status.Should().Be(TransactionStatus.Succeded);
-        }
-
-        [TestMethod]
+        [Fact]
         public void MarkAsFailed_StatusPending_ShouldBeStatusFailed()
         {
             // Arrange
@@ -62,7 +33,12 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             var description = new TransactionDescription("Test");
             var type = TransactionType.Deposit;
             var provider = new UtcNowDateTimeProvider();
-            var transaction = new Transaction(currency, description, type, provider);
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
 
             // Act
             transaction.MarkAsFailed();
@@ -71,40 +47,98 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
             transaction.Status.Should().Be(TransactionStatus.Failed);
         }
 
-        [TestMethod]
-        public void MarkAsSucceded_StatusSucceded_ShouldBeStatusSucceded()
+        [Fact]
+        public void MarkAsFailed_WhenTransactionStatusSucceded_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var currency = Money.Fifty;
             var description = new TransactionDescription("Test");
             var type = TransactionType.Deposit;
             var provider = new UtcNowDateTimeProvider();
-            var transaction = new Transaction(currency, description, type, provider);
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
             transaction.MarkAsSucceded();
 
             // Act
-            transaction.MarkAsFailed();
+            var action = new Action(() => transaction.MarkAsFailed());
+
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void MarkAsSucceded_StatusPending_ShouldBeStatusSucceded()
+        {
+            // Arrange
+            var currency = Money.Fifty;
+            var description = new TransactionDescription("Test");
+            var type = TransactionType.Deposit;
+            var provider = new UtcNowDateTimeProvider();
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Act
+            transaction.MarkAsSucceded();
 
             // Assert
             transaction.Status.Should().Be(TransactionStatus.Succeded);
         }
 
-        [TestMethod]
-        public void MarkAsFailed_StatusFailed_ShouldBeStatusFailed()
+        [Fact]
+        public void MarkAsSucceded_WhenTransactionStatusFailed_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var currency = Money.Fifty;
             var description = new TransactionDescription("Test");
             var type = TransactionType.Deposit;
             var provider = new UtcNowDateTimeProvider();
-            var transaction = new Transaction(currency, description, type, provider);
+
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
             transaction.MarkAsFailed();
 
             // Act
-            transaction.MarkAsSucceded();
+            var action = new Action(() => transaction.MarkAsSucceded());
 
             // Assert
-            transaction.Status.Should().Be(TransactionStatus.Failed);
+            action.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Transaction_WithConstructor_ShouldBeValid()
+        {
+            // Arrange
+            var currency = Money.Fifty;
+            var description = new TransactionDescription("Test");
+            var type = TransactionType.Deposit;
+            var provider = new UtcNowDateTimeProvider();
+
+            // Act
+            var transaction = new Transaction(
+                currency,
+                description,
+                type,
+                provider);
+
+            // Assert
+            transaction.Timestamp.Should().Be(provider.DateTime);
+            transaction.Currency.Should().Be(currency);
+            transaction.Description.Should().Be(description);
+            transaction.Type.Should().Be(type);
+            transaction.Status.Should().Be(TransactionStatus.Pending);
         }
     }
 }

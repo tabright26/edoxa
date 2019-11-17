@@ -1,21 +1,18 @@
-﻿// Filename: Config.cs
-// Date Created: 2019-06-25
+﻿// Filename: IdentityServerConfig.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Extensions;
-using eDoxa.Seedwork.Security.IdentityServer.Resources;
+using eDoxa.Swagger.Client.Extensions;
 
 using IdentityServer4;
 using IdentityServer4.Models;
+
+using IdentityResources = IdentityServer4.Models.IdentityResources;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
@@ -33,31 +30,54 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return new IdentityResources.Address();
 
-            yield return CustomIdentityResources.Roles;
+            yield return Seedwork.Security.IdentityResources.Country;
 
-            yield return CustomIdentityResources.Permissions;
+            yield return Seedwork.Security.IdentityResources.Roles;
 
-            yield return CustomIdentityResources.Stripe;
+            yield return Seedwork.Security.IdentityResources.Permissions;
 
-            yield return CustomIdentityResources.Games;
+            yield return Seedwork.Security.IdentityResources.Games;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
         {
-            yield return CustomApiResources.IdentityApi;
+            yield return ApiResources.IdentityApi;
 
-            yield return CustomApiResources.CashierApi;
+            yield return ApiResources.PaymentApi;
 
-            yield return CustomApiResources.ArenaChallengesApi;
+            yield return ApiResources.CashierApi;
+
+            yield return ApiResources.NotificationsApi;
+
+            yield return ApiResources.ChallengesApi;
+
+            yield return ApiResources.GamesApi;
+
+            yield return ApiResources.ClansApi;
+
+            yield return ApiResources.ChallengesWebAggregator;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
         {
-            yield return CustomApiResources.IdentityApi.SwaggerClient(appSettings.IdentityServer.IdentityUrl);
+            if (appSettings.Swagger.Enabled)
+            {
+                yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.Swagger.Endpoints.IdentityUrl);
 
-            yield return CustomApiResources.CashierApi.SwaggerClient(appSettings.IdentityServer.CashierUrl);
+                yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Swagger.Endpoints.PaymentUrl);
 
-            yield return CustomApiResources.ArenaChallengesApi.SwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl, Scopes.PaymentApi);
+
+                yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
+
+                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl, Scopes.CashierApi, Scopes.GamesApi);
+
+                yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
+
+                yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl);
+
+                yield return ApiResources.ChallengesWebAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesWebAggregatorUrl, Scopes.CashierApi, Scopes.GamesApi, Scopes.ChallengesApi);
+            }
 
             yield return new Client
             {
@@ -65,22 +85,22 @@ namespace eDoxa.Identity.Api.Infrastructure
                 ClientName = "eDoxa Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    appSettings.IdentityServer.Web.SpaUrl,
+                    appSettings.WebSpaProxyUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    appSettings.IdentityServer.Web.SpaUrl,
+                    appSettings.WebSpaProxyUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.IdentityServer.Web.SpaUrl}/callback",
+                    $"{appSettings.WebSpaProxyUrl}/callback",
                     "http://localhost:5300/callback",
                     "http://127.0.0.1:5300/callback",
-                    $"{appSettings.IdentityServer.Web.SpaUrl}/silent_renew.html",
+                    $"{appSettings.WebSpaProxyUrl}/silent_renew.html",
                     "http://localhost:5300/silent_renew.html",
                     "http://127.0.0.1:5300/silent_renew.html"
                 },
@@ -94,15 +114,18 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    AppScopes.Roles,
-                    AppScopes.Permissions,
-                    AppScopes.Stripe,
-                    AppScopes.Games,
-                    AppScopes.IdentityApi,
-                    AppScopes.CashierApi,
-                    AppScopes.ArenaChallengesApi
-                },
-                
+                    Scopes.Country.Name,
+                    Scopes.Roles.Name,
+                    Scopes.Permissions.Name,
+                    Scopes.Games.Name,
+                    Scopes.IdentityApi.Name,
+                    Scopes.PaymentApi.Name,
+                    Scopes.CashierApi.Name,
+                    Scopes.ChallengesApi.Name,
+                    Scopes.GamesApi.Name,
+                    Scopes.ClansApi.Name,
+                    Scopes.ChallengesWebAggregator.Name
+                }
             };
         }
     }

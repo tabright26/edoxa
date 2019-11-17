@@ -1,60 +1,60 @@
 ﻿// Filename: AccountWithdrawalControllerPostAsyncTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http;
+using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountWithdrawalControllerPostAsyncTest : IClassFixture<CashierWebApiFactory>
+    public sealed class AccountWithdrawalControllerPostAsyncTest : IntegrationTest
     {
-        public AccountWithdrawalControllerPostAsyncTest(CashierWebApiFactory factory)
+        public AccountWithdrawalControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            _factory = factory;
         }
-
-        private readonly CashierWebApiFactory _factory;
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(WithdrawalRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(Currency currency, decimal amount)
         {
-            return await _httpClient.PostAsync("api/account/withdrawal", new JsonContent(request));
+            return await _httpClient.PostAsync($"api/account/withdrawal/{currency}", new JsonContent(amount));
         }
 
         [Fact]
-        public async Task Money_InsufficientFunds_ShouldBeStatus400BadRequest()
+        public async Task ShouldBeHttpStatusCodeBadRequest()
         {
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(
+            var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test")
-            );
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -66,49 +66,35 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
-        public async Task Money_InvalidAmount_ShouldBeStatus400BadRequest()
+        public async Task ShouldBeHttpStatusCodeNotFound()
         {
-            // Arrange
-            var account = new Account(new UserId());
-
-            var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test")
-            );
+            var factory = TestApi.WithClaims(
+                new Claim(JwtClaimTypes.Subject, new UserId().ToString()),
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
 
-            await server.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
             // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(2.5M));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
-        public async Task Money_ValidAmount_ShouldBeStatus200OK()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             var account = new Account(new UserId());
@@ -117,10 +103,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             account.CreateTransaction(transaction);
 
-            var factory = _factory.WithClaims(
+            var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test")
-            );
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -132,8 +117,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             await server.UsingScopeAsync(
                 async scope =>
@@ -142,36 +126,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     transaction = await transactionRepository.FindTransactionAsync(transaction.Id);
                     transaction?.MarkAsSucceded();
                     await transactionRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var message = await response.DeserializeAsync<string>();
             message.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task User_WithoutAccount_ShouldBeStatus404NotFound()
-        {
-            var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject,new UserId().ToString()),
-                new Claim(AppClaimTypes.StripeConnectAccountId, "acct_test")
-            );
-
-            _httpClient = factory.CreateClient();
-            var server = factory.Server;
-            server.CleanupDbContext();
-
-            // Act
-            using var response = await this.ExecuteAsync(new WithdrawalRequest(Money.Fifty));
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
         }
     }
 }

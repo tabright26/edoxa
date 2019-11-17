@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+Array [
+  <input
+    className="form-control-sm form-control"
+    placeholder={null}
+    type="text"
+  />,
+  <div
+    className="invalid-feedback"
+  />,
+]
+`;

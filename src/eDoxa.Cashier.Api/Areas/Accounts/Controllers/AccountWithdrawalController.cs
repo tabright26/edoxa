@@ -1,19 +1,20 @@
 ﻿// Filename: AccountWithdrawalController.cs
-// Date Created: 2019-07-03
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
+using AutoMapper;
+
+using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
+using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 
-using MediatR;
+using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,29 +27,62 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
-    [Route("api/account/withdrawal")]
+    [Route("api/account/withdrawal/{currency}")]
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountWithdrawalController : ControllerBase
     {
-        private readonly IMediator _mediator;
+        private readonly IAccountService _accountService;
+        private readonly IBundlesService _bundlesService;
+        private readonly IMapper _mapper;
 
-        public AccountWithdrawalController(IMediator mediator)
+        public AccountWithdrawalController(IAccountService accountService, IBundlesService bundlesService, IMapper mapper)
         {
-            _mediator = mediator;
+            _accountService = accountService;
+            _bundlesService = bundlesService;
+            _mapper = mapper;
         }
 
         /// <summary>
         ///     Withdrawal money from the account.
         /// </summary>
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> PostAsync([FromBody] WithdrawalRequest request)
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        public async Task<IActionResult> PostAsync(Currency currency, [FromBody] decimal amount)
         {
-            await _mediator.SendAsync(request);
+            var userId = HttpContext.GetUserId();
 
-            return this.Ok("Processing the withdrawal transaction...");
+            var email = HttpContext.GetEmail();
+
+            var account = await _accountService.FindUserAccountAsync(userId);
+
+            if (account == null)
+            {
+                return this.NotFound("User's account not found.");
+            }
+
+            var result = await _accountService.WithdrawalAsync(account, currency.Format(amount), email);
+
+            if (result.IsValid)
+            {
+                return this.Ok("Processing the deposit transaction...");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
+        }
+
+        [HttpGet("bundles")]
+        public IActionResult Get(Currency currency)
+        {
+            if (currency == Currency.Money)
+            {
+                return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundlesService.FetchWithdrawalMoneyBundles()));
+            }
+
+            return this.BadRequest("Invalid or unsuported currency.");
         }
     }
 }

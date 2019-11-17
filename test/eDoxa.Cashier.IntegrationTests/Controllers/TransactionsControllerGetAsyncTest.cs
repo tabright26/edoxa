@@ -1,60 +1,57 @@
 ﻿// Filename: TransactionsControllerGetAsyncTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Responses;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class TransactionsControllerGetAsyncTest : IClassFixture<CashierWebApiFactory>
+    public sealed class TransactionsControllerGetAsyncTest : IntegrationTest
     {
-        private readonly CashierWebApiFactory _factory;
-
-        public TransactionsControllerGetAsyncTest(CashierWebApiFactory factory)
+        public TransactionsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            _factory = factory;
         }
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(
-            Currency currency = null,
-            TransactionType type = null,
-            TransactionStatus status = null
-        )
+        private async Task<HttpResponseMessage> ExecuteAsync(Currency currency = null, TransactionType type = null, TransactionStatus status = null)
         {
             return await _httpClient.GetAsync($"api/transactions?currency={currency}&type={type}&status={status}");
         }
 
         [Fact]
-        public async Task ShouldBeNoContent()
+        public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -65,26 +62,24 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status204NoContent);
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
         [Fact]
-        public async Task ShouldBeOk()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var accountFaker = new AccountFaker();
-            accountFaker.UseSeed(1);
-            var account = accountFaker.Generate();
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
+            var account = accountFaker.FakeAccount();
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -95,16 +90,15 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync();
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
-            var transactions = await response.DeserializeAsync<TransactionViewModel[]>();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var transactions = await response.DeserializeAsync<TransactionResponse[]>();
             transactions.Should().HaveCount(account.Transactions.Count);
         }
     }

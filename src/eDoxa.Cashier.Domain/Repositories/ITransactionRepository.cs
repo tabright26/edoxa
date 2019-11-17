@@ -12,12 +12,15 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.Repositories
 {
     public interface ITransactionRepository
     {
         Task<ITransaction?> FindTransactionAsync(TransactionId transactionId);
+
+        Task<ITransaction?> FindTransactionAsync(TransactionMetadata metadata);
 
         Task CommitAsync(CancellationToken cancellationToken = default);
     }

@@ -9,7 +9,7 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class AddressPutRequest
+    public sealed class AddressPutRequest
     {
         public AddressPutRequest(
             string line1,
@@ -25,6 +25,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
             State = state;
             PostalCode = postalCode;
         }
+
+#nullable disable
+        public AddressPutRequest()
+        {
+            // Required by Fluent Validation.
+        }
+#nullable restore
 
         [DataMember(Name = "line1")]
         public string Line1 { get; private set; }

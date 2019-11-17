@@ -1,0 +1,86 @@
+version: '3.7'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
+
+  redis:
+    image: redis:5.0.5
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  seq:
+    image: datalust/seq:latest
+
+  identity.api:
+    image: ${ACR_REGISTRY:-edoxa}/identity.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Identity.Api/Dockerfile
+
+  cashier.api:
+    image: ${ACR_REGISTRY:-edoxa}/cashier.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
+
+  payment.api:
+    image: ${ACR_REGISTRY:-edoxa}/payment.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+
+  notifications.api:
+    image: ${ACR_REGISTRY:-edoxa}/notifications.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+
+  games.api:
+    image: ${ACR_REGISTRY:-edoxa}/games.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Games.Api/Dockerfile
+
+  clans.api:
+    image: ${ACR_REGISTRY:-edoxa}/clans.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Clans.Api/Dockerfile
+
+  challenges.api:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.api:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+
+  challenges.web.aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.web.aggregator:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
+
+  challenges.web.gateway:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.web.gateway:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Gateway/Dockerfile
+
+  challenges.web.jobs:
+    image: ${ACR_REGISTRY:-edoxa}/challenges.web.jobs:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
+
+  web.spa:
+    image: ${ACR_REGISTRY:-edoxa}/web.spa:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Spa/Dockerfile-prod
+
+  web.status:
+    image: ${ACR_REGISTRY:-edoxa}/web.status:prod
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Status/Dockerfile

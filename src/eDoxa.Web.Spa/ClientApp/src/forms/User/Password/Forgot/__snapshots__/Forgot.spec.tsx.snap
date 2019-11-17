@@ -1,0 +1,40 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<form
+  className=""
+  onSubmit={[Function]}
+>
+  <div
+    className="form-group"
+  >
+    <input
+      className="form-control-sm form-control"
+      name="email"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onDragStart={[Function]}
+      onDrop={[Function]}
+      onFocus={[Function]}
+      placeholder="Email"
+      type="text"
+      value=""
+    />
+    <div
+      className="invalid-feedback"
+    />
+  </div>
+  <div
+    className="mb-0 form-group"
+  >
+    <button
+      aria-label={null}
+      className="btn btn-primary btn-block"
+      onClick={[Function]}
+      type="submit"
+    >
+      Send Email
+    </button>
+  </div>
+</form>
+`;

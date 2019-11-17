@@ -1,24 +1,28 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-04-12
+// Date Created: 2019-09-01
 // 
-// ============================================================
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Web.Status.Extensions;
 
+using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Web.Status
 {
     public sealed class Startup
     {
+        static Startup()
+        {
+            TelemetryDebugWriter.IsTracingDisabled = true;
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -28,7 +32,7 @@ namespace eDoxa.Web.Status
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks();
+            services.AddHealthChecks().AddCheck("liveness", () => HealthCheckResult.Healthy());
 
             services.AddHealthChecksUI(Configuration);
         }
@@ -40,7 +44,18 @@ namespace eDoxa.Web.Status
                 application.UseDeveloperExceptionPage();
             }
 
+            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+
+            application.UseHealthChecks(
+                "/liveness",
+                new HealthCheckOptions
+                {
+                    Predicate = registration => registration.Name.Contains("liveness")
+                });
+
             application.UseHealthChecksUI("/status");
+
+            application.UseHttpsRedirection();
         }
     }
 }

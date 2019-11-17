@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="mt-4 card"
+  >
+    <div
+      className="text-justify p-5 card-body"
+    >
+      <h1>
+        F. A. Q.
+      </h1>
+      <section />
+    </div>
+  </div>
+</div>
+`;

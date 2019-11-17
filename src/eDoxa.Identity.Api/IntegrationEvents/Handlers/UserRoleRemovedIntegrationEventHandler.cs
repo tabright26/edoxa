@@ -11,11 +11,11 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserRoleRemovedIntegrationEventHandler : IIntegrationEventHandler<UserRoleRemovedIntegrationEvent>
+    public sealed class UserRoleRemovedIntegrationEventHandler : IIntegrationEventHandler<UserRoleRemovedIntegrationEvent>
     {
-        private readonly UserManager _userManager;
+        private readonly IUserManager _userManager;
 
-        public UserRoleRemovedIntegrationEventHandler(UserManager userManager)
+        public UserRoleRemovedIntegrationEventHandler(IUserManager userManager)
         {
             _userManager = userManager;
         }

@@ -1,8 +1,10 @@
 ﻿// Filename: Register.cshtml.cs
-// Date Created: 2019-07-21
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
+
+#nullable disable
 
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
@@ -10,21 +12,22 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
-#nullable disable
 
 namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly IEmailSender _emailSender;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
+        private readonly IRedirectService _redirectService;
         private readonly ILogger<RegisterModel> _logger;
         private readonly SignInManager _signInManager;
         private readonly UserManager _userManager;
@@ -33,13 +36,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             UserManager userManager,
             SignInManager signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender
+            IServiceBusPublisher serviceBusPublisher,
+            IRedirectService redirectService
         )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
+            _serviceBusPublisher = serviceBusPublisher;
+            _redirectService = redirectService;
         }
 
         [BindProperty] public InputModel Input { get; set; }
@@ -53,43 +58,40 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= _redirectService.RedirectToWebSpaProxy();
 
             if (ModelState.IsValid)
             {
-                var user = new User
-                {
-                    Email = Input.Email
-                };
-
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var result = await _userManager.CreateAsync(
+                    new User
+                    {
+                        Email = Input.Email,
+                        UserName = Input.Email,
+                        Country = Input.Country
+                    },
+                    Input.Password);
 
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
                     _logger.LogInformation("User created a new account with password.");
+
+                    await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(UserId.FromGuid(user.Id), Input.Email, Input.Country);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        null,
-                        new
-                        {
-                            userId = user.Id,
-                            code
-                        },
-                        Request.Scheme
-                    );
+                    var callbackUrl = $"{_redirectService.RedirectToWebSpaProxy("/email/confirm")}?userId={user.Id}&code={code}";
 
-                    await _emailSender.SendEmailAsync(
+                    await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                        UserId.FromGuid(user.Id),
                         Input.Email,
                         "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
-                    );
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     await _signInManager.SignInAsync(user, false);
 
-                    return this.LocalRedirect(returnUrl);
+                    return this.Redirect(returnUrl);
                 }
 
                 foreach (var error in result.Errors)
@@ -107,22 +109,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
-            public string Email { get; set; } = string.Empty;
+            public string Email { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-            public string Password { get; set; } = string.Empty;
+            public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; } = string.Empty;
+            public string ConfirmPassword { get; set; }
 
-            // BUG: Must be test.
-            [RegularExpression("(True|true)", ErrorMessage = "You must accept the terms of service.")]
-            public bool TermsOfService { get; set; }
+            public Country Country { get; set; } = Country.Canada; // FRANCIS: Should be in an input of type select. (TEMP)
         }
     }
 }

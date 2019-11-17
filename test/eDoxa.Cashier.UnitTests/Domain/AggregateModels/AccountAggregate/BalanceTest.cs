@@ -1,5 +1,5 @@
 ﻿// Filename: BalanceTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,44 +10,19 @@ using System.Linq;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
-    [TestClass]
-    public sealed class BalanceTest
+    public sealed class BalanceTest : UnitTest
     {
-        [TestMethod]
-        public void Available_CurrencyMoney_ShouldBeMoneyFifty()
+        public BalanceTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
-            // Arrange
-            var transactions = CreateTransactions().ToList();
-
-            // Act
-            var balance = new Balance(transactions, Currency.Money);
-
-            // Assert
-            balance.Currency.Should().Be(Currency.Money);
-            balance.Available.Should().Be(Money.Fifty);
-            balance.Pending.Should().Be(Money.Ten);
-        }
-
-        [TestMethod]
-        public void Available_CurrencyToken_ShouldBeTokenFiftyThousand()
-        {
-            // Arrange
-            var transactions = CreateTransactions().ToList();
-
-            // Act
-            var balance = new Balance(transactions, Currency.Token);
-
-            // Assert
-            balance.Currency.Should().Be(Currency.Token);
-            balance.Available.Should().Be(Token.FiftyThousand);
-            balance.Pending.Should().Be(decimal.Zero);
         }
 
         private static IEnumerable<ITransaction> CreateTransactions()
@@ -78,6 +53,36 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             transaction.MarkAsFailed();
 
             return transaction;
+        }
+
+        [Fact]
+        public void Balance_WithTransactions_ShouldBeFifty()
+        {
+            // Arrange
+            var transactions = CreateTransactions().ToList();
+
+            // Act
+            var balance = new Balance(transactions, Currency.Money);
+
+            // Assert
+            balance.Available.Should().Be(Money.Fifty);
+            balance.Currency.Should().Be(Currency.Money);
+            balance.Pending.Should().Be(Money.Ten);
+        }
+
+        [Fact]
+        public void Balance_WithTransactions_ShouldBeFiftyThousands()
+        {
+            // Arrange
+            var transactions = CreateTransactions().ToList();
+
+            // Act
+            var balance = new Balance(transactions, Currency.Token);
+
+            // Assert
+            balance.Available.Should().Be(Token.FiftyThousand);
+            balance.Currency.Should().Be(Currency.Token);
+            balance.Pending.Should().Be(decimal.Zero);
         }
     }
 }

@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -148,15 +149,17 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new User
+                var result = await _userManager.CreateAsync(new User
                 {
-                    Email = Input.Email
-                };
-
-                var result = await _userManager.CreateAsync(user);
+                    Email = Input.Email,
+                    UserName = Input.Email,
+                    Country = Input.Country
+                });
 
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByEmailAsync(Input.Email);
+
                     result = await _userManager.AddLoginAsync(user, info);
 
                     if (result.Succeeded)
@@ -185,6 +188,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
         {
             [Required] [EmailAddress]
             public string Email { get; set; }
+
+            public Country Country { get; set; } = Country.Canada;
         }
     }
 }

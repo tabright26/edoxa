@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+Array [
+  <button
+    className="d-lg-none navbar-toggler"
+    data-sidebar-toggler={true}
+    onClick={[Function]}
+    type="button"
+  >
+    <span
+      className="navbar-toggler-icon"
+    />
+  </button>,
+  <a
+    className="active navbar-brand"
+    full={
+      Object {
+        "alt": "eDoxa Logo",
+        "height": 30,
+        "src": "logo.png",
+        "width": 85,
+      }
+    }
+    href="/"
+    minimized={
+      Object {
+        "alt": "eDoxa Logo",
+        "height": 30,
+        "src": "sygnet.png",
+        "width": 30,
+      }
+    }
+    onClick={[Function]}
+    style={Object {}}
+  >
+    <img
+      alt="eDoxa Logo"
+      className="navbar-brand-full"
+      height={30}
+      src="logo.png"
+      width={85}
+    />
+    <img
+      alt="eDoxa Logo"
+      className="navbar-brand-minimized"
+      height={30}
+      src="sygnet.png"
+      width={30}
+    />
+  </a>,
+  <button
+    className="d-md-down-none navbar-toggler"
+    data-sidebar-toggler={true}
+    hidden={true}
+    onClick={[Function]}
+    type="button"
+  >
+    <span
+      className="navbar-toggler-icon"
+    />
+  </button>,
+  <ul
+    className="ml-auto mr-3 navbar-nav"
+  >
+    <li
+      className="dropdown nav-item"
+      onKeyDown={[Function]}
+    >
+      <a
+        aria-expanded={false}
+        aria-haspopup={true}
+        className="dropdown-toggle nav-link"
+        href="#"
+        onClick={[Function]}
+      >
+        <span
+          className="sr-only"
+        >
+          Toggle Dropdown
+        </span>
+      </a>
+      <div
+        aria-hidden={true}
+        className="dropdown-menu dropdown-menu-right"
+        role="menu"
+        style={
+          Object {
+            "right": 0,
+          }
+        }
+        tabIndex="-1"
+      >
+        <form
+          className="form-inline"
+        >
+          <a
+            aria-label={null}
+            className="m-3 btn btn-primary btn-sm btn-block"
+            href="/profile"
+            onClick={[Function]}
+          >
+            Profile
+          </a>
+        </form>
+        <button
+          className="border-top dropdown-item"
+          onClick={[Function]}
+          role="menuitem"
+          tabIndex="0"
+          type="button"
+        >
+          User Info
+        </button>
+        <button
+          className="dropdown-item"
+          onClick={[Function]}
+          role="menuitem"
+          tabIndex="0"
+          type="button"
+        >
+          Logout
+        </button>
+      </div>
+    </li>
+  </ul>,
+  <button
+    className="d-md-down-none navbar-toggler"
+    hidden={true}
+    onClick={[Function]}
+    type="button"
+  >
+    <span
+      className="navbar-toggler-icon"
+    />
+  </button>,
+]
+`;

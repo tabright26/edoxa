@@ -1,12 +1,11 @@
 ﻿// Filename: UserAccountWithdrawalIntegrationEvent.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -14,30 +13,35 @@ using Newtonsoft.Json;
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserAccountWithdrawalIntegrationEvent : IIntegrationEvent
+    public sealed class UserAccountWithdrawalIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
         public UserAccountWithdrawalIntegrationEvent(
-            Guid transactionId,
-            string transactionDescription,
-            string connectAccountId,
+            UserId userId,
+            string email,
+            TransactionId transactionId,
+            string description,
             long amount
         )
         {
+            UserId = userId;
+            Email = email;
             TransactionId = transactionId;
-            TransactionDescription = transactionDescription;
-            ConnectAccountId = connectAccountId;
+            Description = description;
             Amount = amount;
         }
 
         [JsonProperty]
-        public Guid TransactionId { get; }
+        public UserId UserId { get; }
 
         [JsonProperty]
-        public string TransactionDescription { get; }
+        public string Email { get; }
 
         [JsonProperty]
-        public string ConnectAccountId { get; }
+        public TransactionId TransactionId { get; }
+
+        [JsonProperty]
+        public string Description { get; }
 
         [JsonProperty]
         public long Amount { get; }

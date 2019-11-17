@@ -1,60 +1,60 @@
 ﻿// Filename: AccountDepositControllerPostAsyncTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Application.Requests;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http;
+using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountDepositControllerPostAsyncTest : IClassFixture<CashierWebApiFactory>
+    public sealed class AccountDepositControllerPostAsyncTest : IntegrationTest
     {
-        private readonly CashierWebApiFactory _factory;
-
-        public AccountDepositControllerPostAsyncTest(CashierWebApiFactory factory)
+        public AccountDepositControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            _factory = factory;
         }
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(DepositRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(Currency currency, decimal amount)
         {
-            return await _httpClient.PostAsync("api/account/deposit", new JsonContent(request));
+            return await _httpClient.PostAsync($"api/account/deposit/{currency}", new JsonContent(amount));
         }
 
         [Fact]
-        public async Task Money_InvalidAmount_ShouldBeStatus400BadRequest()
+        public async Task ShouldBeHttpStatusCodeBadRequest()
         {
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(
+            var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
-            );
-            
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -65,26 +65,24 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Money.Name, 2.5M));
+            using var response = await this.ExecuteAsync(Currency.Token, 2500M);
 
             // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
-        public async Task Money_ValidAmount_ShouldBeStatus200OK()
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = _factory.WithClaims(
+            var factory = TestApi.WithClaims(
                 new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
-            );
+                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -96,79 +94,14 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Money.Name, Money.Fifty));
+            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
-            var message = await response.DeserializeAsync<string>();
-            message.Should().NotBeNull();
-        }
-
-        [Fact]
-        public async Task Token_InvalidAmount_ShouldBeStatus400BadRequest()
-        {
-            // Arrange
-            var account = new Account(new UserId());
-
-            var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
-            );
-            _httpClient = factory.CreateClient();
-            var server = factory.Server;
-            server.CleanupDbContext();
-
-            await server.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Token.Name, 2500M));
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
-        }
-
-        [Fact]
-        public async Task Token_ValidAmount_ShouldBeStatus200OK()
-        {
-            // Arrange
-            var account = new Account(new UserId());
-
-            var factory = _factory.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(AppClaimTypes.StripeCustomerId, "cus_test")
-            );
-
-            _httpClient = factory.CreateClient();
-            var server = factory.Server;
-            server.CleanupDbContext();
-
-            await server.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync(new DepositRequest(Currency.Token.Name, Token.TwoHundredFiftyThousand));
-
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
             var message = await response.DeserializeAsync<string>();
             message.Should().NotBeNull();
         }

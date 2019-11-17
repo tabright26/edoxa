@@ -8,6 +8,8 @@
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <ApplicationInsightsResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsResourceId>
+    <ApplicationInsightsAnnotationResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,27 +29,31 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0-beta1" />
-    <PackageReference Include="Serilog.AspNetCore" Version="2.1.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="eDoxa.ServiceBus" Version="1.0.0-CI-20190803-030316" />
-    <PackageReference Include="eDoxa.ServiceBus.Abstractions" Version="1.0.0-CI-20190803-030316" />
-    <PackageReference Include="eDoxa.ServiceBus.Azure" Version="1.0.0-CI-20190803-030316" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.0.4" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.Requests\eDoxa.Cashier.Requests.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.Responses\eDoxa.Cashier.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Infrastructure\Data\Storage\SourceFiles\Payouts.csv" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\data\challenges.csv" Link="Setup/challenges.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\challenges.payouts.csv" Link="Setup/challenges.payouts.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Infrastructure\Data\Storage\TestFiles\TestUsers.csv" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="Infrastructure\Data\Storage\TestFiles\TestChallenges.csv" CopyToOutputDirectory="PreserveNewest" />
+    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>

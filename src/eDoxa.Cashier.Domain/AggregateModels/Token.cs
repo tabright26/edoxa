@@ -1,5 +1,5 @@
 ﻿// Filename: Token.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,6 +13,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed class Token : ValueObject, ICurrency
     {
+        public static readonly Token MinValue = new Token(25000);
+
         public static readonly Token FiftyThousand = new Token(50000);
         public static readonly Token OneHundredThousand = new Token(100000);
         public static readonly Token TwoHundredFiftyThousand = new Token(250000);

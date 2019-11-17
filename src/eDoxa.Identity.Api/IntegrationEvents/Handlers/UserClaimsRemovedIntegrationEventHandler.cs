@@ -1,5 +1,5 @@
 ﻿// Filename: UserClaimsRemovedIntegrationEventHandler.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,11 +12,11 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserClaimsRemovedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsRemovedIntegrationEvent>
+    public sealed class UserClaimsRemovedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsRemovedIntegrationEvent>
     {
-        private readonly UserManager _userManager;
+        private readonly IUserManager _userManager;
 
-        public UserClaimsRemovedIntegrationEventHandler(UserManager userManager)
+        public UserClaimsRemovedIntegrationEventHandler(IUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -25,11 +25,9 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
         {
             var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
 
-            foreach (var (type, value) in integrationEvent.Claims)
+            foreach (var claim in integrationEvent.Claims)
             {
-                var claim = new Claim(type, value);
-
-                await _userManager.RemoveClaimAsync(user, claim);
+                await _userManager.RemoveClaimAsync(user, new Claim(claim.Type, claim.Value));
             }
         }
     }

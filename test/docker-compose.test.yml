@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  mssql.test:
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
+    environment:
+      - SA_PASSWORD=fnU3Www9TnBDp3MA
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+    ports:
+      - "5433:1433"
+
+  rabbitmq.test:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "19672:15672"
+      - "9672:5672"
+
+  redis.test:
+    image: redis:5.0.5
+    ports:
+      - "10379:6379"

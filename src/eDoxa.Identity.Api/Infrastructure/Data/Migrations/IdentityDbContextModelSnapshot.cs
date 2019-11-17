@@ -70,6 +70,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
+                    b.Property<string>("Country")
+                        .IsRequired();
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(256);
@@ -163,19 +166,25 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserClaim");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserGame", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxatag", b =>
                 {
-                    b.Property<int>("Value");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("PlayerId");
+                    b.Property<int>("Code");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<long>("Timestamp");
 
                     b.Property<Guid>("UserId");
 
-                    b.HasKey("Value", "PlayerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserGame");
+                    b.ToTable("UserDoxatag");
                 });
 
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserLogin", b =>
@@ -233,44 +242,49 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.User", b =>
                 {
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.DoxaTag", "DoxaTag", b1 =>
+                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.UserInformations", "Informations", b1 =>
                         {
                             b1.Property<Guid>("UserId");
 
-                            b1.Property<int>("Code");
+                            b1.Property<string>("FirstName")
+                                .IsRequired();
 
-                            b1.Property<string>("Name");
+                            b1.Property<int>("Gender");
 
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("DoxaTag");
-
-                            b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                                .WithOne("DoxaTag")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.DoxaTag", "UserId")
-                                .OnDelete(DeleteBehavior.Cascade);
-                        });
-
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.PersonalInfo", "PersonalInfo", b1 =>
-                        {
-                            b1.Property<Guid>("UserId");
-
-                            b1.Property<DateTime?>("BirthDate");
-
-                            b1.Property<string>("FirstName");
-
-                            b1.Property<int?>("Gender");
-
-                            b1.Property<string>("LastName");
+                            b1.Property<string>("LastName")
+                                .IsRequired();
 
                             b1.HasKey("UserId");
 
-                            b1.ToTable("PersonalInfo");
+                            b1.ToTable("UserInformations");
 
                             b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                                .WithOne("PersonalInfo")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.PersonalInfo", "UserId")
+                                .WithOne("Informations")
+                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.UserInformations", "UserId")
                                 .OnDelete(DeleteBehavior.Cascade);
+
+                            b1.OwnsOne("eDoxa.Seedwork.Domain.Miscs.Dob", "Dob", b2 =>
+                                {
+                                    b2.Property<Guid>("UserInformationsUserId");
+
+                                    b2.Property<int>("Day")
+                                        .HasColumnName("Dob_Day");
+
+                                    b2.Property<int>("Month")
+                                        .HasColumnName("Dob_Month");
+
+                                    b2.Property<int>("Year")
+                                        .HasColumnName("Dob_Year");
+
+                                    b2.HasKey("UserInformationsUserId");
+
+                                    b2.ToTable("UserInformations");
+
+                                    b2.HasOne("eDoxa.Identity.Api.Infrastructure.Models.UserInformations")
+                                        .WithOne("Dob")
+                                        .HasForeignKey("eDoxa.Seedwork.Domain.Miscs.Dob", "UserInformationsUserId")
+                                        .OnDelete(DeleteBehavior.Cascade);
+                                });
                         });
                 });
 
@@ -290,10 +304,10 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserGame", b =>
+            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxatag", b =>
                 {
                     b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                        .WithMany()
+                        .WithMany("DoxatagHistory")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

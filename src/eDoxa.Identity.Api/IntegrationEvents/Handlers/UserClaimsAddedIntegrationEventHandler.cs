@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,11 +13,11 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserClaimsAddedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsAddedIntegrationEvent>
+    public sealed class UserClaimsAddedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsAddedIntegrationEvent>
     {
-        private readonly UserManager _userManager;
+        private readonly IUserManager _userManager;
 
-        public UserClaimsAddedIntegrationEventHandler(UserManager userManager)
+        public UserClaimsAddedIntegrationEventHandler(IUserManager userManager)
         {
             _userManager = userManager;
         }
@@ -24,17 +25,12 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
         public async Task HandleAsync(UserClaimsAddedIntegrationEvent integrationEvent)
         {
             var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
+            
+            var claims = await _userManager.GetClaimsAsync(user);
 
-            foreach (var (type, value) in integrationEvent.Claims)
+            foreach (var claim in integrationEvent.Claims.Where(claim => !claims.Any(securityClaim => securityClaim.Type == claim.Type && securityClaim.Value == claim.Value)))
             {
-                var claim = new Claim(type, value);
-
-                var claims = await _userManager.GetClaimsAsync(user);
-
-                if (!claims.Contains(claim))
-                {
-                    await _userManager.AddClaimAsync(user, claim);
-                }
+                await _userManager.AddClaimAsync(user, new Claim(claim.Type, claim.Value));
             }
         }
     }

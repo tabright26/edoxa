@@ -1,17 +1,14 @@
-﻿// Filename: DepositProcessedIntegrationEventHandler.cs
-// Date Created: 2019-07-05
-// 
+﻿// Filename: UserAccountDepositIntegrationEventHandler.cs
+// Date Created: 2019-10-06
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Providers.Stripe.Abstractions;
+using eDoxa.Payment.Api.IntegrationEvents.Extensions;
+using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -20,21 +17,24 @@ using Stripe;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
-    internal sealed class UserAccountDepositIntegrationEventHandler : IIntegrationEventHandler<UserAccountDepositIntegrationEvent>
+    public sealed class UserAccountDepositIntegrationEventHandler : IIntegrationEventHandler<UserAccountDepositIntegrationEvent>
     {
         private readonly ILogger<UserAccountDepositIntegrationEventHandler> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IStripeService _stripeService;
+        private readonly IStripeInvoiceService _stripeInvoiceService;
+        private readonly IStripeCustomerService _stripeCustomerService;
 
         public UserAccountDepositIntegrationEventHandler(
             ILogger<UserAccountDepositIntegrationEventHandler> logger,
             IServiceBusPublisher serviceBusPublisher,
-            IStripeService stripeService
+            IStripeInvoiceService stripeInvoiceService,
+            IStripeCustomerService stripeCustomerService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
-            _stripeService = stripeService;
+            _stripeInvoiceService = stripeInvoiceService;
+            _stripeCustomerService = stripeCustomerService;
         }
 
         public async Task HandleAsync(UserAccountDepositIntegrationEvent integrationEvent)
@@ -43,32 +43,38 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountDepositIntegrationEvent)}...");
 
-                await _stripeService.CreateInvoiceAsync(
+                var customerId = await _stripeCustomerService.GetCustomerIdAsync(integrationEvent.UserId);
+
+                if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
+                {
+                    throw new InvalidOperationException(
+                        "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.");
+                }
+
+                await _stripeInvoiceService.CreateInvoiceAsync(
+                    customerId,
                     integrationEvent.TransactionId,
-                    integrationEvent.TransactionDescription,
-                    integrationEvent.CustomerId,
-                    integrationEvent.Amount
-                );
+                    integrationEvent.Amount,
+                    integrationEvent.Description);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountDepositIntegrationEvent)}.");
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionSuccededIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
-            catch (StripeException exception)
-            {
-                _logger.LogError(exception, exception.StripeError?.ToJson());
-
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
-
-                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
-            }
             catch (Exception exception)
             {
-                _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                if (exception is StripeException stripeException)
+                {
+                    _logger.LogCritical(stripeException, stripeException.StripeError?.ToJson());
+                }
+                else
+                {
+                    _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
+                }
 
-                await _serviceBusPublisher.PublishAsync(new UserTransactionFailedIntegrationEvent(integrationEvent.TransactionId));
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }

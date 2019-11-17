@@ -5,10 +5,11 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -45,7 +46,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(Money amount)
+        public ITransaction Deposit(Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanDeposit())
             {
@@ -59,14 +60,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Charge(Money amount)
+        public ITransaction Charge(TransactionId transactionId, Money amount, TransactionMetadata? metadata = null)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyChargeTransaction(amount);
+            var transaction = new MoneyChargeTransaction(amount, metadata);
+
+            transaction.SetEntityId(transactionId);
 
             _account.CreateTransaction(transaction);
 
@@ -82,7 +85,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Withdrawal(Money amount)
+        public ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles)
         {
             if (!this.CanWithdraw(amount))
             {
@@ -96,19 +99,34 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
+        public bool IsDepositAvailable()
+        {
+            return !(LastDeposit.HasValue && LastDeposit.Value.AddDays(1) >= DateTime.UtcNow);
+        }
+
+        public bool IsWithdrawalAvailable()
+        {
+            return !(LastWithdraw.HasValue && LastWithdraw.Value.AddDays(7) >= DateTime.UtcNow);
+        }
+
+        public bool HaveSufficientMoney(Money money)
+        {
+            return Balance.Available >= money;
+        }
+
         private bool CanDeposit()
         {
-            return new DepositMoneyValidator().Validate(this).IsValid;
+            return this.IsDepositAvailable();
         }
 
         private bool CanCharge(Money money)
         {
-            return new ChargeMoneyValidator(money).Validate(this).IsValid;
+            return this.HaveSufficientMoney(money);
         }
 
         private bool CanWithdraw(Money money)
         {
-            return new WithdrawalMoneyValidator(money).Validate(this).IsValid;
+            return this.HaveSufficientMoney(money) && this.IsWithdrawalAvailable();
         }
     }
 }

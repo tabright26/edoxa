@@ -11,25 +11,24 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
     public interface IUserManager
     {
-        Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId);
+        UserStore Store { get; }
 
-        Task<IdentityResult> RemoveGameAsync(User user, Game game);
-
-        Task<User?> FindByGameAsync(Game game, string playerId);
-
-        Task<IList<UserGame>> GetGamesAsync(User user);
+        Task<IEnumerable<UserDoxatag>> FetchDoxatagsAsync();
 
         Task<IdentityResult> AddAddressAsync(
             User user,
-            string country,
+            Country country,
             string line1,
             string? line2,
             string city,
@@ -49,15 +48,17 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IdentityResult> RemoveAddressAsync(User user, Guid addressId);
 
-        Task<IList<UserAddress>> GetAddressBookAsync(User user);
+        Task<ICollection<UserAddress>> GetAddressBookAsync(User user);
 
         Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId);
 
-        Task<PersonalInfo?> GetPersonalInfoAsync(User user);
+        Task<UserInformations?> GetInformationsAsync(User user);
 
-        Task<DoxaTag?> GetDoxaTagAsync(User user);
+        Task<UserDoxatag?> GetDoxatagAsync(User user);
 
-        Task<string?> GetBirthDateAsync(User user);
+        Task<ICollection<UserDoxatag>> GetDoxatagHistoryAsync(User user);
+
+        Task<Dob?> GetDobAsync(User user);
 
         Task<string?> GetFirstNameAsync(User user);
 
@@ -279,8 +280,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         IQueryable<User> Users { get; }
 
-        Task<IdentityResult> SetPersonalInfoAsync(User user, string? firstName, string? lastName, Gender? gender, DateTime? birthDate);
+        Task<IdentityResult> CreateInformationsAsync(User user, string firstName, string lastName, Gender gender, Dob dob);
 
-        Task<IdentityResult> SetDoxaTagAsync(User user, string doxaTagName);
+        Task<IdentityResult> UpdateInformationsAsync(User user, string firstName);
+
+        Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName);
     }
 }

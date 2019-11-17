@@ -6,13 +6,16 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Specifications.Abstractions;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public interface IAccount : IEntity<AccountId>, IAggregateRoot
+    public interface IAccount : IEntity<AccountId>, IAggregateRoot, IVerifiable
     {
         UserId UserId { get; }
 
@@ -23,16 +26,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         Balance GetBalanceFor(Currency currency);
     }
 
-    public interface IAccount<in TCurrency>
+    public interface IAccount<in TCurrency> : IVerifiable
     where TCurrency : ICurrency
     {
         Balance Balance { get; }
 
         DateTime? LastDeposit { get; }
 
-        ITransaction Deposit(TCurrency amount);
+        ITransaction Deposit(TCurrency amount, IImmutableSet<Bundle> bundles);
 
-        ITransaction Charge(TCurrency amount);
+        ITransaction Charge(TransactionId transactionId, TCurrency amount, TransactionMetadata? metadata = null);
 
         ITransaction Payout(TCurrency amount);
     }

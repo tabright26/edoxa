@@ -1,18 +1,34 @@
 ﻿// Filename: ChallengeFaker.cs
-// Date Created: 2019-07-12
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
+
 using Bogus;
 
-using eDoxa.Cashier.Api.Application.Factories;
+using eDoxa.Cashier.Api.Areas.Challenges.Factories;
+using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 {
-    public sealed class ChallengeFaker : Faker<IChallenge>
+    public sealed partial class ChallengeFaker : IChallengeFaker
+    {
+        public IReadOnlyCollection<IChallenge> FakeChallenges(int count)
+        {
+            return this.Generate(count);
+        }
+
+        public IChallenge FakeChallenge()
+        {
+            return this.Generate();
+        }
+    }
+
+    public sealed partial class ChallengeFaker : Faker<IChallenge>
     {
         public ChallengeFaker()
         {
@@ -21,15 +37,10 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                 {
                     var entryFee = MoneyEntryFee.Five;
 
-                    var payout = new PayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
+                    var payout = new ChallengePayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
 
-                    var challenge = new Challenge(entryFee, payout);
-
-                    challenge.SetEntityId(faker.Challenge().Id());
-
-                    return challenge;
-                }
-            );
+                    return new Challenge(faker.Challenge().Id(), entryFee, payout);
+                });
         }
     }
 }

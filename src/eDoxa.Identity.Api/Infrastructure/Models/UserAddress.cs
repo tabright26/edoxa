@@ -6,6 +6,8 @@
 
 using System;
 
+using eDoxa.Seedwork.Domain.Miscs;
+
 #nullable disable
 
 namespace eDoxa.Identity.Api.Infrastructure.Models
@@ -16,7 +18,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Models
 
         public UserAddressType Type { get; set; }
 
-        public string Country { get; set; }
+        public Country Country { get; set; }
 
         public string Line1 { get; set; }
 

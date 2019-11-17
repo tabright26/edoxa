@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
             return Amount.ToString(CultureInfo.InvariantCulture);
         }
 
-        public Prize ApplyFactor(decimal factor)
+        public Prize ApplyWeighting(decimal factor)
         {
             if (factor < 1)
             {

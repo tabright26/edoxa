@@ -7,13 +7,15 @@
 using System;
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Challenge : Entity<ChallengeId>, IChallenge
     {
-        public Challenge(EntryFee entryFee, IPayout payout)
+        public Challenge(ChallengeId challengeId, EntryFee entryFee, IPayout payout)
         {
+            this.SetEntityId(challengeId);
             EntryFee = entryFee;
             Payout = payout;
         }

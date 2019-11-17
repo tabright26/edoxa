@@ -7,6 +7,7 @@
 using System;
 
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
 {
@@ -23,9 +24,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
         TransactionStatus Status { get; }
 
         TransactionDescription Description { get; }
+        
+        TransactionMetadata Metadata { get; }
 
         void MarkAsSucceded();
 
         void MarkAsFailed();
+
+        void MarkAsCanceled();
     }
 }

@@ -1,61 +1,56 @@
 ﻿// Filename: AccountBalanceControllerGetByCurrencyAsyncTest.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Responses;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
-    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IClassFixture<CashierWebApiFactory>
+    public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IntegrationTest
     {
-        private readonly CashierWebApiFactory _factory;
-        private HttpClient _httpClient;
-
-        public AccountBalanceControllerGetByCurrencyAsyncTest(CashierWebApiFactory factory)
+        public AccountBalanceControllerGetByCurrencyAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testApi,
+            testData,
+            testMapper)
         {
-            _factory = factory;
         }
 
-        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] { currency });
-
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] { new object[] { Currency.All }, new object[] { new Currency() } };
+        private HttpClient _httpClient;
 
         private async Task<HttpResponseMessage> ExecuteAsync(Currency currency)
         {
             return await _httpClient.GetAsync($"api/account/balance/{currency}");
         }
 
-        [Theory]
-        [MemberData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldHaveNoAvailableFundsAndNoPendingFunds(Currency currency)
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeInternalServerError()
         {
-            // Arrange
-            var account = new Account(new UserId());
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
 
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var account = accountFaker.FakeAccount();
+
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -66,32 +61,24 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
-            using var response = await this.ExecuteAsync(currency);
+            using var response = await this.ExecuteAsync(Currency.All);
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
-            var balanceViewModel = await response.DeserializeAsync<BalanceViewModel>();
-            balanceViewModel.Should().NotBeNull();
-            balanceViewModel?.Currency.Should().Be(currency);
-            balanceViewModel?.Available.Should().Be(decimal.Zero);
-            balanceViewModel?.Pending.Should().Be(decimal.Zero);
+            response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         }
 
-        [Theory]
-        [MemberData(nameof(ValidCurrencyDataSets))]
-        public async Task ShouldHaveAvailableFundsAndPendingFunds(Currency currency)
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var accountFaker = new AccountFaker();
-            accountFaker.UseSeed(1);
-            var account = accountFaker.Generate();
+            var currency = Currency.Money;
+            var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
+            var account = accountFaker.FakeAccount();
             var balance = account.GetBalanceFor(currency);
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -102,64 +89,19 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
-                }
-            );
+                });
 
             // Act
             using var response = await this.ExecuteAsync(currency);
 
             // Assert
             response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(StatusCodes.Status200OK);
-            var balanceViewModel = await response.DeserializeAsync<BalanceViewModel>();
-            balanceViewModel.Should().NotBeNull();
-            balanceViewModel?.Currency.Should().Be(currency);
-            balanceViewModel?.Available.Should().Be(balance.Available);
-            balanceViewModel?.Pending.Should().Be(balance.Pending);
-        }
-
-        //[Theory]
-        //[MemberData(nameof(ValidCurrencyDataSets))]
-        //public async Task UserWithoutAccount_ShouldBeNotFound(Currency currency)
-        //{
-        //    var factory = _factory.WithClaims();
-
-        //    _httpClient = factory.CreateClient();
-
-        //    // Act
-        //    using var response = await this.ExecuteAsync(currency);
-
-        //    // Assert
-        //    response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
-        //}
-
-        [Theory]
-        [MemberData(nameof(InvalidCurrencyDataSets))]
-        public async Task InvalidCurrency_ShouldBeBadRequest(Currency currency)
-        {
-            var accountFaker = new AccountFaker();
-            accountFaker.UseSeed(1);
-            var account = accountFaker.Generate();
-            var factory = _factory.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
-
-            _httpClient = factory.CreateClient();
-            var server = factory.Server;
-            server.CleanupDbContext();
-
-            await server.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                }
-            );
-
-            // Act
-            using var response = await this.ExecuteAsync(currency);
-
-            // Assert
-            response.StatusCode.Should().Be(StatusCodes.Status400BadRequest);
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var balanceResponse = await response.DeserializeAsync<BalanceResponse>();
+            balanceResponse.Should().NotBeNull();
+            balanceResponse?.Currency.Should().Be(currency.Name);
+            balanceResponse?.Available.Should().Be(balance.Available);
+            balanceResponse?.Pending.Should().Be(balance.Pending);
         }
     }
 }

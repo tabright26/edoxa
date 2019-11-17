@@ -9,12 +9,19 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Api.Areas.Identity.Requests
 {
     [DataContract]
-    public class GamePostRequest
+    public sealed class GamePostRequest
     {
         public GamePostRequest(string playerId)
         {
             PlayerId = playerId;
         }
+
+#nullable disable
+        public GamePostRequest()
+        {
+            // Required by Fluent Validation.
+        }
+#nullable restore
 
         [DataMember(Name = "playerId")]
         public string PlayerId { get; private set; }

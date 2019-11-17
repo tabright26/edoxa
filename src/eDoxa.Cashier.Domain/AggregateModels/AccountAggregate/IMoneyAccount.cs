@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Immutable;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
@@ -14,6 +15,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     {
         DateTime? LastWithdraw { get; }
 
-        ITransaction Withdrawal(Money amount);
+        ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles);
+
+        bool HaveSufficientMoney(Money money);
+
+        bool IsDepositAvailable();
+
+        bool IsWithdrawalAvailable();
     }
 }

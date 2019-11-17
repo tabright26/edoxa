@@ -1,24 +1,20 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-06-01
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System;
 
 using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
@@ -32,7 +28,7 @@ namespace eDoxa.Cashier.Api
             {
                 var builder = CreateWebHostBuilder(args);
 
-                Log.Information("Building {Application} web host...");
+                Log.Information("Building {Application} host...");
 
                 var host = builder.Build();
 
@@ -40,7 +36,7 @@ namespace eDoxa.Cashier.Api
 
                 host.MigrateDbContextWithRetryPolicy<CashierDbContext>();
 
-                Log.Information("Starting {Application} web host...");
+                Log.Information("Starting {Application} host...");
 
                 host.Run();
 
@@ -61,12 +57,26 @@ namespace eDoxa.Cashier.Api
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
-                .ConfigureServices(services => services.AddAutofac())
                 .CaptureStartupErrors(false)
-                .ConfigureLogging()
+                .ConfigureServices(
+                    services =>
+                    {
+                        services.AddApplicationInsightsTelemetry();
+                        services.AddAutofac();
+                    })
                 .UseAzureKeyVault()
-                .UseApplicationInsights()
-                .UseSerilog();
+                .UseSerilog(
+                    (context, config) =>
+                    {
+                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
+
+                        config.MinimumLevel.Verbose()
+                            .Enrich.WithProperty("Application", typeof(Program).Namespace)
+                            .Enrich.FromLogContext()
+                            .WriteTo.Console()
+                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
+                            .ReadFrom.Configuration(context.Configuration);
+                    });
         }
     }
 }

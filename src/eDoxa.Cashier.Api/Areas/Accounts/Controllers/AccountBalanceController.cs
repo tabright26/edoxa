@@ -1,19 +1,15 @@
 ﻿// Filename: AccountBalanceController.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-08-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
 
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Cashier.Api.ViewModels;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Responses;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +22,6 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/account/balance")]
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountBalanceController : ControllerBase
@@ -42,24 +37,19 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         ///     Get account balance by currency.
         /// </summary>
         [HttpGet("{currency}")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceViewModel))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest)]
-        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByCurrencyAsync(Currency currency)
         {
-            if (!Currency.HasEnumeration(currency))
-            {
-                return this.BadRequest("The currency is invalid");
-            }
+            var response = await _accountQuery.FindUserBalanceResponseAsync(currency);
 
-            var balanceViewModel = await _accountQuery.FindUserBalanceViewModelAsync(currency);
-
-            if (balanceViewModel == null)
+            if (response == null)
             {
                 return this.NotFound($"Account balance for currency {currency} not found.");
             }
 
-            return this.Ok(balanceViewModel);
+            return this.Ok(response);
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿// Filename: UserAccountTransactionSuccededIntegrationEvent.cs
-// Date Created: 2019-07-05
+﻿// Filename: UserTransactionSuccededIntegrationEvent.cs
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -14,16 +13,20 @@ using Newtonsoft.Json;
 namespace eDoxa.Cashier.Api.IntegrationEvents
 {
     [JsonObject]
-    internal sealed class UserTransactionSuccededIntegrationEvent : IIntegrationEvent
+    public sealed class UserTransactionSuccededIntegrationEvent : IIntegrationEvent
     {
         [JsonConstructor]
-        public UserTransactionSuccededIntegrationEvent(Guid transactionId)
+        public UserTransactionSuccededIntegrationEvent(UserId userId, TransactionId transactionId)
         {
+            UserId = userId;
             TransactionId = transactionId;
         }
 
         [JsonProperty]
-        public Guid TransactionId { get; }
+        public UserId UserId { get; }
+
+        [JsonProperty]
+        public TransactionId TransactionId { get; }
 
         [JsonIgnore]
         public string Name => IntegrationEventNames.UserTransactionSucceded;

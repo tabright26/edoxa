@@ -1,12 +1,11 @@
 ﻿// Filename: EntryFee.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 using eDoxa.Seedwork.Domain;
 
@@ -61,11 +60,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
             return entryFee.Amount;
         }
 
-        public static IEnumerable<EntryFee> GetValues()
-        {
-            return GetValues<MoneyEntryFee>().Cast<EntryFee>().Union(GetValues<TokenEntryFee>()).ToList();
-        }
-
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Amount;
@@ -84,6 +78,19 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
         public Prize GetLowestPrize()
         {
+            if (Amount == 0) // TODO: Quick fix.
+            {
+                if (Currency == Currency.Money) // TODO: Quick fix.
+                {
+                    return new Prize(Money.MinValue, Currency); 
+                }
+
+                if (Currency == Currency.Token) // TODO: Quick fix.
+                {
+                    return new Prize(Token.MinValue, Currency); 
+                }
+            }
+
             return new Prize(Amount, Currency);
         }
     }
