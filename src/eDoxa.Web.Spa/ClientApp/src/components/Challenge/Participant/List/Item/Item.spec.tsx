@@ -1,7 +1,7 @@
 // import React from "react";
 // import renderer from "react-test-renderer";
 // import { Provider } from "react-redux";
-// import { MemoryRouter } from "react-router";
+// import { MemoryRouter } from "react-router-dom";
 // import Item from "./Item";
 // import { ChallengesState } from "store/root/challenge/types";
 

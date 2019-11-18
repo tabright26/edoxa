@@ -1,16 +1,15 @@
 import { connect, MapStateToProps } from "react-redux";
 import Summary from "./Summary";
 import { RootState } from "store/types";
-import { RouteChildrenProps } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ChallengeId, Game, ChallengeEntryFee, ChallengeState } from "types";
 import { compose } from "recompose";
-import { withRouter } from "react-router-dom";
 
 interface Params {
   readonly challengeId: ChallengeId;
 }
 
-interface OwnProps extends RouteChildrenProps<Params> {
+interface OwnProps extends RouteComponentProps<Params> {
   readonly challengeId?: ChallengeId;
 }
 

@@ -50,6 +50,8 @@ namespace eDoxa.Web.Spa
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<WebSpaAppSettings>(Configuration);
+
             services.AddHealthChecks()
                 .AddCheck("liveness", () => HealthCheckResult.Healthy())
                 .AddIdentityServer(AppSettings)
@@ -83,6 +85,17 @@ namespace eDoxa.Web.Spa
 
             application.UseMvcWithDefaultRoute();
 
+            application.UseSpa(
+                builder =>
+                {
+                    builder.Options.SourcePath = "ClientApp";
+
+                    if (HostingEnvironment.IsDevelopment())
+                    {
+                        builder.UseProxyToSpaDevelopmentServer(AppSettings.WebSpaClientUrl);
+                    }
+                });
+
             application.UseHealthChecks(
                 "/liveness",
                 new HealthCheckOptions
@@ -96,17 +109,6 @@ namespace eDoxa.Web.Spa
                 {
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
-
-            application.UseSpa(
-                builder =>
-                {
-                    builder.Options.SourcePath = "ClientApp";
-
-                    if (HostingEnvironment.IsDevelopment())
-                    {
-                        builder.UseProxyToSpaDevelopmentServer(AppSettings.WebSpaClientUrl);
-                    }
                 });
         }
     }
