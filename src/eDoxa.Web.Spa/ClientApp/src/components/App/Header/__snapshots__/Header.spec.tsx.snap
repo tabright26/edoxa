@@ -63,66 +63,22 @@ Array [
   <ul
     className="ml-auto mr-3 navbar-nav"
   >
-    <li
-      className="dropdown nav-item"
-      onKeyDown={[Function]}
+    <a
+      aria-label={null}
+      className="mr-2 btn btn-link btn-sm"
+      href="/authentication/login"
+      onClick={[Function]}
     >
-      <a
-        aria-expanded={false}
-        aria-haspopup={true}
-        className="dropdown-toggle nav-link"
-        href="#"
-        onClick={[Function]}
-      >
-        <span
-          className="sr-only"
-        >
-          Toggle Dropdown
-        </span>
-      </a>
-      <div
-        aria-hidden={true}
-        className="dropdown-menu dropdown-menu-right"
-        role="menu"
-        style={
-          Object {
-            "right": 0,
-          }
-        }
-        tabIndex="-1"
-      >
-        <form
-          className="form-inline"
-        >
-          <a
-            aria-label={null}
-            className="m-3 btn btn-primary btn-sm btn-block"
-            href="/profile"
-            onClick={[Function]}
-          >
-            Profile
-          </a>
-        </form>
-        <button
-          className="border-top dropdown-item"
-          onClick={[Function]}
-          role="menuitem"
-          tabIndex="0"
-          type="button"
-        >
-          User Info
-        </button>
-        <button
-          className="dropdown-item"
-          onClick={[Function]}
-          role="menuitem"
-          tabIndex="0"
-          type="button"
-        >
-          Logout
-        </button>
-      </div>
-    </li>
+      Login
+    </a>
+    <a
+      aria-label={null}
+      className="btn btn-outline-primary btn-sm"
+      href="/authentication/register"
+      onClick={[Function]}
+    >
+      Register
+    </a>
   </ul>,
   <button
     className="d-md-down-none navbar-toggler"

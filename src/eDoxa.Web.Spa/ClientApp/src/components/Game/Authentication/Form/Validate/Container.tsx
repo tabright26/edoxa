@@ -9,6 +9,8 @@ import {
 import Link from "./Validate";
 import { Game } from "types";
 import { toastr } from "react-redux-toastr";
+import authorize from "utils/oidc/AuthorizeService";
+import { async } from "q";
 
 interface OwnProps {
   game: Game;
@@ -23,7 +25,19 @@ const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
         (action: GameAuthenticationActions) => {
           switch (action.type) {
             case VALIDATE_GAME_AUTHENTICATION_SUCCESS: {
-              return dispatch(loadGames()).then(() => ownProps.handleCancel());
+              return dispatch(loadGames()).then(() => {
+                console.log(window.location.pathname);
+                return authorize
+                  .getUser()
+                  .then(user => console.log(user))
+                  .then(() =>
+                    authorize
+                      .signIn({
+                        returnUrl: window.location.pathname
+                      })
+                      .then(() => authorize.getUser().then(x => console.log(x)))
+                  );
+              });
             }
             case VALIDATE_GAME_AUTHENTICATION_FAIL: {
               toastr.error("Error", "Validating game authentication failed.");

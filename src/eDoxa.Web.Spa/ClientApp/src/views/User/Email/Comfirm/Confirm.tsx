@@ -2,12 +2,14 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Alert } from "reactstrap";
-import { withUser } from "store/root/user/container";
 import queryString from "query-string";
 import { compose } from "recompose";
 import { confirmUserEmail } from "store/root/user/email/actions";
 
-const EmailConfirm: FunctionComponent<any> = ({ location, confirmUserEmail }) => {
+const EmailConfirm: FunctionComponent<any> = ({
+  location,
+  confirmUserEmail
+}) => {
   const [notFound, setNotFound] = useState(false);
   useEffect(() => {
     const { userId, code } = queryString.parse(location.search);
@@ -31,16 +33,11 @@ const EmailConfirm: FunctionComponent<any> = ({ location, confirmUserEmail }) =>
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    confirmUserEmail: (userId: string, code: string) => dispatch(confirmUserEmail(userId, code))
+    confirmUserEmail: (userId: string, code: string) =>
+      dispatch(confirmUserEmail(userId, code))
   };
 };
 
-const enhance = compose<any, any>(
-  withUser,
-  connect(
-    null,
-    mapDispatchToProps
-  )
-);
+const enhance = compose<any, any>(connect(null, mapDispatchToProps));
 
 export default enhance(EmailConfirm);

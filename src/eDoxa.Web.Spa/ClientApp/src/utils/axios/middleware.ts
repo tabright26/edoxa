@@ -1,5 +1,7 @@
 import axios from "axios";
 import axiosMiddleware from "redux-axios-middleware";
+import authorizeService from "utils/oidc/AuthorizeService";
+import { async } from "q";
 
 export const middleware = axiosMiddleware(
   axios.create({
@@ -9,11 +11,10 @@ export const middleware = axiosMiddleware(
   {
     interceptors: {
       request: [
-        ({ getState }, config) => {
-          const state = getState();
-          const { user } = state.oidc;
-          if (user) {
-            config.headers["Authorization"] = `Bearer ${user.access_token}`;
+        async ({ getState }, config) => {
+          var accessToken = await authorizeService.getAccessToken();
+          if (accessToken) {
+            config.headers["Authorization"] = `Bearer ${accessToken}`;
           }
           return config;
         }

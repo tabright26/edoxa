@@ -14,6 +14,11 @@ import { RootState } from "store/types";
 import produce, { Draft } from "immer";
 import { UserId, ClanId } from "types";
 
+interface OwnProps {
+  userId: UserId;
+  clanId: ClanId;
+}
+
 export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
     useEffect(() => {
@@ -23,7 +28,7 @@ export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
     return <HighOrderComponent {...props} />;
   };
 
-  const mapStateToProps = (state: RootState) => {
+  const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     const clans: ClansState = produce(
       state.root.organization.clan,
       (draft: Draft<ClansState>) => {
@@ -34,15 +39,13 @@ export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
         });
       }
     );
-    const userId: UserId = state.oidc.user.profile["sub"];
-    const clanId: ClanId = state.oidc.user.profile["clanId"];
     return {
       clans,
-      userId,
+      userId: ownProps.userId,
       userClan: clans.data.find(
         clan =>
-          clan.id === clanId ||
-          clan.members.some(member => member.userId === userId)
+          clan.id === ownProps.clanId ||
+          clan.members.some(member => member.userId === ownProps.userId)
       )
     };
   };
