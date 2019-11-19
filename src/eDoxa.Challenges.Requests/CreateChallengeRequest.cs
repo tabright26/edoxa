@@ -1,6 +1,6 @@
 ﻿// Filename: ChallengePostRequest.cs
 // Date Created: 2019-11-07
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 namespace eDoxa.Challenges.Requests
 {
     [DataContract]
-    public sealed class CreateChallengeRequest
+    public sealed class     CreateChallengeRequest
     {
         public CreateChallengeRequest(
             Guid challengeId,
@@ -28,6 +28,13 @@ namespace eDoxa.Challenges.Requests
             Entries = entries;
             Duration = duration;
         }
+
+#nullable disable
+        public CreateChallengeRequest()
+        {
+            // Required by Fluent Validation.
+        }
+#nullable restore
 
         [DataMember(Name = "challengeId")]
         public Guid ChallengeId { get; private set; }

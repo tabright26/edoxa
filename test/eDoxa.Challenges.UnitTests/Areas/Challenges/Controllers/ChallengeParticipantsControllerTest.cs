@@ -1,6 +1,6 @@
 ﻿// Filename: ChallengeParticipantsControllerTest.cs
 // Date Created: 2019-09-29
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -17,6 +17,7 @@ using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Challenges.TestHelper.Mocks;
+using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -211,6 +212,54 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             result.Should().BeOfType<OkObjectResult>();
 
             mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
+
+            mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+
+            mockChallengeService.Verify(
+                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+                    It.IsAny<IChallenge>(),
+                    It.IsAny<ParticipantId>(),
+                    It.IsAny<UserId>(),
+                    It.IsAny<PlayerId>(),
+                    It.IsAny<UtcNowDateTimeProvider>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task PostAsync_ShouldBeBadRequestObjectResult()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000, Game.LeagueOfLegends);
+
+            var challenge = challengeFaker.FakeChallenge();
+
+            var mockParticipantQuery = new Mock<IParticipantQuery>();
+
+            var mockChallengeService = new Mock<IChallengeService>();
+            mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
+
+            mockChallengeService
+                .Setup(
+                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+                        It.IsAny<IChallenge>(),
+                        It.IsAny<ParticipantId>(),
+                        It.IsAny<UserId>(),
+                        It.IsAny<PlayerId>(),
+                        It.IsAny<UtcNowDateTimeProvider>(),
+                        It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationFailure("test", "test message").ToResult())
+                .Verifiable();
+
+            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
 
             mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
