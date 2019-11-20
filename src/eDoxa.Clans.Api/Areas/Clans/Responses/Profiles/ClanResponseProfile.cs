@@ -15,7 +15,8 @@ namespace eDoxa.Clans.Api.Areas.Clans.Responses.Profiles
                 .ForMember(clan => clan.Name, config => config.MapFrom(clan => clan.Name))
                 .ForMember(clan => clan.Summary, config => config.MapFrom(clan => clan.Summary))
                 .ForMember(clan => clan.OwnerId, config => config.MapFrom<Guid>(clan => clan.OwnerId))
-                .ForMember(clan => clan.Members, config => config.MapFrom(clan => clan.Members));
+                .ForMember(clan => clan.Members, config => config.MapFrom(clan => clan.Members))
+                .ForMember(clan => clan.Divisions, config => config.MapFrom(clan => clan.Divisions));
         }
     }
 }

@@ -14,7 +14,6 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Clans.Api.Areas.Clans.DomainEvents
 {
-    // GABRIEL: UNIT TEST.
     public sealed class ClanMemberRemovedDomainEventHandler : IDomainEventHandler<ClanMemberRemovedDomainEvent>
     {
         private readonly IServiceBusPublisher _serviceBusPublisher;

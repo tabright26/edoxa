@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeQueryTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -32,7 +32,10 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
     {
         private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
 
-        public ChallengeQueryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ChallengeQueryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
+            testData,
+            testMapper,
+            validator)
         {
             _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         }

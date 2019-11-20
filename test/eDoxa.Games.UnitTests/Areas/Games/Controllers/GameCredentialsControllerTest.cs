@@ -39,7 +39,7 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         public async Task DeleteByGameAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockCredentialService = new Mock<ICredentialService>();
+            var mockCredentialService = new Mock<IGameCredentialService>();
 
             var mockMapper = new Mock<IMapper>();
 
@@ -82,7 +82,7 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         public async Task DeleteByGameAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            var mockCredentialService = new Mock<ICredentialService>();
+            var mockCredentialService = new Mock<IGameCredentialService>();
 
             var mockMapper = new Mock<IMapper>();
 
@@ -109,7 +109,7 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         public async Task DeleteByGameAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
-            var mockCredentialService = new Mock<ICredentialService>();
+            var mockCredentialService = new Mock<IGameCredentialService>();
 
             var mockMapper = new Mock<IMapper>();
 

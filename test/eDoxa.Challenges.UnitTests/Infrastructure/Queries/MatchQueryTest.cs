@@ -24,7 +24,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 {
     public sealed class MatchQueryTest : UnitTest
     {
-        public MatchQueryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public MatchQueryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

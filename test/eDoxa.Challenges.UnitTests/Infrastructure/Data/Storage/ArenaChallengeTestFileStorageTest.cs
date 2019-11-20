@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class ArenaChallengeTestFileStorageTest : UnitTest
     {
-        public ArenaChallengeTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ArenaChallengeTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

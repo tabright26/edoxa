@@ -25,7 +25,7 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ParticipantTest : UnitTest
     {
-        public ParticipantTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ParticipantTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

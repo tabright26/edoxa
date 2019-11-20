@@ -24,7 +24,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Data.Fakers
     {
         private static readonly Faker Faker = new Faker();
 
-        public ChallengeFakerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ChallengeFakerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

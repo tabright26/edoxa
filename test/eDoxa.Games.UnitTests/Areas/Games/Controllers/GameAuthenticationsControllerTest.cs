@@ -41,8 +41,8 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockAuthFactorService = new Mock<IAuthenticationService>();
-            var mockCredentialService = new Mock<ICredentialService>();
+            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
+            var mockCredentialService = new Mock<IGameCredentialService>();
             var mockMapper = new Mock<IMapper>();
 
             mockAuthFactorService
@@ -53,9 +53,9 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
             mockAuthFactorService
                 .Setup(
                     authFactorService =>
-                        authFactorService.FindAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()))
+                        authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(
-                    new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(
+                    new LeagueOfLegendsGameAuthentication(
                         PlayerId.Parse("playerId"),
                         new LeagueOfLegendsGameAuthenticationFactor(
                             1,
@@ -80,7 +80,7 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
                 Times.Once);
 
             mockAuthFactorService.Verify(
-                authFactorService => authFactorService.FindAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()),
+                authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
                 Times.Once);
         }
 
@@ -88,9 +88,9 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         public async Task PostByGameAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
-            var mockCredentialService = new Mock<ICredentialService>();
+            var mockCredentialService = new Mock<IGameCredentialService>();
 
-            var mockAuthenticationService = new Mock<IAuthenticationService>();
+            var mockAuthenticationService = new Mock<IGameAuthenticationService>();
 
             var mockMapper = new Mock<IMapper>();
 
@@ -119,9 +119,9 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         public async Task PuAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockCredentialService = new Mock<ICredentialService>();
+            var mockCredentialService = new Mock<IGameCredentialService>();
 
-            var mockAuthenticationService = new Mock<IAuthenticationService>();
+            var mockAuthenticationService = new Mock<IGameAuthenticationService>();
 
             var mockMapper = new Mock<IMapper>();
 

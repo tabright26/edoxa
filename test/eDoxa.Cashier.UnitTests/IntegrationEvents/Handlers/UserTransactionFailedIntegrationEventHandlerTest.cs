@@ -49,7 +49,9 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var mockLogger = new MockLogger<UserTransactionFailedIntegrationEventHandler>();
 
-            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserEmailSentIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserEmailSentIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
             var handler = new UserTransactionFailedIntegrationEventHandler(mockTransactionRepository.Object, mockServiceBusPublisher.Object, mockLogger.Object);
 

@@ -30,14 +30,14 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
     [ApiExplorerSettings(GroupName = "Game")]
     public sealed class GameAuthenticationsController : ControllerBase
     {
-        private readonly IAuthenticationService _authenticationService;
-        private readonly ICredentialService _credentialService;
+        private readonly IGameAuthenticationService _gameAuthenticationService;
+        private readonly IGameCredentialService _gameCredentialService;
         private readonly IMapper _mapper;
 
-        public GameAuthenticationsController(IAuthenticationService authenticationService, ICredentialService credentialService, IMapper mapper)
+        public GameAuthenticationsController(IGameAuthenticationService gameAuthenticationService, IGameCredentialService gameCredentialService, IMapper mapper)
         {
-            _authenticationService = authenticationService;
-            _credentialService = credentialService;
+            _gameAuthenticationService = gameAuthenticationService;
+            _gameCredentialService = gameCredentialService;
             _mapper = mapper;
         }
 
@@ -49,11 +49,11 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
         {
             var userId = HttpContext.GetUserId();
 
-            var result = await _authenticationService.GenerateAuthenticationAsync(userId, game, request);
+            var result = await _gameAuthenticationService.GenerateAuthenticationAsync(userId, game, request);
 
             if (result.IsValid)
             {
-                var authentication = await _authenticationService.FindAuthenticationAsync(userId, game);
+                var authentication = await _gameAuthenticationService.FindAuthenticationAsync(userId, game);
 
                 return this.Ok(authentication.Factor);
             }
@@ -73,11 +73,11 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
         {
             var userId = HttpContext.GetUserId();
 
-            var result = await _credentialService.LinkCredentialAsync(userId, game);
+            var result = await _gameCredentialService.LinkCredentialAsync(userId, game);
 
             if (result.IsValid)
             {
-                var credential = await _credentialService.FindCredentialAsync(userId, game);
+                var credential = await _gameCredentialService.FindCredentialAsync(userId, game);
 
                 return this.Ok(_mapper.Map<CredentialResponse>(credential));
             }

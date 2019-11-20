@@ -1,6 +1,6 @@
 ﻿// Filename: ClanMembersController.cs
 // Date Created: 2019-09-30
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -102,7 +102,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan does not exist.");
             }
 
-            var result = await _clanService.KickMemberFromClanAsync(userId, clan, memberId);
+            var result = await _clanService.KickMemberFromClanAsync(clan, userId, memberId);
 
             if (result.IsValid)
             {

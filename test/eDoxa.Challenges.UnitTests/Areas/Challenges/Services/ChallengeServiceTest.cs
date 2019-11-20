@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeServiceTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,6 +7,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -23,7 +25,11 @@ using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
+using FluentValidation.Results;
+
 using Moq;
+
+using Refit;
 
 using Xunit;
 
@@ -31,23 +37,93 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 {
     public sealed class ChallengeServiceTest : UnitTest
     {
-        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 
         [Fact]
-        public async Task RegisterParticipantAsync_ShouldBeVerified()
+        public async Task CreateChallengeAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
             var challenge = challengeFaker.FakeChallenge();
-            var participantCount = challenge.Entries - challenge.Participants.Count;
-            participantCount -= 1;
 
-            for (var index = 0; index < participantCount; index++)
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
+            var scoreDictionnary = new Dictionary<string, float>
             {
-                challenge.Register(new Participant(new ParticipantId(), new UserId(), PlayerId.Parse(Guid.NewGuid().ToString()), new UtcNowDateTimeProvider()));
-            }
+                {"test1", 10},
+                {"test2", 50},
+                {"test3", 100}
+            };
+
+            mockGamesHttpClient.Setup(client => client.GetChallengeScoringAsync(It.IsAny<Game>())).ReturnsAsync(new ScoringDto(scoreDictionnary)).Verifiable();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.Create(It.IsAny<Challenge>())).Verifiable();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            var result = await challengeService.CreateChallengeAsync(
+                new ChallengeId(),
+                new ChallengeName("test"),
+                Game.LeagueOfLegends,
+                new BestOf(5),
+                new Entries(10),
+                new ChallengeDuration(
+                    new TimeSpan(
+                        1,
+                        0,
+                        0,
+                        0)),
+                new UtcNowDateTimeProvider());
+
+            // Assert
+            result.Should().BeOfType<ValidationResult>();
+            mockGamesHttpClient.Verify(client => client.GetChallengeScoringAsync(It.IsAny<Game>()), Times.Once);
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.Create(It.IsAny<Challenge>()), Times.Once);
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteChallengeAsync()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
+            var challenge = challengeFaker.FakeChallenge();
+
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.Delete(It.IsAny<Challenge>())).Verifiable();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            await challengeService.DeleteChallengeAsync(challenge);
+
+            // Assert
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.Delete(It.IsAny<Challenge>()), Times.Once);
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task FindChallengeAsync_ShouldBeOfTypeChallenge()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
+            var challenge = challengeFaker.FakeChallenge();
 
             var mockChallengeRepository = new Mock<IChallengeRepository>();
             var mockGamesHttpClient = new Mock<IGamesHttpClient>();
@@ -57,23 +133,47 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 .ReturnsAsync(challenge)
                 .Verifiable();
 
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            var result = await challengeService.FindChallengeAsync(new ChallengeId());
+
+            // Assert
+            result.Should().BeOfType<Challenge>();
+            mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task RegisterParticipantAsync_ShouldBeOfTypeValidationResult()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
+            var challenge = challengeFaker.FakeChallenge();
+            var participantCount = challenge.Entries - challenge.Participants.Count;
+            participantCount -= 1;
+
+            for (var index = 0; index < participantCount; index++)
+            {
+                challenge.Register(
+                    new Participant(
+                        new ParticipantId(),
+                        new UserId(),
+                        PlayerId.Parse(Guid.NewGuid().ToString()),
+                        new UtcNowDateTimeProvider()));
+            }
+
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
             mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
-                .Verifiable();
-
-            mockGamesHttpClient
-                .Setup(challengeRepository => challengeRepository.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
-                .ReturnsAsync(
-                    new List<MatchDto>
-                    {
-                        new MatchDto(string.Empty, new Dictionary<string, double>())
-                    })
                 .Verifiable();
 
             var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
 
             // Act
-            await challengeService.RegisterChallengeParticipantAsync(
+            var result = await challengeService.RegisterChallengeParticipantAsync(
                 challenge,
                 new ParticipantId(),
                 new UserId(),
@@ -81,9 +181,80 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 new UtcNowDateTimeProvider());
 
             // Assert
-            challenge.Timeline.State.Should().Be(ChallengeState.InProgress);
-            mockChallengeRepository.Verify(challengeRepository => challengeRepository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Never);
+            result.Should().BeOfType<ValidationResult>();
             mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task RegisterParticipantAsync_WhenAlreadyRegistered_ShouldBeOfTypeValidationResultWithErrors()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
+            var challenge = challengeFaker.FakeChallenge();
+
+            var userId = new UserId();
+
+            challenge.Register(
+                new Participant(
+                    new ParticipantId(),
+                    userId,
+                    PlayerId.Parse(Guid.NewGuid().ToString()),
+                    new UtcNowDateTimeProvider()));
+
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            var result = await challengeService.RegisterChallengeParticipantAsync(
+                challenge,
+                new ParticipantId(),
+                userId,
+                new PlayerId(),
+                new UtcNowDateTimeProvider());
+
+            // Assert
+            result.Should().BeOfType<ValidationResult>();
+            result.Errors.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public async Task RegisterParticipantAsync_WhenSoldOut_ShouldBeOfTypeValidationResultWithErrors()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
+            var challenge = challengeFaker.FakeChallenge();
+            var participantCount = challenge.Entries - challenge.Participants.Count;
+
+            for (var index = 0; index < participantCount; index++)
+            {
+                challenge.Register(
+                    new Participant(
+                        new ParticipantId(),
+                        new UserId(),
+                        PlayerId.Parse(Guid.NewGuid().ToString()),
+                        new UtcNowDateTimeProvider()));
+            }
+
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            var result = await challengeService.RegisterChallengeParticipantAsync(
+                challenge,
+                new ParticipantId(),
+                new UserId(),
+                new PlayerId(),
+                new UtcNowDateTimeProvider());
+
+            // Assert
+            result.Should().BeOfType<ValidationResult>();
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -114,7 +285,12 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 .Verifiable();
 
             mockGamesHttpClient
-                .Setup(challengeRepository => challengeRepository.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
+                .Setup(
+                    challengeRepository => challengeRepository.GetChallengeMatchesAsync(
+                        It.IsAny<Game>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DateTime?>(),
+                        It.IsAny<DateTime?>()))
                 .ReturnsAsync(new List<MatchDto>())
                 .Verifiable();
 
@@ -133,7 +309,164 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
-                Times.Exactly(challenges.SelectMany(challenge => challenge.Participants).Count() + challenges.Count));
+                Times.Exactly(challenges.SelectMany(x => x.Participants).Count() + challenges.Count));
+        }
+
+        [Fact]
+        public async Task SynchronizeChallengesAsync_ShouldBeOfTypeValidationResult()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.InProgress);
+            var challenges = challengeFaker.FakeChallenges(5);
+
+            var scoreDictionnary = new Dictionary<string, double>
+            {
+                {"test1", 10},
+                {"test2", 50},
+                {"test3", 100}
+            };
+
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(challenges)
+                .Verifiable();
+
+            mockGamesHttpClient.Setup(
+                    client => client.GetChallengeMatchesAsync(
+                        It.IsAny<Game>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DateTime>(),
+                        It.IsAny<DateTime>()))
+                .ReturnsAsync(
+                    new List<MatchDto>
+                    {
+                        new MatchDto("test1", scoreDictionnary),
+                        new MatchDto("test2", scoreDictionnary),
+                        new MatchDto("test3", scoreDictionnary)
+                    })
+                .Verifiable();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            await challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
+
+            // Assert
+            mockChallengeRepository.Verify(
+                challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
+                Times.Exactly(2));
+
+            mockChallengeRepository.Verify(
+                challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+                Times.Exactly(challenges.SelectMany(x => x.Participants).Count() + 1));
+        }
+
+        [Fact]
+        public async Task SynchronizeChallengesAsync_WhenChallengeIsBadState_ShouldLogError()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
+            var challenges = challengeFaker.FakeChallenges(5);
+
+            var scoreDictionnary = new Dictionary<string, double>
+            {
+                {"test1", 10},
+                {"test2", 50},
+                {"test3", 100}
+            };
+
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(challenges)
+                .Verifiable();
+
+            mockGamesHttpClient.Setup(
+                    client => client.GetChallengeMatchesAsync(
+                        It.IsAny<Game>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DateTime>(),
+                        It.IsAny<DateTime>()))
+                .ReturnsAsync(
+                    new List<MatchDto>
+                    {
+                        new MatchDto("test1", scoreDictionnary),
+                        new MatchDto("test2", scoreDictionnary),
+                        new MatchDto("test3", scoreDictionnary)
+                    })
+                .Verifiable();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            await challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
+
+            // Assert
+            mockChallengeRepository.Verify(
+                challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
+                Times.Exactly(2));
+
+            mockLogger.Verify(Times.Exactly(5));
+        }
+
+        [Fact]
+        public async Task SynchronizeChallengesAsync_WhenParticipantMatchError_ShouldLogError()
+        {
+            // Arrange
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.InProgress);
+            var challenges = challengeFaker.FakeChallenges(5);
+
+            var error = await ApiException.Create(new HttpRequestMessage(), HttpMethod.Patch, new HttpResponseMessage(HttpStatusCode.BadRequest));
+
+            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            var mockGamesHttpClient = new Mock<IGamesHttpClient>();
+            var mockLogger = new MockLogger<ChallengeService>();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+                .ReturnsAsync(challenges)
+                .Verifiable();
+
+            mockGamesHttpClient.Setup(
+                    client => client.GetChallengeMatchesAsync(
+                        It.IsAny<Game>(),
+                        It.IsAny<string>(),
+                        It.IsAny<DateTime>(),
+                        It.IsAny<DateTime>()))
+                .ThrowsAsync(error)
+                .Verifiable();
+
+            mockChallengeRepository.Setup(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
+
+            // Act
+            await challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
+
+            // Assert
+            mockChallengeRepository.Verify(
+                challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
+                Times.Exactly(2));
+
+            mockChallengeRepository.Verify(
+                challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+                Times.Exactly(challenges.Count));
+
+            mockLogger.Verify(Times.Exactly(challenges.SelectMany(challenge => challenge.Participants).Count() - challenges.Count + 1));
         }
     }
 }

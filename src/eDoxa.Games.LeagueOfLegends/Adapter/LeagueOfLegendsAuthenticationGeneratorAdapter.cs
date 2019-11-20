@@ -28,17 +28,17 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
     public sealed class LeagueOfLegendsAuthenticationGeneratorAdapter : AuthenticationGeneratorAdapter<LeagueOfLegendsRequest>
     {
         private readonly ILeagueOfLegendsService _leagueOfLegendsService;
-        private readonly IAuthenticationRepository _authenticationRepository;
+        private readonly IGameAuthenticationRepository _gameAuthenticationRepository;
         private readonly CloudStorageAccount _storageAccount;
 
         public LeagueOfLegendsAuthenticationGeneratorAdapter(
             ILeagueOfLegendsService leagueOfLegendsService,
-            IAuthenticationRepository authenticationRepository,
+            IGameAuthenticationRepository gameAuthenticationRepository,
             CloudStorageAccount storageAccount
         )
         {
             _leagueOfLegendsService = leagueOfLegendsService;
-            _authenticationRepository = authenticationRepository;
+            _gameAuthenticationRepository = gameAuthenticationRepository;
             _storageAccount = storageAccount;
         }
 
@@ -55,12 +55,12 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
                     $"{Game} summoner's name doesn't exists. Note: Only NA server is supported for the moment").ToResult();
             }
 
-            if (await _authenticationRepository.AuthenticationExistsAsync(userId, Game))
+            if (await _gameAuthenticationRepository.AuthenticationExistsAsync(userId, Game))
             {
-                await _authenticationRepository.RemoveAuthenticationAsync(userId, Game);
+                await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
             }
 
-            await _authenticationRepository.AddAuthenticationAsync(userId, Game, await this.GenerateAuthFactor(summoner));
+            await _gameAuthenticationRepository.AddAuthenticationAsync(userId, Game, await this.GenerateAuthFactor(summoner));
 
             return new ValidationResult();
         }

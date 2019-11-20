@@ -1,6 +1,6 @@
 // Filename: InvitationsControllerTest.cs
 // Date Created: 2019-10-02
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -260,6 +260,35 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             result.Should().BeOfType<OkObjectResult>();
 
             mockInvitationService.Verify(clanService => clanService.FetchInvitationsAsync(It.IsAny<UserId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAsync_WithNullParameters_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockInvitationService = new Mock<IInvitationService>();
+
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
+
+            // Act
+            var result = await invitationController.GetAsync(null, null);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+        [Fact]
+        public async Task GetAsync_WithAllParameters_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockInvitationService = new Mock<IInvitationService>();
+
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
+
+            // Act
+            var result = await invitationController.GetAsync(new ClanId(), new UserId());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
 
         [Fact]

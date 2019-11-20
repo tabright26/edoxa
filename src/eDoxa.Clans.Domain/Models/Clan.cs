@@ -1,5 +1,5 @@
 ﻿// Filename: Clan.cs
-// Date Created: 2019-09-30
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -21,15 +21,16 @@ namespace eDoxa.Clans.Domain.Models
             Name = name;
             Summary = null;
             OwnerId = ownerId;
+            Divisions = new HashSet<Division>();
             Members = new HashSet<Member>();
             this.AddMember(new Member(Id, ownerId));
         }
-#nullable disable
+
         private Clan()
         {
             //Requied by EF Core
         }
-#nullable restore
+
         public string Name { get; private set; }
 
         public string? Summary { get; private set; }
@@ -39,6 +40,70 @@ namespace eDoxa.Clans.Domain.Models
         public bool Deleted => !Members.Any();
 
         public ICollection<Member> Members { get; private set; }
+
+        public ICollection<Division> Divisions { get; private set; }
+
+        public void UpdateDivision(DivisionId divisionId, string name, string description)
+        {
+            var division = Divisions.SingleOrDefault(div => div.Id == divisionId);
+
+            if (division == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            division.Update(name, description);
+        }
+
+        public void AddMemberToDivision(DivisionId divisionId, MemberId memberId)
+        {
+            if (!this.HasMember(memberId))
+            {
+                throw new InvalidOperationException();
+            }
+
+            var memberNewDivision = Divisions.SingleOrDefault(division => division.Id == divisionId);
+
+            if (memberNewDivision != null)
+            {
+                memberNewDivision.AddMember(this.FindMember(memberId));
+            }
+        }
+
+        public void RemoveMemberFromDivision(DivisionId divisionId, MemberId memberId)
+        {
+            if (!this.HasMember(memberId))
+            {
+                throw new InvalidOperationException();
+            }
+
+            var memberCurrentDivision = Divisions.SingleOrDefault(division => division.Id == divisionId);
+
+            if (memberCurrentDivision != null)
+            {
+                memberCurrentDivision.RemoveMember(this.FindMember(memberId));
+            }
+        }
+
+        public void CreateDivision(string name, string description)
+        {
+            if (this.HasDivision(name))
+            {
+                throw new InvalidOperationException();
+            }
+
+            Divisions.Add(new Division(Id, name, description));
+        }
+
+        public void RemoveDivision(DivisionId divisionId)
+        {
+            if (!this.HasDivision(divisionId))
+            {
+                throw new InvalidOperationException();
+            }
+
+            Divisions.Remove(Divisions.SingleOrDefault(division => division.Id == divisionId));
+        }
 
         public void AddMember(IMemberInfo memberInfo)
         {
@@ -54,7 +119,7 @@ namespace eDoxa.Clans.Domain.Models
             this.AddDomainEvent(new ClanMemberAddedDomainEvent(member.UserId, Id));
         }
 
-        public void Leave(Member member)
+        public void Leave(Member member) //Francis on devrais avoir RemoveMember a la place et faire le check dans le service
         {
             this.Remove(member);
 
@@ -66,7 +131,7 @@ namespace eDoxa.Clans.Domain.Models
                 }
                 else
                 {
-                    this.AddDomainEvent(new ClanDeletedDomainEvent(Id));    
+                    this.AddDomainEvent(new ClanDeletedDomainEvent(Id));
                 }
             }
         }
@@ -103,6 +168,16 @@ namespace eDoxa.Clans.Domain.Models
             return Members.Count > 1;
         }
 
+        public bool HasDivision(string name)
+        {
+            return Divisions.Any(division => division.Name == name);
+        }
+
+        public bool HasDivision(DivisionId divisionId)
+        {
+            return Divisions.Any(division => division.Id == divisionId);
+        }
+
         public bool HasMember(UserId userId)
         {
             return Members.Any(member => member.UserId == userId);
@@ -121,6 +196,11 @@ namespace eDoxa.Clans.Domain.Models
         public Member FindMember(MemberId memberId)
         {
             return Members.Single(member => member.Id == memberId);
+        }
+
+        public void Update(string summary)
+        {
+            Summary = summary;
         }
 
         private void DelegateOwnership(Member member)

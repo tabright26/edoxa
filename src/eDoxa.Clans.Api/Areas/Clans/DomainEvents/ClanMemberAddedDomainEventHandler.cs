@@ -1,6 +1,6 @@
 ﻿// Filename: ClanMemberAddedDomainEventHandler.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -19,7 +19,6 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Clans.Api.Areas.Clans.DomainEvents
 {
-    // GABRIEL: THIS CLASS UNIT TEST NEED TO BE REFACTORED.
     public sealed class ClanMemberAddedDomainEventHandler : IDomainEventHandler<ClanMemberAddedDomainEvent>
     {
         private readonly IInvitationService _invitationService;

@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.Clans.Infrastructure;
 
 namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
@@ -48,6 +48,24 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
                     b.ToTable("Clan");
                 });
 
+            modelBuilder.Entity("eDoxa.Clans.Domain.Models.Division", b =>
+                {
+                    b.Property<Guid>("Id");
+
+                    b.Property<Guid>("ClanId");
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClanId");
+
+                    b.ToTable("Division");
+                });
+
             modelBuilder.Entity("eDoxa.Clans.Domain.Models.Invitation", b =>
                 {
                     b.Property<Guid>("Id");
@@ -74,6 +92,14 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
                     b.HasIndex("ClanId");
 
                     b.ToTable("Member");
+                });
+
+            modelBuilder.Entity("eDoxa.Clans.Domain.Models.Division", b =>
+                {
+                    b.HasOne("eDoxa.Clans.Domain.Models.Clan")
+                        .WithMany("Divisions")
+                        .HasForeignKey("ClanId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("eDoxa.Clans.Domain.Models.Member", b =>
