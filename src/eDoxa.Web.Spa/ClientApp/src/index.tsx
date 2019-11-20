@@ -6,6 +6,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
+import { REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY } from "keys";
 
 import { Provider } from "react-redux";
 import { configureStore } from "./store";
@@ -21,9 +22,7 @@ const store = configureStore(initialState);
 ReactDOM.render(
   <Provider store={store}>
     <LocalizeProvider store={store} initialize={config}>
-      <StripeProvider
-        apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}
-      >
+      <StripeProvider apiKey={REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}>
         <App />
       </StripeProvider>
     </LocalizeProvider>

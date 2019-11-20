@@ -321,3 +321,5 @@ healthchecksdb
 
 # Solution Items
 /NuGet.config
+
+**/env-config.js

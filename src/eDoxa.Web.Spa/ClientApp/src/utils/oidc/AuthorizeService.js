@@ -1,5 +1,12 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
 import { ApplicationPaths, ApplicationName } from "./ApiAuthorizationConstants";
+import {
+  REACT_APP_WEB_SPA,
+  REACT_APP_CLIENT_ID,
+  REACT_APP_RESPONSE_TYPE,
+  REACT_APP_SCOPE,
+  REACT_APP_AUTHORITY
+} from "keys";
 
 export class AuthorizeService {
   _callbacks = [];
@@ -244,30 +251,23 @@ export class AuthorizeService {
     if (this.userManager !== undefined) {
       return;
     }
-
-    // let response = await fetch(
-    //   ApplicationPaths.ApiAuthorizationClientConfigurationUrl
-    // );
-    // if (!response.ok) {
-    //   throw new Error(`Could not load settings for '${ApplicationName}'`);
-    // }
-    const settings = {};
-    settings.client_id = process.env.REACT_APP_CLIENT_ID;
-    settings.redirect_uri =
-      "http://192.168.0.105:5300/authentication/login-callback";
-    settings.response_type = process.env.REACT_APP_RESPONSE_TYPE;
-    settings.scope = process.env.REACT_APP_SCOPE;
-    settings.authority = process.env.REACT_APP_AUTHORITY;
-    settings.post_logout_redirect_uri =
-      "http://192.168.0.105:5300/authentication/logout-callback";
-    settings.silent_redirect_uri =
-      "http://192.168.0.105:5300/authentication/login-callback";
-    settings.filterProtocolClaims = true;
-    settings.automaticSilentRenew = true;
-    settings.includeIdTokenInSilentRenew = true;
-    settings.userStore = new WebStorageStateStore({
-      prefix: ApplicationName
-    });
+    
+    const settings = {
+      client_id: REACT_APP_CLIENT_ID,
+      redirect_uri: REACT_APP_WEB_SPA + ApplicationPaths.LoginCallback,
+      response_type: REACT_APP_RESPONSE_TYPE,
+      scope: REACT_APP_SCOPE,
+      authority: REACT_APP_AUTHORITY,
+      post_logout_redirect_uri:
+        REACT_APP_WEB_SPA + ApplicationPaths.LogOutCallback,
+      silent_redirect_uri: REACT_APP_WEB_SPA + ApplicationPaths.LoginCallback,
+      filterProtocolClaims: true,
+      automaticSilentRenew: true,
+      includeIdTokenInSilentRenew: true,
+      userStore: new WebStorageStateStore({
+        prefix: ApplicationName
+      })
+    };
 
     this.userManager = new UserManager(settings);
 

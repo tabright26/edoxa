@@ -1,11 +1,11 @@
 import axios from "axios";
 import axiosMiddleware from "redux-axios-middleware";
 import authorizeService from "utils/oidc/AuthorizeService";
-import { async } from "q";
+import { REACT_APP_CHALLENGES_WEB_GATEWAY_URL } from "keys";
 
 export const middleware = axiosMiddleware(
   axios.create({
-    baseURL: process.env.REACT_APP_CHALLENGES_WEB_GATEWAY_URL,
+    baseURL: REACT_APP_CHALLENGES_WEB_GATEWAY_URL,
     responseType: "json"
   }),
   {

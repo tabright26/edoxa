@@ -10,6 +10,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
 COPY /src/eDoxa.Web.Spa/ClientApp/package.json /app/package.json
+COPY /src/eDoxa.Web.Spa/ClientApp/package-lock.json /app/package-lock.json
 RUN npm install npm -g --silent
 RUN npm install react-scripts -g --silent
 RUN npm install typesync -g --silent

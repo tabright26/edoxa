@@ -11,6 +11,7 @@ import {
 import authService from "./AuthorizeService";
 import { ApplicationPaths } from "./ApiAuthorizationConstants";
 import { LinkContainer } from "react-router-bootstrap";
+import { REACT_APP_AUTHORITY } from "keys";
 
 export class LoginMenu extends Component {
   constructor(props) {
@@ -38,12 +39,12 @@ export class LoginMenu extends Component {
     ]);
     this.setState({
       isAuthenticated,
-      doxatag: user && user["doxatag"]
+      user
     });
   }
 
   render() {
-    const { isAuthenticated, doxatag } = this.state;
+    const { isAuthenticated, user } = this.state;
     if (!isAuthenticated) {
       const registerPath = `${ApplicationPaths.Register}`;
       const loginPath = `${ApplicationPaths.Login}`;
@@ -54,16 +55,18 @@ export class LoginMenu extends Component {
         pathname: `${ApplicationPaths.LogOut}`,
         state: { local: true }
       };
-      return this.authenticatedView(doxatag, profilePath, logoutPath);
+      return this.authenticatedView(user, profilePath, logoutPath);
     }
   }
 
-  authenticatedView(doxatag, profilePath, logoutPath) {
+  authenticatedView(user, profilePath, logoutPath) {
     return (
       <Nav className="ml-auto mr-3" navbar>
         <UncontrolledDropdown nav direction="down">
           <DropdownToggle nav caret>
-            {`${doxatag.name}#${doxatag.code}`}
+            {user["doxatag"]
+              ? `${user["doxatag"].name}#${user["doxatag"].code}`
+              : user["email"]}
           </DropdownToggle>
           <DropdownMenu right style={{ right: 0 }}>
             <Form inline>
@@ -107,7 +110,7 @@ export class LoginMenu extends Component {
         </LinkContainer>
         <LinkContainer to={registerPath}>
           <Button
-            href={`${process.env.REACT_APP_AUTHORITY}/Identity/Account/Register`}
+            href={`${REACT_APP_AUTHORITY}/Identity/Account/Register`}
             size="sm"
             tag="a"
             color="primary"
