@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Responses
+namespace eDoxa.Clans.Api.Areas.Clans.Responses
 {
     [JsonObject]
     public class DivisionResponse

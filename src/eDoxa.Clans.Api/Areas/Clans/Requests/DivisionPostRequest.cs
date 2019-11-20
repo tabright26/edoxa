@@ -6,7 +6,7 @@
 
 using System.Runtime.Serialization;
 
-namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Requests
+namespace eDoxa.Clans.Api.Areas.Clans.Requests
 {
     [DataContract]
     public sealed class DivisionPostRequest

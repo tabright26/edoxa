@@ -7,13 +7,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers;
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Organizations.Clans.Domain.Services;
-using eDoxa.Organizations.Clans.TestHelpers;
-using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
-using eDoxa.Organizations.Clans.TestHelpers.Mocks;
+using eDoxa.Clans.Api.Areas.Clans.Controllers;
+using eDoxa.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
+using eDoxa.Clans.Domain.Models;
+using eDoxa.Clans.TestHelper;
+using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -27,7 +26,7 @@ using Moq;
 
 using Xunit;
 
-namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Controllers
+namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 {
     public class ClanDivisionsControllerTest : UnitTest
     {

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Responses;
-using eDoxa.Organizations.Clans.Domain.Services;
+using eDoxa.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Clans.Api.Areas.Clans.Responses;
+using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -21,7 +21,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Controllers
+namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
     [ApiController]

@@ -8,11 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Organizations.Clans.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
-namespace eDoxa.Organizations.Clans.Domain.Models
+namespace eDoxa.Clans.Domain.Models
 {
     public class Division : Entity<DivisionId>
     {

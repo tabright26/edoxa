@@ -4,9 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Organizations.Clans.TestHelpers;
-using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
+using eDoxa.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Clans.TestHelper;
+using eDoxa.Clans.TestHelper.Fixtures;
 
 using FluentAssertions;
 
@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 using Xunit;
 
-namespace eDoxa.Organizations.Clans.UnitTests.Areas.Clans.Requests
+namespace eDoxa.Clans.UnitTests.Areas.Clans.Requests
 {
     public sealed class DivisionPostRequestTest : UnitTest
     {

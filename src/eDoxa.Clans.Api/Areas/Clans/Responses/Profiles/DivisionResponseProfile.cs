@@ -2,9 +2,9 @@
 
 using AutoMapper;
 
-using eDoxa.Organizations.Clans.Domain.Models;
+using eDoxa.Clans.Domain.Models;
 
-namespace eDoxa.Organizations.Clans.Api.Areas.Clans.Responses.Profiles
+namespace eDoxa.Clans.Api.Areas.Clans.Responses.Profiles
 {
     public class DivisionResponseProfile : Profile
     {

@@ -14,7 +14,6 @@ using System.Reflection;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Security;
 
 using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
 

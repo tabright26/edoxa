@@ -9,15 +9,13 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Organizations.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Organizations.Clans.Domain.Models;
-using eDoxa.Organizations.Clans.Domain.Repositories;
-using eDoxa.Organizations.Clans.TestHelpers;
-using eDoxa.Organizations.Clans.TestHelpers.Fixtures;
+using eDoxa.Clans.Domain.Models;
+using eDoxa.Clans.Domain.Repositories;
+using eDoxa.Clans.TestHelper;
+using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http;
+using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
 
@@ -27,7 +25,7 @@ using Xunit;
 
 using Claim = System.Security.Claims.Claim;
 
-namespace eDoxa.Organizations.Clans.IntegrationTests.Controllers.ClanDivisionsController
+namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 {
     public sealed class ClanDivisionsControllerDeleteByIdAsyncTest : IntegrationTest
     {
