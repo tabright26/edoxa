@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Responses;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using IdentityServer4.AccessTokenValidation;

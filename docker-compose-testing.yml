@@ -1,8 +1,0 @@
-version: '3.7'
-
-services:
-  mssql.testing:
-    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
-
-  redis.testing:
-    image: redis:5.0.5

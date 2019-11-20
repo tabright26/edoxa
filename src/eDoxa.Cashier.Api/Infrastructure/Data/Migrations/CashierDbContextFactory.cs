@@ -8,6 +8,7 @@ using System.IO;
 using System.Reflection;
 
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
@@ -27,7 +28,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
         {
             return new CashierDbContext(
                 new DbContextOptionsBuilder<CashierDbContext>().UseSqlServer(
-                        Configuration.GetConnectionString(Seedwork.Infrastructure.ConnectionStrings.SqlServer),
+                        Configuration.GetSqlServerConnectionString(),
                         builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name)
                     )
                     .Options

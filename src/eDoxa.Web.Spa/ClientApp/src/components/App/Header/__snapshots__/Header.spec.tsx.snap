@@ -17,9 +17,9 @@ Array [
     full={
       Object {
         "alt": "eDoxa Logo",
-        "height": 25,
-        "src": "logo.svg",
-        "width": 89,
+        "height": 30,
+        "src": "logo.png",
+        "width": 85,
       }
     }
     href="/"
@@ -27,7 +27,7 @@ Array [
       Object {
         "alt": "eDoxa Logo",
         "height": 30,
-        "src": "sygnet.svg",
+        "src": "sygnet.png",
         "width": 30,
       }
     }
@@ -37,15 +37,15 @@ Array [
     <img
       alt="eDoxa Logo"
       className="navbar-brand-full"
-      height={25}
-      src="logo.svg"
-      width={89}
+      height={30}
+      src="logo.png"
+      width={85}
     />
     <img
       alt="eDoxa Logo"
       className="navbar-brand-minimized"
       height={30}
-      src="sygnet.svg"
+      src="sygnet.png"
       width={30}
     />
   </a>,
@@ -61,94 +61,24 @@ Array [
     />
   </button>,
   <ul
-    className="d-md-down-none navbar-nav"
-  >
-    <li
-      className="px-3 nav-item"
-    >
-      <a
-        className="nav-link nav-link"
-        href="/marketplace"
-        onClick={[Function]}
-      >
-        Marketplace
-      </a>
-    </li>
-    <li
-      className="px-3 nav-item"
-    >
-      <a
-        className="nav-link nav-link"
-        href="/news-feeds"
-        onClick={[Function]}
-      >
-        News Feeds
-      </a>
-    </li>
-  </ul>,
-  <ul
     className="ml-auto mr-3 navbar-nav"
   >
-    <li
-      className="dropdown nav-item"
-      onKeyDown={[Function]}
+    <a
+      aria-label={null}
+      className="mr-2 btn btn-link btn-sm"
+      href="/authentication/login"
+      onClick={[Function]}
     >
-      <a
-        aria-expanded={false}
-        aria-haspopup={true}
-        className="dropdown-toggle nav-link"
-        href="#"
-        onClick={[Function]}
-      >
-        <span
-          className="sr-only"
-        >
-          Toggle Dropdown
-        </span>
-      </a>
-      <div
-        aria-hidden={true}
-        className="dropdown-menu dropdown-menu-right"
-        role="menu"
-        style={
-          Object {
-            "right": 0,
-          }
-        }
-        tabIndex="-1"
-      >
-        <form
-          className="form-inline"
-        >
-          <a
-            aria-label={null}
-            className="m-3 btn btn-primary btn-sm btn-block"
-            href="/profile"
-            onClick={[Function]}
-          >
-            Profile
-          </a>
-        </form>
-        <button
-          className="border-top dropdown-item"
-          onClick={[Function]}
-          role="menuitem"
-          tabIndex="0"
-          type="button"
-        >
-          User Info
-        </button>
-        <button
-          className="dropdown-item"
-          onClick={[Function]}
-          role="menuitem"
-          tabIndex="0"
-          type="button"
-        >
-          Logout
-        </button>
-      </div>
-    </li>
+      Login
+    </a>
+    <a
+      aria-label={null}
+      className="btn btn-outline-primary btn-sm"
+      href="/authentication/register"
+      onClick={[Function]}
+    >
+      Register
+    </a>
   </ul>,
   <button
     className="d-md-down-none navbar-toggler"

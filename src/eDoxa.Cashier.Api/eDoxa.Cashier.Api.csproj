@@ -29,9 +29,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.0" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.0.4" />
@@ -40,6 +40,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.Requests\eDoxa.Cashier.Requests.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.Responses\eDoxa.Cashier.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>

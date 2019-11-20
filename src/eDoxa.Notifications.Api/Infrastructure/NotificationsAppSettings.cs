@@ -15,24 +15,15 @@ using IdentityServer4.Models;
 
 namespace eDoxa.Notifications.Api.Infrastructure
 {
-    public class NotificationsAppSettings : IHasAzureKeyVaultAppSettings, IHasApiResourceAppSettings
+    public class NotificationsAppSettings : IHasApiResourceAppSettings<AuthorityEndpointsOptions>
     {
-        [Required]
-        public ConnectionStrings ConnectionStrings { get; set; }
-
         [Required]
         public ApiResource ApiResource { get; set; }
 
         [Required]
-        public AuthorityOptions Authority { get; set; }
+        public string Authority { get; set; }
 
         [Required]
-        public AzureKeyVaultOptions AzureKeyVault { get; set; }
-    }
-
-    public class ConnectionStrings : IHasSqlServerConnectionString
-    {
-        [Required]
-        public string SqlServer { get; set; }
+        public AuthorityEndpointsOptions Endpoints { get; set; }
     }
 }

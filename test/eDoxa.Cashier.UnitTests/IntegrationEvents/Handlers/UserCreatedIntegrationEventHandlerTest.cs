@@ -6,10 +6,9 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Moq;
@@ -24,11 +23,11 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserCreatedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
+            var mockAccountService = new Mock<IAccountService>();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.Create(It.IsAny<IAccount>())).Verifiable();
+            mockAccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>())).Verifiable();
 
-            var handler = new UserCreatedIntegrationEventHandler(mockAccountRepository.Object);
+            var handler = new UserCreatedIntegrationEventHandler(mockAccountService.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent(new UserId(), "noreply@edoxa.gg", "CA");
 
@@ -36,7 +35,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockAccountRepository.Verify(accountRepository => accountRepository.Create(It.IsAny<IAccount>()), Times.Once);
+            mockAccountService.Verify(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()), Times.Once);
         }
     }
 }

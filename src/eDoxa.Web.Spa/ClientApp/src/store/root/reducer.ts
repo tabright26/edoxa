@@ -1,15 +1,15 @@
 import { combineReducers } from "redux";
 
 import { reducer as paymentReducer } from "store/root/payment/reducer";
-import { reducer as arenaReducer } from "store/root/arena/reducer";
 import { reducer as userReducer } from "store/root/user/reducer";
-import { reducer as organizationsReducer } from "store/root/organizations/reducer";
-import { reducer as doxatagsReducer } from "store/root/doxatags/reducer";
+import { reducer as organizationReducer } from "store/root/organization/reducer";
+import { reducer as gameReducer } from "store/root/game/reducer";
+import { reducer as challengeReducer } from "store/root/challenge/reducer";
 
 export const reducer = combineReducers({
   payment: paymentReducer,
-  arena: arenaReducer,
   user: userReducer,
-  doxatags: doxatagsReducer,
-  organizations: organizationsReducer
+  organization: organizationReducer,
+  game: gameReducer,
+  challenge: challengeReducer
 });

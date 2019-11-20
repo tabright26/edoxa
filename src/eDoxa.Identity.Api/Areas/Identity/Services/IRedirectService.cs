@@ -9,6 +9,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     {
         string RedirectToWebSpa(string url = "/");
 
-        string RedirectToIdentity(string url = "/");
+        string RedirectToAuthority(string url = "/");
     }
 }

@@ -5,7 +5,7 @@ import AddressBook from "./AddressBook";
 
 const ProfileDetails = () => (
   <Fragment>
-    <h5 className="text-uppercase">PROFILE DETAILS</h5>
+    <h5 className="text-uppercase my-4">PROFILE DETAILS</h5>
     <Informations className="my-4" />
     <Email className="my-4" />
     <AddressBook className="my-4" />

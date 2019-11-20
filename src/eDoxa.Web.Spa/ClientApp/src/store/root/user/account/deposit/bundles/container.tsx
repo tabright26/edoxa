@@ -3,10 +3,14 @@ import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserAccountDepositBundlesFor } from "./actions";
 
-export const withUserAccountDepositBundles = (HighOrderComponent: FunctionComponent<any>) => {
+export const withUserAccountDepositBundles = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      props.loadUserAccountDepositBundles();
+      if (!props.bundles.data.length) {
+        props.loadUserAccountDepositBundles();
+      }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;
@@ -20,12 +24,10 @@ export const withUserAccountDepositBundles = (HighOrderComponent: FunctionCompon
 
   const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     return {
-      loadUserAccountDepositBundles: () => dispatch(loadUserAccountDepositBundlesFor(ownProps.currency))
+      loadUserAccountDepositBundles: () =>
+        dispatch(loadUserAccountDepositBundlesFor(ownProps.currency))
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

@@ -1,5 +1,5 @@
 ﻿// Filename: FileStorage.cs
-// Date Created: 2019-09-30
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -16,6 +16,7 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 {
@@ -42,7 +43,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                         .Select(
                             record =>
                             {
-                                var payoutStrategy = new PayoutFactory().CreateInstance();
+                                var payoutStrategy = new ChallengePayoutFactory().CreateInstance();
 
                                 var payoutEntries = new PayoutEntries(record.PayoutEntries);
 
@@ -52,11 +53,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 
                                 var payout = payoutStrategy.GetPayout(payoutEntries, entryFee);
 
-                                var challenge = new Challenge(entryFee, payout);
-
-                                challenge.SetEntityId(ChallengeId.FromGuid(record.Id));
-
-                                return challenge;
+                                return new Challenge(ChallengeId.FromGuid(record.Id), entryFee, payout);
                             })
                         .Cast<IChallenge>()
                         .ToImmutableHashSet();

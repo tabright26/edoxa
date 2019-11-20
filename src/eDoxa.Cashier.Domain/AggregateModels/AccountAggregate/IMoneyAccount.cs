@@ -16,5 +16,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         DateTime? LastWithdraw { get; }
 
         ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles);
+
+        bool HaveSufficientMoney(Money money);
+
+        bool IsDepositAvailable();
+
+        bool IsWithdrawalAvailable();
     }
 }

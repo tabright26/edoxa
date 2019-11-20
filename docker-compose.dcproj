@@ -6,20 +6,16 @@
     <ProjectGuid>702d7d71-3cd1-436f-bd4e-6a488bb3cfc9</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://192.168.0.105:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>web.spa.proxy</DockerServiceName>
+    <DockerServiceName>web.spa</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose-tests.override.yml">
-      <DependentUpon>docker-compose-tests.yml</DependentUpon>
+    <None Include="docker-compose.prod.override.yml">
+      <DependentUpon>docker-compose.prod.yml</DependentUpon>
     </None>
-    <None Include="docker-compose-tests.yml" />
-    <None Include="docker-compose-testing.override.yml">
-      <DependentUpon>docker-compose-testing.yml</DependentUpon>
-    </None>
-    <None Include="docker-compose-testing.yml" />
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
+    <None Include="docker-compose.prod.yml" />
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
   </ItemGroup>

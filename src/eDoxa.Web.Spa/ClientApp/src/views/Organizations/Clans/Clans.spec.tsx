@@ -2,8 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Clans from "./Clans";
-import { ClansState } from "store/root/organizations/clans/types";
-import { DoxatagsState } from "store/root/doxaTags/types";
+import { ClansState } from "store/root/organization/clan/types";
 
 it("renders without crashing", () => {
   //Arrange
@@ -11,43 +10,24 @@ it("renders without crashing", () => {
     data: [
       {
         name: "Clan 1",
-        clanId: "1",
-        members: [{ userId: "123123123" }]
+        id: "1",
+        logo: "1231wqeqwe1212e12e12e12e1",
+        members: [],
+        ownerId: "123"
       },
       {
         name: "Clan 2",
-        clanId: "2",
-        members: [{ userId: "321321321" }]
+        id: "2",
+        logo: "1231wqeqwe1212e12e12e12e1",
+        members: [],
+        ownerId: "123456"
       },
       {
         name: "Clan 3",
-        clanId: "3",
-        members: [{ userId: "123456789" }]
-      }
-    ],
-    loading: false,
-    error: null
-  };
-
-  const doxatags: DoxatagsState = {
-    data: [
-      {
-        name: "User 1",
-        userId: "123123123",
-        code: 1111,
-        timestamp: 1111111
-      },
-      {
-        name: "User 2",
-        userId: "321321321",
-        code: 2222,
-        timestamp: 1111111
-      },
-      {
-        name: "User 3",
-        userId: "123456789",
-        code: 3333,
-        timestamp: 1111111
+        id: "3",
+        logo: "1231wqeqwe1212e12e12e12e1",
+        members: [],
+        ownerId: "789"
       }
     ],
     loading: false,
@@ -65,10 +45,9 @@ it("renders without crashing", () => {
           }
         },
         root: {
-          organizations: {
-            clans
-          },
-          doxatags
+          organization: {
+            clan: clans
+          }
         }
       };
     },

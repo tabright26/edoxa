@@ -10,8 +10,8 @@ using AutoMapper;
 
 using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Api.Areas.Stripe.Responses;
-using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

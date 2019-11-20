@@ -1,17 +1,15 @@
 ﻿// Filename: AccountTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.TestHelpers;
-using eDoxa.Cashier.TestHelpers.Fixtures;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
@@ -26,9 +24,19 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
         {
         }
 
-        public static IEnumerable<object[]> ValidCurrencyDataSets => Currency.GetEnumerations().Select(currency => new object[] {currency});
+        public static TheoryData<Currency> ValidCurrencyDataSets =>
+            new TheoryData<Currency>
+            {
+                Currency.Money,
+                Currency.Token
+            };
 
-        public static IEnumerable<object[]> InvalidCurrencyDataSets => new[] {new object[] {new Currency()}, new object[] {Currency.All}};
+        public static TheoryData<Currency> InvalidCurrencyDataSets =>
+            new TheoryData<Currency>
+            {
+                new Currency(),
+                Currency.All
+            };
 
         [Theory]
         [MemberData(nameof(ValidCurrencyDataSets))]

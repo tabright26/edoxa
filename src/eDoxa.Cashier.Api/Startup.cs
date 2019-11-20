@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,6 @@ using Autofac;
 using AutoMapper;
 
 using eDoxa.Cashier.Api.Areas.Accounts;
-using eDoxa.Cashier.Api.Extensions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
@@ -22,7 +21,10 @@ using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
@@ -45,6 +47,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
 
@@ -84,11 +87,17 @@ namespace eDoxa.Cashier.Api
 
             services.Configure<BundlesOptions>(Configuration.GetSection("Bundles"));
 
-            services.AddHealthChecks(AppSettings);
+            services.AddHealthChecks()
+                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddIdentityServer(AppSettings)
+                .AddAzureKeyVault(Configuration)
+                .AddSqlServer(Configuration)
+                .AddAzureServiceBusTopic(Configuration)
+                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, "paymentapi");
 
             services.AddDbContext<CashierDbContext>(
                 options => options.UseSqlServer(
-                    AppSettings.ConnectionStrings.SqlServer,
+                    Configuration.GetSqlServerConnectionString(),
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
@@ -134,27 +143,26 @@ namespace eDoxa.Cashier.Api
                     options =>
                     {
                         options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.Authority = AppSettings.Endpoints.IdentityUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-        }
 
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
-
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.PaymentApi);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "cashier"));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.CashierApi));
 
-            builder.RegisterModule<CashierApiModule>();
+            builder.RegisterModule<CashierModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
             subscriber.UseIntegrationEventSubscriptions();
 
@@ -182,11 +190,6 @@ namespace eDoxa.Cashier.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
-import { loadUserInformations, createUserInformations } from "store/root/user/informations/actions";
-import { CREATE_USER_INFORMATIONS_FAIL, UserInformationsActions } from "store/root/user/informations/types";
+import { loadUserInformations, createUserInformations } from "store/root/user/information/actions";
+import { CREATE_USER_INFORMATIONS_FAIL, UserInformationsActions } from "store/root/user/information/types";
 import Create from "./Create";
 import { throwSubmissionError } from "utils/form/types";
 

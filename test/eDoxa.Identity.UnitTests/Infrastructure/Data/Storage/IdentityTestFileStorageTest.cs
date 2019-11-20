@@ -6,8 +6,8 @@
 
 using System;
 
-using eDoxa.Identity.TestHelpers;
-using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 
 using FluentAssertions;
 
@@ -31,7 +31,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
             var userClaims = storage.GetUserClaims();
 
             // Assert
-            userClaims.Should().HaveCount(2);
+            userClaims.Should().HaveCount(3);
         }
 
         [Fact]

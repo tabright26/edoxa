@@ -26,7 +26,7 @@ namespace eDoxa.Seedwork.Infrastructure.Extensions
                     {
                         new RedisHost
                         {
-                            Host = configuration.GetConnectionString(ConnectionStrings.Redis)
+                            Host = configuration.GetRedisConnectionString()
                         }
                     }
                 });

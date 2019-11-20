@@ -49,61 +49,57 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.NotificationsApi;
 
-            yield return ApiResources.ArenaChallengesApi;
+            yield return ApiResources.ChallengesApi;
 
-            yield return ApiResources.ArenaGamesApi;
+            yield return ApiResources.GamesApi;
 
-            yield return ApiResources.ArenaGamesLeagueOfLegendsApi;
+            yield return ApiResources.ClansApi;
 
-            yield return ApiResources.OrganizationsClansApi;
+            yield return ApiResources.ChallengesWebAggregator;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
         {
-            yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.IdentityServer.IdentityUrl);
+            if (appSettings.Swagger.Enabled)
+            {
+                yield return ApiResources.IdentityApi.GetSwaggerClient(appSettings.Swagger.Endpoints.IdentityUrl);
 
-            yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.IdentityServer.PaymentUrl);
+                yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Swagger.Endpoints.PaymentUrl);
 
-            yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.IdentityServer.CashierUrl);
+                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl, Scopes.PaymentApi);
 
-            yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.IdentityServer.NotificationsUrl);
+                yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
 
-            yield return ApiResources.ArenaChallengesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaChallengesUrl);
+                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl, Scopes.CashierApi, Scopes.GamesApi);
 
-            var client = ApiResources.ArenaGamesApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesUrl);
+                yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
 
-            client.AllowedScopes.Add(Scopes.ArenaGamesLeagueOfLegendsApi);
+                yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl);
 
-            yield return client;
-
-            yield return ApiResources.ArenaGamesLeagueOfLegendsApi.GetSwaggerClient(appSettings.IdentityServer.ArenaGamesLeagueOfLegendsUrl);
-
-            yield return ApiResources.OrganizationsClansApi.GetSwaggerClient(appSettings.IdentityServer.OrganizationsClansUrl);
+                yield return ApiResources.ChallengesWebAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesWebAggregatorUrl, Scopes.CashierApi, Scopes.GamesApi, Scopes.ChallengesApi);
+            }
 
             yield return new Client
             {
-                ClientId = "edoxa.web.spa",
-                ClientName = "eDoxa Web Spa",
+                ClientId = "web.spa",
+                ClientName = "Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    appSettings.IdentityServer.Web.SpaUrl,
+                    appSettings.WebSpaUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    appSettings.IdentityServer.Web.SpaUrl,
-                    "http://localhost:5300",
-                    "http://127.0.0.1:5300"
+                    $"{appSettings.WebSpaUrl}/authentication/logout-callback",
+                    "http://localhost:5300/authentication/logout-callback",
+                    "http://127.0.0.1:5300/authentication/logout-callback"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.IdentityServer.Web.SpaUrl}/callback",
-                    "http://localhost:5300/callback",
-                    "http://127.0.0.1:5300/callback",
-                    $"{appSettings.IdentityServer.Web.SpaUrl}/silent_renew.html",
-                    "http://localhost:5300/silent_renew.html",
-                    "http://127.0.0.1:5300/silent_renew.html"
+                    $"{appSettings.WebSpaUrl}/authentication/login-callback",
+                    "http://localhost:5300/authentication/login-callback",
+                    "http://127.0.0.1:5300/authentication/login-callback"
                 },
                 AccessTokenType = AccessTokenType.Reference,
                 RequireConsent = false,
@@ -115,17 +111,17 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
-                    Scopes.Country,
-                    Scopes.Roles,
-                    Scopes.Permissions,
-                    Scopes.Games,
-                    Scopes.IdentityApi,
-                    Scopes.PaymentApi,
-                    Scopes.CashierApi,
-                    Scopes.ArenaChallengesApi,
-                    Scopes.ArenaGamesApi,
-                    Scopes.ArenaGamesLeagueOfLegendsApi,
-                    Scopes.OrganizationsClansApi
+                    Scopes.Country.Name,
+                    Scopes.Roles.Name,
+                    Scopes.Permissions.Name,
+                    Scopes.Games.Name,
+                    Scopes.IdentityApi.Name,
+                    Scopes.PaymentApi.Name,
+                    Scopes.CashierApi.Name,
+                    Scopes.ChallengesApi.Name,
+                    Scopes.GamesApi.Name,
+                    Scopes.ClansApi.Name,
+                    Scopes.ChallengesWebAggregator.Name
                 }
             };
         }

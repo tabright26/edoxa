@@ -26,14 +26,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IEnumerable<UserDoxatag>> FetchDoxatagsAsync();
 
-        Task<IdentityResult> AddGameAsync(User user, string gameName, string playerId);
-
-        Task<IdentityResult> RemoveGameAsync(User user, Game game);
-
-        Task<User?> FindByGameAsync(Game game, string playerId);
-
-        Task<IList<UserGame>> GetGamesAsync(User user);
-
         Task<IdentityResult> AddAddressAsync(
             User user,
             Country country,

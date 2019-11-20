@@ -2,52 +2,32 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Details from "./Details";
-import { ClansState } from "store/root/organizations/clans/types";
-import { DoxatagsState } from "store/root/doxaTags/types";
+import { ClansState } from "store/root/organization/clan/types";
 
 it("renders without crashing", () => {
   //Arrange
-  const clans: ClansState = {
+  const clan: ClansState = {
     data: [
       {
+        id: "1",
+        logo: "qqwenwqj123n12ijni1n2ieb12ie1i2ubeiu12bei1u2bei",
+        ownerId: "123214",
         name: "Clan 1",
-        clanId: "1",
-        members: [{ userId: "123123123" }]
+        members: []
       },
       {
+        id: "2",
+        logo: "qqwenwqj123n12ijni1n2ieb12ie1i2ubeiu12bei1u2bei",
+        ownerId: "123214",
         name: "Clan 2",
-        clanId: "2",
-        members: [{ userId: "321321321" }]
+        members: []
       },
       {
+        id: "3",
+        logo: "qqwenwqj123n12ijni1n2ieb12ie1i2ubeiu12bei1u2bei",
+        ownerId: "123214",
         name: "Clan 3",
-        clanId: "3",
-        members: [{ userId: "123456789" }]
-      }
-    ],
-    loading: false,
-    error: null
-  };
-
-  const doxatags: DoxatagsState = {
-    data: [
-      {
-        name: "User 1",
-        userId: "123123123",
-        code: 1111,
-        timestamp: 1111111
-      },
-      {
-        name: "User 2",
-        userId: "321321321",
-        code: 2222,
-        timestamp: 1111111
-      },
-      {
-        name: "User 3",
-        userId: "123456789",
-        code: 3333,
-        timestamp: 1111111
+        members: []
       }
     ],
     loading: false,
@@ -65,10 +45,9 @@ it("renders without crashing", () => {
           }
         },
         root: {
-          organizations: {
-            clans
-          },
-          doxatags
+          organization: {
+            clan
+          }
         }
       };
     },
@@ -80,7 +59,11 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Details match={{ params: "1", isExact: false, path: "", url: "" }} history={null} location={null} />
+        <Details
+          match={{ params: "1", isExact: false, path: "", url: "" }}
+          history={null}
+          location={null}
+        />
       </Provider>
     )
     .toJSON();

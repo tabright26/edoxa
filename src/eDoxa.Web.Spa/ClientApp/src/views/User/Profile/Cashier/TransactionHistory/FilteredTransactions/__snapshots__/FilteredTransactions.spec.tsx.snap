@@ -30,9 +30,6 @@ Array [
             <th>
               Amount
             </th>
-            <th>
-              Description
-            </th>
           </tr>
         </thead>
         <tbody />

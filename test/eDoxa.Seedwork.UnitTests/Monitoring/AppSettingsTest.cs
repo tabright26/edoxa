@@ -30,12 +30,16 @@ namespace eDoxa.Seedwork.UnitTests.Monitoring
         private sealed class MockAppSettings : IHasApiResourceAppSettings, IHasAzureKubernetesServiceAppSettings
         {
             [Required]
-            public AuthorityOptions Authority { get; set; }
+            public string Authority { get; set; }
 
             [Required]
             public ApiResource ApiResource { get; set; }
 
+            [Required]
             public bool AzureKubernetesServiceEnabled { get; set; }
+
+            [Required]
+            public AuthorityEndpointsOptions Endpoints { get; set; }
         }
 
         [Fact]

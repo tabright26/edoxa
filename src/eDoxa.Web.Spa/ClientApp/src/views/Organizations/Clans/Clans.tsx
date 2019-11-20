@@ -1,38 +1,54 @@
 import React, { useState, useEffect, Fragment, FunctionComponent } from "react";
 import { Row, Col, Card, CardHeader, Button } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
-import { withClans } from "store/root/organizations/clans/container";
-import ClanCard from "components/Organization/Clan/Card/Card";
-import CandidatureList from "components/Organization/Clan/Candidature/List/List";
-import InvitationList from "components/Organization/Clan/Invitation/List/List";
+import { withClans } from "store/root/organization/clan/container";
+import ClanCard from "components/Clan/Card/Card";
+import CandidatureList from "components/Clan/Candidature/List/List";
+import InvitationList from "components/Clan/Invitation/List/List";
 import ClanModal from "modals/Organization/Clan";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
 import Loading from "components/Shared/Loading";
 
-const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, userId, userClan, actions }) => {
+const ClansIndex: FunctionComponent<any> = ({
+  modals,
+  clans: { data, loading },
+  userId,
+  userClan,
+  actions
+}) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("");
 
   useEffect(() => {
-    var tempClans = data.filter(clan => (searchValue ? clan.name.includes(searchValue) : clan));
+    var tempClans = data.filter(clan =>
+      searchValue ? clan.name.includes(searchValue) : clan
+    );
     switch (sortValue) {
       case "byNameAsc":
-        tempClans = tempClans.sort((clan1, clan2) => (clan1.name > clan2.name ? 1 : -1));
+        tempClans = tempClans
+          .slice()
+          .sort((clan1, clan2) => (clan1.name > clan2.name ? 1 : -1));
         break;
 
       case "byNameDes":
-        tempClans = tempClans.sort((clan1, clan2) => (clan1.name < clan2.name ? 1 : -1));
+        tempClans = tempClans
+          .slice()
+          .sort((clan1, clan2) => (clan1.name < clan2.name ? 1 : -1));
         break;
 
       case "byMemberCountAsc":
-        tempClans = tempClans.sort((clan1, clan2) => clan1.members.length - clan2.members.length);
+        tempClans = tempClans
+          .slice()
+          .sort((clan1, clan2) => clan1.members.length - clan2.members.length);
         break;
 
       case "byMemberCountDsc":
-        tempClans = tempClans.sort((clan1, clan2) => clan2.members.length - clan1.members.length);
+        tempClans = tempClans
+          .slice()
+          .sort((clan1, clan2) => clan2.members.length - clan1.members.length);
         break;
 
       default:
@@ -68,7 +84,9 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, 
                 <Col>
                   Browse all clans
                   {userClan ? (
-                    <LinkContainer to={"/structures/clans/" + userClan.id + "/dashboard"}>
+                    <LinkContainer
+                      to={"/structures/clans/" + userClan.id + "/dashboard"}
+                    >
                       <Button color="primary">or visit yours</Button>
                     </LinkContainer>
                   ) : null}
@@ -77,7 +95,10 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, 
                   {data.length} clans and counting...
                   {!userClan ? (
                     <Fragment>
-                      <div className="btn-link" onClick={() => modals.showCreateClanModal(actions)}>
+                      <div
+                        className="btn-link"
+                        onClick={() => modals.showCreateClanModal(actions)}
+                      >
                         or create your own
                       </div>
                       <ClanModal.Create />
@@ -87,7 +108,11 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, 
                 <Col>
                   Search
                   <br />
-                  <input type="text" value={searchValue} onChange={handleSearchInputChanges} />
+                  <input
+                    type="text"
+                    value={searchValue}
+                    onChange={handleSearchInputChanges}
+                  />
                 </Col>
                 <Col>
                   Sorting
@@ -96,8 +121,12 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, 
                     <option value="noSort"></option>
                     <option value="byNameAsc">by name ascending</option>
                     <option value="byNameDes">by name descending</option>
-                    <option value="byMemberCountAsc">by member count ascending</option>
-                    <option value="byMemberCountDsc">by member count descending</option>
+                    <option value="byMemberCountAsc">
+                      by member count ascending
+                    </option>
+                    <option value="byMemberCountDsc">
+                      by member count descending
+                    </option>
                   </select>
                 </Col>
               </Row>
@@ -120,9 +149,6 @@ const ClansIndex: FunctionComponent<any> = ({ modals, clans: { data, loading }, 
   );
 };
 
-const enhance = compose<any, any>(
-  withClans,
-  withModals
-);
+const enhance = compose<any, any>(withClans, withModals);
 
 export default enhance(ClansIndex);

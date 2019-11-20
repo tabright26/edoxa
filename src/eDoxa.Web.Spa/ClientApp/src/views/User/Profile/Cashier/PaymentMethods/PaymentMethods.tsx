@@ -7,7 +7,7 @@ const BankAccount = React.lazy(() => import("./BankAccount"));
 
 const PaymentMethods = () => (
   <Fragment>
-    <h5 className="text-uppercase">PAYMENT METHODS</h5>
+    <h5 className="text-uppercase my-4">PAYMENT METHODS</h5>
     <Elements>
       <BankAccount className="my-4" />
     </Elements>

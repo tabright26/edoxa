@@ -1,5 +1,5 @@
 ﻿// Filename: Transaction.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
             ICurrency currency,
             TransactionDescription description,
             TransactionType type,
-            IDateTimeProvider provider
+            IDateTimeProvider provider,
+            TransactionMetadata? metadata = null
         )
         {
             Timestamp = provider.DateTime;
@@ -25,6 +26,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
             Description = description;
             Type = type;
             Status = TransactionStatus.Pending;
+            Metadata = metadata ?? new TransactionMetadata();
         }
 
         public DateTime Timestamp { get; }
@@ -34,6 +36,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
         public Price Price => new Price(Currency);
 
         public TransactionDescription Description { get; }
+
+        public TransactionMetadata Metadata { get; }
 
         public TransactionType Type { get; }
 
@@ -57,6 +61,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
             }
 
             Status = TransactionStatus.Failed;
+        }
+
+        public void MarkAsCanceled()
+        {
+            if (Status != TransactionStatus.Pending)
+            {
+                throw new InvalidOperationException();
+            }
+
+            Status = TransactionStatus.Canceled;
         }
     }
 

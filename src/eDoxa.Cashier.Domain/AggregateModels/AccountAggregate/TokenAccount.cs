@@ -9,7 +9,7 @@ using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Cashier.Domain.Validators;
+using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
@@ -49,14 +49,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Charge(Token amount)
+        public ITransaction Charge(TransactionId transactionId, Token amount, TransactionMetadata? metadata = null)
         {
             if (!this.CanCharge(amount))
             {
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenChargeTransaction(amount);
+            var transaction = new TokenChargeTransaction(amount, metadata);
+
+            transaction.SetEntityId(transactionId);
 
             _account.CreateTransaction(transaction);
 
@@ -81,14 +83,24 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
+        public bool IsDepositAvailable()
+        {
+            return !(LastDeposit.HasValue && LastDeposit.Value.AddDays(1) >= DateTime.UtcNow);
+        }
+
+        public bool HaveSufficientMoney(Token token)
+        {
+            return Balance.Available >= token;
+        }
+
         public bool CanDeposit()
         {
-            return new DepositTokenValidator().Validate(this).IsValid;
+            return this.IsDepositAvailable();
         }
 
         public bool CanCharge(Token token)
         {
-            return new ChargeTokenValidator(token).Validate(this).IsValid;
+            return this.HaveSufficientMoney(token);
         }
     }
 }

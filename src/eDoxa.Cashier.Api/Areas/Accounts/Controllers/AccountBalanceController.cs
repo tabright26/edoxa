@@ -6,10 +6,10 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Responses;
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Responses;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

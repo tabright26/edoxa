@@ -1,13 +1,9 @@
 import React, { useEffect, useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-
-import { withClans } from "store/root/organizations/clans/container";
-
-import CandidatureWidget from "components/Organization/Clan/Candidature/Widget/Widget";
-import ClanInfo from "components/Organization/Clan/Summary/Summary";
-
+import { withClans } from "store/root/organization/clan/container";
+import CandidatureWidget from "components/Clan/Candidature/Widget/Widget";
+import ClanInfo from "components/Clan/Summary/Summary";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
-
 import { compose } from "recompose";
 
 const ClanDetailsIndex: FunctionComponent<any> = ({
@@ -34,14 +30,23 @@ const ClanDetailsIndex: FunctionComponent<any> = ({
 
   return (
     <ErrorBoundary>
-      {clan && (
+      {clan ? (
         <Card>
           <CardHeader>
             <ClanInfo clan={clan} />
           </CardHeader>
-          <CardBody>{!userClan ? <CandidatureWidget type="user" id={userId} clanId={clanId} userId={userId} /> : null}</CardBody>
+          <CardBody>
+            {!userClan ? (
+              <CandidatureWidget
+                type="user"
+                id={userId}
+                clanId={clanId}
+                userId={userId}
+              />
+            ) : null}
+          </CardBody>
         </Card>
-      )}
+      ) : null}
     </ErrorBoundary>
   );
 };

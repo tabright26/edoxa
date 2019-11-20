@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.TestHelpers;
-using eDoxa.Identity.TestHelpers.Fixtures;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Testing.Extensions;
-using eDoxa.Seedwork.Testing.Http;
-using eDoxa.Seedwork.Testing.Http.Extensions;
+using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Http;
+using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 

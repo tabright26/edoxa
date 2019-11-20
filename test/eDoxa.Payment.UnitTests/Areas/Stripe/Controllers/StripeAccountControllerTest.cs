@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Areas.Stripe.Controllers;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.TestHelpers;
-using eDoxa.Payment.TestHelpers.Fixtures;
-using eDoxa.Payment.TestHelpers.Mocks;
+using eDoxa.Payment.TestHelper;
+using eDoxa.Payment.TestHelper.Fixtures;
+using eDoxa.Payment.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;

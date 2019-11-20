@@ -9,16 +9,20 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className={className}>
-      <Badge id="moneyPopover" color="dark" style={{ width: "100px" }}>
+      <Badge
+        id="moneyPopover"
+        className="bg-gray-900"
+        style={{ width: "100px" }}
+      >
         <Balance currency={MONEY} attribute="available" />
       </Badge>
       <Popover
         style={{
-          width: "175px"
+          width: "250px"
         }}
         placement="bottom"
         isOpen={open}
-        target='moneyPopover'
+        target="moneyPopover"
         trigger="hover"
         delay={{ show: 0, hide: 250 }}
         toggle={() => setOpen(!open)}
@@ -28,15 +32,23 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
           <dl className="row mb-0">
             <dt className="col-6">Available</dt>
             <dd className="col-6">
-              <Balance currency={MONEY} attribute="available" alignment="right" />
+              <Balance
+                currency={MONEY}
+                attribute="available"
+                alignment="right"
+              />
             </dd>
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
               <Balance currency={MONEY} attribute="pending" alignment="right" />
             </dd>
           </dl>
-          <DepositMoney currency={MONEY} />
-          <WithdrawalMoney currency={MONEY} />
+          {process.env.NODE_ENV !== "production" && (
+            <DepositMoney currency={MONEY} />
+          )}
+          {process.env.NODE_ENV !== "production" && (
+            <WithdrawalMoney currency={MONEY} />
+          )}
         </PopoverBody>
       </Popover>
     </div>

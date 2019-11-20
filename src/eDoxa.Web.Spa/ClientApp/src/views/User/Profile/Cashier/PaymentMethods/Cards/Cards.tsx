@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMethods/container";
+import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMethod/container";
 import { STRIPE_CARD_TYPE } from "types";
 import CardBrandIcon from "components/Payment/Stripe/PaymentMethod/Card/Icon";
 import CardExpiration from "components/Payment/Stripe/PaymentMethod/Card/Expiration";

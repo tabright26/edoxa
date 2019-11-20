@@ -6,8 +6,8 @@
 
 using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Domain.Strategies;
-using eDoxa.Cashier.TestHelpers;
-using eDoxa.Cashier.TestHelpers.Fixtures;
+using eDoxa.Cashier.TestHelper;
+using eDoxa.Cashier.TestHelper.Fixtures;
 
 using FluentAssertions;
 
@@ -27,7 +27,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Factories
         public void CreateInstance_WithoutPayoutStrategy_ShouldNotBeNull()
         {
             // Arrange
-            var payoutFactory = new PayoutFactory();
+            var payoutFactory = new ChallengePayoutFactory();
 
             // Act
             var payoutStrategy = payoutFactory.CreateInstance();
@@ -40,9 +40,9 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Factories
         public void CreateInstance_WithPayoutStrategy_ShouldNotBeNull()
         {
             // Arrange
-            var mockPayoutStrategy = new Mock<IPayoutStrategy>();
+            var mockPayoutStrategy = new Mock<IChallengePayoutStrategy>();
 
-            var payoutFactory = new PayoutFactory(mockPayoutStrategy.Object);
+            var payoutFactory = new ChallengePayoutFactory(mockPayoutStrategy.Object);
 
             // Act
             var payoutStrategy = payoutFactory.CreateInstance();

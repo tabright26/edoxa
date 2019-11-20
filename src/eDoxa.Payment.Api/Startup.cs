@@ -14,7 +14,6 @@ using Autofac;
 using AutoMapper;
 
 using eDoxa.Payment.Api.Areas.Stripe.Extensions;
-using eDoxa.Payment.Api.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
@@ -22,6 +21,8 @@ using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
@@ -46,6 +47,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
 
@@ -85,11 +87,16 @@ namespace eDoxa.Payment.Api
 
             services.AddAppSettings<PaymentAppSettings>(Configuration);
 
-            services.AddHealthChecks(AppSettings);
+            services.AddHealthChecks()
+                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddIdentityServer(AppSettings)
+                .AddAzureKeyVault(Configuration)
+                .AddSqlServer(Configuration)
+                .AddAzureServiceBusTopic(Configuration);
 
             services.AddDbContext<PaymentDbContext>(
                 options => options.UseSqlServer(
-                    AppSettings.ConnectionStrings.SqlServer,
+                    Configuration.GetSqlServerConnectionString()!,
                     sqlServerOptions =>
                     {
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
@@ -135,27 +142,22 @@ namespace eDoxa.Payment.Api
                     options =>
                     {
                         options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Authority.PrivateUrl;
+                        options.Authority = AppSettings.Endpoints.IdentityUrl;
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-        }
-
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
-
+            
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetConnectionString("AzureServiceBus"), "payment"));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.PaymentApi));
 
-            builder.RegisterModule<PaymentApiModule>();
+            builder.RegisterModule<PaymentModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
             subscriber.UseIntegrationEventSubscriptions();
 
@@ -185,11 +187,6 @@ namespace eDoxa.Payment.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

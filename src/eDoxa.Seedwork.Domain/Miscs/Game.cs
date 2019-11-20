@@ -32,5 +32,7 @@ namespace eDoxa.Seedwork.Domain.Miscs
         }
 
         public string DisplayName { get; }
+
+        public string NormalizedName => Name.ToLowerInvariant();
     }
 }

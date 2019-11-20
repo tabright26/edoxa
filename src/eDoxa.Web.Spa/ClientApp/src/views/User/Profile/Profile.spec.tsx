@@ -4,12 +4,12 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Profile from "./Profile";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
-import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethods/types";
+import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethod/types";
 import { UserAccountTransactionsState } from "store/root/user/account/transactions/types";
-import { UserGamesState } from "store/root/user/games/types";
+import { GameAccountCredentialState } from "store/root/user/game/credential/types";
 import { UserAddressBookState } from "store/root/user/addressBook/types";
 import { UserEmailState } from "store/root/user/email/types";
-import { UserInformationsState } from "store/root/user/informations/types";
+import { UserInformationsState } from "store/root/user/information/types";
 import { UserPhoneState } from "store/root/user/phone/types";
 
 it("renders without crashing", () => {
@@ -27,7 +27,11 @@ it("renders without crashing", () => {
           customer: "testCustomer",
           card: {
             brand: "visa",
-            checks: { address_line1_check: "pass", address_postal_code_check: "pass", cvc_check: "pass" },
+            checks: {
+              address_line1_check: "pass",
+              address_postal_code_check: "pass",
+              cvc_check: "pass"
+            },
             country: "CA",
             exp_month: 11,
             exp_year: 22,
@@ -109,7 +113,7 @@ it("renders without crashing", () => {
     error: null
   };
 
-  const games: UserGamesState = {
+  const games: GameAccountCredentialState = {
     data: [{ name: "League of legends", id: "accountID" }],
     loading: false,
     error: null
@@ -141,7 +145,12 @@ it("renders without crashing", () => {
   };
 
   const informations: UserInformationsState = {
-    data: { firstName: "Gabriel", lastName: "Roy", gender: "Male", dob: { year: 1995, month: 8, day: 4 } },
+    data: {
+      firstName: "Gabriel",
+      lastName: "Roy",
+      gender: "Male",
+      dob: { year: 1995, month: 8, day: 4 }
+    },
     loading: false,
     error: null
   };
@@ -182,7 +191,11 @@ it("renders without crashing", () => {
     .create(
       <Provider store={store}>
         <MemoryRouter>
-          <Profile match={{ params: "userId", isExact: false, path: "", url: "" }} history={null} location={null} />
+          <Profile
+            match={{ params: "userId", isExact: false, path: "", url: "" }}
+            history={null}
+            location={null}
+          />
         </MemoryRouter>
       </Provider>
     )

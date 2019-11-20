@@ -21,12 +21,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         public string RedirectToWebSpa(string url = "/")
         {
-            return $"{AppSettings.IdentityServer.Web.SpaUrl}{url}";
+            return $"{AppSettings.WebSpaUrl}{url}";
         }
 
-        public string RedirectToIdentity(string url = "/")
+        public string RedirectToAuthority(string url = "/")
         {
-            return $"{AppSettings.IdentityServer.IdentityUrl}{url}";
+            return $"{AppSettings.Authority}{url}";
         }
     }
 }

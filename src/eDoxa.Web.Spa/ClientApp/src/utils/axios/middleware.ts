@@ -1,19 +1,20 @@
 import axios from "axios";
 import axiosMiddleware from "redux-axios-middleware";
+import authorizeService from "utils/oidc/AuthorizeService";
+import { REACT_APP_CHALLENGES_WEB_GATEWAY_URL } from "keys";
 
 export const middleware = axiosMiddleware(
   axios.create({
-    baseURL: process.env.REACT_APP_WEB_GATEWAY,
+    baseURL: REACT_APP_CHALLENGES_WEB_GATEWAY_URL,
     responseType: "json"
   }),
   {
     interceptors: {
       request: [
-        ({ getState }, config) => {
-          const state = getState();
-          const { user } = state.oidc;
-          if (user) {
-            config.headers["Authorization"] = `Bearer ${user.access_token}`;
+        async ({ getState }, config) => {
+          var accessToken = await authorizeService.getAccessToken();
+          if (accessToken) {
+            config.headers["Authorization"] = `Bearer ${accessToken}`;
           }
           return config;
         }

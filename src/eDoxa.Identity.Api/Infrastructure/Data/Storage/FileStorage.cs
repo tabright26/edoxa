@@ -14,6 +14,7 @@ using System.Reflection;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Security;
 
 using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
 
@@ -149,6 +150,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                         Timestamp = DateTime.UtcNow
                                     }
                                 },
+                                SecurityStamp = Guid.NewGuid().ToString("N"),
                                 Informations = new UserInformations(
                                     record.FirstName,
                                     record.LastName,
@@ -192,7 +194,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         public static IImmutableSet<Role> Roles => LazyRoles.Value;
 
         public static IImmutableSet<RoleClaim> RoleClaims => LazyRoleClaims.Value;
-
+        
         public IImmutableSet<RoleClaim> GetRoleClaims()
         {
             return RoleClaims;
