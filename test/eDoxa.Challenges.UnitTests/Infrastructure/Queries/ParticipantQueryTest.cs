@@ -24,7 +24,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 {
     public sealed class ParticipantQueryTest : UnitTest
     {
-        public ParticipantQueryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ParticipantQueryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

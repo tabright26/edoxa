@@ -16,7 +16,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Validators
     {
         public CandidaturePostRequestValidator()
         {
-            this.EntityId(request => request.UserId).WithMessage(InvitationErrorDescriber.UserIdRequired());
+            this.EntityId(request => request.UserId).WithMessage(CandidatureErrorDescriber.UserIdRequired());
 
             this.EntityId(request => request.ClanId).WithMessage(CandidatureErrorDescriber.ClanIdRequired());
         }

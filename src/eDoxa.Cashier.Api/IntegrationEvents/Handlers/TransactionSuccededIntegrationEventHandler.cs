@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
             if (transaction != null)
             {
-                await _transactionService.MaskTransactionAsSuccededAsync(transaction);
+                await _transactionService.MarkTransactionAsSuccededAsync(transaction);
             }
         }
     }

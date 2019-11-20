@@ -1,6 +1,6 @@
 ﻿// Filename: ClanDeletedDomainEventHandler.cs
 // Date Created: 2019-10-01
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -17,7 +17,6 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Clans.Api.Areas.Clans.DomainEvents
 {
-    // GABRIEL: THIS CLASS UNIT TEST NEED TO BE REFACTORED.
     public sealed class ClanDeletedDomainEventHandler : IDomainEventHandler<ClanDeletedDomainEvent>
     {
         private readonly IClanService _clanService;

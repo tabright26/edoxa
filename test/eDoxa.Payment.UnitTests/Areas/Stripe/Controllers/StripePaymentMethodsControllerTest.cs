@@ -1,6 +1,6 @@
 ﻿// Filename: StripePaymentMethodsControllerTest.cs
 // Date Created: 2019-10-15
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -132,6 +132,50 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
+            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
+
+            mockPaymentMethodService.Verify(
+                paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAsync_ShouldBeOfTypeNoContentResult()
+        {
+            // Arrange
+            var mockPaymentMethodService = new Mock<IStripePaymentMethodService>();
+            var mockCustomerService = new Mock<IStripeCustomerService>();
+            var mockReferenceService = new Mock<IStripeReferenceService>();
+
+            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+
+            mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerId").Verifiable();
+
+            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(
+                    new StripeList<PaymentMethod>
+                    {
+                        Data = new List<PaymentMethod>
+                        {
+                        }
+                    })
+                .Verifiable();
+
+            var paymentMethodController = new StripePaymentMethodsController(
+                mockPaymentMethodService.Object,
+                mockCustomerService.Object,
+                mockReferenceService.Object,
+                TestMapper);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+            paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await paymentMethodController.GetAsync("card");
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
             mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
 

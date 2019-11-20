@@ -1,6 +1,6 @@
 ﻿// Filename: CandidaturePostRequestValidatorTest.cs
 // Date Created: 2019-10-02
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -24,6 +24,18 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
         {
         }
 
+        public static TheoryData<UserId> ValidUserId =>
+            new TheoryData<UserId>
+            {
+                new UserId()
+            };
+
+        public static TheoryData<UserId, string> InvalidUserIds =>
+            new TheoryData<UserId, string>
+            {
+                {null, CandidatureErrorDescriber.UserIdRequired()}
+            };
+
         public static TheoryData<ClanId> ValidClanId =>
             new TheoryData<ClanId>
             {
@@ -35,6 +47,30 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
             {
                 {null, CandidatureErrorDescriber.ClanIdRequired()}
             };
+
+        [Theory]
+        [MemberData(nameof(ValidUserId))]
+        public void Validate_WhenUserIdIsValid_ShouldNotHaveValidationErrorFor(UserId userId)
+        {
+            // Arrange
+            var validator = new CandidaturePostRequestValidator();
+
+            // Act - Assert
+            validator.ShouldNotHaveValidationErrorFor(request => request.UserId, userId);
+        }
+
+        [Theory]
+        [MemberData(nameof(InvalidUserIds))]
+        public void Validate_WhenUserIdIsInvalid_ShouldHaveValidationErrorFor(UserId userId, string errorMessage)
+        {
+            // Arrange
+            var validator = new CandidaturePostRequestValidator();
+
+            // Act - Assert
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.UserId, userId);
+
+            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+        }
 
         [Theory]
         [MemberData(nameof(ValidClanId))]

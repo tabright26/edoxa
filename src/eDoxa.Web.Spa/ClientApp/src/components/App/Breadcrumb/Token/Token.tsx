@@ -17,7 +17,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
       </Badge>
       <Popover
         style={{
-          width: "175px"
+          width: "250px"
         }}
         placement="bottom"
         isOpen={open}

@@ -21,19 +21,19 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
     public sealed class LeagueOfLegendsAuthenticationValidatorAdapter : AuthenticationValidatorAdapter<LeagueOfLegendsGameAuthentication>
     {
         private readonly ILeagueOfLegendsService _leagueOfLegendsService;
-        private readonly IAuthenticationRepository _authenticationRepository;
+        private readonly IGameAuthenticationRepository _gameAuthenticationRepository;
 
-        public LeagueOfLegendsAuthenticationValidatorAdapter(ILeagueOfLegendsService leagueOfLegendsService, IAuthenticationRepository authenticationRepository)
+        public LeagueOfLegendsAuthenticationValidatorAdapter(ILeagueOfLegendsService leagueOfLegendsService, IGameAuthenticationRepository gameAuthenticationRepository)
         {
             _leagueOfLegendsService = leagueOfLegendsService;
-            _authenticationRepository = authenticationRepository;
+            _gameAuthenticationRepository = gameAuthenticationRepository;
         }
 
         public override Game Game => Game.LeagueOfLegends;
 
         public override async Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
         {
-            await _authenticationRepository.RemoveAuthenticationAsync(userId, Game);
+            await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
 
             var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByAccountIdAsync(Region.Na, gameAuthentication.PlayerId);
             

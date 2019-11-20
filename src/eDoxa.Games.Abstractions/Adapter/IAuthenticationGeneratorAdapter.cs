@@ -12,13 +12,13 @@ using FluentValidation.Results;
 
 namespace eDoxa.Games.Abstractions.Adapter
 {
-    public interface IAuthenticationGeneratorAdapter<in TRequest> : IAuthFactorGeneratorAdapter
+    public interface IAuthenticationGeneratorAdapter<in TRequest> : IAuthenticationGeneratorAdapter
     where TRequest : class
     {
         Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
     }
 
-    public interface IAuthFactorGeneratorAdapter
+    public interface IAuthenticationGeneratorAdapter
     {
         Game Game { get; }
 

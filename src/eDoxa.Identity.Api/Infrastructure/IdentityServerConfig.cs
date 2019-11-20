@@ -91,18 +91,15 @@ namespace eDoxa.Identity.Api.Infrastructure
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    appSettings.WebSpaUrl,
-                    "http://localhost:5300",
-                    "http://127.0.0.1:5300"
+                    $"{appSettings.WebSpaUrl}/authentication/logout-callback",
+                    "http://localhost:5300/authentication/logout-callback",
+                    "http://127.0.0.1:5300/authentication/logout-callback"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.WebSpaUrl}/callback",
-                    "http://localhost:5300/callback",
-                    "http://127.0.0.1:5300/callback",
-                    $"{appSettings.WebSpaUrl}/silent_renew.html",
-                    "http://localhost:5300/silent_renew.html",
-                    "http://127.0.0.1:5300/silent_renew.html"
+                    $"{appSettings.WebSpaUrl}/authentication/login-callback",
+                    "http://localhost:5300/authentication/login-callback",
+                    "http://127.0.0.1:5300/authentication/login-callback"
                 },
                 AccessTokenType = AccessTokenType.Reference,
                 RequireConsent = false,

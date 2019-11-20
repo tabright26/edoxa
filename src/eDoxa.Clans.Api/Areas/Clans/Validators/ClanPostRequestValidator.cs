@@ -25,10 +25,6 @@ namespace eDoxa.Clans.Api.Areas.Clans.Validators
                 .Length(3, 20).WithMessage(ClanErrorDescriber.NameLength())
                 .Matches(new Regex("^[a-zA-Z0-9- .,]{3,20}$"))
                 .WithMessage(ClanErrorDescriber.NameInvalid());
-
-            this.RuleFor(request => request.Summary)
-                .Matches(new Regex("^[a-zA-Z- .,]{10,100}$"))
-                .WithMessage(ClanErrorDescriber.SummaryInvalid());
         }
     }
 }

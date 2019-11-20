@@ -18,9 +18,7 @@ export const withUserAccountBalance = (
 ) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
-      if (!props.balance) {
-        props.loadUserAccountBalance();
-      }
+      props.loadUserAccountBalance();
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <HighOrderComponent {...props} />;

@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Games.LeagueOfLegends\eDoxa.Games.LeagueOfLegends.csproj" />
     <ProjectReference Include="..\eDoxa.Challenges.TestHelper\eDoxa.Challenges.TestHelper.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.TestHelper\eDoxa.Seedwork.TestHelper.csproj" />
   </ItemGroup>

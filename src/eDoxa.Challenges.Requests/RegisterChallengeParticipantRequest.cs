@@ -1,6 +1,6 @@
 ﻿// Filename: RegisterChallengeParticipantRequest.cs
 // Date Created: 2019-11-08
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -16,6 +16,13 @@ namespace eDoxa.Challenges.Requests
         {
             ParticipantId = participantId;
         }
+
+#nullable disable
+        public RegisterChallengeParticipantRequest()
+        {
+            // Required by Fluent Validation.
+        }
+#nullable restore
 
         [DataMember(Name = "participantId")]
         public Guid ParticipantId { get; private set; }

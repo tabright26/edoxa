@@ -21,7 +21,7 @@ namespace eDoxa.Games.LeagueOfLegends
             builder.RegisterType<LeagueOfLegendsService>().As<ILeagueOfLegendsService>().SingleInstance();
 
             // Adapters
-            builder.RegisterType<LeagueOfLegendsAuthenticationGeneratorAdapter>().As<IAuthFactorGeneratorAdapter>().InstancePerDependency();
+            builder.RegisterType<LeagueOfLegendsAuthenticationGeneratorAdapter>().As<IAuthenticationGeneratorAdapter>().InstancePerDependency();
             builder.RegisterType<LeagueOfLegendsAuthenticationValidatorAdapter>().As<IAuthenticationValidatorAdapter>().InstancePerDependency();
             builder.RegisterType<LeagueOfLegendsChallengeScoringAdapter>().As<IChallengeScoringAdapter>().InstancePerDependency();
             builder.RegisterType<LeagueOfLegendsChallengeMatchesAdapter>().As<IChallengeMatchesAdapter>().InstancePerDependency();

@@ -16,7 +16,6 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 {

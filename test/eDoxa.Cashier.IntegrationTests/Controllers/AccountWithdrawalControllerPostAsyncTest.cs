@@ -1,11 +1,12 @@
 ﻿// Filename: AccountWithdrawalControllerPostAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
@@ -25,8 +26,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
@@ -52,9 +51,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestApi.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -78,9 +75,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
-            var factory = TestApi.WithClaims(
-                new Claim(JwtClaimTypes.Subject, new UserId().ToString()),
-                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -103,9 +98,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             account.CreateTransaction(transaction);
 
-            var factory = TestApi.WithClaims(
-                new Claim(JwtClaimTypes.Subject, account.UserId.ToString()),
-                new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

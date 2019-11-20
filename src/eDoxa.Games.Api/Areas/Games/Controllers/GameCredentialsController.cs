@@ -30,12 +30,12 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
     [ApiExplorerSettings(GroupName = "Credential")]
     public sealed class GameCredentialsController : ControllerBase
     {
-        private readonly ICredentialService _credentialService;
+        private readonly IGameCredentialService _gameCredentialService;
         private readonly IMapper _mapper;
 
-        public GameCredentialsController(ICredentialService credentialService, IMapper mapper)
+        public GameCredentialsController(IGameCredentialService gameCredentialService, IMapper mapper)
         {
-            _credentialService = credentialService;
+            _gameCredentialService = gameCredentialService;
             _mapper = mapper;
         }
 
@@ -48,14 +48,14 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteAsync(Game game)
         {
-            var credential = await _credentialService.FindCredentialAsync(HttpContext.GetUserId(), game);
+            var credential = await _gameCredentialService.FindCredentialAsync(HttpContext.GetUserId(), game);
 
             if (credential == null)
             {
                 return this.NotFound($"The user's {game} credential was not found.");
             }
 
-            var result = await _credentialService.UnlinkCredentialAsync(credential);
+            var result = await _gameCredentialService.UnlinkCredentialAsync(credential);
 
             if (result.IsValid)
             {

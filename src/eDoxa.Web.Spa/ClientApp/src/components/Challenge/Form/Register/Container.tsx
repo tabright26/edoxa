@@ -10,7 +10,7 @@ import {
 } from "store/root/challenge/types";
 import Register from "./Register";
 import { ChallengeId } from "types";
-import { RouteChildrenProps, withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { toastr } from "react-redux-toastr";
 import { compose } from "recompose";
 
@@ -18,7 +18,7 @@ interface Params {
   readonly challengeId?: ChallengeId;
 }
 
-interface OwnProps extends RouteChildrenProps<Params> {}
+interface OwnProps extends RouteComponentProps<Params> {}
 
 const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
   return {

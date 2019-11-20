@@ -17,10 +17,5 @@
             return "Name invalid. Only letters, numbers and hyphens allowed.";
         }
 
-        public static string SummaryInvalid()
-        {
-            return "Secondary address invalid. Must not have special characters";
-        }
-
     }
 }

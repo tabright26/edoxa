@@ -7,6 +7,7 @@ FROM node:12.2.0-alpine as react-build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 COPY /src/eDoxa.Web.Spa/ClientApp/package.json /app/package.json
+COPY /src/eDoxa.Web.Spa/ClientApp/package-lock.json /app/package-lock.json
 RUN npm install npm -g --silent
 RUN npm install react-scripts -g --silent
 RUN npm install typesync -g --silent
@@ -27,6 +28,14 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
 COPY --from=react-build /app/build /app/ClientApp/build
+COPY /src/eDoxa.Web.Spa/ClientApp/env.sh .
+COPY /src/eDoxa.Web.Spa/ClientApp/.env .
+# Add bash
+RUN apt-get install bash
+# Make our shell script executable
+RUN chmod +x env.sh
+RUN ./env.sh
+RUN mv env.sh /app/ClientApp/build
 ENTRYPOINT ["dotnet", "eDoxa.Web.Spa.dll"]
 
 EXPOSE 80

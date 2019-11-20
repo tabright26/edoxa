@@ -4,8 +4,6 @@ import { UPDATE_STRIPE_BANKACCOUNT_FAIL, StripeBankAccountActions } from "store/
 import Update from "./Update";
 import { compose } from "recompose";
 import { injectStripe } from "react-stripe-elements";
-import { withtUserProfile } from "store/root/user/container";
-import { COUNTRY_CLAIM_TYPE } from "utils/oidc/types";
 import { throwSubmissionError } from "utils/form/types";
 
 const mapDispatchToProps = (dispatch: any, ownProps: any) => {
@@ -38,7 +36,6 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
 
 const enhance = compose<any, any>(
   injectStripe,
-  withtUserProfile(COUNTRY_CLAIM_TYPE),
   connect(
     null,
     mapDispatchToProps

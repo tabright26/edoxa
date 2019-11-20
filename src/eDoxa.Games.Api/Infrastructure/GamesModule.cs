@@ -21,17 +21,17 @@ namespace eDoxa.Games.Api.Infrastructure
         protected override void Load(ContainerBuilder builder)
         {
             // Repositories
-            builder.RegisterType<CredentialRepository>().As<ICredentialRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<AuthenticationRepository>().As<IAuthenticationRepository>().SingleInstance();
+            builder.RegisterType<GameCredentialRepository>().As<IGameCredentialRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<GameAuthenticationRepository>().As<IGameAuthenticationRepository>().SingleInstance();
 
             // Services
-            builder.RegisterType<CredentialService>().As<ICredentialService>().InstancePerLifetimeScope();
-            builder.RegisterType<AuthenticationService>().As<IAuthenticationService>().InstancePerLifetimeScope();
+            builder.RegisterType<GameCredentialService>().As<IGameCredentialService>().InstancePerLifetimeScope();
+            builder.RegisterType<GameAuthenticationService>().As<IGameAuthenticationService>().InstancePerLifetimeScope();
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
 
             // Factories
-            builder.RegisterType<AuthenticationGeneratorFactory>().As<IAuthenticationGeneratorFactory>().SingleInstance();
-            builder.RegisterType<AuthenticationValidatorFactory>().As<IAuthenticationValidatorFactory>().SingleInstance();
+            builder.RegisterType<GameGameAuthenticationGeneratorFactory>().As<IGameAuthenticationGeneratorFactory>().SingleInstance();
+            builder.RegisterType<GameGameAuthenticationValidatorFactory>().As<IGameAuthenticationValidatorFactory>().SingleInstance();
             builder.RegisterType<ChallengeScoringFactory>().As<IChallengeScoringFactory>().SingleInstance();
             builder.RegisterType<ChallengeMatchesFactory>().As<IChallengeMatchesFactory>().SingleInstance();
 

@@ -12,15 +12,18 @@ using Xunit;
 
 namespace eDoxa.Challenges.TestHelper
 {
-    public abstract class UnitTest : IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>
+    public abstract class UnitTest : IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>,  IClassFixture<TestValidator>
     {
-        protected UnitTest(TestDataFixture testData, TestMapperFixture testMapper)
+        protected UnitTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator)
         {
             TestData = testData;
+            TestValidator = testValidator;
             TestMapper = testMapper.Instance;
         }
 
         protected TestDataFixture TestData { get; }
+
+        public TestValidator TestValidator { get; }
 
         protected IMapper TestMapper { get; }
     }

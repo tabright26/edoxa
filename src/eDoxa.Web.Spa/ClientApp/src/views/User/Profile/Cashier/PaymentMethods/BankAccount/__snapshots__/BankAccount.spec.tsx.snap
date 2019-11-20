@@ -52,23 +52,13 @@ exports[`renders without crashing 1`] = `
   <div
     className="card-body"
   >
-    <dl
-      className="row mb-0"
+    <div
+      className="animated fadeIn pt-1 text-center"
     >
-      <dd
-        className="col-sm-3 text-muted mb-0"
-      >
-        Bank account
-      </dd>
-      <dd
-        className="col-sm-5 mb-0"
-      >
-        <span>
-          XXXXX-
-          4242
-        </span>
-      </dd>
-    </dl>
+      <div
+        className="sk-spinner sk-spinner-pulse"
+      />
+    </div>
   </div>
 </div>
 `;

@@ -205,7 +205,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                 {
                     var accountRepository = scope.GetRequiredService<ITransactionService>();
                     var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
-                    await accountRepository.MaskTransactionAsSuccededAsync(transactionQuery);
+                    await accountRepository.MarkTransactionAsSuccededAsync(transactionQuery);
                     transactionQuery.Status.Should().Be(TransactionStatus.Succeded);
                 });
 

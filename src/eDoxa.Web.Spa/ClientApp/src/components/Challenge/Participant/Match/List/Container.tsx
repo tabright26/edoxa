@@ -2,7 +2,7 @@ import { connect, MapStateToProps } from "react-redux";
 import List from "./List";
 import { RootState } from "store/types";
 import { ChallengeId, ParticipantId, ChallengeParticipantMatch } from "types";
-import { RouteChildrenProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
 import { compose } from "recompose";
 import { withRouter } from "react-router-dom";
 
@@ -10,7 +10,7 @@ interface Params {
   readonly challengeId: ChallengeId;
 }
 
-interface OwnProps extends RouteChildrenProps<Params> {
+interface OwnProps extends RouteComponentProps<Params> {
   readonly participantId: ParticipantId;
 }
 

@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Details from "./Details";
 import { ChallengesState } from "store/root/challenge/types";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter } from "react-router-dom";
 
 it("renders without crashing", () => {
   //Arrange

@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class MatchTest : UnitTest
     {
-        public MatchTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public MatchTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

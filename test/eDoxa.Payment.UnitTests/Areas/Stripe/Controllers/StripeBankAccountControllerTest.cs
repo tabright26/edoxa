@@ -1,6 +1,6 @@
 ﻿// Filename: StripeBankAccountControllerTest.cs
 // Date Created: 2019-10-15
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -87,6 +87,39 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
             mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAsync_WhenBankAccountDoesNotExist_ShouldBeOfTypeNotFoundObjectResult()
+        {
+            // Arrange
+            var mockExternalService = new Mock<IStripeExternalAccountService>();
+            var mockAccountService = new Mock<IStripeAccountService>();
+            var mockReferenceService = new Mock<IStripeReferenceService>();
+
+            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+
+            mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
+
+            mockExternalService.Setup(externalService => externalService.FindBankAccountAsync(It.IsAny<string>())).Verifiable();
+
+            var bankAccountController = new StripeBankAccountController(
+                mockExternalService.Object,
+                mockAccountService.Object,
+                mockReferenceService.Object,
+                TestMapper);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await bankAccountController.GetAsync();
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
+            mockExternalService.Verify(externalService => externalService.FindBankAccountAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
