@@ -3,7 +3,7 @@
 exports[`renders without crashing 1`] = `
 Array [
   <h5
-    className="text-uppercase"
+    className="text-uppercase my-4"
   >
     PROFILE SECURITY
   </h5>,

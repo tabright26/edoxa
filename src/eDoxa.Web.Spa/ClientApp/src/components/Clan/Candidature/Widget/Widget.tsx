@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toastr } from "react-redux-toastr";
 import { Button } from "reactstrap";
 
-import { withCandidatures } from "store/root/organizations/candidatures/container";
+import { withCandidatures } from "store/root/organization/candidature/container";
 
 //TODO. LE TRUC C<EST QUE ON FAIT UN RELOAD POUR CHAQUE WIDGE TDANS LA PAGE
 

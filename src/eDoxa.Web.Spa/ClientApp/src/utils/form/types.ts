@@ -19,8 +19,11 @@ export function throwSubmissionError(error: AxiosError<AxiosErrorData>): void {
         break;
       }
       case 415:
+      case 500:
       default: {
-        throw new SubmissionError<AxiosErrorData>({ _error: "Something went wrong. You should try again later ..." });
+        throw new SubmissionError<AxiosErrorData>({
+          _error: "Something went wrong. You should try again later ..."
+        });
       }
     }
   }

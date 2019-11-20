@@ -74,7 +74,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
                 {
                     var challengeRepository = scope.GetRequiredService<IChallengeRepository>();
                     challengeRepository.Create(challenges);
-                    await challengeRepository.CommitAsync();
+                    await challengeRepository.CommitAsync(false);
                 });
 
             // Act

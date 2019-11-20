@@ -35,31 +35,31 @@ namespace eDoxa.Games.UnitTests.Factories
         {
             // Arrange
             var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
-            var mockAuthFactorRepository = new Mock<IAuthFactorRepository>();
+            var mockAuthFactorRepository = new Mock<IAuthenticationRepository>();
 
-            var factory = new AuthFactorValidatorFactory(
-                new[] {new LeagueOfLegendsAuthFactorValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object)});
+            var factory = new AuthenticationValidatorFactory(
+                new[] {new LeagueOfLegendsAuthenticationValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object)});
 
             // Act
             var result = factory.CreateInstance(Game.LeagueOfLegends);
 
             // Assert
-            result.Should().BeOfType<LeagueOfLegendsAuthFactorValidatorAdapter>();
+            result.Should().BeOfType<LeagueOfLegendsAuthenticationValidatorAdapter>();
         }
 
         [Fact]
         public void CreateInstance_ShouldBeOfTypeInvalidOperationException()
         {
             // Arrange
-            var mockAuthFactorValidatorAdapters = new Mock<IDictionary<Game, IAuthFactorValidatorAdapter>>();
+            var mockAuthFactorValidatorAdapters = new Mock<IDictionary<Game, IAuthenticationValidatorAdapter>>();
 
-            var mockAuthFactorValidatorAdapter = new Mock<List<IAuthFactorValidatorAdapter>>();
+            var mockAuthFactorValidatorAdapter = new Mock<List<IAuthenticationValidatorAdapter>>();
 
-            mockAuthFactorValidatorAdapters.Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthFactorValidatorAdapter>.IsAny))
+            mockAuthFactorValidatorAdapters.Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthenticationValidatorAdapter>.IsAny))
                 .Returns(false)
                 .Verifiable();
 
-            var authFactorValidatorFactory = new AuthFactorValidatorFactory(mockAuthFactorValidatorAdapter.Object);
+            var authFactorValidatorFactory = new AuthenticationValidatorFactory(mockAuthFactorValidatorAdapter.Object);
 
             try
             {

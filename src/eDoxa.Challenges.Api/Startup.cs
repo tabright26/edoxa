@@ -23,6 +23,7 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
@@ -57,8 +58,6 @@ namespace eDoxa.Challenges.Api
 {
     public sealed class Startup
     {
-        private const string AzureServiceBusDiscriminator = "challenges";
-
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -96,8 +95,8 @@ namespace eDoxa.Challenges.Api
                 .AddSqlServer(Configuration)
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, "cashierapi")
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, "gamesapi");
+                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
+                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi);
 
             services.AddDbContext<ChallengesDbContext>(
                 options => options.UseSqlServer(
@@ -152,24 +151,19 @@ namespace eDoxa.Challenges.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddHttpClients(AppSettings);
-        }
-
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
-
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings, Scopes.CashierApi, Scopes.GamesApi);
+
+            services.AddHttpClients(AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.ChallengesApi));
 
             builder.RegisterModule<ChallengesModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
             subscriber.UseIntegrationEventSubscriptions();
 
@@ -197,11 +191,6 @@ namespace eDoxa.Challenges.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

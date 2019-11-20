@@ -2,8 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Dashboard from "./Dashboard";
-import { ClansState } from "store/root/organizations/clans/types";
-import { DoxatagsState } from "store/root/doxaTags/types";
+import { ClansState } from "store/root/organization/clan/types";
 
 it("renders without crashing", () => {
   //Arrange
@@ -29,31 +28,6 @@ it("renders without crashing", () => {
     error: null
   };
 
-  const doxatags: DoxatagsState = {
-    data: [
-      {
-        name: "User 1",
-        userId: "123123123",
-        code: 1111,
-        timestamp: 1111111
-      },
-      {
-        name: "User 2",
-        userId: "321321321",
-        code: 2222,
-        timestamp: 1111111
-      },
-      {
-        name: "User 3",
-        userId: "123456789",
-        code: 3333,
-        timestamp: 1111111
-      }
-    ],
-    loading: false,
-    error: null
-  };
-
   const store: any = {
     getState: () => {
       return {
@@ -65,10 +39,9 @@ it("renders without crashing", () => {
           }
         },
         root: {
-          organizations: {
-            clans
-          },
-          doxatags
+          organization: {
+            clan: clans
+          }
         }
       };
     },
@@ -80,7 +53,11 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Dashboard match={{ params: "1", isExact: false, path: "", url: "" }} history={null} location={null} />
+        <Dashboard
+          match={{ params: "1", isExact: false, path: "", url: "" }}
+          history={null}
+          location={null}
+        />
       </Provider>
     )
     .toJSON();

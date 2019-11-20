@@ -32,6 +32,6 @@ namespace eDoxa.Challenges.Domain.Repositories
 
         Task<bool> AnyChallengeAsync(ChallengeId challengeId);
 
-        Task CommitAsync(CancellationToken cancellationToken = default);
+        Task CommitAsync(bool dispatchDomainEvents, CancellationToken cancellationToken = default);
     }
 }

@@ -13,7 +13,7 @@ const ArenaChallengePayout: FunctionComponent<Props> = ({ payout }) => {
   let prevSize = 1;
   let nextSize = 0;
   return (
-    <Card className="my-4 text-center">
+    <Card className="text-center">
       <CardHeader className="bg-gray-900">
         <strong className="text-uppercase">Payout</strong>
       </CardHeader>

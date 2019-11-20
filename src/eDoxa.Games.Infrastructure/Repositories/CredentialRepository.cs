@@ -1,5 +1,5 @@
 ﻿// Filename: CredentialRepository.cs
-// Date Created: 2019-10-27
+// Date Created: 2019-11-11
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels.CredentialAggregate;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;

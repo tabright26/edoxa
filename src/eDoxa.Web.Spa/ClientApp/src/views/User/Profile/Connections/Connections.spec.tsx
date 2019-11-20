@@ -2,12 +2,14 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Connections from "./Connections";
-import { GameCredentialsState } from "store/root/user/games/types";
+import { GamesState } from "store/root/game/types";
+import { Game, GameOption } from "types";
+import { LINK_GAME_CREDENTIAL_MODAL } from "modals";
 
 it("renders without crashing", () => {
   //Arrange
-  const games: GameCredentialsState = {
-    data: [{ name: "League of legends", id: "accountID" }],
+  const game: GamesState = {
+    data: new Map<Game, GameOption>(),
     loading: false,
     error: null
   };
@@ -15,10 +17,11 @@ it("renders without crashing", () => {
   const store: any = {
     getState: () => {
       return {
+        modal: {
+          name: LINK_GAME_CREDENTIAL_MODAL
+        },
         root: {
-          user: {
-            games
-          }
+          game
         }
       };
     },

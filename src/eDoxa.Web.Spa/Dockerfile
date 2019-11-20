@@ -15,4 +15,3 @@ COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "eDoxa.Web.Spa.dll"]
 
 EXPOSE 80
-EXPOSE 433

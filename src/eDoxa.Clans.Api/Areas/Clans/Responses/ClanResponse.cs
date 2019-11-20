@@ -30,5 +30,8 @@ namespace eDoxa.Clans.Api.Areas.Clans.Responses
 
         [JsonProperty("members")]
         public ICollection<MemberResponse> Members { get; set; }
+
+        [JsonProperty("divisions")]
+        public ICollection<MemberResponse> Divisions { get; set; }
     }
 }

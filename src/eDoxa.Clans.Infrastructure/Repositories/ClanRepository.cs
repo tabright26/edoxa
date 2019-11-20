@@ -1,6 +1,6 @@
 ﻿// Filename: ClanRepository.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -76,6 +76,7 @@ namespace eDoxa.Clans.Infrastructure.Repositories
             if (blobList.Any())
             {
                 var blobItem = blobList.OrderByDescending(item => long.Parse(Path.GetFileNameWithoutExtension(item.Uri.ToString()))).First();
+                
                 var blockBlob = directory.GetBlockBlobReference(Path.GetFileName(blobItem.Uri.ToString()));
 
                 await blockBlob.DownloadToStreamAsync(memoryStream);
@@ -126,5 +127,16 @@ namespace eDoxa.Clans.Infrastructure.Repositories
         {
             return await _context.Clans.AsExpandable().AnyAsync(clan => clan.Id == clanId && clan.OwnerId == ownerId);
         }
+
+        public async Task<IReadOnlyCollection<Division>> FetchDivisionsAsync(ClanId clanId)
+        {
+            return await _context.Divisions.AsExpandable().AsNoTracking().Where(division => division.ClanId == clanId).ToListAsync();
+        }
+
+        public async Task<Division?> FindDivisionAsync(DivisionId divisionId)
+        {
+            return await _context.Divisions.Include(clan => clan.Members).AsExpandable().SingleOrDefaultAsync(division => division.Id == divisionId);
+        }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿// Filename: ClansDbContext.cs
 // Date Created: 2019-09-29
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -42,6 +42,8 @@ namespace eDoxa.Clans.Infrastructure
         public DbSet<Candidature> Candidatures => this.Set<Candidature>();
 
         public DbSet<Invitation> Invitations => this.Set<Invitation>();
+
+        public DbSet<Division> Divisions => this.Set<Division>();
 
         public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
         {
@@ -144,6 +146,26 @@ namespace eDoxa.Clans.Infrastructure
                     builder.Property(invitation => invitation.UserId).HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value)).IsRequired();
                     builder.Property(invitation => invitation.ClanId).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
                     builder.HasKey(invitation => invitation.Id);
+                });
+
+            modelBuilder.Entity<Division>(
+                builder =>
+                {
+                    builder.ToTable("Division");
+
+                    builder.Property(division => division.Id)
+                        .HasConversion(divisionId => divisionId.ToGuid(), value => DivisionId.FromGuid(value))
+                        .IsRequired();
+
+                    builder.HasMany(division => division.Members).WithOne().HasForeignKey();
+
+                    builder.Property(division => division.Name).IsRequired();
+
+                    builder.Property(division => division.Description).IsRequired(false);
+
+                    builder.Property(division => division.ClanId).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
+
+                    builder.HasKey(division => division.Id);
                 });
         }
     }

@@ -12,13 +12,21 @@ export const TRANSACTION_TYPE_CHARGE = "charge";
 export const TRANSACTION_TYPE_PAYOUT = "payout";
 export const TRANSACTION_TYPE_WITHDRAWAL = "withdrawal";
 
-export type TransactionType = typeof TRANSACTION_TYPE_DEPOSIT | typeof TRANSACTION_TYPE_REWARD | typeof TRANSACTION_TYPE_CHARGE | typeof TRANSACTION_TYPE_PAYOUT | typeof TRANSACTION_TYPE_WITHDRAWAL;
+export type TransactionType =
+  | typeof TRANSACTION_TYPE_DEPOSIT
+  | typeof TRANSACTION_TYPE_REWARD
+  | typeof TRANSACTION_TYPE_CHARGE
+  | typeof TRANSACTION_TYPE_PAYOUT
+  | typeof TRANSACTION_TYPE_WITHDRAWAL;
 
 export const TRANSACTION_STATUS_PENDING = "pending";
 export const TRANSACTION_STATUS_SUCCEDED = "succeded";
 export const TRANSACTION_STATUS_FAILED = "failed";
 
-export type TransactionStatus = typeof TRANSACTION_STATUS_PENDING | typeof TRANSACTION_STATUS_SUCCEDED | typeof TRANSACTION_STATUS_FAILED;
+export type TransactionStatus =
+  | typeof TRANSACTION_STATUS_PENDING
+  | typeof TRANSACTION_STATUS_SUCCEDED
+  | typeof TRANSACTION_STATUS_FAILED;
 
 export type AccountId = string;
 export type AddressId = string;
@@ -98,7 +106,7 @@ export interface Doxatag {
 
 export type Game = "LeagueOfLegends";
 
-export type Logo = Stream | null;
+export type Logo = Stream | string | null;
 
 export interface ClanOwner {
   readonly userId: UserId;
@@ -142,6 +150,7 @@ export interface GameOption {
   readonly name: string;
   readonly displayName: string;
   readonly displayed: boolean;
+  readonly verified: boolean;
   readonly services: Map<GameServiceName, boolean>;
 }
 
@@ -154,7 +163,7 @@ export interface GameCredential {
 export interface Challenge extends Entity<ChallengeId> {
   readonly name: string;
   readonly game: Game;
-  readonly state: string;
+  readonly state: ChallengeState;
   readonly bestOf: number;
   readonly entries: number;
   readonly payoutEntries: number;
@@ -165,6 +174,17 @@ export interface Challenge extends Entity<ChallengeId> {
   readonly payout: ChallengePayout;
   readonly participants: ChallengeParticipant[];
 }
+
+export const CHALLENGE_STATE_INSCRIPTION = "Inscription";
+export const CHALLENGE_STATE_STARTED = "Started";
+export const CHALLENGE_STATE_ENDED = "Ended";
+export const CHALLENGE_STATE_CLOSED = "Closed";
+
+export type ChallengeState =
+  | typeof CHALLENGE_STATE_INSCRIPTION
+  | typeof CHALLENGE_STATE_STARTED
+  | typeof CHALLENGE_STATE_ENDED
+  | typeof CHALLENGE_STATE_CLOSED;
 
 export interface ChallengeTimeline {
   readonly createdAt: number;
@@ -198,7 +218,7 @@ export interface ChallengePayoutBucket {
 export interface ChallengeParticipant extends Entity<ParticipantId> {
   readonly score: number;
   readonly challengeId: ChallengeId;
-  readonly user: ChallengeParticipantUser;
+  readonly user?: ChallengeParticipantUser;
   readonly matches: ChallengeParticipantMatch[];
 }
 

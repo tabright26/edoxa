@@ -15,7 +15,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Extensions
     {
         public static void UseStripe(this IApplicationBuilder _, IConfiguration configuration)
         {
-            StripeConfiguration.ApiKey = configuration["StripeConfiguration:ApiKey"];
+            StripeConfiguration.ApiKey = configuration["Payment:Stripe:ApiKey"];
         }
     }
 }

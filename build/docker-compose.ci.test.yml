@@ -56,7 +56,7 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - WebSpaProxyUrl=http://${HOST:-localhost}:5300
+      - WebSpaUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity.api
       - Swagger__Enabled=false
     volumes:

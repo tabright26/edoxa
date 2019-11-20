@@ -19,7 +19,7 @@ namespace eDoxa.Seedwork.Security
         public static readonly ApiResource NotificationsApi = new NotificationsResource();
         public static readonly ApiResource PaymentApi = new PaymentResource();
         public static readonly ApiResource ChallengesApi = new ChallengesResource();
-        public static readonly ApiResource ChallengesAggregator = new ChallengesAggregateResource();
+        public static readonly ApiResource ChallengesWebAggregator = new ChallengesAggregateResource();
 
         public sealed class PaymentResource : ApiResource
         {
@@ -102,8 +102,8 @@ namespace eDoxa.Seedwork.Security
         public sealed class ChallengesAggregateResource : ApiResource
         {
             internal ChallengesAggregateResource() : base(
-                Security.Scopes.ChallengesAggregator.Name,
-                Security.Scopes.ChallengesAggregator.DisplayName,
+                Security.Scopes.ChallengesWebAggregator.Name,
+                Security.Scopes.ChallengesWebAggregator.DisplayName,
                 IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));

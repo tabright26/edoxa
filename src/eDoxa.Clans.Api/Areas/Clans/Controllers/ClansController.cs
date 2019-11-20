@@ -1,6 +1,6 @@
 ﻿// Filename: ClansController.cs
 // Date Created: 2019-09-29
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -67,6 +67,33 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             if (result.IsValid)
             {
                 return this.Ok("The clan has been created.");
+            }
+
+            result.AddToModelState(ModelState, null);
+
+            return this.ValidationProblem(ModelState);
+        }
+
+        /// <summary>
+        ///     Update a clan.
+        /// </summary>
+        [HttpPut]
+        public async Task<IActionResult> UpdateAsync(ClanId clanId, ClanPostRequest request)
+        {
+            var userId = HttpContext.GetUserId();
+
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
+            {
+                return this.NotFound("Clan does not exist.");
+            }
+
+            var result = await _clanService.UpdateClanAsync(clan, userId, request.Summary);
+
+            if (result.IsValid)
+            {
+                return this.Ok("Clan updated.");
             }
 
             result.AddToModelState(ModelState, null);

@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Autofac;
 
 using eDoxa.Games.Abstractions.Services;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
+using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -54,25 +56,25 @@ namespace eDoxa.Games.IntegrationTests.Areas.AuthFactor.Controllers
             // Arrange
             var userId = new UserId();
 
-            var authFactor = new Domain.AggregateModels.AuthFactorAggregate.AuthFactor(new PlayerId(), userId);
+            var authFactor = new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty));
 
             var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
-                        var mockAuthFactorService = new Mock<IAuthFactorService>();
+                        var mockAuthFactorService = new Mock<IAuthenticationService>();
 
                         mockAuthFactorService
-                            .Setup(authFactorService => authFactorService.GenerateAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
+                            .Setup(authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
                             .ReturnsAsync(new ValidationResult())
                             .Verifiable();
 
                         mockAuthFactorService
-                            .Setup(authFactorService => authFactorService.FindAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+                            .Setup(authFactorService => authFactorService.FindAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()))
                             .ReturnsAsync(authFactor)
                             .Verifiable();
 
-                        container.RegisterInstance(mockAuthFactorService.Object).As<IAuthFactorService>().SingleInstance();
+                        container.RegisterInstance(mockAuthFactorService.Object).As<IAuthenticationService>().SingleInstance();
                     }));
             _httpClient = factory.CreateClient();
 
@@ -93,17 +95,17 @@ namespace eDoxa.Games.IntegrationTests.Areas.AuthFactor.Controllers
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
-                        var mockAuthFactorService = new Mock<IAuthFactorService>();
+                        var mockAuthFactorService = new Mock<IAuthenticationService>();
 
                         var validationFailure = new ValidationResult();
                         validationFailure.Errors.Add(new ValidationFailure("test", "validation failure test"));
 
                         mockAuthFactorService
-                            .Setup(authFactorService => authFactorService.GenerateAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
+                            .Setup(authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
                             .ReturnsAsync(validationFailure)
                             .Verifiable();
 
-                        container.RegisterInstance(mockAuthFactorService.Object).As<IAuthFactorService>().SingleInstance();
+                        container.RegisterInstance(mockAuthFactorService.Object).As<IAuthenticationService>().SingleInstance();
                     }));
             _httpClient = factory.CreateClient();
 

@@ -46,13 +46,6 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
                 "This-is-a,clan."
             };
 
-        public static TheoryData<string, string> InvalidSummaries =>
-            new TheoryData<string, string>
-            {
-                {"Pretty", ClanErrorDescriber.SummaryInvalid()},
-                {"This-is-not a ! Clan", ClanErrorDescriber.SummaryInvalid()}
-            };
-
         [Theory]
         [MemberData(nameof(ValidNames))]
         public void Validate_WhenNameIsValid_ShouldNotHaveValidationErrorFor(string name)

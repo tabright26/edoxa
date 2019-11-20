@@ -373,7 +373,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var service = new ClanService(mockClanRepository.Object);
 
             // Act
-            var result = await service.KickMemberFromClanAsync(ownerId, clan, member.Id);
+            var result = await service.KickMemberFromClanAsync(clan, ownerId, member.Id);
 
             // Assert
             result.Should().BeOfType<ValidationResult>();
@@ -385,6 +385,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
         public async Task KickMemberFromClanAsync_WhenNotOwner_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
+            var ownerId = new UserId();
             var mockClanRepository = new Mock<IClanRepository>();
 
             var clan = new Clan("test", new UserId());
@@ -392,7 +393,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var service = new ClanService(mockClanRepository.Object);
 
             // Act
-            var result = await service.KickMemberFromClanAsync(new UserId(), clan, new MemberId());
+            var result = await service.KickMemberFromClanAsync(clan, ownerId, new MemberId());
 
             // Assert
             result.Should().BeOfType<ValidationResult>();
@@ -411,7 +412,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var service = new ClanService(mockClanRepository.Object);
 
             // Act
-            var result = await service.KickMemberFromClanAsync(ownerId, clan, new MemberId());
+            var result = await service.KickMemberFromClanAsync(clan, ownerId, new MemberId());
 
             // Assert
             result.Should().BeOfType<ValidationResult>();

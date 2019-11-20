@@ -13,6 +13,7 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Areas.Identity;
 using eDoxa.Identity.Api.Areas.Identity.Constants;
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
 using eDoxa.Identity.Api.Areas.Identity.Services;
@@ -26,6 +27,7 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Extensions;
@@ -65,8 +67,6 @@ namespace eDoxa.Identity.Api
 {
     public sealed class Startup
     {
-        private const string AzureServiceBusDiscriminator = "identity";
-
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
             $"{typeof(Startup).GetTypeInfo().Assembly.GetName().Name}.xml");
@@ -95,6 +95,8 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
+            services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
+
             services.AddHealthChecks()
                 .AddCheck("liveness", () => HealthCheckResult.Healthy())
                 .AddAzureKeyVault(Configuration)
@@ -102,7 +104,7 @@ namespace eDoxa.Identity.Api
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
 
-            services.AddDataProtection(Configuration, AppSettings.ApiResource.Name);
+            services.AddDataProtection(Configuration, AppNames.IdentityApi);
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
@@ -142,7 +144,7 @@ namespace eDoxa.Identity.Api
                         options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
 
                         options.SignIn.RequireConfirmedPhoneNumber = false;
-                        options.SignIn.RequireConfirmedEmail = HostingEnvironment.IsProduction();
+                        options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
 
                         options.Tokens.AuthenticatorTokenProvider = CustomTokenProviders.Authenticator;
                         options.Tokens.ChangeEmailTokenProvider = CustomTokenProviders.ChangeEmail;
@@ -241,23 +243,18 @@ namespace eDoxa.Identity.Api
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-        }
-
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            this.ConfigureServices(services);
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AzureServiceBusDiscriminator));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.IdentityApi));
 
             builder.RegisterModule<IdentityModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
         {
             subscriber.UseIntegrationEventSubscriptions();
 
@@ -297,11 +294,6 @@ namespace eDoxa.Identity.Api
                     Predicate = _ => true,
                     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
-        }
-
-        public void ConfigureDevelopment(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
-        {
-            this.Configure(application, subscriber);
 
             application.UseSwagger(provider, AppSettings);
         }

@@ -1,40 +1,102 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
+import { MemoryRouter } from "react-router-dom";
 import Scoring from "./Scoring";
-import { ChallengesState } from "store/root/arena/challenges/types";
+import { ChallengesState } from "store/root/challenge/types";
 
 it("renders without crashing", () => {
   //Arrange
   const challenges: ChallengesState = {
     data: [
-      { id: "123", timestamp: 1231212313, timeline: { createdAt: 1231231231 }, participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] },
-      { id: "456", timestamp: 1231212313, timeline: { createdAt: 1231231231 }, participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] },
-      { id: "789", timestamp: 1231231223, timeline: { createdAt: 1231231231 }, participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] }
+      {
+        id: "123",
+        name: "",
+        state: "Inscription",
+        bestOf: 3,
+        entries: 10,
+        game: "LeagueOfLegends",
+        payoutEntries: 5,
+        entryFee: { currency: "token", amount: 0 },
+        participants: [],
+        timeline: {
+          createdAt: 123123123,
+          startedAt: null,
+          endedAt: null,
+          closedAt: null
+        },
+        scoring: new Map<string, string>(),
+        payout: {
+          prizePool: { currency: "token", amount: 200000 },
+          buckets: []
+        }
+      },
+      {
+        id: "456",
+        name: "",
+        state: "Inscription",
+        bestOf: 3,
+        entries: 10,
+        game: "LeagueOfLegends",
+        payoutEntries: 5,
+        entryFee: { currency: "token", amount: 0 },
+        participants: [],
+        timeline: {
+          createdAt: 123123123,
+          startedAt: null,
+          endedAt: null,
+          closedAt: null
+        },
+        scoring: new Map<string, string>(),
+        payout: {
+          prizePool: { currency: "token", amount: 200000 },
+          buckets: []
+        }
+      },
+      {
+        id: "678",
+        name: "",
+        state: "Inscription",
+        bestOf: 3,
+        entries: 10,
+        game: "LeagueOfLegends",
+        payoutEntries: 5,
+        entryFee: { currency: "token", amount: 0 },
+        participants: [],
+        timeline: {
+          createdAt: 123123123,
+          startedAt: null,
+          endedAt: null,
+          closedAt: null
+        },
+        scoring: new Map<string, string>(),
+        payout: {
+          prizePool: { currency: "token", amount: 200000 },
+          buckets: []
+        }
+      }
     ],
     loading: false,
     error: null
   };
 
   const store: any = {
-    getState: () => {},
+    getState: () => {
+      return {
+        root: {
+          challenge: challenges
+        }
+      };
+    },
     dispatch: action => {},
     subscribe: () => {}
   };
 
-  const challenge = challenges.data.find(challenge => challenge.id === "123");
+  // Arrange
+  const scoring = new Map<string, string>();
 
   //Act
-  const tree = renderer
-    .create(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Scoring challenge={challenge} />
-        </MemoryRouter>
-      </Provider>
-    )
-    .toJSON();
+  const tree = renderer.create(<Scoring scoring={scoring} />).toJSON();
 
   //Assert
   expect(tree).toMatchSnapshot();

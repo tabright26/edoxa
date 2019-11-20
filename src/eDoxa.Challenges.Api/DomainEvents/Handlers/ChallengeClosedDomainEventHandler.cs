@@ -7,16 +7,25 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
+using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.DomainEvents.Handlers
 {
     public sealed class ChallengeClosedDomainEventHandler : IDomainEventHandler<ChallengeClosedDomainEvent>
     {
-        public Task Handle(ChallengeClosedDomainEvent domainEvent, CancellationToken cancellationToken)
+        private readonly IServiceBusPublisher _serviceBusPublisher;
+
+        public ChallengeClosedDomainEventHandler(IServiceBusPublisher serviceBusPublisher)
         {
-            return Task.CompletedTask;
+            _serviceBusPublisher = serviceBusPublisher;
+        }
+
+        public async Task Handle(ChallengeClosedDomainEvent domainEvent, CancellationToken cancellationToken)
+        {
+            await _serviceBusPublisher.PublishChallengeClosedIntegrationEventAsync(domainEvent.Challenge.Id, domainEvent.Challenge.Scoreboard);
         }
     }
 }

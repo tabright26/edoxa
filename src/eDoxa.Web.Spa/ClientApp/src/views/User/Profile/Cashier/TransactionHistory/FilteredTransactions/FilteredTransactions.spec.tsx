@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import FilteredTransactions from "./FilteredTransactions";
-import { UserAccountTransactionsState } from "store/root/user/account/transactions/types";
+import { UserAccountTransactionsState } from "store/root/user/account/transaction/types";
 
 it("renders without crashing", () => {
   //Arrange
@@ -46,7 +46,7 @@ it("renders without crashing", () => {
         root: {
           user: {
             account: {
-              transactions
+              transaction: transactions
             }
           }
         }

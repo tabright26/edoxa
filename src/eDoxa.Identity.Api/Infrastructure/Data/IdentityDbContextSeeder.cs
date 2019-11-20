@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContextSeeder.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,11 +7,14 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Areas.Identity;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 using static eDoxa.Identity.Api.Infrastructure.Data.Storage.FileStorage;
 
@@ -26,12 +29,16 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             UserManager userManager,
             RoleManager roleManager,
             IHostingEnvironment environment,
+            IOptions<AdminOptions> options,
             ILogger<IdentityDbContextSeeder> logger
         ) : base(environment, logger)
         {
+            Options = options.Value;
             _userManager = userManager;
             _roleManager = roleManager;
         }
+
+        public AdminOptions Options { get; }
 
         protected override async Task SeedAsync()
         {
@@ -79,6 +86,32 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             else
             {
                 Logger.LogInformation("The users already populated.");
+            }
+        }
+
+        protected override async Task SeedProductionAsync()
+        {
+            if (!_userManager.Users.Any(user => user.Id == AppAdmin.Id))
+            {
+                var admin = Users.Single(x => x.Id == AppAdmin.Id);
+
+                await _userManager.CreateAsync(admin, Options.Password);
+
+                foreach (var claim in UserClaims.Where(userClaim => userClaim.UserId == admin.Id))
+                {
+                    await _userManager.AddClaimAsync(admin, claim.ToClaim());
+                }
+
+                foreach (var role in UserRoles.Where(userRole => userRole.UserId == admin.Id))
+                {
+                    await _userManager.AddToRoleAsync(admin, Roles.Single(roleModel => roleModel.Id == role.RoleId).Name);
+                }
+
+                Logger.LogInformation("The admin being populated...");
+            }
+            else
+            {
+                Logger.LogInformation("The admin already populated.");
             }
         }
     }

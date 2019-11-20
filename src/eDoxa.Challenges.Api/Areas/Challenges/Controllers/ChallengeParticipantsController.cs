@@ -84,11 +84,13 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 return this.NotFound("Challenge not found.");
             }
 
+            var playerId = HttpContext.GetPlayerId(challenge.Game);
+
             var result = await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
                 participantId,
                 HttpContext.GetUserId(),
-                HttpContext.GetPlayerId(challenge.Game),
+                playerId,
                 new UtcNowDateTimeProvider());
 
             if (result.IsValid)

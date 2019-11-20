@@ -24,7 +24,7 @@ const ChallengeParticipantItem: FunctionComponent<Props> = ({ participant, posit
           >
             <Badge variant="primary">{position}</Badge>
           </div>
-          <div className="px-3 py-2">{participant.user.doxatag.name}</div>
+          <div className="px-3 py-2">{participant.user ? participant.user.doxatag.name : "Data unavailable"}</div>
           <div
             className="bg-primary px-3 py-2 text-center ml-auto"
             style={{

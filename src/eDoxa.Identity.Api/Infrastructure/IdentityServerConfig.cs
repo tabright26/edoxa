@@ -55,7 +55,7 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return ApiResources.ClansApi;
 
-            yield return ApiResources.ChallengesAggregator;
+            yield return ApiResources.ChallengesWebAggregator;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
@@ -76,33 +76,30 @@ namespace eDoxa.Identity.Api.Infrastructure
 
                 yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl);
 
-                yield return ApiResources.ChallengesAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesAggregatorUrl, Scopes.CashierApi, Scopes.GamesApi, Scopes.ChallengesApi);
+                yield return ApiResources.ChallengesWebAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesWebAggregatorUrl, Scopes.CashierApi, Scopes.GamesApi, Scopes.ChallengesApi);
             }
 
             yield return new Client
             {
-                ClientId = "edoxa.web.spa",
-                ClientName = "eDoxa Web Spa",
+                ClientId = "web.spa",
+                ClientName = "Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {
-                    appSettings.WebSpaProxyUrl,
+                    appSettings.WebSpaUrl,
                     "http://localhost:5300",
                     "http://127.0.0.1:5300"
                 },
                 PostLogoutRedirectUris = new HashSet<string>
                 {
-                    appSettings.WebSpaProxyUrl,
-                    "http://localhost:5300",
-                    "http://127.0.0.1:5300"
+                    $"{appSettings.WebSpaUrl}/authentication/logout-callback",
+                    "http://localhost:5300/authentication/logout-callback",
+                    "http://127.0.0.1:5300/authentication/logout-callback"
                 },
                 RedirectUris = new HashSet<string>
                 {
-                    $"{appSettings.WebSpaProxyUrl}/callback",
-                    "http://localhost:5300/callback",
-                    "http://127.0.0.1:5300/callback",
-                    $"{appSettings.WebSpaProxyUrl}/silent_renew.html",
-                    "http://localhost:5300/silent_renew.html",
-                    "http://127.0.0.1:5300/silent_renew.html"
+                    $"{appSettings.WebSpaUrl}/authentication/login-callback",
+                    "http://localhost:5300/authentication/login-callback",
+                    "http://127.0.0.1:5300/authentication/login-callback"
                 },
                 AccessTokenType = AccessTokenType.Reference,
                 RequireConsent = false,
@@ -124,7 +121,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.ChallengesApi.Name,
                     Scopes.GamesApi.Name,
                     Scopes.ClansApi.Name,
-                    Scopes.ChallengesAggregator.Name
+                    Scopes.ChallengesWebAggregator.Name
                 }
             };
         }

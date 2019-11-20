@@ -9,9 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Abstractions.Services;
-using eDoxa.Games.Domain.AggregateModels.AuthFactorAggregate;
-using eDoxa.Games.Domain.AggregateModels.CredentialAggregate;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
+using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -39,7 +39,7 @@ namespace eDoxa.Games.UnitTests.Services
             var userId = new UserId();
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             mockCredentialRepository
                 .Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -64,7 +64,7 @@ namespace eDoxa.Games.UnitTests.Services
             var userId = new UserId();
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             mockCredentialRepository
                 .Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -72,7 +72,7 @@ namespace eDoxa.Games.UnitTests.Services
                 .Verifiable();
 
             mockAuthFactorService
-                .Setup(authFactor => authFactor.AuthFactorExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+                .Setup(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(false)
                 .Verifiable();
 
@@ -87,7 +87,7 @@ namespace eDoxa.Games.UnitTests.Services
                 Times.Once);
 
             mockAuthFactorService.Verify(
-                authFactor => authFactor.AuthFactorExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
+                authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
                 Times.Once);
         }
 
@@ -97,10 +97,10 @@ namespace eDoxa.Games.UnitTests.Services
             // Arrange
             var userId = new UserId();
 
-            var userAuthFactor = new AuthFactor(new PlayerId(), userId);
+            var userAuthFactor = new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty));
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             mockCredentialRepository
                 .Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -108,17 +108,17 @@ namespace eDoxa.Games.UnitTests.Services
                 .Verifiable();
 
             mockAuthFactorService
-                .Setup(authFactor => authFactor.AuthFactorExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+                .Setup(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(true)
                 .Verifiable();
 
             mockAuthFactorService
-                .Setup(authFactor => authFactor.FindAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+                .Setup(authFactor => authFactor.FindAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(userAuthFactor)
                 .Verifiable();
 
             mockAuthFactorService
-                .Setup(authFactor => authFactor.ValidateAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<AuthFactor>()))
+                .Setup(authFactor => authFactor.ValidateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>>()))
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
@@ -142,15 +142,15 @@ namespace eDoxa.Games.UnitTests.Services
                 Times.Once);
 
             mockAuthFactorService.Verify(
-                authFactor => authFactor.AuthFactorExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
+                authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
                 Times.Once);
 
             mockAuthFactorService.Verify(
-                authFactor => authFactor.FindAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
+                authFactor => authFactor.FindAuthenticationAsync<LeagueOfLegendsGameAuthenticationFactor>(It.IsAny<UserId>(), It.IsAny<Game>()),
                 Times.Once);
 
             mockAuthFactorService.Verify(
-                authFactor => authFactor.ValidateAuthFactorAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<AuthFactor>()),
+                authFactor => authFactor.ValidateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>>()),
                 Times.Once);
 
             mockCredentialRepository.Verify(repository => repository.CreateCredential(It.IsAny<Credential>()), Times.Once);
@@ -167,7 +167,7 @@ namespace eDoxa.Games.UnitTests.Services
             var userId = new UserId();
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             var credential = new Credential(userId, Game.LeagueOfLegends, new PlayerId(), new UtcNowDateTimeProvider());
 
@@ -202,7 +202,7 @@ namespace eDoxa.Games.UnitTests.Services
             var userId = new UserId();
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             var credentials = new List<Credential>() { new Credential(userId, Game.LeagueOfLegends, new PlayerId(), new UtcNowDateTimeProvider())};
 
@@ -229,7 +229,7 @@ namespace eDoxa.Games.UnitTests.Services
             var userId = new UserId();
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             var credential = new Credential(userId, Game.LeagueOfLegends, new PlayerId(), new UtcNowDateTimeProvider());
 
@@ -256,7 +256,7 @@ namespace eDoxa.Games.UnitTests.Services
             var userId = new UserId();
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             mockCredentialRepository
                 .Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -281,7 +281,7 @@ namespace eDoxa.Games.UnitTests.Services
             var userId = new UserId();
 
             var mockCredentialRepository = new Mock<ICredentialRepository>();
-            var mockAuthFactorService = new Mock<IAuthFactorService>();
+            var mockAuthFactorService = new Mock<IAuthenticationService>();
 
             var credentials = new List<Credential>() { new Credential(userId, Game.LeagueOfLegends, new PlayerId(), new UtcNowDateTimeProvider())};
 

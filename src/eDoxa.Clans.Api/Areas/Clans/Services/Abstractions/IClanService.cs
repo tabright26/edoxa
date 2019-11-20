@@ -1,6 +1,6 @@
 ﻿// Filename: IClanService.cs
 // Date Created: 2019-10-02
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -26,6 +26,8 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services.Abstractions
 
         Task<ValidationResult> CreateClanAsync(UserId userId, string name);
 
+        Task<ValidationResult> UpdateClanAsync(Clan clan, UserId userId, string summary);
+
         Task<Stream> DownloadLogoAsync(Clan clan);
 
         Task<ValidationResult> UploadLogoAsync(Clan clan, UserId userId, IFormFile logo);
@@ -43,10 +45,30 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services.Abstractions
 
         Task<Member?> FindMemberAsync(Clan clan, MemberId memberId);
 
-        Task<ValidationResult> KickMemberFromClanAsync(UserId userId, Clan clan, MemberId memberId);
+        Task<ValidationResult> KickMemberFromClanAsync(Clan clan, UserId userId, MemberId memberId);
 
         Task<ValidationResult> LeaveClanAsync(Clan clan, UserId userId);
 
         Task<bool> IsMemberAsync(UserId userId);
+
+        Task<IReadOnlyCollection<Division>> FetchDivisionsAsync(ClanId clanId);
+
+        Task<IReadOnlyCollection<Member>> FetchDivisionMembersAsync(DivisionId divisionId);
+
+        Task<ValidationResult> CreateDivisionAsync(Clan clan, UserId userId, string name, string description);
+
+        Task<ValidationResult> DeleteDivisionAsync(Clan clan, UserId userId, DivisionId divisionId);
+
+        Task<ValidationResult> UpdateDivisionAsync(
+            Clan clan,
+            UserId userId,
+            DivisionId divisionId,
+            string name,
+            string description
+        );
+
+        Task<ValidationResult> AddMemberToDivisionAsync(Clan clan, UserId userId, DivisionId divisionId, MemberId memberId);
+
+        Task<ValidationResult> RemoveMemberFromDivisionAsync(Clan clan, UserId userId, DivisionId divisionId, MemberId memberId);
     }
 }

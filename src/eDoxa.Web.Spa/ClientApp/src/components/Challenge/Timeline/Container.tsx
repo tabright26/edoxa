@@ -1,16 +1,15 @@
 import { connect, MapStateToProps } from "react-redux";
 import Timeline from "./Timeline";
 import { RootState } from "store/types";
-import { RouteChildrenProps } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ChallengeId, ChallengeTimeline } from "types";
 import { compose } from "recompose";
-import { withRouter } from "react-router-dom";
 
 interface Params {
   readonly challengeId: ChallengeId;
 }
 
-type OwnProps = RouteChildrenProps<Params>;
+type OwnProps = RouteComponentProps<Params>;
 
 interface StateProps {
   readonly state: string;
@@ -18,7 +17,7 @@ interface StateProps {
 }
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (state, ownProps) => {
-  const { data } = state.root.arena.challenges;
+  const { data } = state.root.challenge;
   const challenge = data.find(challenge => challenge.id === ownProps.match.params.challengeId);
   return {
     state: challenge.state,

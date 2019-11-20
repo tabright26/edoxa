@@ -52,6 +52,8 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
                 challenge.Close(new DateTimeProvider(source.Timeline.ClosedAt.Value));
             }
 
+            challenge.ClearDomainEvents();
+
             return challenge;
         }
     }

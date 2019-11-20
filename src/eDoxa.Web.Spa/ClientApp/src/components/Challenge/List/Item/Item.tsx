@@ -6,7 +6,7 @@ import ChallengeSummary from "components/Challenge/Summary";
 
 const ChallengeParticipantItem = ({ challenge }) => {
   return (
-    <Card className="card-accent-primary">
+    <Card>
       <LinkContainer
         to={"/arena/challenges/" + challenge.id}
         style={{
@@ -16,7 +16,11 @@ const ChallengeParticipantItem = ({ challenge }) => {
         <CardBody>
           <Row>
             <Col md="3">
-              <ChallengeLogo className="h-100 bg-gray-900" height={150} width={150} />
+              <ChallengeLogo
+                className="h-100 bg-gray-900"
+                height={150}
+                width={150}
+              />
             </Col>
             <Col md="9">
               <ChallengeSummary challengeId={challenge.id} />

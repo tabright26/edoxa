@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
             var payoutStructures = storage.GetChallengePayouts();
 
             // Assert
-            payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(56);
+            payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(55);
         }
     }
 }

@@ -5,10 +5,11 @@ import { ChallengeScoring, ChallengeId } from "types";
 interface Props {
   readonly challengeId: ChallengeId;
   readonly scoring: ChallengeScoring;
+  readonly className?: string;
 }
 
-const Scoring: FunctionComponent<Props> = ({ scoring }) => (
-  <Card className="my-2">
+const Scoring: FunctionComponent<Props> = ({ scoring, className }) => (
+  <Card className={className}>
     <CardHeader className="text-center bg-gray-900">
       <strong className="text-uppercase">Scoring</strong>
     </CardHeader>
