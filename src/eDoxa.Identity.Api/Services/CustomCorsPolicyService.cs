@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Services
 
             AllowedOrigins = new List<string>
             {
-                appSettings.Value.WebSpaProxyUrl
+                appSettings.Value.WebSpaUrl
             };
         }
     }

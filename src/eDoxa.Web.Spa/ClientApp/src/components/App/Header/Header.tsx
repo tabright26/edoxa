@@ -1,73 +1,15 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import {
-  Button,
-  Form,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  UncontrolledDropdown,
-  Nav
-} from "reactstrap";
-import {
   AppNavbarBrand,
   AppSidebarToggler,
   AppAsideToggler
 } from "@coreui/react";
+import { LoginMenu } from "utils/oidc/LoginMenu";
 import logo from "assets/img/brand/logo.png";
 import sygnet from "assets/img/brand/sygnet.png";
-import { withUser, withUserIsAuthenticated } from "store/root/user/container";
-import userManager, { POST_LOGIN_REDIRECT_URI } from "utils/oidc/userManager";
-import { compose } from "recompose";
 
-const HeaderDropdown: FunctionComponent<any> = ({ user }) => {
-  const signoutRedirectClickHandled = () => {
-    localStorage.removeItem(POST_LOGIN_REDIRECT_URI);
-    userManager.removeUser();
-    userManager.signoutRedirect();
-  };
-  const userInfoClickHandled = () => {
-    console.log(JSON.stringify(user, null, 2));
-  };
-  return (
-    <UncontrolledDropdown nav direction="down">
-      <DropdownToggle nav caret>
-        {user.profile.email}
-      </DropdownToggle>
-      <DropdownMenu right style={{ right: 0 }}>
-        <Form inline>
-          <LinkContainer to="/profile">
-            <Button block size="sm" color="primary" className="m-3">
-              Profile
-            </Button>
-          </LinkContainer>
-        </Form>
-        {process.env.NODE_ENV !== "production" ? (
-          <DropdownItem
-            className="border-top"
-            onClick={() => userInfoClickHandled()}
-          >
-            User Info
-          </DropdownItem>
-        ) : null}
-        <DropdownItem onClick={() => signoutRedirectClickHandled()}>
-          Logout
-        </DropdownItem>
-      </DropdownMenu>
-    </UncontrolledDropdown>
-  );
-};
-
-const Header: FunctionComponent<any> = ({
-  isAuthenticated,
-  user,
-  balance,
-  children,
-  ...attributes
-}) => {
-  const signinRedirectClickHandled = () => {
-    userManager.signinRedirect();
-  };
+const Header: FunctionComponent = () => {
   return (
     <Fragment>
       <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -90,37 +32,10 @@ const Header: FunctionComponent<any> = ({
           </LinkContainer>
         </NavItem>
       </Nav> */}
-      {isAuthenticated ? (
-        <Nav className="ml-auto mr-3" navbar>
-          <HeaderDropdown user={user} />
-        </Nav>
-      ) : (
-        <Nav className="ml-auto mr-3" navbar>
-          <Button
-            size="sm"
-            color="link"
-            style={{ textDecoration: "none" }}
-            className="mr-2"
-            onClick={() => signinRedirectClickHandled()}
-          >
-            Login
-          </Button>
-          <Button
-            href={`${process.env.REACT_APP_AUTHORITY}/Identity/Account/Register`}
-            size="sm"
-            tag="a"
-            color="primary"
-            outline
-          >
-            Register
-          </Button>
-        </Nav>
-      )}
+      <LoginMenu />
       <AppAsideToggler className="d-md-down-none" hidden />
     </Fragment>
   );
 };
 
-const enhance = compose(withUser, withUserIsAuthenticated);
-
-export default enhance(Header);
+export default Header;

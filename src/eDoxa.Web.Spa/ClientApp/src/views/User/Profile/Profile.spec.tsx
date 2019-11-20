@@ -27,7 +27,11 @@ it("renders without crashing", () => {
           customer: "testCustomer",
           card: {
             brand: "visa",
-            checks: { address_line1_check: "pass", address_postal_code_check: "pass", cvc_check: "pass" },
+            checks: {
+              address_line1_check: "pass",
+              address_postal_code_check: "pass",
+              cvc_check: "pass"
+            },
             country: "CA",
             exp_month: 11,
             exp_year: 22,
@@ -141,7 +145,12 @@ it("renders without crashing", () => {
   };
 
   const informations: UserInformationsState = {
-    data: { firstName: "Gabriel", lastName: "Roy", gender: "Male", dob: { year: 1995, month: 8, day: 4 } },
+    data: {
+      firstName: "Gabriel",
+      lastName: "Roy",
+      gender: "Male",
+      dob: { year: 1995, month: 8, day: 4 }
+    },
     loading: false,
     error: null
   };
@@ -182,7 +191,11 @@ it("renders without crashing", () => {
     .create(
       <Provider store={store}>
         <MemoryRouter>
-          <Profile match={{ params: "userId", isExact: false, path: "", url: "" }} history={null} location={null} />
+          <Profile
+            match={{ params: "userId", isExact: false, path: "", url: "" }}
+            history={null}
+            location={null}
+          />
         </MemoryRouter>
       </Provider>
     )

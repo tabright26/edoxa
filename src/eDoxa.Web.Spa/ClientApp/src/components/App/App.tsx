@@ -9,18 +9,39 @@ import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 import StripePaymentMethodModal from "modals/Payment/Stripe/PaymentMethod";
 import { Elements } from "react-stripe-elements";
+import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 
-const Callback: FunctionComponent<RouteComponentProps> = React.lazy(() => import("utils/oidc/components/Callback"));
-const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/401"));
-const ErrorPage403: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/403"));
-const ErrorPage404: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/404"));
-const ErrorPage500: FunctionComponent<RouteComponentProps> = React.lazy(() => import("components/Shared/ErrorPage/500"));
-const EmailConfirm: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/User/Email/Comfirm"));
-const PasswordForgot: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/User/Password/Forgot"));
-const PasswordReset: FunctionComponent<RouteComponentProps> = React.lazy(() => import("views/User/Password/Reset"));
+const ApiAuthorizationRoutes: FunctionComponent<RouteComponentProps> = React.lazy(
+  () => import("utils/oidc/ApiAuthorizationRoutes")
+);
+const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() =>
+  import("components/Shared/ErrorPage/401")
+);
+const ErrorPage403: FunctionComponent<RouteComponentProps> = React.lazy(() =>
+  import("components/Shared/ErrorPage/403")
+);
+const ErrorPage404: FunctionComponent<RouteComponentProps> = React.lazy(() =>
+  import("components/Shared/ErrorPage/404")
+);
+const ErrorPage500: FunctionComponent<RouteComponentProps> = React.lazy(() =>
+  import("components/Shared/ErrorPage/500")
+);
+const EmailConfirm: FunctionComponent<RouteComponentProps> = React.lazy(() =>
+  import("views/User/Email/Comfirm")
+);
+const PasswordForgot: FunctionComponent<RouteComponentProps> = React.lazy(() =>
+  import("views/User/Password/Forgot")
+);
+const PasswordReset: FunctionComponent<RouteComponentProps> = React.lazy(() =>
+  import("views/User/Password/Reset")
+);
 
-const DefaultLayout: FunctionComponent<any> = React.lazy(() => import("components/App/Layout/Default"));
-const NoneLayout: FunctionComponent<any> = React.lazy(() => import("components/App/Layout/None"));
+const DefaultLayout: FunctionComponent<any> = React.lazy(() =>
+  import("components/App/Layout/Default")
+);
+const NoneLayout: FunctionComponent<any> = React.lazy(() =>
+  import("components/App/Layout/None")
+);
 
 const App = () => (
   <>
@@ -35,11 +56,34 @@ const App = () => (
     <Router history={history}>
       <Suspense fallback={<Loading />}>
         <Switch>
-          <Route<RouteProps> exact path="/callback" name="Callback" render={props => <Callback {...props} />} />
-          <Route<RouteProps> exact path="/errors/401" name="Error 401" render={props => <ErrorPage401 {...props} />} />
-          <Route<RouteProps> exact path="/errors/403" name="Error 403" render={props => <ErrorPage403 {...props} />} />
-          <Route<RouteProps> exact path="/errors/404" name="Error 404" render={props => <ErrorPage404 {...props} />} />
-          <Route<RouteProps> exact path="/errors/500" name="Error 500" render={props => <ErrorPage500 {...props} />} />
+          <Route<any>
+            path={ApplicationPaths.ApiAuthorizationPrefix}
+            component={props => <ApiAuthorizationRoutes {...props} />}
+          />
+          <Route<RouteProps>
+            exact
+            path="/errors/401"
+            name="Error 401"
+            render={props => <ErrorPage401 {...props} />}
+          />
+          <Route<RouteProps>
+            exact
+            path="/errors/403"
+            name="Error 403"
+            render={props => <ErrorPage403 {...props} />}
+          />
+          <Route<RouteProps>
+            exact
+            path="/errors/404"
+            name="Error 404"
+            render={props => <ErrorPage404 {...props} />}
+          />
+          <Route<RouteProps>
+            exact
+            path="/errors/500"
+            name="Error 500"
+            render={props => <ErrorPage500 {...props} />}
+          />
           <Route<RouteProps>
             exact
             path="/email/confirm"
@@ -76,7 +120,11 @@ const App = () => (
               </Suspense>
             )}
           />
-          <Route<RouteProps> path="/" name="Home" render={props => <DefaultLayout {...props} />} />
+          <Route<RouteProps>
+            path="/"
+            name="Home"
+            render={props => <DefaultLayout {...props} />}
+          />
           <Redirect to="/errors/404" />
         </Switch>
       </Suspense>

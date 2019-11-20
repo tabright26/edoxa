@@ -210,6 +210,7 @@ orleans.codegen.cs
 
 # production
 /build
+/src/eDoxa.Web.Spa/ClientApp/build
 
 # misc
 .DS_Store
@@ -320,3 +321,5 @@ healthchecksdb
 
 # Solution Items
 /NuGet.config
+
+**/env-config.js

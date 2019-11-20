@@ -15,7 +15,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Responses.Profiles
         public StripeCustomerResponseProfile()
         {
             this.CreateMap<Customer, StripeCustomerResponse>()
-                .ForMember(customer => customer.DefaultPaymentMethodId, config => config.MapFrom(customer => customer.InvoiceSettings.DefaultPaymentMethod.Id));
+                .ForMember(customer => customer.DefaultPaymentMethodId, config => config.MapFrom(customer => customer.InvoiceSettings.DefaultPaymentMethodId));
         }
     }
 }
