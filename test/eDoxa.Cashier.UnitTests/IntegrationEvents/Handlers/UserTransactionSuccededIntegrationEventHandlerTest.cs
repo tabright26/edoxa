@@ -53,7 +53,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var mockLogger = new MockLogger<UserTransactionSuccededIntegrationEventHandler>();
 
-            var handler = new UserTransactionSuccededIntegrationEventHandler(mockTransactionRepository.Object, mockServiceBusPublisher.Object, mockLogger.Object);
+            var handler = new UserTransactionSuccededIntegrationEventHandler(
+                mockTransactionRepository.Object,
+                mockServiceBusPublisher.Object,
+                mockLogger.Object);
 
             var integrationEvent = new UserTransactionSuccededIntegrationEvent(new UserId(), transaction.Id);
 

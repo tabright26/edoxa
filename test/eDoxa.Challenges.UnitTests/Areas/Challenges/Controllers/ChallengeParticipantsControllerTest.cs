@@ -35,7 +35,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
 {
     public sealed class ChallengeParticipantsControllerTest : UnitTest
     {
-        public ChallengeParticipantsControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ChallengeParticipantsControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

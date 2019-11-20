@@ -1,6 +1,6 @@
-﻿// Filename: PayoutFactoryTest.cs
-// Date Created: 2019-09-16
-//
+﻿// Filename: ChallengePayoutFactoryTest.cs
+// Date Created: 2019-11-20
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 

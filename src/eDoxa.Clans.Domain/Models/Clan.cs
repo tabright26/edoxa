@@ -1,6 +1,6 @@
 ﻿// Filename: Clan.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-11-20
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -21,15 +21,16 @@ namespace eDoxa.Clans.Domain.Models
             Name = name;
             Summary = null;
             OwnerId = ownerId;
+            Divisions = new HashSet<Division>();
             Members = new HashSet<Member>();
             this.AddMember(new Member(Id, ownerId));
         }
-#nullable disable
+
         private Clan()
         {
             //Requied by EF Core
         }
-#nullable restore
+
         public string Name { get; private set; }
 
         public string? Summary { get; private set; }
@@ -49,7 +50,6 @@ namespace eDoxa.Clans.Domain.Models
             if (division == null)
             {
                 throw new InvalidOperationException();
-
             }
 
             division.Update(name, description);
@@ -68,7 +68,6 @@ namespace eDoxa.Clans.Domain.Models
             {
                 memberNewDivision.AddMember(this.FindMember(memberId));
             }
-
         }
 
         public void RemoveMemberFromDivision(DivisionId divisionId, MemberId memberId)

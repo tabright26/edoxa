@@ -157,13 +157,13 @@ namespace eDoxa.Clans.Infrastructure
                         .HasConversion(divisionId => divisionId.ToGuid(), value => DivisionId.FromGuid(value))
                         .IsRequired();
 
-                    builder.HasMany(division => division.Members).WithOne().HasForeignKey();
-
                     builder.Property(division => division.Name).IsRequired();
 
                     builder.Property(division => division.Description).IsRequired(false);
 
                     builder.Property(division => division.ClanId).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
+       
+                    builder.Ignore(division => division.Members);
 
                     builder.HasKey(division => division.Id);
                 });

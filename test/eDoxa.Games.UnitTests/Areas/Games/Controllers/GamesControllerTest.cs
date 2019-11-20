@@ -36,7 +36,7 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
         public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var serviceCredential = new Mock<ICredentialService>();
+            var serviceCredential = new Mock<IGameCredentialService>();
 
             serviceCredential.Setup(x => x.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>())).ReturnsAsync(true).Verifiable(); // TODO: Verify.
 

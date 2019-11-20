@@ -13,10 +13,7 @@ using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentAssertions.Equivalency;
 
 using Moq;
 

@@ -24,11 +24,11 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
     [ApiExplorerSettings(GroupName = "Games")]
     public sealed class GamesController : ControllerBase
     {
-        private readonly ICredentialService _credentialService;
+        private readonly IGameCredentialService _gameCredentialService;
 
-        public GamesController(ICredentialService credentialService, IOptions<GamesOptions> options)
+        public GamesController(IGameCredentialService gameCredentialService, IOptions<GamesOptions> options)
         {
-            _credentialService = credentialService;
+            _gameCredentialService = gameCredentialService;
             Options = options.Value;
         }
 
@@ -38,7 +38,7 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
         public async Task<IActionResult> GetAsync()
         {
             // TODO: Temp.
-            Options.LeagueOfLegends.Verified = await _credentialService.CredentialExistsAsync(HttpContext.GetUserId(), Game.LeagueOfLegends);
+            Options.LeagueOfLegends.Verified = await _gameCredentialService.CredentialExistsAsync(HttpContext.GetUserId(), Game.LeagueOfLegends);
 
             return this.Ok(Options);
         }

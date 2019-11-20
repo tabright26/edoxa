@@ -1,6 +1,6 @@
 ﻿// Filename: ChallengesControllerTest.cs
-// Date Created: 2019-09-16
-//
+// Date Created: 2019-10-06
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -45,8 +45,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
             var mockChallengeQuery = new Mock<IChallengeQuery>();
             var mockChallengeService = new Mock<IChallengeService>();
 
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync())
-                .Verifiable();
+            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync()).Verifiable();
 
             mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
@@ -76,7 +75,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
             var bucket = new Bucket(Prize.None, BucketSize.Individual);
 
             var buckets = new Buckets(
-                new List<Bucket>()
+                new List<Bucket>
                 {
                     bucket
                 });
@@ -84,12 +83,13 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
             var payoutBuckets = new Payout(buckets);
 
             mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchChallengesAsync())
-                .ReturnsAsync(new List<Challenge>() {
+                .ReturnsAsync(
+                    new List<Challenge>
+                    {
                         new Challenge(new ChallengeId(), entreFee, payoutBuckets),
                         new Challenge(new ChallengeId(), entreFee, payoutBuckets),
                         new Challenge(new ChallengeId(), entreFee, payoutBuckets)
-                    }
-                )
+                    })
                 .Verifiable();
 
             mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
@@ -165,21 +165,36 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
             var mockChallengeQuery = new Mock<IChallengeQuery>();
             var mockChallengeService = new Mock<IChallengeService>();
 
-            mockChallengeService.Setup(challengeService => challengeService.CreateChallengeAsync(
-                It.IsAny<ChallengeId>(), It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>(), It.IsAny<CancellationToken>()))
+            mockChallengeService
+                .Setup(
+                    challengeService => challengeService.CreateChallengeAsync(
+                        It.IsAny<ChallengeId>(),
+                        It.IsAny<PayoutEntries>(),
+                        It.IsAny<EntryFee>(),
+                        It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationFailure("test", "test error").ToResult())
                 .Verifiable();
 
             var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 
             // Act
-            var result = await controller.PostAsync(new CreateChallengeRequest(new Guid(), 10, 5000, "Token" ));
+            var result = await controller.PostAsync(
+                new CreateChallengeRequest(
+                    new Guid(),
+                    10,
+                    5000,
+                    "Token"));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockChallengeService.Verify(challengeService => challengeService.CreateChallengeAsync(
-                It.IsAny<ChallengeId>(), It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>(), It.IsAny<CancellationToken>()), Times.Once);
+            mockChallengeService.Verify(
+                challengeService => challengeService.CreateChallengeAsync(
+                    It.IsAny<ChallengeId>(),
+                    It.IsAny<PayoutEntries>(),
+                    It.IsAny<EntryFee>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
         }
 
         [Fact]
@@ -192,8 +207,13 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
 
             var mockChallengeService = new Mock<IChallengeService>();
 
-            mockChallengeService.Setup(challengeService => challengeService.CreateChallengeAsync(
-                    It.IsAny<ChallengeId>(), It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>(), It.IsAny<CancellationToken>()))
+            mockChallengeService
+                .Setup(
+                    challengeService => challengeService.CreateChallengeAsync(
+                        It.IsAny<ChallengeId>(),
+                        It.IsAny<PayoutEntries>(),
+                        It.IsAny<EntryFee>(),
+                        It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
@@ -204,13 +224,23 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
             var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 
             // Act
-            var result = await controller.PostAsync(new CreateChallengeRequest(new Guid(), 10, 5000, "Token"));
+            var result = await controller.PostAsync(
+                new CreateChallengeRequest(
+                    new Guid(),
+                    10,
+                    5000,
+                    "Token"));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockChallengeService.Verify(challengeService => challengeService.CreateChallengeAsync(
-                It.IsAny<ChallengeId>(), It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>(), It.IsAny<CancellationToken>()), Times.Once);
+            mockChallengeService.Verify(
+                challengeService => challengeService.CreateChallengeAsync(
+                    It.IsAny<ChallengeId>(),
+                    It.IsAny<PayoutEntries>(),
+                    It.IsAny<EntryFee>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
 
             mockChallengeQuery.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 

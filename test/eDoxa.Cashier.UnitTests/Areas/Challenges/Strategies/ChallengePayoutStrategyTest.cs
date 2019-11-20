@@ -1,23 +1,19 @@
-﻿// Filename: PayoutFactoryTest.cs
-// Date Created: 2019-09-16
-//
+﻿// Filename: ChallengePayoutStrategyTest.cs
+// Date Created: 2019-11-20
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Factories;
 using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 
 using FluentAssertions;
-
-using Moq;
 
 using Xunit;
 
@@ -38,7 +34,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Strategies
             var bucket = new Bucket(Prize.None, BucketSize.Individual);
 
             var buckets = new Buckets(
-                new List<Bucket>()
+                new List<Bucket>
                 {
                     bucket
                 });
@@ -60,19 +56,15 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Strategies
 
             var bucket = new Bucket(Prize.None, BucketSize.Individual);
 
-            var buckets = new Buckets(
-                new List<Bucket>()
-                {
-                });
+            var buckets = new Buckets(new List<Bucket>());
 
             var payoutEntries = new PayoutEntries(buckets);
 
             // Act
-            var action = new Func<IPayout>( () => payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token)));
+            var action = new Func<IPayout>(() => payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token)));
 
             // Assert
             action.Should().Throw<NotSupportedException>();
         }
-
     }
 }

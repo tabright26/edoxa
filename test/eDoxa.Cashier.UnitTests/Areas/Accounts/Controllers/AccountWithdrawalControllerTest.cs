@@ -1,6 +1,6 @@
 ﻿// Filename: AccountWithdrawalControllerTest.cs
 // Date Created: 2019-10-06
-//
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -36,6 +36,57 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
     {
         public AccountWithdrawalControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
+        }
+
+        [Fact]
+        public void GetAsync_WithCurrencyAll_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockAccountService = new Mock<IAccountService>();
+
+            var mockBundlesService = new Mock<IBundlesService>();
+
+            var controller = new AccountWithdrawalController(mockAccountService.Object, mockBundlesService.Object, TestMapper);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = controller.Get(Currency.All);
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public void GetAsync_WithCurrencyMoney_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var mockAccountService = new Mock<IAccountService>();
+
+            var mockBundlesService = new Mock<IBundlesService>();
+
+            var bundle = new List<Bundle>
+            {
+                new Bundle(new Token(100), new Price(new Money(50)))
+            };
+
+            mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
+
+            var controller = new AccountWithdrawalController(mockAccountService.Object, mockBundlesService.Object, TestMapper);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = controller.Get(Currency.Money);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            mockBundlesService.Verify(accountService => accountService.FetchWithdrawalMoneyBundles(), Times.Once);
         }
 
         [Fact]
@@ -172,58 +223,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                     It.IsAny<string>(),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
-        }
-
-        [Fact]
-        public void GetAsync_WithCurrencyMoney_ShouldBeOfTypeOkObjectResult()
-        {
-            // Arrange
-            var mockAccountService = new Mock<IAccountService>();
-
-            var mockBundlesService = new Mock<IBundlesService>();
-
-            var bundle = new List<Bundle>()
-            {
-                new Bundle(new Token(100), new Price(new Money(50)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles())
-                .Returns(bundle.ToImmutableHashSet())
-                .Verifiable();
-
-            var controller = new AccountWithdrawalController(mockAccountService.Object, mockBundlesService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = controller.Get(Currency.Money);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            mockBundlesService.Verify(accountService => accountService.FetchWithdrawalMoneyBundles(), Times.Once);
-        }
-
-        [Fact]
-        public void GetAsync_WithCurrencyAll_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockAccountService = new Mock<IAccountService>();
-
-            var mockBundlesService = new Mock<IBundlesService>();
-
-            var controller = new AccountWithdrawalController(mockAccountService.Object, mockBundlesService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-            // Act
-            var result = controller.Get(Currency.All);
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

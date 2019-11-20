@@ -8,28 +8,17 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Castle.Core.Logging;
-
 using eDoxa.Clans.Api.Areas.Clans.DomainEvents;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.DomainEvents;
-using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Mocks;
-using eDoxa.ServiceBus.Abstractions;
-
-using FluentAssertions.Equivalency;
-
-using Microsoft.Extensions.Logging;
 
 using Moq;
 
 using Xunit;
-
-using IMemberInfo = eDoxa.Clans.Domain.Models.IMemberInfo;
 
 namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
 {

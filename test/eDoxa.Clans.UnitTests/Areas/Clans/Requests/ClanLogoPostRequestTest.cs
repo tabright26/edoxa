@@ -9,14 +9,10 @@ using System.IO;
 using eDoxa.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
-
-using Newtonsoft.Json;
 
 using Xunit;
 

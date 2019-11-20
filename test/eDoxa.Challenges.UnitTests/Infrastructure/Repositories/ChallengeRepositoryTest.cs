@@ -20,7 +20,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Repositories
 {
     public sealed class ChallengeRepositoryTest : UnitTest
     {
-        public ChallengeRepositoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ChallengeRepositoryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 

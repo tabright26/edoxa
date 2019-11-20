@@ -1,6 +1,6 @@
 ﻿// Filename: TransactionsControllerTest.cs
-// Date Created: 2019-09-16
-//
+// Date Created: 2019-10-06
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -28,7 +28,6 @@ using FluentAssertions;
 
 using FluentValidation.Results;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Moq;
@@ -114,6 +113,87 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
         }
 
         [Fact]
+        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockTransactionQuery = new Mock<ITransactionQuery>();
+            var mockAccountService = new Mock<IAccountService>();
+
+            var account = new Account(new UserId());
+
+            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+
+            mockAccountService.Setup(
+                    accountService => accountService.CreateTransactionAsync(
+                        It.IsAny<IAccount>(),
+                        It.IsAny<decimal>(),
+                        It.IsAny<Currency>(),
+                        It.IsAny<TransactionId>(),
+                        It.IsAny<TransactionType>(),
+                        It.IsAny<TransactionMetadata>(),
+                        It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ValidationFailure("test", "test message").ToResult())
+                .Verifiable();
+
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await controller.PostAsync(
+                new CreateTransactionRequest(
+                    new Guid(),
+                    "Deposit",
+                    "Money",
+                    50));
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+
+            mockAccountService.Verify(
+                accountService => accountService.CreateTransactionAsync(
+                    It.IsAny<IAccount>(),
+                    It.IsAny<decimal>(),
+                    It.IsAny<Currency>(),
+                    It.IsAny<TransactionId>(),
+                    It.IsAny<TransactionType>(),
+                    It.IsAny<TransactionMetadata>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
+        }
+
+        [Fact]
+        public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
+        {
+            // Arrange
+            var mockTransactionQuery = new Mock<ITransactionQuery>();
+            var mockAccountService = new Mock<IAccountService>();
+
+            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
+
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await controller.PostAsync(
+                new CreateTransactionRequest(
+                    new Guid(),
+                    "Deposit",
+                    "Money",
+                    50));
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+        }
+
+        [Fact]
         public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
@@ -128,24 +208,21 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                 TransactionType.Deposit,
                 new UtcNowDateTimeProvider());
 
-            mockAccountService
-                .Setup(
-                    accountService => accountService.FindUserAccountAsync(
-                        It.IsAny<UserId>()))
-                .ReturnsAsync(account)
-                .Verifiable();
+            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
-            mockAccountService
-                .Setup(
+            mockAccountService.Setup(
                     accountService => accountService.CreateTransactionAsync(
-                        It.IsAny<IAccount>(), It.IsAny<decimal>(), It.IsAny<Currency>(), It.IsAny<TransactionId>(), It.IsAny<TransactionType>(), It.IsAny<TransactionMetadata>(), It.IsAny<CancellationToken>()))
+                        It.IsAny<IAccount>(),
+                        It.IsAny<decimal>(),
+                        It.IsAny<Currency>(),
+                        It.IsAny<TransactionId>(),
+                        It.IsAny<TransactionType>(),
+                        It.IsAny<TransactionMetadata>(),
+                        It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ValidationResult())
                 .Verifiable();
 
-            mockTransactionQuery
-                .Setup(
-                    transactionQuery => transactionQuery.FindTransactionAsync(
-                        It.IsAny<TransactionId>()))
+            mockTransactionQuery.Setup(transactionQuery => transactionQuery.FindTransactionAsync(It.IsAny<TransactionId>()))
                 .ReturnsAsync(transaction)
                 .Verifiable();
 
@@ -158,84 +235,32 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(new CreateTransactionRequest(new Guid(), "Deposit", "Money", 50));
+            var result = await controller.PostAsync(
+                new CreateTransactionRequest(
+                    new Guid(),
+                    "Deposit",
+                    "Money",
+                    50));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
             mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.CreateTransactionAsync(
-                It.IsAny<IAccount>(), It.IsAny<decimal>(), It.IsAny<Currency>(), It.IsAny<TransactionId>(), It.IsAny<TransactionType>(), It.IsAny<TransactionMetadata>(), It.IsAny<CancellationToken>()), Times.Once);
+
+            mockAccountService.Verify(
+                accountService => accountService.CreateTransactionAsync(
+                    It.IsAny<IAccount>(),
+                    It.IsAny<decimal>(),
+                    It.IsAny<Currency>(),
+                    It.IsAny<TransactionId>(),
+                    It.IsAny<TransactionType>(),
+                    It.IsAny<TransactionMetadata>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
 
             mockTransactionQuery.Verify(transactionQuery => transactionQuery.FindTransactionAsync(It.IsAny<TransactionId>()), Times.Once);
 
             mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
-        }
-
-        [Fact]
-        public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var mockTransactionQuery = new Mock<ITransactionQuery>();
-            var mockAccountService = new Mock<IAccountService>();
-
-            mockAccountService
-                .Setup(
-                    accountService => accountService.FindUserAccountAsync(
-                        It.IsAny<UserId>()))
-                .Verifiable();
-
-            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await controller.PostAsync(new CreateTransactionRequest(new Guid(), "Deposit", "Money", 50));
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockTransactionQuery = new Mock<ITransactionQuery>();
-            var mockAccountService = new Mock<IAccountService>();
-
-            var account = new Account(new UserId());
-
-            mockAccountService
-                .Setup(
-                    accountService => accountService.FindUserAccountAsync(
-                        It.IsAny<UserId>()))
-                .ReturnsAsync(account)
-                .Verifiable();
-
-            mockAccountService
-                .Setup(
-                    accountService => accountService.CreateTransactionAsync(
-                        It.IsAny<IAccount>(), It.IsAny<decimal>(), It.IsAny<Currency>(), It.IsAny<TransactionId>(), It.IsAny<TransactionType>(), It.IsAny<TransactionMetadata>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationFailure("test", "test message").ToResult())
-                .Verifiable();
-
-            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await controller.PostAsync(new CreateTransactionRequest(new Guid(), "Deposit", "Money", 50));
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.CreateTransactionAsync(
-                It.IsAny<IAccount>(), It.IsAny<decimal>(), It.IsAny<Currency>(), It.IsAny<TransactionId>(), It.IsAny<TransactionType>(), It.IsAny<TransactionMetadata>(), It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }

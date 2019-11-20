@@ -31,15 +31,13 @@ using Moq;
 
 using Refit;
 
-using StackExchange.Redis.Extensions.Core.Extensions;
-
 using Xunit;
 
 namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 {
     public sealed class ChallengeServiceTest : UnitTest
     {
-        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
         }
 
@@ -307,7 +305,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
 
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
-                Times.Once);
+                Times.Exactly(2));
 
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
@@ -361,16 +359,13 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             await challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
 
             // Assert
-            var commitCount = challenges.Count;
-            challenges.ForEach(challenge => commitCount += challenge.Participants.Count);
-
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
-                Times.Once());
+                Times.Exactly(2));
 
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
-                Times.Exactly(commitCount));
+                Times.Exactly(challenges.SelectMany(x => x.Participants).Count() + 1));
         }
 
         [Fact]
@@ -422,7 +417,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             // Assert
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
-                Times.Once());
+                Times.Exactly(2));
 
             mockLogger.Verify(Times.Exactly(5));
         }
@@ -463,18 +458,15 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             await challengeService.SynchronizeChallengesAsync(Game.LeagueOfLegends, new UtcNowDateTimeProvider());
 
             // Assert
-            var commitCount = 0;
-            challenges.ForEach(challenge => commitCount += challenge.Participants.Count);
-
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.FetchChallengesAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
-                Times.Once());
+                Times.Exactly(2));
 
             mockChallengeRepository.Verify(
                 challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
                 Times.Exactly(challenges.Count));
 
-            mockLogger.Verify(Times.Exactly(commitCount));
+            mockLogger.Verify(Times.Exactly(challenges.SelectMany(challenge => challenge.Participants).Count() - challenges.Count + 1));
         }
     }
 }
