@@ -35,7 +35,7 @@ RUN apt-get install bash
 # Make our shell script executable
 RUN chmod +x env.sh
 RUN ./env.sh
-RUN mv env.sh /app/ClientApp/build
+RUN mv env-config.js /app/ClientApp/build
 ENTRYPOINT ["dotnet", "eDoxa.Web.Spa.dll"]
 
 EXPOSE 80
