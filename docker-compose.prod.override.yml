@@ -185,6 +185,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - PUBLIC_URL=https://edoxa.gg
       - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
       - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
       - REACT_APP_CLIENT_ID=web.spa
