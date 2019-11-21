@@ -9,6 +9,7 @@ using System;
 using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Seedwork.Application.DevTools.Attributes
 {
@@ -19,7 +20,7 @@ namespace eDoxa.Seedwork.Application.DevTools.Attributes
     {
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
-            var environment = context.HttpContext.RequestServices.GetService<IHostingEnvironment>();
+            var environment = context.HttpContext.RequestServices.GetService<IWebHostEnvironment>();
 
             if (environment.IsProduction())
             {

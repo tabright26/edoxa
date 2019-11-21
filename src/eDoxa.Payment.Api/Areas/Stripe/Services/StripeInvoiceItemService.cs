@@ -35,7 +35,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             await this.CreateAsync(
                 new InvoiceItemCreateOptions
                 {
-                    CustomerId = customerId,
+                    Customer = customerId,
                     Currency = Options.Currency,
                     Amount = amount,
                     Description = description,

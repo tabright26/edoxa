@@ -7,15 +7,16 @@
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Seedwork.Infrastructure
+namespace eDoxa.Seedwork.Application
 {
     public abstract class DbContextSeeder : IDbContextSeeder
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
-        protected DbContextSeeder(IHostingEnvironment environment, ILogger logger)
+        protected DbContextSeeder(IWebHostEnvironment environment, ILogger logger)
         {
             _environment = environment;
             Logger = logger;

@@ -42,7 +42,7 @@ namespace eDoxa.Challenges.Web.Jobs
             TelemetryDebugWriter.IsTracingDisabled = true;
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Web.Jobs
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {

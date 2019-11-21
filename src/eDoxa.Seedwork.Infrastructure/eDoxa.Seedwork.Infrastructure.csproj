@@ -14,9 +14,9 @@
     <PackageReference Include="eDoxa.Storage.Azure" Version="1.0.0-CI-20191002-025905" />
     <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="1.1.16" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.0" />
-    <PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.1.0" />
-    <PackageReference Include="Microsoft.Azure.Storage.File" Version="11.1.0" />
+    <PackageReference Include="Microsoft.Azure.Storage.Blob" Version="11.1.1" />
+    <PackageReference Include="Microsoft.Azure.Storage.Common" Version="11.1.1" />
+    <PackageReference Include="Microsoft.Azure.Storage.File" Version="11.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.0.1" />

@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
@@ -16,9 +17,9 @@ namespace eDoxa.Notifications.Api.Infrastructure.Data
     internal sealed class NotificationsDbContextCleaner : IDbContextCleaner
     {
         private readonly NotificationsDbContext _context;
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
-        public NotificationsDbContextCleaner(IHostingEnvironment environment, NotificationsDbContext context)
+        public NotificationsDbContextCleaner(IWebHostEnvironment environment, NotificationsDbContext context)
         {
             _environment = environment;
             _context = context;

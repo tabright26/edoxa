@@ -6,18 +6,20 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data
 {
     internal sealed class IdentityDbContextCleaner : IDbContextCleaner
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         private readonly IdentityDbContext _context;
 
-        public IdentityDbContextCleaner(IHostingEnvironment environment, IdentityDbContext context)
+        public IdentityDbContextCleaner(IWebHostEnvironment environment, IdentityDbContext context)
         {
             _environment = environment;
             _context = context;

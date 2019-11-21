@@ -9,6 +9,7 @@ using eDoxa.Web.Status.Extensions;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -37,7 +38,7 @@ namespace eDoxa.Web.Status
             services.AddHealthChecksUI(Configuration);
         }
 
-        public void Configure(IApplicationBuilder application, IHostingEnvironment environment)
+        public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
         {
             if (environment.IsDevelopment())
             {

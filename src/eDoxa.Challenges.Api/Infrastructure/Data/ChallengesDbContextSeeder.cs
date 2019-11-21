@@ -14,6 +14,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure;
@@ -31,7 +32,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
         public ChallengesDbContextSeeder(
             ChallengesDbContext context,
             IChallengeRepository challengeRepository,
-            IHostingEnvironment environment,
+            IWebHostEnvironment environment,
             ILogger<ChallengesDbContextSeeder> logger
         ) : base(environment, logger)
         {

@@ -15,6 +15,7 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Security;
@@ -39,7 +40,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             IBundlesService bundlesService,
             IAccountRepository accountRepository,
             IChallengeRepository challengeRepository,
-            IHostingEnvironment environment,
+            IWebHostEnvironment environment,
             ILogger<CashierDbContextSeeder> logger,
             IChallengePayoutFactory challengePayoutFactory
         ) : base(environment, logger)

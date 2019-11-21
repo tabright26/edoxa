@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 using Polly;
 
-namespace eDoxa.Seedwork.Infrastructure.Extensions
+namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class WebHostExtensions
     {

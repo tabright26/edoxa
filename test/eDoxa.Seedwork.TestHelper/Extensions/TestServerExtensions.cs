@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Infrastructure;
 

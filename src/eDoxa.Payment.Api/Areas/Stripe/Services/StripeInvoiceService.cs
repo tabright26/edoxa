@@ -44,7 +44,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             await this.CreateAsync(
                 new InvoiceCreateOptions
                 {
-                    CustomerId = customerId,
+                    Customer = customerId,
                     AutoAdvance = true,
                     Metadata = new Dictionary<string, string>
                     {

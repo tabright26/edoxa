@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-namespace eDoxa.Seedwork.Infrastructure
+namespace eDoxa.Seedwork.Application
 {
     public interface IDbContextCleaner
     {

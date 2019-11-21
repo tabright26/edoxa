@@ -71,7 +71,7 @@ namespace eDoxa.Challenges.Web.Aggregator
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
@@ -82,7 +82,7 @@ namespace eDoxa.Challenges.Web.Aggregator
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {

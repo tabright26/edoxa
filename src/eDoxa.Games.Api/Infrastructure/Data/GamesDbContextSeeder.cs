@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +19,7 @@ namespace eDoxa.Games.Api.Infrastructure.Data
     {
         private readonly GamesDbContext _context;
 
-        public GamesDbContextSeeder(GamesDbContext context, IHostingEnvironment environment, ILogger<GamesDbContextSeeder> logger) : base(environment, logger)
+        public GamesDbContextSeeder(GamesDbContext context, IWebHostEnvironment environment, ILogger<GamesDbContextSeeder> logger) : base(environment, logger)
         {
             _context = context;
         }

@@ -11,6 +11,7 @@ using IdentityServer4.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
@@ -20,11 +21,11 @@ namespace eDoxa.Seedwork.Application
     // TODO: This middleware must be replaced by the default Exception Handler Middleware in .Net Core 3.0.
     public sealed class ExceptionHandlerMiddleware
     {
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         private readonly ILogger<ExceptionHandlerMiddleware> _logger;
         private readonly RequestDelegate _next;
 
-        public ExceptionHandlerMiddleware(IHostingEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger, RequestDelegate next)
+        public ExceptionHandlerMiddleware(IWebHostEnvironment environment, ILogger<ExceptionHandlerMiddleware> logger, RequestDelegate next)
         {
             _environment = environment;
             _logger = logger;
