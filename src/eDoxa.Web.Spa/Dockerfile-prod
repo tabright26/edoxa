@@ -34,8 +34,6 @@ COPY /src/eDoxa.Web.Spa/ClientApp/.env .
 RUN apt-get install bash
 # Make our shell script executable
 RUN chmod +x env.sh
-RUN ./env.sh
-RUN mv env-config.js /app/ClientApp/build
-ENTRYPOINT ["dotnet", "eDoxa.Web.Spa.dll"]
+ENTRYPOINT ["./env.sh && mv env-config.js /app/ClientApp/build && dotnet eDoxa.Web.Spa.dll"]
 
 EXPOSE 80
