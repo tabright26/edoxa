@@ -31,7 +31,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 {
                     challengeStats.ToTable("ScoringItem");
 
-                    challengeStats.HasForeignKey("ChallengeId");
+                    challengeStats.WithOwner().HasForeignKey("ChallengeId");
 
                     challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 

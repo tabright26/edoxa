@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 {
                     challengeStats.ToTable("Bucket");
 
-                    challengeStats.HasForeignKey("ChallengeId");
+                    challengeStats.WithOwner().HasForeignKey("ChallengeId");
 
                     challengeStats.Property(bucket => bucket.PrizeAmount).HasColumnType("decimal(11, 2)");
 

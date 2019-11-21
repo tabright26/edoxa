@@ -99,7 +99,7 @@ namespace eDoxa.Payment.Api
                     Configuration.GetSqlServerConnectionString()!,
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
@@ -114,8 +114,7 @@ namespace eDoxa.Payment.Api
                     {
                         options.Filters.Add(new ProducesAttribute("application/json"));
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>()
                 .AddFluentValidation(
                     config =>

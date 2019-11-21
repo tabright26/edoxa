@@ -62,7 +62,7 @@ namespace eDoxa.Web.Spa
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc();
 
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/build");
         }

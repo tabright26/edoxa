@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.Monitoring</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.Monitoring</RootNamespace>
     <LangVersion>8.0</LangVersion>
@@ -17,7 +17,7 @@
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="2.2.4" />
     <PackageReference Include="AspNetCore.HealthChecks.SignalR" Version="2.2.0" />
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="2.2.1" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="2.2.33" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.0.4" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
   </ItemGroup>

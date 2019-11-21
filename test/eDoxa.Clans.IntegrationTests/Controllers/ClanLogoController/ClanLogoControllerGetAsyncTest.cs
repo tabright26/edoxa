@@ -21,7 +21,7 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Http;
 
 using Xunit;
 

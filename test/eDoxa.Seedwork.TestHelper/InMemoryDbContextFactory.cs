@@ -45,7 +45,7 @@ namespace eDoxa.Seedwork.TestHelper
 
         private TDbContext CreateInstance()
         {
-            return (TDbContext) Activator.CreateInstance(typeof(TDbContext), this.CreateOptions());
+            return (TDbContext) Activator.CreateInstance(typeof(TDbContext), this.CreateOptions())!;
         }
 
         private DbContextOptions<TDbContext> CreateOptions()

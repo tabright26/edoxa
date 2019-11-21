@@ -97,7 +97,7 @@ namespace eDoxa.Notifications.Api
                     Configuration.GetSqlServerConnectionString()!,
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
@@ -109,13 +109,8 @@ namespace eDoxa.Notifications.Api
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
 
-            services.AddMvc(
-                    options =>
-                    {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
-                    })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
+            services.AddControllers()
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddDevTools<NotificationsDbContextSeeder, NotificationsDbContextCleaner>()
                 .AddFluentValidation(
                     config =>

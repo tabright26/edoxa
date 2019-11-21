@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 {
                     matchStats.ToTable("Stat");
 
-                    matchStats.HasForeignKey("MatchId");
+                    matchStats.WithOwner().HasForeignKey("MatchId");
 
                     matchStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 

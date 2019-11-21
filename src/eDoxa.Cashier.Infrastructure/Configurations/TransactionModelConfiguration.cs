@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 {
                     transactionMetadata.ToTable("TransactionMetadata");
 
-                    transactionMetadata.HasForeignKey("TransactionId");
+                    transactionMetadata.WithOwner().HasForeignKey("TransactionId");
 
                     transactionMetadata.Property<Guid>("Id").ValueGeneratedOnAdd();
 

@@ -12,7 +12,7 @@ using eDoxa.Clans.TestHelper.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Http;
 
 using Xunit;
 

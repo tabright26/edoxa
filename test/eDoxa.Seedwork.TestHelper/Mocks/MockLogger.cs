@@ -7,7 +7,6 @@
 using System;
 
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Internal;
 
 using Moq;
 
@@ -21,7 +20,7 @@ namespace eDoxa.Seedwork.TestHelper.Mocks
                 logger => logger.Log(
                     It.IsAny<LogLevel>(),
                     It.IsAny<EventId>(),
-                    It.IsAny<FormattedLogValues>(),
+                    It.IsAny<object>(),
                     It.IsAny<Exception>(),
                     It.IsAny<Func<object, Exception, string>>()
                 )
@@ -33,7 +32,7 @@ namespace eDoxa.Seedwork.TestHelper.Mocks
             this.Verify(logger => logger.Log(
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
-                It.IsAny<FormattedLogValues>(),
+                It.IsAny<object>(),
                 It.IsAny<Exception>(),
                 It.IsAny<Func<object, Exception, string>>()), times);
         }

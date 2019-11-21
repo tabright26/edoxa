@@ -7,6 +7,8 @@
 using System;
 using System.Threading.Tasks;
 
+using IdentityServer4.Extensions;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
