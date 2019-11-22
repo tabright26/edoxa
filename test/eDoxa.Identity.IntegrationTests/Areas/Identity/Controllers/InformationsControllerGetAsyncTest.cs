@@ -18,7 +18,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -107,7 +106,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.DeserializeAsync<UserInformationsResponse>();
+                    var profileResponse = await response.Content.ReadAsAsync<UserInformationsResponse>();
 
                     //profileResponse.Should().BeEquivalentTo(mapper.Map<UserInformationsResponse>(profile));
                 });

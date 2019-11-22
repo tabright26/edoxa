@@ -17,7 +17,6 @@ using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -69,7 +68,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var participantResponse = await response.DeserializeAsync<ParticipantResponse>();
+            var participantResponse = await response.Content.ReadAsAsync<ParticipantResponse>();
             participantResponse.Should().NotBeNull();
             participantResponse?.Id.Should().Be(participantId);
         }

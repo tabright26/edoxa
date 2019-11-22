@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
 

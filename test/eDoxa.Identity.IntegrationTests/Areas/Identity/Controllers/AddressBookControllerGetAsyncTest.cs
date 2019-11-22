@@ -19,7 +19,6 @@ using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -118,7 +117,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.DeserializeAsync<ICollection<UserAddressResponse>>();
+                    var addressResponse = await response.Content.ReadAsAsync<ICollection<UserAddressResponse>>();
 
                     addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<UserAddressResponse>>(addressBook));
                 });

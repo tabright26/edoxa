@@ -29,7 +29,7 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
             return new ClansDbContext(
                 new DbContextOptionsBuilder<ClansDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
-                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name))
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name))
                     .Options);
         }
     }

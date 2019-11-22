@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Security;
-using eDoxa.Swagger.Client.Extensions;
+using eDoxa.Swagger.Extensions;
 
 using IdentityServer4;
 using IdentityServer4.Models;

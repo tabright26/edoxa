@@ -16,7 +16,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -37,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(PasswordResetPostRequest request)
         {
-            return await _httpClient.PostAsync("api/password/reset", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync("api/password/reset", request);
         }
 
         private HttpClient _httpClient;

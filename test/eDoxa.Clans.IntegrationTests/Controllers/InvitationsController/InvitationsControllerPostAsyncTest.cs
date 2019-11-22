@@ -16,7 +16,6 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -36,9 +35,9 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(InvitationPostRequest invitationPostRequest)
+        private async Task<HttpResponseMessage> ExecuteAsync(InvitationPostRequest invitationPostRequest )
         {
-            return await _httpClient.PostAsync("api/invitations", new JsonContent(invitationPostRequest));
+            return await _httpClient.PostAsJsonAsync("api/invitations", invitationPostRequest);
         }
 
         [Fact]

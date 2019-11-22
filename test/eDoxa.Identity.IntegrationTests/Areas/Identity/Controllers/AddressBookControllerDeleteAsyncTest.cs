@@ -16,7 +16,6 @@ using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -84,7 +83,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                    var message = await response.DeserializeAsync<string>();
+                    var message = await response.Content.ReadAsAsync<string>();
 
                     message.Should().NotBeNullOrWhiteSpace();
                 });

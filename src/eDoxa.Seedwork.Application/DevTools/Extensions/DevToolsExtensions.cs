@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Application.DevTools.Controllers;
-using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.Extensions.DependencyInjection;
 

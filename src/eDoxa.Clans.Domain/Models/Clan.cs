@@ -198,7 +198,7 @@ namespace eDoxa.Clans.Domain.Models
             return Members.Single(member => member.Id == memberId);
         }
 
-        public void Update(string summary)
+        public void Update(string? summary)
         {
             Summary = summary;
         }

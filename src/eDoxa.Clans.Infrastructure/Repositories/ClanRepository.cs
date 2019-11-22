@@ -18,7 +18,6 @@ using eDoxa.Storage.Azure.Extensions;
 
 using LinqKit;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Storage;
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.EntityFrameworkCore;
@@ -85,15 +84,15 @@ namespace eDoxa.Clans.Infrastructure.Repositories
             return memoryStream;
         }
 
-        public async Task UploadLogoAsync(ClanId clanId, IFormFile logo)
+        public async Task UploadLogoAsync(ClanId clanId, Stream stream, string fileName)
         {
             var container = _storageAccount.GetBlobContainer();
 
             var directory = container.GetDirectoryReference($"organizations/clans/{clanId}/logo");
 
-            var blockBlob = directory.GetBlockBlobReference($"{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}{Path.GetExtension(logo.FileName)}");
+            var blockBlob = directory.GetBlockBlobReference($"{new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds()}{Path.GetExtension(fileName)}");
 
-            await blockBlob.UploadFromStreamAsync(logo.OpenReadStream());
+            await blockBlob.UploadFromStreamAsync(stream);
         }
 
         public async Task DeleteLogoAsync(ClanId clanId)

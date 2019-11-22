@@ -18,7 +18,6 @@ using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -97,7 +96,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var transactions = await response.DeserializeAsync<TransactionResponse[]>();
+            var transactions = await response.Content.ReadAsAsync<TransactionResponse[]>();
             transactions.Should().HaveCount(account.Transactions.Count);
         }
     }

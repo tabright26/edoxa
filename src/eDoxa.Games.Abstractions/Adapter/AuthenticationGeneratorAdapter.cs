@@ -23,7 +23,7 @@ namespace eDoxa.Games.Abstractions.Adapter
 
         public async Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, object request)
         {
-            return await this.GenerateAuthenticationAsync(userId, JsonConvert.DeserializeObject<TRequest>(request.ToString()));
+            return await this.GenerateAuthenticationAsync(userId, JsonConvert.DeserializeObject<TRequest>(request.ToString()!));
         }
     }
 }

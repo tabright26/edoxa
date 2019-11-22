@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
             return new IdentityDbContext(
                 new DbContextOptionsBuilder<IdentityDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
-                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name)
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name)
                     )
                     .Options
             );

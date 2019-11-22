@@ -16,7 +16,6 @@ using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -97,7 +96,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var balanceResponse = await response.DeserializeAsync<BalanceResponse>();
+            var balanceResponse = await response.Content.ReadAsAsync<BalanceResponse>();
             balanceResponse.Should().NotBeNull();
             balanceResponse?.Currency.Should().Be(currency.Name);
             balanceResponse?.Available.Should().Be(balance.Available);

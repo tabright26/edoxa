@@ -10,7 +10,6 @@ using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 
 using Microsoft.AspNetCore;

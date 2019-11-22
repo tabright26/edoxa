@@ -16,8 +16,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -38,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(InformationsPutRequest request)
         {
-            return await _httpClient.PutAsync("api/informations", new JsonContent(request));
+            return await _httpClient.PutAsJsonAsync("api/informations", request);
         }
 
         private HttpClient _httpClient;
@@ -69,7 +67,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var message = await response.DeserializeAsync<string>();
+            var message = await response.Content.ReadAsAsync<string>();
             message.Should().NotBeNullOrWhiteSpace();
         }
     }

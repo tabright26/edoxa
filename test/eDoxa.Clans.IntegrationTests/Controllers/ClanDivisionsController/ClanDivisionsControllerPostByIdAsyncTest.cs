@@ -16,7 +16,6 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -38,7 +37,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId, DivisionPostRequest request)
         {
-            return await _httpClient.PostAsync($"api/clans/{clanId}/divisions", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync($"api/clans/{clanId}/divisions", request);
         }
 
         [Fact]

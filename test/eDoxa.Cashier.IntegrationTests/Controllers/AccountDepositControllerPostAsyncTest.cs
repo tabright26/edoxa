@@ -17,8 +17,6 @@ using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -41,7 +39,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(Currency currency, decimal amount)
         {
-            return await _httpClient.PostAsync($"api/account/deposit/{currency}", new JsonContent(amount));
+            return await _httpClient.PostAsJsonAsync($"api/account/deposit/{currency}", amount);
         }
 
         [Fact]
@@ -97,7 +95,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var message = await response.DeserializeAsync<string>();
+            var message = await response.Content.ReadAsAsync<string>();
             message.Should().NotBeNull();
         }
     }

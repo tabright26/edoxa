@@ -17,8 +17,6 @@ using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -41,7 +39,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId, AddressPutRequest request)
         {
-            return await _httpClient.PutAsync($"api/address-book/{addressId}", new JsonContent(request));
+            return await _httpClient.PutAsJsonAsync($"api/address-book/{addressId}", request);
         }
 
         private HttpClient _httpClient;
@@ -93,7 +91,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                    var message = await response.DeserializeAsync<string>();
+                    var message = await response.Content.ReadAsAsync<string>();
 
                     message.Should().NotBeNullOrWhiteSpace();
                 });

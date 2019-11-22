@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
             return new CashierDbContext(
                 new DbContextOptionsBuilder<CashierDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
-                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name)
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name)
                     )
                     .Options
             );

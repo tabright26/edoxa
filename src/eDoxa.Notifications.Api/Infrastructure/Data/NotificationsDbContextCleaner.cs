@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.Hosting;
 

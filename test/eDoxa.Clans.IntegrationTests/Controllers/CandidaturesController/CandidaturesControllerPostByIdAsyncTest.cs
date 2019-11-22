@@ -1,11 +1,12 @@
 ﻿// Filename: CandidaturesControllerPostByIdAsyncTest.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
@@ -15,15 +16,12 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
 {
@@ -37,7 +35,11 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
 
         private async Task<HttpResponseMessage> ExecuteAsync(CandidatureId candidatureId)
         {
-            return await _httpClient.PostAsync($"api/candidatures/{candidatureId}", new JsonContent(""));
+            return await _httpClient.PostAsJsonAsync(
+                $"api/candidatures/{candidatureId}",
+                new
+                {
+                });
         }
 
         [Fact]

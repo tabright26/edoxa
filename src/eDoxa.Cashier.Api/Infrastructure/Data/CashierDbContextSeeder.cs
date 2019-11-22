@@ -17,7 +17,6 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Infrastructure;
 using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;

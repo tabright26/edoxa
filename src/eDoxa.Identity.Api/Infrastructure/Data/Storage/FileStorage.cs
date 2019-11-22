@@ -27,7 +27,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<Role>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/roles.csv"));
 
@@ -54,7 +54,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<RoleClaim>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/roles.claims.csv"));
 
@@ -83,7 +83,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<UserClaim>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.claims.csv"));
 
@@ -112,7 +112,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<User>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
 
@@ -163,7 +163,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<UserRole>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.roles.csv"));
 

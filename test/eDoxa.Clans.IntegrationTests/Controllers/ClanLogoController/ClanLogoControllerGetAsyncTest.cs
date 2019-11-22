@@ -21,8 +21,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http;
-
 using Xunit;
 
 using Claim = System.Security.Claims.Claim;
@@ -110,7 +108,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
                     file.Position = 0;
                     file.CopyTo(logo);
 
-                    await clanRepository.UploadLogoAsync(clan.Id, new FormFile(logo, 0, logo.Length, "edoxa", "testImage"));
+                    await clanRepository.UploadLogoAsync(clan.Id, logo, "testImage");
                 });
 
             // Act

@@ -29,7 +29,7 @@ namespace eDoxa.Notifications.Api.Infrastructure.Data.Migrations
             return new NotificationsDbContext(
                 new DbContextOptionsBuilder<NotificationsDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
-                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name))
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name))
                     .Options);
         }
     }

@@ -16,7 +16,6 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -84,7 +83,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<ClanResponse[]>();
+            var challengeResponses = await response.Content.ReadAsAsync<ClanResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

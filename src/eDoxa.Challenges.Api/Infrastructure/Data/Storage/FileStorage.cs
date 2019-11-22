@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<User>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
 
@@ -48,7 +48,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<IChallenge>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/challenges.csv"));
 

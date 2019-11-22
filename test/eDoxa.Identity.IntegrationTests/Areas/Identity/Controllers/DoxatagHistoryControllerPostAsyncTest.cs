@@ -19,8 +19,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -41,7 +39,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(DoxatagPostRequest request)
         {
-            return await _httpClient.PostAsync("api/doxatag-history", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync("api/doxatag-history", request);
         }
 
         private HttpClient _httpClient;
@@ -87,7 +85,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var message = await response.DeserializeAsync<string>();
+            var message = await response.Content.ReadAsAsync<string>();
 
             message.Should().NotBeNullOrWhiteSpace();
         }

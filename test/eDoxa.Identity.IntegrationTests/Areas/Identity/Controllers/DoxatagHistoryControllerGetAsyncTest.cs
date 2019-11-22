@@ -22,7 +22,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -124,7 +123,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var doxatagResponse = (await response.DeserializeAsync<IEnumerable<UserDoxatagResponse>>()).First();
+                    var doxatagResponse = (await response.Content.ReadAsAsync<IEnumerable<UserDoxatagResponse>>()).First();
 
                     var expectedDoxatagResponse = mapper.Map<IEnumerable<UserDoxatagResponse>>(user.DoxatagHistory).First();
 

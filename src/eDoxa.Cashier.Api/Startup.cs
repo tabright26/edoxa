@@ -100,7 +100,7 @@ namespace eDoxa.Cashier.Api
                     Configuration.GetSqlServerConnectionString(),
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 

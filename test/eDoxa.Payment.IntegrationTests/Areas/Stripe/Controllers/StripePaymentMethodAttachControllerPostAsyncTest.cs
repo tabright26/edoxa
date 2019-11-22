@@ -15,7 +15,6 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -43,7 +42,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(string paymentMethodId, StripePaymentMethodAttachPostRequest request)
         {
-            return await _httpClient.PostAsync($"api/stripe/payment-methods/{paymentMethodId}/attach", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync($"api/stripe/payment-methods/{paymentMethodId}/attach", request);
         }
 
         [Fact]

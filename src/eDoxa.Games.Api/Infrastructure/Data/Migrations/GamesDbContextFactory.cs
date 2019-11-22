@@ -29,7 +29,7 @@ namespace eDoxa.Games.Api.Infrastructure.Data.Migrations
             return new GamesDbContext(
                 new DbContextOptionsBuilder<GamesDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
-                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name))
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name))
                     .Options);
         }
     }

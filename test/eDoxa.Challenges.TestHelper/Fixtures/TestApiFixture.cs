@@ -26,7 +26,7 @@ namespace eDoxa.Challenges.TestHelper.Fixtures
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFixture)).Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFixture))!.Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 

@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<IChallenge>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/challenges.csv"));
 
@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
             new Lazy<ILookup<PayoutEntries, PayoutLevel>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/challenges.payouts.csv"));
 
@@ -84,7 +84,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<User>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
 

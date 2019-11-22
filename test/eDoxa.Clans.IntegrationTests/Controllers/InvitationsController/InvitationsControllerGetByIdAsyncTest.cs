@@ -16,7 +16,6 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -88,7 +87,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var invitationResponse = await response.DeserializeAsync<InvitationResponse>();
+            var invitationResponse = await response.Content.ReadAsAsync<InvitationResponse>();
             invitationResponse!.Id.Should().Be(invitation.Id);
         }
     }

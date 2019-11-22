@@ -12,13 +12,11 @@ using System.Threading.Tasks;
 using Autofac;
 
 using eDoxa.Games.Abstractions.Services;
-using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -45,9 +43,9 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Game game, LeagueOfLegendsRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(Game game, LeagueOfLegendsRequest request )
         {
-            return await _httpClient.PostAsync($"api/games/{game}/authentications", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync($"api/games/{game}/authentications", request);
         }
 
         [Fact]

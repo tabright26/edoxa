@@ -23,7 +23,6 @@ using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -50,7 +49,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId, RegisterChallengeParticipantRequest request)
         {
-            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync($"api/challenges/{challengeId}/participants", request);
         }
 
         [Fact]

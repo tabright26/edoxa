@@ -18,7 +18,6 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.0.4" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.HealthChecks" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

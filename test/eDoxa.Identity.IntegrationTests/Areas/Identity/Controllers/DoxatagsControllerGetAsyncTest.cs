@@ -15,7 +15,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -87,7 +86,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var users = await response.DeserializeAsync<UserDoxatagResponse[]>();
+            var users = await response.Content.ReadAsAsync<UserDoxatagResponse[]>();
 
             users.Should().HaveCount(100);
         }
