@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -50,6 +50,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -273,7 +274,15 @@ namespace eDoxa.Identity.Api
 
             application.UseHttpsRedirection();
             application.UseStaticFiles();
-            application.UseForwardedHeaders();
+
+            // https://github.com/IdentityServer/IdentityServer4/issues/1331
+            application.UseForwardedHeaders(
+                new ForwardedHeadersOptions
+                {
+                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+                    RequireHeaderSymmetry = false
+                });
+
             application.UseCookiePolicy();
 
             application.UseIdentityServer();

@@ -30,12 +30,10 @@ COPY --from=publish /app .
 COPY --from=react-build /app/build /app/ClientApp/build
 COPY /src/eDoxa.Web.Spa/ClientApp/env.sh .
 COPY /src/eDoxa.Web.Spa/ClientApp/.env .
-# Add bash
-RUN apt-get install bash
-# Make our shell script executable
-RUN chmod +x env.sh
-RUN ./env.sh
-RUN mv env.sh /app/ClientApp/build
-ENTRYPOINT ["dotnet", "eDoxa.Web.Spa.dll"]
+RUN apt update
+RUN apt install dos2unix
+RUN dos2unix /app/.env
+RUN chmod +x /app/env.sh
+ENTRYPOINT ["/bin/bash", "-c", "/app/env.sh && mv /app/env-config.js /app/ClientApp/build && dotnet /app/eDoxa.Web.Spa.dll"]
 
 EXPOSE 80
