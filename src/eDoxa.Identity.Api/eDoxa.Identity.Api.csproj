@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
     <AssemblyName>eDoxa.Identity.Api</AssemblyName>
     <RootNamespace>eDoxa.Identity.Api</RootNamespace>
     <LangVersion>8.0</LangVersion>
