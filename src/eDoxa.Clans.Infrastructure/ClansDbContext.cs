@@ -74,7 +74,7 @@ namespace eDoxa.Clans.Infrastructure
                 {
                     builder.ToTable("Clan");
 
-                    builder.Property(clan => clan.Id).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
+                    builder.Property(clan => clan.Id).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired().ValueGeneratedNever();
 
                     builder.Property(clan => clan.Name).IsRequired();
 
@@ -94,7 +94,7 @@ namespace eDoxa.Clans.Infrastructure
                 {
                     builder.ToTable("Clan");
 
-                    builder.Property(clan => clan.Id).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
+                    builder.Property(clan => clan.Id).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired().ValueGeneratedNever();
 
                     builder.Property(clan => clan.Name).IsRequired();
 
@@ -112,7 +112,7 @@ namespace eDoxa.Clans.Infrastructure
                 {
                     builder.ToTable("Member");
 
-                    builder.Property(member => member.Id).HasConversion(memberId => memberId.ToGuid(), value => MemberId.FromGuid(value)).IsRequired();
+                    builder.Property(member => member.Id).HasConversion(memberId => memberId.ToGuid(), value => MemberId.FromGuid(value)).IsRequired().ValueGeneratedNever();
 
                     builder.Property(member => member.UserId).HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value)).IsRequired();
                     builder.Property(member => member.ClanId).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
@@ -127,7 +127,7 @@ namespace eDoxa.Clans.Infrastructure
 
                     builder.Property(candidature => candidature.Id)
                         .HasConversion(candidatureId => candidatureId.ToGuid(), value => CandidatureId.FromGuid(value))
-                        .IsRequired();
+                        .IsRequired().ValueGeneratedNever();
 
                     builder.Property(candidature => candidature.UserId).HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value)).IsRequired();
                     builder.Property(candidature => candidature.ClanId).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
@@ -141,7 +141,7 @@ namespace eDoxa.Clans.Infrastructure
 
                     builder.Property(invitation => invitation.Id)
                         .HasConversion(invitationId => invitationId.ToGuid(), value => InvitationId.FromGuid(value))
-                        .IsRequired();
+                        .IsRequired().ValueGeneratedNever();
 
                     builder.Property(invitation => invitation.UserId).HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value)).IsRequired();
                     builder.Property(invitation => invitation.ClanId).HasConversion(clanId => clanId.ToGuid(), value => ClanId.FromGuid(value)).IsRequired();
@@ -155,7 +155,7 @@ namespace eDoxa.Clans.Infrastructure
 
                     builder.Property(division => division.Id)
                         .HasConversion(divisionId => divisionId.ToGuid(), value => DivisionId.FromGuid(value))
-                        .IsRequired();
+                        .IsRequired().ValueGeneratedNever();
 
                     builder.Property(division => division.Name).IsRequired();
 

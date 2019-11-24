@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
         public override string ToString()
         {
-            return Buckets.ToString();
+            return Buckets.ToString()!;
         }
 
         protected override IEnumerable<object> GetAtomicValues()

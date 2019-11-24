@@ -18,7 +18,6 @@ using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -30,8 +29,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengeHistoryControllerGetAsyncTest : IntegrationTest
     {
-        public ChallengeHistoryControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengeHistoryControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -54,7 +53,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var participant = challenge.Participants.First();
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -74,7 +73,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponse = (await response.DeserializeAsync<ChallengeResponse[]>()).First();
+            var challengeResponse = (await response.Content.ReadAsAsync<ChallengeResponse[]>()).First();
             challengeResponse.Id.Should().Be(challenge.Id);
         }
     }

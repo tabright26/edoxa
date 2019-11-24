@@ -14,9 +14,9 @@ using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Miscs;
 
-using Microsoft.EntityFrameworkCore;
+using LinqKit;
 
-using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
+using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Services
 {
@@ -93,7 +93,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         public async Task<IList<int>> GetCodesForDoxatagAsync(string doxatagName, CancellationToken cancellationToken = default)
         {
-            return await DoxatagHistory.Where(doxatag => doxatag.Name.Contains(doxatagName, StringComparison.OrdinalIgnoreCase))
+            return await DoxatagHistory.AsExpandable()
+                .Where(doxatag => doxatag.Name.Equals(doxatagName, StringComparison.OrdinalIgnoreCase))
                 .Select(doxatag => doxatag.Code)
                 .ToListAsync(cancellationToken);
         }

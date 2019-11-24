@@ -26,7 +26,6 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,7 +41,7 @@ namespace eDoxa.Challenges.Web.Jobs
             TelemetryDebugWriter.IsTracingDisabled = true;
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
@@ -50,7 +49,7 @@ namespace eDoxa.Challenges.Web.Jobs
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -86,7 +85,7 @@ namespace eDoxa.Challenges.Web.Jobs
             // Add the processing server as IHostedService
             services.AddHangfireServer();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -110,21 +109,25 @@ namespace eDoxa.Challenges.Web.Jobs
                     Authorization = new[] {new AllowAnonymousAuthorizationFilter()}
                 });
 
-            application.UseMvc();
+            application.UseRouting();
 
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
-                });
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
                 });
         }
     }

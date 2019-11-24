@@ -24,7 +24,6 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -59,8 +58,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -79,7 +80,7 @@ namespace eDoxa.Identity.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
@@ -88,7 +89,7 @@ namespace eDoxa.Identity.Api
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         private IdentityAppSettings AppSettings { get; }
 
@@ -112,7 +113,7 @@ namespace eDoxa.Identity.Api
                     Configuration.GetSqlServerConnectionString()!,
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
@@ -177,18 +178,17 @@ namespace eDoxa.Identity.Api
                     option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
                 });
 
-            services.AddMvc(
+            services.AddMvc()
+                .AddNewtonsoftJson(
                     options =>
                     {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddDevTools<IdentityDbContextSeeder, IdentityDbContextCleaner>()
                 .AddRazorPagesOptions(
                     options =>
                     {
-                        options.AllowAreas = true;
                         options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
                         options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
                     })
@@ -207,6 +207,9 @@ namespace eDoxa.Identity.Api
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
+
+            
+            services.AddVersionedApiExplorer();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
 
@@ -245,7 +248,9 @@ namespace eDoxa.Identity.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddAuthorization();
+
+            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -285,26 +290,37 @@ namespace eDoxa.Identity.Api
 
             application.UseCookiePolicy();
 
+            application.UseRouting();
+            application.UseCors("default");
+
+            application.UseAuthentication();
             application.UseIdentityServer();
+            application.UseAuthorization();
 
-            application.UseMvcWithDefaultRoute();
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapRazorPages();
+
+                    endpoints.MapDefaultControllerRoute();
+
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
                 });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
-
-            application.UseSwagger(provider, AppSettings);
+            //application.UseSwagger(provider, AppSettings);
         }
     }
 }

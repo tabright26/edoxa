@@ -16,7 +16,6 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -30,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
 {
     public sealed class ClansControllerGetAsyncTest : IntegrationTest
     {
-        public ClansControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public ClansControllerGetAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -45,7 +44,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -65,7 +64,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -84,7 +83,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<ClanResponse[]>();
+            var challengeResponses = await response.Content.ReadAsAsync<ClanResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

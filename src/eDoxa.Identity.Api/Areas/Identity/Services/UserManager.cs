@@ -14,6 +14,8 @@ using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
+using LinqKit;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -61,9 +63,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
         {
             this.ThrowIfDisposed();
 
-            return await Store.DoxatagHistory.GroupBy(doxatag => doxatag.UserId)
-                .Select(doxatagHistory => doxatagHistory.OrderBy(doxatag => doxatag.Timestamp).First())
-                .ToListAsync();
+            var doxatagHistory = await Store.DoxatagHistory.AsExpandable().ToListAsync();
+
+            return doxatagHistory.GroupBy(doxatag => doxatag.UserId)
+                .Select(history => history.OrderBy(doxatag => doxatag.Timestamp).First())
+                .ToList();
         }
 
         public async Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId)

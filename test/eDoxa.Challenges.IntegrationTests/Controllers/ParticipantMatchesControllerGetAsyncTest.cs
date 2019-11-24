@@ -17,7 +17,6 @@ using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -27,8 +26,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
     public sealed class ParticipantMatchesControllerGetAsyncTest : IntegrationTest
     {
-        public ParticipantMatchesControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ParticipantMatchesControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -49,7 +48,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
-            var factory = TestApi.WithClaims();
+            var factory = TestHost.WithClaims();
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -70,7 +69,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var matchResponses = await response.DeserializeAsync<MatchResponse[]>();
+            var matchResponses = await response.Content.ReadAsAsync<MatchResponse[]>();
             matchResponses.Should().HaveCount(participant.Matches.Count);
         }
     }

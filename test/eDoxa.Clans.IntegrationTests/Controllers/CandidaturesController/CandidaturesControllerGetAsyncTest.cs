@@ -16,7 +16,6 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -30,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
 {
     public sealed class CandidaturesControllerGetAsyncTest : IntegrationTest
     {
-        public CandidaturesControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public CandidaturesControllerGetAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -50,7 +49,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
         public async Task WithClanId_ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -71,7 +70,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             var clan = new Clan("ClanName", new UserId());
             var candidature = new Candidature(userId, clan.Id);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -94,7 +93,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<CandidatureResponse[]>();
+            var challengeResponses = await response.Content.ReadAsAsync<CandidatureResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
 
@@ -102,7 +101,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
         public async Task WithUserId_ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -123,7 +122,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             var clan = new Clan("ClanName", new UserId());
             var candidature = new Candidature(userId, clan.Id);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -146,7 +145,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.DeserializeAsync<CandidatureResponse[]>();
+            var challengeResponses = await response.Content.ReadAsAsync<CandidatureResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

@@ -16,7 +16,6 @@ using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -30,15 +29,15 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 {
     public sealed class InvitationsControllerPostAsyncTest : IntegrationTest
     {
-        public InvitationsControllerPostAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public InvitationsControllerPostAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(InvitationPostRequest invitationPostRequest)
+        private async Task<HttpResponseMessage> ExecuteAsync(InvitationPostRequest invitationPostRequest )
         {
-            return await _httpClient.PostAsync("api/invitations", new JsonContent(invitationPostRequest));
+            return await _httpClient.PostAsJsonAsync("api/invitations", invitationPostRequest);
         }
 
         [Fact]
@@ -48,7 +47,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -75,7 +74,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

@@ -32,11 +32,6 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
             return builder.AddAzureBlobStorage(string.Join(';', configuration.GetAzureBlobStorageConnectionString()!.Split(';').Take(4)));
         }
 
-        public static IHealthChecksBuilder AddRabbitMq(this IHealthChecksBuilder builder, IConfiguration configuration)
-        {
-            return builder.AddRabbitMQ(configuration.GetRabbitMqConnectionString());
-        }
-
         public static IHealthChecksBuilder AddAzureKeyVault(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             var connectionString = new KeyVaultConnectionStringBuilder(configuration.GetAzureKeyVaultConnectionString()!);

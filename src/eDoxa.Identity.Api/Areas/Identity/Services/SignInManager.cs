@@ -22,14 +22,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             CustomUserClaimsPrincipalFactory claimsFactory,
             IOptions<IdentityOptions> optionsAccessor,
             ILogger<SignInManager> logger,
-            IAuthenticationSchemeProvider schemes
+            IAuthenticationSchemeProvider schemes,
+            IUserConfirmation<User> confirmation
         ) : base(
             userManager,
             contextAccessor,
             claimsFactory,
             optionsAccessor,
             logger,
-            schemes
+            schemes,
+            confirmation
         )
         {
         }

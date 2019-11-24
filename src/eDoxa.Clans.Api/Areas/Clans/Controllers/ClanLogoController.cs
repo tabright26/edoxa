@@ -69,7 +69,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan does not exist.");
             }
 
-            var result = await _clanService.UploadLogoAsync(clan, userId, logo);
+            var result = await _clanService.UploadLogoAsync(clan, userId, logo.OpenReadStream(), logo.FileName);
 
             if (result.IsValid)
             {
@@ -78,7 +78,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 
             result.AddToModelState(ModelState, null);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

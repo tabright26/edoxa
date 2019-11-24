@@ -69,7 +69,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 {
                     InvoiceSettings = new CustomerInvoiceSettingsOptions
                     {
-                        DefaultPaymentMethodId = paymentMethodId
+                        DefaultPaymentMethod = paymentMethodId
                     }
                 });
         }

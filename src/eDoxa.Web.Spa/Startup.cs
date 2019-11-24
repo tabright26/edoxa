@@ -21,10 +21,10 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Web.Spa
 {
@@ -35,7 +35,7 @@ namespace eDoxa.Web.Spa
             TelemetryDebugWriter.IsTracingDisabled = true;
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
@@ -44,7 +44,7 @@ namespace eDoxa.Web.Spa
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         public WebSpaAppSettings AppSettings { get; }
 
@@ -61,8 +61,6 @@ namespace eDoxa.Web.Spa
             services.AddDataProtection(Configuration, AppNames.WebSpa);
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/build");
         }
@@ -83,7 +81,26 @@ namespace eDoxa.Web.Spa
             application.UseStaticFiles();
             application.UseSpaStaticFiles();
 
-            application.UseMvcWithDefaultRoute();
+            application.UseRouting();
+
+            application.UseEndpoints(
+                endpoints =>
+                {
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
+                });
 
             application.UseSpa(
                 builder =>
@@ -94,21 +111,6 @@ namespace eDoxa.Web.Spa
                     {
                         builder.UseProxyToSpaDevelopmentServer(AppSettings.WebSpaClientUrl);
                     }
-                });
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
-                {
-                    Predicate = registration => registration.Name.Contains("liveness")
-                });
-
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
         }
     }

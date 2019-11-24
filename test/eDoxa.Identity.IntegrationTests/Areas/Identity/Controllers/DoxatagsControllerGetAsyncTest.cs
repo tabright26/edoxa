@@ -15,7 +15,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -25,8 +24,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
     public sealed class DoxatagsControllerGetAsyncTest : IntegrationTest
     {
-        public DoxatagsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public DoxatagsControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -43,8 +42,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             // Act
@@ -60,8 +59,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(
@@ -87,7 +86,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var users = await response.DeserializeAsync<UserDoxatagResponse[]>();
+            var users = await response.Content.ReadAsAsync<UserDoxatagResponse[]>();
 
             users.Should().HaveCount(100);
         }

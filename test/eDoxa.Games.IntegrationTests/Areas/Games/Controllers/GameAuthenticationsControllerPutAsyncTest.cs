@@ -21,7 +21,6 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -39,8 +38,8 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
 {
     public sealed class GameAuthenticationsControllerPutAsyncTest : IntegrationTest
     {
-        public GameAuthenticationsControllerPutAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public GameAuthenticationsControllerPutAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -50,7 +49,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(Game game)
         {
-            return await _httpClient.PutAsync($"api/games/{game}/authentications", new JsonContent(""));
+            return await _httpClient.PutAsJsonAsync($"api/games/{game}/authentications", new {});
         }
 
         [Fact]
@@ -65,7 +64,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                 new PlayerId(),
                 new DateTimeProvider(DateTime.Now));
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -98,7 +97,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                 new PlayerId(),
                 new DateTimeProvider(DateTime.Now));
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>

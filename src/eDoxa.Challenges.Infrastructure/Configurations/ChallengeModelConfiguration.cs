@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 
             builder.Ignore(challenge => challenge.DomainEvents);
 
-            builder.Property(challenge => challenge.Id);
+            builder.Property(challenge => challenge.Id).ValueGeneratedNever();
 
             builder.OwnsOne(challenge => challenge.Timeline);
 
@@ -31,7 +31,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 {
                     challengeStats.ToTable("ScoringItem");
 
-                    challengeStats.HasForeignKey("ChallengeId");
+                    challengeStats.WithOwner().HasForeignKey("ChallengeId");
 
                     challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 

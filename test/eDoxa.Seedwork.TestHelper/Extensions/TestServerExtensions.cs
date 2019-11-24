@@ -7,8 +7,8 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Infrastructure;
 
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -44,17 +44,23 @@ namespace eDoxa.Seedwork.TestHelper.Extensions
 
         public static void UsingScope(this TestServer server, Action<IServiceScope> execute)
         {
-            server.Host.UsingScope(execute);
+            using var scope = server.Services.CreateScope();
+
+            execute(scope);
         }
 
         public static async Task UsingScopeAsync(this TestServer server, Func<IServiceScope, Task> executeAsync)
         {
-            await server.Host.UsingScopeAsync(executeAsync);
+            using var scope = server.Services.CreateScope();
+
+            await executeAsync(scope);
         }
 
         public static async Task<TResult> UsingScopeAsync<TResult>(this TestServer server, Func<IServiceScope, Task<TResult>> executeAsync)
         {
-            return await server.Host.UsingScopeAsync(executeAsync);
+            using var scope = server.Services.CreateScope();
+
+            return await executeAsync(scope);
         }
     }
 }

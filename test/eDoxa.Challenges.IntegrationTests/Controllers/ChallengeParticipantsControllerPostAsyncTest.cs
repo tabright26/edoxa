@@ -23,7 +23,6 @@ using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -39,8 +38,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengeParticipantsControllerPostAsyncTest : IntegrationTest
     {
-        public ChallengeParticipantsControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengeParticipantsControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -50,7 +49,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(ChallengeId challengeId, RegisterChallengeParticipantRequest request)
         {
-            return await _httpClient.PostAsync($"api/challenges/{challengeId}/participants", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync($"api/challenges/{challengeId}/participants", request);
         }
 
         [Fact]
@@ -66,7 +65,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             var playerId = PlayerId.Parse(Guid.NewGuid().ToString());
 
             // Need extension methods for complex claims.
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim($"games/{challenge.Game.NormalizedName}", playerId))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim($"games/{challenge.Game.NormalizedName}", playerId))
                 .WithWebHostBuilder(
                     x =>
                     {

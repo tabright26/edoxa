@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly string _name;
 
-        public StatName(PropertyInfo propertyInfo) : this(propertyInfo.GetMethod.Name.Substring(4))
+        public StatName(PropertyInfo propertyInfo) : this(propertyInfo.GetMethod!.Name.Substring(4))
         {
         }
 

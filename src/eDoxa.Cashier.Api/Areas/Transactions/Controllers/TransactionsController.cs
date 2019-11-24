@@ -98,7 +98,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
 
             result.AddToModelState(ModelState, null);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

@@ -11,8 +11,8 @@ namespace eDoxa.Games.IntegrationTests.Areas.Challenges.Controllers
 {
     public sealed class ChallengeGameMatchesControllerGetAsyncTest : IntegrationTest // TODO: Integration test
     {
-        public ChallengeGameMatchesControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengeGameMatchesControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {

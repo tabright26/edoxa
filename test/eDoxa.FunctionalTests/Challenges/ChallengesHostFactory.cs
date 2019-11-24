@@ -1,4 +1,4 @@
-﻿// Filename: IdentityApiFactory.cs
+﻿// Filename: ChallengesApiFactory.cs
 // Date Created: 2019-11-02
 // 
 // ================================================
@@ -9,8 +9,8 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Identity.Api;
-using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Challenges.Api;
+using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
@@ -19,13 +19,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.FunctionalTests.Identity
+namespace eDoxa.FunctionalTests.Challenges
 {
-    public sealed class IdentityApiFactory : IdentityApiFactory<Startup>
+    public sealed class ChallengesHostFactory : WebHostFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityApiFactory)).Location), "Identity"));
+            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ChallengesHostFactory)).Location), "Challenges"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
@@ -44,7 +44,7 @@ namespace eDoxa.FunctionalTests.Identity
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<IdentityDbContext>();
+            server.EnsureCreatedDbContext<ChallengesDbContext>();
 
             return server;
         }

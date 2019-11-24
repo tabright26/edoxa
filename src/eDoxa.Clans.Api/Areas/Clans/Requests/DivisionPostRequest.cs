@@ -27,8 +27,8 @@ namespace eDoxa.Clans.Api.Areas.Clans.Requests
         [DataMember(Name = "name")]
         public string Name { get; private set; }
 
-        [DataMember(Name = "description", IsRequired = false)]
-        public string? Description { get; private set; }
+        [DataMember(Name = "description")]
+        public string Description { get; private set; }
 
     }
 }

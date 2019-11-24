@@ -11,6 +11,7 @@ using eDoxa.Identity.Api.Infrastructure;
 using IdentityServer4.Services;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -19,7 +20,7 @@ namespace eDoxa.Identity.Api.Services
     internal sealed class CustomCorsPolicyService : DefaultCorsPolicyService
     {
         public CustomCorsPolicyService(
-            IHostingEnvironment environment,
+            IWebHostEnvironment environment,
             IOptions<IdentityAppSettings> appSettings,
             ILogger<CustomCorsPolicyService> logger
         ) : base(logger)

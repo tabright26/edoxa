@@ -24,7 +24,6 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
@@ -50,6 +49,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.Api
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         private CashierAppSettings AppSettings { get; }
 
@@ -100,7 +100,7 @@ namespace eDoxa.Cashier.Api
                     Configuration.GetSqlServerConnectionString(),
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
@@ -110,13 +110,13 @@ namespace eDoxa.Cashier.Api
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
 
-            services.AddMvc(
+            services.AddControllers()
+                .AddNewtonsoftJson(
                     options =>
                     {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddDevTools<CashierDbContextSeeder, CashierDbContextCleaner>()
                 .AddFluentValidation(
                     config =>
@@ -134,6 +134,8 @@ namespace eDoxa.Cashier.Api
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
+            services.AddVersionedApiExplorer();
+
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(CashierDbContext)));
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
@@ -148,11 +150,13 @@ namespace eDoxa.Cashier.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
-                Scopes.PaymentApi);
+            services.AddAuthorization();
+
+            //services.AddSwagger(
+            //    XmlCommentsFilePath,
+            //    AppSettings,
+            //    AppSettings,
+            //    Scopes.PaymentApi);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -170,28 +174,34 @@ namespace eDoxa.Cashier.Api
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
+            application.UseRouting();
             application.UseCors("default");
 
             application.UseAuthentication();
+            application.UseAuthorization();
 
-            application.UseMvc();
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapControllers();
+
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
                 });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
-
-            application.UseSwagger(provider, AppSettings);
+            //application.UseSwagger(provider, AppSettings);
         }
     }
 }

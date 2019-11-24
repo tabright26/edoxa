@@ -12,15 +12,15 @@ using Xunit;
 
 namespace eDoxa.Notifications.TestHelper
 {
-    public abstract class IntegrationTest : IClassFixture<TestApiFixture>, IClassFixture<TestMapperFixture>
+    public abstract class IntegrationTest : IClassFixture<TestHostFixture>, IClassFixture<TestMapperFixture>
     {
-        protected IntegrationTest(TestApiFixture testApi, TestMapperFixture testMapper)
+        protected IntegrationTest(TestHostFixture testHost, TestMapperFixture testMapper)
         {
-            TestApi = testApi;
+            TestHost = testHost;
             TestMapper = testMapper.Instance;
         }
 
-        protected TestApiFixture TestApi { get; }
+        protected TestHostFixture TestHost { get; }
 
         protected IMapper TestMapper { get; }
     }

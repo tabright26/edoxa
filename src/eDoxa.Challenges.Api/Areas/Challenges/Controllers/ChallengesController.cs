@@ -99,7 +99,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 
             result.AddToModelState(ModelState, null);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 
             result.AddToModelState(ModelState, null);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

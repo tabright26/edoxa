@@ -21,8 +21,6 @@ using FluentAssertions;
 
 using IdentityModel;
 
-using Microsoft.AspNetCore.Http.Internal;
-
 using Xunit;
 
 using Claim = System.Security.Claims.Claim;
@@ -31,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
 {
     public sealed class ClanLogoControllerGetAsyncTest : IntegrationTest
     {
-        public ClanLogoControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public ClanLogoControllerGetAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -46,7 +44,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
         public async Task ShouldBeHttpStatusCodeNotFoundClan()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -65,7 +63,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -93,11 +91,11 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
-            var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
+            var stream = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
 
             await testServer.UsingScopeAsync(
                 async scope =>
@@ -105,12 +103,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
-
-                    var logo = new MemoryStream();
-                    file.Position = 0;
-                    file.CopyTo(logo);
-
-                    await clanRepository.UploadLogoAsync(clan.Id, new FormFile(logo, 0, logo.Length, "edoxa", "testImage"));
+                    
+                    await clanRepository.UploadLogoAsync(clan.Id, stream, "testImage");
                 });
 
             // Act
@@ -121,8 +115,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var fileImageData = new MemoryStream();
-            file.Position = 0;
-            await file.CopyToAsync(fileImageData);
+            stream.Position = 0;
+            await stream.CopyToAsync(fileImageData);
 
             response.Content.Headers.ContentLength.Should().Be(fileImageData.Length);
         }

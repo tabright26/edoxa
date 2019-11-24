@@ -18,8 +18,6 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
-using Microsoft.AspNetCore.Http;
-
 namespace eDoxa.Clans.Api.Areas.Clans.Services
 {
     public sealed class ClanService : IClanService
@@ -62,7 +60,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services
             return new ValidationResult();
         }
 
-        public async Task<ValidationResult> UpdateClanAsync(Clan clan, UserId userId, string summary)
+        public async Task<ValidationResult> UpdateClanAsync(Clan clan, UserId userId, string? summary)
         {
             if (!clan.MemberIsOwner(userId))
             {
@@ -85,14 +83,14 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services
             return await _clanRepository.DownloadLogoAsync(clan.Id);
         }
 
-        public async Task<ValidationResult> UploadLogoAsync(Clan clan, UserId userId, IFormFile logo)
+        public async Task<ValidationResult> UploadLogoAsync(Clan clan, UserId userId, Stream stream, string fileName)
         {
             if (!clan.MemberIsOwner(userId))
             {
                 return new ValidationFailure(string.Empty, $"The user ({userId}) isn't the clan owner.").ToResult();
             }
 
-            await _clanRepository.UploadLogoAsync(clan.Id, logo);
+            await _clanRepository.UploadLogoAsync(clan.Id, stream, fileName);
 
             return new ValidationResult();
         }

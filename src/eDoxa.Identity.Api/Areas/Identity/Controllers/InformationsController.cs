@@ -92,7 +92,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

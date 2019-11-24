@@ -19,7 +19,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 
             builder.Ignore(participant => participant.DomainEvents);
 
-            builder.Property(participant => participant.Id);
+            builder.Property(participant => participant.Id).ValueGeneratedNever();
 
             builder.HasMany(participant => participant.Matches).WithOne(match => match.Participant).OnDelete(DeleteBehavior.Cascade);
 

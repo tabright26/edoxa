@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         public IdentityDbContextSeeder(
             UserManager userManager,
             RoleManager roleManager,
-            IHostingEnvironment environment,
+            IWebHostEnvironment environment,
             IOptions<AdminOptions> options,
             ILogger<IdentityDbContextSeeder> logger
         ) : base(environment, logger)

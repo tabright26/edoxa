@@ -18,8 +18,6 @@ using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -31,8 +29,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountWithdrawalControllerPostAsyncTest : IntegrationTest
     {
-        public AccountWithdrawalControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public AccountWithdrawalControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -42,7 +40,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(Currency currency, decimal amount)
         {
-            return await _httpClient.PostAsync($"api/account/withdrawal/{currency}", new JsonContent(amount));
+            return await _httpClient.PostAsJsonAsync($"api/account/withdrawal/{currency}", amount);
         }
 
         [Fact]
@@ -51,7 +49,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -75,7 +73,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         [Fact]
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -98,7 +96,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             account.CreateTransaction(transaction);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -127,7 +125,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var message = await response.DeserializeAsync<string>();
+            var message = await response.Content.ReadAsStringAsync();
             message.Should().NotBeNull();
         }
     }

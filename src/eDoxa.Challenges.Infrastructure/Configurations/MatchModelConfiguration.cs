@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 
             builder.Ignore(match => match.DomainEvents);
 
-            builder.Property(match => match.Id);
+            builder.Property(match => match.Id).ValueGeneratedNever();
 
             builder.OwnsMany(
                 match => match.Stats,
@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
                 {
                     matchStats.ToTable("Stat");
 
-                    matchStats.HasForeignKey("MatchId");
+                    matchStats.WithOwner().HasForeignKey("MatchId");
 
                     matchStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 

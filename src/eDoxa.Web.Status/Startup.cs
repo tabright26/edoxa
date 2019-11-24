@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-01
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,6 +9,7 @@ using eDoxa.Web.Status.Extensions;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
@@ -37,8 +38,10 @@ namespace eDoxa.Web.Status
             services.AddHealthChecksUI(Configuration);
         }
 
-        public void Configure(IApplicationBuilder application, IHostingEnvironment environment)
+        public void Configure(IApplicationBuilder application, IWebHostEnvironment environment)
         {
+            const string UIPath = "/status";
+
             if (environment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
@@ -46,16 +49,24 @@ namespace eDoxa.Web.Status
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseHttpsRedirection();
+
+            application.UseRouting();
+
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecksUI(options => options.UIPath = UIPath);
                 });
 
-            application.UseHealthChecksUI("/status");
-
-            application.UseHttpsRedirection();
+            application.UseStatusCodePagesWithRedirects(UIPath);
         }
     }
 }

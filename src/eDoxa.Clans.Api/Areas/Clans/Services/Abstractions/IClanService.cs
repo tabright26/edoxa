@@ -14,8 +14,6 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;
 
-using Microsoft.AspNetCore.Http;
-
 namespace eDoxa.Clans.Api.Areas.Clans.Services.Abstractions
 {
     public interface IClanService
@@ -26,11 +24,16 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services.Abstractions
 
         Task<ValidationResult> CreateClanAsync(UserId userId, string name);
 
-        Task<ValidationResult> UpdateClanAsync(Clan clan, UserId userId, string summary);
+        Task<ValidationResult> UpdateClanAsync(Clan clan, UserId userId, string? summary);
 
         Task<Stream> DownloadLogoAsync(Clan clan);
 
-        Task<ValidationResult> UploadLogoAsync(Clan clan, UserId userId, IFormFile logo);
+        Task<ValidationResult> UploadLogoAsync(
+            Clan clan,
+            UserId userId,
+            Stream stream,
+            string fileName
+        );
 
         Task DeleteLogoAsync(ClanId clanId);
 

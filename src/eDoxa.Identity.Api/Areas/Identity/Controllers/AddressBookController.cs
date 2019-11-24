@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -20,7 +21,6 @@ using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Internal;
 
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -88,7 +88,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

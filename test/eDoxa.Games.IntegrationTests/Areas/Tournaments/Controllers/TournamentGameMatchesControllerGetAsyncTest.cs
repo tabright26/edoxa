@@ -23,8 +23,8 @@ namespace eDoxa.Games.IntegrationTests.Areas.Tournaments.Controllers
 {
     public sealed class TournamentGameMatchesControllerGetAsyncTest : IntegrationTest
     {
-        public TournamentGameMatchesControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public TournamentGameMatchesControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -42,7 +42,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Tournaments.Controllers
         {
             // Arrange
             var userId = new UserId();
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
 
             // Act

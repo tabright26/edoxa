@@ -33,7 +33,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 {
     public sealed class StripeBankAccountControllerGetAsyncTest : IntegrationTest
     {
-        public StripeBankAccountControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public StripeBankAccountControllerGetAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -49,7 +49,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
         {
             // Arrange
             var userId = new UserId();
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
@@ -83,7 +83,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
         {
             // Arrange
             var userId = new UserId();
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
@@ -111,7 +111,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
         {
             // Arrange
             var userId = new UserId();
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {

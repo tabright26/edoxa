@@ -33,12 +33,12 @@ using Account = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account;
 
 namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
 {
-    public sealed class DepositProcessedIntegrationEventHandlerTest : IClassFixture<CashierApiFactory>
+    public sealed class DepositProcessedIntegrationEventHandlerTest : IClassFixture<CashierHostFactory>
     {
-        public DepositProcessedIntegrationEventHandlerTest(CashierApiFactory cashierApiFactory)
+        public DepositProcessedIntegrationEventHandlerTest(CashierHostFactory cashierHostFactory)
         {
-            cashierApiFactory.CreateClient();
-            _testServer = cashierApiFactory.Server;
+            cashierHostFactory.CreateClient();
+            _testServer = cashierHostFactory.Server;
             _testServer.CleanupDbContext();
         }
 
@@ -79,7 +79,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
         // TODO: The method name must be written as a test scenario.
         public async Task TransactionStatus_ShouldBeFailed()
         {
-            using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentHostFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {
@@ -144,7 +144,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
         // TODO: The method name must be written as a test scenario.
         public async Task TransactionStatus_ShouldBeSucceded()
         {
-            using var paymentWebApplicationFactory = new PaymentApiFactory().WithWebHostBuilder(
+            using var paymentWebApplicationFactory = new PaymentHostFactory().WithWebHostBuilder(
                 builder => builder.ConfigureTestContainer<ContainerBuilder>(
                     container =>
                     {

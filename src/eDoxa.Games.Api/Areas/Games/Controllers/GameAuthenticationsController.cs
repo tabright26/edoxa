@@ -60,7 +60,7 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
 
             result.AddToModelState(ModelState, null);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
 
             result.AddToModelState(ModelState, null);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

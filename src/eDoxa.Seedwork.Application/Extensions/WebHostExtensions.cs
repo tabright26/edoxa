@@ -5,16 +5,16 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Data.SqlClient;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 using Polly;
 
-namespace eDoxa.Seedwork.Infrastructure.Extensions
+namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class WebHostExtensions
     {

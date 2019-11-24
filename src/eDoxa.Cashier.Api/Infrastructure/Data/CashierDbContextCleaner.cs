@@ -7,18 +7,19 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Infrastructure;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Application;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data
 {
     internal sealed class CashierDbContextCleaner : IDbContextCleaner
     {
         private readonly CashierDbContext _context;
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
-        public CashierDbContextCleaner(IHostingEnvironment environment, CashierDbContext context)
+        public CashierDbContextCleaner(IWebHostEnvironment environment, CashierDbContext context)
         {
             _environment = environment;
             _context = context;

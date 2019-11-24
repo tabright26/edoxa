@@ -88,8 +88,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IdentityResult> CreateAsync(User user, string password);
 
-        string NormalizeKey(string key);
-
         Task UpdateNormalizedUserNameAsync(User user);
 
         Task<string> GetUserNameAsync(User user);

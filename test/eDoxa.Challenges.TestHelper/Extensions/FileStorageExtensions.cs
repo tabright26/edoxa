@@ -17,7 +17,7 @@ namespace eDoxa.Challenges.TestHelper.Extensions
     {
         public static T DeserializeJsonFile<T>(this FileStorage _, string path)
         {
-            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+            path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory!, path);
 
             var json = File.ReadAllText(path);
 

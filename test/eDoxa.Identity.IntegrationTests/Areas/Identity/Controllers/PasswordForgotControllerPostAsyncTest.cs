@@ -15,7 +15,6 @@ using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -25,8 +24,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
     public sealed class PasswordForgotControllerPostAsyncTest : IntegrationTest
     {
-        public PasswordForgotControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public PasswordForgotControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -34,7 +33,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(PasswordForgotPostRequest request)
         {
-            return await _httpClient.PostAsync("api/password/forgot", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync("api/password/forgot", request);
         }
 
         private HttpClient _httpClient;
@@ -46,8 +45,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var user = users.First();
             user.Informations = null;
 
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(
