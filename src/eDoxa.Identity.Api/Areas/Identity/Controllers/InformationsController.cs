@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/informations")]
     [ApiExplorerSettings(GroupName = "Informations")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public class InformationsController : ControllerBase
     {
         private readonly IUserManager _userManager;
@@ -92,7 +92,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

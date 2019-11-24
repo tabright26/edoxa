@@ -118,12 +118,13 @@ namespace eDoxa.Challenges.Web.Aggregator
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
 
-            services.AddMvc(
+            services.AddControllers()
+                .AddNewtonsoftJson(
                     options =>
                     {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     })
-                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddControllersAsServices()
                 .AddFluentValidation(
                     config =>
@@ -141,6 +142,9 @@ namespace eDoxa.Challenges.Web.Aggregator
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
+            
+            services.AddVersionedApiExplorer();
+
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)));
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
@@ -155,13 +159,15 @@ namespace eDoxa.Challenges.Web.Aggregator
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
-                Scopes.CashierApi,
-                Scopes.GamesApi,
-                Scopes.ChallengesApi);
+            services.AddAuthorization();
+
+            //services.AddSwagger(
+            //    XmlCommentsFilePath,
+            //    AppSettings,
+            //    AppSettings,
+            //    Scopes.CashierApi,
+            //    Scopes.GamesApi,
+            //    Scopes.ChallengesApi);
 
             services.AddHttpContextAccessor();
 
@@ -230,30 +236,34 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
+            application.UseRouting();
             application.UseCors("default");
 
             application.UseAuthentication();
+            application.UseAuthorization();
 
-            application.UseHttpsRedirection();
-
-            application.UseMvc();
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapControllers();
+
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
                 });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
-
-            application.UseSwagger(provider, AppSettings);
+            //application.UseSwagger(provider, AppSettings);
         }
     }
 }

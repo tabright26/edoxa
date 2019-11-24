@@ -29,7 +29,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/doxatag-history")]
     [ApiExplorerSettings(GroupName = "Doxatag History")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public class DoxatagHistoryController : ControllerBase
     {
         private readonly IUserManager _userManager;
@@ -80,7 +80,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

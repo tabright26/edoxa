@@ -12,8 +12,6 @@ using eDoxa.Seedwork.Domain.Miscs;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
-
 namespace eDoxa.Identity.Api.Infrastructure
 {
     public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
@@ -29,6 +27,7 @@ namespace eDoxa.Identity.Api.Infrastructure
             modelBuilder.Entity<User>(
                 builder =>
                 {
+                    builder.Property(user => user.Id).IsRequired().ValueGeneratedNever();
                     builder.Property(user => user.Email).IsRequired();
                     builder.Property(user => user.NormalizedEmail).IsRequired();
                     builder.Property(user => user.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
@@ -37,15 +36,30 @@ namespace eDoxa.Identity.Api.Infrastructure
                         user => user.Informations,
                         userInformations =>
                         {
+                            userInformations.WithOwner().HasForeignKey("UserId");
+                            userInformations.Property<Guid>("Id").ValueGeneratedOnAdd();
                             userInformations.Property(informations => informations!.FirstName).IsRequired();
                             userInformations.Property(informations => informations!.LastName).IsRequired();
+
                             userInformations.Property(informations => informations!.Gender)
                                 .HasConversion(gender => gender.Value, value => Gender.FromValue(value))
                                 .IsRequired();
-                            userInformations.OwnsOne(informations => informations!.Dob).Property(dob => dob.Year).HasColumnName("Dob_Year").IsRequired();
-                            userInformations.OwnsOne(informations => informations!.Dob).Property(dob => dob.Month).HasColumnName("Dob_Month").IsRequired();
-                            userInformations.OwnsOne(informations => informations!.Dob).Property(dob => dob.Day).HasColumnName("Dob_Day").IsRequired();
+
+                            userInformations.HasKey("Id");
                             userInformations.ToTable("UserInformations");
+
+                            userInformations.OwnsOne(
+                                userInfo => userInfo!.Dob,
+                                userDob =>
+                                {
+                                    userDob.WithOwner().HasForeignKey("UserId");
+                                    userDob.Property<Guid>("Id").ValueGeneratedOnAdd();
+                                    userDob.Property(dob => dob.Year).IsRequired();
+                                    userDob.Property(dob => dob.Month).IsRequired();
+                                    userDob.Property(dob => dob.Day).IsRequired();
+                                    userDob.HasKey("Id");
+                                    userDob.ToTable("UserDob");
+                                });
                         });
 
                     builder.HasMany(user => user.DoxatagHistory).WithOne().HasForeignKey(doxatag => doxatag.UserId).IsRequired();
@@ -57,7 +71,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 builder =>
                 {
                     builder.HasKey(doxatag => doxatag.Id);
-                    builder.Property(doxatag => doxatag.Id).IsRequired();
+                    builder.Property(doxatag => doxatag.Id).IsRequired().ValueGeneratedNever();
                     builder.Property(doxatag => doxatag.UserId).IsRequired();
                     builder.Property(doxatag => doxatag.Name).IsRequired();
                     builder.Property(doxatag => doxatag.Code).IsRequired();
@@ -69,7 +83,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 builder =>
                 {
                     builder.HasKey(address => address.Id);
-                    builder.Property(address => address.Id).IsRequired();
+                    builder.Property(address => address.Id).IsRequired().ValueGeneratedNever();
                     builder.Property(address => address.Type).HasConversion(type => type.Value, type => UserAddressType.FromValue(type)).IsRequired();
                     builder.Property(address => address.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
                     builder.Property(address => address.Line1).IsRequired();

@@ -62,8 +62,6 @@ namespace eDoxa.Web.Spa
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
-            services.AddMvc();
-
             services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/build");
         }
 
@@ -83,7 +81,26 @@ namespace eDoxa.Web.Spa
             application.UseStaticFiles();
             application.UseSpaStaticFiles();
 
-            application.UseMvcWithDefaultRoute();
+            application.UseRouting();
+
+            application.UseEndpoints(
+                endpoints =>
+                {
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
+                });
 
             application.UseSpa(
                 builder =>
@@ -94,21 +111,6 @@ namespace eDoxa.Web.Spa
                     {
                         builder.UseProxyToSpaDevelopmentServer(AppSettings.WebSpaClientUrl);
                     }
-                });
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
-                {
-                    Predicate = registration => registration.Name.Contains("liveness")
-                });
-
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
                 });
         }
     }

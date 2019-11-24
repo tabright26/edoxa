@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
 
             result.AddToModelState(ModelState, null);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(ModelState);
         }
 
         [HttpGet("bundles")]

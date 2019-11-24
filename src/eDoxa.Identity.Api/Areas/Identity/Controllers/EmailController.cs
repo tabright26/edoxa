@@ -25,7 +25,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/email")]
     [ApiExplorerSettings(GroupName = "Email")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize]
     public sealed class EmailController : ControllerBase
     {
         private readonly IUserManager _userManager;

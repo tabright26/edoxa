@@ -50,6 +50,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -110,12 +111,13 @@ namespace eDoxa.Cashier.Api
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
 
-            services.AddMvc(
+            services.AddControllers()
+                .AddNewtonsoftJson(
                     options =>
                     {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     })
-                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddDevTools<CashierDbContextSeeder, CashierDbContextCleaner>()
                 .AddFluentValidation(
                     config =>
@@ -133,6 +135,8 @@ namespace eDoxa.Cashier.Api
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
+            services.AddVersionedApiExplorer();
+
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(CashierDbContext)));
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
@@ -147,11 +151,13 @@ namespace eDoxa.Cashier.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings,
-                Scopes.PaymentApi);
+            services.AddAuthorization();
+
+            //services.AddSwagger(
+            //    XmlCommentsFilePath,
+            //    AppSettings,
+            //    AppSettings,
+            //    Scopes.PaymentApi);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -169,28 +175,34 @@ namespace eDoxa.Cashier.Api
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
 
+            application.UseRouting();
             application.UseCors("default");
 
             application.UseAuthentication();
+            application.UseAuthorization();
 
-            application.UseMvc();
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapControllers();
+
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
                 });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
-
-            application.UseSwagger(provider, AppSettings);
+            //application.UseSwagger(provider, AppSettings);
         }
     }
 }

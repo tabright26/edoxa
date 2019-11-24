@@ -18,7 +18,7 @@ namespace eDoxa.Seedwork.TestHelper
     {
         public override WebApplicationFactory<TStartup> WithClaims(params Claim[] claims)
         {
-            return this.WithWebHostBuilder(builder => builder.ConfigureTestServices(services => services.AddFakeAuthenticationFilter(claims)));
+            return this.WithWebHostBuilder(builder => builder.ConfigureTestServices(services => services.AddFakeAuthentication(options => options.Claims = claims)));
         }
     }
 }

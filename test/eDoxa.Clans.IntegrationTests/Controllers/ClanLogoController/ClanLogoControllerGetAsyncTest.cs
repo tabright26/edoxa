@@ -95,7 +95,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
-            var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
+            var stream = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
 
             await testServer.UsingScopeAsync(
                 async scope =>
@@ -103,12 +103,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
-
-                    var logo = new MemoryStream();
-                    file.Position = 0;
-                    file.CopyTo(logo);
-
-                    await clanRepository.UploadLogoAsync(clan.Id, logo, "testImage");
+                    
+                    await clanRepository.UploadLogoAsync(clan.Id, stream, "testImage");
                 });
 
             // Act
@@ -119,8 +115,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
             var fileImageData = new MemoryStream();
-            file.Position = 0;
-            await file.CopyToAsync(fileImageData);
+            stream.Position = 0;
+            await stream.CopyToAsync(fileImageData);
 
             response.Content.Headers.ContentLength.Should().Be(fileImageData.Length);
         }

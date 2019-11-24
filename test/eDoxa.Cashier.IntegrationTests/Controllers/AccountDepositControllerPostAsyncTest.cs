@@ -4,8 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -95,7 +97,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var message = await response.Content.ReadAsAsync<string>();
+            var message = await response.Content.ReadAsStringAsync();
             message.Should().NotBeNull();
         }
     }

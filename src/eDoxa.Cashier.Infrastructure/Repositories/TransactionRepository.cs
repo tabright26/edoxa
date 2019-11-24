@@ -47,11 +47,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<TransactionModel?> FindTransactionModelAsync(IDictionary<string, string> metadata)
         {
-            var transactionModels = from transaction in _context.Transactions.AsExpandable()
+            var transactionModels = from transaction in await _context.Transactions.AsExpandable().ToListAsync()
                                     where transaction.Metadata.Any(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value)))
                                     select transaction;
 
-            return await transactionModels.SingleOrDefaultAsync();
+            return transactionModels.SingleOrDefault();
         }
     }
 

@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 
             builder.Ignore(challenge => challenge.DomainEvents);
 
-            builder.Property(challenge => challenge.Id);
+            builder.Property(challenge => challenge.Id).ValueGeneratedNever();
 
             builder.OwnsOne(challenge => challenge.Timeline);
 

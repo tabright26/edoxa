@@ -61,6 +61,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -177,12 +178,13 @@ namespace eDoxa.Identity.Api
                     option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
                 });
 
-            services.AddMvc(
+            services.AddMvc()
+                .AddNewtonsoftJson(
                     options =>
                     {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     })
-                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddDevTools<IdentityDbContextSeeder, IdentityDbContextCleaner>()
                 .AddRazorPagesOptions(
                     options =>
@@ -205,6 +207,9 @@ namespace eDoxa.Identity.Api
                     options.DefaultApiVersion = new ApiVersion(1, 0);
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
+
+            
+            services.AddVersionedApiExplorer();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
 
@@ -243,7 +248,9 @@ namespace eDoxa.Identity.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddAuthorization();
+
+            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -275,26 +282,36 @@ namespace eDoxa.Identity.Api
             application.UseForwardedHeaders();
             application.UseCookiePolicy();
 
+            application.UseRouting();
+            application.UseCors("default");
+
             application.UseIdentityServer();
+            application.UseAuthorization();
 
-            application.UseMvcWithDefaultRoute();
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapRazorPages();
+
+                    endpoints.MapDefaultControllerRoute();
+
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
+
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
                 });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
-
-            application.UseSwagger(provider, AppSettings);
+            //application.UseSwagger(provider, AppSettings);
         }
     }
 }

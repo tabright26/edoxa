@@ -20,9 +20,9 @@ namespace eDoxa.Seedwork.TestHelper.Mocks
                 logger => logger.Log(
                     It.IsAny<LogLevel>(),
                     It.IsAny<EventId>(),
-                    It.IsAny<object>(),
+                    It.IsAny<It.IsAnyType>(),
                     It.IsAny<Exception>(),
-                    It.IsAny<Func<object, Exception, string>>()
+                    (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()
                 )
             ).Verifiable();
         }
@@ -32,9 +32,9 @@ namespace eDoxa.Seedwork.TestHelper.Mocks
             this.Verify(logger => logger.Log(
                 It.IsAny<LogLevel>(),
                 It.IsAny<EventId>(),
-                It.IsAny<object>(),
+                It.IsAny<It.IsAnyType>(),
                 It.IsAny<Exception>(),
-                It.IsAny<Func<object, Exception, string>>()), times);
+                (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()), times);
         }
     }
 }

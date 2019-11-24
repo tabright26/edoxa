@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
             TestApi.CreateClient();
             var testServer = TestApi.Server;
             testServer.CleanupDbContext();
-
+            
             await testServer.UsingScopeAsync(
                 async scope =>
                 {

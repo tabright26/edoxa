@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable("Transaction");
 
-            builder.Property(transaction => transaction.Id).IsRequired();
+            builder.Property(transaction => transaction.Id).IsRequired().ValueGeneratedNever();;
 
             builder.Property(transaction => transaction.Timestamp).IsRequired();
 

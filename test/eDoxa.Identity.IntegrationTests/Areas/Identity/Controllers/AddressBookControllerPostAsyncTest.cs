@@ -77,7 +77,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                    var message = await response.Content.ReadAsAsync<string>();
+                    var message = await response.Content.ReadAsStringAsync();
 
                     message.Should().NotBeNullOrWhiteSpace();
                 });
