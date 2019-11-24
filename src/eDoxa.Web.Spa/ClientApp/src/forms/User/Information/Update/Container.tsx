@@ -1,9 +1,7 @@
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import Update from "./Update";
-import { loadUserInformations, updateUserInformations } from "store/root/user/information/actions";
-import { UserInformationsActions, UPDATE_USER_INFORMATIONS_FAIL } from "store/root/user/information/types";
-import { throwSubmissionError } from "utils/form/types";
+import { updateUserInformations } from "store/root/user/information/actions";
 
 const mapStateToProps = (state: RootState) => {
   const { data } = state.root.user.information;
@@ -15,22 +13,8 @@ const mapStateToProps = (state: RootState) => {
 const mapDispatchToProps = (dispatch: any) => {
   return {
     updateUserInformations: (data: any) =>
-      dispatch(updateUserInformations(data)).then((action: UserInformationsActions) => {
-        switch (action.type) {
-          case UPDATE_USER_INFORMATIONS_FAIL: {
-            throwSubmissionError(action.error);
-            break;
-          }
-          default: {
-            dispatch(loadUserInformations());
-            break;
-          }
-        }
-      })
+      dispatch(updateUserInformations(data))
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Update);
+export default connect(mapStateToProps, mapDispatchToProps)(Update);
