@@ -18,11 +18,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Seedwork.TestHelper
 {
-    public abstract class WebApiFactory<TStartup> : WebApplicationFactory<TStartup>
+    public abstract class WebHostFactory<TStartup> : WebApplicationFactory<TStartup>
     where TStartup : class
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)

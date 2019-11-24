@@ -4,10 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -30,8 +28,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountDepositControllerPostAsyncTest : IntegrationTest
     {
-        public AccountDepositControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public AccountDepositControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -50,7 +48,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -77,7 +75,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

@@ -23,7 +23,6 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;

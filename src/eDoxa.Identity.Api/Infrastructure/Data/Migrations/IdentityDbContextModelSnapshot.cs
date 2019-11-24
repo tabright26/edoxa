@@ -3,8 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using eDoxa.Identity.Api.Infrastructure;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {

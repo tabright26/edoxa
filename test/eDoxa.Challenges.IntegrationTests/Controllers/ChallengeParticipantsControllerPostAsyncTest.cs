@@ -38,8 +38,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengeParticipantsControllerPostAsyncTest : IntegrationTest
     {
-        public ChallengeParticipantsControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengeParticipantsControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -65,7 +65,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             var playerId = PlayerId.Parse(Guid.NewGuid().ToString());
 
             // Need extension methods for complex claims.
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim($"games/{challenge.Game.NormalizedName}", playerId))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim($"games/{challenge.Game.NormalizedName}", playerId))
                 .WithWebHostBuilder(
                     x =>
                     {

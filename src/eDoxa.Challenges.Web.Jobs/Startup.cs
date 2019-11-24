@@ -109,21 +109,25 @@ namespace eDoxa.Challenges.Web.Jobs
                     Authorization = new[] {new AllowAnonymousAuthorizationFilter()}
                 });
 
-            application.UseMvc();
+            application.UseRouting();
 
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
-                });
+                    endpoints.MapHealthChecks(
+                        "/liveness",
+                        new HealthCheckOptions
+                        {
+                            Predicate = registration => registration.Name.Contains("liveness")
+                        });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                    endpoints.MapHealthChecks(
+                        "/health",
+                        new HealthCheckOptions
+                        {
+                            Predicate = _ => true,
+                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                        });
                 });
         }
     }

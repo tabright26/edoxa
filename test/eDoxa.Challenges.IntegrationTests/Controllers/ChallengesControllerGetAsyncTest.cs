@@ -24,8 +24,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengesControllerGetAsyncTest : IntegrationTest
     {
-        public ChallengesControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengesControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -42,8 +42,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             // Act
@@ -64,8 +64,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var challenges = challengeFaker.FakeChallenges(count);
 
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

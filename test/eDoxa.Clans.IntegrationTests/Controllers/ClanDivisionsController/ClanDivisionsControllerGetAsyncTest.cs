@@ -29,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 {
     public sealed class ClanDivisionsControllerGetAsyncTest : IntegrationTest
     {
-        public ClanDivisionsControllerGetAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public ClanDivisionsControllerGetAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -44,7 +44,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
 
             _httpClient = factory.CreateClient();
 
@@ -69,7 +69,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 
             clan.CreateDivision("test", "description");
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

@@ -30,7 +30,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/address-book")]
     [ApiExplorerSettings(GroupName = "Address Book")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class AddressBookController : ControllerBase
     {
         private readonly IUserManager _userManager;

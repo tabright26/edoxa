@@ -22,11 +22,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Cashier.TestHelper.Fixtures
 {
-    public sealed class TestApiFixture : WebApiFactory<Startup>
+    public sealed class TestHostFixture : WebHostFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFixture))!.Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestHostFixture))!.Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 

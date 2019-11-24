@@ -24,8 +24,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
     public sealed class DoxatagsControllerGetAsyncTest : IntegrationTest
     {
-        public DoxatagsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public DoxatagsControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -42,8 +42,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             // Act
@@ -59,8 +59,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

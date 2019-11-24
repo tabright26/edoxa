@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/informations")]
     [ApiExplorerSettings(GroupName = "Informations")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class InformationsController : ControllerBase
     {
         private readonly IUserManager _userManager;

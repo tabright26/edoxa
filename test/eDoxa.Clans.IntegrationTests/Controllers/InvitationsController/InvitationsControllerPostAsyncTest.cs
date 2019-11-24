@@ -29,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 {
     public sealed class InvitationsControllerPostAsyncTest : IntegrationTest
     {
-        public InvitationsControllerPostAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public InvitationsControllerPostAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -47,7 +47,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -74,7 +74,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

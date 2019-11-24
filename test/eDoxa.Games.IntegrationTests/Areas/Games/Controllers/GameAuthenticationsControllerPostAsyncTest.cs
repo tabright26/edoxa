@@ -34,8 +34,8 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
 {
     public sealed class GameAuthenticationsControllerPostAsyncTest : IntegrationTest
     {
-        public GameAuthenticationsControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public GameAuthenticationsControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -54,7 +54,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
             // Arrange
             var userId = new UserId();
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
@@ -97,7 +97,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                     2,
                     string.Empty));
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>

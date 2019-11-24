@@ -24,7 +24,6 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -285,6 +284,7 @@ namespace eDoxa.Identity.Api
             application.UseRouting();
             application.UseCors("default");
 
+            application.UseAuthentication();
             application.UseIdentityServer();
             application.UseAuthorization();
 

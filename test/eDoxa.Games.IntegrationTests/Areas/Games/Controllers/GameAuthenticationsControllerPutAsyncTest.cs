@@ -38,8 +38,8 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
 {
     public sealed class GameAuthenticationsControllerPutAsyncTest : IntegrationTest
     {
-        public GameAuthenticationsControllerPutAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public GameAuthenticationsControllerPutAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -64,7 +64,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                 new PlayerId(),
                 new DateTimeProvider(DateTime.Now));
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -97,7 +97,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                 new PlayerId(),
                 new DateTimeProvider(DateTime.Now));
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>

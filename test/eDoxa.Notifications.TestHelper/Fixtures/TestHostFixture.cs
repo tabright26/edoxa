@@ -9,8 +9,8 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Payment.Api;
-using eDoxa.Payment.Infrastructure;
+using eDoxa.Notifications.Api;
+using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Moq;
@@ -20,13 +20,13 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Payment.TestHelper.Fixtures
+namespace eDoxa.Notifications.TestHelper.Fixtures
 {
-    public sealed class TestApiFixture : WebApiFactory<Startup>
+    public sealed class TestHostFixture : WebHostFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFixture))!.Location));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestHostFixture))!.Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
@@ -46,7 +46,7 @@ namespace eDoxa.Payment.TestHelper.Fixtures
         {
             var server = base.CreateServer(builder);
 
-            server.MigrateDbContext<PaymentDbContext>();
+            server.MigrateDbContext<NotificationsDbContext>();
 
             return server;
         }

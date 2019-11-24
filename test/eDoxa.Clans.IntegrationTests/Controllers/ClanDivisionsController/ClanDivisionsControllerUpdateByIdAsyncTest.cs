@@ -30,7 +30,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 {
     public sealed class ClanDivisionsControllerUpdateByIdAsyncTest : IntegrationTest
     {
-        public ClanDivisionsControllerUpdateByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public ClanDivisionsControllerUpdateByIdAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -51,7 +51,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             clan.CreateDivision("test", "description");
             var divisionId = clan.Divisions.FirstOrDefault()?.Id;
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -78,7 +78,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -100,7 +100,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             clan.CreateDivision("test", "description");
             var divisionId = clan.Divisions.FirstOrDefault()?.Id;
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

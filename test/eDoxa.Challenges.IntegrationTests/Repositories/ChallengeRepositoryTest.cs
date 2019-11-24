@@ -32,7 +32,7 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
     // TODO: Avoid using Theory in integration tests.
     public sealed class ChallengeRepositoryTest : IntegrationTest
     {
-        public ChallengeRepositoryTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
+        public ChallengeRepositoryTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
         {
         }
 
@@ -47,8 +47,8 @@ namespace eDoxa.Challenges.IntegrationTests.Repositories
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(seed, Game.LeagueOfLegends, ChallengeState.Inscription);
             var fakeChallenge = challengeFaker.FakeChallenge();
 
-            TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

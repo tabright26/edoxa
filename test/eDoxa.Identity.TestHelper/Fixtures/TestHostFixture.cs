@@ -1,5 +1,5 @@
-﻿// Filename: IdentityApiFactory.cs
-// Date Created: 2019-11-02
+﻿// Filename: TestApiFactory.cs
+// Date Created: 2019-09-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,19 +13,20 @@ using eDoxa.Identity.Api;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.FunctionalTests.Identity
+namespace eDoxa.Identity.TestHelper.Fixtures
 {
-    public sealed class IdentityApiFactory : IdentityApiFactory<Startup>
+    public sealed class TestHostFixture : WebHostFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityApiFactory)).Location), "Identity"));
+            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestHostFixture))!.Location));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
@@ -38,13 +39,14 @@ namespace eDoxa.FunctionalTests.Identity
 
         protected override void ContainerTestBuilder(ContainerBuilder builder)
         {
+            builder.RegisterModule<MockServiceBusModule>();
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<IdentityDbContext>();
+            server.MigrateDbContext<IdentityDbContext>();
 
             return server;
         }

@@ -1,5 +1,5 @@
-﻿// Filename: TestApiFixture.cs
-// Date Created: 2019-10-06
+﻿// Filename: ChallengesApiFactory.cs
+// Date Created: 2019-11-02
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,24 +9,23 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Clans.Api;
-using eDoxa.Clans.Infrastructure;
+using eDoxa.Challenges.Api;
+using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.ServiceBus.Moq;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Clans.TestHelper.Fixtures
+namespace eDoxa.FunctionalTests.Challenges
 {
-    public sealed class TestApiFixture : WebApiFactory<Startup>
+    public sealed class ChallengesHostFactory : WebHostFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.GetDirectoryName(Assembly.GetAssembly(typeof(TestApiFixture))!.Location));
+            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ChallengesHostFactory)).Location), "Challenges"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
@@ -39,14 +38,13 @@ namespace eDoxa.Clans.TestHelper.Fixtures
 
         protected override void ContainerTestBuilder(ContainerBuilder builder)
         {
-            builder.RegisterModule<MockServiceBusModule>();
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ClansDbContext>();
+            server.EnsureCreatedDbContext<ChallengesDbContext>();
 
             return server;
         }

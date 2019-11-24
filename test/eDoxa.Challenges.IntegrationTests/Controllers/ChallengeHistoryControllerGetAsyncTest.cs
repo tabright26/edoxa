@@ -29,8 +29,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengeHistoryControllerGetAsyncTest : IntegrationTest
     {
-        public ChallengeHistoryControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengeHistoryControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var participant = challenge.Participants.First();
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

@@ -29,8 +29,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class TransactionsControllerGetAsyncTest : IntegrationTest
     {
-        public TransactionsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public TransactionsControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
             var account = accountFaker.FakeAccount();
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();

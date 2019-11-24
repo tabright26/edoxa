@@ -13,7 +13,7 @@ namespace eDoxa.Notifications.IntegrationTests
 {
     public sealed class Test : IntegrationTest
     {
-        public Test(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public Test(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 

@@ -29,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 {
     public sealed class InvitationsControllerGetByIdAsyncTest : IntegrationTest
     {
-        public InvitationsControllerGetByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public InvitationsControllerGetByIdAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -44,7 +44,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -64,7 +64,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var clan = new Clan("ClanName", new UserId());
             var invitation = new Invitation(userId, clan.Id);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

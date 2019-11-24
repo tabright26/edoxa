@@ -25,8 +25,8 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 {
     public sealed class ChallengesControllerGetByIdAsyncTest : IntegrationTest
     {
-        public ChallengesControllerGetByIdAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengesControllerGetByIdAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
-            var factory = TestApi.WithClaims();
+            var factory = TestHost.WithClaims();
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

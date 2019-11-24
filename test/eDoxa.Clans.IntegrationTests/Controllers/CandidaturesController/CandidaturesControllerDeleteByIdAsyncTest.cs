@@ -28,7 +28,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
 {
     public sealed class CandidaturesControllerDeleteByIdAsyncTest : IntegrationTest
     {
-        public CandidaturesControllerDeleteByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public CandidaturesControllerDeleteByIdAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -47,7 +47,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             var clan = new Clan("ClanName", new UserId());
             var candidature = new Candidature(userId, clan.Id);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -76,7 +76,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -96,7 +96,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             var clan = new Clan("ClanName", ownerId);
             var candidature = new Candidature(new UserId(), clan.Id);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, ownerId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, ownerId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

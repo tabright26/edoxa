@@ -27,7 +27,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/phone")]
     [ApiExplorerSettings(GroupName = "Phone")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public class PhoneController : ControllerBase
     {
         private readonly IUserManager _userManager;
