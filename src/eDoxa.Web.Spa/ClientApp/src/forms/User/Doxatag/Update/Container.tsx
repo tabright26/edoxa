@@ -1,15 +1,7 @@
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import {
-  loadUserDoxatagHistory,
-  updateUserDoxatag
-} from "store/root/user/doxatagHistory/actions";
-import {
-  UserDoxatagHistoryActions,
-  UPDATE_USER_DOXATAG_FAIL
-} from "store/root/user/doxatagHistory/types";
+import { updateUserDoxatag } from "store/root/user/doxatagHistory/actions";
 import Update from "./Update";
-import { throwSubmissionError } from "utils/form/types";
 
 const mapStateToProps = (state: RootState) => {
   const { data } = state.root.user.doxatagHistory;
@@ -26,21 +18,7 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    updateUserDoxatag: (data: any) =>
-      dispatch(updateUserDoxatag(data)).then(
-        (action: UserDoxatagHistoryActions) => {
-          switch (action.type) {
-            case UPDATE_USER_DOXATAG_FAIL: {
-              throwSubmissionError(action.error);
-              break;
-            }
-            default: {
-              dispatch(loadUserDoxatagHistory());
-              break;
-            }
-          }
-        }
-      )
+    updateUserDoxatag: (data: any) => dispatch(updateUserDoxatag(data))
   };
 };
 
