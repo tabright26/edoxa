@@ -71,6 +71,15 @@ namespace eDoxa.Gateway
                 }
             );
 
+            //TODO: Add production cors policy.
+
+            //options.AddPolicy("AllowSubdomain",
+            //    builder =>
+            //    {
+            //        builder.WithOrigins("https://*.example.com")
+            //            .SetIsOriginAllowedToAllowWildcardSubdomains();
+            //    });
+
             services.AddAuthentication(
                 AppSettings,
                 new Dictionary<string, ApiResource>
@@ -100,6 +109,9 @@ namespace eDoxa.Gateway
 
             application.UseRouting();
             application.UseCors("default");
+
+            //application.UseHttpsRedirection(); // TODO: To verify.
+            //application.UseForwardedHeaders(); // TODO: To verify.
 
             application.UseEndpoints(
                 endpoints =>
