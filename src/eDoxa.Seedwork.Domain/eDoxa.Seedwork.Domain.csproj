@@ -4,8 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.Domain</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.Domain</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

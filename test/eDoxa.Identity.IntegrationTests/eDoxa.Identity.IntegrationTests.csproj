@@ -4,7 +4,6 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Identity.IntegrationTests</AssemblyName>
     <RootNamespace>eDoxa.Identity.IntegrationTests</RootNamespace>
-    <LangVersion>8.0</LangVersion>
     <Nullable>disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>

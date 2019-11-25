@@ -4,8 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Identity.TestHelper</AssemblyName>
     <RootNamespace>eDoxa.Identity.TestHelper</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

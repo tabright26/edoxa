@@ -4,8 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Challenges.Domain</AssemblyName>
     <RootNamespace>eDoxa.Challenges.Domain</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

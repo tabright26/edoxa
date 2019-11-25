@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
     <AssemblyName>eDoxa.Games.Api</AssemblyName>
+    <RootNamespace>eDoxa.Games.Api</RootNamespace>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>

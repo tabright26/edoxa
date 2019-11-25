@@ -4,8 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.Security</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.Security</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
