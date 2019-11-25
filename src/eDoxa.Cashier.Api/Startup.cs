@@ -192,6 +192,8 @@ namespace eDoxa.Cashier.Api
                 {
                     endpoints.MapControllers();
 
+                    endpoints.MapConfigurationRoute<CashierAppSettings>(AppSettings.ApiResource);
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions

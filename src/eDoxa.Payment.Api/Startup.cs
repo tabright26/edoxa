@@ -186,6 +186,8 @@ namespace eDoxa.Payment.Api
                 endpoints =>
                 {
                     endpoints.MapControllers();
+                    
+                    endpoints.MapConfigurationRoute<PaymentAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapHealthChecks(
                         "/liveness",

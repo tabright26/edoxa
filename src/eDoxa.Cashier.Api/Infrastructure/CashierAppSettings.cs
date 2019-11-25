@@ -8,6 +8,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
+using eDoxa.Cashier.Api.Areas.Accounts;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
@@ -25,6 +26,8 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
         [Required]
         public EndpointsOptions Endpoints { get; set; }
+
+        public BundlesOptions Bundles { get; set; }
     }
 
     public sealed class EndpointsOptions : AuthorityEndpointsOptions

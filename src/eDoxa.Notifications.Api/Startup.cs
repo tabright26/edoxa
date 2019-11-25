@@ -185,6 +185,8 @@ namespace eDoxa.Notifications.Api
                 {
                     endpoints.MapControllers();
 
+                    endpoints.MapConfigurationRoute<NotificationsAppSettings>(AppSettings.ApiResource);
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions

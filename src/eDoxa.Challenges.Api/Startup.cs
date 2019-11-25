@@ -196,6 +196,8 @@ namespace eDoxa.Challenges.Api
                 {
                     endpoints.MapControllers();
 
+                    endpoints.MapConfigurationRoute<ChallengesAppSettings>(AppSettings.ApiResource);
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions

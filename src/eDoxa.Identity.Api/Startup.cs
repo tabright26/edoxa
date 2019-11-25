@@ -302,6 +302,8 @@ namespace eDoxa.Identity.Api
 
                     endpoints.MapDefaultControllerRoute();
 
+                    endpoints.MapConfigurationRoute<IdentityAppSettings>(AppSettings.ApiResource);
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions

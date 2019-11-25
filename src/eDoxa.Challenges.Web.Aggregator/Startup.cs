@@ -250,6 +250,8 @@ namespace eDoxa.Challenges.Web.Aggregator
                 {
                     endpoints.MapControllers();
 
+                    endpoints.MapConfigurationRoute<ChallengesWebAggregatorAppSettings>(AppSettings.ApiResource);
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions

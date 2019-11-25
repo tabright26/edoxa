@@ -10,6 +10,7 @@
 // This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
@@ -86,6 +87,8 @@ namespace eDoxa.Web.Spa
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapConfigurationRoute<WebSpaAppSettings>();
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions

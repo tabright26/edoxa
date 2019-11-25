@@ -13,7 +13,6 @@ using eDoxa.Swagger.Options;
 using IdentityServer4.Models;
 
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {

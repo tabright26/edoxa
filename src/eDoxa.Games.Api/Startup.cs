@@ -188,6 +188,8 @@ namespace eDoxa.Games.Api
                 {
                     endpoints.MapControllers();
 
+                    endpoints.MapConfigurationRoute<GamesAppSettings>(AppSettings.ApiResource);
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions

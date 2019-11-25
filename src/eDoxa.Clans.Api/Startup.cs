@@ -185,6 +185,8 @@ namespace eDoxa.Clans.Api
                 {
                     endpoints.MapControllers();
 
+                    endpoints.MapConfigurationRoute<ClansAppSettings>(AppSettings.ApiResource);
+
                     endpoints.MapHealthChecks(
                         "/liveness",
                         new HealthCheckOptions
