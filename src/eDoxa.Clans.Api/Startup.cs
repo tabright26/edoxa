@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -134,7 +134,6 @@ namespace eDoxa.Clans.Api
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
-            
             services.AddVersionedApiExplorer();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(ClansDbContext)));
@@ -153,7 +152,7 @@ namespace eDoxa.Clans.Api
 
             services.AddAuthorization();
 
-                //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -198,7 +197,7 @@ namespace eDoxa.Clans.Api
                         });
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

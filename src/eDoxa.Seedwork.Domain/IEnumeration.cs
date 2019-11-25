@@ -8,6 +8,8 @@ namespace eDoxa.Seedwork.Domain
 {
     public interface IEnumeration
     {
-        // Marker interface
+        string Name { get; }
+
+        int Value { get; }
     }
 }

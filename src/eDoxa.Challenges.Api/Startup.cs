@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,6 +25,7 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
@@ -155,7 +156,12 @@ namespace eDoxa.Challenges.Api
 
             services.AddAuthorization();
 
-            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings, Scopes.CashierApi, Scopes.GamesApi);
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.CashierApi,
+                Scopes.GamesApi);
 
             services.AddHttpClients(AppSettings);
         }
@@ -202,7 +208,7 @@ namespace eDoxa.Challenges.Api
                         });
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

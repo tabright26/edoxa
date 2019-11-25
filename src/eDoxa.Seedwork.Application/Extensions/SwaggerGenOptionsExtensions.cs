@@ -9,6 +9,10 @@ using System.Linq;
 using eDoxa.Seedwork.Domain;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi.Writers;
 
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -23,10 +27,10 @@ namespace eDoxa.Seedwork.Application.Extensions
             {
                 options.MapType(
                     type,
-                    () => new Schema
+                    () => new OpenApiSchema
                     {
                         Type = "string",
-                        Enum = Enumeration.GetEnumerations(type).Cast<object>().ToList()
+                        Enum = Enumeration.GetEnumerations(type).Select(x => new OpenApiString(x.Name)).Cast<IOpenApiAny>().ToList()
                     });
             }
         }

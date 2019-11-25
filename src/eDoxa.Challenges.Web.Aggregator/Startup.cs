@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-11-06
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -23,6 +23,7 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
@@ -141,7 +142,6 @@ namespace eDoxa.Challenges.Web.Aggregator
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
-            
             services.AddVersionedApiExplorer();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)));
@@ -160,13 +160,13 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddAuthorization();
 
-            //services.AddSwagger(
-            //    XmlCommentsFilePath,
-            //    AppSettings,
-            //    AppSettings,
-            //    Scopes.CashierApi,
-            //    Scopes.GamesApi,
-            //    Scopes.ChallengesApi);
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.CashierApi,
+                Scopes.GamesApi,
+                Scopes.ChallengesApi);
 
             services.AddHttpContextAccessor();
 
@@ -262,7 +262,7 @@ namespace eDoxa.Challenges.Web.Aggregator
                         });
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

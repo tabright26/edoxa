@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -134,7 +134,6 @@ namespace eDoxa.Payment.Api
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
-            
             services.AddVersionedApiExplorer();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(PaymentDbContext)));
@@ -152,8 +151,8 @@ namespace eDoxa.Payment.Api
                     });
 
             services.AddAuthorization();
-            
-            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -200,7 +199,7 @@ namespace eDoxa.Payment.Api
                         });
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

@@ -24,6 +24,7 @@ using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
@@ -152,16 +153,16 @@ namespace eDoxa.Cashier.Api
 
             services.AddAuthorization();
 
-            //services.AddSwagger(
-            //    XmlCommentsFilePath,
-            //    AppSettings,
-            //    AppSettings,
-            //    Scopes.PaymentApi);
+            services.AddSwagger(
+                XmlCommentsFilePath,
+                AppSettings,
+                AppSettings,
+                Scopes.PaymentApi);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.CashierApi));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString(), AppNames.CashierApi));
 
             builder.RegisterModule<CashierModule>();
         }
@@ -201,7 +202,7 @@ namespace eDoxa.Cashier.Api
                         });
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

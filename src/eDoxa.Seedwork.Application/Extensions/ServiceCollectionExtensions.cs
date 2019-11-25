@@ -36,7 +36,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 {
                     options.DescribeAllEnumerationsAsStrings();
 
-                    options.OperationFilter<SwaggerOperationFilter>(
+                    options.OperationFilter<SecurityRequirementsOperationFilter>(
                         new SwaggerOperationOptions(
                             Scopes.IdentityApi,
                             Scopes.PaymentApi,

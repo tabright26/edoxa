@@ -24,6 +24,7 @@ using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -208,7 +209,6 @@ namespace eDoxa.Identity.Api
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
-            
             services.AddVersionedApiExplorer();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
@@ -250,7 +250,7 @@ namespace eDoxa.Identity.Api
 
             services.AddAuthorization();
 
-            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -320,7 +320,7 @@ namespace eDoxa.Identity.Api
                         });
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }

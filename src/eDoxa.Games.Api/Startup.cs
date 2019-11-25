@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-10-26
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -139,7 +139,6 @@ namespace eDoxa.Games.Api
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
-            
             services.AddVersionedApiExplorer();
 
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(GamesDbContext)));
@@ -158,7 +157,7 @@ namespace eDoxa.Games.Api
 
             services.AddAuthorization();
 
-            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -168,7 +167,7 @@ namespace eDoxa.Games.Api
             builder.RegisterModule<GamesModule>();
         }
 
-        public void Configure(IApplicationBuilder application , IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application, IApiVersionDescriptionProvider provider)
         {
             application.UseCustomExceptionHandler();
 
@@ -201,7 +200,7 @@ namespace eDoxa.Games.Api
                         });
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(provider, AppSettings);
         }
     }
 }
