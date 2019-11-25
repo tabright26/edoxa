@@ -1,5 +1,5 @@
 ﻿// Filename: GameAuthenticationsController.cs
-// Date Created: 2019-11-14
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -24,7 +24,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Games.Api.Areas.Games.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/games/{game}/authentications")]
     [ApiExplorerSettings(GroupName = "Game")]
@@ -41,10 +40,10 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Generate game authentication.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Generate game authentication.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(object))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync(Game game, [FromBody] object request)
         {
             var userId = HttpContext.GetUserId();
@@ -63,10 +62,8 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Validate game authentication.
-        /// </summary>
         [HttpPut]
+        [SwaggerOperation("Validate game authentication.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CredentialResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync(Game game)

@@ -7,6 +7,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Net.Mime;
 using System.Reflection;
 
 using Autofac;
@@ -111,7 +112,12 @@ namespace eDoxa.Cashier.Api
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
 
-            services.AddControllers()
+            services.AddControllers(
+                    options =>
+                    {
+                        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
+                        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
+                    })
                 .AddNewtonsoftJson(
                     options =>
                     {
@@ -151,8 +157,6 @@ namespace eDoxa.Cashier.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddAuthorization();
-
             services.AddSwagger(
                 XmlCommentsFilePath,
                 AppSettings,
@@ -162,7 +166,7 @@ namespace eDoxa.Cashier.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString(), AppNames.CashierApi));
+            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.CashierApi));
 
             builder.RegisterModule<CashierModule>();
         }
@@ -174,6 +178,8 @@ namespace eDoxa.Cashier.Api
             application.UseCustomExceptionHandler();
 
             application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+
+            application.UseStaticFiles();
 
             application.UseRouting();
             application.UseCors("default");

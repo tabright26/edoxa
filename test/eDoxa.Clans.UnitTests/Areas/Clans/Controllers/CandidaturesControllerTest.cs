@@ -191,7 +191,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             var result = await candidatureController.GetByIdAsync(new CandidatureId());
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            result.Should().BeOfType<NotFoundObjectResult>();
             mockCandidatureService.Verify(clanService => clanService.FindCandidatureAsync(It.IsAny<CandidatureId>()), Times.Once);
         }
 

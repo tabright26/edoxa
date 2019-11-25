@@ -1,5 +1,5 @@
 ﻿// Filename: AddressBookController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -31,7 +31,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Route("api/address-book")]
     [ApiExplorerSettings(GroupName = "Address Book")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class AddressBookController : ControllerBase
+    public sealed class AddressBookController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
@@ -42,11 +42,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Find user's address book.
-        /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserAddressResponse>))]
+        [SwaggerOperation("Find user's address book.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserAddressResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
@@ -62,10 +60,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.Ok(_mapper.Map<IEnumerable<UserAddressResponse>>(addressBook));
         }
 
-        /// <summary>
-        ///     Add user's address.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Add user's address.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] AddressPostRequest request)
@@ -91,10 +87,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Update user's address by id.
-        /// </summary>
         [HttpPut("{addressId}")]
+        [SwaggerOperation("Update user's address by id.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync(Guid addressId, [FromBody] AddressPutRequest request)
@@ -120,10 +114,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Remove user's address by id.
-        /// </summary>
         [HttpDelete("{addressId}")]
+        [SwaggerOperation("Remove user's address by id.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Guid))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> DeleteAsync(Guid addressId)
@@ -136,7 +128,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             {
                 return this.Ok(addressId);
             }
-    
+
             ModelState.Bind(result);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));

@@ -28,7 +28,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/challenges")]
     [ApiExplorerSettings(GroupName = "Challenges")]
@@ -43,31 +42,26 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
             _challengeService = challengeService;
         }
 
-        /// <summary>
-        ///     Find a challenge.
-        /// </summary>
         [AllowAnonymous]
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        [SwaggerOperation("Fetch challenges.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var response = await _challengeQuery.FetchChallengeResponsesAsync();
+            var responses = await _challengeQuery.FetchChallengeResponsesAsync();
 
-            if (!response.Any())
+            if (!responses.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(response);
+            return this.Ok(responses);
         }
 
-        /// <summary>
-        ///     Create a challenge.
-        /// </summary>
-        [HttpPost]
         [Authorize(Roles = AppRoles.Admin)]
+        [HttpPost]
+        [SwaggerOperation("Create a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
@@ -92,13 +86,10 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Find a challenge.
-        /// </summary>
         [AllowAnonymous]
         [HttpGet("{challengeId}")]
+        [SwaggerOperation("Find a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
         {

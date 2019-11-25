@@ -1,5 +1,5 @@
 ﻿// Filename: DoxatagsController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -37,11 +37,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Fetch Doxatags.
-        /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxatagResponse>))]
+        [SwaggerOperation("Fetch Doxatags.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserDoxatagResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {

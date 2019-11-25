@@ -1,5 +1,5 @@
 ﻿// Filename: MatchesController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,7 +20,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/matches")]
     [ApiExplorerSettings(GroupName = "Match")]
@@ -33,12 +32,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             _matchQuery = matchQuery;
         }
 
-        /// <summary>
-        ///     Find a match.
-        /// </summary>
         [HttpGet("{matchId}")]
+        [SwaggerOperation("Find a match.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchResponse))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {

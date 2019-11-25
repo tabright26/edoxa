@@ -29,7 +29,6 @@ using ChallengeRequests = eDoxa.Challenges.Requests;
 namespace eDoxa.Challenges.Web.Aggregator.Controllers
 {
     [Microsoft.AspNetCore.Authorization.Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/challenges/{challengeId}/participants")]
     [ApiExplorerSettings(GroupName = "Challenge")]
@@ -53,10 +52,8 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             _serviceBusPublisher = serviceBusPublisher;
         }
 
-        /// <summary>
-        ///     Register a participant to a challenge.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Register a participant to a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId)

@@ -1,5 +1,5 @@
 ﻿// Filename: EmailController.cs
-// Date Created: 2019-10-12
+// Date Created: 2019-10-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -37,10 +37,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Find user's address book.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Find user's address book.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(EmailResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()

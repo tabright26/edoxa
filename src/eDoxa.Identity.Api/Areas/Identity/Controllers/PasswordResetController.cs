@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordResetController.cs
-// Date Created: 2019-08-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,10 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -29,10 +32,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _userManager = userManager;
         }
 
-        /// <summary>
-        ///     User's password reset.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("User's password reset.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] PasswordResetPostRequest request)
         {
             if (ModelState.IsValid)
@@ -61,7 +64,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 }
             }
 
-            return this.BadRequest(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

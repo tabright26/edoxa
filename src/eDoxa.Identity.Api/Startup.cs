@@ -248,8 +248,6 @@ namespace eDoxa.Identity.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddAuthorization();
-
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 

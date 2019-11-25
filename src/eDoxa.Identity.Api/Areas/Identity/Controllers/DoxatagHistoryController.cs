@@ -1,5 +1,5 @@
 ﻿// Filename: DoxatagHistoryController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -41,11 +41,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Find user's Doxatag history.
-        /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxatagResponse>))]
+        [SwaggerOperation("Find user's Doxatag history.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserDoxatagResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
@@ -61,10 +59,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.Ok(_mapper.Map<IEnumerable<UserDoxatagResponse>>(doxatagHistory));
         }
 
-        /// <summary>
-        ///     Create new user's Doxatag.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Create new user's Doxatag.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] DoxatagPostRequest request)

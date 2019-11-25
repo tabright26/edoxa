@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeParticipantsController.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,7 +27,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/challenges/{challengeId}/participants")]
     [ApiExplorerSettings(GroupName = "Challenge")]
@@ -42,10 +41,8 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             _challengeService = challengeService;
         }
 
-        /// <summary>
-        ///     Find the participants of a challenge.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Find the participants of a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -63,13 +60,11 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 return this.Ok(responses);
             }
 
-            return this.BadRequest(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Register a participant to a challenge.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Register a participant to a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeGameMatchesController.cs
-// Date Created: 2019-10-31
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,15 +8,18 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Abstractions.Services;
+using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Games.Api.Areas.Challenges.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/challenge/games/{game}/matches")]
     [ApiExplorerSettings(GroupName = "Challenge")]
@@ -29,8 +32,10 @@ namespace eDoxa.Games.Api.Areas.Challenges.Controllers
             _challengeService = challengeService;
         }
 
-        [HttpGet]
         [AllowAnonymous] // TODO: Quick fix.
+        [HttpGet]
+        [SwaggerOperation("Get matches for challenge participants.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchDto[]))]
         public async Task<IActionResult> GetAsync(
             Game game,
             [FromQuery] string playerId,

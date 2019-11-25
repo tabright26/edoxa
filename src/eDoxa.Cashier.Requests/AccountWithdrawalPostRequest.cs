@@ -1,4 +1,4 @@
-﻿// Filename: AccountDepositPostRequest.cs
+﻿// Filename: AccountWithdrawalPostRequest.cs
 // Date Created: 2019-08-27
 // 
 // ================================================
@@ -6,26 +6,22 @@
 
 using System.Runtime.Serialization;
 
-namespace eDoxa.Cashier.Api.Areas.Accounts.Requests
+namespace eDoxa.Cashier.Requests
 {
     [DataContract]
-    public sealed class AccountDepositPostRequest
+    public sealed class AccountWithdrawalPostRequest
     {
-        public AccountDepositPostRequest(string currency, decimal amount)
+        public AccountWithdrawalPostRequest(decimal amount)
         {
-            Currency = currency;
             Amount = amount;
         }
 
 #nullable disable
-        public AccountDepositPostRequest()
+        public AccountWithdrawalPostRequest()
         {
             // Required by Fluent Validation.
         }
 #nullable restore
-
-        [DataMember(Name = "currency")]
-        public string Currency { get; private set; }
 
         [DataMember(Name = "amount")]
         public decimal Amount { get; private set; }

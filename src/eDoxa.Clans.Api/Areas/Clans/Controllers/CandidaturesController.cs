@@ -1,5 +1,5 @@
 ﻿// Filename: CandidaturesController.cs
-// Date Created: 2019-09-30
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,15 +20,17 @@ using eDoxa.Seedwork.Domain.Miscs;
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/candidatures")]
     [ApiExplorerSettings(GroupName = "Candidatures")]
-    public class CandidaturesController : ControllerBase
+    public sealed class CandidaturesController : ControllerBase
     {
         private readonly ICandidatureService _candidatureService;
         private readonly IMapper _mapper;
@@ -39,12 +41,14 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Get candidatures.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Get candidatures.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureResponse[]))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> GetAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
         {
+            // TODO: Use ValidationProblemDetails to handle bad request.
             if (clanId == null && userId == null)
             {
                 return this.BadRequest("No query parameter as been provided.");
@@ -75,26 +79,26 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<IEnumerable<CandidatureResponse>>(candidatures));
         }
 
-        /// <summary>
-        ///     Get a specific candidature from the Id.
-        /// </summary>
         [HttpGet("{candidatureId}")]
+        [SwaggerOperation("Get a specific candidature from the Id.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(CandidatureId candidatureId)
         {
             var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
 
             if (candidature == null)
             {
-                return this.NotFound();
+                return this.NotFound("Candidature not found.");
             }
 
             return this.Ok(_mapper.Map<CandidatureResponse>(candidature));
         }
 
-        /// <summary>
-        ///     Create candidature from a user to a clan.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Create candidature from a user to a clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync(CandidaturePostRequest request)
         {
             var userId = HttpContext.GetUserId();
@@ -111,10 +115,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Accept candidature from a user.
-        /// </summary>
         [HttpPost("{candidatureId}")]
+        [SwaggerOperation("Accept candidature from a user.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostByIdAsync(CandidatureId candidatureId)
         {
             var ownerId = HttpContext.GetUserId();
@@ -138,10 +143,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Decline candidature from a user.
-        /// </summary>
         [HttpDelete("{candidatureId}")]
+        [SwaggerOperation("Decline candidature from a user.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteByIdAsync(CandidatureId candidatureId)
         {
             var ownerId = HttpContext.GetUserId();

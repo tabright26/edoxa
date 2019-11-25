@@ -1,6 +1,6 @@
 ﻿// Filename: ClansController.cs
-// Date Created: 2019-09-29
-//
+// Date Created: 2019-11-20
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -19,15 +19,17 @@ using eDoxa.Seedwork.Domain.Miscs;
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/clans")]
     [ApiExplorerSettings(GroupName = "Clans")]
-    public class ClansController : ControllerBase
+    public sealed class ClansController : ControllerBase
     {
         private readonly IClanService _clanService;
         private readonly IMapper _mapper;
@@ -38,10 +40,10 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Get all clans.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Get all clans.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanResponse[]))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var clans = await _clanService.FetchClansAsync();
@@ -54,10 +56,10 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<IEnumerable<ClanResponse>>(clans));
         }
 
-        /// <summary>
-        ///     Create a clan.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Create a clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync(ClanPostRequest request)
         {
             var userId = HttpContext.GetUserId();
@@ -74,10 +76,27 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Update a clan.
-        /// </summary>
+        [HttpGet("{clanId}")]
+        [SwaggerOperation("Get a specific clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        public async Task<IActionResult> GetByIdAsync(ClanId clanId)
+        {
+            var clan = await _clanService.FindClanAsync(clanId);
+
+            if (clan == null)
+            {
+                return this.NotFound("Clan not found.");
+            }
+
+            return this.Ok(_mapper.Map<ClanResponse>(clan));
+        }
+
         [HttpPut]
+        [SwaggerOperation("Update a clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> UpdateAsync(ClanId clanId, ClanPostRequest request)
         {
             var userId = HttpContext.GetUserId();
@@ -99,22 +118,6 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             result.AddToModelState(ModelState, null);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
-        }
-
-        /// <summary>
-        ///     Get a specific clan.
-        /// </summary>
-        [HttpGet("{clanId}")]
-        public async Task<IActionResult> GetByIdAsync(ClanId clanId)
-        {
-            var clan = await _clanService.FindClanAsync(clanId);
-
-            if (clan == null)
-            {
-                return this.NotFound();
-            }
-
-            return this.Ok(_mapper.Map<ClanResponse>(clan));
         }
     }
 }

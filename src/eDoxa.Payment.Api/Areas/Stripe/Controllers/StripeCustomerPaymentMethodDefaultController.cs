@@ -1,5 +1,5 @@
 ﻿// Filename: StripeCustomerPaymentMethodDefaultController.cs
-// Date Created: 2019-10-22
+// Date Created: 2019-10-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,14 +13,16 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Stripe;
 
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/stripe/customer/payment-methods/{paymentMethodId}/default")]
     [ApiExplorerSettings(GroupName = "Stripe")]
@@ -42,6 +44,10 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         }
 
         [HttpPut]
+        [SwaggerOperation("Set payment method as default.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripeCustomerResponse))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PutAsync(string paymentMethodId)
         {
             try

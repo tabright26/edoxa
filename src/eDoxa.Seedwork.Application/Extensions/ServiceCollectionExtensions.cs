@@ -13,6 +13,7 @@ using eDoxa.Swagger.Options;
 using IdentityServer4.Models;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {
@@ -34,6 +35,8 @@ namespace eDoxa.Seedwork.Application.Extensions
                 xmlCommentsFilePath,
                 options =>
                 {
+                    options.EnableAnnotations(true);
+
                     options.DescribeAllEnumerationsAsStrings();
 
                     options.OperationFilter<SecurityRequirementsOperationFilter>(
@@ -45,6 +48,14 @@ namespace eDoxa.Seedwork.Application.Extensions
                             Scopes.ChallengesApi,
                             Scopes.GamesApi,
                             Scopes.ClansApi));
+
+                    //options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                    //{
+                    //    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    //    Name = "Authorization",
+                    //    In = ParameterLocation.Header,
+                    //    Type = SecuritySchemeType.ApiKey
+                    //});
                 },
                 scopes);
         }

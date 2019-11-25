@@ -1,5 +1,5 @@
 ﻿// Filename: EmailConfirmController.cs
-// Date Created: 2019-08-30
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -28,10 +31,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _userManager = userManager;
         }
 
-        /// <summary>
-        ///     User's forgot password.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("User's forgot password.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync([FromQuery] string? userId, [FromQuery] string? code)
         {
             if (userId != null && code != null)

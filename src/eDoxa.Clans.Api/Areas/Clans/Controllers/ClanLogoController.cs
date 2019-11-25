@@ -1,9 +1,10 @@
 ﻿// Filename: ClanLogoController.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-11-20
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.IO;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
@@ -16,10 +17,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using Swashbuckle.AspNetCore.Annotations;
+
 namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/clans/{clanId}/logo")]
     [ApiExplorerSettings(GroupName = "Clans")]
     public class ClanLogoController : ControllerBase
@@ -31,10 +33,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             _clanService = clanService;
         }
 
-        /// <summary>
-        ///     Download clan logo.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Download clan logo.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Stream))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
             var clan = await _clanService.FindClanAsync(clanId);
@@ -54,10 +57,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.File(logo, "application/octet-stream");
         }
 
-        /// <summary>
-        ///     Upload clan logo.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Upload clan logo.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(ClanId clanId, [FromForm] IFormFile logo)
         {
             var userId = HttpContext.GetUserId();
@@ -69,7 +73,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan does not exist.");
             }
 
-            var result = await _clanService.UploadLogoAsync(clan, userId, logo.OpenReadStream(), logo.FileName);
+            var result = await _clanService.UploadLogoAsync(
+                clan,
+                userId,
+                logo.OpenReadStream(),
+                logo.FileName);
 
             if (result.IsValid)
             {

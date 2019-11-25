@@ -1,5 +1,5 @@
 ﻿// Filename: InformationsController.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-10-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -40,10 +40,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Find user's personal info.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Find user's profile informations.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserInformationsResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
@@ -60,10 +58,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.Ok(_mapper.Map<UserInformationsResponse>(informations));
         }
 
-        /// <summary>
-        ///     Create user's profile information.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Create user's profile informations.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -95,10 +91,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Update user's profile information.
-        /// </summary>
         [HttpPut]
+        [SwaggerOperation("Update user's profile informations.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]

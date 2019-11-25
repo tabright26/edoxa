@@ -9,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Reflection;
 
 using Autofac;
@@ -118,7 +119,12 @@ namespace eDoxa.Challenges.Web.Aggregator
                     options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
                 });
 
-            services.AddControllers()
+            services.AddControllers(
+                    options =>
+                    {
+                        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
+                        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
+                    })
                 .AddNewtonsoftJson(
                     options =>
                     {
@@ -157,8 +163,6 @@ namespace eDoxa.Challenges.Web.Aggregator
                         options.RequireHttpsMetadata = false;
                         options.ApiSecret = "secret";
                     });
-
-            services.AddAuthorization();
 
             services.AddSwagger(
                 XmlCommentsFilePath,

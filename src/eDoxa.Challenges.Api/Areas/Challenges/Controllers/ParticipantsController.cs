@@ -1,5 +1,5 @@
 ﻿// Filename: ParticipantsController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,7 +20,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/participants")]
     [ApiExplorerSettings(GroupName = "Participant")]
@@ -33,13 +32,10 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             _query = query;
         }
 
-        /// <summary>
-        ///     Find a participant.
-        /// </summary>
         [HttpGet("{participantId}")]
+        [SwaggerOperation("Find a participant.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
         {
             var response = await _query.FindParticipantResponseAsync(participantId);

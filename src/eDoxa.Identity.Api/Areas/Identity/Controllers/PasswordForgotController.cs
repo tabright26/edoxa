@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordForgotController.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,7 +14,10 @@ using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -37,10 +40,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             _redirectService = redirectService;
         }
 
-        /// <summary>
-        ///     User's forgot password.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("User's forgot password.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] PasswordForgotPostRequest request)
         {
             if (ModelState.IsValid)
@@ -66,7 +69,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.Ok();
             }
 
-            return this.BadRequest(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

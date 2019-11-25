@@ -1,6 +1,6 @@
 ﻿// Filename: ClanMembersController.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-11-20
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -18,12 +18,14 @@ using eDoxa.Seedwork.Domain.Miscs;
 using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/clans/{clanId}/members")]
     [ApiExplorerSettings(GroupName = "Clans")]
     public class ClanMembersController : ControllerBase
@@ -37,10 +39,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Get all members of a specific clan.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Get all members of a specific clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MemberResponse[]))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
             var clan = await _clanService.FindClanAsync(clanId);
@@ -60,10 +63,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<IEnumerable<MemberResponse>>(members));
         }
 
-        /// <summary>
-        ///     User leave the clan.
-        /// </summary>
         [HttpDelete]
+        [SwaggerOperation("User leave the clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteAsync(ClanId clanId)
         {
             var userId = HttpContext.GetUserId();
@@ -87,10 +91,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Kick a specific member from the clan.
-        /// </summary>
         [HttpDelete("{memberId}")]
+        [SwaggerOperation("Kick a specific member from the clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, MemberId memberId)
         {
             var userId = HttpContext.GetUserId();
