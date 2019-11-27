@@ -10,7 +10,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels;
+using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
+using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;

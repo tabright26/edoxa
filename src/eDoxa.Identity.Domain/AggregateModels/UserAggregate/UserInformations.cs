@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class UserInformations : ValueObject
     {

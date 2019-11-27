@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;

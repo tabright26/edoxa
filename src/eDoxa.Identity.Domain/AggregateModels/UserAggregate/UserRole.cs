@@ -1,4 +1,4 @@
-﻿// Filename: UserToken.cs
+﻿// Filename: UserRole.cs
 // Date Created: 2019-07-17
 // 
 // ================================================
@@ -8,9 +8,9 @@ using System;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    public class UserToken : IdentityUserToken<Guid>
+    public class UserRole : IdentityUserRole<Guid>
     {
     }
 }

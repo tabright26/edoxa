@@ -13,8 +13,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Attributes;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.ViewModels;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using IdentityModel;
 

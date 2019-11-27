@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Identity.Api.Areas.Identity.TokenProviders.Options;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;

@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;

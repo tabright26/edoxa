@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

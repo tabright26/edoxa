@@ -1,4 +1,4 @@
-﻿// Filename: UserClaim.cs
+﻿// Filename: UserToken.cs
 // Date Created: 2019-07-17
 // 
 // ================================================
@@ -8,9 +8,9 @@ using System;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    public class UserClaim : IdentityUserClaim<Guid>
+    public class UserToken : IdentityUserToken<Guid>
     {
     }
 }

@@ -8,7 +8,7 @@ using System.ComponentModel;
 
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Identity.Domain.AggregateModels.AddressAggregate
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
     public sealed class UserAddressType : Enumeration<UserAddressType>

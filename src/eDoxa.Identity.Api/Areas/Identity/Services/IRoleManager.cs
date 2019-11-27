@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;

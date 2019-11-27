@@ -8,11 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
+using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
+using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public class User : IdentityUser<Guid>
     {

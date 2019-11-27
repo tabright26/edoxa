@@ -6,7 +6,8 @@
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Responses;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Profiles

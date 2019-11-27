@@ -11,11 +11,14 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Domain.AggregateModels;
+using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
-using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
+using UserClaim = eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserClaim;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 {

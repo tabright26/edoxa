@@ -8,7 +8,7 @@ using System;
 
 #nullable disable
 
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate
 {
     public class UserDoxatag
     {

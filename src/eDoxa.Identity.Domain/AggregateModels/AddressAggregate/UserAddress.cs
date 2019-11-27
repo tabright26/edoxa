@@ -10,7 +10,7 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 #nullable disable
 
-namespace eDoxa.Identity.Api.Infrastructure.Models
+namespace eDoxa.Identity.Domain.AggregateModels.AddressAggregate
 {
     public class UserAddress
     {
