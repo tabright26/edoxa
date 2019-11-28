@@ -14,9 +14,9 @@ using FluentValidation;
 
 namespace eDoxa.Identity.Api.Validators
 {
-    public class InformationsPostRequestValidator : AbstractValidator<InformationsPostRequest>
+    public class CreateProfileRequestValidator : AbstractValidator<CreateProfileRequest>
     {
-        public InformationsPostRequestValidator()
+        public CreateProfileRequestValidator()
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()

@@ -13,9 +13,9 @@ using FluentValidation.TestHelper;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
+namespace eDoxa.Identity.UnitTests.Validators
 {
-    public sealed class PasswordResetPostRequestValidatorTest
+    public sealed class ResetPasswordRequestValidatorTest
     {
         public static TheoryData<string> ValidEmails =>
             new TheoryData<string>
@@ -56,7 +56,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenEmailIsValid_ShouldNotHaveValidationErrorFor(string email)
         {
             // Arrange
-            var validator = new PasswordResetPostRequestValidator();
+            var validator = new ResetPasswordRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Email, email);
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenEmailIsInvalid_ShouldNotHaveValidationErrorFor(string email, string errorMessage)
         {
             // Arrange
-            var validator = new PasswordResetPostRequestValidator();
+            var validator = new ResetPasswordRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Email, email);
@@ -80,7 +80,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenPasswordIsValid_ShouldNotHaveValidationErrorFor(string email)
         {
             // Arrange
-            var validator = new PasswordResetPostRequestValidator();
+            var validator = new ResetPasswordRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Email, email);
@@ -91,7 +91,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenPasswordIsInvalid_ShouldNotHaveValidationErrorFor(string email, string errorMessage)
         {
             // Arrange
-            var validator = new PasswordResetPostRequestValidator();
+            var validator = new ResetPasswordRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Email, email);

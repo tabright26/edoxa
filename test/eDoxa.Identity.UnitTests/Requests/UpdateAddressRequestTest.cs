@@ -1,11 +1,10 @@
-﻿// Filename: AddressPostRequestTest.cs
-// Date Created: 2019-09-16
+﻿// Filename: UpdateAddressRequestTest.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Identity.Requests;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -13,17 +12,15 @@ using Newtonsoft.Json;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
+namespace eDoxa.Identity.UnitTests.Requests
 {
-    public sealed class AddressPostRequestTest
+    public sealed class UpdateAddressRequestTest
     {
         [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var country = Country.Canada.Name;
-            var request = new AddressPostRequest(
-                country,
+            var request = new UpdateAddressRequest(
                 "Line1",
                 "Line2",
                 "City",
@@ -33,10 +30,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act
-            var requestDeserialized = JsonConvert.DeserializeObject<AddressPostRequest>(requestSerialized);
+            var requestDeserialized = JsonConvert.DeserializeObject<UpdateAddressRequest>(requestSerialized);
 
             // Assert
-            requestSerialized.Should().Contain(country);
             requestDeserialized.Should().BeEquivalentTo(request);
         }
     }

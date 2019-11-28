@@ -1,5 +1,5 @@
-﻿// Filename: DoxatagPostRequestTest.cs
-// Date Created: 2019-09-16
+﻿// Filename: ChangeDoxatagRequestTest.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,19 +12,19 @@ using Newtonsoft.Json;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
+namespace eDoxa.Identity.UnitTests.Requests
 {
-    public sealed class DoxatagPostRequestTest
+    public sealed class ChangeDoxatagRequestTest
     {
         [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var request = new DoxatagPostRequest("Doxatag");
+            var request = new ChangeDoxatagRequest("Doxatag");
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act
-            var requestDeserialized = JsonConvert.DeserializeObject<DoxatagPostRequest>(requestSerialized);
+            var requestDeserialized = JsonConvert.DeserializeObject<ChangeDoxatagRequest>(requestSerialized);
 
             // Assert
             requestDeserialized.Should().BeEquivalentTo(request);

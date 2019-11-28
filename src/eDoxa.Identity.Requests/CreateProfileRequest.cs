@@ -11,9 +11,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Requests
 {
     [DataContract]
-    public sealed class InformationsPostRequest
+    public sealed class CreateProfileRequest
     {
-        public InformationsPostRequest(
+        public CreateProfileRequest(
             string firstName,
             string lastName,
             string gender,
@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Requests
             Dob = new DobRequest(year, month, day);
         }
 
-        public InformationsPostRequest()
+        public CreateProfileRequest()
         {
             // Required by Fluent Validation.
         }

@@ -13,9 +13,9 @@ using FluentValidation.TestHelper;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
+namespace eDoxa.Identity.UnitTests.Validators
 {
-    public sealed class PasswordForgotPostRequestValidatorTest
+    public sealed class ForgotPasswordRequestValidatorTest
     {
         public static TheoryData<string> ValidEmails =>
             new TheoryData<string>
@@ -38,7 +38,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenEmailIsValid_ShouldNotHaveValidationErrorFor(string email)
         {
             // Arrange
-            var validator = new PasswordForgotPostRequestValidator();
+            var validator = new ForgotPasswordRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Email, email);
@@ -49,7 +49,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenEmailIsInvalid_ShouldNotHaveValidationErrorFor(string email, string errorMessage)
         {
             // Arrange
-            var validator = new PasswordForgotPostRequestValidator();
+            var validator = new ForgotPasswordRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Email, email);

@@ -34,7 +34,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(InformationsPutRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(UpdateProfileRequest request)
         {
             return await _httpClient.PutAsJsonAsync("api/informations", request);
         }
@@ -62,7 +62,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new InformationsPutRequest("Bob"));
+            using var response = await this.ExecuteAsync(new UpdateProfileRequest("Bob"));
 
             // Assert
             response.EnsureSuccessStatusCode();

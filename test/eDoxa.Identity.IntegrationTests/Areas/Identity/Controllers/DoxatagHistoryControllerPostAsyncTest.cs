@@ -37,7 +37,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(DoxatagPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(ChangeDoxatagRequest request)
         {
             return await _httpClient.PostAsJsonAsync("api/doxatag-history", request);
         }
@@ -74,7 +74,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new DoxatagPostRequest("New"));
+            using var response = await this.ExecuteAsync(new ChangeDoxatagRequest("New"));
 
             // Assert
             response.EnsureSuccessStatusCode();

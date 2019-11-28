@@ -65,7 +65,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerOperation("Create new user's Doxatag.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] DoxatagPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] ChangeDoxatagRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 

@@ -243,7 +243,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
 
-            var request = new AddressPostRequest(
+            var request = new CreateAddressRequest(
                 Country.Canada.Name,
                 "New",
                 "New",
@@ -369,7 +369,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
 
-            var request = new AddressPutRequest(
+            var request = new UpdateAddressRequest(
                 "New",
                 "New",
                 "New",

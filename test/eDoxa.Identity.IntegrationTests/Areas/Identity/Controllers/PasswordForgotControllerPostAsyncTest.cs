@@ -31,7 +31,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(PasswordForgotPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(ForgotPasswordRequest request)
         {
             return await _httpClient.PostAsJsonAsync("api/password/forgot", request);
         }
@@ -60,7 +60,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));
+            using var response = await this.ExecuteAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
 
             // Assert
             response.EnsureSuccessStatusCode();

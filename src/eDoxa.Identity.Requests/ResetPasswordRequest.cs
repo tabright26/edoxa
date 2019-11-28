@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Requests
 {
     [DataContract]
-    public sealed class PasswordResetPostRequest
+    public sealed class ResetPasswordRequest
     {
-        public PasswordResetPostRequest(string email, string password, string code)
+        public ResetPasswordRequest(string email, string password, string code)
         {
             Email = email;
             Password = password;
@@ -19,7 +19,7 @@ namespace eDoxa.Identity.Requests
         }
 
 #nullable disable
-        public PasswordResetPostRequest()
+        public ResetPasswordRequest()
         {
             // Required by Fluent Validation.
         }

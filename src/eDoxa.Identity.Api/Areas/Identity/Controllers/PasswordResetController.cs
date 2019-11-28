@@ -36,7 +36,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerOperation("User's password reset.")]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] PasswordResetPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] ResetPasswordRequest request)
         {
             if (ModelState.IsValid)
             {

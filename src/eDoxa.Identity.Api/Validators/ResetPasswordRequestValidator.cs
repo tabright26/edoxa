@@ -13,9 +13,9 @@ using FluentValidation;
 
 namespace eDoxa.Identity.Api.Validators
 {
-    public class PasswordResetPostRequestValidator : AbstractValidator<PasswordResetPostRequest>
+    public class ResetPasswordRequestValidator : AbstractValidator<ResetPasswordRequest>
     {
-        public PasswordResetPostRequestValidator()
+        public ResetPasswordRequestValidator()
         {
             this.RuleFor(request => request.Email).NotNull().WithMessage(PasswordResetErrorDescriber.EmailRequired()).
                 NotEmpty().WithMessage(PasswordForgotErrorDescriber.EmailRequired()).

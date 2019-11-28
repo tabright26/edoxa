@@ -1,5 +1,5 @@
-﻿// Filename: GamePostRequestTest.cs
-// Date Created: 2019-09-16
+﻿// Filename: UpdateProfileRequestTest.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,19 +12,19 @@ using Newtonsoft.Json;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
+namespace eDoxa.Identity.UnitTests.Requests
 {
-    public sealed class GamePostRequestTest
+    public sealed class UpdateProfileRequestTest
     {
         [Fact]
         public void DeserializeObject_WhenDeserializeWithDataContractConstructor_ShouldBeEquivalentToRequest()
         {
             // Arrange
-            var request = new GamePostRequest("user");
+            var request = new UpdateProfileRequest("Bob");
             var requestSerialized = JsonConvert.SerializeObject(request);
 
             // Act
-            var requestDeserialized = JsonConvert.DeserializeObject<GamePostRequest>(requestSerialized);
+            var requestDeserialized = JsonConvert.DeserializeObject<UpdateProfileRequest>(requestSerialized);
 
             // Assert
             requestDeserialized.Should().BeEquivalentTo(request);

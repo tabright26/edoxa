@@ -29,12 +29,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Route("api/informations")]
     [ApiExplorerSettings(GroupName = "Informations")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class InformationsController : ControllerBase
+    public sealed class ProfileController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
 
-        public InformationsController(IUserManager userManager, IMapper mapper)
+        public ProfileController(IUserManager userManager, IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
@@ -63,7 +63,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] InformationsPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] CreateProfileRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -96,7 +96,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PutAsync([FromBody] InformationsPutRequest request)
+        public async Task<IActionResult> PutAsync([FromBody] UpdateProfileRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 

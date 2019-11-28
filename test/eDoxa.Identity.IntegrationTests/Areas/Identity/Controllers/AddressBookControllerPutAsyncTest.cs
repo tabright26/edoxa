@@ -37,7 +37,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId, AddressPutRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId, UpdateAddressRequest request)
         {
             return await _httpClient.PutAsJsonAsync($"api/address-book/{addressId}", request);
         }
@@ -81,7 +81,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     // Act
                     using var response = await this.ExecuteAsync(
                         addressBook.First().Id,
-                        new AddressPutRequest(
+                        new UpdateAddressRequest(
                             "1234 Rue Test",
                             null,
                             "Montreal",

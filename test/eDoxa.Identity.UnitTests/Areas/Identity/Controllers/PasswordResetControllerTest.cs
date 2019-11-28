@@ -53,7 +53,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordResetController(mockUserManager.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", "code"));
+            var result = await controller.PostAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", "code"));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -83,7 +83,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordResetController(mockUserManager.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", "code"));
+            var result = await controller.PostAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", "code"));
 
             // Assert
             result.Should().BeOfType<OkResult>();
@@ -114,7 +114,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordResetController(mockUserManager.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", "code"));
+            var result = await controller.PostAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", "code"));
 
             // Assert
             result.Should().BeOfType<OkResult>();

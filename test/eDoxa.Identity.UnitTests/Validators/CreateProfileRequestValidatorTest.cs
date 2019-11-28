@@ -15,9 +15,9 @@ using FluentValidation.TestHelper;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
+namespace eDoxa.Identity.UnitTests.Validators
 {
-    public sealed class InformationsPostRequestValidatorTest
+    public sealed class CreateProfileRequestValidatorTest
     {
         public static TheoryData<string> ValidFirstNames =>
             new TheoryData<string>
@@ -99,7 +99,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsValid_ShouldNotHaveValidationErrorFor(string firstName)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.FirstName, firstName);
@@ -110,7 +110,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsInvalid_ShouldHaveValidationErrorFor(string firstName, string errorMessage)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.FirstName, firstName);
@@ -122,7 +122,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLastNameIsValid_ShouldNotHaveValidationErrorFor(string lastName)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.LastName, lastName);
@@ -133,7 +133,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLastNameIsInvalid_ShouldHaveValidationErrorFor(string lastName, string errorMessage)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.LastName, lastName);
@@ -145,7 +145,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(Gender gender)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender.Name);
@@ -156,7 +156,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(Gender gender, string errorMessage)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender.Name);
@@ -168,7 +168,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenDobIsValid_ShouldNotHaveValidationErrorFor(DobRequest dob)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Dob, dob);

@@ -66,7 +66,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerOperation("Add user's address.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] AddressPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] CreateAddressRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -93,7 +93,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerOperation("Update user's address by id.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PutAsync(AddressId addressId, [FromBody] AddressPutRequest request)
+        public async Task<IActionResult> PutAsync(AddressId addressId, [FromBody] UpdateAddressRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 

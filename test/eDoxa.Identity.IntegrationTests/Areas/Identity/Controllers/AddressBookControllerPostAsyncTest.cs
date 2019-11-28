@@ -36,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(AddressPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(CreateAddressRequest request)
         {
             return await _httpClient.PostAsJsonAsync("api/address-book", request);
         }
@@ -64,7 +64,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     // Act
                     using var response = await this.ExecuteAsync(
-                        new AddressPostRequest(
+                        new CreateAddressRequest(
                             Country.Canada.Name,
                             "1234 Test Street",
                             null,

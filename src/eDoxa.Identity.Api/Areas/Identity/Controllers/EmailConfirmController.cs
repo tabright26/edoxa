@@ -22,7 +22,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/email/confirm")]
     [ApiExplorerSettings(GroupName = "Email")]
-    public class EmailConfirmController : ControllerBase
+    public sealed class EmailConfirmController : ControllerBase
     {
         private readonly IUserManager _userManager;
 

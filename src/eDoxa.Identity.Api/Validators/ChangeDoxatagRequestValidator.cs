@@ -13,9 +13,9 @@ using FluentValidation;
 
 namespace eDoxa.Identity.Api.Validators
 {
-    public class DoxatagPostRequestValidator : AbstractValidator<DoxatagPostRequest>
+    public class ChangeDoxatagRequestValidator : AbstractValidator<ChangeDoxatagRequest>
     {
-        public DoxatagPostRequestValidator()
+        public ChangeDoxatagRequestValidator()
         {
             this.RuleFor(request => request.Name).NotNull().WithMessage(DoxatagErrorDescriber.Required()).
                 NotEmpty().WithMessage(DoxatagErrorDescriber.Required()).

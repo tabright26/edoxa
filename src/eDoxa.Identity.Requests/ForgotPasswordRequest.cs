@@ -9,15 +9,15 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Requests
 {
     [DataContract]
-    public class PasswordForgotPostRequest
+    public class ForgotPasswordRequest
     {
-        public PasswordForgotPostRequest(string email)
+        public ForgotPasswordRequest(string email)
         {
             Email = email;
         }
 
 #nullable disable
-        public PasswordForgotPostRequest()
+        public ForgotPasswordRequest()
         {
             // Required by Fluent Validation.
         }

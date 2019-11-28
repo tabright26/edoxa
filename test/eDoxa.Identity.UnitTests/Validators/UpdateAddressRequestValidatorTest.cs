@@ -13,9 +13,9 @@ using FluentValidation.TestHelper;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
+namespace eDoxa.Identity.UnitTests.Validators
 {
-    public sealed class AddressPutRequestValidatorTest
+    public sealed class UpdateAddressRequestValidatorTest
     {
         public static TheoryData<string, string> InvalidLine1Address =>
             new TheoryData<string, string>
@@ -96,7 +96,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLine1IsValid_ShouldNotHaveValidationErrorFor(string line1)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Line1, line1);
@@ -107,7 +107,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLine1IsInvalid_ShouldHaveValidationErrorFor(string line1, string errorMessage)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Line1, line1);
@@ -119,7 +119,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLine2IsValid_ShouldNotHaveValidationErrorFor(string line2)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Line2, line2);
@@ -130,7 +130,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenLine2IsInvalid_ShouldHaveValidationErrorFor(string line2, string errorMessage)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Line2, line2);
@@ -142,7 +142,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenCityIsValid_ShouldNotHaveValidationErrorFor(string city)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.City, city);
@@ -153,7 +153,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenCityIsInvalid_ShouldHaveValidationErrorFor(string city, string errorMessage)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.City, city);
@@ -165,7 +165,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenStateIsValid_ShouldNotHaveValidationErrorFor(string state)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.State, state);
@@ -176,7 +176,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenStateIsInvalid_ShouldHaveValidationErrorFor(string state, string errorMessage)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.State, state);
@@ -188,7 +188,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenPostalCodeIsValid_ShouldNotHaveValidationErrorFor(string postalCode)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.PostalCode, postalCode);
@@ -199,7 +199,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenPostalCodeIsInvalid_ShouldHaveValidationErrorFor(string postalCode, string errorMessage)
         {
             // Arrange
-            var validator = new AddressPutRequestValidator();
+            var validator = new UpdateAddressRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.PostalCode, postalCode);

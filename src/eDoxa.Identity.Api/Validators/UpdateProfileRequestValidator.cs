@@ -13,9 +13,9 @@ using FluentValidation;
 
 namespace eDoxa.Identity.Api.Validators
 {
-    public class InformationsPutRequestValidator : AbstractValidator<InformationsPutRequest>
+    public class UpdateProfileRequestValidator : AbstractValidator<UpdateProfileRequest>
     {
-        public InformationsPutRequestValidator()
+        public UpdateProfileRequestValidator()
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()

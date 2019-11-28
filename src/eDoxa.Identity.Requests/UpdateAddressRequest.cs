@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Requests
 {
     [DataContract]
-    public sealed class AddressPutRequest
+    public sealed class UpdateAddressRequest
     {
-        public AddressPutRequest(
+        public UpdateAddressRequest(
             string line1,
             string? line2,
             string city,
@@ -27,7 +27,7 @@ namespace eDoxa.Identity.Requests
         }
 
 #nullable disable
-        public AddressPutRequest()
+        public UpdateAddressRequest()
         {
             // Required by Fluent Validation.
         }

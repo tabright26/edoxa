@@ -26,7 +26,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/doxatags")]
     [ApiExplorerSettings(GroupName = "Doxatags")]
-    public class DoxatagsController : ControllerBase
+    public sealed class DoxatagsController : ControllerBase
     {
         private readonly IDoxatagService _doxatagService;
         private readonly IMapper _mapper;

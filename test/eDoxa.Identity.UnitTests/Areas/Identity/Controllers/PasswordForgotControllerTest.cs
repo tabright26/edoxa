@@ -53,7 +53,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             controller.ModelState.AddModelError("error", "error");
 
             // Act
-            var result = await controller.PostAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));
+            var result = await controller.PostAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -97,7 +97,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordForgotController(mockUserManager.Object, mockServiceBusPublisher.Object, mockRedirectService.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));
+            var result = await controller.PostAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
 
             // Assert
             result.Should().BeOfType<OkResult>();

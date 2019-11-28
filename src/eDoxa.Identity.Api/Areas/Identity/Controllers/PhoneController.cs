@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Route("api/phone")]
     [ApiExplorerSettings(GroupName = "Phone")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class PhoneController : ControllerBase
+    public sealed class PhoneController : ControllerBase
     {
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
@@ -61,7 +61,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerOperation("Udpate user's phone.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] PhonePostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] ChangePhoneRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 

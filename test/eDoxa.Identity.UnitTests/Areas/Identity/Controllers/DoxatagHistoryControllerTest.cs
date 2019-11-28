@@ -166,7 +166,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new DoxatagHistoryController(mockUserManager.Object, mockDoxatagService.Object, TestMapper);
 
-            var request = new DoxatagPostRequest("Doxatag");
+            var request = new ChangeDoxatagRequest("Doxatag");
 
             // Act
             var result = await controller.PostAsync(request);

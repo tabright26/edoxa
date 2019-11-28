@@ -9,15 +9,15 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Requests
 {
     [DataContract]
-    public sealed class InformationsPutRequest
+    public sealed class UpdateProfileRequest
     {
-        public InformationsPutRequest(string firstName)
+        public UpdateProfileRequest(string firstName)
         {
             FirstName = firstName;
         }
 
 #nullable disable
-        public InformationsPutRequest()
+        public UpdateProfileRequest()
         {
             // Required by Fluent Validation.
         }

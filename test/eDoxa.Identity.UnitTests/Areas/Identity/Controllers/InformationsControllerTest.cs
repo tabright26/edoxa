@@ -44,7 +44,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -74,7 +74,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetInformationsAsync(It.IsAny<User>())).ReturnsAsync(user.Profile).Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -162,11 +162,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.PostAsync(
-                new InformationsPostRequest(
+                new CreateProfileRequest(
                     "Bob",
                     "Bob",
                     Gender.Male.Name,
@@ -256,10 +256,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
-            var result = await controller.PutAsync(new InformationsPutRequest("Bob"));
+            var result = await controller.PutAsync(new UpdateProfileRequest("Bob"));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

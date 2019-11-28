@@ -9,9 +9,9 @@ using System.Runtime.Serialization;
 namespace eDoxa.Identity.Requests
 {
     [DataContract]
-    public sealed class PhonePostRequest
+    public sealed class ChangePhoneRequest
     {
-        public PhonePostRequest(string number)
+        public ChangePhoneRequest(string number)
         {
             Number = number;
         }

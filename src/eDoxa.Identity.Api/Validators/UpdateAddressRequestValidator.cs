@@ -1,4 +1,4 @@
-﻿// Filename: AddressPostRequestValidator.cs
+﻿// Filename: AddressPutRequestValidator.cs
 // Date Created: 2019-08-23
 //
 // ================================================
@@ -8,18 +8,15 @@ using System.Text.RegularExpressions;
 
 using eDoxa.Identity.Api.ErrorDescribers;
 using eDoxa.Identity.Requests;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation;
 
 namespace eDoxa.Identity.Api.Validators
 {
-    public sealed class AddressPostRequestValidator : AbstractValidator<AddressPostRequest>
+    public class UpdateAddressRequestValidator : AbstractValidator<UpdateAddressRequest>
     {
-        public AddressPostRequestValidator()
+        public UpdateAddressRequestValidator()
         {
-            //this.Enumeration(request => request.Country).NotEmpty().NotAll().IsInEnumeration(); // TODO: Need to be fixed.
-
             this.RuleFor(request => request.Line1)
                 .NotNull()
                 .WithMessage(AddressBookErrorDescriber.Line1Required())

@@ -44,7 +44,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerOperation("User's forgot password.")]
         [SwaggerResponse(StatusCodes.Status200OK)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] PasswordForgotPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] ForgotPasswordRequest request)
         {
             if (ModelState.IsValid)
             {

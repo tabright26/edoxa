@@ -12,9 +12,9 @@ using FluentValidation.TestHelper;
 
 using Xunit;
 
-namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
+namespace eDoxa.Identity.UnitTests.Validators
 {
-    public sealed class PersonalInfoPutRequestValidatorTest
+    public sealed class UpdateProfileRequestValidatorTest
     {
         public static TheoryData<string> ValidFirstNames =>
             new TheoryData<string>
@@ -42,7 +42,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsValid_ShouldNotHaveValidationErrorFor(string firstName)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.FirstName, firstName);
@@ -53,7 +53,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
         public void Validate_WhenFirstNameIsInvalid_ShouldHaveValidationErrorFor(string firstName, string errorMessage)
         {
             // Arrange
-            var validator = new InformationsPostRequestValidator();
+            var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.FirstName, firstName);
