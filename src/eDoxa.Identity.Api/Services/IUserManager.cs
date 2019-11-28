@@ -1,5 +1,5 @@
-﻿// Filename: ICustomUserManager.cs
-// Date Created: --
+﻿// Filename: IUserManager.cs
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,15 +10,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
-using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.Api.Services
 {
@@ -26,39 +22,51 @@ namespace eDoxa.Identity.Api.Services
     {
         UserStore Store { get; }
 
-        Task<IEnumerable<Doxatag>> FetchDoxatagsAsync();
+        ILogger Logger { get; set; }
 
-        Task<IdentityResult> AddAddressAsync(
-            User user,
-            Country country,
-            string line1,
-            string? line2,
-            string city,
-            string? state,
-            string? postalCode
-        );
+        IPasswordHasher<User> PasswordHasher { get; set; }
 
-        Task<IdentityResult> UpdateAddressAsync(
-            User user,
-            AddressId addressId,
-            string line1,
-            string? line2,
-            string city,
-            string? state,
-            string? postalCode
-        );
+        IList<IUserValidator<User>> UserValidators { get; }
 
-        Task<IdentityResult> RemoveAddressAsync(User user, AddressId addressId);
+        IList<IPasswordValidator<User>> PasswordValidators { get; }
 
-        Task<IReadOnlyCollection<Address>> GetAddressBookAsync(User user);
+        ILookupNormalizer KeyNormalizer { get; set; }
 
-        Task<Address?> FindUserAddressAsync(User user, AddressId addressId);
+        IdentityErrorDescriber ErrorDescriber { get; set; }
+
+        IdentityOptions Options { get; set; }
+
+        bool SupportsUserAuthenticationTokens { get; }
+
+        bool SupportsUserAuthenticatorKey { get; }
+
+        bool SupportsUserTwoFactorRecoveryCodes { get; }
+
+        bool SupportsUserTwoFactor { get; }
+
+        bool SupportsUserPassword { get; }
+
+        bool SupportsUserSecurityStamp { get; }
+
+        bool SupportsUserRole { get; }
+
+        bool SupportsUserLogin { get; }
+
+        bool SupportsUserEmail { get; }
+
+        bool SupportsUserPhoneNumber { get; }
+
+        bool SupportsUserClaim { get; }
+
+        bool SupportsUserLockout { get; }
+
+        bool SupportsQueryableUsers { get; }
+
+        IQueryable<User> Users { get; }
+
+        Task<Country> GetCountryAsync(User user);
 
         Task<UserProfile?> GetInformationsAsync(User user);
-
-        Task<Doxatag?> GetDoxatagAsync(User user);
-
-        Task<IReadOnlyCollection<Doxatag>> GetDoxatagHistoryAsync(User user);
 
         Task<Dob?> GetDobAsync(User user);
 
@@ -178,7 +186,10 @@ namespace eDoxa.Identity.Api.Services
 
         Task<bool> VerifyChangePhoneNumberTokenAsync(User user, string token, string phoneNumber);
 
-        Task<bool> VerifyUserTokenAsync(User user, string tokenProvider, string purpose,
+        Task<bool> VerifyUserTokenAsync(
+            User user,
+            string tokenProvider,
+            string purpose,
             string token
         );
 
@@ -218,7 +229,10 @@ namespace eDoxa.Identity.Api.Services
 
         Task<string> GetAuthenticationTokenAsync(User user, string loginProvider, string tokenName);
 
-        Task<IdentityResult> SetAuthenticationTokenAsync(User user, string loginProvider, string tokenName,
+        Task<IdentityResult> SetAuthenticationTokenAsync(
+            User user,
+            string loginProvider,
+            string tokenName,
             string tokenValue
         );
 
@@ -238,52 +252,14 @@ namespace eDoxa.Identity.Api.Services
 
         Task<byte[]> CreateSecurityTokenAsync(User user);
 
-        ILogger Logger { get; set; }
-
-        IPasswordHasher<User> PasswordHasher { get; set; }
-
-        IList<IUserValidator<User>> UserValidators { get; }
-
-        IList<IPasswordValidator<User>> PasswordValidators { get; }
-
-        ILookupNormalizer KeyNormalizer { get; set; }
-
-        IdentityErrorDescriber ErrorDescriber { get; set; }
-
-        IdentityOptions Options { get; set; }
-
-        bool SupportsUserAuthenticationTokens { get; }
-
-        bool SupportsUserAuthenticatorKey { get; }
-
-        bool SupportsUserTwoFactorRecoveryCodes { get; }
-
-        bool SupportsUserTwoFactor { get; }
-
-        bool SupportsUserPassword { get; }
-
-        bool SupportsUserSecurityStamp { get; }
-
-        bool SupportsUserRole { get; }
-
-        bool SupportsUserLogin { get; }
-
-        bool SupportsUserEmail { get; }
-
-        bool SupportsUserPhoneNumber { get; }
-
-        bool SupportsUserClaim { get; }
-
-        bool SupportsUserLockout { get; }
-
-        bool SupportsQueryableUsers { get; }
-
-        IQueryable<User> Users { get; }
-
-        Task<IdentityResult> CreateInformationsAsync(User user, string firstName, string lastName, Gender gender, Dob dob);
+        Task<IdentityResult> CreateInformationsAsync(
+            User user,
+            string firstName,
+            string lastName,
+            Gender gender,
+            Dob dob
+        );
 
         Task<IdentityResult> UpdateInformationsAsync(User user, string firstName);
-
-        Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName);
     }
 }

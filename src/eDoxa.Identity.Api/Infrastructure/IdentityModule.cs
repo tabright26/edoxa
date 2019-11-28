@@ -21,6 +21,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             builder.RegisterType<DoxatagRepository>().As<IDoxatagRepository>().InstancePerLifetimeScope();
 
             // Services
+            builder.RegisterType<AddressService>().As<IAddressService>().InstancePerLifetimeScope();
+            builder.RegisterType<DoxatagService>().As<IDoxatagService>().InstancePerLifetimeScope();
             builder.RegisterType<RedirectService>().As<IRedirectService>().InstancePerDependency();
         }
     }

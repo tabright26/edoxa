@@ -30,14 +30,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Route("api/doxatag-history")]
     [ApiExplorerSettings(GroupName = "Doxatag History")]
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class DoxatagHistoryController : ControllerBase
+    public sealed class DoxatagHistoryController : ControllerBase
     {
         private readonly IUserManager _userManager;
+        private readonly IDoxatagService _doxatagService;
         private readonly IMapper _mapper;
 
-        public DoxatagHistoryController(IUserManager userManager, IMapper mapper)
+        public DoxatagHistoryController(IUserManager userManager, IDoxatagService doxatagService, IMapper mapper)
         {
             _userManager = userManager;
+            _doxatagService = doxatagService;
             _mapper = mapper;
         }
 
@@ -49,7 +51,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var doxatagHistory = await _userManager.GetDoxatagHistoryAsync(user);
+            var doxatagHistory = await _doxatagService.FetchDoxatagHistoryAsync(user);
 
             if (!doxatagHistory.Any())
             {
@@ -67,7 +69,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var result = await _userManager.SetDoxatagAsync(user, request.Name);
+            var result = await _doxatagService.ChangeDoxatagAsync(user, request.Name);
 
             if (result.Succeeded)
             {

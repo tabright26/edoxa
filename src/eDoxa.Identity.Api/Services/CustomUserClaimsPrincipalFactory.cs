@@ -1,5 +1,5 @@
 ﻿// Filename: CustomUserClaimsPrincipalFactory.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,23 +20,30 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-using Claim = System.Security.Claims.Claim;
 using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
 namespace eDoxa.Identity.Api.Services
 {
     public sealed class CustomUserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<User>
     {
-        public CustomUserClaimsPrincipalFactory(UserManager userManager, RoleManager roleManager, IOptions<IdentityOptions> optionsAccessor)
+        private readonly IDoxatagService _doxatagService;
+
+        public CustomUserClaimsPrincipalFactory(
+            IUserManager userManager,
+            IRoleManager roleManager,
+            IDoxatagService doxatagService,
+            IOptions<IdentityOptions> optionsAccessor
+        )
         {
+            _doxatagService = doxatagService;
             UserManager = userManager;
             RoleManager = roleManager;
             Options = optionsAccessor.Value;
         }
 
-        private UserManager UserManager { get; }
+        private IUserManager UserManager { get; }
 
-        private RoleManager RoleManager { get; }
+        private IRoleManager RoleManager { get; }
 
         private IdentityOptions Options { get; }
 
@@ -93,7 +100,7 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateDoxatagClaimAsync(User user)
         {
-            var doxatag = await UserManager.GetDoxatagAsync(user);
+            var doxatag = await _doxatagService.FindDoxatagAsync(user);
 
             if (doxatag != null)
             {

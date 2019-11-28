@@ -34,11 +34,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     public sealed class AddressBookController : ControllerBase
     {
         private readonly IUserManager _userManager;
+        private readonly IAddressService _addressService;
         private readonly IMapper _mapper;
 
-        public AddressBookController(IUserManager userManager, IMapper mapper)
+        public AddressBookController(IUserManager userManager, IAddressService addressService, IMapper mapper)
         {
             _userManager = userManager;
+            _addressService = addressService;
             _mapper = mapper;
         }
 
@@ -50,7 +52,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var addressBook = await _userManager.GetAddressBookAsync(user);
+            var addressBook = await _addressService.GetAddressBookAsync(user);
 
             if (!addressBook.Any())
             {
@@ -68,7 +70,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var result = await _userManager.AddAddressAsync(
+            var result = await _addressService.AddAddressAsync(
                 user,
                 Country.FromName(request.Country),
                 request.Line1,
@@ -95,7 +97,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var result = await _userManager.UpdateAddressAsync(
+            var result = await _addressService.UpdateAddressAsync(
                 user,
                 addressId,
                 request.Line1,
@@ -122,7 +124,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var result = await _userManager.RemoveAddressAsync(user, addressId);
+            var result = await _addressService.RemoveAddressAsync(user, addressId);
 
             if (result.Succeeded)
             {

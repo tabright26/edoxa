@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -36,7 +35,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId)
+        private async Task<HttpResponseMessage> ExecuteAsync(AddressId addressId)
         {
             return await _httpClient.DeleteAsync($"api/address-book/{addressId}");
         }
@@ -62,7 +61,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result.Succeeded.Should().BeTrue();
 
-                    result = await userManager.AddAddressAsync(
+                    var addressService = scope.GetRequiredService<IAddressService>();
+
+                    result = await addressService.AddAddressAsync(
                         user,
                         Country.Canada,
                         "1234 Test Street",
@@ -73,7 +74,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result.Succeeded.Should().BeTrue();
 
-                    var addressBook = await userManager.GetAddressBookAsync(user);
+                    var addressBook = await addressService.GetAddressBookAsync(user);
 
                     // Act
                     using var response = await this.ExecuteAsync(addressBook.First().Id);

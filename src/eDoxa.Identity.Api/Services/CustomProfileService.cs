@@ -1,5 +1,5 @@
 ﻿// Filename: CustomProfileService.cs
-// Date Created: 2019-07-17
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,7 +17,7 @@ namespace eDoxa.Identity.Api.Services
 {
     internal sealed class CustomProfileService : IProfileService
     {
-        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, UserManager userManager, IOptions<IdentityOptions> optionsAccessor)
+        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, IUserManager userManager, IOptions<IdentityOptions> optionsAccessor)
         {
             PrincipalFactory = principalFactory;
             UserManager = userManager;
@@ -26,11 +26,11 @@ namespace eDoxa.Identity.Api.Services
 
         private CustomUserClaimsPrincipalFactory PrincipalFactory { get; }
 
-        private UserManager UserManager { get; }
+        private IUserManager UserManager { get; }
 
         private IdentityOptions Options { get; }
 
-        public async Task GetProfileDataAsync( ProfileDataRequestContext context)
+        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
             var user = await UserManager.GetUserAsync(context.Subject);
 
@@ -42,7 +42,7 @@ namespace eDoxa.Identity.Api.Services
             }
         }
 
-        public async Task IsActiveAsync( IsActiveContext context)
+        public async Task IsActiveAsync(IsActiveContext context)
         {
             var user = await UserManager.GetUserAsync(context.Subject);
 

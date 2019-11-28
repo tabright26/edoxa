@@ -28,12 +28,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiExplorerSettings(GroupName = "Doxatags")]
     public class DoxatagsController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IDoxatagService _doxatagService;
         private readonly IMapper _mapper;
 
-        public DoxatagsController(IUserManager userManager, IMapper mapper)
+        public DoxatagsController(IDoxatagService doxatagService, IMapper mapper)
         {
-            _userManager = userManager;
+            _doxatagService = doxatagService;
             _mapper = mapper;
         }
 
@@ -43,7 +43,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var doxatags = await _userManager.FetchDoxatagsAsync();
+            var doxatags = await _doxatagService.FetchDoxatagsAsync();
 
             if (!doxatags.Any())
             {
