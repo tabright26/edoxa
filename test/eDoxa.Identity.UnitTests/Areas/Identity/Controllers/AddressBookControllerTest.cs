@@ -1,5 +1,5 @@
 ﻿// Filename: AddressBookControllerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -86,26 +86,25 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {
-                        Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = Country.Canada,
-                        Line1 = "Test"
-                    }
-                }
+                Id = Guid.NewGuid()
             };
 
-            var address = user.AddressBook.First();
+            var address = new Address(
+                UserId.FromGuid(user.Id),
+                Country.Canada,
+                "Line1",
+                null,
+                "City",
+                "State",
+                "PostalCode");
+
+            user.AddressBook.Add(address);
 
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()))
+            mockUserManager.Setup(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
@@ -121,7 +120,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<Guid>()), Times.Once);
+            mockUserManager.Verify(userManager => userManager.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()), Times.Once);
         }
 
         [Fact]
@@ -134,7 +133,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(new Collection<UserAddress>()).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(new Collection<Address>()).Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, TestMapper);
 
@@ -155,23 +154,25 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = Country.Canada,
-                        Line1 = "Test"
-                    }
-                }
+                Id = Guid.NewGuid()
             };
+
+            var address = new Address(
+                UserId.FromGuid(user.Id),
+                Country.Canada,
+                "Line1",
+                null,
+                "City",
+                "State",
+                "PostalCode");
+
+            user.AddressBook.Add(address);
 
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(user.AddressBook).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(user.AddressBook.ToList()).Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, TestMapper);
 
@@ -188,91 +189,25 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(userManager => userManager.GetAddressBookAsync(It.IsAny<User>()), Times.Once);
         }
 
-        //[Fact]
-        //public async Task PostAsync_ShouldBeBadRequestObjectResult()
-        //{
-        //    // Arrange
-        //    var user = new User
-        //    {
-        //        AddressBook = new Collection<UserAddress>
-        //        {
-        //            new UserAddress
-        //            {
-        //                Id = Guid.NewGuid(),
-        //                City = "Test",
-        //                PostalCode = "Test",
-        //                Country = Country.Canada,
-        //                Line1 = "Test"
-        //            }
-        //        }
-        //    };
-
-        //    var mockUserManager = new Mock<IUserManager>();
-
-        //    mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
-
-        //    mockUserManager.Setup(
-        //            userManager => userManager.AddAddressAsync(
-        //                It.IsAny<User>(),
-        //                It.IsAny<Country>(),
-        //                It.IsAny<string>(),
-        //                It.IsAny<string>(),
-        //                It.IsAny<string>(),
-        //                It.IsAny<string>(),
-        //                It.IsAny<string>()))
-        //        .ReturnsAsync(IdentityResult.Failed())
-        //        .Verifiable();
-
-        //    var controller = new AddressBookController(mockUserManager.Object, TestMapper);
-
-        //    var request = new AddressPostRequest(
-        //        Country.Canada,
-        //        "New",
-        //        "New",
-        //        "New",
-        //        "New",
-        //        "New");
-
-        //    // Act
-        //    var result = await controller.PostAsync(request);
-
-        //    // Assert
-        //    result.Should().BeOfType<BadRequestObjectResult>();
-
-        //    result.As<BadRequestObjectResult>().Should().BeEquivalentTo(new BadRequestObjectResult(controller.ModelState));
-
-        //    mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
-
-        //    mockUserManager.Verify(
-        //        userManager => userManager.AddAddressAsync(
-        //            It.IsAny<User>(),
-        //            It.IsAny<Country>(),
-        //            It.IsAny<string>(),
-        //            It.IsAny<string>(),
-        //            It.IsAny<string>(),
-        //            It.IsAny<string>(),
-        //            It.IsAny<string>()),
-        //        Times.Once);
-        //}
-
         [Fact]
         public async Task PostAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             var user = new User
             {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {
-                        Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = Country.Canada,
-                        Line1 = "Test"
-                    }
-                }
+                Id = Guid.NewGuid()
             };
+
+            var address = new Address(
+                UserId.FromGuid(user.Id),
+                Country.Canada,
+                "Line1",
+                null,
+                "City",
+                "State",
+                "PostalCode");
+
+            user.AddressBook.Add(address);
 
             var mockUserManager = new Mock<IUserManager>();
 
@@ -381,18 +316,19 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new Collection<UserAddress>
-                {
-                    new UserAddress
-                    {
-                        Id = Guid.NewGuid(),
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = Country.Canada,
-                        Line1 = "Test"
-                    }
-                }
+                Id = Guid.NewGuid()
             };
+
+            var address = new Address(
+                UserId.FromGuid(user.Id),
+                Country.Canada,
+                "Line1",
+                null,
+                "City",
+                "State",
+                "PostalCode");
+
+            user.AddressBook.Add(address);
 
             var mockUserManager = new Mock<IUserManager>();
 
@@ -401,7 +337,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Setup(
                     userManager => userManager.UpdateAddressAsync(
                         It.IsAny<User>(),
-                        It.IsAny<Guid>(),
+                        It.IsAny<AddressId>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
@@ -432,7 +368,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockUserManager.Verify(
                 userManager => userManager.UpdateAddressAsync(
                     It.IsAny<User>(),
-                    It.IsAny<Guid>(),
+                    It.IsAny<AddressId>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),

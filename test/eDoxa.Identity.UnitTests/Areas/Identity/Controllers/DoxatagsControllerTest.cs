@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
@@ -16,6 +15,8 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
 
@@ -39,7 +40,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var mockUserManager = new Mock<IUserManager>();
 
-            mockUserManager.Setup(userManager => userManager.FetchDoxatagsAsync()).ReturnsAsync(Array.Empty<UserDoxatag>()).Verifiable();
+            mockUserManager.Setup(userManager => userManager.FetchDoxatagsAsync()).ReturnsAsync(Array.Empty<Doxatag>()).Verifiable();
 
             var controller = new DoxatagsController(mockUserManager.Object, TestMapper);
 
@@ -61,17 +62,12 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            user.DoxatagHistory = new Collection<UserDoxatag>
-            {
-                new UserDoxatag
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = user.Id,
-                    Name = "Test",
-                    Code = 1234,
-                    Timestamp = DateTime.UtcNow
-                }
-            };
+            user.DoxatagHistory.Add(
+                new Doxatag(
+                    UserId.FromGuid(user.Id),
+                    "Name",
+                    1000,
+                    new UtcNowDateTimeProvider()));
 
             var mockUserManager = new Mock<IUserManager>();
 

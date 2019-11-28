@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
@@ -22,16 +21,16 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         public User()
         {
             Informations = null;
-            DoxatagHistory = new Collection<UserDoxatag>();
-            AddressBook = new Collection<UserAddress>();
+            DoxatagHistory = new HashSet<Doxatag>();
+            AddressBook = new HashSet<Address>();
         }
 #nullable restore
         public Country Country { get; set; }
 
-        public UserInformations? Informations { get; set; }
+        public UserProfile? Informations { get; set; }
 
-        public ICollection<UserDoxatag> DoxatagHistory { get; set; }
+        public ICollection<Doxatag> DoxatagHistory { get; set; }
 
-        public ICollection<UserAddress> AddressBook { get; set; }
+        public ICollection<Address> AddressBook { get; set; }
     }
 }

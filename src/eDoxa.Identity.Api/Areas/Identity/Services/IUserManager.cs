@@ -10,7 +10,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -27,7 +26,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     {
         UserStore Store { get; }
 
-        Task<IEnumerable<UserDoxatag>> FetchDoxatagsAsync();
+        Task<IEnumerable<Doxatag>> FetchDoxatagsAsync();
 
         Task<IdentityResult> AddAddressAsync(
             User user,
@@ -41,7 +40,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         Task<IdentityResult> UpdateAddressAsync(
             User user,
-            Guid addressId,
+            AddressId addressId,
             string line1,
             string? line2,
             string city,
@@ -49,17 +48,17 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             string? postalCode
         );
 
-        Task<IdentityResult> RemoveAddressAsync(User user, Guid addressId);
+        Task<IdentityResult> RemoveAddressAsync(User user, AddressId addressId);
 
-        Task<ICollection<UserAddress>> GetAddressBookAsync(User user);
+        Task<IReadOnlyCollection<Address>> GetAddressBookAsync(User user);
 
-        Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId);
+        Task<Address?> FindUserAddressAsync(User user, AddressId addressId);
 
-        Task<UserInformations?> GetInformationsAsync(User user);
+        Task<UserProfile?> GetInformationsAsync(User user);
 
-        Task<UserDoxatag?> GetDoxatagAsync(User user);
+        Task<Doxatag?> GetDoxatagAsync(User user);
 
-        Task<ICollection<UserDoxatag>> GetDoxatagHistoryAsync(User user);
+        Task<IReadOnlyCollection<Doxatag>> GetDoxatagHistoryAsync(User user);
 
         Task<Dob?> GetDobAsync(User user);
 

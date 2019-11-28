@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.ViewModels;
@@ -31,7 +30,6 @@ using Microsoft.Extensions.Options;
 namespace eDoxa.Identity.Api.Controllers
 {
     [AllowAnonymous]
-    [SecurityHeaders]
     public class AccountController : Controller
     {
         private readonly IClientStore _clientStore;

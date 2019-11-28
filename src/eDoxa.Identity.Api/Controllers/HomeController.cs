@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityServer4.Services;
@@ -20,7 +19,6 @@ using Microsoft.Extensions.Logging;
 namespace eDoxa.Identity.Api.Controllers
 {
     [AllowAnonymous]
-    [SecurityHeaders]
     public class HomeController : Controller
     {
         private readonly IWebHostEnvironment _environment;

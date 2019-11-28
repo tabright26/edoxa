@@ -12,7 +12,6 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
@@ -31,7 +30,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Identity.Api.Controllers
 {
     [AllowAnonymous]
-    [SecurityHeaders]
     public class ExternalController : Controller
     {
         private readonly IEventService _events;

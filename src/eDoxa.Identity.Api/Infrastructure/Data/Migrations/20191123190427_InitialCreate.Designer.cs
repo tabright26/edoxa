@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Infrastructure;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {

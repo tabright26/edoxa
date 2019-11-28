@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +14,7 @@ using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Responses;
+using eDoxa.Seedwork.Domain.Miscs;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -91,7 +91,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerOperation("Update user's address by id.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PutAsync(Guid addressId, [FromBody] AddressPutRequest request)
+        public async Task<IActionResult> PutAsync(AddressId addressId, [FromBody] AddressPutRequest request)
         {
             var user = await _userManager.GetUserAsync(User);
 
@@ -116,9 +116,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpDelete("{addressId}")]
         [SwaggerOperation("Remove user's address by id.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Guid))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressId))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> DeleteAsync(Guid addressId)
+        public async Task<IActionResult> DeleteAsync(AddressId addressId)
         {
             var user = await _userManager.GetUserAsync(User);
 

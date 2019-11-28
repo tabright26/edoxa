@@ -8,7 +8,7 @@ using System;
 
 using Autofac.Extensions.DependencyInjection;
 
-using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Security.Extensions;
 

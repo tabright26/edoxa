@@ -13,9 +13,9 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
-    public sealed class UserInformations : ValueObject
+    public sealed class UserProfile : ValueObject
     {
-        public UserInformations(
+        public UserProfile(
             string firstName,
             string lastName,
             Gender gender,
@@ -28,7 +28,7 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
             Dob = dob;
         }
 
-        private UserInformations()
+        private UserProfile()
         {
             // Required by EF Core.
         }

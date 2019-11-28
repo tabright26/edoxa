@@ -7,6 +7,7 @@
 using System.IO;
 using System.Reflection;
 
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 using Microsoft.EntityFrameworkCore;

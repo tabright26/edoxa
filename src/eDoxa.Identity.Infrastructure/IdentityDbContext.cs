@@ -5,19 +5,22 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Identity.Api.Infrastructure
+namespace eDoxa.Identity.Infrastructure
 {
-    public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>
+    public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>, IUnitOfWork
     {
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
         {
@@ -70,7 +73,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.ToTable("User");
                 });
 
-            modelBuilder.Entity<UserDoxatag>(
+            modelBuilder.Entity<Doxatag>(
                 builder =>
                 {
                     builder.HasKey(doxatag => doxatag.Id);
@@ -82,12 +85,12 @@ namespace eDoxa.Identity.Api.Infrastructure
                     builder.ToTable("UserDoxatag");
                 });
 
-            modelBuilder.Entity<UserAddress>(
+            modelBuilder.Entity<Address>(
                 builder =>
                 {
                     builder.HasKey(address => address.Id);
                     builder.Property(address => address.Id).IsRequired().ValueGeneratedNever();
-                    builder.Property(address => address.Type).HasConversion(type => type.Value, type => UserAddressType.FromValue(type)).IsRequired();
+                    builder.Property(address => address.Type).HasConversion(type => type.Value, type => AddressType.FromValue(type)).IsRequired();
                     builder.Property(address => address.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
                     builder.Property(address => address.Line1).IsRequired();
                     builder.Property(address => address.Line2).IsRequired(false);
@@ -103,6 +106,11 @@ namespace eDoxa.Identity.Api.Infrastructure
             modelBuilder.Entity<UserRole>().ToTable("UserRole");
             modelBuilder.Entity<Role>().ToTable("Role");
             modelBuilder.Entity<RoleClaim>().ToTable("RoleClaim");
+        }
+
+        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        {
+            await this.SaveChangesAsync(cancellationToken);
         }
     }
 }

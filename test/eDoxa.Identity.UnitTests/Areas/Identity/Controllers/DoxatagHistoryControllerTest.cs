@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
@@ -48,7 +50,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetDoxatagHistoryAsync(It.IsAny<User>())).ReturnsAsync(new Collection<UserDoxatag>()).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetDoxatagHistoryAsync(It.IsAny<User>())).ReturnsAsync(new Collection<Doxatag>()).Verifiable();
 
             var controller = new DoxatagHistoryController(mockUserManager.Object, TestMapper);
 
@@ -72,23 +74,18 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            user.DoxatagHistory = new Collection<UserDoxatag>
-            {
-                new UserDoxatag
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = user.Id,
-                    Name = "Test",
-                    Code = 1234,
-                    Timestamp = DateTime.UtcNow
-                }
-            };
+            user.DoxatagHistory.Add(
+                new Doxatag(
+                    UserId.FromGuid(user.Id),
+                    "Name",
+                    1000,
+                    new UtcNowDateTimeProvider()));
 
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetDoxatagHistoryAsync(It.IsAny<User>())).ReturnsAsync(user.DoxatagHistory).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetDoxatagHistoryAsync(It.IsAny<User>())).ReturnsAsync(user.DoxatagHistory.ToList()).Verifiable();
 
             var controller = new DoxatagHistoryController(mockUserManager.Object, TestMapper);
 
@@ -142,17 +139,19 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User
             {
-                AddressBook = new List<UserAddress>
-                {
-                    new UserAddress
-                    {
-                        City = "Test",
-                        PostalCode = "Test",
-                        Country = Country.Canada,
-                        Line1 = "Test"
-                    }
-                }
+                Id = Guid.NewGuid()
             };
+
+            var address = new Address(
+                UserId.FromGuid(user.Id),
+                Country.Canada,
+                "Line1",
+                null,
+                "City",
+                "State",
+                "PostalCode");
+
+            user.AddressBook.Add(address);
 
             var mockUserManager = new Mock<IUserManager>();
 

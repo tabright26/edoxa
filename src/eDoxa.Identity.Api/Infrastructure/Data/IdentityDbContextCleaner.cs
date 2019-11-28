@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application;
 
 using Microsoft.AspNetCore.Hosting;

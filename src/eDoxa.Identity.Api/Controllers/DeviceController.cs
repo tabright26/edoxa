@@ -8,7 +8,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityServer4;
@@ -25,7 +24,6 @@ using Microsoft.Extensions.Logging;
 namespace eDoxa.Identity.Api.Controllers
 {
     [Authorize]
-    [SecurityHeaders]
     public class DeviceController : Controller
     {
         private readonly IClientStore _clientStore;

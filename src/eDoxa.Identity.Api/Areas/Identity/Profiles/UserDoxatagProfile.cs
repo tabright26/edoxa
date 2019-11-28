@@ -15,7 +15,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Profiles
     {
         public UserDoxatagProfile()
         {
-            this.CreateMap<UserDoxatag, UserDoxatagResponse>()
+            this.CreateMap<Doxatag, UserDoxatagResponse>()
                 .ForMember(doxatag => doxatag.UserId, config => config.MapFrom(doxatag => doxatag.UserId))
                 .ForMember(doxatag => doxatag.Name, config => config.MapFrom(doxatag => doxatag.Name))
                 .ForMember(doxatag => doxatag.Code, config => config.MapFrom(doxatag => doxatag.Code))

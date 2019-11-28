@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -18,6 +16,8 @@ using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -50,17 +50,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
 
-            user.DoxatagHistory = new Collection<UserDoxatag>
-            {
-                new UserDoxatag
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = user.Id,
-                    Name = "Test",
-                    Code = 1000,
-                    Timestamp = DateTime.UtcNow
-                }
-            };
+            user.DoxatagHistory.Add(
+                new Doxatag(
+                    UserId.FromGuid(user.Id),
+                    "Name",
+                    1000,
+                    new UtcNowDateTimeProvider()));
 
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();

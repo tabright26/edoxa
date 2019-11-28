@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Domain.AggregateModels;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
@@ -66,7 +65,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var user = new User
             {
-                Informations = new UserInformations("Test", "Test", Gender.Male, new Dob(dob))
+                Informations = new UserProfile("Test", "Test", Gender.Male, new Dob(dob))
             };
 
             var mockUserManager = new Mock<IUserManager>();
@@ -244,7 +243,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var user = new User
             {
-                Informations = new UserInformations("FirstName", "LastName", Gender.Male, new Dob(dob))
+                Informations = new UserProfile("FirstName", "LastName", Gender.Male, new Dob(dob))
             };
 
             var mockUserManager = new Mock<IUserManager>();

@@ -6,8 +6,6 @@
 
 using AutoMapper;
 
-using eDoxa.Identity.Domain.AggregateModels;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Responses;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Profiles
@@ -16,7 +14,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Profiles
     {
         public UserInformationsProfile()
         {
-            this.CreateMap<UserInformations, UserInformationsResponse>()
+            this.CreateMap<Domain.AggregateModels.UserAggregate.UserProfile, UserInformationsResponse>()
                 .ForMember(
                     informations => informations.Name,
                     config =>

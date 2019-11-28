@@ -1,5 +1,5 @@
 ﻿// Filename: UserManager.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,17 +10,15 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
-using eDoxa.Identity.Domain.AggregateModels;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.Repositories;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
-using LinqKit;
-
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -30,6 +28,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
     {
         private static readonly Random Random = new Random();
         private readonly IServiceBusPublisher _publisher;
+        private readonly IAddressRepository _addressRepository;
+        private readonly IDoxatagRepository _doxatagRepository;
 
         public UserManager(
             UserStore store,
@@ -41,7 +41,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             CustomIdentityErrorDescriber errors,
             IServiceProvider services,
             ILogger<UserManager> logger,
-            IServiceBusPublisher publisher
+            IServiceBusPublisher publisher,
+            IAddressRepository addressRepository,
+            IDoxatagRepository doxatagRepository
         ) : base(
             store,
             optionsAccessor,
@@ -54,6 +56,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             logger)
         {
             _publisher = publisher;
+            _addressRepository = addressRepository;
+            _doxatagRepository = doxatagRepository;
             ErrorDescriber = errors;
             Store = store;
         }
@@ -62,18 +66,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         public new UserStore Store { get; }
 
-        public async Task<IEnumerable<UserDoxatag>> FetchDoxatagsAsync()
+        public async Task<IEnumerable<Doxatag>> FetchDoxatagsAsync()
         {
             this.ThrowIfDisposed();
 
-            var doxatagHistory = await Store.DoxatagHistory.AsExpandable().ToListAsync();
-
-            return doxatagHistory.GroupBy(doxatag => doxatag.UserId)
-                .Select(history => history.OrderBy(doxatag => doxatag.Timestamp).First())
-                .ToList();
+            return await _doxatagRepository.FetchDoxatagsAsync();
         }
 
-        public async Task<UserAddress?> FindUserAddressAsync(User user, Guid addressId)
+        public async Task<Address?> FindUserAddressAsync(User user, AddressId addressId)
         {
             this.ThrowIfDisposed();
 
@@ -82,7 +82,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.FindUserAddressAsync(user.Id, addressId);
+            return await _addressRepository.FindAddressAsync(UserId.FromGuid(user.Id), addressId);
         }
 
         public override async Task<IdentityResult> SetEmailAsync(User user, string email)
@@ -109,7 +109,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return result;
         }
 
-        public async Task<UserInformations?> GetInformationsAsync(User user)
+        public async Task<UserProfile?> GetInformationsAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -138,7 +138,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             await Store.SetInformationsAsync(
                 user,
-                new UserInformations(
+                new UserProfile(
                     firstName,
                     lastName,
                     gender,
@@ -177,7 +177,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             await Store.SetInformationsAsync(
                 user,
-                new UserInformations(
+                new UserProfile(
                     firstName,
                     lastName,
                     gender,
@@ -201,7 +201,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return result;
         }
 
-        public async Task<UserDoxatag?> GetDoxatagAsync(User user)
+        public async Task<Doxatag?> GetDoxatagAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -210,10 +210,10 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetDoxatagAsync(user, CancellationToken);
+            return await _doxatagRepository.FindDoxatagAsync(UserId.FromGuid(user.Id));
         }
 
-        public async Task<ICollection<UserDoxatag>> GetDoxatagHistoryAsync(User user)
+        public async Task<IReadOnlyCollection<Doxatag>> GetDoxatagHistoryAsync(User user)
         {
             this.ThrowIfDisposed();
 
@@ -222,7 +222,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetDoxatagHistoryAsync(user, CancellationToken);
+            return await _doxatagRepository.FetchDoxatagHistoryAsync(UserId.FromGuid(user.Id));
         }
 
         public async Task<IdentityResult> SetDoxatagAsync(User user, string doxatagName)
@@ -234,16 +234,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var doxatag = new UserDoxatag
-            {
-                Id = Guid.NewGuid(),
-                UserId = user.Id,
-                Name = doxatagName,
-                Code = await this.EnsureCodeUniqueness(doxatagName),
-                Timestamp = DateTime.UtcNow
-            };
+            var doxatag = new Doxatag(
+                UserId.FromGuid(user.Id),
+                doxatagName,
+                await this.EnsureCodeUniqueness(doxatagName),
+                new UtcNowDateTimeProvider());
 
-            await Store.SetDoxatagAsync(user, doxatag, CancellationToken);
+            _doxatagRepository.Create(doxatag);
+
+            await _doxatagRepository.UnitOfWork.CommitAsync();
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -298,28 +297,29 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
             return await Store.GetGenderAsync(user, CancellationToken);
         }
 
-        public async Task<ICollection<UserAddress>> GetAddressBookAsync(User user)
+        public async Task<IReadOnlyCollection<Address>> GetAddressBookAsync(User user)
         {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return await Store.GetAddressBookAsync(user, CancellationToken);
+            return await _addressRepository.FetchAddressBookAsync(UserId.FromGuid(user.Id));
         }
 
-        public async Task<IdentityResult> RemoveAddressAsync(User user, Guid addressId)
+        public async Task<IdentityResult> RemoveAddressAsync(User user, AddressId addressId)
         {
             this.ThrowIfDisposed();
 
-            if (user == null)
+            var address = await this.FindUserAddressAsync(user, addressId);
+
+            if (address == null)
             {
-                throw new ArgumentNullException(nameof(user));
+                return IdentityResult.Failed(
+                    new IdentityError
+                    {
+                        Description = "Address not found."
+                    });
             }
 
-            await Store.RemoveAddressAsync(user, addressId, CancellationToken);
+            _addressRepository.Delete(address);
+
+            await _addressRepository.UnitOfWork.CommitAsync();
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -343,15 +343,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            await Store.AddAddressAsync(
-                user,
+            var address = new Address(
+                UserId.FromGuid(user.Id),
                 country,
                 line1,
                 line2,
                 city,
                 state,
-                postalCode,
-                CancellationToken);
+                postalCode);
+
+            user.AddressBook.Add(address);
+
+            _addressRepository.Create(address);
+
+            await _addressRepository.UnitOfWork.CommitAsync();
 
             await this.UpdateSecurityStampAsync(user);
 
@@ -359,17 +364,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
             if (result.Succeeded)
             {
-                await _publisher.PublishUserAddressChangedIntegrationEventAsync(
-                    UserId.FromGuid(user.Id),
-                    new UserAddress
-                    {
-                        City = city,
-                        Country = country,
-                        Line1 = line1,
-                        Line2 = line2,
-                        PostalCode = postalCode,
-                        State = state
-                    });
+                await _publisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(user.Id), address);
             }
 
             return result;
@@ -377,7 +372,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         public async Task<IdentityResult> UpdateAddressAsync(
             User user,
-            Guid addressId,
+            AddressId addressId,
             string line1,
             string? line2,
             string city,
@@ -392,7 +387,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            var address = await Store.FindUserAddressAsync(user.Id, addressId, CancellationToken);
+            var address = await _addressRepository.FindAddressAsync(UserId.FromGuid(user.Id), addressId);
 
             if (address == null)
             {
@@ -404,12 +399,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
                     });
             }
 
-            address.Line1 = line1;
-            address.Line2 = line2;
-            address.City = city;
-            address.State = state;
-            address.PostalCode = postalCode;
-
+            address.Update(line1, line2, city, state, postalCode);
+            
             await this.UpdateSecurityStampAsync(user);
 
             var result = await this.UpdateUserAsync(user);
@@ -424,7 +415,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Services
 
         private async Task<int> EnsureCodeUniqueness(string doxatagName)
         {
-            var codes = await Store.GetCodesForDoxatagAsync(doxatagName);
+            var codes = await _doxatagRepository.FetchDoxatagCodesByNameAsync(doxatagName);
 
             return codes.Any() ? EnsureCodeUniqueness() : GenerateCode();
 

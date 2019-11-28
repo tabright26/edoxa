@@ -40,7 +40,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(new UserCreatedIntegrationEvent(userId, email, country));
         }
 
-        public static async Task PublishUserAddressChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, UserAddress address)
+        public static async Task PublishUserAddressChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, Address address)
         {
             await publisher.PublishAsync(
                 new UserAddressChangedIntegrationEvent(
