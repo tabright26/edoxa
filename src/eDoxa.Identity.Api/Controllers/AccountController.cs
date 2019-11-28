@@ -8,9 +8,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityModel;

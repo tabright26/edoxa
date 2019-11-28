@@ -7,8 +7,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
-
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 

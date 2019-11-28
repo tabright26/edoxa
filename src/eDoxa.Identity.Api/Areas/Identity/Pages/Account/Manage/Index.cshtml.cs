@@ -11,8 +11,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 

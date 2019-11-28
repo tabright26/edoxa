@@ -5,8 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
-
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.ServiceBus.Abstractions;
 

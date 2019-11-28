@@ -20,14 +20,14 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 #nullable disable
         public User()
         {
-            Informations = null;
+            Profile = null;
             DoxatagHistory = new HashSet<Doxatag>();
             AddressBook = new HashSet<Address>();
         }
 #nullable restore
         public Country Country { get; set; }
 
-        public UserProfile? Informations { get; set; }
+        public UserProfile? Profile { get; set; }
 
         public ICollection<Doxatag> DoxatagHistory { get; set; }
 

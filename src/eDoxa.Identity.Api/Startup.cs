@@ -13,10 +13,7 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity;
-using eDoxa.Identity.Api.Areas.Identity.Constants;
 using eDoxa.Identity.Api.Areas.Identity.Extensions;
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
@@ -24,7 +21,6 @@ using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
@@ -67,6 +63,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
+
+using IdentityDbContext = eDoxa.Identity.Infrastructure.IdentityDbContext;
 
 namespace eDoxa.Identity.Api
 {
@@ -151,14 +149,14 @@ namespace eDoxa.Identity.Api
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
 
-                        options.Tokens.AuthenticatorTokenProvider = CustomTokenProviders.Authenticator;
-                        options.Tokens.ChangeEmailTokenProvider = CustomTokenProviders.ChangeEmail;
-                        options.Tokens.ChangePhoneNumberTokenProvider = CustomTokenProviders.ChangePhoneNumber;
-                        options.Tokens.EmailConfirmationTokenProvider = CustomTokenProviders.EmailConfirmation;
-                        options.Tokens.PasswordResetTokenProvider = CustomTokenProviders.PasswordReset;
+                        options.Tokens.AuthenticatorTokenProvider = Constants.TokenProviders.Authenticator;
+                        options.Tokens.ChangeEmailTokenProvider = Constants.TokenProviders.ChangeEmail;
+                        options.Tokens.ChangePhoneNumberTokenProvider = Constants.TokenProviders.ChangePhoneNumber;
+                        options.Tokens.EmailConfirmationTokenProvider = Constants.TokenProviders.EmailConfirmation;
+                        options.Tokens.PasswordResetTokenProvider = Constants.TokenProviders.PasswordReset;
                     })
                 .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddUserStore<UserStore>()
+                .AddUserStore<Services.UserStore>()
                 .AddTokenProviders(
                     options =>
                     {

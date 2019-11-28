@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +18,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager _userManager;
+        private readonly IUserManager _userManager;
 
-        public ConfirmEmailModel(UserManager userManager)
+        public ConfirmEmailModel(IUserManager userManager)
         {
             _userManager = userManager;
         }

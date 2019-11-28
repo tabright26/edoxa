@@ -8,8 +8,8 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.IntegrationEvents;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;

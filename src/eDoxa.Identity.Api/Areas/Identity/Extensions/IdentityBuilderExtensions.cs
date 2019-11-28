@@ -6,13 +6,14 @@
 
 using System;
 
-using eDoxa.Identity.Api.Areas.Identity.Constants;
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Areas.Identity.TokenProviders;
-using eDoxa.Identity.Api.Areas.Identity.TokenProviders.Options;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Api.TokenProviders;
+using eDoxa.Identity.Api.TokenProviders.Options;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+
+using static eDoxa.Identity.Api.Constants.TokenProviders;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Extensions
 {
@@ -21,7 +22,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
         public static void BuildCustomServices(this IdentityBuilder builder)
         {
             var services = builder.Services;
-            services.AddScoped<UserStore>();
+            services.AddScoped<Services.UserStore>();
             services.AddScoped<CustomUserClaimsPrincipalFactory>();
             services.AddScoped<CustomIdentityErrorDescriber>();
             services.AddScoped<UserManager>();
@@ -35,11 +36,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Extensions
         public static IdentityBuilder AddTokenProviders(this IdentityBuilder builder, Action<TokenProviderOptions> options)
         {
             return builder.AddDefaultTokenProviders()
-                .AddTokenProvider<AuthenticatorTokenProvider>(CustomTokenProviders.Authenticator)
-                .AddTokenProvider<ChangeEmailTokenProvider>(CustomTokenProviders.ChangeEmail)
-                .AddTokenProvider<ChangePhoneNumberTokenProvider>(CustomTokenProviders.ChangePhoneNumber)
-                .AddTokenProvider<EmailConfirmationTokenProvider>(CustomTokenProviders.EmailConfirmation)
-                .AddTokenProvider<PasswordResetTokenProvider>(CustomTokenProviders.PasswordReset)
+                .AddTokenProvider<AuthenticatorTokenProvider>(Authenticator)
+                .AddTokenProvider<ChangeEmailTokenProvider>(ChangeEmail)
+                .AddTokenProvider<ChangePhoneNumberTokenProvider>(ChangePhoneNumber)
+                .AddTokenProvider<EmailConfirmationTokenProvider>(EmailConfirmation)
+                .AddTokenProvider<PasswordResetTokenProvider>(PasswordReset)
                 .AddTokenProviderOptions(options);
         }
 

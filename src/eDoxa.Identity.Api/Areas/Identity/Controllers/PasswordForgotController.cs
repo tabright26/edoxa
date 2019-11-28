@@ -7,8 +7,8 @@
 using System.Threading.Tasks;
 using System.Web;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Requests;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;

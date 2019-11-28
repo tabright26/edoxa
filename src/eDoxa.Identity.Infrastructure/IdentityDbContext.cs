@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityDbContext.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,12 +8,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
-using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure.Configurations;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -26,91 +24,32 @@ namespace eDoxa.Identity.Infrastructure
         {
         }
 
+        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        {
+            await this.SaveChangesAsync(cancellationToken);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>(
-                builder =>
-                {
-                    builder.Property(user => user.Id).IsRequired().ValueGeneratedNever();
-                    builder.Property(user => user.Email).IsRequired();
-                    builder.Property(user => user.NormalizedEmail).IsRequired();
-                    builder.Property(user => user.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
+            modelBuilder.ApplyConfiguration(new AddressConfiguration());
 
-                    builder.OwnsOne(
-                        user => user.Informations,
-                        userInformations =>
-                        {
-                            userInformations.WithOwner().HasForeignKey("UserId");
-                            userInformations.Property<Guid>("Id").ValueGeneratedOnAdd();
-                            userInformations.Property(informations => informations!.FirstName).IsRequired();
-                            userInformations.Property(informations => informations!.LastName).IsRequired();
+            modelBuilder.ApplyConfiguration(new DoxatagConfiguration());
 
-                            userInformations.Property(informations => informations!.Gender)
-                                .HasConversion(gender => gender.Value, value => Gender.FromValue(value))
-                                .IsRequired();
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-                            userInformations.HasKey("Id");
-                            userInformations.ToTable("UserInformations");
+            modelBuilder.ApplyConfiguration(new UserClaimConfiguration());
 
-                            userInformations.OwnsOne(
-                                userInfo => userInfo!.Dob,
-                                userDob =>
-                                {
-                                    userDob.WithOwner().HasForeignKey("UserId");
-                                    userDob.Property<Guid>("Id").ValueGeneratedOnAdd();
-                                    userDob.Property(dob => dob.Year).IsRequired();
-                                    userDob.Property(dob => dob.Month).IsRequired();
-                                    userDob.Property(dob => dob.Day).IsRequired();
-                                    userDob.HasKey("Id");
-                                    userDob.ToTable("UserDob");
-                                });
-                        });
+            modelBuilder.ApplyConfiguration(new UserLoginConfiguration());
 
-                    builder.HasMany(user => user.DoxatagHistory).WithOne().HasForeignKey(doxatag => doxatag.UserId).IsRequired();
-                    builder.HasMany(user => user.AddressBook).WithOne().HasForeignKey(address => address.UserId).IsRequired();
-                    builder.ToTable("User");
-                });
+            modelBuilder.ApplyConfiguration(new UserTokenConfiguration());
 
-            modelBuilder.Entity<Doxatag>(
-                builder =>
-                {
-                    builder.HasKey(doxatag => doxatag.Id);
-                    builder.Property(doxatag => doxatag.Id).IsRequired().ValueGeneratedNever();
-                    builder.Property(doxatag => doxatag.UserId).IsRequired();
-                    builder.Property(doxatag => doxatag.Name).IsRequired();
-                    builder.Property(doxatag => doxatag.Code).IsRequired();
-                    builder.Property(doxatag => doxatag.Timestamp).HasConversion(dateTime => dateTime.Ticks, ticks => new DateTime(ticks)).IsRequired();
-                    builder.ToTable("UserDoxatag");
-                });
+            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
 
-            modelBuilder.Entity<Address>(
-                builder =>
-                {
-                    builder.HasKey(address => address.Id);
-                    builder.Property(address => address.Id).IsRequired().ValueGeneratedNever();
-                    builder.Property(address => address.Type).HasConversion(type => type.Value, type => AddressType.FromValue(type)).IsRequired();
-                    builder.Property(address => address.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
-                    builder.Property(address => address.Line1).IsRequired();
-                    builder.Property(address => address.Line2).IsRequired(false);
-                    builder.Property(address => address.City).IsRequired();
-                    builder.Property(address => address.State).IsRequired(false);
-                    builder.Property(address => address.PostalCode).IsRequired(false);
-                    builder.ToTable("UserAddress");
-                });
+            modelBuilder.ApplyConfiguration(new RoleConfiguration());
 
-            modelBuilder.Entity<UserClaim>().ToTable("UserClaim");
-            modelBuilder.Entity<UserLogin>().ToTable("UserLogin");
-            modelBuilder.Entity<UserToken>().ToTable("UserToken");
-            modelBuilder.Entity<UserRole>().ToTable("UserRole");
-            modelBuilder.Entity<Role>().ToTable("Role");
-            modelBuilder.Entity<RoleClaim>().ToTable("RoleClaim");
-        }
-
-        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
-        {
-            await this.SaveChangesAsync(cancellationToken);
+            modelBuilder.ApplyConfiguration(new RoleClaimConfiguration());
         }
     }
 }

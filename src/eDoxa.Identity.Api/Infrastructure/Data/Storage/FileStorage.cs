@@ -147,7 +147,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                     Email = record.Email,
                                     PhoneNumber = record.Phone,
                                     SecurityStamp = Guid.NewGuid().ToString("N"),
-                                    Informations = new UserProfile(
+                                    Profile = new UserProfile(
                                         record.FirstName,
                                         record.LastName,
                                         Gender.FromValue(record.Gender),
