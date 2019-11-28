@@ -11,12 +11,12 @@ using eDoxa.Identity.Responses;
 
 namespace eDoxa.Identity.Api.Profiles
 {
-    public class UserAddressProfile : Profile
+    public class AddressProfile : Profile
     {
-        public UserAddressProfile()
+        public AddressProfile()
         {
-            this.CreateMap<Address, UserAddressResponse>()
-                .ForMember(address => address.Id, config => config.MapFrom(address => address.Id))
+            this.CreateMap<Address, AddressResponse>()
+                .ForMember(address => address.Id, config => config.MapFrom(address => address.Id.ToGuid()))
                 .ForMember(address => address.Type, config => config.MapFrom(address => address.Type == null ? null : address.Type.Name))
                 .ForMember(address => address.Country, config => config.MapFrom(address => address.Country.Name))
                 .ForMember(address => address.Line1, config => config.MapFrom(address => address.Line1))

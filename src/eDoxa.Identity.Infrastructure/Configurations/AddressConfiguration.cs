@@ -21,8 +21,6 @@ namespace eDoxa.Identity.Infrastructure.Configurations
                 .IsRequired()
                 .ValueGeneratedNever();
 
-            builder.Property(address => address.UserId).HasConversion(userId => userId.ToGuid(), value => UserId.FromGuid(value)).IsRequired();
-
             builder.Property(address => address.Type)
                 .HasConversion(type => type != null ? type.Value : (int?) null, type => type.HasValue ? AddressType.FromValue(type.Value) : null)
                 .IsRequired(false);
@@ -38,6 +36,8 @@ namespace eDoxa.Identity.Infrastructure.Configurations
             builder.Property(address => address.State).IsRequired(false);
 
             builder.Property(address => address.PostalCode).IsRequired(false);
+
+            builder.Property(address => address.UserId).IsRequired();
 
             builder.HasKey(address => address.Id);
 

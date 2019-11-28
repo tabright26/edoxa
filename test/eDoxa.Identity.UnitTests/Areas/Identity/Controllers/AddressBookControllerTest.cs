@@ -98,8 +98,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 "State",
                 "PostalCode");
 
-            user.AddressBook.Add(address);
-
             var mockUserManager = new Mock<IUserManager>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
@@ -172,7 +170,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 "State",
                 "PostalCode");
 
-            user.AddressBook.Add(address);
+            var addressBook = new List<Address>
+            {
+                address
+            };
 
             var mockUserManager = new Mock<IUserManager>();
 
@@ -181,7 +182,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var mockAddressService = new Mock<IAddressService>();
 
             mockAddressService.Setup(addressService => addressService.GetAddressBookAsync(It.IsAny<User>()))
-                .ReturnsAsync(user.AddressBook.ToList())
+                .ReturnsAsync(addressBook)
                 .Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
@@ -192,7 +193,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<ICollection<UserAddressResponse>>(user.AddressBook));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<ICollection<AddressResponse>>(addressBook));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -217,7 +218,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 "State",
                 "PostalCode");
 
-            user.AddressBook.Add(address);
+            var addressBook = new List<Address>
+            {
+                address
+            };
 
             var mockUserManager = new Mock<IUserManager>();
 
@@ -340,7 +344,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 "State",
                 "PostalCode");
 
-            user.AddressBook.Add(address);
+            var addressBook = new List<Address>
+            {
+                address
+            };
 
             var mockUserManager = new Mock<IUserManager>();
 
@@ -370,7 +377,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 "New");
 
             // Act
-            var result = await controller.PutAsync(user.AddressBook.First().Id, request);
+            var result = await controller.PutAsync(addressBook.First().Id, request);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

@@ -18,6 +18,6 @@ namespace eDoxa.Challenges.Web.Aggregator.Services
     public interface IIdentityService
     {
         [Get("/api/doxatags")]
-        Task<IReadOnlyCollection<IdentityResponses.UserDoxatagResponse>> FetchDoxatagsAsync();
+        Task<IReadOnlyCollection<IdentityResponses.DoxatagResponse>> FetchDoxatagsAsync();
     }
 }

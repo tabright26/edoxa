@@ -50,12 +50,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
 
-            user.DoxatagHistory.Add(
-                new Doxatag(
-                    UserId.FromGuid(user.Id),
-                    "Name",
-                    1000,
-                    new UtcNowDateTimeProvider()));
+            const string doxatagName = "Name";
 
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
@@ -68,6 +63,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var userManager = scope.GetRequiredService<UserManager>();
 
                     var result = await userManager.CreateAsync(user);
+
+                    result.Succeeded.Should().BeTrue();
+
+                    var doxatagService = scope.GetRequiredService<IDoxatagService>();
+
+                    result = await doxatagService.ChangeDoxatagAsync(user, doxatagName);
 
                     result.Succeeded.Should().BeTrue();
                 });

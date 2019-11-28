@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Responses
 {
     [JsonObject]
-    public class UserInformationsResponse
+    public class UserProfileResponse
     {
         [JsonProperty("name")]
         public string Name { get; set; }

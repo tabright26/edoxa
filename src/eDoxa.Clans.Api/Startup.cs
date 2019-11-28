@@ -112,11 +112,7 @@ namespace eDoxa.Clans.Api
                 });
 
             services.AddControllers(
-                    options =>
-                    {
-                        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
-                        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
-                    })
+                    options => options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json)))
                 .AddNewtonsoftJson(
                     options =>
                     {

@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-#nullable disable
-
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -22,7 +20,7 @@ namespace eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate
             string name,
             int code,
             IDateTimeProvider provider
-        )
+        ) : this()
         {
             UserId = userId;
             Name = name;
@@ -30,7 +28,12 @@ namespace eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate
             Timestamp = provider.DateTime;
         }
 
-        public UserId UserId { get; private set; }
+        private Doxatag()
+        {
+            // Required by EF Core.
+        }
+
+        public Guid UserId { get; private set; }
 
         public string Name { get; private set; }
 

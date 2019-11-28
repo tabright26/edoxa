@@ -82,8 +82,6 @@ namespace eDoxa.Identity.Api.Services
                 state,
                 postalCode);
 
-            user.AddressBook.Add(address);
-
             _addressRepository.Create(address);
 
             await _addressRepository.UnitOfWork.CommitAsync();

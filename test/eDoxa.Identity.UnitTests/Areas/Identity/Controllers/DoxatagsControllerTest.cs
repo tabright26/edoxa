@@ -63,16 +63,17 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            user.DoxatagHistory.Add(
-                new Doxatag(
-                    UserId.FromGuid(user.Id),
-                    "Name",
-                    1000,
-                    new UtcNowDateTimeProvider()));
+            var doxatag = new Doxatag(
+                UserId.FromGuid(user.Id),
+                "Name",
+                1000,
+                new UtcNowDateTimeProvider());
+
+            var doxatagHistory = new List<Doxatag> {doxatag};
 
             var mockDoxatagService = new Mock<IDoxatagService>();
 
-            mockDoxatagService.Setup(doxatagService => doxatagService.FetchDoxatagsAsync()).ReturnsAsync(user.DoxatagHistory.ToList()).Verifiable();
+            mockDoxatagService.Setup(doxatagService => doxatagService.FetchDoxatagsAsync()).ReturnsAsync(doxatagHistory).Verifiable();
 
             var controller = new DoxatagsController(mockDoxatagService.Object, TestMapper);
 
@@ -82,7 +83,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<UserDoxatagResponse>>(user.DoxatagHistory.ToList()));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<DoxatagResponse>>(doxatagHistory));
 
             mockDoxatagService.Verify(doxatagService => doxatagService.FetchDoxatagsAsync(), Times.Once);
         }

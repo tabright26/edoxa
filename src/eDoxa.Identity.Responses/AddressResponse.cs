@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace eDoxa.Identity.Responses
 {
     [JsonObject]
-    public class UserAddressResponse
+    public class AddressResponse
     {
         [JsonProperty("id")]
         public Guid Id { get; set; }

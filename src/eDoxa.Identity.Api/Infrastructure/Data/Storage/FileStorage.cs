@@ -108,6 +108,37 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                         .ToImmutableHashSet();
                 });
 
+        private static Lazy<IImmutableSet<Doxatag>> LazyDoxatags =>
+            new Lazy<IImmutableSet<Doxatag>>(
+                () =>
+                {
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
+
+                    using var csvReader = file.OpenCsvReader();
+
+                    return csvReader.GetRecords(
+                            new
+                            {
+                                Id = default(Guid),
+                                Doxatag = default(string),
+                                FirstName = default(string),
+                                LastName = default(string),
+                                Email = default(string),
+                                Phone = default(string),
+                                BirthDate = default(long),
+                                Gender = default(int)
+                            })
+                        .Select(
+                            record => new Doxatag(
+                                UserId.FromGuid(record.Id),
+                                record.Doxatag!,
+                                Random.Next(100, 10000),
+                                new UtcNowDateTimeProvider()))
+                        .ToImmutableHashSet();
+                });
+
         private static Lazy<IImmutableSet<User>> LazyUsers =>
             new Lazy<IImmutableSet<User>>(
                 () =>
@@ -133,11 +164,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                         .Select(
                             record =>
                             {
-                                var doxatag = new Doxatag(
-                                    UserId.FromGuid(record.Id),
-                                    record.Doxatag,
-                                    Random.Next(100, 10000),
-                                    new UtcNowDateTimeProvider());
+                                //var doxatag = new Doxatag(
+                                //    UserId.FromGuid(record.Id),
+                                //    record.Doxatag,
+                                //    Random.Next(100, 10000),
+                                //    new UtcNowDateTimeProvider());
 
                                 var user = new User
                                 {
@@ -154,7 +185,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                         new Dob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
                                 };
 
-                                user.DoxatagHistory.Add(doxatag);
+                                //user.DoxatagHistory.Add(doxatag);
 
                                 return user;
                             })
@@ -196,6 +227,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 
         public static IImmutableSet<RoleClaim> RoleClaims => LazyRoleClaims.Value;
 
+        public static IImmutableSet<Doxatag> Doxatags => LazyDoxatags.Value;
+
         public IImmutableSet<RoleClaim> GetRoleClaims()
         {
             return RoleClaims;
@@ -219,6 +252,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         public IImmutableSet<UserRole> GetUserRoles()
         {
             return UserRoles;
+        }
+
+        public IImmutableSet<Doxatag> GetDoxatags()
+        {
+            return Doxatags;
         }
     }
 }

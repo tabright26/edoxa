@@ -12,7 +12,7 @@ using Newtonsoft.Json.Converters;
 namespace eDoxa.Identity.Responses
 {
     [JsonObject]
-    public class UserDoxatagResponse
+    public class DoxatagResponse
     {
         [JsonProperty("userId")]
         public Guid UserId { get; set; }

@@ -52,7 +52,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.DoxatagHistory = null;
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -83,12 +82,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
 
-            user.DoxatagHistory.Add(
-                new Doxatag(
-                    UserId.FromGuid(user.Id),
-                    "Name",
-                    1000,
-                    new UtcNowDateTimeProvider()));
+            const string doxatagName = "Name";
 
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
@@ -103,6 +97,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
+                    
+                    var doxatagService = scope.GetRequiredService<IDoxatagService>();
+
+                    result = await doxatagService.ChangeDoxatagAsync(user, doxatagName);
+
+                    result.Succeeded.Should().BeTrue();
                 });
 
             // Act
@@ -112,20 +112,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             response.EnsureSuccessStatusCode();
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var mapper = scope.GetRequiredService<IMapper>();
-
-                    var doxatagResponse = (await response.Content.ReadAsAsync<IEnumerable<UserDoxatagResponse>>()).First();
-
-                    var expectedDoxatagResponse = mapper.Map<IEnumerable<UserDoxatagResponse>>(user.DoxatagHistory).First();
-
-                    doxatagResponse.Name.Should().Be(expectedDoxatagResponse.Name);
-
-                    doxatagResponse.Code.Should().Be(expectedDoxatagResponse.Code);
-                });
         }
     }
 }

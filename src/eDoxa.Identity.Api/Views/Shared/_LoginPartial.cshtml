@@ -1,7 +1,6 @@
 @using System.Security.Claims
 @using eDoxa.Identity.Api.Services
-@using Microsoft.AspNetCore.Identity
-@inject SignInManager<> SignInManager
+@inject SignInManager SignInManager
 @inject UserManager UserManager
 @if (SignInManager.IsSignedIn(User) && !(ViewData["signed-out"] is bool))
 {

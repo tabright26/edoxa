@@ -101,7 +101,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                         request.EntryFeeCurrency));
 
                 return this.Ok(
-                    ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, new Collection<UserDoxatagResponse>()));
+                    ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, new Collection<DoxatagResponse>()));
             }
             catch (ApiException exception)
             {

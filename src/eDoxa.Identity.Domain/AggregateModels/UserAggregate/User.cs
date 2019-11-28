@@ -21,16 +21,10 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         public User()
         {
             Profile = null;
-            DoxatagHistory = new HashSet<Doxatag>();
-            AddressBook = new HashSet<Address>();
         }
 #nullable restore
         public Country Country { get; set; }
 
         public UserProfile? Profile { get; set; }
-
-        public ICollection<Doxatag> DoxatagHistory { get; set; }
-
-        public ICollection<Address> AddressBook { get; set; }
     }
 }

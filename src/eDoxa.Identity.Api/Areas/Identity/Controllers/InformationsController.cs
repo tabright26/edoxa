@@ -42,20 +42,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find user's profile informations.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserInformationsResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserProfileResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var informations = await _userManager.GetInformationsAsync(user);
+            var profile = await _userManager.GetInformationsAsync(user);
 
-            if (informations == null)
+            if (profile == null)
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<UserInformationsResponse>(informations));
+            return this.Ok(_mapper.Map<UserProfileResponse>(profile));
         }
 
         [HttpPost]

@@ -20,7 +20,7 @@ namespace eDoxa.Identity.Domain.Repositories
 
         Task<IReadOnlyCollection<Doxatag>> FetchDoxatagHistoryAsync(UserId userId);
 
-        Task<IReadOnlyCollection<Doxatag>> FetchDoxatagsAsync();
+        Task<IImmutableSet<Doxatag>> FetchDoxatagsAsync();
 
         Task<IImmutableSet<int>> FetchDoxatagCodesByNameAsync(string name);
 

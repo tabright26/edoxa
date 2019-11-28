@@ -69,28 +69,63 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAddress",
+                name: "Address",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Type = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: true),
                     Country = table.Column<string>(nullable: false),
                     Line1 = table.Column<string>(nullable: false),
                     Line2 = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: false),
-                    PostalCode = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false)
+                    PostalCode = table.Column<string>(nullable: true),
+                    UserId = table.Column<Guid>(nullable: false),
+                    UserId1 = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserAddress", x => x.Id);
+                    table.PrimaryKey("PK_Address", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserAddress_User_UserId",
+                        name: "FK_Address_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Address_User_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Doxatag",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Code = table.Column<int>(nullable: false),
+                    Timestamp = table.Column<long>(nullable: false),
+                    UserId1 = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Doxatag", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Doxatag_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Doxatag_User_UserId1",
+                        column: x => x.UserId1,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -115,48 +150,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserDoxatag",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Code = table.Column<int>(nullable: false),
-                    Timestamp = table.Column<long>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserDoxatag", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserDoxatag_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserInformations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    FirstName = table.Column<string>(nullable: false),
-                    LastName = table.Column<string>(nullable: false),
-                    Gender = table.Column<int>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserInformations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserInformations_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "UserLogin",
                 columns: table => new
                 {
@@ -170,6 +163,27 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     table.PrimaryKey("PK_UserLogin", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
                         name: "FK_UserLogin_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProfile",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProfile", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserProfile_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
@@ -234,12 +248,32 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_UserDob", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserDob_UserInformations_UserId",
+                        name: "FK_UserDob_UserProfile_UserId",
                         column: x => x.UserId,
-                        principalTable: "UserInformations",
+                        principalTable: "UserProfile",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Address_UserId",
+                table: "Address",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Address_UserId1",
+                table: "Address",
+                column: "UserId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doxatag_UserId",
+                table: "Doxatag",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Doxatag_UserId1",
+                table: "Doxatag",
+                column: "UserId1");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -266,11 +300,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAddress_UserId",
-                table: "UserAddress",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserClaim_UserId",
                 table: "UserClaim",
                 column: "UserId");
@@ -282,20 +311,15 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserDoxatag_UserId",
-                table: "UserDoxatag",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserInformations_UserId",
-                table: "UserInformations",
-                column: "UserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserLogin_UserId",
                 table: "UserLogin",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserProfile_UserId",
+                table: "UserProfile",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
@@ -306,19 +330,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RoleClaim");
+                name: "Address");
 
             migrationBuilder.DropTable(
-                name: "UserAddress");
+                name: "Doxatag");
+
+            migrationBuilder.DropTable(
+                name: "RoleClaim");
 
             migrationBuilder.DropTable(
                 name: "UserClaim");
 
             migrationBuilder.DropTable(
                 name: "UserDob");
-
-            migrationBuilder.DropTable(
-                name: "UserDoxatag");
 
             migrationBuilder.DropTable(
                 name: "UserLogin");
@@ -330,7 +354,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "UserToken");
 
             migrationBuilder.DropTable(
-                name: "UserInformations");
+                name: "UserProfile");
 
             migrationBuilder.DropTable(
                 name: "Role");

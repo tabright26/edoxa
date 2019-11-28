@@ -45,7 +45,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find user's Doxatag history.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserDoxatagResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
@@ -58,7 +58,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserDoxatagResponse>>(doxatagHistory));
+            return this.Ok(_mapper.Map<IEnumerable<DoxatagResponse>>(doxatagHistory));
         }
 
         [HttpPost]

@@ -69,12 +69,14 @@ namespace eDoxa.Identity.Infrastructure.Repositories
             return codes.ToImmutableSortedSet();
         }
 
-        public async Task<IReadOnlyCollection<Doxatag>> FetchDoxatagsAsync()
+        public async Task<IImmutableSet<Doxatag>> FetchDoxatagsAsync()
         {
-            return await DoxatagHistory.AsExpandable()
+            var doxatags = await DoxatagHistory.AsExpandable().ToListAsync();
+
+            return doxatags
                 .GroupBy(doxatag => doxatag.UserId)
                 .Select(history => history.OrderBy(doxatag => doxatag.Timestamp).First())
-                .ToListAsync();
+                .ToImmutableHashSet();
         }
     }
 }

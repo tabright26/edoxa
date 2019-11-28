@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -19,7 +21,7 @@ namespace eDoxa.Identity.Domain.AggregateModels.AddressAggregate
             string city,
             string? state,
             string? postalCode
-        )
+        ) : this()
         {
             Type = null;
             Country = country;
@@ -29,6 +31,11 @@ namespace eDoxa.Identity.Domain.AggregateModels.AddressAggregate
             State = state;
             PostalCode = postalCode;
             UserId = userId;
+        }
+
+        private Address()
+        {
+            // Required by EF Core.
         }
 
         public AddressType? Type { get; private set; }
@@ -45,7 +52,7 @@ namespace eDoxa.Identity.Domain.AggregateModels.AddressAggregate
 
         public string? PostalCode { get; private set; }
 
-        public UserId UserId { get; private set; }
+        public Guid UserId { get; private set; }
 
         public void Update(
             string line1,
