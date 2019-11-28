@@ -8,10 +8,7 @@
 
 using System.Runtime.Serialization;
 
-using eDoxa.Seedwork.Application.Requests;
-using eDoxa.Seedwork.Domain.Miscs;
-
-namespace eDoxa.Identity.Api.Areas.Identity.Requests
+namespace eDoxa.Identity.Requests
 {
     [DataContract]
     public sealed class InformationsPostRequest
@@ -19,7 +16,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
         public InformationsPostRequest(
             string firstName,
             string lastName,
-            Gender gender,
+            string gender,
             int year,
             int month,
             int day
@@ -43,7 +40,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Requests
         public string LastName { get; private set; }
 
         [DataMember(Name = "gender")]
-        public Gender Gender { get; private set; }
+        public string Gender { get; private set; }
 
         [DataMember(Name = "dob")]
         public DobRequest Dob { get; private set; }

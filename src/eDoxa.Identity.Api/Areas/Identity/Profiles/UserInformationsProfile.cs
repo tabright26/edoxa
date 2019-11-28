@@ -25,7 +25,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Profiles
                 )
                 .ForMember(informations => informations.FirstName, config => config.MapFrom(informations => informations.FirstName))
                 .ForMember(informations => informations.LastName, config => config.MapFrom(informations => informations.LastName))
-                .ForMember(informations => informations.Gender, config => config.MapFrom(informations => informations.Gender))
+                .ForMember(informations => informations.Gender, config => config.MapFrom(informations => informations.Gender.Name))
                 .ForMember(informations => informations.Dob, config => config.MapFrom(informations => new DobResponse(informations.Dob.Year, informations.Dob.Month, informations.Dob.Day)));
         }
     }

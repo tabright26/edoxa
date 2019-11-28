@@ -7,7 +7,7 @@
 using System.Text.RegularExpressions;
 
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
-using eDoxa.Identity.Api.Areas.Identity.Requests;
+using eDoxa.Identity.Requests;
 
 using FluentValidation;
 

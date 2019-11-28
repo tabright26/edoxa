@@ -6,7 +6,7 @@
 
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
 using eDoxa.Identity.Api.Areas.Identity.Validators;
-using eDoxa.Seedwork.Application.Requests;
+using eDoxa.Identity.Requests;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
@@ -148,7 +148,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender);
+            validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender.Name);
         }
 
         [Theory]
@@ -159,7 +159,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             var validator = new InformationsPostRequestValidator();
 
             // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender);
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender.Name);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 

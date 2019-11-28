@@ -7,8 +7,7 @@
 using System.Text.RegularExpressions;
 
 using eDoxa.Identity.Api.Areas.Identity.ErrorDescribers;
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Identity.Requests;
 
 using FluentValidation;
 
@@ -18,7 +17,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
     {
         public AddressPostRequestValidator()
         {
-            this.Enumeration(request => request.Country).NotEmpty().NotAll().IsInEnumeration();
+            //this.Enumeration(request => request.Country).NotEmpty().NotAll().IsInEnumeration(); // TODO: Need to be fixed.
 
             this.RuleFor(request => request.Line1)
                 .NotNull()

@@ -17,8 +17,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Profiles
         {
             this.CreateMap<Address, UserAddressResponse>()
                 .ForMember(address => address.Id, config => config.MapFrom(address => address.Id))
-                .ForMember(address => address.Type, config => config.MapFrom(address => address.Type.Name))
-                .ForMember(address => address.Country, config => config.MapFrom(address => address.Country))
+                .ForMember(address => address.Type, config => config.MapFrom(address => address.Type == null ? null : address.Type.Name))
+                .ForMember(address => address.Country, config => config.MapFrom(address => address.Country.Name))
                 .ForMember(address => address.Line1, config => config.MapFrom(address => address.Line1))
                 .ForMember(address => address.Line2, config => config.MapFrom(address => address.Line2))
                 .ForMember(address => address.City, config => config.MapFrom(address => address.City))

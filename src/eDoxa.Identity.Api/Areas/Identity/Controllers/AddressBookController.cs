@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -70,7 +70,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             var result = await _userManager.AddAddressAsync(
                 user,
-                request.Country,
+                Country.FromName(request.Country),
                 request.Line1,
                 request.Line2,
                 request.City,

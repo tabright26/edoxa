@@ -6,7 +6,7 @@
 
 using System.Runtime.Serialization;
 
-namespace eDoxa.Seedwork.Application.Requests
+namespace eDoxa.Identity.Requests
 {
     [DataContract]
     public sealed class DobRequest

@@ -9,8 +9,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -69,7 +69,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 new InformationsPostRequest(
                     "Bob",
                     "Bob",
-                    Gender.Male,
+                    Gender.Male.Name,
                     2000,
                     1,
                     1));

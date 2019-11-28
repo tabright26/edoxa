@@ -6,7 +6,7 @@
 
 using System.Runtime.Serialization;
 
-namespace eDoxa.Identity.Api.Areas.Identity.Requests
+namespace eDoxa.Identity.Requests
 {
     [DataContract]
     public sealed class PasswordResetPostRequest

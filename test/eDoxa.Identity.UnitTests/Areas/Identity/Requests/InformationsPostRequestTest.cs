@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
+using eDoxa.Identity.Requests;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
@@ -28,7 +28,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Requests
             var request = new InformationsPostRequest(
                 "FirstName",
                 "LastName",
-                Gender.Other,
+                Gender.Other.Name,
                 unixEpoch.Year,
                 unixEpoch.Month,
                 unixEpoch.Day);

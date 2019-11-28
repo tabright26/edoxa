@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -78,7 +78,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 user,
                 request.FirstName,
                 request.LastName,
-                request.Gender,
+               Gender.FromName(request.Gender),
                 new Dob(request.Dob.Year, request.Dob.Month, request.Dob.Day));
 
             if (result.Succeeded)

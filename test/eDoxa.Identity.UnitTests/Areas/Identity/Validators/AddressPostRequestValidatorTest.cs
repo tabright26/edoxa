@@ -116,7 +116,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             var validator = new AddressPostRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Country, country);
+            validator.ShouldNotHaveValidationErrorFor(request => request.Country, country.Name);
         }
 
         [Theory]
@@ -127,7 +127,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             var validator = new AddressPostRequestValidator();
 
             // Act
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Country, country);
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.Country, country.Name);
 
             // Assert
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);

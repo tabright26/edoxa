@@ -9,8 +9,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -65,7 +65,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     // Act
                     using var response = await this.ExecuteAsync(
                         new AddressPostRequest(
-                            Country.Canada,
+                            Country.Canada.Name,
                             "1234 Test Street",
                             null,
                             "Toronto",

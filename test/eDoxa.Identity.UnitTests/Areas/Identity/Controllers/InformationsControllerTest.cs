@@ -9,9 +9,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Areas.Identity.Requests;
 using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
@@ -169,7 +169,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 new InformationsPostRequest(
                     "Bob",
                     "Bob",
-                    Gender.Male,
+                    Gender.Male.Name,
                     2000,
                     1,
                     1));
