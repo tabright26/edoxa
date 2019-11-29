@@ -11,13 +11,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Services;
-using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;

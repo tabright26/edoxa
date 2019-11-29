@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
   </ItemGroup>

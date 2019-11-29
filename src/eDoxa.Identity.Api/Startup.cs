@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,14 +13,13 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Extensions;
-using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Validations;
@@ -40,6 +39,7 @@ using HealthChecks.UI.Client;
 using IdentityModel;
 
 using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Services;
 
 using MediatR;
 
@@ -47,7 +47,6 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -63,8 +62,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
-
-using IdentityDbContext = eDoxa.Identity.Infrastructure.IdentityDbContext;
 
 namespace eDoxa.Identity.Api
 {
@@ -98,6 +95,21 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
+            if (string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_FORWARDEDHEADERS_ENABLED"), "true", StringComparison.OrdinalIgnoreCase))
+            {
+                services.Configure<ForwardedHeadersOptions>(
+                    options =>
+                    {
+                        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+                        // Only loopback proxies are allowed by default.
+                        // Clear that restriction because forwarders are enabled by explicit 
+                        // configuration.
+                        options.KnownNetworks.Clear();
+                        options.KnownProxies.Clear();
+                    });
+            }
+
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
             services.AddHealthChecks()
@@ -118,13 +130,6 @@ namespace eDoxa.Identity.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
-            services.Configure<CookiePolicyOptions>(
-                options =>
-                {
-                    options.CheckConsentNeeded = _ => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                });
-
             services.AddIdentity<User, Role>(
                     options =>
                     {
@@ -134,43 +139,34 @@ namespace eDoxa.Identity.Api
                         options.Password.RequireLowercase = true;
                         options.Password.RequireNonAlphanumeric = true;
                         options.Password.RequireUppercase = true;
-
                         options.Lockout.AllowedForNewUsers = true;
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                         options.Lockout.MaxFailedAccessAttempts = 5;
-
                         options.User.RequireUniqueEmail = true;
-
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
                         options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Doxatag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
                         options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
-
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
-
-                        options.Tokens.AuthenticatorTokenProvider = Constants.TokenProviders.Authenticator;
-                        options.Tokens.ChangeEmailTokenProvider = Constants.TokenProviders.ChangeEmail;
-                        options.Tokens.ChangePhoneNumberTokenProvider = Constants.TokenProviders.ChangePhoneNumber;
-                        options.Tokens.EmailConfirmationTokenProvider = Constants.TokenProviders.EmailConfirmation;
-                        options.Tokens.PasswordResetTokenProvider = Constants.TokenProviders.PasswordReset;
                     })
                 .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddUserStore<Services.UserStore>()
-                .AddTokenProviders(
-                    options =>
-                    {
-                        options.Authenticator.TokenLifespan = TimeSpan.FromHours(1);
-                        options.ChangeEmail.TokenLifespan = TimeSpan.FromDays(1);
-                        options.ChangePhoneNumber.TokenLifespan = TimeSpan.FromDays(1);
-                        options.EmailConfirmation.TokenLifespan = TimeSpan.FromDays(2);
-                        options.PasswordReset.TokenLifespan = TimeSpan.FromHours(2);
-                    })
+                .AddDefaultTokenProviders()
+                .AddUserStore<UserStore>()
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
                 .AddUserManager<UserManager>()
                 .AddSignInManager<SignInManager>()
-                .AddRoleManager<RoleManager>()
-                .BuildCustomServices();
+                .AddRoleManager<RoleManager>();
+
+            services.AddScoped<UserStore>();
+            services.AddScoped<CustomUserClaimsPrincipalFactory>();
+            services.AddScoped<CustomIdentityErrorDescriber>();
+            services.AddScoped<UserManager>();
+            services.AddScoped<IUserManager, UserManager>();
+            services.AddScoped<SignInManager>();
+            services.AddScoped<ISignInManager, SignInManager>();
+            services.AddScoped<RoleManager>();
+            services.AddScoped<IRoleManager, RoleManager>();
 
             services.Configure<PasswordHasherOptions>(
                 option =>
@@ -231,10 +227,13 @@ namespace eDoxa.Identity.Api
                 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients(AppSettings))
-                .AddCorsPolicyService<CustomCorsPolicyService>()
-                .AddProfileService<CustomProfileService>()
-                .AddAspNetIdentity<User>()
-                .BuildCustomServices();
+                //.AddCorsPolicyService<CustomCorsPolicyService>()
+                .AddProfileService<CustomProfileService>();
+
+            //.AddApiAuthorization<User, IdentityDbContext>();
+
+            services.AddTransient<ICorsPolicyService, CustomCorsPolicyService>();
+            services.AddTransient<IProfileService, CustomProfileService>();
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
 
@@ -262,13 +261,15 @@ namespace eDoxa.Identity.Api
         {
             subscriber.UseIntegrationEventSubscriptions();
 
+            application.UseForwardedHeaders();
+
             if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
+                application.UseDatabaseErrorPage();
             }
             else
             {
-                //application.UseCustomExceptionHandler();
                 application.UseExceptionHandler("/Home/Error");
                 application.UseHsts();
             }
@@ -278,18 +279,7 @@ namespace eDoxa.Identity.Api
             application.UseHttpsRedirection();
             application.UseStaticFiles();
 
-            // https://github.com/IdentityServer/IdentityServer4/issues/1331
-            application.UseForwardedHeaders(
-                new ForwardedHeadersOptions
-                {
-                    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-                    RequireHeaderSymmetry = false
-                });
-
-            application.UseCookiePolicy();
-
             application.UseRouting();
-            application.UseCors("default");
 
             application.UseAuthentication();
             application.UseIdentityServer();

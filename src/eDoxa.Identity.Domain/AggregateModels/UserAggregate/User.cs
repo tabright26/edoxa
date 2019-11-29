@@ -5,10 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 
-using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
-using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using Microsoft.AspNetCore.Identity;

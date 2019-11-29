@@ -13,15 +13,37 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure.Configurations;
 using eDoxa.Seedwork.Domain;
 
+using IdentityServer4.EntityFramework.Entities;
+using IdentityServer4.EntityFramework.Extensions;
+using IdentityServer4.EntityFramework.Interfaces;
+using IdentityServer4.EntityFramework.Options;
+
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+
+using UserClaim = eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserClaim;
 
 namespace eDoxa.Identity.Infrastructure
 {
-    public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>, IUnitOfWork
+    public sealed class IdentityDbContext : IdentityDbContext<User, Role, Guid, UserClaim, UserRole, UserLogin, RoleClaim, UserToken>,
+                                            IPersistedGrantDbContext,
+                                            IUnitOfWork
     {
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> options) : base(options)
+        private readonly IOptions<OperationalStoreOptions> _operationalStoreOptions;
+
+        public IdentityDbContext(DbContextOptions<IdentityDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options)
         {
+            _operationalStoreOptions = operationalStoreOptions;
+        }
+
+        public DbSet<PersistedGrant> PersistedGrants { get; set; }
+
+        public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
+
+        Task<int> IPersistedGrantDbContext.SaveChangesAsync()
+        {
+            return this.SaveChangesAsync();
         }
 
         public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
@@ -29,27 +51,29 @@ namespace eDoxa.Identity.Infrastructure
             await this.SaveChangesAsync(cancellationToken);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(builder);
 
-            modelBuilder.ApplyConfiguration(new AddressConfiguration());
+            builder.ConfigurePersistedGrantContext(_operationalStoreOptions.Value);
 
-            modelBuilder.ApplyConfiguration(new DoxatagConfiguration());
+            builder.ApplyConfiguration(new AddressConfiguration());
 
-            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new DoxatagConfiguration());
 
-            modelBuilder.ApplyConfiguration(new UserClaimConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
 
-            modelBuilder.ApplyConfiguration(new UserLoginConfiguration());
+            builder.ApplyConfiguration(new UserClaimConfiguration());
 
-            modelBuilder.ApplyConfiguration(new UserTokenConfiguration());
+            builder.ApplyConfiguration(new UserLoginConfiguration());
 
-            modelBuilder.ApplyConfiguration(new UserRoleConfiguration());
+            builder.ApplyConfiguration(new UserTokenConfiguration());
 
-            modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new UserRoleConfiguration());
 
-            modelBuilder.ApplyConfiguration(new RoleClaimConfiguration());
+            builder.ApplyConfiguration(new RoleConfiguration());
+
+            builder.ApplyConfiguration(new RoleClaimConfiguration());
         }
     }
 }

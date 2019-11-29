@@ -4,23 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Identity.Api.Services;
-using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
