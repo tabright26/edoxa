@@ -24,6 +24,8 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
             IEnumerable<IdentityResponses.DoxatagResponse> doxatags
         )
         {
+            doxatags ??= new List<IdentityResponses.DoxatagResponse>();
+
             return new ParticipantModel
             {
                 Id = participantFromChallengesService.Id,
@@ -37,7 +39,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                                 Name = doxatag.Name,
                                 Code = doxatag.Code
                             })
-                        .Single()
+                        .SingleOrDefault()
                 },
                 Score = participantFromChallengesService.Score,
                 ChallengeId = challengeId,
