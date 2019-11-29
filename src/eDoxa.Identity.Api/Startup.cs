@@ -7,6 +7,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using Autofac;
@@ -38,12 +39,12 @@ using HealthChecks.UI.Client;
 
 using IdentityModel;
 
-using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Services;
 
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -222,30 +223,25 @@ namespace eDoxa.Identity.Api
                         options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
                         options.UserInteraction.LogoutUrl = "/Account/Logout";
                     })
-                .AddDeveloperSigningCredential()
-                .AddInMemoryPersistedGrants()
-                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-                .AddInMemoryClients(IdentityServerConfig.GetClients(AppSettings))
+                .AddApiAuthorization<User, IdentityDbContext>(
+                    options =>
+                    {
+                        options.IdentityResources.Clear();
+                        options.IdentityResources.AddRange(IdentityServerConfig.GetIdentityResources().ToArray());
 
-                //.AddCorsPolicyService<CustomCorsPolicyService>()
+                        options.ApiResources.Clear();
+                        options.ApiResources.AddRange(IdentityServerConfig.GetApiResources().ToArray());
+
+                        options.Clients.Clear();
+                        options.Clients.AddRange(IdentityServerConfig.GetClients(AppSettings).ToArray());
+                    })
                 .AddProfileService<CustomProfileService>();
-
-            //.AddApiAuthorization<User, IdentityDbContext>();
 
             services.AddTransient<IProfileService, CustomProfileService>();
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(
-                    options =>
-                    {
-                        options.ApiName = AppSettings.ApiResource.Name;
-                        options.Authority = AppSettings.Endpoints.IdentityUrl;
-                        options.RequireHttpsMetadata = false;
-                        options.ApiSecret = "secret";
-                    });
+            services.AddAuthentication().AddIdentityServerJwt();
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
@@ -266,7 +262,7 @@ namespace eDoxa.Identity.Api
             if (HostingEnvironment.IsDevelopment())
             {
                 application.UseDeveloperExceptionPage();
-                application.UseDatabaseErrorPage();
+                //application.UseDatabaseErrorPage();
             }
             else
             {

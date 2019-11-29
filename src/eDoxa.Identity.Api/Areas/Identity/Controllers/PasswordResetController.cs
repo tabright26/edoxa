@@ -20,7 +20,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [AllowAnonymous]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/password/reset")]
     [ApiExplorerSettings(GroupName = "Password")]
     public sealed class PasswordResetController : ControllerBase

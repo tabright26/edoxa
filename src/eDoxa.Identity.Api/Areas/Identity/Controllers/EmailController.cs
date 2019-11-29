@@ -11,8 +11,6 @@ using AutoMapper;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Responses;
 
-using IdentityServer4.AccessTokenValidation;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +19,11 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/email")]
     [ApiExplorerSettings(GroupName = "Email")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class EmailController : ControllerBase
     {
         private readonly IUserService _userService;

@@ -8,6 +8,40 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "DeviceCodes",
+                columns: table => new
+                {
+                    UserCode = table.Column<string>(maxLength: 200, nullable: false),
+                    DeviceCode = table.Column<string>(maxLength: 200, nullable: false),
+                    SubjectId = table.Column<string>(maxLength: 200, nullable: true),
+                    ClientId = table.Column<string>(maxLength: 200, nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    Expiration = table.Column<DateTime>(nullable: false),
+                    Data = table.Column<string>(maxLength: 50000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceCodes", x => x.UserCode);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PersistedGrants",
+                columns: table => new
+                {
+                    Key = table.Column<string>(maxLength: 200, nullable: false),
+                    Type = table.Column<string>(maxLength: 50, nullable: false),
+                    SubjectId = table.Column<string>(maxLength: 200, nullable: true),
+                    ClientId = table.Column<string>(maxLength: 200, nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    Expiration = table.Column<DateTime>(nullable: true),
+                    Data = table.Column<string>(maxLength: 50000, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Role",
                 columns: table => new
                 {
@@ -80,8 +114,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     City = table.Column<string>(nullable: false),
                     State = table.Column<string>(nullable: true),
                     PostalCode = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
-                    UserId1 = table.Column<Guid>(nullable: true)
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,12 +125,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Address_User_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,8 +135,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     UserId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Code = table.Column<int>(nullable: false),
-                    Timestamp = table.Column<long>(nullable: false),
-                    UserId1 = table.Column<Guid>(nullable: true)
+                    Timestamp = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,12 +146,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Doxatag_User_UserId1",
-                        column: x => x.UserId1,
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -261,9 +281,15 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Address_UserId1",
-                table: "Address",
-                column: "UserId1");
+                name: "IX_DeviceCodes_DeviceCode",
+                table: "DeviceCodes",
+                column: "DeviceCode",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeviceCodes_Expiration",
+                table: "DeviceCodes",
+                column: "Expiration");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Doxatag_UserId",
@@ -271,9 +297,14 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Doxatag_UserId1",
-                table: "Doxatag",
-                column: "UserId1");
+                name: "IX_PersistedGrants_Expiration",
+                table: "PersistedGrants",
+                column: "Expiration");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PersistedGrants_SubjectId_ClientId_Type",
+                table: "PersistedGrants",
+                columns: new[] { "SubjectId", "ClientId", "Type" });
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -333,7 +364,13 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "Address");
 
             migrationBuilder.DropTable(
+                name: "DeviceCodes");
+
+            migrationBuilder.DropTable(
                 name: "Doxatag");
+
+            migrationBuilder.DropTable(
+                name: "PersistedGrants");
 
             migrationBuilder.DropTable(
                 name: "RoleClaim");

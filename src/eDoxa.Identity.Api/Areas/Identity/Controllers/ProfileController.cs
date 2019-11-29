@@ -14,8 +14,6 @@ using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
-using IdentityServer4.AccessTokenValidation;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +22,11 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/informations")]
     [ApiExplorerSettings(GroupName = "Informations")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class ProfileController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -43,7 +41,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [HttpGet]
         [SwaggerOperation("Find user's profile informations.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserProfileResponse))]
-        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userService.GetUserAsync(User);
@@ -52,7 +50,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             if (profile == null)
             {
-                return this.NoContent();
+                return this.NotFound("User profile not found.");
             }
 
             return this.Ok(_mapper.Map<UserProfileResponse>(profile));

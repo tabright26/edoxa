@@ -16,8 +16,6 @@ using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Miscs;
 
-using IdentityServer4.AccessTokenValidation;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,11 +24,11 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/address-book")]
     [ApiExplorerSettings(GroupName = "Address Book")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class AddressBookController : ControllerBase
     {
         private readonly IUserService _userService;

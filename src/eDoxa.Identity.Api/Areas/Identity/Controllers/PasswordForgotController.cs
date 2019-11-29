@@ -24,7 +24,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [AllowAnonymous]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/password/forgot")]
     [ApiExplorerSettings(GroupName = "Password")]
     public sealed class PasswordForgotController : ControllerBase
