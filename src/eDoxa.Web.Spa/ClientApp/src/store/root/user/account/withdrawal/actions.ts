@@ -1,8 +1,17 @@
-import { USER_ACCOUNT_WITHDRAWAL_MONEY, USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS, USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL, UserAccountWithdrawalActionCreators } from "./types";
+import {
+  USER_ACCOUNT_WITHDRAWAL_MONEY,
+  USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS,
+  USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL,
+  UserAccountWithdrawalActionCreators
+} from "./types";
 import { Currency, MONEY, TOKEN } from "types";
 import { AxiosPayload } from "utils/axios/types";
 
-export function accountWithdrawal(currency: Currency, amount: number): UserAccountWithdrawalActionCreators {
+export function accountWithdrawal(
+  currency: Currency,
+  amount: number,
+  meta: any
+): UserAccountWithdrawalActionCreators {
   const payload: AxiosPayload = {
     request: {
       method: "POST",
@@ -16,8 +25,13 @@ export function accountWithdrawal(currency: Currency, amount: number): UserAccou
   switch (currency) {
     case MONEY:
       return {
-        types: [USER_ACCOUNT_WITHDRAWAL_MONEY, USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS, USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL],
-        payload
+        types: [
+          USER_ACCOUNT_WITHDRAWAL_MONEY,
+          USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS,
+          USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL
+        ],
+        payload,
+        meta
       };
     case TOKEN:
       throw new Error("Token is not supported for withdrawal.");

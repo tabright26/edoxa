@@ -8,13 +8,22 @@ import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";
 
-const Informations: FunctionComponent<any> = ({ className, informations: { data, loading, error } }) => {
+const Informations: FunctionComponent<any> = ({
+  className,
+  informations: { data, loading, error }
+}) => {
+  console.log(data);
   const [buttonDisabled, setbuttonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">INFORMATIONS</strong>
-        <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} disabled={buttonDisabled || !data} onClick={() => setbuttonDisabled(true)}>
+        <Button.Link
+          className="p-0 ml-auto my-auto"
+          icon={faEdit}
+          disabled={buttonDisabled || !data}
+          onClick={() => setbuttonDisabled(true)}
+        >
           UPDATE
         </Button.Link>
       </CardHeader>
@@ -22,7 +31,9 @@ const Informations: FunctionComponent<any> = ({ className, informations: { data,
         {loading ? (
           <Loading />
         ) : !data ? (
-          <UserInformationForm.Create handleCancel={() => setbuttonDisabled(false)} />
+          <UserInformationForm.Create
+            handleCancel={() => setbuttonDisabled(false)}
+          />
         ) : !buttonDisabled ? (
           <dl className="row mb-0">
             <dd className="col-sm-3 text-muted">Name</dd>
@@ -31,13 +42,22 @@ const Informations: FunctionComponent<any> = ({ className, informations: { data,
             </dd>
             <dd className="col-sm-3 text-muted">Date of birth</dd>
             <dd className="col-sm-9">
-              <Moment date={[data.dob.year, data.dob.month - 1, data.dob.day]} format="ll" />
+              {data.dob ? (
+                <Moment
+                  date={[data.dob.year, data.dob.month - 1, data.dob.day]}
+                  format="ll"
+                />
+              ) : (
+                ""
+              )}
             </dd>
             <dd className="col-sm-3 text-muted mb-0">Gender</dd>
             <dd className="col-sm-9 mb-0">{data.gender}</dd>
           </dl>
         ) : (
-          <UserInformationForm.Update handleCancel={() => setbuttonDisabled(false)} />
+          <UserInformationForm.Update
+            handleCancel={() => setbuttonDisabled(false)}
+          />
         )}
       </CardBody>
     </Card>

@@ -10,7 +10,11 @@ import {
 import { Currency, MONEY, TOKEN } from "types";
 import { AxiosPayload } from "utils/axios/types";
 
-export function accountDeposit(currency: Currency, amount: number): UserAccountDepositActionCreators {
+export function accountDeposit(
+  currency: Currency,
+  amount: number,
+  meta: any
+): UserAccountDepositActionCreators {
   const payload: AxiosPayload = {
     request: {
       method: "POST",
@@ -24,13 +28,23 @@ export function accountDeposit(currency: Currency, amount: number): UserAccountD
   switch (currency) {
     case MONEY:
       return {
-        types: [USER_ACCOUNT_DEPOSIT_MONEY, USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS, USER_ACCOUNT_DEPOSIT_MONEY_FAIL],
-        payload
+        types: [
+          USER_ACCOUNT_DEPOSIT_MONEY,
+          USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS,
+          USER_ACCOUNT_DEPOSIT_MONEY_FAIL
+        ],
+        payload,
+        meta
       };
     case TOKEN:
       return {
-        types: [USER_ACCOUNT_DEPOSIT_TOKEN, USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS, USER_ACCOUNT_DEPOSIT_TOKEN_FAIL],
-        payload
+        types: [
+          USER_ACCOUNT_DEPOSIT_TOKEN,
+          USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS,
+          USER_ACCOUNT_DEPOSIT_TOKEN_FAIL
+        ],
+        payload,
+        meta
       };
   }
 }

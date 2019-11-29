@@ -1,4 +1,12 @@
-import { LOAD_USER_PHONE, LOAD_USER_PHONE_SUCCESS, LOAD_USER_PHONE_FAIL, UPDATE_USER_PHONE, UPDATE_USER_PHONE_SUCCESS, UPDATE_USER_PHONE_FAIL, UserPhoneActionCreators } from "./types";
+import {
+  LOAD_USER_PHONE,
+  LOAD_USER_PHONE_SUCCESS,
+  LOAD_USER_PHONE_FAIL,
+  UPDATE_USER_PHONE,
+  UPDATE_USER_PHONE_SUCCESS,
+  UPDATE_USER_PHONE_FAIL,
+  UserPhoneActionCreators
+} from "./types";
 
 export function loadUserPhone(): UserPhoneActionCreators {
   return {
@@ -12,15 +20,20 @@ export function loadUserPhone(): UserPhoneActionCreators {
   };
 }
 
-export function updateUserPhone(data: any): UserPhoneActionCreators {
+export function updateUserPhone(data: any, meta: any): UserPhoneActionCreators {
   return {
-    types: [UPDATE_USER_PHONE, UPDATE_USER_PHONE_SUCCESS, UPDATE_USER_PHONE_FAIL],
+    types: [
+      UPDATE_USER_PHONE,
+      UPDATE_USER_PHONE_SUCCESS,
+      UPDATE_USER_PHONE_FAIL
+    ],
     payload: {
       request: {
         method: "POST",
         url: "/identity/api/phone",
         data
       }
-    }
+    },
+    meta
   };
 }

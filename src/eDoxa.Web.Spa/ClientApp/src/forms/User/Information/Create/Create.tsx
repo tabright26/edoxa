@@ -8,19 +8,49 @@ import { compose } from "recompose";
 import { validate } from "./validate";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
+import { createUserInformations } from "store/root/user/information/actions";
+import { throwSubmissionError } from "utils/form/types";
 
-const CreateUserInformationsForm: FunctionComponent<any> = ({ handleSubmit, createUserInformations, error }) => (
-  <Form onSubmit={handleSubmit((data: any) => createUserInformations(data))}>
+async function submit(values, dispatch) {
+  try {
+    return await new Promise((resolve, reject) => {
+      const meta: any = { resolve, reject };
+      dispatch(createUserInformations(values, meta));
+    });
+  } catch (error) {
+    throwSubmissionError(error);
+  }
+}
+
+const CreateUserInformationsForm: FunctionComponent<any> = ({
+  handleSubmit,
+  handleCancel,
+  dispatch,
+  error
+}) => (
+  <Form
+    onSubmit={handleSubmit(data =>
+      submit(data, dispatch).then(() => handleCancel())
+    )}
+  >
     {error && <FormValidation error={error} />}
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dt className="col-sm-4 mb-0">
-            <Field name="firstName" label="Enter your first name" component={Input.Text} />
+            <Field
+              name="firstName"
+              label="Enter your first name"
+              component={Input.Text}
+            />
           </dt>
           <dd className="col-sm-4 mb-0">
-            <Field name="lastName" label="Enter your last name" component={Input.Text} />
+            <Field
+              name="lastName"
+              label="Enter your last name"
+              component={Input.Text}
+            />
           </dd>
         </dl>
       </dd>
@@ -56,6 +86,8 @@ const CreateUserInformationsForm: FunctionComponent<any> = ({ handleSubmit, crea
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm({ form: CREATE_USER_INFORMATIONS_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm({ form: CREATE_USER_INFORMATIONS_FORM, validate })
+);
 
 export default enhance(CreateUserInformationsForm);

@@ -6,6 +6,7 @@ export interface AxiosPayload {
 export interface AxiosActionCreator<T> {
   types: T[];
   payload: AxiosPayload;
+  meta?: any;
 }
 
 export interface AxiosErrorData {
@@ -21,7 +22,10 @@ export interface AxiosAction<ActionType, TData = any> {
   error: AxiosError<AxiosErrorData>;
 }
 
-export interface AxiosState<AxiosDataState = any, AxiosErrorState = string | AxiosError<AxiosErrorData>> {
+export interface AxiosState<
+  AxiosDataState = any,
+  AxiosErrorState = string | AxiosError<AxiosErrorData>
+> {
   readonly data: AxiosDataState;
   readonly loading: boolean;
   readonly error?: AxiosErrorState;

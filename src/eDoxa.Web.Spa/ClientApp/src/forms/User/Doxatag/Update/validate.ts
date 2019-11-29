@@ -4,7 +4,8 @@ export const validate = values => {
   if (!values.name) {
     errors.name = "Doxatag is required";
   } else if (!nameRegExp.test(values.name)) {
-    errors.name = "Invalid format. Must between 16 characters and greater than characters 2";
+    errors.name =
+      "Invalid format. Must between 16 characters and greater than characters 2";
   }
   return errors;
 };

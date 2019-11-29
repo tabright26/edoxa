@@ -1,8 +1,7 @@
 import { combineEpics } from "redux-observable";
 import { ofType } from "redux-observable";
-import { filter, mapTo } from "rxjs/operators";
-
-import { throwSubmissionError } from "utils/form/types";
+import { NEVER } from "rxjs";
+import { switchMap } from "rxjs/operators";
 
 import {
   USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS,
@@ -60,20 +59,30 @@ import {
 
 import { loadUserPhone } from "store/root/user/phone/actions";
 
-//-------------------------------------------------------------------------------------------------
-
-const formUserAccountDepositSuccessEpic = action$ =>
+const formUserAccountDepositSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(
       USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS,
       USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS
-    )
+    ),
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+    })
   );
 
-const formUserAccountDepositFailEpic = action$ =>
+const formUserAccountDepositFailEpic = (action$: any) =>
   action$.pipe(
     ofType(USER_ACCOUNT_DEPOSIT_MONEY_FAIL, USER_ACCOUNT_DEPOSIT_TOKEN_FAIL),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserAccountDepositEpic = combineEpics(
@@ -81,13 +90,27 @@ const formUserAccountDepositEpic = combineEpics(
   formUserAccountDepositFailEpic
 );
 
-const formUserAccountWithdrawalSuccessEpic = action$ =>
-  action$.pipe(ofType(USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS));
+const formUserAccountWithdrawalSuccessEpic = (action$: any): any =>
+  action$.pipe(
+    ofType(USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS),
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+    })
+  );
 
-const formUserAccountWithdrawalFailEpic = action$ =>
+const formUserAccountWithdrawalFailEpic = (action$: any) =>
   action$.pipe(
     ofType(USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserAccountWithdrawalEpic = combineEpics(
@@ -102,24 +125,36 @@ const formUserAccountEpic = combineEpics(
 
 //-------------------------------------------------------------------------------------------------
 
-const formUserAddressSuccessEpic = action$ =>
+const formUserAddressSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(
       CREATE_USER_ADDRESS_SUCCESS,
       DELETE_USER_ADDRESS_SUCCESS,
       UPDATE_USER_ADDRESS_SUCCESS
     ),
-    mapTo(() => loadUserAddressBook())
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+      return Promise.resolve(loadUserAddressBook());
+    })
   );
 
-const formUserAddressFailEpic = action$ =>
+const formUserAddressFailEpic = (action$: any) =>
   action$.pipe(
     ofType(
       CREATE_USER_ADDRESS_FAIL,
       DELETE_USER_ADDRESS_FAIL,
       UPDATE_USER_ADDRESS_FAIL
     ),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserAddressEpic = combineEpics(
@@ -129,16 +164,28 @@ const formUserAddressEpic = combineEpics(
 
 //-------------------------------------------------------------------------------------------------
 
-const formUserDoxatagSuccessEpic = action$ =>
+const formUserDoxatagSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(UPDATE_USER_DOXATAG_SUCCESS),
-    mapTo(() => loadUserDoxatagHistory())
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+      return Promise.resolve(loadUserDoxatagHistory());
+    })
   );
 
-const formUserDoxatagFailEpic = action$ =>
+const formUserDoxatagFailEpic = (action$: any) =>
   action$.pipe(
     ofType(UPDATE_USER_DOXATAG_FAIL),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserDoxatagEpic = combineEpics(
@@ -148,16 +195,28 @@ const formUserDoxatagEpic = combineEpics(
 
 //-------------------------------------------------------------------------------------------------
 
-const formUserInformationSuccessEpic = action$ =>
+const formUserInformationSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(CREATE_USER_INFORMATIONS_SUCCESS, UPDATE_USER_INFORMATIONS_SUCCESS),
-    mapTo(() => loadUserInformations())
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+      return Promise.resolve(loadUserInformations());
+    })
   );
 
-const formUserInformationFailEpic = action$ =>
+const formUserInformationFailEpic = (action$: any) =>
   action$.pipe(
     ofType(CREATE_USER_INFORMATIONS_FAIL, UPDATE_USER_INFORMATIONS_FAIL),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserInformationEpic = combineEpics(
@@ -167,16 +226,28 @@ const formUserInformationEpic = combineEpics(
 
 //-------------------------------------------------------------------------------------------------
 
-const formUserPasswordForgotSuccessEpic = action$ =>
+const formUserPasswordForgotSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(FORGOT_USER_PASSWORD_SUCCESS),
-    mapTo(() => push("/"))
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+      return Promise.resolve(push("/"));
+    })
   );
 
-const formUserPasswordForgotFailEpic = action$ =>
+const formUserPasswordForgotFailEpic = (action$: any) =>
   action$.pipe(
     ofType(FORGOT_USER_PASSWORD_FAIL),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserPasswordForgotEpic = combineEpics(
@@ -184,16 +255,30 @@ const formUserPasswordForgotEpic = combineEpics(
   formUserPasswordForgotFailEpic
 );
 
-const formUserPasswordResetSuccessEpic = action$ =>
+const formUserPasswordResetSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(RESET_USER_PASSWORD_SUCCESS),
-    mapTo(() => (window.location.href = `${REACT_APP_AUTHORITY}/account/login`))
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+      return Promise.resolve(
+        (window.location.href = `${REACT_APP_AUTHORITY}/account/login`)
+      );
+    })
   );
 
-const formUserPasswordResetFailEpic = action$ =>
+const formUserPasswordResetFailEpic = (action$: any) =>
   action$.pipe(
     ofType(RESET_USER_PASSWORD_FAIL),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserPasswordResetEpic = combineEpics(
@@ -208,16 +293,28 @@ const formUserPasswordEpic = combineEpics(
 
 //-------------------------------------------------------------------------------------------------
 
-const formUserPhoneSuccessEpic = action$ =>
+const formUserPhoneSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(UPDATE_USER_PHONE_SUCCESS),
-    mapTo(() => loadUserPhone())
+    switchMap((action: any): any => {
+      const { resolve } = action.meta.previousAction.meta;
+      if (resolve) {
+        resolve(action.payload);
+      }
+      return Promise.resolve(loadUserPhone());
+    })
   );
 
-const formUserPhoneFailEpic = action$ =>
+const formUserPhoneFailEpic = (action$: any) =>
   action$.pipe(
     ofType(UPDATE_USER_PHONE_FAIL),
-    mapTo(action => throwSubmissionError(action.error))
+    switchMap((action: any) => {
+      const { reject } = action.meta.previousAction.meta;
+      if (reject) {
+        reject(action.error);
+      }
+      return NEVER;
+    })
   );
 
 const formUserPhoneEpic = combineEpics(

@@ -8,13 +8,29 @@ import { validate } from "./validate";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
+import { updateUserInformations } from "store/root/user/information/actions";
+import { throwSubmissionError } from "utils/form/types";
 
-const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel, error }) => (
+async function submit(values, dispatch) {
+  try {
+    return await new Promise((resolve, reject) => {
+      const meta: any = { resolve, reject };
+      dispatch(updateUserInformations(values, meta));
+    });
+  } catch (error) {
+    throwSubmissionError(error);
+  }
+}
+
+const UpdateUserInformationsForm: FunctionComponent<any> = ({
+  handleSubmit,
+  handleCancel,
+  dispatch,
+  error
+}) => (
   <Form
     onSubmit={handleSubmit(data =>
-      updateUserInformations(data).then(() => {
-        handleCancel();
-      })
+      submit(data, dispatch).then(() => handleCancel())
     )}
   >
     {error && <FormValidation error={error} />}
@@ -23,10 +39,19 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformat
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dt className="col-sm-4 mb-0">
-            <Field name="firstName" label="Enter your first name" component={Input.Text} />
+            <Field
+              name="firstName"
+              label="Enter your first name"
+              component={Input.Text}
+            />
           </dt>
           <dd className="col-sm-4 mb-0">
-            <Field name="lastName" label="Enter your first name" component={Input.Text} disabled />
+            <Field
+              name="lastName"
+              label="Enter your first name"
+              component={Input.Text}
+              disabled
+            />
           </dd>
         </dl>
       </dd>
@@ -56,6 +81,11 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformat
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_USER_INFORMATIONS_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm<any, { handleCancel: () => any }, string>({
+    form: UPDATE_USER_INFORMATIONS_FORM,
+    validate
+  })
+);
 
 export default enhance(UpdateUserInformationsForm);

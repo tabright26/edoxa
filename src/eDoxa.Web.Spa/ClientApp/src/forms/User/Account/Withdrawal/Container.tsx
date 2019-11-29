@@ -1,5 +1,4 @@
 import { connect, MapStateToProps } from "react-redux";
-import { accountWithdrawal } from "store/root/user/account/withdrawal/actions";
 import Withdrawal from "./Withdrawal";
 import { RootState } from "store/types";
 import { Bundle, Currency } from "types";
@@ -26,11 +25,4 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   };
 };
 
-const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
-  return {
-    accountWithdrawal: (data: any) =>
-      dispatch(accountWithdrawal(ownProps.currency, data.bundle))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Withdrawal);
+export default connect(mapStateToProps)(Withdrawal);

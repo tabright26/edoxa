@@ -7,17 +7,39 @@ import { UPDATE_USER_DOXATAG_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
+import { updateUserDoxatag } from "store/root/user/doxatagHistory/actions";
+import { throwSubmissionError } from "utils/form/types";
 
-const UpdateUserDoxatagForm: FunctionComponent<any> = ({ updateUserDoxatag, handleSubmit, handleCancel, error }) => (
+async function submit(values, dispatch) {
+  try {
+    return await new Promise((resolve, reject) => {
+      const meta: any = { resolve, reject };
+      dispatch(updateUserDoxatag(values, meta));
+    });
+  } catch (error) {
+    throwSubmissionError(error);
+  }
+}
+
+const UpdateUserDoxatagForm: FunctionComponent<any> = ({
+  handleSubmit,
+  handleCancel,
+  dispatch,
+  error
+}) => (
   <Form
     onSubmit={handleSubmit(data =>
-      updateUserDoxatag(data).then(() => {
-        handleCancel();
-      })
+      submit(data, dispatch).then(() => handleCancel())
     )}
   >
     {error && <FormValidation error={error} />}
-    <Field type="text" name="name" label="Name" formGroup={FormGroup} component={Input.Text} />
+    <Field
+      type="text"
+      name="name"
+      label="Name"
+      formGroup={FormGroup}
+      component={Input.Text}
+    />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
       <Button.Cancel onClick={handleCancel} />
@@ -25,6 +47,11 @@ const UpdateUserDoxatagForm: FunctionComponent<any> = ({ updateUserDoxatag, hand
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_USER_DOXATAG_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm<any, { handleCancel: () => any }, string>({
+    form: UPDATE_USER_DOXATAG_FORM,
+    validate
+  })
+);
 
 export default enhance(UpdateUserDoxatagForm);

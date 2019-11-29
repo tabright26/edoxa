@@ -13,7 +13,11 @@ import {
 
 export function loadUserInformations(): UserInformationsActionCreators {
   return {
-    types: [LOAD_USER_INFORMATIONS, LOAD_USER_INFORMATIONS_SUCCESS, LOAD_USER_INFORMATIONS_FAIL],
+    types: [
+      LOAD_USER_INFORMATIONS,
+      LOAD_USER_INFORMATIONS_SUCCESS,
+      LOAD_USER_INFORMATIONS_FAIL
+    ],
     payload: {
       request: {
         method: "GET",
@@ -23,22 +27,37 @@ export function loadUserInformations(): UserInformationsActionCreators {
   };
 }
 
-export function createUserInformations(data: any): UserInformationsActionCreators {
+export function createUserInformations(
+  data: any,
+  meta: any
+): UserInformationsActionCreators | any {
   return {
-    types: [CREATE_USER_INFORMATIONS, CREATE_USER_INFORMATIONS_SUCCESS, CREATE_USER_INFORMATIONS_FAIL],
+    types: [
+      CREATE_USER_INFORMATIONS,
+      CREATE_USER_INFORMATIONS_SUCCESS,
+      CREATE_USER_INFORMATIONS_FAIL
+    ],
     payload: {
       request: {
         method: "POST",
         url: "/identity/api/informations",
         data
       }
-    }
+    },
+    meta
   };
 }
 
-export function updateUserInformations(data: any): UserInformationsActionCreators {
+export function updateUserInformations(
+  data: any,
+  meta: any
+): UserInformationsActionCreators {
   return {
-    types: [UPDATE_USER_INFORMATIONS, UPDATE_USER_INFORMATIONS_SUCCESS, UPDATE_USER_INFORMATIONS_FAIL],
+    types: [
+      UPDATE_USER_INFORMATIONS,
+      UPDATE_USER_INFORMATIONS_SUCCESS,
+      UPDATE_USER_INFORMATIONS_FAIL
+    ],
     payload: {
       request: {
         method: "PUT",
@@ -47,6 +66,7 @@ export function updateUserInformations(data: any): UserInformationsActionCreator
           firstName: data.firstName
         }
       }
-    }
+    },
+    meta
   };
 }

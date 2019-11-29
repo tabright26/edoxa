@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { updateUserDoxatag } from "store/root/user/doxatagHistory/actions";
 import Update from "./Update";
 
 const mapStateToProps = (state: RootState) => {
@@ -16,10 +15,4 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    updateUserDoxatag: (data: any) => dispatch(updateUserDoxatag(data))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Update);
+export default connect(mapStateToProps)(Update);

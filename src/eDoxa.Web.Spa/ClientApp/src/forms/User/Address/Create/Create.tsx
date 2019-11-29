@@ -8,28 +8,74 @@ import { CREATE_USER_ADDRESS_FORM } from "forms";
 import { validate } from "./validate";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
+import { createUserAddress } from "store/root/user/addressBook/actions";
+import { throwSubmissionError } from "utils/form/types";
 
-const CreateUserAddressForm: FunctionComponent<any> = ({ createUserAddress, handleSubmit, handleCancel, error }) => (
+async function submit(values, dispatch) {
+  try {
+    return await new Promise((resolve, reject) => {
+      const meta: any = { resolve, reject };
+      dispatch(createUserAddress(values, meta));
+    });
+  } catch (error) {
+    throwSubmissionError(error);
+  }
+}
+
+const CreateUserAddressForm: FunctionComponent<any> = ({
+  handleSubmit,
+  handleCancel,
+  dispatch,
+  error
+}) => (
   <Form
     onSubmit={handleSubmit(data =>
-      createUserAddress(data).then(() => {
-        handleCancel();
-      })
+      submit(data, dispatch).then(() => handleCancel())
     )}
   >
     {error && <FormValidation error={error} />}
     <FormGroup>
       <FormField.Country />
     </FormGroup>
-    <Field type="text" name="line1" label="Address line 1" formGroup={FormGroup} component={Input.Text} />
-    <Field type="text" name="line2" label="Address line 2 (optional)" formGroup={FormGroup} component={Input.Text} />
-    <Field type="text" name="city" label="City" formGroup={FormGroup} component={Input.Text} />
+    <Field
+      type="text"
+      name="line1"
+      label="Address line 1"
+      formGroup={FormGroup}
+      component={Input.Text}
+    />
+    <Field
+      type="text"
+      name="line2"
+      label="Address line 2 (optional)"
+      formGroup={FormGroup}
+      component={Input.Text}
+    />
+    <Field
+      type="text"
+      name="city"
+      label="City"
+      formGroup={FormGroup}
+      component={Input.Text}
+    />
     <FormGroup row className="my-0">
       <Col xs="8">
-        <Field type="text" name="state" label="State" formGroup={FormGroup} component={Input.Text} />
+        <Field
+          type="text"
+          name="state"
+          label="State"
+          formGroup={FormGroup}
+          component={Input.Text}
+        />
       </Col>
       <Col xs="4">
-        <Field type="text" name="postalCode" label="Postal Code" formGroup={FormGroup} component={Input.Text} />
+        <Field
+          type="text"
+          name="postalCode"
+          label="Postal Code"
+          formGroup={FormGroup}
+          component={Input.Text}
+        />
       </Col>
     </FormGroup>
     <FormGroup className="mb-0">
@@ -39,6 +85,11 @@ const CreateUserAddressForm: FunctionComponent<any> = ({ createUserAddress, hand
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => {} }, string>({ form: CREATE_USER_ADDRESS_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm<any, { handleCancel: () => {} }, string>({
+    form: CREATE_USER_ADDRESS_FORM,
+    validate
+  })
+);
 
 export default enhance(CreateUserAddressForm);

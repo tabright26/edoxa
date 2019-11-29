@@ -269,13 +269,13 @@ export class AuthorizeService {
       userStore: new WebStorageStateStore({
         prefix: ApplicationName
       }),
-      loadUserInfo: false,
-      metadata: {
-        issuer: REACT_APP_AUTHORITY,
-        jwks_uri: `${REACT_APP_AUTHORITY}/.well-known/openid-configuration/jwks`,
-        end_session_endpoint: `${REACT_APP_AUTHORITY}/connect/endsession`,
-        authorization_endpoint: `${REACT_APP_AUTHORITY}/connect/authorize`
-      }
+      loadUserInfo: false
+      // metadata: {
+      //   issuer: REACT_APP_AUTHORITY,
+      //   jwks_uri: `${REACT_APP_AUTHORITY}/.well-known/openid-configuration/jwks`,
+      //   end_session_endpoint: `${REACT_APP_AUTHORITY}/connect/endsession`,
+      //   authorization_endpoint: `${REACT_APP_AUTHORITY}/connect/authorize`
+      // }
     };
 
     this.userManager = new UserManager(settings);

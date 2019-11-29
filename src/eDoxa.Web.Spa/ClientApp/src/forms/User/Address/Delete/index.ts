@@ -1,3 +1,3 @@
-import DeleteUserAddressContainer from "./Container";
+import DeleteUserAddressForm from "./Delete";
 
-export default DeleteUserAddressContainer;
+export default DeleteUserAddressForm;

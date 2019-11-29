@@ -1,5 +1,4 @@
 import { connect, MapStateToProps } from "react-redux";
-import { accountDeposit } from "store/root/user/account/deposit/actions";
 import Deposit from "./Deposit";
 import { RootState } from "store/types";
 import { Currency, Bundle } from "types";
@@ -26,11 +25,4 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   };
 };
 
-const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
-  return {
-    accountDeposit: (data: any) =>
-      dispatch(accountDeposit(ownProps.currency, data.bundle))
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Deposit);
+export default connect(mapStateToProps)(Deposit);

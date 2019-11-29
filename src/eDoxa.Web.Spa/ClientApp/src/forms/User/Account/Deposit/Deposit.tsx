@@ -8,13 +8,33 @@ import FormField from "components/Shared/Form/Field";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import faker from "faker";
+import { throwSubmissionError } from "utils/form/types";
+import { accountDeposit } from "store/root/user/account/deposit/actions";
 
 faker.seed(1000);
 
-const DepositForm: FunctionComponent<any> = ({ bundles, accountDeposit, currency, handleSubmit, handleCancel, error }) => (
+async function submit(values, currency, dispatch) {
+  try {
+    return await new Promise((resolve, reject) => {
+      const meta: any = { resolve, reject };
+      dispatch(accountDeposit(currency, values.amount, meta));
+    });
+  } catch (error) {
+    throwSubmissionError(error);
+  }
+}
+
+const DepositForm: FunctionComponent<any> = ({
+  bundles,
+  dispatch,
+  currency,
+  handleSubmit,
+  handleCancel,
+  error
+}) => (
   <Form
     onSubmit={handleSubmit(data =>
-      accountDeposit(data).then(() => {
+      submit(data, currency, dispatch).then(() => {
         handleCancel();
       })
     )}
@@ -31,6 +51,11 @@ const DepositForm: FunctionComponent<any> = ({ bundles, accountDeposit, currency
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: USER_ACCOUNT_DEPOSIT_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm<any, { handleCancel: () => any }, string>({
+    form: USER_ACCOUNT_DEPOSIT_FORM,
+    validate
+  })
+);
 
 export default enhance(DepositForm);

@@ -8,13 +8,33 @@ import FormField from "components/Shared/Form/Field";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import faker from "faker";
+import { throwSubmissionError } from "utils/form/types";
+import { accountWithdrawal } from "store/root/user/account/withdrawal/actions";
 
 faker.seed(1000);
 
-const WithdrawalForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, accountWithdrawal, currency, bundles, error }) => (
+async function submit(values, currency, dispatch) {
+  try {
+    return await new Promise((resolve, reject) => {
+      const meta: any = { resolve, reject };
+      dispatch(accountWithdrawal(currency, values.amount, meta));
+    });
+  } catch (error) {
+    throwSubmissionError(error);
+  }
+}
+
+const WithdrawalForm: FunctionComponent<any> = ({
+  bundles,
+  dispatch,
+  currency,
+  handleSubmit,
+  handleCancel,
+  error
+}) => (
   <Form
     onSubmit={handleSubmit(data =>
-      accountWithdrawal(data).then(() => {
+      submit(data, currency, dispatch).then(() => {
         handleCancel();
       })
     )}
@@ -31,6 +51,11 @@ const WithdrawalForm: FunctionComponent<any> = ({ handleSubmit, handleCancel, ac
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: USER_ACCOUNT_WITHDRAWAL_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm<any, { handleCancel: () => any }, string>({
+    form: USER_ACCOUNT_WITHDRAWAL_FORM,
+    validate
+  })
+);
 
 export default enhance(WithdrawalForm);

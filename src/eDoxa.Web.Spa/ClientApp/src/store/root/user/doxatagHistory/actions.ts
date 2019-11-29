@@ -10,7 +10,11 @@ import {
 
 export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
   return {
-    types: [LOAD_USER_DOXATAGHISTORY, LOAD_USER_DOXATAGHISTORY_SUCCESS, LOAD_USER_DOXATAGHISTORY_FAIL],
+    types: [
+      LOAD_USER_DOXATAGHISTORY,
+      LOAD_USER_DOXATAGHISTORY_SUCCESS,
+      LOAD_USER_DOXATAGHISTORY_FAIL
+    ],
     payload: {
       request: {
         method: "GET",
@@ -20,15 +24,23 @@ export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
   };
 }
 
-export function updateUserDoxatag(data: any): UserDoxatagHistoryActionCreators {
+export function updateUserDoxatag(
+  data: any,
+  meta: any
+): UserDoxatagHistoryActionCreators {
   return {
-    types: [UPDATE_USER_DOXATAG, UPDATE_USER_DOXATAG_SUCCESS, UPDATE_USER_DOXATAG_FAIL],
+    types: [
+      UPDATE_USER_DOXATAG,
+      UPDATE_USER_DOXATAG_SUCCESS,
+      UPDATE_USER_DOXATAG_FAIL
+    ],
     payload: {
       request: {
         method: "POST",
         url: "/identity/api/doxatag-history",
         data
       }
-    }
+    },
+    meta
   };
 }

@@ -17,41 +17,50 @@ export const initialState: UserDoxatagHistoryState = {
   loading: false
 };
 
-export const reducer: Reducer<UserDoxatagHistoryState, UserDoxatagHistoryActions> = produce((draft: Draft<UserDoxatagHistoryState>, action: UserDoxatagHistoryActions) => {
-  switch (action.type) {
-    case LOAD_USER_DOXATAGHISTORY:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case LOAD_USER_DOXATAGHISTORY_SUCCESS:
-      const { status, data } = action.payload;
-      switch (status) {
-        case 204:
-          draft.error = null;
-          draft.loading = false;
-          break;
-        default:
-          draft.data = data;
-          draft.error = null;
-          draft.loading = false;
-          break;
-      }
-      break;
-    case LOAD_USER_DOXATAGHISTORY_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-    case UPDATE_USER_DOXATAG:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case UPDATE_USER_DOXATAG_SUCCESS:
-      draft.error = null;
-      draft.loading = false;
-      break;
-    case UPDATE_USER_DOXATAG_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-  }
-}, initialState);
+export const reducer: Reducer<
+  UserDoxatagHistoryState,
+  UserDoxatagHistoryActions
+> = produce(
+  (
+    draft: Draft<UserDoxatagHistoryState>,
+    action: UserDoxatagHistoryActions
+  ) => {
+    switch (action.type) {
+      case LOAD_USER_DOXATAGHISTORY:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case LOAD_USER_DOXATAGHISTORY_SUCCESS:
+        const { status, data } = action.payload;
+        switch (status) {
+          case 204:
+            draft.error = null;
+            draft.loading = false;
+            break;
+          default:
+            draft.data = data;
+            draft.error = null;
+            draft.loading = false;
+            break;
+        }
+        break;
+      case LOAD_USER_DOXATAGHISTORY_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+      case UPDATE_USER_DOXATAG:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case UPDATE_USER_DOXATAG_SUCCESS:
+        draft.error = null;
+        draft.loading = false;
+        break;
+      case UPDATE_USER_DOXATAG_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+    }
+  },
+  initialState
+);
