@@ -39,6 +39,7 @@ using HealthChecks.UI.Client;
 
 using IdentityModel;
 
+using IdentityServer4.AccessTokenValidation;
 using IdentityServer4.Services;
 
 using MediatR;
@@ -241,7 +242,18 @@ namespace eDoxa.Identity.Api
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddAuthentication().AddIdentityServerJwt();
+            //services.AddAuthentication().AddIdentityServerJwt();
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerJwt()
+                .AddIdentityServerAuthentication(
+                    options =>
+                    {
+                        options.ApiName = AppSettings.ApiResource.Name;
+                        options.Authority = AppSettings.Endpoints.IdentityUrl;
+                        options.RequireHttpsMetadata = false;
+                        options.ApiSecret = "secret";
+                    });
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }

@@ -15,6 +15,8 @@ using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 
+using IdentityServer4.AccessTokenValidation;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +25,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
-    [Authorize]
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/doxatag-history")]
