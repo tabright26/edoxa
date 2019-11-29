@@ -19,12 +19,12 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Services
 {
-    public sealed class UserManager : UserManager<User>, IUserManager
+    public sealed class UserService : UserManager<User>, IUserService
     {
         private readonly IServiceBusPublisher _publisher;
 
-        public UserManager(
-            UserStore store,
+        public UserService(
+            UserRepository repository,
             IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<User> passwordHasher,
             IEnumerable<IUserValidator<User>> userValidators,
@@ -32,10 +32,10 @@ namespace eDoxa.Identity.Api.Services
             ILookupNormalizer keyNormalizer,
             CustomIdentityErrorDescriber errors,
             IServiceProvider services,
-            ILogger<UserManager> logger,
+            ILogger<UserService> logger,
             IServiceBusPublisher publisher
         ) : base(
-            store,
+            repository,
             optionsAccessor,
             passwordHasher,
             userValidators,
@@ -47,12 +47,12 @@ namespace eDoxa.Identity.Api.Services
         {
             _publisher = publisher;
             ErrorDescriber = errors;
-            Store = store;
+            Repository = repository;
         }
 
         private new CustomIdentityErrorDescriber ErrorDescriber { get; }
 
-        public new UserStore Store { get; }
+        public new UserRepository Repository { get; }
 
         public override async Task<IdentityResult> SetEmailAsync(User user, string email)
         {
@@ -87,7 +87,7 @@ namespace eDoxa.Identity.Api.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetInformationsAsync(user, CancellationToken);
+            return await Repository.GetInformationsAsync(user, CancellationToken);
         }
 
         public async Task<IdentityResult> CreateInformationsAsync(
@@ -105,7 +105,7 @@ namespace eDoxa.Identity.Api.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            await Store.SetInformationsAsync(
+            await Repository.SetInformationsAsync(
                 user,
                 new UserProfile(
                     firstName,
@@ -144,7 +144,7 @@ namespace eDoxa.Identity.Api.Services
             var gender = user.Profile!.Gender!;
             var dob = user.Profile!.Dob!;
 
-            await Store.SetInformationsAsync(
+            await Repository.SetInformationsAsync(
                 user,
                 new UserProfile(
                     firstName,
@@ -179,7 +179,7 @@ namespace eDoxa.Identity.Api.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetDobAsync(user, CancellationToken);
+            return await Repository.GetDobAsync(user, CancellationToken);
         }
 
         public async Task<string?> GetFirstNameAsync(User user)
@@ -191,7 +191,7 @@ namespace eDoxa.Identity.Api.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetFirstNameAsync(user, CancellationToken);
+            return await Repository.GetFirstNameAsync(user, CancellationToken);
         }
 
         public async Task<string?> GetLastNameAsync(User user)
@@ -203,7 +203,7 @@ namespace eDoxa.Identity.Api.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetLastNameAsync(user, CancellationToken);
+            return await Repository.GetLastNameAsync(user, CancellationToken);
         }
 
         public async Task<Gender?> GetGenderAsync(User user)
@@ -215,7 +215,7 @@ namespace eDoxa.Identity.Api.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetGenderAsync(user, CancellationToken);
+            return await Repository.GetGenderAsync(user, CancellationToken);
         }
 
         public async Task<Country> GetCountryAsync(User user)
@@ -227,7 +227,7 @@ namespace eDoxa.Identity.Api.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return await Store.GetCountryAsync(user, CancellationToken);
+            return await Repository.GetCountryAsync(user, CancellationToken);
         }
     }
 }

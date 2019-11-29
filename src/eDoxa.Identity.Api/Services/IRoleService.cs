@@ -1,23 +1,25 @@
 ﻿// Filename: IRoleManager.cs
-// Date Created: --
+// Date Created: 2019-11-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Services
 {
-    public interface IRoleManager
+    public interface IRoleService
     {
+        bool SupportsQueryableRoles { get; }
+
+        bool SupportsRoleClaims { get; }
+
         Task<IdentityResult> CreateAsync(Role role);
 
         Task UpdateNormalizedRoleNameAsync(Role role);
@@ -27,8 +29,6 @@ namespace eDoxa.Identity.Api.Services
         Task<IdentityResult> DeleteAsync(Role role);
 
         Task<bool> RoleExistsAsync(string roleName);
-
-        string NormalizeKey(string key);
 
         Task<Role> FindByIdAsync(string roleId);
 
@@ -47,19 +47,5 @@ namespace eDoxa.Identity.Api.Services
         Task<IList<Claim>> GetClaimsAsync(Role role);
 
         void Dispose();
-
-        ILogger Logger { get; set; }
-
-        IList<IRoleValidator<Role>> RoleValidators { get; }
-
-        IdentityErrorDescriber ErrorDescriber { get; set; }
-
-        ILookupNormalizer KeyNormalizer { get; set; }
-
-        IQueryable<Role> Roles { get; }
-
-        bool SupportsQueryableRoles { get; }
-
-        bool SupportsRoleClaims { get; }
     }
 }

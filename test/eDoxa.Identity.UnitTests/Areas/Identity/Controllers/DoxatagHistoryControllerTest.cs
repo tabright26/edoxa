@@ -44,7 +44,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User();
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
@@ -82,7 +82,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var doxatagHistory = new List<Doxatag> {doxatag};
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
@@ -154,7 +154,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             //    "State",
             //    "PostalCode");
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 

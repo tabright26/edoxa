@@ -56,7 +56,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 async scope =>
                 {
                     // Arrange
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 

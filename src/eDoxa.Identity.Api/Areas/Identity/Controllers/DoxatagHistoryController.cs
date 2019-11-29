@@ -32,13 +32,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class DoxatagHistoryController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IDoxatagService _doxatagService;
         private readonly IMapper _mapper;
 
-        public DoxatagHistoryController(IUserManager userManager, IDoxatagService doxatagService, IMapper mapper)
+        public DoxatagHistoryController(IUserService userService, IDoxatagService doxatagService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
             _doxatagService = doxatagService;
             _mapper = mapper;
         }
@@ -49,7 +49,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             var doxatagHistory = await _doxatagService.FetchDoxatagHistoryAsync(user);
 
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] ChangeDoxatagRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             var result = await _doxatagService.ChangeDoxatagAsync(user, request.Name);
 

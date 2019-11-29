@@ -13,20 +13,20 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class RoleDeletedIntegrationEventHandler : IIntegrationEventHandler<RoleDeletedIntegrationEvent>
     {
-        private readonly IRoleManager _roleManager;
+        private readonly IRoleService _roleService;
 
-        public RoleDeletedIntegrationEventHandler(IRoleManager roleManager)
+        public RoleDeletedIntegrationEventHandler(IRoleService roleService)
         {
-            _roleManager = roleManager;
+            _roleService = roleService;
         }
 
         public async Task HandleAsync(RoleDeletedIntegrationEvent integrationEvent)
         {
-            if (await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
+            if (await _roleService.RoleExistsAsync(integrationEvent.RoleName))
             {
-                var role = await _roleManager.FindByNameAsync(integrationEvent.RoleName);
+                var role = await _roleService.FindByNameAsync(integrationEvent.RoleName);
 
-                await _roleManager.DeleteAsync(role);
+                await _roleService.DeleteAsync(role);
             }
         }
     }

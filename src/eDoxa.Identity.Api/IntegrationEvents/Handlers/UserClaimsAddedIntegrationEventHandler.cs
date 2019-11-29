@@ -15,22 +15,22 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class UserClaimsAddedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsAddedIntegrationEvent>
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
 
-        public UserClaimsAddedIntegrationEventHandler(IUserManager userManager)
+        public UserClaimsAddedIntegrationEventHandler(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         public async Task HandleAsync(UserClaimsAddedIntegrationEvent integrationEvent)
         {
-            var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
+            var user = await _userService.FindByIdAsync(integrationEvent.UserId.ToString());
             
-            var claims = await _userManager.GetClaimsAsync(user);
+            var claims = await _userService.GetClaimsAsync(user);
 
             foreach (var claim in integrationEvent.Claims.Where(claim => !claims.Any(securityClaim => securityClaim.Type == claim.Type && securityClaim.Value == claim.Value)))
             {
-                await _userManager.AddClaimAsync(user, new Claim(claim.Type, claim.Value));
+                await _userService.AddClaimAsync(user, new Claim(claim.Type, claim.Value));
             }
         }
     }

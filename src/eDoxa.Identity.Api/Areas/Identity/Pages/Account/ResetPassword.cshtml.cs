@@ -20,11 +20,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager _userManager;
+        private readonly IUserService _userService;
 
-        public ResetPasswordModel(UserManager userManager)
+        public ResetPasswordModel(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -52,7 +52,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 return this.Page();
             }
 
-            var user = await _userManager.FindByEmailAsync(Input.Email);
+            var user = await _userService.FindByEmailAsync(Input.Email);
 
             if (user == null)
             {
@@ -60,7 +60,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 return this.RedirectToPage("./ResetPasswordConfirmation");
             }
 
-            var result = await _userManager.ResetPasswordAsync(user, Input.Code, Input.Password);
+            var result = await _userService.ResetPasswordAsync(user, Input.Code, Input.Password);
 
             if (result.Succeeded)
             {

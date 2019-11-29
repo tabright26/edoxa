@@ -28,12 +28,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class EmailController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public EmailController(IUserManager userManager, IMapper mapper)
+        public EmailController(IUserService userService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -43,7 +43,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             return this.Ok(_mapper.Map<EmailResponse>(user));
         }

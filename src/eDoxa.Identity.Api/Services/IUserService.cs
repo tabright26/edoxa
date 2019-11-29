@@ -18,9 +18,9 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Services
 {
-    public interface IUserManager
+    public interface IUserService
     {
-        UserStore Store { get; }
+        UserRepository Repository { get; }
 
         ILogger Logger { get; set; }
 

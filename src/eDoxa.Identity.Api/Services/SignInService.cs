@@ -14,18 +14,18 @@ using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Services
 {
-    public sealed class SignInManager : SignInManager<User>, ISignInManager
+    public sealed class SignInService : SignInManager<User>, ISignInService
     {
-        public SignInManager(
-            UserManager userManager,
+        public SignInService(
+            UserService userService,
             IHttpContextAccessor contextAccessor,
             CustomUserClaimsPrincipalFactory claimsFactory,
             IOptions<IdentityOptions> optionsAccessor,
-            ILogger<SignInManager> logger,
+            ILogger<SignInService> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<User> confirmation
         ) : base(
-            userManager,
+            userService,
             contextAccessor,
             claimsFactory,
             optionsAccessor,

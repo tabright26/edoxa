@@ -14,20 +14,20 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class UserClaimsRemovedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsRemovedIntegrationEvent>
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
 
-        public UserClaimsRemovedIntegrationEventHandler(IUserManager userManager)
+        public UserClaimsRemovedIntegrationEventHandler(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         public async Task HandleAsync(UserClaimsRemovedIntegrationEvent integrationEvent)
         {
-            var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
+            var user = await _userService.FindByIdAsync(integrationEvent.UserId.ToString());
 
             foreach (var claim in integrationEvent.Claims)
             {
-                await _userManager.RemoveClaimAsync(user, new Claim(claim.Type, claim.Value));
+                await _userService.RemoveClaimAsync(user, new Claim(claim.Type, claim.Value));
             }
         }
     }

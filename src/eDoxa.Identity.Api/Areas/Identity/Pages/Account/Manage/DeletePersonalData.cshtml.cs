@@ -20,14 +20,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager _userManager;
-        private readonly SignInManager _signInManager;
+        private readonly IUserService _userService;
+        private readonly ISignInService _signInService;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
-        public DeletePersonalDataModel(UserManager userManager, SignInManager signInManager, ILogger<DeletePersonalDataModel> logger)
+        public DeletePersonalDataModel(IUserService userService, ISignInService signInService, ILogger<DeletePersonalDataModel> logger)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _signInService = signInService;
             _logger = logger;
         }
 
@@ -38,32 +38,32 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            RequirePassword = await _userManager.HasPasswordAsync(user);
+            RequirePassword = await _userService.HasPasswordAsync(user);
 
             return this.Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            RequirePassword = await _userManager.HasPasswordAsync(user);
+            RequirePassword = await _userService.HasPasswordAsync(user);
 
             if (RequirePassword)
             {
-                if (!await _userManager.CheckPasswordAsync(user, Input.Password))
+                if (!await _userService.CheckPasswordAsync(user, Input.Password))
                 {
                     ModelState.AddModelError(string.Empty, "Password not correct.");
 
@@ -71,15 +71,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            var result = await _userManager.DeleteAsync(user);
-            var userId = await _userManager.GetUserIdAsync(user);
+            var result = await _userService.DeleteAsync(user);
+            var userId = await _userService.GetUserIdAsync(user);
 
             if (!result.Succeeded)
             {
                 throw new InvalidOperationException($"Unexpected error occurred deleteing user with ID '{userId}'.");
             }
 
-            await _signInManager.SignOutAsync();
+            await _signInService.SignOutAsync();
 
             _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
 

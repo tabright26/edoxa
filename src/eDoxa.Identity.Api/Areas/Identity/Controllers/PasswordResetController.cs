@@ -25,11 +25,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiExplorerSettings(GroupName = "Password")]
     public sealed class PasswordResetController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
 
-        public PasswordResetController(IUserManager userManager)
+        public PasswordResetController(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -40,7 +40,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(request.Email);
+                var user = await _userService.FindByEmailAsync(request.Email);
 
                 if (user == null)
                 {
@@ -51,7 +51,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 // BUG: Quick fix. Must be refactored. Related to the encoding.
                 var code = request.Code.Replace(" ", "+");
 
-                var result = await _userManager.ResetPasswordAsync(user, code, request.Password);
+                var result = await _userService.ResetPasswordAsync(user, code, request.Password);
 
                 if (result.Succeeded)
                 {

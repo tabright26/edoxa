@@ -14,22 +14,22 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class RoleClaimsAddedIntegrationEventHandler : IIntegrationEventHandler<RoleClaimsAddedIntegrationEvent>
     {
-        private readonly IRoleManager _roleManager;
+        private readonly IRoleService _roleService;
 
-        public RoleClaimsAddedIntegrationEventHandler(IRoleManager roleManager)
+        public RoleClaimsAddedIntegrationEventHandler(IRoleService roleService)
         {
-            _roleManager = roleManager;
+            _roleService = roleService;
         }
 
         public async Task HandleAsync(RoleClaimsAddedIntegrationEvent integrationEvent)
         {
-            if (await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
+            if (await _roleService.RoleExistsAsync(integrationEvent.RoleName))
             {
-                var role = await _roleManager.FindByNameAsync(integrationEvent.RoleName);
+                var role = await _roleService.FindByNameAsync(integrationEvent.RoleName);
 
                 foreach (var claim in integrationEvent.Claims)
                 {
-                    await _roleManager.AddClaimAsync(role, new Claim(claim.Type, claim.Value));
+                    await _roleService.AddClaimAsync(role, new Claim(claim.Type, claim.Value));
                 }
             }
         }

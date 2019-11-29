@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Services
 {
-    public interface ISignInManager
+    public interface ISignInService
     {
         Task<ClaimsPrincipal> CreateUserPrincipalAsync(User user);
 

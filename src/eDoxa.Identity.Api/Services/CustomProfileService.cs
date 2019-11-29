@@ -17,22 +17,22 @@ namespace eDoxa.Identity.Api.Services
 {
     internal sealed class CustomProfileService : IProfileService
     {
-        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, IUserManager userManager, IOptions<IdentityOptions> optionsAccessor)
+        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, IUserService userService, IOptions<IdentityOptions> optionsAccessor)
         {
             PrincipalFactory = principalFactory;
-            UserManager = userManager;
+            IUserService = userService;
             Options = optionsAccessor.Value;
         }
 
         private CustomUserClaimsPrincipalFactory PrincipalFactory { get; }
 
-        private IUserManager UserManager { get; }
+        private IUserService IUserService { get; }
 
         private IdentityOptions Options { get; }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var user = await UserManager.GetUserAsync(context.Subject);
+            var user = await IUserService.GetUserAsync(context.Subject);
 
             var principal = await PrincipalFactory.CreateAsync(user);
 
@@ -44,19 +44,19 @@ namespace eDoxa.Identity.Api.Services
 
         public async Task IsActiveAsync(IsActiveContext context)
         {
-            var user = await UserManager.GetUserAsync(context.Subject);
+            var user = await IUserService.GetUserAsync(context.Subject);
 
             if (user != null)
             {
-                context.IsActive = !await UserManager.IsLockedOutAsync(user);
+                context.IsActive = !await IUserService.IsLockedOutAsync(user);
 
-                if (UserManager.SupportsUserSecurityStamp)
+                if (IUserService.SupportsUserSecurityStamp)
                 {
-                    var claims = await UserManager.GetClaimsAsync(user);
+                    var claims = await IUserService.GetClaimsAsync(user);
 
                     var securityStamp = claims.SingleOrDefault(claim => claim.Type == Options.ClaimsIdentity.SecurityStampClaimType)?.Value;
 
-                    context.IsActive = securityStamp != await UserManager.GetSecurityStampAsync(user);
+                    context.IsActive = securityStamp != await IUserService.GetSecurityStampAsync(user);
                 }
             }
             else

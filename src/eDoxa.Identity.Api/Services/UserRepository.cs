@@ -15,10 +15,10 @@ using eDoxa.Seedwork.Domain.Miscs;
 
 namespace eDoxa.Identity.Api.Services
 {
-    public sealed class UserStore : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
+    public sealed class UserRepository : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
         UserLogin, UserToken, RoleClaim>
     {
-        public UserStore(IdentityDbContext context, CustomIdentityErrorDescriber describer) : base(context, describer)
+        public UserRepository(IdentityDbContext context, CustomIdentityErrorDescriber describer) : base(context, describer)
         {
         }
 

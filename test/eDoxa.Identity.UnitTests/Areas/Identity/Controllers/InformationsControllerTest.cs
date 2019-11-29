@@ -40,7 +40,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User();
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
@@ -68,7 +68,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Profile = new UserProfile("Test", "Test", Gender.Male, new Dob(dob))
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
@@ -146,7 +146,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User();
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
@@ -246,7 +246,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Profile = new UserProfile("FirstName", "LastName", Gender.Male, new Dob(dob))
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 

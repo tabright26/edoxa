@@ -32,7 +32,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
         public async Task UserRoleAddedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(roleManager => roleManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new User()).Verifiable();
 

@@ -95,7 +95,7 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
-            if (string.Equals(Environment.GetEnvironmentVariable("ASPNETCORE_FORWARDEDHEADERS_ENABLED"), "true", StringComparison.OrdinalIgnoreCase))
+            if (Configuration.GetValue<bool>("ASPNETCORE_FORWARDEDHEADERS_ENABLED"))
             {
                 services.Configure<ForwardedHeadersOptions>(
                     options =>
@@ -152,21 +152,21 @@ namespace eDoxa.Identity.Api
                     })
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders()
-                .AddUserStore<UserStore>()
+                .AddUserStore<UserRepository>()
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
-                .AddUserManager<UserManager>()
-                .AddSignInManager<SignInManager>()
-                .AddRoleManager<RoleManager>();
+                .AddUserManager<UserService>()
+                .AddSignInManager<SignInService>()
+                .AddRoleManager<RoleService>();
 
-            services.AddScoped<UserStore>();
+            services.AddScoped<UserRepository>();
             services.AddScoped<CustomUserClaimsPrincipalFactory>();
             services.AddScoped<CustomIdentityErrorDescriber>();
-            services.AddScoped<UserManager>();
-            services.AddScoped<IUserManager, UserManager>();
-            services.AddScoped<SignInManager>();
-            services.AddScoped<ISignInManager, SignInManager>();
-            services.AddScoped<RoleManager>();
-            services.AddScoped<IRoleManager, RoleManager>();
+            services.AddScoped<UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<SignInService>();
+            services.AddScoped<ISignInService, SignInService>();
+            services.AddScoped<RoleService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.Configure<PasswordHasherOptions>(
                 option =>
@@ -227,12 +227,12 @@ namespace eDoxa.Identity.Api
                 .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
                 .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
                 .AddInMemoryClients(IdentityServerConfig.GetClients(AppSettings))
+
                 //.AddCorsPolicyService<CustomCorsPolicyService>()
                 .AddProfileService<CustomProfileService>();
 
             //.AddApiAuthorization<User, IdentityDbContext>();
 
-            services.AddTransient<ICorsPolicyService, CustomCorsPolicyService>();
             services.AddTransient<IProfileService, CustomProfileService>();
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));

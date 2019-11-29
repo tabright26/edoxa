@@ -31,12 +31,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class ProfileController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public ProfileController(IUserManager userManager, IMapper mapper)
+        public ProfileController(IUserService userService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -46,9 +46,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var profile = await _userManager.GetInformationsAsync(user);
+            var profile = await _userService.GetInformationsAsync(user);
 
             if (profile == null)
             {
@@ -65,16 +65,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] CreateProfileRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var informations = await _userManager.GetInformationsAsync(user);
+            var informations = await _userService.GetInformationsAsync(user);
 
             if (informations != null)
             {
                 return this.BadRequest("The user's personal information has already been created.");
             }
 
-            var result = await _userManager.CreateInformationsAsync(
+            var result = await _userService.CreateInformationsAsync(
                 user,
                 request.FirstName,
                 request.LastName,
@@ -98,16 +98,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync([FromBody] UpdateProfileRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var informations = await _userManager.GetInformationsAsync(user);
+            var informations = await _userService.GetInformationsAsync(user);
 
             if (informations == null)
             {
                 return this.BadRequest("The user's personal informations does not exist.");
             }
 
-            var result = await _userManager.UpdateInformationsAsync(user, request.FirstName);
+            var result = await _userService.UpdateInformationsAsync(user, request.FirstName);
 
             if (result.Succeeded)
             {

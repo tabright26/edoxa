@@ -24,12 +24,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public ForgotPasswordModel(UserManager userManager, IServiceBusPublisher serviceBusPublisher)
+        public ForgotPasswordModel(IUserService userService, IServiceBusPublisher serviceBusPublisher)
         {
-            _userManager = userManager;
+            _userService = userService;
             _serviceBusPublisher = serviceBusPublisher;
         }
 
@@ -40,9 +40,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(Input.Email);
+                var user = await _userService.FindByEmailAsync(Input.Email);
 
-                if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+                if (user == null || !await _userService.IsEmailConfirmedAsync(user))
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return this.RedirectToPage("./ForgotPasswordConfirmation");
@@ -50,7 +50,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
                 var callbackUrl = Url.Page(
                     "/Account/ResetPassword",

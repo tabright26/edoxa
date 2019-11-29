@@ -29,19 +29,19 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IRedirectService _redirectService;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly SignInManager _signInManager;
-        private readonly UserManager _userManager;
+        private readonly SignInService _signInService;
+        private readonly IUserService _userService;
 
         public RegisterModel(
-            UserManager userManager,
-            SignInManager signInManager,
+            IUserService userService,
+            SignInService signInService,
             ILogger<RegisterModel> logger,
             IServiceBusPublisher serviceBusPublisher,
             IRedirectService redirectService
         )
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _signInService = signInService;
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
             _redirectService = redirectService;
@@ -62,7 +62,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var result = await _userManager.CreateAsync(
+                var result = await _userService.CreateAsync(
                     new User
                     {
                         Email = Input.Email,
@@ -73,13 +73,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var user = await _userService.FindByEmailAsync(Input.Email);
 
                     _logger.LogInformation("User created a new account with password.");
 
                     await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(UserId.FromGuid(user.Id), Input.Email, Input.Country);
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
                     var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
 
@@ -89,7 +89,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                         "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    await _signInManager.SignInAsync(user, false);
+                    await _signInService.SignInAsync(user, false);
 
                     return this.Redirect(returnUrl);
                 }

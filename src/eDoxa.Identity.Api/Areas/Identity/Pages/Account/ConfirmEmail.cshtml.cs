@@ -18,11 +18,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
 
-        public ConfirmEmailModel(IUserManager userManager)
+        public ConfirmEmailModel(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         public async Task<IActionResult> OnGetAsync(string? userId, string? code)
@@ -32,14 +32,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 return this.RedirectToPage("/Index");
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userService.FindByIdAsync(userId);
 
             if (user == null)
             {
                 return this.NotFound($"Unable to load user with ID '{userId}'.");
             }
 
-            var result = await _userManager.ConfirmEmailAsync(user, code);
+            var result = await _userService.ConfirmEmailAsync(user, code);
 
             if (!result.Succeeded)
             {

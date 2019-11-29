@@ -33,13 +33,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class AddressBookController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IAddressService _addressService;
         private readonly IMapper _mapper;
 
-        public AddressBookController(IUserManager userManager, IAddressService addressService, IMapper mapper)
+        public AddressBookController(IUserService userService, IAddressService addressService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
             _addressService = addressService;
             _mapper = mapper;
         }
@@ -50,7 +50,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             var addressBook = await _addressService.GetAddressBookAsync(user);
 
@@ -68,7 +68,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] CreateAddressRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             var result = await _addressService.AddAddressAsync(
                 user,
@@ -95,7 +95,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync(AddressId addressId, [FromBody] UpdateAddressRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             var result = await _addressService.UpdateAddressAsync(
                 user,
@@ -122,7 +122,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> DeleteAsync(AddressId addressId)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             var result = await _addressService.RemoveAddressAsync(user, addressId);
 

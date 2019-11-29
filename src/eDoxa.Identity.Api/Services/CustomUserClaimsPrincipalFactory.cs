@@ -29,21 +29,21 @@ namespace eDoxa.Identity.Api.Services
         private readonly IDoxatagService _doxatagService;
 
         public CustomUserClaimsPrincipalFactory(
-            IUserManager userManager,
-            IRoleManager roleManager,
+            IUserService userService,
+            IRoleService roleService,
             IDoxatagService doxatagService,
             IOptions<IdentityOptions> optionsAccessor
         )
         {
             _doxatagService = doxatagService;
-            UserManager = userManager;
-            RoleManager = roleManager;
+            IUserService = userService;
+            RoleService = roleService;
             Options = optionsAccessor.Value;
         }
 
-        private IUserManager UserManager { get; }
+        private IUserService IUserService { get; }
 
-        private IRoleManager RoleManager { get; }
+        private IRoleService RoleService { get; }
 
         private IdentityOptions Options { get; }
 
@@ -67,9 +67,9 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task GenerateUserClaimsAsync(User user)
         {
-            Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await UserManager.GetUserIdAsync(user)));
+            Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await IUserService.GetUserIdAsync(user)));
 
-            var country = await UserManager.GetCountryAsync(user);
+            var country = await IUserService.GetCountryAsync(user);
 
             Identity!.AddClaim(new Claim(ClaimTypes.Country, country.TwoDigitIso));
 
@@ -87,14 +87,14 @@ namespace eDoxa.Identity.Api.Services
 
             await this.TryGeneratePhoneNumberClaimsAsync(user);
 
-            if (UserManager.SupportsUserSecurityStamp)
+            if (IUserService.SupportsUserSecurityStamp)
             {
-                Identity.AddClaim(new Claim(Options.ClaimsIdentity.SecurityStampClaimType, await UserManager.GetSecurityStampAsync(user)));
+                Identity.AddClaim(new Claim(Options.ClaimsIdentity.SecurityStampClaimType, await IUserService.GetSecurityStampAsync(user)));
             }
 
-            if (UserManager.SupportsUserClaim)
+            if (IUserService.SupportsUserClaim)
             {
-                Identity.AddClaims(await UserManager.GetClaimsAsync(user));
+                Identity.AddClaims(await IUserService.GetClaimsAsync(user));
             }
         }
 
@@ -120,9 +120,9 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateNameClaimAsync(User user)
         {
-            var firstName = await UserManager.GetFirstNameAsync(user);
+            var firstName = await IUserService.GetFirstNameAsync(user);
 
-            var lastName = await UserManager.GetLastNameAsync(user);
+            var lastName = await IUserService.GetLastNameAsync(user);
 
             if (firstName != null && lastName != null)
             {
@@ -132,7 +132,7 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateFirstNameClaimAsync(User user)
         {
-            var firstName = await UserManager.GetFirstNameAsync(user);
+            var firstName = await IUserService.GetFirstNameAsync(user);
 
             if (firstName != null)
             {
@@ -142,7 +142,7 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateLastNameClaimAsync(User user)
         {
-            var lastName = await UserManager.GetLastNameAsync(user);
+            var lastName = await IUserService.GetLastNameAsync(user);
 
             if (lastName != null)
             {
@@ -152,7 +152,7 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateBirthDateClaimAsync(User user)
         {
-            var dob = await UserManager.GetDobAsync(user);
+            var dob = await IUserService.GetDobAsync(user);
 
             if (dob != null)
             {
@@ -162,11 +162,11 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateEmailClaimsAsync(User user)
         {
-            if (UserManager.SupportsUserEmail)
+            if (IUserService.SupportsUserEmail)
             {
-                var email = await UserManager.GetEmailAsync(user);
+                var email = await IUserService.GetEmailAsync(user);
 
-                var emailConfirmed = await UserManager.IsEmailConfirmedAsync(user);
+                var emailConfirmed = await IUserService.IsEmailConfirmedAsync(user);
 
                 Identity!.AddClaim(new Claim(JwtClaimTypes.Email, email));
 
@@ -176,13 +176,13 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGeneratePhoneNumberClaimsAsync(User user)
         {
-            if (UserManager.SupportsUserPhoneNumber)
+            if (IUserService.SupportsUserPhoneNumber)
             {
-                var phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+                var phoneNumber = await IUserService.GetPhoneNumberAsync(user);
 
                 if (phoneNumber != null)
                 {
-                    var phoneNumberConfirmed = await UserManager.IsPhoneNumberConfirmedAsync(user);
+                    var phoneNumberConfirmed = await IUserService.IsPhoneNumberConfirmedAsync(user);
 
                     Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumber, phoneNumber));
 
@@ -193,15 +193,15 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task GenerateRoleClaimsAsync(User user)
         {
-            if (UserManager.SupportsUserRole)
+            if (IUserService.SupportsUserRole)
             {
-                var roles = await UserManager.GetRolesAsync(user);
+                var roles = await IUserService.GetRolesAsync(user);
 
                 foreach (var roleName in roles)
                 {
                     Identity!.AddClaim(new Claim(Options.ClaimsIdentity.RoleClaimType, roleName));
 
-                    if (RoleManager.SupportsRoleClaims)
+                    if (RoleService.SupportsRoleClaims)
                     {
                         await this.GenerateRoleClaimsAsync(roleName);
                     }
@@ -211,11 +211,11 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task GenerateRoleClaimsAsync(string roleName)
         {
-            var role = await RoleManager.FindByNameAsync(roleName);
+            var role = await RoleService.FindByNameAsync(roleName);
 
             if (role != null)
             {
-                Identity!.AddClaims(await RoleManager.GetClaimsAsync(role));
+                Identity!.AddClaims(await RoleService.GetClaimsAsync(role));
             }
         }
     }

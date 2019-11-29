@@ -30,7 +30,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         public async Task GetAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).Verifiable();
 
@@ -58,7 +58,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
@@ -88,7 +88,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 

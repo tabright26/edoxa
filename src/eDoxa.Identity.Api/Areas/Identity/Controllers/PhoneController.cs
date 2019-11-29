@@ -30,12 +30,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     public sealed class PhoneController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public PhoneController(IUserManager userManager, IMapper mapper)
+        public PhoneController(IUserService userService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -45,9 +45,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var phoneNumber = await _userService.GetPhoneNumberAsync(user);
 
             if (phoneNumber == null)
             {
@@ -63,9 +63,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] ChangePhoneRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var result = await _userManager.SetPhoneNumberAsync(user, request.Number);
+            var result = await _userService.SetPhoneNumberAsync(user, request.Number);
 
             if (result.Succeeded)
             {

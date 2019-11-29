@@ -34,18 +34,18 @@ namespace eDoxa.Identity.Api.Controllers
     {
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly SignInManager _signInManager;
-        private readonly UserManager _userManager;
+        private readonly ISignInService _signInService;
+        private readonly IUserService _userService;
 
         public ExternalController(
-            UserManager userManager,
-            SignInManager signInManager,
+            IUserService userService,
+            ISignInService signInService,
             IIdentityServerInteractionService interaction,
             IEventService events
         )
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _signInService = signInService;
             _interaction = interaction;
             _events = events;
         }
@@ -125,7 +125,7 @@ namespace eDoxa.Identity.Api.Controllers
             // issue authentication cookie for user
             // we must issue the cookie maually, and can't use the SignInManager because
             // it doesn't expose an API to issue additional claims from the login workflow
-            var principal = await _signInManager.CreateUserPrincipalAsync(user);
+            var principal = await _signInService.CreateUserPrincipalAsync(user);
             additionalLocalClaims.AddRange(principal.Claims);
             var name = principal.FindFirst(JwtClaimTypes.Name)?.Value ?? user.Id.ToString();
             await _events.RaiseAsync(new UserLoginSuccessEvent(provider, providerUserId, user.Id.ToString(), name));
@@ -216,7 +216,7 @@ namespace eDoxa.Identity.Api.Controllers
             var providerUserId = userIdClaim.Value;
 
             // find external user
-            var user = await _userManager.FindByLoginAsync(provider, providerUserId);
+            var user = await _userService.FindByLoginAsync(provider, providerUserId);
 
             return (user, provider, providerUserId, claims);
         }
@@ -268,7 +268,7 @@ namespace eDoxa.Identity.Api.Controllers
                 UserName = Guid.NewGuid().ToString()
             };
 
-            var identityResult = await _userManager.CreateAsync(user);
+            var identityResult = await _userService.CreateAsync(user);
 
             if (!identityResult.Succeeded)
             {
@@ -277,7 +277,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (filtered.Any())
             {
-                identityResult = await _userManager.AddClaimsAsync(user, filtered);
+                identityResult = await _userService.AddClaimsAsync(user, filtered);
 
                 if (!identityResult.Succeeded)
                 {
@@ -285,7 +285,7 @@ namespace eDoxa.Identity.Api.Controllers
                 }
             }
 
-            identityResult = await _userManager.AddLoginAsync(user, new UserLoginInfo(provider, providerUserId, provider));
+            identityResult = await _userService.AddLoginAsync(user, new UserLoginInfo(provider, providerUserId, provider));
 
             if (!identityResult.Succeeded)
             {

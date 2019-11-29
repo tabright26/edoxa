@@ -29,13 +29,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiExplorerSettings(GroupName = "Password")]
     public sealed class PasswordForgotController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IRedirectService _redirectService;
 
-        public PasswordForgotController(IUserManager userManager, IServiceBusPublisher serviceBusPublisher, IRedirectService redirectService)
+        public PasswordForgotController(IUserService userService, IServiceBusPublisher serviceBusPublisher, IRedirectService redirectService)
         {
-            _userManager = userManager;
+            _userService = userService;
             _serviceBusPublisher = serviceBusPublisher;
             _redirectService = redirectService;
         }
@@ -48,14 +48,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(request.Email);
+                var user = await _userService.FindByEmailAsync(request.Email);
 
                 // Don't reveal that the user does not exist or is not confirmed
-                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
+                if (user != null && await _userService.IsEmailConfirmedAsync(user))
                 {
                     // For more information on how to enable account confirmation and password reset please 
                     // visit https://go.microsoft.com/fwlink/?LinkID=532713
-                    var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
                     var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
 

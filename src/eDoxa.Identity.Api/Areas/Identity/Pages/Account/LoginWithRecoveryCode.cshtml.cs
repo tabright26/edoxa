@@ -22,12 +22,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginWithRecoveryCodeModel : PageModel
     {
-        private readonly SignInManager _signInManager;
+        private readonly ISignInService _signInService;
         private readonly ILogger<LoginWithRecoveryCodeModel> _logger;
 
-        public LoginWithRecoveryCodeModel(SignInManager signInManager, ILogger<LoginWithRecoveryCodeModel> logger)
+        public LoginWithRecoveryCodeModel(ISignInService signInService, ILogger<LoginWithRecoveryCodeModel> logger)
         {
-            _signInManager = signInManager;
+            _signInService = signInService;
             _logger = logger;
         }
 
@@ -39,7 +39,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await _signInService.GetTwoFactorAuthenticationUserAsync();
 
             if (user == null)
             {
@@ -58,7 +58,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 return this.Page();
             }
 
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await _signInService.GetTwoFactorAuthenticationUserAsync();
 
             if (user == null)
             {
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             var recoveryCode = Input.RecoveryCode.Replace(" ", string.Empty);
 
-            var result = await _signInManager.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
+            var result = await _signInService.TwoFactorRecoveryCodeSignInAsync(recoveryCode);
 
             if (result.Succeeded)
             {

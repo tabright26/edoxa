@@ -14,20 +14,20 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class UserEmailSentIntegrationEventHandler : IIntegrationEventHandler<UserEmailSentIntegrationEvent>
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public UserEmailSentIntegrationEventHandler(IUserManager userManager, IServiceBusPublisher serviceBusPublisher)
+        public UserEmailSentIntegrationEventHandler(IUserService userService, IServiceBusPublisher serviceBusPublisher)
         {
-            _userManager = userManager;
+            _userService = userService;
             _serviceBusPublisher = serviceBusPublisher;
         }
 
         public async Task HandleAsync(UserEmailSentIntegrationEvent integrationEvent)
         {
-            var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
+            var user = await _userService.FindByIdAsync(integrationEvent.UserId.ToString());
 
-            var email = await _userManager.GetEmailAsync(user);
+            var email = await _userService.GetEmailAsync(user);
 
             await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
                 integrationEvent.UserId,
