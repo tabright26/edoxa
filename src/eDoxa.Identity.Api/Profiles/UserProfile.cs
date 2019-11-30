@@ -11,7 +11,7 @@ using eDoxa.Identity.Responses;
 
 namespace eDoxa.Identity.Api.Profiles
 {
-    public class UserProfile : Profile
+    internal sealed class UserProfile : Profile
     {
         public UserProfile()
         {

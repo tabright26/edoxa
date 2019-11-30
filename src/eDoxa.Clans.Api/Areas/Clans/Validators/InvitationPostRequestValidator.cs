@@ -5,8 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Clans.Api.Areas.Clans.ErrorDescribers;
-using eDoxa.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
+using eDoxa.Clans.Requests;
 
 using FluentValidation;
 
@@ -16,9 +15,9 @@ namespace eDoxa.Clans.Api.Areas.Clans.Validators
     {
         public InvitationPostRequestValidator()
         {
-            this.EntityId(request => request.UserId).WithMessage(InvitationErrorDescriber.UserIdRequired());
+            this.RuleFor(request => request.UserId).NotNull().WithMessage(InvitationErrorDescriber.UserIdRequired()).NotEmpty().WithMessage(InvitationErrorDescriber.UserIdRequired());
 
-            this.EntityId(request => request.ClanId).WithMessage(InvitationErrorDescriber.ClanIdRequired());
+            this.RuleFor(request => request.ClanId).NotNull().WithMessage(InvitationErrorDescriber.ClanIdRequired()).NotEmpty().WithMessage(InvitationErrorDescriber.ClanIdRequired());
         }
     }
 }

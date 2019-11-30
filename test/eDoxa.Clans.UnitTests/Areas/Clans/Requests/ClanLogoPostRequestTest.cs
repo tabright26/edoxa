@@ -6,7 +6,7 @@
 
 using System.IO;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 

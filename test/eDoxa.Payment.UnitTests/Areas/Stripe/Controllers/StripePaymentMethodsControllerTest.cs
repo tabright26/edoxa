@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Areas.Stripe.Controllers;
-using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.Requests;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Payment.TestHelper.Mocks;

@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.Models;
+using eDoxa.Clans.Requests;
+using eDoxa.Clans.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
@@ -102,7 +102,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
         {
             var ownerId = HttpContext.GetUserId();
 
-            var result = await _invitationService.SendInvitationAsync(request.ClanId, request.UserId, ownerId);
+            var result = await _invitationService.SendInvitationAsync(ClanId.FromGuid(request.ClanId), UserId.FromGuid(request.UserId), ownerId);
 
             if (result.IsValid)
             {

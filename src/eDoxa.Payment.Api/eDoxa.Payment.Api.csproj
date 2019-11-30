@@ -21,6 +21,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Payment.Infrastructure\eDoxa.Payment.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Payment.Requests\eDoxa.Payment.Requests.csproj" />
+    <ProjectReference Include="..\eDoxa.Payment.Responses\eDoxa.Payment.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>

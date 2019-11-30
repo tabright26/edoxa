@@ -23,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Clans.Infrastructure\eDoxa.Clans.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Clans.Requests\eDoxa.Clans.Requests.csproj" />
+    <ProjectReference Include="..\eDoxa.Clans.Responses\eDoxa.Clans.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 

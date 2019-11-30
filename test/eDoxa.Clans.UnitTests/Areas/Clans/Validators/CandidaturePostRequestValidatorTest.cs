@@ -33,7 +33,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
         public static TheoryData<UserId, string> InvalidUserIds =>
             new TheoryData<UserId, string>
             {
-                {null, CandidatureErrorDescriber.UserIdRequired()}
+                {UserId.Empty, CandidatureErrorDescriber.UserIdRequired()}
             };
 
         public static TheoryData<ClanId> ValidClanId =>
@@ -45,7 +45,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
         public static TheoryData<ClanId, string> InvalidClanIds =>
             new TheoryData<ClanId, string>
             {
-                {null, CandidatureErrorDescriber.ClanIdRequired()}
+                {ClanId.Empty, CandidatureErrorDescriber.ClanIdRequired()}
             };
 
         [Theory]
@@ -56,7 +56,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
             var validator = new CandidaturePostRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.UserId, userId);
+            validator.ShouldNotHaveValidationErrorFor(request => request.UserId, userId.ToGuid());
         }
 
         [Theory]
@@ -67,7 +67,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
             var validator = new CandidaturePostRequestValidator();
 
             // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.UserId, userId);
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.UserId, userId.ToGuid());
 
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
@@ -80,7 +80,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
             var validator = new CandidaturePostRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.ClanId, clanId);
+            validator.ShouldNotHaveValidationErrorFor(request => request.ClanId, clanId.ToGuid());
         }
 
         [Theory]
@@ -91,7 +91,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
             var validator = new CandidaturePostRequestValidator();
 
             // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.ClanId, clanId);
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.ClanId, clanId.ToGuid());
 
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }

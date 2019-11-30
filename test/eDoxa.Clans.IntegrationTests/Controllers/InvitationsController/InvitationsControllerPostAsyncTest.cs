@@ -8,9 +8,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
+using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;

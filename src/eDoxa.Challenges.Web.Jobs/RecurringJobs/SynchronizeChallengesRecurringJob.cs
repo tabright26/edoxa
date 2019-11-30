@@ -10,7 +10,7 @@ using eDoxa.Challenges.Web.Jobs.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
-namespace eDoxa.Challenges.Web.Jobs.Services
+namespace eDoxa.Challenges.Web.Jobs.RecurringJobs
 {
     public sealed class SynchronizeChallengesRecurringJob
     {

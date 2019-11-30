@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Payment.Api.Areas.Stripe.Responses;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;

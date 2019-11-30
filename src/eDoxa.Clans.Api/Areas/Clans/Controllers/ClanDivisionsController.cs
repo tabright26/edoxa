@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
+using eDoxa.Clans.Requests;
+using eDoxa.Clans.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 

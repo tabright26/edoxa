@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Payment.Api.Areas.Stripe.Requests;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.Requests;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Miscs;

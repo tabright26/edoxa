@@ -177,11 +177,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Web.Aggreg
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Web.Jobs", "src\eDoxa.Challenges.Web.Jobs\eDoxa.Challenges.Web.Jobs.csproj", "{FFCA57B4-64FC-48FA-A288-C17AB81BF3D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Identity.Domain", "src\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj", "{38227356-B1E0-412C-8257-B4E9F2F8208A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Identity.Domain", "src\eDoxa.Identity.Domain\eDoxa.Identity.Domain.csproj", "{38227356-B1E0-412C-8257-B4E9F2F8208A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Identity.Infrastructure", "src\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj", "{50253A0D-3A0F-4B86-B6B7-041FA59B134D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Identity.Infrastructure", "src\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj", "{50253A0D-3A0F-4B86-B6B7-041FA59B134D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Identity.Requests", "src\eDoxa.Identity.Requests\eDoxa.Identity.Requests.csproj", "{41248FAD-0ADE-433E-9632-C32E1554A7EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Identity.Requests", "src\eDoxa.Identity.Requests\eDoxa.Identity.Requests.csproj", "{41248FAD-0ADE-433E-9632-C32E1554A7EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Clans.Requests", "src\eDoxa.Clans.Requests\eDoxa.Clans.Requests.csproj", "{AE81CEFF-EA83-465C-B29E-3A0FAE45F020}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Clans.Responses", "src\eDoxa.Clans.Responses\eDoxa.Clans.Responses.csproj", "{166A5F80-6394-4FC4-AA0F-E02088A35E8F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Payment.Requests", "src\eDoxa.Payment.Requests\eDoxa.Payment.Requests.csproj", "{F1C3F983-DE12-489C-BD5A-BDDC64D6F5CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Payment.Responses", "src\eDoxa.Payment.Responses\eDoxa.Payment.Responses.csproj", "{22589AA7-516C-4F47-96E2-B367620F7492}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -449,6 +457,22 @@ Global
 		{41248FAD-0ADE-433E-9632-C32E1554A7EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41248FAD-0ADE-433E-9632-C32E1554A7EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41248FAD-0ADE-433E-9632-C32E1554A7EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE81CEFF-EA83-465C-B29E-3A0FAE45F020}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE81CEFF-EA83-465C-B29E-3A0FAE45F020}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE81CEFF-EA83-465C-B29E-3A0FAE45F020}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE81CEFF-EA83-465C-B29E-3A0FAE45F020}.Release|Any CPU.Build.0 = Release|Any CPU
+		{166A5F80-6394-4FC4-AA0F-E02088A35E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{166A5F80-6394-4FC4-AA0F-E02088A35E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{166A5F80-6394-4FC4-AA0F-E02088A35E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{166A5F80-6394-4FC4-AA0F-E02088A35E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1C3F983-DE12-489C-BD5A-BDDC64D6F5CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1C3F983-DE12-489C-BD5A-BDDC64D6F5CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1C3F983-DE12-489C-BD5A-BDDC64D6F5CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1C3F983-DE12-489C-BD5A-BDDC64D6F5CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22589AA7-516C-4F47-96E2-B367620F7492}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22589AA7-516C-4F47-96E2-B367620F7492}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22589AA7-516C-4F47-96E2-B367620F7492}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22589AA7-516C-4F47-96E2-B367620F7492}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -531,6 +555,10 @@ Global
 		{38227356-B1E0-412C-8257-B4E9F2F8208A} = {3799662A-7D24-4FE0-B23F-38281CA1D84E}
 		{50253A0D-3A0F-4B86-B6B7-041FA59B134D} = {3799662A-7D24-4FE0-B23F-38281CA1D84E}
 		{41248FAD-0ADE-433E-9632-C32E1554A7EE} = {3799662A-7D24-4FE0-B23F-38281CA1D84E}
+		{AE81CEFF-EA83-465C-B29E-3A0FAE45F020} = {77BF035E-3B62-4A95-A525-90E94E48038B}
+		{166A5F80-6394-4FC4-AA0F-E02088A35E8F} = {77BF035E-3B62-4A95-A525-90E94E48038B}
+		{F1C3F983-DE12-489C-BD5A-BDDC64D6F5CF} = {9050415E-2E9D-4737-8D81-A938CD4D1D80}
+		{22589AA7-516C-4F47-96E2-B367620F7492} = {9050415E-2E9D-4737-8D81-A938CD4D1D80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

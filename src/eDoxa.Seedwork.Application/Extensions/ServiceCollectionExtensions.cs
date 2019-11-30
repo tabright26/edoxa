@@ -46,7 +46,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 .AddCustomFluentValidation<TStartup>();
         }
 
-        public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services)
+        public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services, Action<ProblemDetailsOptions>? action = null)
         {
             var provider = services.BuildServiceProvider();
 
@@ -57,6 +57,8 @@ namespace eDoxa.Seedwork.Application.Extensions
                 {
                     // Don't include exception details in a production environment.
                     options.IncludeExceptionDetails = context => !environment.IsProduction();
+
+                    action?.Invoke(options);
 
                     // This will map NotImplementedException to the 501 Not Implemented status code.
                     options.Map<NotImplementedException>(exception => new ExceptionProblemDetails(exception, StatusCodes.Status501NotImplemented));

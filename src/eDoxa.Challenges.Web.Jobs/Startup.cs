@@ -9,7 +9,7 @@ using System;
 using Autofac;
 
 using eDoxa.Challenges.Web.Jobs.Infrastructure;
-using eDoxa.Challenges.Web.Jobs.Services;
+using eDoxa.Challenges.Web.Jobs.RecurringJobs;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Hangfire.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
