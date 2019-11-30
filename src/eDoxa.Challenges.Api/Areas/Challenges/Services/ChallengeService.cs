@@ -13,7 +13,7 @@ using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
-using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Miscs;
 

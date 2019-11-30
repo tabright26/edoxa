@@ -4,24 +4,19 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Swagger.Extensions;
-
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class ApplicationBuilderExtensions
     {
-        public static void UseSwagger(this IApplicationBuilder application, IApiVersionDescriptionProvider provider, IHasApiResourceAppSettings appSettings)
+        public static IApplicationBuilder UseCustomPathBase(this IApplicationBuilder application)
         {
-            application.UseSwagger(provider, appSettings.ApiResource.GetSwaggerClientId(), appSettings.ApiResource.GetSwaggerClientName());
-        }
+            var configuration = application.ApplicationServices.GetRequiredService<IConfiguration>();
 
-        public static void UseCustomExceptionHandler(this IApplicationBuilder application)
-        {
-            application.UseMiddleware<ExceptionHandlerMiddleware>();
+            return application.UsePathBase(configuration["ASPNETCORE_PATHBASE"]);
         }
     }
 }

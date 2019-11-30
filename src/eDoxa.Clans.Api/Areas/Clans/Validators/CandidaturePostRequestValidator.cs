@@ -6,7 +6,7 @@
 
 using eDoxa.Clans.Api.Areas.Clans.ErrorDescribers;
 using eDoxa.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 
 using FluentValidation;
 

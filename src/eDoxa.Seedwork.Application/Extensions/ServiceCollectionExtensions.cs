@@ -1,62 +1,88 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Monitoring.AppSettings;
-using eDoxa.Seedwork.Security;
-using eDoxa.Swagger.Extensions;
-using eDoxa.Swagger.Filters;
-using eDoxa.Swagger.Options;
+using System;
+using System.Net.Http;
+using System.Net.Mime;
 
-using IdentityServer4.Models;
+using FluentValidation.AspNetCore;
 
+using Hellang.Middleware.ProblemDetails;
+
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddSwagger(
-            this IServiceCollection services,
-            string xmlCommentsFilePath,
-            IHasApiResourceAppSettings apiResourceAppSettings,
-            IHasAuthorityAppSettings authorityAppSettings,
-            params Scope[] scopes
-        )
+        public static IServiceCollection AddCustomApiVersioning(this IServiceCollection services, ApiVersion version)
         {
-            services.AddSwagger(
-                authorityAppSettings.Authority,
-                apiResourceAppSettings.ApiResource.Name,
-                apiResourceAppSettings.ApiResource.DisplayName,
-                apiResourceAppSettings.ApiResource.Description,
-                xmlCommentsFilePath,
+            return services.AddApiVersioning(
+                    options =>
+                    {
+                        options.ReportApiVersions = true;
+                        options.AssumeDefaultVersionWhenUnspecified = true;
+                        options.DefaultApiVersion = version;
+                        options.ApiVersionReader = new HeaderApiVersionReader();
+                    })
+                .AddVersionedApiExplorer();
+        }
+
+        public static IMvcBuilder AddCustomControllers<TStartup>(this IServiceCollection services)
+        {
+            return services.AddControllers(
+                    options =>
+                    {
+                        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
+                        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
+                    })
+                .AddNewtonsoftJson(
+                    options =>
+                    {
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    })
+                .AddFluentValidation(
+                    config =>
+                    {
+                        config.RegisterValidatorsFromAssemblyContaining<TStartup>();
+                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
+                    });
+        }
+
+        public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services)
+        {
+            var provider = services.BuildServiceProvider();
+
+            var environment = provider.GetRequiredService<IWebHostEnvironment>();
+
+            return services.AddProblemDetails(
                 options =>
                 {
-                    options.EnableAnnotations(true);
+                    // Don't include exception details in a production environment.
+                    options.IncludeExceptionDetails = context => !environment.IsProduction();
 
-                    options.DescribeAllEnumerationsAsStrings();
+                    // This will map NotImplementedException to the 501 Not Implemented status code.
+                    options.Map<NotImplementedException>(exception => new ExceptionProblemDetails(exception, StatusCodes.Status501NotImplemented));
 
-                    options.OperationFilter<SecurityRequirementsOperationFilter>(
-                        new SwaggerOperationOptions(
-                            Scopes.IdentityApi,
-                            Scopes.PaymentApi,
-                            Scopes.CashierApi,
-                            Scopes.NotificationsApi,
-                            Scopes.ChallengesApi,
-                            Scopes.GamesApi,
-                            Scopes.ClansApi));
+                    // This will map HttpRequestException to the 503 Service Unavailable status code.
+                    options.Map<HttpRequestException>(exception => new ExceptionProblemDetails(exception, StatusCodes.Status503ServiceUnavailable));
 
-                    //options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                    //{
-                    //    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    //    Name = "Authorization",
-                    //    In = ParameterLocation.Header,
-                    //    Type = SecuritySchemeType.ApiKey
-                    //});
-                },
-                scopes);
+                    // Because exceptions are handled polymorphically, this will act as a "catch all" mapping, which is why it's added last.
+                    // If an exception other than NotImplementedException and HttpRequestException is thrown, this will handle it.
+                    options.Map<Exception>(exception => new ExceptionProblemDetails(exception, StatusCodes.Status500InternalServerError));
+                });
         }
     }
 }

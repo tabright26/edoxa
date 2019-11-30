@@ -6,6 +6,8 @@
 
 using System;
 
+using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +16,7 @@ using Serilog;
 
 namespace eDoxa.Web.Status
 {
-    public static class Program
+    public sealed class Program
     {
         public static int Main(string[] args)
         {
@@ -49,18 +51,7 @@ namespace eDoxa.Web.Status
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
                 .ConfigureServices(services => services.AddApplicationInsightsTelemetry())
-                .UseSerilog(
-                    (context, config) =>
-                    {
-                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
-
-                        config.MinimumLevel.Verbose()
-                            .Enrich.WithProperty("Application", typeof(Program).Namespace)
-                            .Enrich.FromLogContext()
-                            .WriteTo.Console()
-                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                            .ReadFrom.Configuration(context.Configuration);
-                    });
+                .UseCustomSerilog<Program>();
         }
     }
 }

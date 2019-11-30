@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -24,6 +23,6 @@ namespace eDoxa.Challenges.Api.IntegrationEvents
         [JsonProperty]
         public Game Game { get; }
 
-        public string Name => IntegrationEventNames.ChallengesSynchronized;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.ChallengesSynchronized;
     }
 }

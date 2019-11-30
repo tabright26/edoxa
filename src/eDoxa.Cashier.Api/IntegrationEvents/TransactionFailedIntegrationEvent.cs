@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -24,6 +23,6 @@ namespace eDoxa.Cashier.Api.IntegrationEvents
         [JsonProperty]
         public TransactionId TransactionId { get; }
 
-        public string Name => IntegrationEventNames.TransactionFailed;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.TransactionFailed;
     }
 }

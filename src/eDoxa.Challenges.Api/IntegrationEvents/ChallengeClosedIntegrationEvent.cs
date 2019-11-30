@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -24,6 +23,6 @@ namespace eDoxa.Challenges.Api.IntegrationEvents
         [JsonProperty]
         public IDictionary<UserId, decimal?> Scoreboard { get; }
 
-        public string Name => IntegrationEventNames.ChallengeClosed;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.ChallengeClosed;
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,7 +7,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Net.Mime;
 using System.Reflection;
 
 using Autofac;
@@ -21,18 +20,20 @@ using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
-using FluentValidation.AspNetCore;
 
-using HealthChecks.UI.Client;
+using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -40,18 +41,10 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -70,16 +63,13 @@ namespace eDoxa.Cashier.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<CashierAppSettings>(CashierApi);
         }
 
         public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment HostingEnvironment { get; }
 
         private CashierAppSettings AppSettings { get; }
 
@@ -90,7 +80,7 @@ namespace eDoxa.Cashier.Api
             services.Configure<BundlesOptions>(Configuration.GetSection("Bundles"));
 
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
@@ -106,46 +96,17 @@ namespace eDoxa.Cashier.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
-            services.AddCors(
-                options =>
-                {
-                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
-                });
+            services.AddCustomCors();
 
-            services.AddControllers(
-                    options =>
-                    {
-                        options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
-                        options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
-                    })
-                .AddNewtonsoftJson(
-                    options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    })
-                .AddDevTools<CashierDbContextSeeder, CashierDbContextCleaner>()
-                .AddFluentValidation(
-                    config =>
-                    {
-                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
-                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    });
+            services.AddCustomProblemDetails();
 
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.ReportApiVersions = true;
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader();
-                });
+            services.AddCustomControllers<Startup>().AddDevTools<CashierDbContextSeeder, CashierDbContextCleaner>();
 
-            services.AddVersionedApiExplorer();
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(CashierDbContext)));
+            services.AddAutoMapper(typeof(Startup), typeof(CashierDbContext));
 
-            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
+            services.AddMediatR(typeof(Startup));
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
@@ -171,18 +132,14 @@ namespace eDoxa.Cashier.Api
             builder.RegisterModule<CashierModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            subscriber.UseIntegrationEventSubscriptions();
+            application.UseProblemDetails();
 
-            application.UseCustomExceptionHandler();
-
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
-
-            application.UseStaticFiles();
+            application.UseCustomPathBase();
 
             application.UseRouting();
-            application.UseCors("default");
+            application.UseCustomCors();
 
             application.UseAuthentication();
             application.UseAuthorization();
@@ -194,23 +151,12 @@ namespace eDoxa.Cashier.Api
 
                     endpoints.MapConfigurationRoute<CashierAppSettings>(AppSettings.ApiResource);
 
-                    endpoints.MapHealthChecks(
-                        "/liveness",
-                        new HealthCheckOptions
-                        {
-                            Predicate = registration => registration.Name.Contains("liveness")
-                        });
-
-                    endpoints.MapHealthChecks(
-                        "/health",
-                        new HealthCheckOptions
-                        {
-                            Predicate = _ => true,
-                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                        });
+                    endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(AppSettings);
+
+            subscriber.UseIntegrationEventSubscriptions();
         }
     }
 }

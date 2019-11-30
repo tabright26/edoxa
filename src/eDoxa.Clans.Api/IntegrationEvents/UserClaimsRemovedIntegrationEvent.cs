@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
@@ -30,6 +29,6 @@ namespace eDoxa.Clans.Api.IntegrationEvents
         public Claims Claims { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.UserClaimsRemoved;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.UserClaimsRemoved;
     }
 }

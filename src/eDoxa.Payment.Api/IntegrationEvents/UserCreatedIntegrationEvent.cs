@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -33,6 +32,6 @@ namespace eDoxa.Payment.Api.IntegrationEvents
         public Country Country { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.UserCreated;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.UserCreated;
     }
 }

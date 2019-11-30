@@ -26,6 +26,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.0.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.0.601" />
     <PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" Version="5.5.0" />
     <PackageReference Include="StackExchange.Redis.Extensions.Newtonsoft" Version="5.5.0" />
   </ItemGroup>

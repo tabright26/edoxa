@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
-using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentValidation.Results;

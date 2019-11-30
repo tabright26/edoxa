@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;

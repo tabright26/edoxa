@@ -8,21 +8,21 @@ using System.Collections.Generic;
 
 using eDoxa.Gateway.Extensions;
 using eDoxa.Gateway.Infrastructure;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
+using eDoxa.Seedwork.Security.Cors.Extensions;
 
-using HealthChecks.UI.Client;
+using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.Models;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Microsoft.Extensions.Hosting;
 
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
@@ -31,7 +31,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Gateway
 {
-    public class Startup
+    public sealed class Startup
     {
         static Startup()
         {
@@ -54,7 +54,7 @@ namespace eDoxa.Gateway
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
                 .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
                 .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppNames.PaymentApi)
@@ -64,21 +64,9 @@ namespace eDoxa.Gateway
                 .AddUrlGroup(AppSettings.Endpoints.ClansUrl, AppNames.ClansApi)
                 .AddUrlGroup(AppSettings.Endpoints.ChallengesWebAggregatorUrl, AppNames.ChallengesWebAggregator);
 
-            services.AddCors(
-                options =>
-                {
-                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
-                }
-            );
+            services.AddCustomCors();
 
-            //TODO: Add production cors policy.
-
-            //options.AddPolicy("AllowSubdomain",
-            //    builder =>
-            //    {
-            //        builder.WithOrigins("https://*.example.com")
-            //            .SetIsOriginAllowedToAllowWildcardSubdomains();
-            //    });
+            services.AddProblemDetails();
 
             services.AddAuthentication(
                 AppSettings,
@@ -100,15 +88,12 @@ namespace eDoxa.Gateway
 
         public void Configure(IApplicationBuilder application)
         {
-            if (HostingEnvironment.IsDevelopment())
-            {
-                application.UseDeveloperExceptionPage();
-            }
+            application.UseProblemDetails();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+            application.UseCustomPathBase();
 
             application.UseRouting();
-            application.UseCors("default");
+            application.UseCustomCors();
 
             //application.UseHttpsRedirection(); // TODO: To verify.
             //application.UseForwardedHeaders(); // TODO: To verify.
@@ -116,20 +101,7 @@ namespace eDoxa.Gateway
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapHealthChecks(
-                        "/liveness",
-                        new HealthCheckOptions
-                        {
-                            Predicate = registration => registration.Name.Contains("liveness")
-                        });
-
-                    endpoints.MapHealthChecks(
-                        "/health",
-                        new HealthCheckOptions
-                        {
-                            Predicate = _ => true,
-                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                        });
+                    endpoints.MapCustomHealthChecks();
                 });
 
             application.UseOcelot().Wait();

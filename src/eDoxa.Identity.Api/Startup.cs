@@ -23,19 +23,19 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.DataProtection.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
-
-using HealthChecks.UI.Client;
 
 using IdentityModel;
 
@@ -47,17 +47,14 @@ using MediatR;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
@@ -115,13 +112,13 @@ namespace eDoxa.Identity.Api
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
 
-            services.AddDataProtection(Configuration, AppNames.IdentityApi);
+            services.AddCustomDataProtection(Configuration, AppNames.IdentityApi);
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
@@ -265,10 +262,8 @@ namespace eDoxa.Identity.Api
             builder.RegisterModule<IdentityModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            subscriber.UseIntegrationEventSubscriptions();
-
             application.UseForwardedHeaders();
 
             if (HostingEnvironment.IsDevelopment())
@@ -282,7 +277,7 @@ namespace eDoxa.Identity.Api
                 application.UseHsts();
             }
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+            application.UseCustomPathBase();
 
             application.UseHttpsRedirection();
             application.UseStaticFiles();
@@ -302,23 +297,12 @@ namespace eDoxa.Identity.Api
 
                     endpoints.MapConfigurationRoute<IdentityAppSettings>(AppSettings.ApiResource);
 
-                    endpoints.MapHealthChecks(
-                        "/liveness",
-                        new HealthCheckOptions
-                        {
-                            Predicate = registration => registration.Name.Contains("liveness")
-                        });
-
-                    endpoints.MapHealthChecks(
-                        "/health",
-                        new HealthCheckOptions
-                        {
-                            Predicate = _ => true,
-                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                        });
+                    endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(AppSettings);
+
+            subscriber.UseIntegrationEventSubscriptions();
         }
     }
 }

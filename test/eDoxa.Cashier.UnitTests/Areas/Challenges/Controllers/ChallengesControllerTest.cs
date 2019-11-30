@@ -17,7 +17,7 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application.Validations.Extensions;
+using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 
 using FluentAssertions;
