@@ -50,7 +50,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var result = await controller.GetAsync();
 
             // Assert
-            result.Should().BeOfType<NoContentResult>();
+            result.Should().BeOfType<NotFoundObjectResult>();
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 

@@ -8,8 +8,6 @@ using System;
 using System.Net.Http;
 using System.Net.Mime;
 
-using FluentValidation.AspNetCore;
-
 using Hellang.Middleware.ProblemDetails;
 
 using Microsoft.AspNetCore.Hosting;
@@ -18,9 +16,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {
@@ -47,18 +42,8 @@ namespace eDoxa.Seedwork.Application.Extensions
                         options.Filters.Add(new ConsumesAttribute(MediaTypeNames.Application.Json));
                         options.Filters.Add(new ProducesAttribute(MediaTypeNames.Application.Json));
                     })
-                .AddNewtonsoftJson(
-                    options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    })
-                .AddFluentValidation(
-                    config =>
-                    {
-                        config.RegisterValidatorsFromAssemblyContaining<TStartup>();
-                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    });
+                .AddCustomNewtonsoftJson()
+                .AddCustomFluentValidation<TStartup>();
         }
 
         public static IServiceCollection AddCustomProblemDetails(this IServiceCollection services)

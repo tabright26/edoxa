@@ -58,6 +58,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
         }
 
         [HttpPost]
+        [Consumes("multipart/form-data")]
         [SwaggerOperation("Upload clan logo.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]

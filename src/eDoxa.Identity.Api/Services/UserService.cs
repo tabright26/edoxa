@@ -30,7 +30,7 @@ namespace eDoxa.Identity.Api.Services
             IEnumerable<IUserValidator<User>> userValidators,
             IEnumerable<IPasswordValidator<User>> passwordValidators,
             ILookupNormalizer keyNormalizer,
-            CustomIdentityErrorDescriber errors,
+            IdentityErrorDescriber errors,
             IServiceProvider services,
             ILogger<UserService> logger,
             IServiceBusPublisher publisher
@@ -50,9 +50,7 @@ namespace eDoxa.Identity.Api.Services
             Repository = repository;
         }
 
-        private new CustomIdentityErrorDescriber ErrorDescriber { get; }
-
-        public new UserRepository Repository { get; }
+        public UserRepository Repository { get; }
 
         public override async Task<IdentityResult> SetEmailAsync(User user, string email)
         {

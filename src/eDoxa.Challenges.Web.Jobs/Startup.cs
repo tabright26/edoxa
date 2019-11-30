@@ -10,6 +10,7 @@ using Autofac;
 
 using eDoxa.Challenges.Web.Jobs.Infrastructure;
 using eDoxa.Challenges.Web.Jobs.Services;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Hangfire.Extensions;
 using eDoxa.Seedwork.Domain.Miscs;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -82,6 +83,8 @@ namespace eDoxa.Challenges.Web.Jobs
 
         public void Configure(IApplicationBuilder application)
         {
+            application.UseCustomPathBase();
+
             application.UseRouting();
 
             application.UseEndpoints(endpoints => endpoints.MapCustomHealthChecks());

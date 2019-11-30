@@ -147,7 +147,7 @@ namespace eDoxa.Clans.Api
                 endpoints =>
                 {
                     endpoints.MapControllers();
-
+                    
                     endpoints.MapConfigurationRoute<ClansAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
