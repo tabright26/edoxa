@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Nullable>disable</Nullable>
-    <IsPackable>false</IsPackable>
     <AssemblyName>eDoxa.Clans.UnitTests</AssemblyName>
     <RootNamespace>eDoxa.Clans.UnitTests</RootNamespace>
+    <Nullable>Disable</Nullable>
+    <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>

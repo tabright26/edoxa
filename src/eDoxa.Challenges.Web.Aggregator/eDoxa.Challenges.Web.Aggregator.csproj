@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <Nullable>disable</Nullable>
     <AssemblyName>eDoxa.Challenges.Web.Aggregator</AssemblyName>
     <RootNamespace>eDoxa.Challenges.Web.Aggregator</RootNamespace>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>

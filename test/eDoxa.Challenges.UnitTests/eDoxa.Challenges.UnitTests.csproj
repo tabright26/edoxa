@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Challenges.UnitTests</AssemblyName>
     <RootNamespace>eDoxa.Challenges.UnitTests</RootNamespace>
-    <Nullable>disable</Nullable>
+    <Nullable>Disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

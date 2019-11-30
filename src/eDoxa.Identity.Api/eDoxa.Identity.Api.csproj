@@ -5,8 +5,6 @@
     <AssemblyName>eDoxa.Identity.Api</AssemblyName>
     <RootNamespace>eDoxa.Identity.Api</RootNamespace>
     <Nullable>Enable</Nullable>
-    <ApplicationInsightsResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsResourceId>
-    <ApplicationInsightsAnnotationResourceId>/subscriptions/94f2e2f6-0cc0-40ed-ab0a-96f8090b7e66/resourcegroups/edoxa-dev-rg/providers/microsoft.insights/components/edoxa-dev</ApplicationInsightsAnnotationResourceId>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -38,10 +36,6 @@
     <None Include="..\..\data\users.roles.csv" Link="Setup/users.roles.csv" CopyToOutputDirectory="Always" />
     <None Include="..\..\data\users.claims.csv" Link="Setup/users.claims.csv" CopyToOutputDirectory="Always" />
     <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services" />
   </ItemGroup>
 
 </Project>
