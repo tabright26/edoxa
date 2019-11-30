@@ -1,32 +1,30 @@
 ﻿// Filename: ClanLogoPostRequest.cs
-// Date Created: 2019-09-30
-//
+// Date Created: 2019-11-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
-
 using Microsoft.AspNetCore.Http;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Clans.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class ClanLogoPostRequest
     {
+        [JsonConstructor]
         public ClanLogoPostRequest(IFormFile logo)
         {
             Logo = logo;
         }
 
-#nullable disable
-        public ClanLogoPostRequest() //Todo: Why is this never used.
+        public ClanLogoPostRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "logo")]
-
+        [JsonProperty("logo")]
         public IFormFile Logo { get; private set; }
     }
 }

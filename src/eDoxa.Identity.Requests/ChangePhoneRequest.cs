@@ -1,22 +1,28 @@
-﻿// Filename: PhonePostRequest.cs
-// Date Created: --
+﻿// Filename: ChangePhoneRequest.cs
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class ChangePhoneRequest
     {
+        [JsonConstructor]
         public ChangePhoneRequest(string number)
         {
             Number = number;
         }
 
-        [DataMember(Name = "number")]
-        public string Number { get; }
+        public ChangePhoneRequest()
+        {
+            // Required by Fluent Validation.
+        }
+
+        [JsonProperty("number")]
+        public string Number { get; private set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: StripeCustomerResponse.cs
-// Date Created: 2019-10-23
+// Date Created: 2019-11-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

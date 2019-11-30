@@ -1,22 +1,28 @@
 ﻿// Filename: StripeBankAccountPostRequest.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-11-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Payment.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class StripeBankAccountPostRequest
     {
+        [JsonConstructor]
         public StripeBankAccountPostRequest(string token)
         {
             Token = token;
         }
 
-        [DataMember(Name = "token")]
-        public string Token { get; }
+        public StripeBankAccountPostRequest()
+        {
+            // Required by Fluent Validation.
+        }
+
+        [JsonProperty("token")]
+        public string Token { get; private set; }
     }
 }

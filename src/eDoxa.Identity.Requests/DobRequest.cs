@@ -1,16 +1,17 @@
 ﻿// Filename: DobRequest.cs
-// Date Created: 2019-10-17
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class DobRequest
     {
+        [JsonConstructor]
         public DobRequest(int year, int month, int day)
         {
             Year = year;
@@ -18,13 +19,18 @@ namespace eDoxa.Identity.Requests
             Day = day;
         }
 
-        [DataMember(Name = "year")]
-        public int Year { get; }
+        public DobRequest()
+        {
+            // Required by Fluent Validation.
+        }
 
-        [DataMember(Name = "month")]
-        public int Month { get; }
+        [JsonProperty("year")]
+        public int Year { get; private set; }
 
-        [DataMember(Name = "day")]
-        public int Day { get; }
+        [JsonProperty("month")]
+        public int Month { get; private set; }
+
+        [JsonProperty("day")]
+        public int Day { get; private set; }
     }
 }

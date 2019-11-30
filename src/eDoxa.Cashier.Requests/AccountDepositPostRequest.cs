@@ -1,33 +1,32 @@
 ﻿// Filename: AccountDepositPostRequest.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-11-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Cashier.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class AccountDepositPostRequest
     {
+        [JsonConstructor]
         public AccountDepositPostRequest(string currency, decimal amount)
         {
             Currency = currency;
             Amount = amount;
         }
 
-#nullable disable
         public AccountDepositPostRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "currency")]
+        [JsonProperty("currency")]
         public string Currency { get; private set; }
 
-        [DataMember(Name = "amount")]
+        [JsonProperty("amount")]
         public decimal Amount { get; private set; }
     }
 }

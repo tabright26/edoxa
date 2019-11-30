@@ -1,35 +1,32 @@
-﻿// Filename: AccountDepositPostRequest.cs
-// Date Created: 2019-08-27
-//
+﻿// Filename: DivisionPostRequest.cs
+// Date Created: 2019-11-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Clans.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class DivisionPostRequest
     {
+        [JsonConstructor]
         public DivisionPostRequest(string name, string description)
         {
             Name = name;
             Description = description;
         }
 
-#nullable disable
         public DivisionPostRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; private set; }
 
-        [DataMember(Name = "description")]
+        [JsonProperty("description")]
         public string Description { get; private set; }
-
     }
 }
-

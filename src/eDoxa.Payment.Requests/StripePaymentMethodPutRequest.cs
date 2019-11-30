@@ -1,26 +1,32 @@
 ﻿// Filename: StripePaymentMethodPutRequest.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-11-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Payment.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class StripePaymentMethodPutRequest
     {
+        [JsonConstructor]
         public StripePaymentMethodPutRequest(long expMonth, long expYear)
         {
             ExpMonth = expMonth;
             ExpYear = expYear;
         }
 
-        [DataMember(Name = "expMonth")]
-        public long ExpMonth { get; }
+        public StripePaymentMethodPutRequest()
+        {
+            // Required by Fluent Validation.
+        }
 
-        [DataMember(Name = "expYear")]
-        public long ExpYear { get; }
+        [JsonProperty("expMonth")]
+        public long ExpMonth { get; private set; }
+
+        [JsonProperty("expYear")]
+        public long ExpYear { get; private set; }
     }
 }

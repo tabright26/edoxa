@@ -1,35 +1,32 @@
-﻿// Filename: AccountDepositPostRequest.cs
-// Date Created: 2019-08-27
-//
+﻿// Filename: ClanPostRequest.cs
+// Date Created: 2019-11-30
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Clans.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class ClanPostRequest
     {
-        public ClanPostRequest(string name, string summary)
+        [JsonConstructor]
+        public ClanPostRequest(string name, string summary = null)
         {
             Name = name;
             Summary = summary;
         }
 
-#nullable disable
         public ClanPostRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; private set; }
 
-        [DataMember(Name = "summary", IsRequired = false)]
-        public string? Summary { get; private set; }
-
+        [JsonProperty("summary", Required = Required.AllowNull)]
+        public string Summary { get; private set; }
     }
 }
-

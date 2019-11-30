@@ -1,22 +1,28 @@
 ﻿// Filename: StripePaymentMethodAttachPostRequest.cs
-// Date Created: 2019-10-22
+// Date Created: 2019-11-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Payment.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class StripePaymentMethodAttachPostRequest
     {
+        [JsonConstructor]
         public StripePaymentMethodAttachPostRequest(bool defaultPaymentMethod = false)
         {
             DefaultPaymentMethod = defaultPaymentMethod;
         }
 
-        [DataMember(Name = "defaultPaymentMethod", IsRequired = false)]
-        public bool DefaultPaymentMethod { get; }
+        public StripePaymentMethodAttachPostRequest()
+        {
+            // Required by Fluent Validation.
+        }
+
+        [JsonProperty("defaultPaymentMethod", Required = Required.AllowNull)]
+        public bool DefaultPaymentMethod { get; private set; }
     }
 }

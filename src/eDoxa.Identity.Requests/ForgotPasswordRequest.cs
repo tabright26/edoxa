@@ -1,29 +1,28 @@
-﻿// Filename: PasswordForgotPostRequest.cs
-// Date Created: 2019-08-29
+﻿// Filename: ForgotPasswordRequest.cs
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Requests
 {
-    [DataContract]
+    [JsonObject]
     public class ForgotPasswordRequest
     {
+        [JsonConstructor]
         public ForgotPasswordRequest(string email)
         {
             Email = email;
         }
 
-#nullable disable
         public ForgotPasswordRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "email")]
+        [JsonProperty("email")]
         public string Email { get; private set; }
     }
 }

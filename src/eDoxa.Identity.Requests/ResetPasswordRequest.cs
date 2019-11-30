@@ -1,16 +1,17 @@
-﻿// Filename: PasswordResetPostRequest.cs
-// Date Created: 2019-08-29
+﻿// Filename: ResetPasswordRequest.cs
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class ResetPasswordRequest
     {
+        [JsonConstructor]
         public ResetPasswordRequest(string email, string password, string code)
         {
             Email = email;
@@ -18,20 +19,18 @@ namespace eDoxa.Identity.Requests
             Code = code;
         }
 
-#nullable disable
         public ResetPasswordRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "email")]
+        [JsonProperty("email")]
         public string Email { get; private set; }
 
-        [DataMember(Name = "password")]
+        [JsonProperty("password")]
         public string Password { get; private set; }
 
-        [DataMember(Name = "code")]
+        [JsonProperty("code")]
         public string Code { get; private set; }
     }
 }

@@ -1,18 +1,19 @@
-﻿// Filename: InformationsPostRequest.cs
-// Date Created: 2019-10-06
+﻿// Filename: CreateProfileRequest.cs
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 #nullable disable
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class CreateProfileRequest
     {
+        [JsonConstructor]
         public CreateProfileRequest(
             string firstName,
             string lastName,
@@ -33,16 +34,16 @@ namespace eDoxa.Identity.Requests
             // Required by Fluent Validation.
         }
 
-        [DataMember(Name = "firstName")]
+        [JsonProperty("firstName")]
         public string FirstName { get; private set; }
 
-        [DataMember(Name = "lastName")]
+        [JsonProperty("lastName")]
         public string LastName { get; private set; }
 
-        [DataMember(Name = "gender")]
+        [JsonProperty("gender")]
         public string Gender { get; private set; }
 
-        [DataMember(Name = "dob")]
+        [JsonProperty("dob")]
         public DobRequest Dob { get; private set; }
     }
 }

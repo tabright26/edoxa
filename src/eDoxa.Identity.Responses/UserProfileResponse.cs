@@ -1,5 +1,5 @@
-﻿// Filename: UserInformationsResponse.cs
-// Date Created: 2019-11-07
+﻿// Filename: UserProfileResponse.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.

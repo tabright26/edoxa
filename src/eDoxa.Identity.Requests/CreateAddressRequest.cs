@@ -1,23 +1,24 @@
-﻿// Filename: AddressPostRequest.cs
-// Date Created: 2019-08-12
+﻿// Filename: CreateAddressRequest.cs
+// Date Created: 2019-11-27
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Identity.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class CreateAddressRequest
     {
+        [JsonConstructor]
         public CreateAddressRequest(
             string country,
             string line1,
-            string? line2,
+            string line2,
             string city,
-            string? state,
-            string? postalCode
+            string state,
+            string postalCode
         )
         {
             Country = country;
@@ -28,29 +29,27 @@ namespace eDoxa.Identity.Requests
             PostalCode = postalCode;
         }
 
-#nullable disable
         public CreateAddressRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "country")]
+        [JsonProperty("country")]
         public string Country { get; private set; }
 
-        [DataMember(Name = "line1")]
+        [JsonProperty("line1")]
         public string Line1 { get; private set; }
 
-        [DataMember(Name = "line2", IsRequired = false)]
-        public string? Line2 { get; private set; }
+        [JsonProperty("line2", Required = Required.AllowNull)]
+        public string Line2 { get; private set; }
 
-        [DataMember(Name = "city")]
+        [JsonProperty("city")]
         public string City { get; private set; }
 
-        [DataMember(Name = "state", IsRequired = false)]
-        public string? State { get; private set; }
+        [JsonProperty("state", Required = Required.AllowNull)]
+        public string State { get; private set; }
 
-        [DataMember(Name = "postalCode", IsRequired = false)]
-        public string? PostalCode { get; private set; }
+        [JsonProperty("postalCode", Required = Required.AllowNull)]
+        public string PostalCode { get; private set; }
     }
 }
