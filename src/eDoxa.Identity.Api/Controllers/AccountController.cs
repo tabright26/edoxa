@@ -8,10 +8,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityModel;
@@ -31,20 +30,19 @@ using Microsoft.Extensions.Options;
 namespace eDoxa.Identity.Api.Controllers
 {
     [AllowAnonymous]
-    [SecurityHeaders]
     public class AccountController : Controller
     {
         private readonly IClientStore _clientStore;
         private readonly IEventService _events;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
-        private readonly SignInManager _signInManager;
-        private readonly UserManager _userManager;
+        private readonly ISignInService _signInService;
+        private readonly IUserService _userService;
         private readonly IdentityAppSettings _appSettings;
 
         public AccountController(
-            UserManager userManager,
-            SignInManager signInManager,
+            IUserService userService,
+            ISignInService signInService,
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
@@ -52,8 +50,8 @@ namespace eDoxa.Identity.Api.Controllers
             IOptionsMonitor<IdentityAppSettings> options
         )
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _signInService = signInService;
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
@@ -130,11 +128,11 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+                var user = await _userService.FindByEmailAsync(model.Email);
 
                 if (user != null)
                 {
-                    var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
+                    var result = await _signInService.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
 
                     if (result.Succeeded)
                     {
@@ -225,7 +223,7 @@ namespace eDoxa.Identity.Api.Controllers
             if (User?.Identity.IsAuthenticated == true)
             {
                 // delete local authentication cookie
-                await _signInManager.SignOutAsync();
+                await _signInService.SignOutAsync();
 
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));

@@ -8,7 +8,7 @@ using System;
 
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 

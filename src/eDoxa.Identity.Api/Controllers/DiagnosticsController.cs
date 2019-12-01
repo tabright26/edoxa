@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 
 using Microsoft.AspNetCore.Authentication;
@@ -16,7 +15,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace eDoxa.Identity.Api.Controllers
 {
     [Authorize]
-    [SecurityHeaders]
     public class DiagnosticsController : Controller
     {
         public async Task<IActionResult> Index()

@@ -7,7 +7,7 @@
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 

@@ -8,9 +8,4 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
-using System.Runtime.CompilerServices;
-
-// Required by Moq.
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-
-[assembly: InternalsVisibleTo("eDoxa.FunctionalTests")]
+[assembly: Microsoft.AspNetCore.Mvc.ApiController]

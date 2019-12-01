@@ -9,13 +9,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -40,17 +40,17 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User();
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
 
             // Assert
-            result.Should().BeOfType<NoContentResult>();
+            result.Should().BeOfType<NotFoundObjectResult>();
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -65,16 +65,16 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var user = new User
             {
-                Informations = new UserInformations("Test", "Test", Gender.Male, new Dob(dob))
+                Profile = new UserProfile("Test", "Test", Gender.Male, new Dob(dob))
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetInformationsAsync(It.IsAny<User>())).ReturnsAsync(user.Informations).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetInformationsAsync(It.IsAny<User>())).ReturnsAsync(user.Profile).Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -82,7 +82,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<UserInformationsResponse>(user.Informations));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<UserProfileResponse>(user.Profile));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -146,7 +146,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Arrange
             var user = new User();
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
@@ -162,14 +162,14 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
             var result = await controller.PostAsync(
-                new InformationsPostRequest(
+                new CreateProfileRequest(
                     "Bob",
                     "Bob",
-                    Gender.Male,
+                    Gender.Male.Name,
                     2000,
                     1,
                     1));
@@ -243,23 +243,23 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var user = new User
             {
-                Informations = new UserInformations("FirstName", "LastName", Gender.Male, new Dob(dob))
+                Profile = new UserProfile("FirstName", "LastName", Gender.Male, new Dob(dob))
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.GetInformationsAsync(It.IsAny<User>())).ReturnsAsync(user.Informations).Verifiable();
+            mockUserManager.Setup(userManager => userManager.GetInformationsAsync(It.IsAny<User>())).ReturnsAsync(user.Profile).Verifiable();
 
             mockUserManager.Setup(userManager => userManager.UpdateInformationsAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new InformationsController(mockUserManager.Object, TestMapper);
+            var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
-            var result = await controller.PutAsync(new InformationsPutRequest("Bob"));
+            var result = await controller.PutAsync(new UpdateProfileRequest("Bob"));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

@@ -11,9 +11,9 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
                 name: "Division",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ClanId = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    ClanId = table.Column<Guid>(),
+                    Name = table.Column<string>(),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

@@ -9,7 +9,7 @@ using System;
 using Bogus;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers.DataSets
         {
             if (game == Game.LeagueOfLegends)
             {
-                return Seedwork.Domain.Miscs.PlayerId.Parse(Faker.Random.Replace("*******_******************_*_*****************"));
+                return Seedwork.Domain.Misc.PlayerId.Parse(Faker.Random.Replace("*******_******************_*_*****************"));
             }
 
             throw new ArgumentNullException(nameof(game));

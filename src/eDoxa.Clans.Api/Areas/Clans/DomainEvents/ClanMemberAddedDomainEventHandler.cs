@@ -12,7 +12,7 @@ using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Api.IntegrationEvents.Extensions;
 using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;

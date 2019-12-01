@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-10-26
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,17 +19,21 @@ using eDoxa.Games.Infrastructure;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Infrastructure.Redis.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
+using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
-using FluentValidation.AspNetCore;
 
-using HealthChecks.UI.Client;
+using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -37,18 +41,10 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -67,18 +63,15 @@ namespace eDoxa.Games.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<GamesAppSettings>(GamesApi);
         }
 
         private GamesAppSettings AppSettings { get; }
 
         public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -89,7 +82,7 @@ namespace eDoxa.Games.Api
             services.Configure<LeagueOfLegendsOptions>(Configuration.GetSection("Games:LeagueOfLegends"));
 
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
                 .AddRedis(Configuration)
@@ -107,44 +100,19 @@ namespace eDoxa.Games.Api
 
             services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
 
-            services.AddRedisCache(Configuration);
+            services.AddCustomRedis(Configuration);
 
-            services.AddCors(
-                options =>
-                {
-                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
-                });
+            services.AddCustomCors();
 
-            services.AddControllers()
-                .AddNewtonsoftJson(
-                    options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    })
-                .AddDevTools<GamesDbContextSeeder, GamesDbContextCleaner>()
-                .AddFluentValidation(
-                    config =>
-                    {
-                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
-                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    });
+            services.AddCustomProblemDetails();
 
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.ReportApiVersions = true;
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader();
-                });
+            services.AddCustomControllers<Startup>().AddDevTools<GamesDbContextSeeder, GamesDbContextCleaner>();
 
-            
-            services.AddVersionedApiExplorer();
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(GamesDbContext)));
+            services.AddAutoMapper(typeof(Startup), typeof(GamesDbContext));
 
-            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
+            services.AddMediatR(typeof(Startup));
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
@@ -156,9 +124,7 @@ namespace eDoxa.Games.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddAuthorization();
-
-            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -168,14 +134,14 @@ namespace eDoxa.Games.Api
             builder.RegisterModule<GamesModule>();
         }
 
-        public void Configure(IApplicationBuilder application , IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application)
         {
-            application.UseCustomExceptionHandler();
+            application.UseProblemDetails();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+            application.UseCustomPathBase();
 
             application.UseRouting();
-            application.UseCors("default");
+            application.UseCustomCors();
 
             application.UseAuthentication();
             application.UseAuthorization();
@@ -185,23 +151,12 @@ namespace eDoxa.Games.Api
                 {
                     endpoints.MapControllers();
 
-                    endpoints.MapHealthChecks(
-                        "/liveness",
-                        new HealthCheckOptions
-                        {
-                            Predicate = registration => registration.Name.Contains("liveness")
-                        });
+                    endpoints.MapConfigurationRoute<GamesAppSettings>(AppSettings.ApiResource);
 
-                    endpoints.MapHealthChecks(
-                        "/health",
-                        new HealthCheckOptions
-                        {
-                            Predicate = _ => true,
-                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                        });
+                    endpoints.MapCustomHealthChecks();
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(AppSettings);
         }
     }
 }

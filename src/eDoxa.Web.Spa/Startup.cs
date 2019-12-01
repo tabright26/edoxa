@@ -1,29 +1,24 @@
 // Filename: Startup.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-// Copyright © 2019, Francis Quenneville
-// All rights reserved.
-// 
-// This file is subject to the terms and conditions defined in file 'LICENSE.md', which is part of
-// this source code package.
-
+using eDoxa.Seedwork.Application.DevTools.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
+using eDoxa.Seedwork.Security.DataProtection.Extensions;
+using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
+using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
-
-using HealthChecks.UI.Client;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Web.Spa
@@ -52,13 +47,15 @@ namespace eDoxa.Web.Spa
         {
             services.Configure<WebSpaAppSettings>(Configuration);
 
+            services.AddCustomForwardedHeaders();
+
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
                 .AddUrlGroup(AppSettings.ChallengesWebGatewayUrl, AppNames.ChallengesWebGateway);
 
-            services.AddDataProtection(Configuration, AppNames.WebSpa);
+            services.AddCustomDataProtection(Configuration, AppNames.WebSpa);
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 
@@ -67,17 +64,15 @@ namespace eDoxa.Web.Spa
 
         public void Configure(IApplicationBuilder application)
         {
-            if (HostingEnvironment.IsDevelopment())
-            {
-                application.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                application.UseHsts();
-            }
+            application.UseForwardedHeaders();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+            application.UseCustomMvcExceptionHandler();
 
+            application.UseCustomHsts();
+
+            application.UseCustomPathBase();
+
+            application.UseHttpsRedirection();
             application.UseStaticFiles();
             application.UseSpaStaticFiles();
 
@@ -86,20 +81,9 @@ namespace eDoxa.Web.Spa
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapHealthChecks(
-                        "/liveness",
-                        new HealthCheckOptions
-                        {
-                            Predicate = registration => registration.Name.Contains("liveness")
-                        });
+                    endpoints.MapConfigurationRoute<WebSpaAppSettings>();
 
-                    endpoints.MapHealthChecks(
-                        "/health",
-                        new HealthCheckOptions
-                        {
-                            Predicate = _ => true,
-                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                        });
+                    endpoints.MapCustomHealthChecks();
                 });
 
             application.UseSpa(

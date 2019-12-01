@@ -9,7 +9,10 @@ interface Props {
   position: number;
 }
 
-const ChallengeParticipantItem: FunctionComponent<Props> = ({ participant, position }) => {
+const ChallengeParticipantItem: FunctionComponent<Props> = ({
+  participant,
+  position
+}) => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
   return (
@@ -24,7 +27,11 @@ const ChallengeParticipantItem: FunctionComponent<Props> = ({ participant, posit
           >
             <Badge variant="primary">{position}</Badge>
           </div>
-          <div className="px-3 py-2">{participant.user ? participant.user.doxatag.name : "Data unavailable"}</div>
+          <div className="px-3 py-2">
+            {participant.user.doxatag
+              ? participant.user.doxatag.name
+              : "Data unavailable"}
+          </div>
           <div
             className="bg-primary px-3 py-2 text-center ml-auto"
             style={{

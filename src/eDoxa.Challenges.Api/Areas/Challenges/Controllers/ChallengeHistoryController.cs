@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeHistoryController.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@ using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Responses;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +22,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/challenges/history")]
     [ApiExplorerSettings(GroupName = "Challenge")]
@@ -35,13 +34,10 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             _challengeQuery = challengeQuery;
         }
 
-        /// <summary>
-        ///     Find the challenge history of a user.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Find the challenge history of a user.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)
         {
             var responses = await _challengeQuery.FetchUserChallengeHistoryResponsesAsync(game, state);

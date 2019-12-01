@@ -1,5 +1,5 @@
 ﻿// Filename: PhoneController.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-10-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 
 using IdentityServer4.AccessTokenValidation;
@@ -23,33 +23,31 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/phone")]
     [ApiExplorerSettings(GroupName = "Phone")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class PhoneController : ControllerBase
+    public sealed class PhoneController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public PhoneController(IUserManager userManager, IMapper mapper)
+        public PhoneController(IUserService userService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Find user's address book.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Find user's phone.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneResponse))]
-        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var phoneNumber = await _userService.GetPhoneNumberAsync(user);
 
             if (phoneNumber == null)
             {
@@ -59,17 +57,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.Ok(_mapper.Map<PhoneResponse>(user));
         }
 
-        /// <summary>
-        ///     Add user's address.
-        /// </summary>
         [HttpPost]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerOperation("Udpate user's phone.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] PhonePostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] ChangePhoneRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var result = await _userManager.SetPhoneNumberAsync(user, request.Number);
+            var result = await _userService.SetPhoneNumberAsync(user, request.Number);
 
             if (result.Succeeded)
             {

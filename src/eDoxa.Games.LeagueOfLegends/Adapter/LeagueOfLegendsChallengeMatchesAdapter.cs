@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Seedwork.Application.Dtos;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using RiotSharp.Misc;
 

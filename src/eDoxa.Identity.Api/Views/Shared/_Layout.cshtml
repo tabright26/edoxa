@@ -1,7 +1,7 @@
 ﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@using eDoxa.Identity.Api.Areas.Identity.Services
+@using eDoxa.Identity.Api.Services
 @using Microsoft.Extensions.Hosting
-@inject SignInManager SignInManager
+@inject ISignInService SignInService
 @inject IWebHostEnvironment HostingEnvironment
 <!DOCTYPE html>
 <html>
@@ -31,7 +31,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    @if (HostingEnvironment.IsDevelopment() && SignInManager.IsSignedIn(User) && !(ViewData["signed-out"] is bool))
+                    @if (HostingEnvironment.IsDevelopment() && SignInService.IsSignedIn(User) && !(ViewData["signed-out"] is bool))
                     {
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-link text-dark">

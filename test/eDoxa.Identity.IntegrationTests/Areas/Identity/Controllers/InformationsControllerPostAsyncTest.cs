@@ -9,12 +9,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -36,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(InformationsPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(CreateProfileRequest request)
         {
             return await _httpClient.PostAsJsonAsync("api/informations", request);
         }
@@ -48,7 +48,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.Informations = null;
+            user.Profile = null;
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -57,7 +57,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -66,10 +66,10 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             // Act
             using var response = await this.ExecuteAsync(
-                new InformationsPostRequest(
+                new CreateProfileRequest(
                     "Bob",
                     "Bob",
-                    Gender.Male,
+                    Gender.Male.Name,
                     2000,
                     1,
                     1));

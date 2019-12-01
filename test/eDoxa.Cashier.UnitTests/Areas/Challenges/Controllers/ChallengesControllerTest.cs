@@ -17,12 +17,10 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -172,7 +170,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
                         It.IsAny<PayoutEntries>(),
                         It.IsAny<EntryFee>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationFailure("test", "test error").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("test", "test error"))
                 .Verifiable();
 
             var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
@@ -214,7 +212,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Controllers
                         It.IsAny<PayoutEntries>(),
                         It.IsAny<EntryFee>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();

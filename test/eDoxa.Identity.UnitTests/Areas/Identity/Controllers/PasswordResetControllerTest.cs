@@ -8,9 +8,9 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 
@@ -36,7 +36,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
@@ -53,7 +53,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordResetController(mockUserManager.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", "code"));
+            var result = await controller.PostAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", "code"));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -72,7 +72,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
@@ -83,7 +83,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordResetController(mockUserManager.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", "code"));
+            var result = await controller.PostAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", "code"));
 
             // Assert
             result.Should().BeOfType<OkResult>();
@@ -97,7 +97,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         public async Task PostAsync_WhenUserNotFound_ShouldBeOkResult()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).Verifiable();
 
@@ -114,7 +114,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordResetController(mockUserManager.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", "code"));
+            var result = await controller.PostAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", "code"));
 
             // Assert
             result.Should().BeOfType<OkResult>();

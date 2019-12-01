@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Infrastructure.SqlServer;
 
 namespace eDoxa.Challenges.Infrastructure.Models
 {

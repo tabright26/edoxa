@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.DomainEvents.Handlers

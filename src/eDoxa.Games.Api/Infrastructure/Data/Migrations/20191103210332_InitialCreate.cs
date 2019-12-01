@@ -11,10 +11,10 @@ namespace eDoxa.Games.Api.Infrastructure.Data.Migrations
                 name: "Credential",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
-                    Game = table.Column<int>(nullable: false),
-                    PlayerId = table.Column<string>(nullable: false),
-                    Timestamp = table.Column<long>(nullable: false)
+                    UserId = table.Column<Guid>(),
+                    Game = table.Column<int>(),
+                    PlayerId = table.Column<string>(),
+                    Timestamp = table.Column<long>()
                 },
                 constraints: table =>
                 {

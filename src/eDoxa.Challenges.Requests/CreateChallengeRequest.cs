@@ -1,17 +1,19 @@
-﻿// Filename: ChallengePostRequest.cs
-// Date Created: 2019-11-07
-//
+﻿// Filename: CreateChallengeRequest.cs
+// Date Created: 2019-11-25
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Runtime.Serialization;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Requests
 {
-    [DataContract]
-    public sealed class     CreateChallengeRequest
+    [JsonObject]
+    public sealed class CreateChallengeRequest
     {
+        [JsonConstructor]
         public CreateChallengeRequest(
             Guid challengeId,
             string name,
@@ -29,29 +31,27 @@ namespace eDoxa.Challenges.Requests
             Duration = duration;
         }
 
-#nullable disable
         public CreateChallengeRequest()
         {
             // Required by Fluent Validation.
         }
-#nullable restore
 
-        [DataMember(Name = "challengeId")]
+        [JsonProperty("challengeId")]
         public Guid ChallengeId { get; private set; }
 
-        [DataMember(Name = "name")]
+        [JsonProperty("name")]
         public string Name { get; private set; }
 
-        [DataMember(Name = "game")]
+        [JsonProperty("game")]
         public string Game { get; private set; }
 
-        [DataMember(Name = "bestOf")]
+        [JsonProperty("bestOf")]
         public int BestOf { get; private set; }
 
-        [DataMember(Name = "entries")]
+        [JsonProperty("entries")]
         public int Entries { get; private set; }
 
-        [DataMember(Name = "duration")]
+        [JsonProperty("duration")]
         public int Duration { get; private set; }
     }
 }

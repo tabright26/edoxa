@@ -1,19 +1,27 @@
 ﻿// Filename: CreateTransactionRequest.cs
-// Date Created: 2019-11-08
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Cashier.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class CreateTransactionRequest
     {
-        public CreateTransactionRequest(Guid id, string type, string currency, decimal amount, IDictionary<string, string> metadata = null)
+        [JsonConstructor]
+        public CreateTransactionRequest(
+            Guid id,
+            string type,
+            string currency,
+            decimal amount,
+            IDictionary<string, string> metadata = null
+        )
         {
             Id = id;
             Type = type;
@@ -22,19 +30,24 @@ namespace eDoxa.Cashier.Requests
             Metadata = metadata ?? new Dictionary<string, string>();
         }
 
-        [DataMember(Name = "id")]
+        public CreateTransactionRequest()
+        {
+            // Required by Fluent Validation.
+        }
+
+        [JsonProperty("id")]
         public Guid Id { get; private set; }
 
-        [DataMember(Name = "type")]
+        [JsonProperty("type")]
         public string Type { get; private set; }
 
-        [DataMember(Name = "currency")]
+        [JsonProperty("currency")]
         public string Currency { get; private set; }
 
-        [DataMember(Name = "amount")]
+        [JsonProperty("amount")]
         public decimal Amount { get; private set; }
 
-        [DataMember(Name = "metadata")]
+        [JsonProperty("metadata")]
         public IDictionary<string, string> Metadata { get; private set; }
     }
 }

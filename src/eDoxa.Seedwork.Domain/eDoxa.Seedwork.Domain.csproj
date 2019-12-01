@@ -4,18 +4,14 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.Domain</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.Domain</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
-    <PackageReference Include="eDoxa.Specifications" Version="3.0.1" />
-    <PackageReference Include="eDoxa.Specifications.Abstractions" Version="3.0.1" />
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Collections.Immutable" Version="1.6.0" />
   </ItemGroup>
 
 </Project>

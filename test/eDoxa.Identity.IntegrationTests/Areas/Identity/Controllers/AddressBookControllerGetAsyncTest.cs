@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -59,7 +59,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -88,13 +88,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
 
-                    result = await userManager.AddAddressAsync(
+                    var addressService = scope.GetRequiredService<IAddressService>();
+
+                    result = await addressService.AddAddressAsync(
                         user,
                         Country.Canada,
                         "1234 Test Street",
@@ -105,7 +107,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result.Succeeded.Should().BeTrue();
 
-                    var addressBook = await userManager.GetAddressBookAsync(user);
+                    var addressBook = await addressService.GetAddressBookAsync(user);
 
                     // Act
                     using var response = await this.ExecuteAsync();
@@ -117,9 +119,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.Content.ReadAsAsync<ICollection<UserAddressResponse>>();
+                    var addressResponse = await response.Content.ReadAsAsync<ICollection<AddressResponse>>();
 
-                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<UserAddressResponse>>(addressBook));
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
                 });
         }
     }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Moq;
 

@@ -17,13 +17,10 @@ using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Challenges.TestHelper.Mocks;
-using eDoxa.Seedwork.Application.Validations.Extensions;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -196,7 +193,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
@@ -248,7 +245,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationFailure("test", "test message").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("test", "test message"))
                 .Verifiable();
 
             var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);

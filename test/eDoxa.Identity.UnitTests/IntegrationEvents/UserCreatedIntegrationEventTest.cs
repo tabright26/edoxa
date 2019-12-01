@@ -7,7 +7,7 @@
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 

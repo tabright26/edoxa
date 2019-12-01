@@ -13,7 +13,7 @@ using Autofac;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -115,7 +115,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 
                     mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
-                    mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException());
+                    mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException(HttpStatusCode.BadRequest, new StripeError(), string.Empty));
 
                     container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
                     container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();

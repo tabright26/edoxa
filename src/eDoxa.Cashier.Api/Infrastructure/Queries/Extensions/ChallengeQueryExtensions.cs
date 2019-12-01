@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Cashier.Responses;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
 {

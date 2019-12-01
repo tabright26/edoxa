@@ -10,8 +10,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -34,7 +34,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(InformationsPutRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(UpdateProfileRequest request)
         {
             return await _httpClient.PutAsJsonAsync("api/informations", request);
         }
@@ -54,7 +54,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -62,7 +62,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new InformationsPutRequest("Bob"));
+            using var response = await this.ExecuteAsync(new UpdateProfileRequest("Bob"));
 
             // Assert
             response.EnsureSuccessStatusCode();

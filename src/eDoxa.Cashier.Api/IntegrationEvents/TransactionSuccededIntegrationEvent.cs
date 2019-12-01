@@ -6,7 +6,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -25,6 +24,6 @@ namespace eDoxa.Cashier.Api.IntegrationEvents
         [JsonProperty]
         public IDictionary<string, string> Metadata { get; }
 
-        public string Name => IntegrationEventNames.TransactionSucceded;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.TransactionSucceded;
     }
 }

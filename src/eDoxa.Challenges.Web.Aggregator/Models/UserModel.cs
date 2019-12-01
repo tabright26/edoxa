@@ -12,6 +12,6 @@ namespace eDoxa.Challenges.Web.Aggregator.Models
     {
         public Guid Id { get; set; }
 
-        public DoxatagModel Doxatag { get; set; }
+        public DoxatagModel? Doxatag { get; set; }
     }
 }

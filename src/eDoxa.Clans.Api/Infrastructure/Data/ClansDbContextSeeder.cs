@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Infrastructure.Data.Storage;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.Infrastructure;
-using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;

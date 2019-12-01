@@ -10,9 +10,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,13 +25,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     public class ExternalLoginModel : PageModel
     {
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly SignInManager _signInManager;
-        private readonly UserManager _userManager;
+        private readonly SignInService _signInService;
+        private readonly IUserService _userService;
 
-        public ExternalLoginModel(SignInManager signInManager, UserManager userManager, ILogger<ExternalLoginModel> logger)
+        public ExternalLoginModel(SignInService signInService, IUserService userService, ILogger<ExternalLoginModel> logger)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _signInService = signInService;
+            _userService = userService;
             _logger = logger;
         }
 
@@ -60,7 +60,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 }
             );
 
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            var properties = _signInService.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
 
             return new ChallengeResult(provider, properties);
         }
@@ -82,7 +82,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 );
             }
 
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+            var info = await _signInService.GetExternalLoginInfoAsync();
 
             if (info == null)
             {
@@ -98,7 +98,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
+            var result = await _signInService.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false, true);
 
             if (result.Succeeded)
             {
@@ -132,7 +132,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
 
             // Get the information about the user from the external login provider
-            var info = await _signInManager.GetExternalLoginInfoAsync();
+            var info = await _signInService.GetExternalLoginInfoAsync();
 
             if (info == null)
             {
@@ -149,7 +149,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var result = await _userManager.CreateAsync(new User
+                var result = await _userService.CreateAsync(new User
                 {
                     Email = Input.Email,
                     UserName = Input.Email,
@@ -158,15 +158,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.FindByEmailAsync(Input.Email);
+                    var user = await _userService.FindByEmailAsync(Input.Email);
 
-                    result = await _userManager.AddLoginAsync(user, info);
+                    result = await _userService.AddLoginAsync(user, info);
 
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
 
-                        await _signInManager.SignInAsync(user, false);
+                        await _signInService.SignInAsync(user, false);
 
                         return this.LocalRedirect(returnUrl);
                     }

@@ -4,17 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -36,7 +35,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Guid addressId)
+        private async Task<HttpResponseMessage> ExecuteAsync(AddressId addressId)
         {
             return await _httpClient.DeleteAsync($"api/address-book/{addressId}");
         }
@@ -56,13 +55,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<IUserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
                     result.Succeeded.Should().BeTrue();
 
-                    result = await userManager.AddAddressAsync(
+                    var addressService = scope.GetRequiredService<IAddressService>();
+
+                    result = await addressService.AddAddressAsync(
                         user,
                         Country.Canada,
                         "1234 Test Street",
@@ -73,7 +74,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     result.Succeeded.Should().BeTrue();
 
-                    var addressBook = await userManager.GetAddressBookAsync(user);
+                    var addressBook = await addressService.GetAddressBookAsync(user);
 
                     // Act
                     using var response = await this.ExecuteAsync(addressBook.First().Id);

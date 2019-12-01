@@ -1,43 +1,45 @@
 ﻿// Filename: PasswordResetController.cs
-// Date Created: 2019-08-29
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
     [AllowAnonymous]
     [ApiController]
     [ApiVersion("1.0")]
-    [Produces("application/json")]
     [Route("api/password/reset")]
     [ApiExplorerSettings(GroupName = "Password")]
     public sealed class PasswordResetController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
 
-        public PasswordResetController(IUserManager userManager)
+        public PasswordResetController(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
-        /// <summary>
-        ///     User's password reset.
-        /// </summary>
         [HttpPost]
-        public async Task<IActionResult> PostAsync([FromBody] PasswordResetPostRequest request)
+        [SwaggerOperation("User's password reset.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        public async Task<IActionResult> PostAsync([FromBody] ResetPasswordRequest request)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(request.Email);
+                var user = await _userService.FindByEmailAsync(request.Email);
 
                 if (user == null)
                 {
@@ -48,7 +50,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 // BUG: Quick fix. Must be refactored. Related to the encoding.
                 var code = request.Code.Replace(" ", "+");
 
-                var result = await _userManager.ResetPasswordAsync(user, code, request.Password);
+                var result = await _userService.ResetPasswordAsync(user, code, request.Password);
 
                 if (result.Succeeded)
                 {
@@ -61,7 +63,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 }
             }
 
-            return this.BadRequest(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

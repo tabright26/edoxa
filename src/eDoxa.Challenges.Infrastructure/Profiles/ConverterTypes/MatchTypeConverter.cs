@@ -11,7 +11,7 @@ using AutoMapper;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
 {

@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Infrastructure.Configurations;
 using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Infrastructure;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Infrastructure.MediatR.Extensions;
+using eDoxa.Seedwork.Infrastructure.SqlServer;
 
 using MediatR;
 

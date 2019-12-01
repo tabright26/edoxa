@@ -6,7 +6,7 @@
 
 using eDoxa.Challenges.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers.Factories
 {

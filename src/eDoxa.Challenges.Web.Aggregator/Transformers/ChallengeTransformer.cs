@@ -21,9 +21,11 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
         public static ParticipantModel Transform(
             Guid challengeId,
             ChallengeResponses.ParticipantResponse participantFromChallengesService,
-            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatags
+            IEnumerable<IdentityResponses.DoxatagResponse> doxatags
         )
         {
+            doxatags ??= new List<IdentityResponses.DoxatagResponse>();
+
             return new ParticipantModel
             {
                 Id = participantFromChallengesService.Id,
@@ -37,7 +39,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                                 Name = doxatag.Name,
                                 Code = doxatag.Code
                             })
-                        .Single()
+                        .SingleOrDefault()
                 },
                 Score = participantFromChallengesService.Score,
                 ChallengeId = challengeId,
@@ -64,7 +66,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
         public static ChallengeModel Transform(
             ChallengeResponses.ChallengeResponse challenge,
             CashierResponses.ChallengeResponse challengeFromCashier,
-            IEnumerable<IdentityResponses.UserDoxatagResponse> doxatags
+            IEnumerable<IdentityResponses.DoxatagResponse> doxatags
         )
         {
             return new ChallengeModel
@@ -117,7 +119,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
         public static IReadOnlyCollection<ChallengeModel> Transform(
             IReadOnlyCollection<ChallengeResponses.ChallengeResponse> challengesFromChallengesService,
             IReadOnlyCollection<CashierResponses.ChallengeResponse> challengesFromCashierService,
-            IReadOnlyCollection<IdentityResponses.UserDoxatagResponse> doxatagsFromIdentityService
+            IReadOnlyCollection<IdentityResponses.DoxatagResponse> doxatagsFromIdentityService
         )
         {
             var challengeModels = from challengeFromChallengesService in challengesFromChallengesService

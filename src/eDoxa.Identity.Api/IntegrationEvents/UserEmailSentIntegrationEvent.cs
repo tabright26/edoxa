@@ -4,8 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -33,6 +32,6 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         public string HtmlMessage { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.UserEmailSent;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.UserEmailSent;
     }
 }

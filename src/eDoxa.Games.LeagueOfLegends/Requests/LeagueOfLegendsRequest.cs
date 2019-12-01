@@ -4,19 +4,25 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Games.LeagueOfLegends.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class LeagueOfLegendsRequest
     {
+        [JsonConstructor]
         public LeagueOfLegendsRequest(string summonerName)
         {
             SummonerName = summonerName;
         }
 
-        [DataMember(Name = "summonerName")]
+        public LeagueOfLegendsRequest()
+        {
+            // Required by Fluent Validation.
+        }
+
+        [JsonProperty("summonerName")]
         public string SummonerName { get; }
     }
 }

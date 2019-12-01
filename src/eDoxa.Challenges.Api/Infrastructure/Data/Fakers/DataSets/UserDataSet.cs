@@ -11,7 +11,7 @@ using Bogus;
 
 using eDoxa.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {

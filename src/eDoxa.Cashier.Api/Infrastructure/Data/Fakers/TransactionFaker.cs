@@ -13,7 +13,7 @@ using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 {

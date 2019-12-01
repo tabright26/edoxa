@@ -11,15 +11,15 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 name: "Challenge",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(),
                     Name = table.Column<string>(nullable: true),
-                    Game = table.Column<int>(nullable: false),
-                    State = table.Column<int>(nullable: false),
-                    BestOf = table.Column<int>(nullable: false),
-                    Entries = table.Column<int>(nullable: false),
+                    Game = table.Column<int>(),
+                    State = table.Column<int>(),
+                    BestOf = table.Column<int>(),
+                    Entries = table.Column<int>(),
                     SynchronizedAt = table.Column<DateTime>(nullable: true),
-                    Timeline_CreatedAt = table.Column<DateTime>(nullable: false),
-                    Timeline_Duration = table.Column<long>(nullable: false),
+                    Timeline_CreatedAt = table.Column<DateTime>(),
+                    Timeline_Duration = table.Column<long>(),
                     Timeline_StartedAt = table.Column<DateTime>(nullable: true),
                     Timeline_ClosedAt = table.Column<DateTime>(nullable: true)
                 },
@@ -32,11 +32,11 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 name: "Participant",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    RegisteredAt = table.Column<DateTime>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    RegisteredAt = table.Column<DateTime>(),
                     SynchronizedAt = table.Column<DateTime>(nullable: true),
                     PlayerId = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(),
                     ChallengeId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
@@ -54,10 +54,10 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 name: "ScoringItem",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    ChallengeId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    ChallengeId = table.Column<Guid>(),
                     Name = table.Column<string>(nullable: true),
-                    Weighting = table.Column<float>(nullable: false)
+                    Weighting = table.Column<float>()
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 name: "Match",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(),
                     GameUuid = table.Column<string>(nullable: true),
                     ParticipantId = table.Column<Guid>(nullable: true)
                 },
@@ -93,11 +93,11 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                 name: "Stat",
                 columns: table => new
                 {
-                    MatchId = table.Column<Guid>(nullable: false),
-                    Id = table.Column<Guid>(nullable: false),
+                    MatchId = table.Column<Guid>(),
+                    Id = table.Column<Guid>(),
                     Name = table.Column<string>(nullable: true),
-                    Value = table.Column<double>(nullable: false),
-                    Weighting = table.Column<float>(nullable: false)
+                    Value = table.Column<double>(),
+                    Weighting = table.Column<float>()
                 },
                 constraints: table =>
                 {

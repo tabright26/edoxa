@@ -4,8 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Clans.TestHelper</AssemblyName>
     <RootNamespace>eDoxa.Clans.TestHelper</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

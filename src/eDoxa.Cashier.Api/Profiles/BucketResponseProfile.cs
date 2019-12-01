@@ -1,5 +1,5 @@
 ﻿// Filename: BucketResponseProfile.cs
-// Date Created: 2019-11-07
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@ using eDoxa.Cashier.Responses;
 
 namespace eDoxa.Cashier.Api.Profiles
 {
-    public class BucketResponseProfile : Profile
+    internal sealed class BucketResponseProfile : Profile
     {
         public BucketResponseProfile()
         {

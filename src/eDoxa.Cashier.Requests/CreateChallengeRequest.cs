@@ -1,17 +1,19 @@
 ﻿// Filename: CreateChallengeRequest.cs
-// Date Created: 2019-11-08
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Runtime.Serialization;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Cashier.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class CreateChallengeRequest
     {
+        [JsonConstructor]
         public CreateChallengeRequest(
             Guid challengeId,
             int payoutEntries,
@@ -25,16 +27,21 @@ namespace eDoxa.Cashier.Requests
             EntryFeeCurrency = entryFeeCurrency;
         }
 
-        [DataMember(Name = "challengeId")]
+        public CreateChallengeRequest()
+        {
+            // Required by Fluent Validation.
+        }
+
+        [JsonProperty("challengeId")]
         public Guid ChallengeId { get; private set; }
 
-        [DataMember(Name = "payoutEntries")]
+        [JsonProperty("payoutEntries")]
         public int PayoutEntries { get; private set; }
 
-        [DataMember(Name = "entryFeeAmount")]
+        [JsonProperty("entryFeeAmount")]
         public decimal EntryFeeAmount { get; private set; }
 
-        [DataMember(Name = "entryFeeCurrency")]
+        [JsonProperty("entryFeeCurrency")]
         public string EntryFeeCurrency { get; private set; }
     }
 }

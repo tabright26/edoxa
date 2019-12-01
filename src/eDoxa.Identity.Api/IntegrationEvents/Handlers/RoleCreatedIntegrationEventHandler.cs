@@ -5,27 +5,26 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
-
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class RoleCreatedIntegrationEventHandler : IIntegrationEventHandler<RoleCreatedIntegrationEvent>
     {
-        private readonly IRoleManager _roleManager;
+        private readonly IRoleService _roleService;
 
-        public RoleCreatedIntegrationEventHandler(IRoleManager roleManager)
+        public RoleCreatedIntegrationEventHandler(IRoleService roleService)
         {
-            _roleManager = roleManager;
+            _roleService = roleService;
         }
 
         public async Task HandleAsync(RoleCreatedIntegrationEvent integrationEvent)
         {
-            if (!await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
+            if (!await _roleService.RoleExistsAsync(integrationEvent.RoleName))
             {
-                await _roleManager.CreateAsync(
+                await _roleService.CreateAsync(
                     new Role
                     {
                         Name = integrationEvent.RoleName

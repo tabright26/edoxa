@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,9 +15,7 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.AspNetCore;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,11 +26,10 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/transactions")]
     [ApiExplorerSettings(GroupName = "Transaction")]
-    public class TransactionsController : ControllerBase
+    public sealed class TransactionsController : ControllerBase
     {
         private readonly ITransactionQuery _transactionQuery;
         private readonly IAccountService _accountService;
@@ -44,13 +40,10 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
             _accountService = accountService;
         }
 
-        /// <summary>
-        ///     Get transactions by currency, type and status.
-        /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<TransactionResponse>))]
+        [SwaggerOperation("Get transactions by currency, type and status.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> GetAsync(Currency? currency = null, TransactionType? type = null, TransactionStatus? status = null)
         {
             var responses = await _transactionQuery.FetchUserTransactionResponsesAsync(currency, type, status);
@@ -63,10 +56,8 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
             return this.Ok(responses);
         }
 
-        /// <summary>
-        ///     Create a transaction.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Create a transaction.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
@@ -96,7 +87,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
                 return this.Ok(response);
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

@@ -8,18 +8,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Api.Areas.Clans.Controllers;
-using eDoxa.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.Models;
+using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Clans.TestHelper.Mocks;
-using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -94,7 +92,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             var result = await clanController.GetByIdAsync(new ClanId());
 
             // Assert
-            result.Should().BeOfType<NotFoundResult>();
+            result.Should().BeOfType<NotFoundObjectResult>();
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
         }
@@ -125,7 +123,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             var mockClanService = new Mock<IClanService>();
 
             mockClanService.Setup(clanService => clanService.CreateClanAsync(It.IsAny<UserId>(), It.IsAny<string>()))
-                .ReturnsAsync(new ValidationFailure(string.Empty, "Test error").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("Test error"))
                 .Verifiable();
 
             var clansController = new ClansController(mockClanService.Object, TestMapper);
@@ -152,7 +150,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             var mockClanService = new Mock<IClanService>();
 
             mockClanService.Setup(clanService => clanService.CreateClanAsync(It.IsAny<UserId>(), It.IsAny<string>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var clansController = new ClansController(mockClanService.Object, TestMapper);

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Clans.Domain.Models
 {

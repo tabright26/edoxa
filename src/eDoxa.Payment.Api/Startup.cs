@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,18 +20,21 @@ using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
-using FluentValidation.AspNetCore;
 
-using HealthChecks.UI.Client;
+using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -39,18 +42,10 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 namespace eDoxa.Payment.Api
 {
@@ -67,16 +62,13 @@ namespace eDoxa.Payment.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<PaymentAppSettings>(ApiResources.PaymentApi);
         }
 
         public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment HostingEnvironment { get; }
 
         public PaymentAppSettings AppSettings { get; }
 
@@ -89,7 +81,7 @@ namespace eDoxa.Payment.Api
             services.AddAppSettings<PaymentAppSettings>(Configuration);
 
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
@@ -104,42 +96,17 @@ namespace eDoxa.Payment.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
-            services.AddCors(
-                options =>
-                {
-                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
-                });
+            services.AddCustomCors();
 
-            services.AddControllers()
-                .AddNewtonsoftJson(
-                    options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    })
-                .AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>()
-                .AddFluentValidation(
-                    config =>
-                    {
-                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
-                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    });
+            services.AddCustomProblemDetails(options => options.MapStripeException());
 
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.ReportApiVersions = true;
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader();
-                });
+            services.AddCustomControllers<Startup>().AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>();
 
-            
-            services.AddVersionedApiExplorer();
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(PaymentDbContext)));
+            services.AddAutoMapper(typeof(Startup), typeof(PaymentDbContext));
 
-            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
+            services.AddMediatR(typeof(Startup));
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
@@ -151,9 +118,7 @@ namespace eDoxa.Payment.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddAuthorization();
-            
-            //services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -163,18 +128,14 @@ namespace eDoxa.Payment.Api
             builder.RegisterModule<PaymentModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            subscriber.UseIntegrationEventSubscriptions();
+            application.UseProblemDetails();
 
-            application.UseStripe(Configuration);
-
-            application.UseCustomExceptionHandler();
-
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+            application.UseCustomPathBase();
 
             application.UseRouting();
-            application.UseCors("default");
+            application.UseCustomCors();
 
             application.UseAuthentication();
             application.UseAuthorization();
@@ -184,23 +145,16 @@ namespace eDoxa.Payment.Api
                 {
                     endpoints.MapControllers();
 
-                    endpoints.MapHealthChecks(
-                        "/liveness",
-                        new HealthCheckOptions
-                        {
-                            Predicate = registration => registration.Name.Contains("liveness")
-                        });
+                    endpoints.MapConfigurationRoute<PaymentAppSettings>(AppSettings.ApiResource);
 
-                    endpoints.MapHealthChecks(
-                        "/health",
-                        new HealthCheckOptions
-                        {
-                            Predicate = _ => true,
-                            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                        });
+                    endpoints.MapCustomHealthChecks();
                 });
 
-            //application.UseSwagger(provider, AppSettings);
+            application.UseSwagger(AppSettings);
+
+            application.UseStripe(Configuration);
+
+            subscriber.UseIntegrationEventSubscriptions();
         }
     }
 }

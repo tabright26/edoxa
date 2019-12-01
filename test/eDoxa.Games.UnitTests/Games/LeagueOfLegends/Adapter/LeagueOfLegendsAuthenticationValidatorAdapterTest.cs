@@ -13,7 +13,8 @@ using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -65,7 +66,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             var result = await authFactorService.ValidateAuthenticationAsync(userId, new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty)));
 
             // Assert
-            result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
                 leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),
@@ -110,7 +111,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
             var result = await authFactorService.ValidateAuthenticationAsync(userId, new GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>(new PlayerId(), new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty)));
 
             // Assert
-            result.Should().BeOfType<FluentValidation.Results.ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             mockLeagueOfLegendsService.Verify(
                 leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),

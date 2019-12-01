@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Payment.Api.Areas.Stripe.Requests;
+using eDoxa.Payment.Requests;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 

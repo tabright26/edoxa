@@ -10,7 +10,7 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Identity.Api;
-using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
 

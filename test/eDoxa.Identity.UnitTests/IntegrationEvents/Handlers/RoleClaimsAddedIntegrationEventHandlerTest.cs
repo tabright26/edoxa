@@ -6,10 +6,10 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Security;
@@ -34,7 +34,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
         public async Task RoleClaimAddedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockRoleManager = new Mock<IRoleManager>();
+            var mockRoleManager = new Mock<IRoleService>();
 
             mockRoleManager.Setup(roleManager => roleManager.RoleExistsAsync(It.IsAny<string>())).ReturnsAsync(true).Verifiable();
 

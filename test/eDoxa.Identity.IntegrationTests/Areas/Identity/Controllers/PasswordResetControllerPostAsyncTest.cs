@@ -10,8 +10,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -34,7 +34,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(PasswordResetPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(ResetPasswordRequest request)
         {
             return await _httpClient.PostAsJsonAsync("api/password/reset", request);
         }
@@ -56,7 +56,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 async scope =>
                 {
                     // Arrange
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -65,7 +65,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var code = await userManager.GeneratePasswordResetTokenAsync(user);
 
                     // Act
-                    using var response = await this.ExecuteAsync(new PasswordResetPostRequest("admin@edoxa.gg", "Pass@word1", code));
+                    using var response = await this.ExecuteAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", code));
 
                     // Assert
                     response.EnsureSuccessStatusCode();

@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +22,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class LoginWith2faModel : PageModel
     {
-        private readonly SignInManager _signInManager;
+        private readonly ISignInService _signInService;
         private readonly ILogger<LoginWith2faModel> _logger;
 
-        public LoginWith2faModel(SignInManager signInManager, ILogger<LoginWith2faModel> logger)
+        public LoginWith2faModel(ISignInService signInService, ILogger<LoginWith2faModel> logger)
         {
-            _signInManager = signInManager;
+            _signInService = signInService;
             _logger = logger;
         }
 
@@ -41,7 +41,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnGetAsync(bool rememberMe, string returnUrl = null)
         {
             // Ensure the user has gone through the username & password screen first
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await _signInService.GetTwoFactorAuthenticationUserAsync();
 
             if (user == null)
             {
@@ -63,7 +63,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             returnUrl ??= Url.Content("~/");
 
-            var user = await _signInManager.GetTwoFactorAuthenticationUserAsync();
+            var user = await _signInService.GetTwoFactorAuthenticationUserAsync();
 
             if (user == null)
             {
@@ -72,7 +72,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
             var authenticatorCode = Input.TwoFactorCode.Replace(" ", string.Empty).Replace("-", string.Empty);
 
-            var result = await _signInManager.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
+            var result = await _signInService.TwoFactorAuthenticatorSignInAsync(authenticatorCode, rememberMe, Input.RememberMachine);
 
             if (result.Succeeded)
             {

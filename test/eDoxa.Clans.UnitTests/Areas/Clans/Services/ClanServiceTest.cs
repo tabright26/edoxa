@@ -15,11 +15,10 @@ using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Moq;
 
@@ -101,7 +100,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.CreateClanAsync(new UserId(), "test clan");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
             mockClanRepository.Verify(repository => repository.ExistsAsync(It.IsAny<string>()), Times.Once);
             mockClanRepository.Verify(repository => repository.Create(It.IsAny<Clan>()), Times.Once);
@@ -124,7 +123,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.CreateClanAsync(new UserId(), "test clan");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
             mockClanRepository.Verify(repository => repository.ExistsAsync(It.IsAny<string>()), Times.Once);
@@ -144,7 +143,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.CreateClanAsync(new UserId(), "test clan");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
         }
@@ -323,7 +322,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.KickMemberFromClanAsync(clan, ownerId, member.Id);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -342,7 +341,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.KickMemberFromClanAsync(clan, ownerId, new MemberId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -361,7 +360,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.KickMemberFromClanAsync(clan, ownerId, new MemberId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -387,7 +386,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.LeaveClanAsync(clan, memberUserId);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -406,7 +405,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.LeaveClanAsync(clan, new UserId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -431,7 +430,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.LeaveClanAsync(clan, ownerId);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
             mockClanRepository.Verify(repository => repository.Delete(It.IsAny<Clan>()), Times.Once);
         }
@@ -461,7 +460,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
                 "testFile");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.UploadLogoAsync(It.IsAny<ClanId>(), It.IsAny<Stream>(), It.IsAny<string>()), Times.Once);
         }
 
@@ -487,7 +486,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
                 "testFile");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
     }

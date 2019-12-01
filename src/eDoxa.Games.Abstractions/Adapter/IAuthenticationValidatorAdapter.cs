@@ -7,22 +7,21 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.Results;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Abstractions.Adapter
 {
     public interface IAuthenticationValidatorAdapter<in TAuthentication> : IAuthenticationValidatorAdapter
     where TAuthentication : GameAuthentication
     {
-        Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
+        Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
     }
 
     public interface IAuthenticationValidatorAdapter
     {
         Game Game { get; }
 
-        Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication);
+        Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication);
     }
 }

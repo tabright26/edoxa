@@ -1,20 +1,20 @@
 ﻿// Filename: AddressBookController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
+using eDoxa.Seedwork.Domain.Misc;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -26,55 +26,53 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/address-book")]
     [ApiExplorerSettings(GroupName = "Address Book")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class AddressBookController : ControllerBase
+    public sealed class AddressBookController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
+        private readonly IAddressService _addressService;
         private readonly IMapper _mapper;
 
-        public AddressBookController(IUserManager userManager, IMapper mapper)
+        public AddressBookController(IUserService userService, IAddressService addressService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
+            _addressService = addressService;
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Find user's address book.
-        /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserAddressResponse>))]
+        [SwaggerOperation("Find user's address book.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var addressBook = await _userManager.GetAddressBookAsync(user);
+            var addressBook = await _addressService.GetAddressBookAsync(user);
 
             if (!addressBook.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserAddressResponse>>(addressBook));
+            return this.Ok(_mapper.Map<IEnumerable<AddressResponse>>(addressBook));
         }
 
-        /// <summary>
-        ///     Add user's address.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Add user's address.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] AddressPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] CreateAddressRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var result = await _userManager.AddAddressAsync(
+            var result = await _addressService.AddAddressAsync(
                 user,
-                request.Country,
+                Country.FromName(request.Country),
                 request.Line1,
                 request.Line2,
                 request.City,
@@ -91,17 +89,15 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Update user's address by id.
-        /// </summary>
         [HttpPut("{addressId}")]
+        [SwaggerOperation("Update user's address by id.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PutAsync(Guid addressId, [FromBody] AddressPutRequest request)
+        public async Task<IActionResult> PutAsync(AddressId addressId, [FromBody] UpdateAddressRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var result = await _userManager.UpdateAddressAsync(
+            var result = await _addressService.UpdateAddressAsync(
                 user,
                 addressId,
                 request.Line1,
@@ -120,23 +116,21 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Remove user's address by id.
-        /// </summary>
         [HttpDelete("{addressId}")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Guid))]
+        [SwaggerOperation("Remove user's address by id.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressId))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> DeleteAsync(Guid addressId)
+        public async Task<IActionResult> DeleteAsync(AddressId addressId)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var result = await _userManager.RemoveAddressAsync(user, addressId);
+            var result = await _addressService.RemoveAddressAsync(user, addressId);
 
             if (result.Succeeded)
             {
                 return this.Ok(addressId);
             }
-    
+
             ModelState.Bind(result);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));

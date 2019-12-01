@@ -13,7 +13,7 @@ using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper;
 
 using FluentAssertions;

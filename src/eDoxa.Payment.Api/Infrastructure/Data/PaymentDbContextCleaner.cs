@@ -7,7 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Infrastructure;
-using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 

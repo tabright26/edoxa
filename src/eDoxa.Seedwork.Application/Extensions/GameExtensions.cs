@@ -1,10 +1,10 @@
 ﻿// Filename: GameExtensions.cs
-// Date Created: 2019-10-31
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 
 namespace eDoxa.Seedwork.Application.Extensions

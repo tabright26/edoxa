@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -24,6 +23,6 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         public string RoleName { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.RoleCreated;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.RoleCreated;
     }
 }

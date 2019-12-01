@@ -11,9 +11,9 @@ namespace eDoxa.Payment.Api.Infrastructure.Data.Migrations
                 name: "StripeReference",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(nullable: false),
-                    CustomerId = table.Column<string>(nullable: false),
-                    AccountId = table.Column<string>(nullable: false)
+                    UserId = table.Column<Guid>(),
+                    CustomerId = table.Column<string>(),
+                    AccountId = table.Column<string>()
                 },
                 constraints: table =>
                 {

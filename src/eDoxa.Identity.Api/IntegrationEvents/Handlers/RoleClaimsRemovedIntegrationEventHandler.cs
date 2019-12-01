@@ -7,29 +7,29 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class RoleClaimsRemovedIntegrationEventHandler : IIntegrationEventHandler<RoleClaimsRemovedIntegrationEvent>
     {
-        private readonly IRoleManager _roleManager;
+        private readonly IRoleService _roleService;
 
-        public RoleClaimsRemovedIntegrationEventHandler(IRoleManager roleManager)
+        public RoleClaimsRemovedIntegrationEventHandler(IRoleService roleService)
         {
-            _roleManager = roleManager;
+            _roleService = roleService;
         }
 
         public async Task HandleAsync(RoleClaimsRemovedIntegrationEvent integrationEvent)
         {
-            if (await _roleManager.RoleExistsAsync(integrationEvent.RoleName))
+            if (await _roleService.RoleExistsAsync(integrationEvent.RoleName))
             {
-                var role = await _roleManager.FindByNameAsync(integrationEvent.RoleName);
+                var role = await _roleService.FindByNameAsync(integrationEvent.RoleName);
 
                 foreach (var claim in integrationEvent.Claims)
                 {
-                    await _roleManager.RemoveClaimAsync(role, new Claim(claim.Type, claim.Value));
+                    await _roleService.RemoveClaimAsync(role, new Claim(claim.Type, claim.Value));
                 }
             }
         }

@@ -19,12 +19,10 @@ using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using IdentityModel;
 
@@ -71,8 +69,8 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                         {
                             var mockCredentialService = new Mock<IGameCredentialService>();
 
-                            var validationFailure = new ValidationResult();
-                            validationFailure.Errors.Add(new ValidationFailure("test", "validation failure test"));
+                            var validationFailure = new DomainValidationResult();
+                            validationFailure.AddDomainValidationError("test", "validation failure test");
 
                             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                                 .ReturnsAsync(credential)

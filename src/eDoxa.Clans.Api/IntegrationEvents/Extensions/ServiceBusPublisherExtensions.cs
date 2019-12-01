@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 

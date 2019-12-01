@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
@@ -48,7 +48,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.Informations = null;
+            user.Profile = null;
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -57,7 +57,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -86,7 +86,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -106,7 +106,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.Content.ReadAsAsync<UserInformationsResponse>();
+                    var profileResponse = await response.Content.ReadAsAsync<UserProfileResponse>();
 
                     //profileResponse.Should().BeEquivalentTo(mapper.Map<UserInformationsResponse>(profile));
                 });

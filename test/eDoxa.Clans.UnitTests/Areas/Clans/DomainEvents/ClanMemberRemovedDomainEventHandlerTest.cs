@@ -11,7 +11,7 @@ using eDoxa.Clans.Api.Areas.Clans.DomainEvents;
 using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Moq;

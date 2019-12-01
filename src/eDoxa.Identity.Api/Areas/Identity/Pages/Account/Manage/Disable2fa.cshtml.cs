@@ -9,7 +9,7 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,12 +19,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class Disable2faModel : PageModel
     {
-        private readonly UserManager _userManager;
+        private readonly IUserService _userService;
         private readonly ILogger<Disable2faModel> _logger;
 
-        public Disable2faModel(UserManager userManager, ILogger<Disable2faModel> logger)
+        public Disable2faModel(IUserService userService, ILogger<Disable2faModel> logger)
         {
-            _userManager = userManager;
+            _userService = userService;
             _logger = logger;
         }
 
@@ -33,16 +33,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            if (!await _userManager.GetTwoFactorEnabledAsync(user))
+            if (!await _userService.GetTwoFactorEnabledAsync(user))
             {
-                throw new InvalidOperationException($"Cannot disable 2FA for user with ID '{_userManager.GetUserId(User)}' as it's not currently enabled.");
+                throw new InvalidOperationException($"Cannot disable 2FA for user with ID '{_userService.GetUserId(User)}' as it's not currently enabled.");
             }
 
             return this.Page();
@@ -50,21 +50,21 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
+            var disable2faResult = await _userService.SetTwoFactorEnabledAsync(user, false);
 
             if (!disable2faResult.Succeeded)
             {
-                throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user with ID '{_userManager.GetUserId(User)}'.");
+                throw new InvalidOperationException($"Unexpected error occurred disabling 2FA for user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
+            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userService.GetUserId(User));
             StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
 
             return this.RedirectToPage("./TwoFactorAuthentication");

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.ViewModels;
 
 using IdentityServer4.Events;
@@ -25,7 +24,6 @@ namespace eDoxa.Identity.Api.Controllers
     ///     This sample controller allows a user to revoke grants given to clients
     /// </summary>
     [Authorize]
-    [SecurityHeaders]
     public class GrantsController : Controller
     {
         private readonly IClientStore _clients;

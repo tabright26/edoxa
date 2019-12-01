@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -22,13 +22,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager _userManager;
-        private readonly SignInManager _signInManager;
+        private readonly IUserService _userService;
+        private readonly ISignInService _signInService;
 
-        public ExternalLoginsModel(UserManager userManager, SignInManager signInManager)
+        public ExternalLoginsModel(IUserService userService, ISignInService signInService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _signInService = signInService;
         }
 
         public IList<UserLoginInfo> CurrentLogins { get; set; }
@@ -42,16 +42,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            CurrentLogins = await _userManager.GetLoginsAsync(user);
+            CurrentLogins = await _userService.GetLoginsAsync(user);
 
-            OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
+            OtherLogins = (await _signInService.GetExternalAuthenticationSchemesAsync()).Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
                 .ToList();
 
             ShowRemoveButton = user.PasswordHash != null || CurrentLogins.Count > 1;
@@ -61,23 +61,23 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostRemoveLoginAsync(string loginProvider, string providerKey)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            var result = await _userManager.RemoveLoginAsync(user, loginProvider, providerKey);
+            var result = await _userService.RemoveLoginAsync(user, loginProvider, providerKey);
 
             if (!result.Succeeded)
             {
-                var userId = await _userManager.GetUserIdAsync(user);
+                var userId = await _userService.GetUserIdAsync(user);
 
                 throw new InvalidOperationException($"Unexpected error occurred removing external login for user with ID '{userId}'.");
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+            await _signInService.RefreshSignInAsync(user);
             StatusMessage = "The external login was removed.";
 
             return this.RedirectToPage();
@@ -90,28 +90,28 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
             // Request a redirect to the external login provider to link a login for the current user
             var redirectUrl = Url.Page("./ExternalLogins", "LinkLoginCallback");
-            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userManager.GetUserId(User));
+            var properties = _signInService.ConfigureExternalAuthenticationProperties(provider, redirectUrl, _userService.GetUserId(User));
 
             return new ChallengeResult(provider, properties);
         }
 
         public async Task<IActionResult> OnGetLinkLoginCallbackAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            var info = await _signInManager.GetExternalLoginInfoAsync(await _userManager.GetUserIdAsync(user));
+            var info = await _signInService.GetExternalLoginInfoAsync(await _userService.GetUserIdAsync(user));
 
             if (info == null)
             {
                 throw new InvalidOperationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
             }
 
-            var result = await _userManager.AddLoginAsync(user, info);
+            var result = await _userService.AddLoginAsync(user, info);
 
             if (!result.Succeeded)
             {

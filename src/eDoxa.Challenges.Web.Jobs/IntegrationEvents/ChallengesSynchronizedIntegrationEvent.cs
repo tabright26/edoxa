@@ -4,8 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -24,6 +23,6 @@ namespace eDoxa.Challenges.Web.Jobs.IntegrationEvents
         [JsonProperty]
         public Game Game { get; }
 
-        public string Name => IntegrationEventNames.ChallengesSynchronized;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.ChallengesSynchronized;
     }
 }

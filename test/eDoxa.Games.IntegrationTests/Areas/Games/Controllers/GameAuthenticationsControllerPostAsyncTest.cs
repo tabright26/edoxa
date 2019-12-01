@@ -16,11 +16,10 @@ using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using IdentityModel;
 
@@ -61,8 +60,8 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                         {
                             var mockAuthFactorService = new Mock<IGameAuthenticationService>();
 
-                            var validationFailure = new ValidationResult();
-                            validationFailure.Errors.Add(new ValidationFailure("test", "validation failure test"));
+                            var validationFailure = new DomainValidationResult();
+                            validationFailure.AddDomainValidationError("test", "validation failure test");
 
                             mockAuthFactorService
                                 .Setup(
@@ -108,7 +107,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                                 .Setup(
                                     authFactorService =>
                                         authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
-                                .ReturnsAsync(new ValidationResult())
+                                .ReturnsAsync(new DomainValidationResult())
                                 .Verifiable();
 
                             mockAuthFactorService

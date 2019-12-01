@@ -1,6 +1,6 @@
-﻿// Filename: ClanDivisionsController.cs
-// Date Created: 2019-10-31
-//
+﻿// Filename: DivisionMembersController.cs
+// Date Created: 2019-11-24
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
+using eDoxa.Clans.Responses;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.AspNetCore;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/clans/{clanId}/divisions/{divisionId}/members")]
     [ApiExplorerSettings(GroupName = "Clans")]
     public class DivisionMembersController : ControllerBase
@@ -37,10 +37,10 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Get all members of a specific divisions.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Get all members of a specific divisions.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MemberResponse[]))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(DivisionId divisionId)
         {
             var members = await _clanService.FetchDivisionMembersAsync(divisionId);
@@ -53,10 +53,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<IEnumerable<MemberResponse>>(members));
         }
 
-        /// <summary>
-        ///     Add a member to a division.
-        /// </summary>
         [HttpPost("{memberId}")]
+        [SwaggerOperation("Add a member to a division.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostByIdAsync(ClanId clanId, DivisionId divisionId, MemberId memberId)
         {
             var userId = HttpContext.GetUserId();
@@ -68,22 +69,27 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan does not exist.");
             }
 
-            var result = await _clanService.AddMemberToDivisionAsync(clan, userId, divisionId, memberId);
+            var result = await _clanService.AddMemberToDivisionAsync(
+                clan,
+                userId,
+                divisionId,
+                memberId);
 
             if (result.IsValid)
             {
                 return this.Ok("Division created.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Remove a member from a division.
-        /// </summary>
         [HttpDelete("{memberId}")]
+        [SwaggerOperation("Remove a member from a division.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, DivisionId divisionId, MemberId memberId)
         {
             var userId = HttpContext.GetUserId();
@@ -95,17 +101,20 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan does not exist.");
             }
 
-            var result = await _clanService.RemoveMemberFromDivisionAsync(clan, userId, divisionId, memberId);
+            var result = await _clanService.RemoveMemberFromDivisionAsync(
+                clan,
+                userId,
+                divisionId,
+                memberId);
 
             if (result.IsValid)
             {
                 return this.Ok("The division has been removed.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
-
     }
 }

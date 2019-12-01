@@ -7,7 +7,7 @@
 using System.Text.RegularExpressions;
 
 using eDoxa.Clans.Api.Areas.Clans.ErrorDescribers;
-using eDoxa.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Clans.Requests;
 
 using FluentValidation;
 

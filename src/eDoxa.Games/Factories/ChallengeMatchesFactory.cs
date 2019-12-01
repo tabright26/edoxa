@@ -10,7 +10,7 @@ using System.Linq;
 
 using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Games.Abstractions.Factories;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Factories
 {

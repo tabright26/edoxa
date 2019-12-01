@@ -2,21 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
     <AssemblyName>eDoxa.Challenges.Web.Jobs</AssemblyName>
     <RootNamespace>eDoxa.Challenges.Web.Jobs</RootNamespace>
+    <Nullable>Enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hangfire" Version="1.7.7" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.8.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.3" />
-    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.0.4" />
-    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>

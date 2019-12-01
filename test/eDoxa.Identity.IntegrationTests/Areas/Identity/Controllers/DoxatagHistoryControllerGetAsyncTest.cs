@@ -1,23 +1,16 @@
 ﻿// Filename: DoxatagHistoryControllerGetAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Identity.Responses;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -52,7 +45,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.DoxatagHistory = null;
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -61,7 +53,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -83,17 +75,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
 
-            user.DoxatagHistory = new Collection<UserDoxatag>
-            {
-                new UserDoxatag
-                {
-                    Id = Guid.NewGuid(),
-                    UserId = user.Id,
-                    Name = "Test",
-                    Code = 1000,
-                    Timestamp = DateTime.UtcNow
-                }
-            };
+            const string doxatagName = "Name";
 
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
@@ -103,9 +85,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
+
+                    result.Succeeded.Should().BeTrue();
+                    
+                    var doxatagService = scope.GetRequiredService<IDoxatagService>();
+
+                    result = await doxatagService.ChangeDoxatagAsync(user, doxatagName);
 
                     result.Succeeded.Should().BeTrue();
                 });
@@ -117,20 +105,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             response.EnsureSuccessStatusCode();
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var mapper = scope.GetRequiredService<IMapper>();
-
-                    var doxatagResponse = (await response.Content.ReadAsAsync<IEnumerable<UserDoxatagResponse>>()).First();
-
-                    var expectedDoxatagResponse = mapper.Map<IEnumerable<UserDoxatagResponse>>(user.DoxatagHistory).First();
-
-                    doxatagResponse.Name.Should().Be(expectedDoxatagResponse.Name);
-
-                    doxatagResponse.Code.Should().Be(expectedDoxatagResponse.Code);
-                });
         }
     }
 }

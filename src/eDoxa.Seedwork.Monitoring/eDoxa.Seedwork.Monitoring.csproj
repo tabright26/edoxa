@@ -4,8 +4,7 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Seedwork.Monitoring</AssemblyName>
     <RootNamespace>eDoxa.Seedwork.Monitoring</RootNamespace>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +17,11 @@
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.0.0" />
     <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.0.4" />
     <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="3.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="3.0.4" />
+    <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
   </ItemGroup>
 
   <ItemGroup>

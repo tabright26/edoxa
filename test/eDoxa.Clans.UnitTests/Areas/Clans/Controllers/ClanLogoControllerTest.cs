@@ -59,7 +59,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
         //    mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
 
         //    mockClanService.Setup(clanService => clanService.CreateOrUpdateClanLogoAsync(It.IsAny<Clan>(), It.IsAny<FileStream>(), It.IsAny<UserId>()))
-        //        .ReturnsAsync(new ValidationResult()).Verifiable();
+        //        .ReturnsAsync(new DomainValidationResult()).Verifiable();
 
         //    var clanLogoController = new ClanLogoController(mockClanService.Object);
 
@@ -89,7 +89,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
         //    mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).Verifiable();
 
         //    mockClanService.Setup(clanService => clanService.CreateOrUpdateClanLogoAsync(It.IsAny<Clan>(), It.IsAny<FileStream>(), It.IsAny<UserId>()))
-        //        .ReturnsAsync(new ValidationResult()).Verifiable();
+        //        .ReturnsAsync(new DomainValidationResult()).Verifiable();
 
         //    var clanLogoController = new ClanLogoController(mockClanService.Object);
 

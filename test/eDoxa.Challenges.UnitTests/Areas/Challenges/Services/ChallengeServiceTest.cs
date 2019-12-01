@@ -20,12 +20,10 @@ using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Moq;
 
@@ -85,7 +83,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 new UtcNowDateTimeProvider());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockGamesHttpClient.Verify(client => client.GetChallengeScoringAsync(It.IsAny<Game>()), Times.Once);
             mockChallengeRepository.Verify(challengeRepository => challengeRepository.Create(It.IsAny<Challenge>()), Times.Once);
             mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -181,7 +179,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 new UtcNowDateTimeProvider());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockChallengeRepository.Verify(challengeRepository => challengeRepository.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -216,7 +214,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 new UtcNowDateTimeProvider());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -253,7 +251,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                 new UtcNowDateTimeProvider());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 

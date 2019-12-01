@@ -9,12 +9,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -36,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(AddressPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(CreateAddressRequest request)
         {
             return await _httpClient.PostAsJsonAsync("api/address-book", request);
         }
@@ -56,7 +56,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -64,8 +64,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     // Act
                     using var response = await this.ExecuteAsync(
-                        new AddressPostRequest(
-                            Country.Canada,
+                        new CreateAddressRequest(
+                            Country.Canada.Name,
                             "1234 Test Street",
                             null,
                             "Toronto",

@@ -11,7 +11,7 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Payment.TestHelper.Mocks;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -29,30 +29,6 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
     {
         public StripeCustomerControllerTest(TestMapperFixture testMapper) : base(testMapper)
         {
-        }
-
-        [Fact]
-        public async Task GetAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockReferenceService = new Mock<IStripeReferenceService>();
-            var mockCustomerService = new Mock<IStripeCustomerService>();
-
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException()).Verifiable();
-
-            var customerController = new StripeCustomerController(mockCustomerService.Object, mockReferenceService.Object, TestMapper);
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            customerController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await customerController.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]

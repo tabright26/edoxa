@@ -7,7 +7,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Attributes;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.ViewModels;
 
@@ -25,7 +24,6 @@ using Microsoft.Extensions.Logging;
 namespace eDoxa.Identity.Api.Controllers
 {
     [Authorize]
-    [SecurityHeaders]
     public class ConsentController : Controller
     {
         private readonly IClientStore _clientStore;

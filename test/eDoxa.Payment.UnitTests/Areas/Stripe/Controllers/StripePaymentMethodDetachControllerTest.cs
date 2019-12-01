@@ -11,7 +11,7 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Payment.TestHelper.Mocks;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -29,36 +29,6 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
     {
         public StripePaymentMethodDetachControllerTest(TestMapperFixture testMapper) : base(testMapper)
         {
-        }
-
-        [Fact]
-        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockPaymentMethodService = new Mock<IStripePaymentMethodService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
-
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.DetachPaymentMethodAsync(It.IsAny<string>()))
-                .ThrowsAsync(new StripeException())
-                .Verifiable();
-
-            var paymentMethodDetachController = new StripePaymentMethodDetachController(
-                mockPaymentMethodService.Object,
-                mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            paymentMethodDetachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await paymentMethodDetachController.PostAsync("PaymentMethod");
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockPaymentMethodService.Verify(paymentMethodService => paymentMethodService.DetachPaymentMethodAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]

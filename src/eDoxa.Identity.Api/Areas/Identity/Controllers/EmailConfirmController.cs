@@ -1,5 +1,5 @@
 ﻿// Filename: EmailConfirmController.cs
-// Date Created: 2019-08-30
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,10 +7,13 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
@@ -19,24 +22,24 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/email/confirm")]
     [ApiExplorerSettings(GroupName = "Email")]
-    public class EmailConfirmController : ControllerBase
+    public sealed class EmailConfirmController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
 
-        public EmailConfirmController(IUserManager userManager)
+        public EmailConfirmController(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
-        /// <summary>
-        ///     User's forgot password.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("User's forgot password.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync([FromQuery] string? userId, [FromQuery] string? code)
         {
             if (userId != null && code != null)
             {
-                var user = await _userManager.FindByIdAsync(userId);
+                var user = await _userService.FindByIdAsync(userId);
 
                 if (user == null)
                 {
@@ -46,7 +49,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 // BUG: Quick fix. Must be refactored. Related to the encoding.
                 code = code.Replace(" ", "+");
 
-                var result = await _userManager.ConfirmEmailAsync(user, code);
+                var result = await _userService.ConfirmEmailAsync(user, code);
 
                 if (!result.Succeeded)
                 {

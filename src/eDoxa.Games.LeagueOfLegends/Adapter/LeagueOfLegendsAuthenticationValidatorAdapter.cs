@@ -9,10 +9,8 @@ using System.Threading.Tasks;
 using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
-using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.Results;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using RiotSharp.Misc;
 
@@ -31,7 +29,7 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
+        public override async Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
         {
             await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
 
@@ -39,10 +37,10 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
             
             if (summoner.ProfileIconId != gameAuthentication.Factor.ExpectedSummonerProfileIconId)
             {
-                return new ValidationFailure("_error", $"{Game} authentication process failed.").ToResult();
+                return DomainValidationResult.Failure("_error", $"{Game} authentication process failed.");
             }
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
     }
 }

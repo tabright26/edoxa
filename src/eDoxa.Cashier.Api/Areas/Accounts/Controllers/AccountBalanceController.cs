@@ -1,5 +1,5 @@
 ﻿// Filename: AccountBalanceController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -20,7 +20,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/account/balance")]
     [ApiExplorerSettings(GroupName = "Account")]
@@ -33,12 +32,9 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             _accountQuery = accountQuery;
         }
 
-        /// <summary>
-        ///     Get account balance by currency.
-        /// </summary>
         [HttpGet("{currency}")]
+        [SwaggerOperation("Get account balance by currency.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceResponse))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByCurrencyAsync(Currency currency)
         {
