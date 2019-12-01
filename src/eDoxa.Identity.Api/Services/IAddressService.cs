@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Identity;
 

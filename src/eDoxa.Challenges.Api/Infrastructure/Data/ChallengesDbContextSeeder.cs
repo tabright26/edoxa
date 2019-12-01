@@ -16,7 +16,7 @@ using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;

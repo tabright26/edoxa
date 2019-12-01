@@ -7,7 +7,7 @@
 using eDoxa.Identity.Api.ErrorDescribers;
 using eDoxa.Identity.Api.Validators;
 using eDoxa.Seedwork.Application.FluentValidation.ErrorDescribers;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 

@@ -11,7 +11,7 @@ using AutoMapper;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Areas.Games.Responses;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentValidation.AspNetCore;
 

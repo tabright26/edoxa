@@ -7,7 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Extensions

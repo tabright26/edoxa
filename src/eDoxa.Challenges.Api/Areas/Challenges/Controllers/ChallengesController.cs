@@ -15,7 +15,7 @@ using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 
 using FluentValidation.AspNetCore;

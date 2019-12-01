@@ -6,7 +6,7 @@
 
 using System.ComponentModel;
 
-namespace eDoxa.Seedwork.Domain.Miscs
+namespace eDoxa.Seedwork.Domain.Misc
 {
     [TypeConverter(typeof(StringIdTypeConverter))]
     public sealed class PlayerId : StringId<PlayerId>

@@ -1,4 +1,4 @@
-﻿// Filename: MatchId.cs
+﻿// Filename: ParticipantId.cs
 // Date Created: 2019-06-20
 // 
 // ================================================
@@ -10,10 +10,10 @@
 
 using System.ComponentModel;
 
-namespace eDoxa.Seedwork.Domain.Miscs
+namespace eDoxa.Seedwork.Domain.Misc
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class MatchId : EntityId<MatchId>
+    public sealed class ParticipantId : EntityId<ParticipantId>
     {
     }
 }

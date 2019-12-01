@@ -13,7 +13,7 @@ using eDoxa.Challenges.Web.Aggregator.Models;
 using eDoxa.Challenges.Web.Aggregator.Services;
 using eDoxa.Challenges.Web.Aggregator.Transformers;
 using eDoxa.Identity.Responses;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 

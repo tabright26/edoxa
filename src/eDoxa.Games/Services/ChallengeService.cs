@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Seedwork.Application.Dtos;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Services
 {

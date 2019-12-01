@@ -11,7 +11,7 @@ using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Games.Factories;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 

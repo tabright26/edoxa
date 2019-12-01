@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

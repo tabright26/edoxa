@@ -1,5 +1,5 @@
 ﻿// Filename: Entity.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,10 +9,9 @@ using System.Collections.Generic;
 
 namespace eDoxa.Seedwork.Domain
 {
-    public abstract class Entity<TEntityId> : IEntity
+    public abstract class Entity<TEntityId> : Entity
     where TEntityId : EntityId<TEntityId>, new()
     {
-        private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
         private int? _requestedHashCode;
 
         protected Entity()
@@ -21,18 +20,6 @@ namespace eDoxa.Seedwork.Domain
         }
 
         public virtual TEntityId Id { get; private set; }
-
-        public void ClearDomainEvents()
-        {
-            _domainEvents.Clear();
-        }
-
-        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
-
-        public void AddDomainEvent(IDomainEvent domainEvent)
-        {
-            _domainEvents.Add(domainEvent);
-        }
 
         public bool IsTransient()
         {
@@ -106,6 +93,23 @@ namespace eDoxa.Seedwork.Domain
             }
 
             Id = entityId;
+        }
+    }
+
+    public abstract class Entity : IEntity
+    {
+        private Queue<IDomainEvent> _domainEvents = new Queue<IDomainEvent>();
+
+        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
+
+        public void AddDomainEvent(IDomainEvent domainEvent)
+        {
+            _domainEvents.Enqueue(domainEvent);
+        }
+
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
         }
     }
 }

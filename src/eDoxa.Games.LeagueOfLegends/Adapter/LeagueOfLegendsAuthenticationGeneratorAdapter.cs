@@ -13,7 +13,7 @@ using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Seedwork.Application.FluentValidation.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation.Results;

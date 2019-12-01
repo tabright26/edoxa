@@ -5,18 +5,15 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 
 using eDoxa.Games.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Domain.AggregateModels.GameAggregate
 {
-    public sealed class Credential : IEquatable<Credential?>, IEntity, IAggregateRoot
+    public sealed class Credential : Entity, IAggregateRoot, IEquatable<Credential?> 
     {
-        private List<IDomainEvent> _domainEvents = new List<IDomainEvent>();
-
         public Credential(
             UserId userId,
             Game game,
@@ -45,13 +42,6 @@ namespace eDoxa.Games.Domain.AggregateModels.GameAggregate
         public PlayerId PlayerId { get; private set; }
 
         public DateTime Timestamp { get; private set; }
-
-        public IReadOnlyCollection<IDomainEvent> DomainEvents => _domainEvents;
-
-        public void ClearDomainEvents()
-        {
-            _domainEvents.Clear();
-        }
 
         public bool Equals(Credential? other)
         {
@@ -85,11 +75,6 @@ namespace eDoxa.Games.Domain.AggregateModels.GameAggregate
 
                 return hashCode;
             }
-        }
-
-        public void AddDomainEvent(IDomainEvent domainEvent)
-        {
-            _domainEvents.Add(domainEvent);
         }
 
         public void Delete()

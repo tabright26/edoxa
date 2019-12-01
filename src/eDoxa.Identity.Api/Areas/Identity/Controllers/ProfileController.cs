@@ -12,7 +12,7 @@ using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using IdentityServer4.AccessTokenValidation;
 

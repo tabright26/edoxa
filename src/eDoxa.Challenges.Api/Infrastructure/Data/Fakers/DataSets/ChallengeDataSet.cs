@@ -8,7 +8,7 @@ using Bogus;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 {
@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers.DataSets
 
         public Game Game(Game? game = null)
         {
-            return game ?? Faker.PickRandom(Seedwork.Domain.Miscs.Game.GetEnumerations());
+            return game ?? Faker.PickRandom(Seedwork.Domain.Misc.Game.GetEnumerations());
         }
 
         public BestOf BestOf()

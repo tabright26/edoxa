@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace eDoxa.Seedwork.Domain.Miscs
+namespace eDoxa.Seedwork.Domain.Misc
 {
     [JsonObject]
     public sealed class Dob : ValueObject

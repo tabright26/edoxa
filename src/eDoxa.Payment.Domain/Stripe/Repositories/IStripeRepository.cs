@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Payment.Domain.Stripe.Repositories
 {

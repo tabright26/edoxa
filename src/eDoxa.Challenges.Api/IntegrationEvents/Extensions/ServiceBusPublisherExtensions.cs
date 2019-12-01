@@ -9,7 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions

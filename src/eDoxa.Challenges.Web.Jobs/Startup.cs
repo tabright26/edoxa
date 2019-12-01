@@ -12,7 +12,7 @@ using eDoxa.Challenges.Web.Jobs.Infrastructure;
 using eDoxa.Challenges.Web.Jobs.RecurringJobs;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Hangfire.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;

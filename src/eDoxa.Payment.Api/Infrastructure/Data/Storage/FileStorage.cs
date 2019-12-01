@@ -11,7 +11,7 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
 namespace eDoxa.Payment.Api.Infrastructure.Data.Storage

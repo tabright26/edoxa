@@ -11,7 +11,7 @@ using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Application.FluentValidation.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentValidation.Results;
 

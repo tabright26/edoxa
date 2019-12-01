@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentValidation.AspNetCore;
 

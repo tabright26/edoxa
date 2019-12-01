@@ -7,7 +7,7 @@
 using System;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Identity.Domain.AggregateModels.AddressAggregate
 {

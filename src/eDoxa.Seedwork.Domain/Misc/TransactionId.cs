@@ -1,15 +1,15 @@
-﻿// Filename: DivisionId.cs
-// Date Created: 2019-10-31
-//
+﻿// Filename: TransactionId.cs
+// Date Created: 2019-07-05
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.ComponentModel;
 
-namespace eDoxa.Seedwork.Domain.Miscs
+namespace eDoxa.Seedwork.Domain.Misc
 {
     [TypeConverter(typeof(EntityIdTypeConverter))]
-    public sealed class DivisionId : EntityId<DivisionId>
+    public sealed class TransactionId : EntityId<TransactionId>
     {
     }
 }

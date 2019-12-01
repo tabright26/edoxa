@@ -10,7 +10,7 @@ using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentValidation.Results;
 

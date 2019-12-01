@@ -17,7 +17,7 @@ using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using LinqKit;
 

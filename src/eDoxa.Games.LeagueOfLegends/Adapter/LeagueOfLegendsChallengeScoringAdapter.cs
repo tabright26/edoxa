@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Seedwork.Application.Dtos;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.Extensions.Options;
 

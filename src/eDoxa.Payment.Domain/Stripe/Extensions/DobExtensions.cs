@@ -6,7 +6,7 @@
 
 using Stripe;
 
-using Dob = eDoxa.Seedwork.Domain.Miscs.Dob;
+using Dob = eDoxa.Seedwork.Domain.Misc.Dob;
 
 namespace eDoxa.Payment.Domain.Stripe.Extensions
 {
