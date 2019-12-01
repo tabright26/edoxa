@@ -55,10 +55,10 @@ namespace eDoxa.Seedwork.Application.Extensions
             return services.AddProblemDetails(
                 options =>
                 {
+                    action?.Invoke(options);
+
                     // Don't include exception details in a production environment.
                     options.IncludeExceptionDetails = context => !environment.IsProduction();
-
-                    action?.Invoke(options);
 
                     // This will map NotImplementedException to the 501 Not Implemented status code.
                     options.Map<NotImplementedException>(exception => new ExceptionProblemDetails(exception, StatusCodes.Status501NotImplemented));

@@ -19,8 +19,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using Stripe;
-
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
@@ -57,30 +55,23 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync([FromQuery] string type)
         {
-            try
+            var userId = HttpContext.GetUserId();
+
+            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
             {
-                var userId = HttpContext.GetUserId();
-
-                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
-                {
-                    return this.NotFound("Stripe reference not found.");
-                }
-
-                var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
-
-                var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId, type);
-
-                if (!paymentMethods.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(_mapper.Map<IEnumerable<StripePaymentMethodResponse>>(paymentMethods));
+                return this.NotFound("Stripe reference not found.");
             }
-            catch (StripeException exception)
+
+            var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
+
+            var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId, type);
+
+            if (!paymentMethods.Any())
             {
-                return this.BadRequest(exception.StripeResponse);
+                return this.NoContent();
             }
+
+            return this.Ok(_mapper.Map<IEnumerable<StripePaymentMethodResponse>>(paymentMethods));
         }
 
         [HttpPut("{paymentMethodId}")]
@@ -90,23 +81,16 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PutAsync(string paymentMethodId, [FromBody] StripePaymentMethodPutRequest request)
         {
-            try
+            var userId = HttpContext.GetUserId();
+
+            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
             {
-                var userId = HttpContext.GetUserId();
-
-                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
-                {
-                    return this.NotFound("Stripe reference not found.");
-                }
-
-                var paymentMethod = await _stripePaymentMethodService.UpdatePaymentMethodAsync(paymentMethodId, request.ExpMonth, request.ExpYear);
-
-                return this.Ok(_mapper.Map<StripePaymentMethodResponse>(paymentMethod));
+                return this.NotFound("Stripe reference not found.");
             }
-            catch (StripeException exception)
-            {
-                return this.BadRequest(exception.StripeResponse);
-            }
+
+            var paymentMethod = await _stripePaymentMethodService.UpdatePaymentMethodAsync(paymentMethodId, request.ExpMonth, request.ExpYear);
+
+            return this.Ok(_mapper.Map<StripePaymentMethodResponse>(paymentMethod));
         }
     }
 }

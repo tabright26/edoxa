@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -101,7 +101,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomCors();
 
-            services.AddCustomProblemDetails();
+            services.AddCustomProblemDetails(options => options.MapStripeException());
 
             services.AddCustomControllers<Startup>().AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>();
 
@@ -147,7 +147,7 @@ namespace eDoxa.Payment.Api
                 endpoints =>
                 {
                     endpoints.MapControllers();
-                    
+
                     endpoints.MapConfigurationRoute<PaymentAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();

@@ -17,8 +17,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using Stripe;
-
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
@@ -54,30 +52,23 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
-            try
+            var userId = HttpContext.GetUserId();
+
+            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
             {
-                var userId = HttpContext.GetUserId();
-
-                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
-                {
-                    return this.NotFound("Stripe reference not found.");
-                }
-
-                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
-
-                var bankAccount = await _externalAccountService.FindBankAccountAsync(accountId);
-
-                if (bankAccount == null)
-                {
-                    return this.NotFound("Bank account not found.");
-                }
-
-                return this.Ok(_mapper.Map<StripeBankAccountResponse>(bankAccount));
+                return this.NotFound("Stripe reference not found.");
             }
-            catch (StripeException exception)
+
+            var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
+
+            var bankAccount = await _externalAccountService.FindBankAccountAsync(accountId);
+
+            if (bankAccount == null)
             {
-                return this.BadRequest(exception.StripeResponse);
+                return this.NotFound("Bank account not found.");
             }
+
+            return this.Ok(_mapper.Map<StripeBankAccountResponse>(bankAccount));
         }
 
         [HttpPost]
@@ -87,25 +78,18 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync([FromBody] StripeBankAccountPostRequest request)
         {
-            try
+            var userId = HttpContext.GetUserId();
+
+            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
             {
-                var userId = HttpContext.GetUserId();
-
-                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
-                {
-                    return this.NotFound("Stripe reference not found.");
-                }
-
-                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
-
-                var bankAccount = await _externalAccountService.UpdateBankAccountAsync(accountId, request.Token);
-
-                return this.Ok(_mapper.Map<StripeBankAccountResponse>(bankAccount));
+                return this.NotFound("Stripe reference not found.");
             }
-            catch (StripeException exception)
-            {
-                return this.BadRequest(exception.StripeResponse);
-            }
+
+            var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
+
+            var bankAccount = await _externalAccountService.UpdateBankAccountAsync(accountId, request.Token);
+
+            return this.Ok(_mapper.Map<StripeBankAccountResponse>(bankAccount));
         }
     }
 }

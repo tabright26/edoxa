@@ -16,8 +16,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using Stripe;
-
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
@@ -46,25 +44,18 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
-            try
+            var userId = HttpContext.GetUserId();
+
+            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
             {
-                var userId = HttpContext.GetUserId();
-
-                if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
-                {
-                    return this.NotFound("Stripe reference not found.");
-                }
-
-                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
-
-                var account = await _stripeAccountService.GetAccountAsync(accountId);
-
-                return this.Ok(_mapper.Map<StripeAccountResponse>(account));
+                return this.NotFound("Stripe reference not found.");
             }
-            catch (StripeException exception)
-            {
-                return this.BadRequest(exception.StripeResponse);
-            }
+
+            var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
+
+            var account = await _stripeAccountService.GetAccountAsync(accountId);
+
+            return this.Ok(_mapper.Map<StripeAccountResponse>(account));
         }
     }
 }
