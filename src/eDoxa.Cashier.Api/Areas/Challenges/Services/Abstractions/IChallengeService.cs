@@ -8,9 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions
 {
@@ -20,6 +19,6 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions
 
         Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
 
-        Task<ValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee, CancellationToken cancellationToken = default);
+        Task<DomainValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee, CancellationToken cancellationToken = default);
     }
 }

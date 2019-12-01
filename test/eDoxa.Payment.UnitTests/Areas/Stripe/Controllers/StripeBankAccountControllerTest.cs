@@ -33,36 +33,6 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockExternalService = new Mock<IStripeExternalAccountService>();
-            var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
-
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException()).Verifiable();
-
-            var bankAccountController = new StripeBankAccountController(
-                mockExternalService.Object,
-                mockAccountService.Object,
-                mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await bankAccountController.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-        }
-
-        [Fact]
         public async Task GetAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
@@ -153,36 +123,6 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
             mockExternalService.Verify(externalService => externalService.FindBankAccountAsync(It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockExternalService = new Mock<IStripeExternalAccountService>();
-            var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
-
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException()).Verifiable();
-
-            var bankAccountController = new StripeBankAccountController(
-                mockExternalService.Object,
-                mockAccountService.Object,
-                mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await bankAccountController.PostAsync(new StripeBankAccountPostRequest("AS123TOKEN"));
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]

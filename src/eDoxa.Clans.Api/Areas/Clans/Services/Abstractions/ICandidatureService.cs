@@ -12,9 +12,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Services.Abstractions
 {
@@ -26,11 +25,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services.Abstractions
 
         Task<Candidature?> FindCandidatureAsync(CandidatureId candidatureId);
 
-        Task<ValidationResult> SendCandidatureAsync(UserId candidateId, ClanId clanId);
+        Task<DomainValidationResult> SendCandidatureAsync(UserId candidateId, ClanId clanId);
 
-        Task<ValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId);
+        Task<DomainValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId);
 
-        Task<ValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId ownerId);
+        Task<DomainValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId ownerId);
 
         Task DeleteCandidaturesAsync(UserId clanId);
 

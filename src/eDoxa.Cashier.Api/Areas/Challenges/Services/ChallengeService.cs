@@ -11,10 +11,8 @@ using eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Api.Areas.Challenges.Services
 {
@@ -41,7 +39,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services
             await _challengeRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task<ValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee, CancellationToken cancellationToken = default)
+        public async Task<DomainValidationResult> CreateChallengeAsync(ChallengeId challengeId, PayoutEntries payoutEntries, EntryFee entryFee, CancellationToken cancellationToken = default)
         {
             var strategy = _challengePayoutFactory.CreateInstance();
 
@@ -49,7 +47,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services
 
             if (payout == null)
             {
-                return new ValidationFailure("", "Invalid payout structure. Payout entries doesn't match the chart.").ToResult();
+                return DomainValidationResult.Failure("Invalid payout structure. Payout entries doesn't match the chart.");
             }
 
             var challenge = new Challenge(challengeId, entryFee, payout);
@@ -58,7 +56,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Services
 
             await _challengeRepository.CommitAsync(cancellationToken);
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
     }
 }

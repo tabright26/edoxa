@@ -25,8 +25,6 @@ using eDoxa.ServiceBus.Abstractions;
 
 using FluentAssertions;
 
-using FluentValidation.Results;
-
 using Moq;
 
 using Xunit;
@@ -102,7 +100,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -129,7 +127,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -169,7 +167,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -196,7 +194,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -221,7 +219,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -246,7 +244,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
         }
 
         [Fact]
@@ -270,7 +268,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
         }
 
         [Fact] //TODO: Validation with TryGetValue
@@ -293,7 +291,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -328,7 +326,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.DepositAsync(account, Money.OneHundred, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchDepositMoneyBundles(), Times.Once());
 
@@ -370,7 +368,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.DepositAsync(account, Money.OneHundred, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchDepositMoneyBundles(), Times.Once());
@@ -398,7 +396,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.DepositAsync(account, Money.OneHundred, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             result.Errors.Should().NotBeEmpty();
 
@@ -418,7 +416,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
 
             // Act
-            var action = new Func<Task<ValidationResult>>(async () => await service.DepositAsync(account, null, "gabriel@edoxa.gg"));
+            var action = new Func<Task<DomainValidationResult>>(async () => await service.DepositAsync(account, null, "gabriel@edoxa.gg"));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
@@ -455,7 +453,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.DepositAsync(account, Token.FiftyThousand, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockBundlesService.Verify(bundleService => bundleService.FetchDepositTokenBundles(), Times.Once());
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
             mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserAccountDepositIntegrationEvent>()), Times.Once());
@@ -493,7 +491,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.DepositAsync(account, Token.FiftyThousand, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchDepositTokenBundles(), Times.Once());
@@ -522,7 +520,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.DepositAsync(account, Token.FiftyThousand, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchDepositTokenBundles(), Times.Once());
@@ -593,7 +591,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.WithdrawalAsync(account, Money.Twenty, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());
 
@@ -620,7 +618,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.WithdrawalAsync(account, Token.FiftyThousand, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -649,7 +647,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.WithdrawalAsync(account, Money.Twenty, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());
@@ -688,7 +686,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.WithdrawalAsync(account, Money.Twenty, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());
@@ -717,7 +715,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var result = await service.WithdrawalAsync(account, Money.Twenty, "gabriel@edoxa.gg");
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
             mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());

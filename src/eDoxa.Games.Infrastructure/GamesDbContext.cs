@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Infrastructure.MediatR.Extensions;
 
 using MediatR;
 

@@ -6,9 +6,8 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 using Newtonsoft.Json;
 
@@ -19,9 +18,9 @@ namespace eDoxa.Games.Abstractions.Adapter
     {
         public abstract Game Game { get; }
 
-        public abstract Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
+        public abstract Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
 
-        public async Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, object request)
+        public async Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, object request)
         {
             return await this.GenerateAuthenticationAsync(userId, JsonConvert.DeserializeObject<TRequest>(request.ToString()!));
         }

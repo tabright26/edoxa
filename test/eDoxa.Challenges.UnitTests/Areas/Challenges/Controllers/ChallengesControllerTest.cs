@@ -17,13 +17,10 @@ using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -157,7 +154,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                 It.IsAny<Challenge>(),
                 It.IsAny<IDateTimeProvider>(),
                 It.IsAny<CancellationToken>()
-                )).ReturnsAsync(new ValidationResult()).Verifiable();
+                )).ReturnsAsync(new DomainValidationResult()).Verifiable();
 
             mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
@@ -216,7 +213,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                 It.IsAny<Challenge>(),
                 It.IsAny<IDateTimeProvider>(),
                 It.IsAny<CancellationToken>()
-                )).ReturnsAsync(new ValidationFailure("test", "test message").ToResult()).Verifiable();
+                )).ReturnsAsync(DomainValidationResult.Failure("test", "test message")).Verifiable();
 
             var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 
@@ -251,7 +248,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                 It.IsAny<ChallengeDuration>(),
                 It.IsAny<IDateTimeProvider>(),
                 It.IsAny<CancellationToken>()
-                )).ReturnsAsync(new ValidationResult()).Verifiable();
+                )).ReturnsAsync(new DomainValidationResult()).Verifiable();
 
             mockChallengeQuery.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
@@ -294,7 +291,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                 It.IsAny<ChallengeDuration>(),
                 It.IsAny<IDateTimeProvider>(),
                 It.IsAny<CancellationToken>()
-                )).ReturnsAsync(new ValidationFailure("test", "test message").ToResult()).Verifiable();
+                )).ReturnsAsync(DomainValidationResult.Failure("test", "test message")).Verifiable();
 
             var controller = new ChallengesController(mockChallengeQuery.Object, mockChallengeService.Object);
 

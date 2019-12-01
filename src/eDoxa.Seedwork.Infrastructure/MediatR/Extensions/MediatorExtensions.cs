@@ -10,7 +10,7 @@ using eDoxa.Seedwork.Domain;
 
 using MediatR;
 
-namespace eDoxa.Seedwork.Infrastructure.Extensions
+namespace eDoxa.Seedwork.Infrastructure.MediatR.Extensions
 {
     public static class MediatorExtensions
     {

@@ -7,7 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Hosting;

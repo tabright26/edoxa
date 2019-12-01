@@ -12,15 +12,13 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
-using FluentValidation.Results;
-
 namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
 {
     public interface IChallengeService
     {
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<ValidationResult> CreateChallengeAsync(
+        Task<DomainValidationResult> CreateChallengeAsync(
             ChallengeId id,
             ChallengeName name,
             Game game,
@@ -31,7 +29,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
             CancellationToken cancellationToken = default
         );
 
-        Task<ValidationResult> RegisterChallengeParticipantAsync(
+        Task<DomainValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             ParticipantId participantId,
             UserId userId,
@@ -42,7 +40,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions
 
         Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
 
-        Task<ValidationResult> SynchronizeChallengeAsync(IChallenge challenge, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
+        Task<DomainValidationResult> SynchronizeChallengeAsync(IChallenge challenge, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
 
         Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
     }

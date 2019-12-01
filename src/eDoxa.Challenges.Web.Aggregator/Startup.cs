@@ -17,9 +17,9 @@ using AutoMapper;
 
 using eDoxa.Challenges.Web.Aggregator.Infrastructure;
 using eDoxa.Challenges.Web.Aggregator.Services;
-using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Refit.DelegatingHandlers;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;

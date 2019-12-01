@@ -32,30 +32,6 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
         }
 
         [Fact]
-        public async Task PutAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockReferenceService = new Mock<IStripeReferenceService>();
-            var mockCustomerService = new Mock<IStripeCustomerService>();
-
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException()).Verifiable();
-
-            var customerPaymentDefaultController = new StripeCustomerPaymentMethodDefaultController(mockReferenceService.Object, mockCustomerService.Object, TestMapper);
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            customerPaymentDefaultController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await customerPaymentDefaultController.PutAsync("testValue");
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
-        }
-
-        [Fact]
         public async Task PutAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange

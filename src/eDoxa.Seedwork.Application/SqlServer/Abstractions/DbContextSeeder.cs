@@ -1,5 +1,5 @@
 ﻿// Filename: DbContextSeeder.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-11-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Seedwork.Application
+namespace eDoxa.Seedwork.Application.SqlServer.Abstractions
 {
     public abstract class DbContextSeeder : IDbContextSeeder
     {

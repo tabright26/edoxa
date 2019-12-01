@@ -10,10 +10,8 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Services
 {
@@ -43,16 +41,16 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services
             return await _candidatureRepository.FindAsync(candidatureId);
         }
 
-        public async Task<ValidationResult> SendCandidatureAsync(UserId userId, ClanId clanId)
+        public async Task<DomainValidationResult> SendCandidatureAsync(UserId userId, ClanId clanId)
         {
             if (await _clanRepository.IsMemberAsync(userId))
             {
-                return new ValidationFailure(string.Empty, "User already in a clan.").ToResult();
+                return DomainValidationResult.Failure(string.Empty, "User already in a clan.");
             }
 
             if (await _candidatureRepository.ExistsAsync(userId, clanId))
             {
-                return new ValidationFailure("_error", "The candidature of this member for that clan already exist.").ToResult();
+                return DomainValidationResult.Failure("_error", "The candidature of this member for that clan already exist.");
             }
 
             var candidature = new Candidature(userId, clanId);
@@ -61,35 +59,35 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services
 
             await _candidatureRepository.UnitOfWork.CommitAsync();
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
-        public async Task<ValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId)
+        public async Task<DomainValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId)
         {
             if (!await _clanRepository.IsOwnerAsync(candidature.ClanId, ownerId))
             {
-                return new ValidationFailure(string.Empty, "Permission required.").ToResult();
+                return DomainValidationResult.Failure("Permission required.");
             }
 
             candidature.Accept();
 
             await _candidatureRepository.UnitOfWork.CommitAsync();
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
-        public async Task<ValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId userId)
+        public async Task<DomainValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId userId)
         {
             if (!await _clanRepository.IsOwnerAsync(candidature.ClanId, userId))
             {
-                return new ValidationFailure(string.Empty, "Permission required.").ToResult();
+                return DomainValidationResult.Failure("Permission required.");
             }
 
             _candidatureRepository.Delete(candidature);
 
             await _candidatureRepository.UnitOfWork.CommitAsync();
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
         public async Task DeleteCandidaturesAsync(ClanId clanId)

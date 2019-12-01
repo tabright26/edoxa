@@ -12,7 +12,7 @@ using System.Reflection;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 namespace eDoxa.Clans.Api.Infrastructure.Data.Storage
 {

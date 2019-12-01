@@ -20,13 +20,10 @@ using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Cashier.TestHelper.Mocks;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -132,7 +129,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionMetadata>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationFailure("test", "test message").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("test", "test message"))
                 .Verifiable();
 
             var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
@@ -219,7 +216,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionMetadata>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             mockTransactionQuery.Setup(transactionQuery => transactionQuery.FindTransactionAsync(It.IsAny<TransactionId>()))

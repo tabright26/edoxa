@@ -11,11 +11,8 @@ using System.Threading.Tasks;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Games.Services
 {
@@ -30,16 +27,16 @@ namespace eDoxa.Games.Services
             _gameAuthenticationService = gameAuthenticationService;
         }
 
-        public async Task<ValidationResult> LinkCredentialAsync(UserId userId, Game game)
+        public async Task<DomainValidationResult> LinkCredentialAsync(UserId userId, Game game)
         {
             if (await _gameCredentialRepository.CredentialExistsAsync(userId, game))
             {
-                return new ValidationFailure(string.Empty, $"{game} credential are already linked.").ToResult();
+                return DomainValidationResult.Failure($"{game} credential are already linked.");
             }
 
             if (!await _gameAuthenticationService.AuthenticationExistsAsync(userId, game))
             {
-                return new ValidationFailure(string.Empty, $"{game} authentication process not started.").ToResult();
+                return DomainValidationResult.Failure($"{game} authentication process not started.");
             }
 
             var authFactor = await _gameAuthenticationService.FindAuthenticationAsync(userId, game);
@@ -62,7 +59,7 @@ namespace eDoxa.Games.Services
             return result;
         }
 
-        public async Task<ValidationResult> UnlinkCredentialAsync(Credential credential)
+        public async Task<DomainValidationResult> UnlinkCredentialAsync(Credential credential)
         {
             credential.Delete();
 
@@ -72,7 +69,7 @@ namespace eDoxa.Games.Services
 
             await _gameCredentialRepository.UnitOfWork.CommitAsync();
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
         public async Task<IReadOnlyCollection<Credential>> FetchCredentialsAsync(UserId userId)

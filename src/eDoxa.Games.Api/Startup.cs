@@ -22,6 +22,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Infrastructure.Redis.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
@@ -102,7 +103,7 @@ namespace eDoxa.Games.Api
 
             services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
 
-            services.AddRedisCache(Configuration);
+            services.AddCustomRedis(Configuration);
 
             services.AddCustomCors();
 

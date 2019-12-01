@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Infrastructure.Extensions;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,11 +15,11 @@ using StackExchange.Redis.Extensions.Core.Configuration;
 using StackExchange.Redis.Extensions.Core.Implementations;
 using StackExchange.Redis.Extensions.Newtonsoft;
 
-namespace eDoxa.Seedwork.Infrastructure.Extensions
+namespace eDoxa.Seedwork.Infrastructure.Redis.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static void AddRedisCache(this IServiceCollection services, IConfiguration configuration)
+        public static void AddCustomRedis(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton(
                 new RedisConfiguration

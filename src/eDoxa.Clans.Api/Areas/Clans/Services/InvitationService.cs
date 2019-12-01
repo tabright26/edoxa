@@ -10,10 +10,8 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Services
 {
@@ -43,21 +41,21 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services
             return await _invitationRepository.FindAsync(invitationId);
         }
 
-        public async Task<ValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
+        public async Task<DomainValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
         {
             if (!await _clanRepository.IsOwnerAsync(clanId, ownerId))
             {
-                return new ValidationFailure(string.Empty, "Permission required.").ToResult();
+                return DomainValidationResult.Failure("Permission required.");
             }
 
             if (await _clanRepository.IsMemberAsync(userId))
             {
-                return new ValidationFailure(string.Empty, "Target already in a clan.").ToResult();
+                return DomainValidationResult.Failure("Target already in a clan.");
             }
 
             if (await _invitationRepository.ExistsAsync(ownerId, clanId))
             {
-                return new ValidationFailure("_error", "The invitation from this clan to that member already exist.").ToResult();
+                return DomainValidationResult.Failure("_error", "The invitation from this clan to that member already exist.");
             }
 
             var invitation = new Invitation(userId, clanId);
@@ -66,35 +64,35 @@ namespace eDoxa.Clans.Api.Areas.Clans.Services
 
             await _invitationRepository.UnitOfWork.CommitAsync();
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
-        public async Task<ValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId)
+        public async Task<DomainValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId)
         {
             if (invitation.UserId != userId)
             {
-                return new ValidationFailure(string.Empty, $"The user {userId} can not accept someone else invitation.").ToResult();
+                return DomainValidationResult.Failure($"The user {userId} can not accept someone else invitation.");
             }
 
             invitation.Accept();
 
             await _invitationRepository.UnitOfWork.CommitAsync();
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
-        public async Task<ValidationResult> DeclineInvitationAsync(Invitation invitation, UserId userId)
+        public async Task<DomainValidationResult> DeclineInvitationAsync(Invitation invitation, UserId userId)
         {
             if (invitation.UserId != userId)
             {
-                return new ValidationFailure(string.Empty, $"The user {userId} can not decline someone else invitation.").ToResult();
+                return DomainValidationResult.Failure($"The user {userId} can not decline someone else invitation.");
             }
 
             _invitationRepository.Delete(invitation);
 
             await _invitationRepository.UnitOfWork.CommitAsync();
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
         public async Task DeleteInvitationsAsync(ClanId clanId)

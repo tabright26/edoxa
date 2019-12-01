@@ -16,8 +16,6 @@ using eDoxa.Clans.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
-using FluentValidation.AspNetCore;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -83,7 +81,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("Division created.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
@@ -111,7 +109,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("The division has been removed.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
@@ -144,7 +142,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("Division Updated.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

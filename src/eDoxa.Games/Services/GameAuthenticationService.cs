@@ -10,9 +10,8 @@ using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Games.Services
 {
@@ -49,14 +48,14 @@ namespace eDoxa.Games.Services
             return await _gameAuthenticationRepository.AuthenticationExistsAsync(userId, game);
         }
 
-        public async Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request)
+        public async Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request)
         {
             var adapter = _gameAuthenticationGeneratorFactory.CreateInstance(game);
 
             return await adapter.GenerateAuthenticationAsync(userId, request);
         }
 
-        public async Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication)
+        public async Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication)
         {
             var adapter = _gameAuthenticationValidatorFactory.CreateInstance(game);
 

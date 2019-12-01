@@ -17,8 +17,6 @@ using eDoxa.Clans.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
-using FluentValidation.AspNetCore;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -110,7 +108,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("The candidature as been sent.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
@@ -138,7 +136,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("The candidature has been accepted.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
@@ -166,7 +164,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("The candidature has been declined.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

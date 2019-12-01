@@ -31,39 +31,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
         public StripePaymentMethodAttachControllerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
-
-        [Fact]
-        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockPaymentMethodService = new Mock<IStripePaymentMethodService>();
-            var mockCustomerService = new Mock<IStripeCustomerService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
-
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()))
-                .ThrowsAsync(new StripeException())
-                .Verifiable();
-
-            var paymentMethodAttachController = new StripePaymentMethodAttachController(
-                mockPaymentMethodService.Object,
-                mockCustomerService.Object,
-                mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await paymentMethodAttachController.PostAsync("PaymentMethod", new StripePaymentMethodAttachPostRequest());
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
-        }
-
+        
         [Fact]
         public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
         {

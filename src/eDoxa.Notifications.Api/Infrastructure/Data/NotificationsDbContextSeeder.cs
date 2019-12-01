@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Notifications.Infrastructure;
-using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;

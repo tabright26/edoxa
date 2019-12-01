@@ -14,7 +14,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Infrastructure;
-using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 

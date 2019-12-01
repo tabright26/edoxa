@@ -14,11 +14,10 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.Responses;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
-
-using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -90,7 +89,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 //return this.Created(Url.Link("CreateChallenge", null), response);
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
@@ -137,7 +136,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 return this.Ok(response);
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

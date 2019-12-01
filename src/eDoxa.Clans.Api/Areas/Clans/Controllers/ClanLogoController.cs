@@ -11,8 +11,6 @@ using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
-using FluentValidation.AspNetCore;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -85,7 +83,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("The logo has been uploaded.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

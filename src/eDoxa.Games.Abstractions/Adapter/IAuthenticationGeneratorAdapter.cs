@@ -6,22 +6,21 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Games.Abstractions.Adapter
 {
     public interface IAuthenticationGeneratorAdapter<in TRequest> : IAuthenticationGeneratorAdapter
     where TRequest : class
     {
-        Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
+        Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
     }
 
     public interface IAuthenticationGeneratorAdapter
     {
         Game Game { get; }
 
-        Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, object request);
+        Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, object request);
     }
 }

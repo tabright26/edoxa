@@ -13,8 +13,6 @@ using eDoxa.Games.Api.Areas.Games.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
-using FluentValidation.AspNetCore;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -57,7 +55,7 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
                 return this.Ok(authentication.Factor);
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
@@ -79,7 +77,7 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
                 return this.Ok(_mapper.Map<CredentialResponse>(credential));
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

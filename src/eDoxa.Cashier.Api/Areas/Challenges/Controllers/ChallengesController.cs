@@ -14,10 +14,9 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.Responses;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
-
-using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -81,7 +80,7 @@ namespace eDoxa.Cashier.Api.Areas.Challenges.Controllers
                 return this.Ok(response);
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Application.DevTools.Attributes;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

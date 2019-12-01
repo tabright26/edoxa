@@ -17,11 +17,10 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Moq;
 
@@ -64,7 +63,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Services
             var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, Currency.Token));
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
 
             mockChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
 
@@ -102,7 +101,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Challenges.Services
             var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, Currency.Token));
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
             mockChallengePayoutStrategy.Verify(payout => payout.GetPayout(It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Seedwork.Infrastructure
+namespace eDoxa.Seedwork.Infrastructure.SqlServer
 {
     public interface IEntityModel
     {

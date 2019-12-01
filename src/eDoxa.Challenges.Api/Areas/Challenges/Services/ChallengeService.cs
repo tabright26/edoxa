@@ -13,11 +13,8 @@ using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using FluentValidation.Results;
 
 using Microsoft.Extensions.Logging;
 
@@ -43,7 +40,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
             return await _challengeRepository.FindChallengeAsync(challengeId);
         }
 
-        public async Task<ValidationResult> CreateChallengeAsync(
+        public async Task<DomainValidationResult> CreateChallengeAsync(
             ChallengeId id,
             ChallengeName name,
             Game game,
@@ -69,10 +66,10 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
 
             await _challengeRepository.CommitAsync(true, cancellationToken);
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
-        public async Task<ValidationResult> RegisterChallengeParticipantAsync(
+        public async Task<DomainValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             ParticipantId participantId,
             UserId userId,
@@ -83,12 +80,12 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
         {
             if (challenge.SoldOut)
             {
-                return new ValidationFailure("_error", "The challenge was sold out.").ToResult();
+                return DomainValidationResult.Failure("_error", "The challenge was sold out.");
             }
 
             if (challenge.ParticipantExists(userId))
             {
-                return new ValidationFailure("_error", "The user already is registered.").ToResult();
+                return DomainValidationResult.Failure("_error", "The user already is registered.");
             }
 
             var participant = new Participant(participantId, userId, playerId, registeredAt);
@@ -102,7 +99,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
 
             await _challengeRepository.CommitAsync(true, cancellationToken);
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
         public async Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default)
@@ -125,7 +122,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
             }
         }
 
-        public async Task<ValidationResult> SynchronizeChallengeAsync(
+        public async Task<DomainValidationResult> SynchronizeChallengeAsync(
             IChallenge challenge,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default
@@ -133,7 +130,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
         {
             if (!challenge.CanSynchronize())
             {
-                return new ValidationFailure("_error", "Challenge wasn't synchronized due to is current state.").ToResult();
+                return DomainValidationResult.Failure("_error", "Challenge wasn't synchronized due to is current state.");
             }
 
             challenge.Synchronize(synchronizedAt);
@@ -174,7 +171,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Services
                 await _challengeRepository.CommitAsync(true, cancellationToken);
             }
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
         public async Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)

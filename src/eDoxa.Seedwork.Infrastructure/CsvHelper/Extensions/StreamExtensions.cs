@@ -8,7 +8,7 @@ using System.IO;
 
 using CsvHelper;
 
-namespace eDoxa.Seedwork.Infrastructure.Extensions
+namespace eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions
 {
     public static class StreamExtensions
     {

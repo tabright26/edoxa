@@ -6,6 +6,8 @@
 
 using System;
 
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
+
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;

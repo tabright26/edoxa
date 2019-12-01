@@ -15,7 +15,7 @@ using IdentityServer4;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 
-namespace eDoxa.Seedwork.Application.DelegatingHandlers
+namespace eDoxa.Seedwork.Application.Refit.DelegatingHandlers
 {
     public sealed class AccessTokenDelegatingHandler : DelegatingHandler
     {

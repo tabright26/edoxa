@@ -12,11 +12,9 @@ using eDoxa.Games.Abstractions.Adapter;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Requests;
-using eDoxa.Seedwork.Application.FluentValidation.Extensions;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Storage.Azure.Extensions;
-
-using FluentValidation.Results;
 
 using Microsoft.Azure.Storage;
 
@@ -44,15 +42,13 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
+        public override async Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
         {
             var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
 
             if (summoner == null)
             {
-                return new ValidationFailure(
-                    string.Empty,
-                    $"{Game} summoner's name doesn't exists. Note: Only NA server is supported for the moment").ToResult();
+                return DomainValidationResult.Failure($"{Game} summoner's name doesn't exists. Note: Only NA server is supported for the moment");
             }
 
             if (await _gameAuthenticationRepository.AuthenticationExistsAsync(userId, Game))
@@ -62,7 +58,7 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
             await _gameAuthenticationRepository.AddAuthenticationAsync(userId, Game, await this.GenerateAuthFactor(summoner));
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
         private async Task<LeagueOfLegendsGameAuthentication> GenerateAuthFactor(Summoner summoner)

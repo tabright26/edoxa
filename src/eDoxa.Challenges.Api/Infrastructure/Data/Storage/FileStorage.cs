@@ -15,7 +15,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
 {

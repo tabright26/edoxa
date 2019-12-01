@@ -14,8 +14,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 
-using FluentValidation.AspNetCore;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -66,7 +64,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
                 return this.Ok("Processing the deposit transaction...");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

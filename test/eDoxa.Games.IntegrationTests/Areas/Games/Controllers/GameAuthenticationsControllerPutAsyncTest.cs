@@ -24,8 +24,6 @@ using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
 
-using FluentValidation.Results;
-
 using IdentityModel;
 
 using Microsoft.AspNetCore.TestHost;
@@ -104,15 +102,15 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
                         {
                             var mockCredentialService = new Mock<IGameCredentialService>();
 
-                            var validationFailure = new ValidationResult();
-                            validationFailure.Errors.Add(new ValidationFailure("test", "validation failure test"));
+                            var validationFailure = new DomainValidationResult();
+                            validationFailure.AddDomainValidationError("test", "validation failure test");
 
                             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                                 .ReturnsAsync(credential)
                                 .Verifiable();
 
                             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                                .ReturnsAsync(new ValidationResult())
+                                .ReturnsAsync(new DomainValidationResult())
                                 .Verifiable();
 
                             container.RegisterInstance(mockCredentialService.Object).As<IGameCredentialService>().SingleInstance();

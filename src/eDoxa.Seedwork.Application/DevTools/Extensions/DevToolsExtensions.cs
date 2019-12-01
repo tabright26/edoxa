@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Application.DevTools.Controllers;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.Extensions.DependencyInjection;
 

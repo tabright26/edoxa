@@ -20,8 +20,6 @@ using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
-using FluentValidation.Results;
-
 using Microsoft.AspNetCore.Mvc;
 
 using Moq;
@@ -47,7 +45,7 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
 
             mockAuthFactorService
                 .Setup(authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             mockAuthFactorService
@@ -94,8 +92,8 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
 
             var mockMapper = new Mock<IMapper>();
 
-            var validation = new ValidationResult();
-            validation.Errors.Add(new ValidationFailure("test", "test error"));
+            var validation = new DomainValidationResult();
+            validation.AddDomainValidationError("test", "test error");
 
             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(validation)
@@ -134,7 +132,7 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Controllers
                 new UtcNowDateTimeProvider());
 
             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
