@@ -10,8 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="eDoxa.Specifications" Version="3.0.1" />
-    <PackageReference Include="eDoxa.Specifications.Abstractions" Version="3.0.1" />
     <PackageReference Include="MediatR" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
