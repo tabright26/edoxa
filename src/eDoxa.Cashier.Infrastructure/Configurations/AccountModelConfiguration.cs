@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable("Account");
 
-            builder.Property(account => account.Id).IsRequired();
+            builder.Property(account => account.Id).IsRequired().ValueGeneratedNever();
 
             builder.Property(account => account.UserId).IsRequired();
 

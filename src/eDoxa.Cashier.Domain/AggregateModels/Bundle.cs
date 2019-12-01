@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 
         public override string ToString()
         {
-            return Currency.ToString();
+            return Currency.ToString()!;
         }
     }
 }

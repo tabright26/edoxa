@@ -1,5 +1,5 @@
 ﻿// Filename: InvitationsController.cs
-// Date Created: 2019-09-30
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,22 +10,22 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
-using eDoxa.Clans.Api.Areas.Clans.Responses;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.Models;
+using eDoxa.Clans.Requests;
+using eDoxa.Clans.Responses;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.AspNetCore;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 {
     [Authorize]
-    [ApiController]
     [Route("api/invitations")]
     [ApiExplorerSettings(GroupName = "Invitations")]
     public class InvitationsController : ControllerBase
@@ -39,10 +39,11 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Get invitations.
-        /// </summary>
         [HttpGet]
+        [SwaggerOperation("Get invitations.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationResponse[]))]
+        [SwaggerResponse(StatusCodes.Status204NoContent)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> GetAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
         {
             if (clanId == null && userId == null)
@@ -75,10 +76,10 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<IEnumerable<InvitationResponse>>(invitations));
         }
 
-        /// <summary>
-        ///     Get invitation by id.
-        /// </summary>
         [HttpGet("{invitationId}")]
+        [SwaggerOperation("Get invitation by id.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationResponse))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(InvitationId invitationId)
         {
             var invitation = await _invitationService.FindInvitationAsync(invitationId);
@@ -91,30 +92,31 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
             return this.Ok(_mapper.Map<InvitationResponse>(invitation));
         }
 
-        /// <summary>
-        ///     Create invitation from a clan to a user.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Create invitation from a clan to a user.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync(InvitationPostRequest request)
         {
             var ownerId = HttpContext.GetUserId();
 
-            var result = await _invitationService.SendInvitationAsync(request.ClanId, request.UserId, ownerId);
+            var result = await _invitationService.SendInvitationAsync(ClanId.FromGuid(request.ClanId), UserId.FromGuid(request.UserId), ownerId);
 
             if (result.IsValid)
             {
                 return this.Ok("The invitation as been sent.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Accept invitation from a clan.
-        /// </summary>
         [HttpPost("{invitationId}")]
+        [SwaggerOperation("Accept invitation from a clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostByIdAsync(InvitationId invitationId)
         {
             var userId = HttpContext.GetUserId();
@@ -133,15 +135,16 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("The invitation has been accepted.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Decline invitation from a clan.
-        /// </summary>
         [HttpDelete("{invitationId}")]
+        [SwaggerOperation("Decline invitation from a clan.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteByIdAsync(InvitationId invitationId)
         {
             var userId = HttpContext.GetUserId();
@@ -160,9 +163,9 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.Ok("The invitation has been declined.");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

@@ -4,9 +4,4 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.CompilerServices;
-
-// Required by Moq.
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-
-[assembly: InternalsVisibleTo("eDoxa.Organizations.Clans.UnitTests")]
+[assembly: Microsoft.AspNetCore.Mvc.ApiController]

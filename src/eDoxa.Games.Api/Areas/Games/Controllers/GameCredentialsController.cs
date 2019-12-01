@@ -1,5 +1,5 @@
 ﻿// Filename: GameCredentialsController.cs
-// Date Created: 2019-11-11
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,9 +11,7 @@ using AutoMapper;
 using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Areas.Games.Responses;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.AspNetCore;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,7 +22,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Games.Api.Areas.Games.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/games/{game}/credentials")]
     [ApiExplorerSettings(GroupName = "Credential")]
@@ -39,10 +36,8 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Unlink game credential.
-        /// </summary>
         [HttpDelete]
+        [SwaggerOperation("Unlink game credential.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CredentialResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
@@ -62,9 +57,9 @@ namespace eDoxa.Games.Api.Areas.Games.Controllers
                 return this.Ok(_mapper.Map<CredentialResponse>(credential));
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

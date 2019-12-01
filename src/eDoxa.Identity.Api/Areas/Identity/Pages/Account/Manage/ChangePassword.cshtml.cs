@@ -9,7 +9,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,14 +19,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {
-        private readonly UserManager _userManager;
-        private readonly SignInManager _signInManager;
+        private readonly IUserService _userService;
+        private readonly ISignInService _signInService;
         private readonly ILogger<ChangePasswordModel> _logger;
 
-        public ChangePasswordModel(UserManager userManager, SignInManager signInManager, ILogger<ChangePasswordModel> logger)
+        public ChangePasswordModel(IUserService userService, ISignInService signInService, ILogger<ChangePasswordModel> logger)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _signInService = signInService;
             _logger = logger;
         }
 
@@ -38,14 +38,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            var hasPassword = await _userManager.HasPasswordAsync(user);
+            var hasPassword = await _userService.HasPasswordAsync(user);
 
             if (!hasPassword)
             {
@@ -62,14 +62,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            var changePasswordResult = await _userManager.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
+            var changePasswordResult = await _userService.ChangePasswordAsync(user, Input.OldPassword, Input.NewPassword);
 
             if (!changePasswordResult.Succeeded)
             {
@@ -81,7 +81,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
                 return this.Page();
             }
 
-            await _signInManager.RefreshSignInAsync(user);
+            await _signInService.RefreshSignInAsync(user);
             _logger.LogInformation("User changed their password successfully.");
             StatusMessage = "Your password has been changed.";
 

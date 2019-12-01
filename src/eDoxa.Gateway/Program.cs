@@ -4,16 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
+
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Serilog;
-
 namespace eDoxa.Gateway
 {
-    public static class Program
+    public sealed class Program
     {
         public static void Main(string[] args)
         {
@@ -26,27 +26,18 @@ namespace eDoxa.Gateway
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var builder = WebHost.CreateDefaultBuilder<Startup>(args);
+            var webHostBuilder = WebHost.CreateDefaultBuilder<Startup>(args);
 
-            builder.ConfigureServices(
+            webHostBuilder.ConfigureServices(
                     services =>
                     {
                         services.AddApplicationInsightsTelemetry();
-                        services.AddSingleton(builder);
+                        services.AddSingleton(webHostBuilder);
                     })
-                .ConfigureAppConfiguration(config => config.AddJsonFile("ocelot.json", false, true))
-                .UseSerilog(
-                    (context, config) =>
-                    {
-                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
+                .ConfigureAppConfiguration(builder => builder.AddJsonFile("ocelot.json", false, true))
+                .UseCustomSerilog<Program>();
 
-                        config.MinimumLevel.Information()
-                            .Enrich.FromLogContext()
-                            .WriteTo.Console()
-                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl);
-                    });
-
-            return builder;
+            return webHostBuilder;
         }
     }
 }

@@ -8,10 +8,10 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.ServiceBus.Abstractions;
@@ -32,7 +32,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
         public async Task PostAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).Verifiable();
 
@@ -53,7 +53,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             controller.ModelState.AddModelError("error", "error");
 
             // Act
-            var result = await controller.PostAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));
+            var result = await controller.PostAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -78,7 +78,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
@@ -97,7 +97,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordForgotController(mockUserManager.Object, mockServiceBusPublisher.Object, mockRedirectService.Object);
 
             // Act
-            var result = await controller.PostAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));
+            var result = await controller.PostAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
 
             // Assert
             result.Should().BeOfType<OkResult>();

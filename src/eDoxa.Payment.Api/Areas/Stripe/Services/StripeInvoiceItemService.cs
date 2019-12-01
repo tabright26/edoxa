@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.Extensions.Options;
 
@@ -35,7 +35,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             await this.CreateAsync(
                 new InvoiceItemCreateOptions
                 {
-                    CustomerId = customerId,
+                    Customer = customerId,
                     Currency = Options.Currency,
                     Amount = amount,
                     Description = description,

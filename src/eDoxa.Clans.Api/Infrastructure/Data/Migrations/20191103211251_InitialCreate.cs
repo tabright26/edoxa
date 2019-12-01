@@ -11,9 +11,9 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
                 name: "Candidature",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ClanId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    UserId = table.Column<Guid>(),
+                    ClanId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
@@ -24,10 +24,10 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
                 name: "Clan",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
+                    Id = table.Column<Guid>(),
+                    Name = table.Column<string>(),
                     Summary = table.Column<string>(nullable: true),
-                    OwnerId = table.Column<Guid>(nullable: false)
+                    OwnerId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
@@ -38,9 +38,9 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
                 name: "Invitation",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ClanId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    UserId = table.Column<Guid>(),
+                    ClanId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {
@@ -51,9 +51,9 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Migrations
                 name: "Member",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false),
-                    ClanId = table.Column<Guid>(nullable: false)
+                    Id = table.Column<Guid>(),
+                    UserId = table.Column<Guid>(),
+                    ClanId = table.Column<Guid>()
                 },
                 constraints: table =>
                 {

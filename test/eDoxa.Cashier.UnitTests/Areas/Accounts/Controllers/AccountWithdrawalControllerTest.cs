@@ -17,12 +17,10 @@ using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Cashier.TestHelper.Mocks;
-using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -105,7 +103,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationFailure("error", "error test").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("error", "error test"))
                 .Verifiable();
 
             var mockBundlesService = new Mock<IBundlesService>();
@@ -149,7 +147,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var mockBundlesService = new Mock<IBundlesService>();
@@ -195,7 +193,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
                         It.IsAny<Money>(),
                         It.IsAny<string>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var mockBundlesService = new Mock<IBundlesService>();

@@ -8,23 +8,23 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 {
     public sealed class UserClaimsReplacedIntegrationEventHandler : IIntegrationEventHandler<UserClaimsReplacedIntegrationEvent>
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
 
-        public UserClaimsReplacedIntegrationEventHandler(IUserManager userManager)
+        public UserClaimsReplacedIntegrationEventHandler(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         public async Task HandleAsync(UserClaimsReplacedIntegrationEvent integrationEvent)
         {
-            var user = await _userManager.FindByIdAsync(integrationEvent.UserId.ToString());
+            var user = await _userService.FindByIdAsync(integrationEvent.UserId.ToString());
 
             for (var index = 0; index < integrationEvent.ClaimCount; index++)
             {
@@ -32,7 +32,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 
                 var newClaim = integrationEvent.NewClaims.ElementAt(index);
 
-                await _userManager.ReplaceClaimAsync(user, new Claim(claim.Type, claim.Value), new Claim(newClaim.Type, newClaim.Value));
+                await _userService.ReplaceClaimAsync(user, new Claim(claim.Type, claim.Value), new Claim(newClaim.Type, newClaim.Value));
             }
         }
     }

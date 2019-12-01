@@ -6,13 +6,13 @@
 
 using System.IO;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
+using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Http;
 
 using Xunit;
 

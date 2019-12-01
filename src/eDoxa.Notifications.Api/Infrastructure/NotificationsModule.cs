@@ -6,7 +6,7 @@
 
 using Autofac;
 
-using eDoxa.Notifications.Api.Areas.Email.Services;
+using eDoxa.Notifications.Api.Services;
 using eDoxa.Notifications.Domain.Services;
 
 namespace eDoxa.Notifications.Api.Infrastructure

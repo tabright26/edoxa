@@ -18,11 +18,9 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
-
-using FluentValidation.Results;
 
 namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 {
@@ -39,7 +37,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             _serviceBusPublisher = serviceBusPublisher;
         }
 
-        public async Task<ValidationResult> WithdrawalAsync(
+        public async Task<DomainValidationResult> WithdrawalAsync(
             IAccount account,
             ICurrency currency,
             string email,
@@ -54,22 +52,19 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                     if (bundles.All(withdrawal => withdrawal.Currency.Amount != money.Amount))
                     {
-                        return new ValidationFailure(
-                                string.Empty,
-                                $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].")
-                            .ToResult();
+                        return DomainValidationResult.Failure($"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
                     }
 
                     var moneyAccount = new MoneyAccount(account);
 
                     if (!moneyAccount.HaveSufficientMoney(money))
                     {
-                        return new ValidationFailure("_error", "Insufficient funds.").ToResult();
+                        return DomainValidationResult.Failure("Insufficient funds.");
                     }
 
                     if (!moneyAccount.IsWithdrawalAvailable())
                     {
-                        return new ValidationFailure("_error", $"Withdrawal unavailable until {moneyAccount.LastWithdraw?.AddDays(7)}").ToResult();
+                        return DomainValidationResult.Failure($"Withdrawal unavailable until {moneyAccount.LastWithdraw?.AddDays(7)}");
                     }
 
                     var transaction = moneyAccount.Withdrawal(money, bundles);
@@ -83,17 +78,17 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                         transaction.Description.Text,
                         transaction.Price.ToCents());
 
-                    return new ValidationResult();
+                    return new DomainValidationResult();
                 }
 
                 default:
                 {
-                    return new ValidationFailure(string.Empty, "The withdrawal of token is not supported.").ToResult();
+                    return DomainValidationResult.Failure("The withdrawal of token is not supported.");
                 }
             }
         }
 
-        public async Task<ValidationResult> CreateTransactionAsync(
+        public async Task<DomainValidationResult> CreateTransactionAsync(
             IAccount account,
             decimal amount,
             Currency currency,
@@ -133,7 +128,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                     case null:
                     {
-                        return new ValidationFailure("_error", "Invalid currency.").ToResult();
+                        return DomainValidationResult.Failure("Invalid currency.");
                     }
                 }
             }
@@ -204,7 +199,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             await _accountRepository.CommitAsync();
         }
 
-        public async Task<ValidationResult> DepositAsync(
+        public async Task<DomainValidationResult> DepositAsync(
             IAccount account,
             ICurrency currency,
             string email,
@@ -219,17 +214,14 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                     if (bundles.All(deposit => deposit.Currency.Amount != money.Amount))
                     {
-                        return new ValidationFailure(
-                                string.Empty,
-                                $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].")
-                            .ToResult();
+                        return DomainValidationResult.Failure($"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
                     }
 
                     var moneyAccount = new MoneyAccount(account);
 
                     if (!moneyAccount.IsDepositAvailable())
                     {
-                        return new ValidationFailure("_error", $"Deposit unavailable until {moneyAccount.LastDeposit?.AddDays(1)}").ToResult();
+                        return DomainValidationResult.Failure($"Deposit unavailable until {moneyAccount.LastDeposit?.AddDays(1)}");
                     }
 
                     await this.DepositAsync(
@@ -240,7 +232,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                         email,
                         cancellationToken);
 
-                    return new ValidationResult();
+                    return new DomainValidationResult();
                 }
 
                 case Token token:
@@ -249,17 +241,14 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
 
                     if (bundles.All(deposit => deposit.Currency.Amount != token.Amount))
                     {
-                        return new ValidationFailure(
-                                "_error",
-                                $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].")
-                            .ToResult();
+                        return DomainValidationResult.Failure($"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
                     }
 
                     var tokenAccount = new TokenAccount(account);
 
                     if (!tokenAccount.IsDepositAvailable())
                     {
-                        return new ValidationFailure("_error", $"Deposit unavailable until {tokenAccount.LastDeposit?.AddDays(1)}").ToResult();
+                        return DomainValidationResult.Failure($"Deposit unavailable until {tokenAccount.LastDeposit?.AddDays(1)}");
                     }
 
                     await this.DepositAsync(
@@ -270,7 +259,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                         email,
                         cancellationToken);
 
-                    return new ValidationResult();
+                    return new DomainValidationResult();
                 }
 
                 default:
@@ -299,7 +288,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             }
         }
 
-        public async Task<ValidationResult> CreateTransactionAsync(
+        public async Task<DomainValidationResult> CreateTransactionAsync(
             IMoneyAccount account,
             Money money,
             TransactionId transactionId,
@@ -312,20 +301,20 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             {
                 if (!account.HaveSufficientMoney(money))
                 {
-                    return new ValidationFailure("_error", "Insufficient funds.").ToResult();
+                    return DomainValidationResult.Failure("Insufficient funds.");
                 }
 
                 account.Charge(transactionId, money, transactionMetadata);
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
-                return new ValidationResult();
+                return new DomainValidationResult();
             }
 
-            return new ValidationFailure("_error", "Unsupported transaction type for money.").ToResult();
+            return DomainValidationResult.Failure("Unsupported transaction type for money.");
         }
 
-        public async Task<ValidationResult> CreateTransactionAsync(
+        public async Task<DomainValidationResult> CreateTransactionAsync(
             ITokenAccount account,
             Token token,
             TransactionId transactionId,
@@ -338,21 +327,21 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
             {
                 if (!account.HaveSufficientMoney(token))
                 {
-                    return new ValidationFailure("_error", "Insufficient funds.").ToResult();
+                    return DomainValidationResult.Failure("Insufficient funds.");
                 }
 
                 account.Charge(transactionId, token, transactionMetadata);
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
-                return new ValidationResult();
+                return new DomainValidationResult();
             }
 
-            return new ValidationFailure("_error", "Unsupported transaction type for money.").ToResult();
+            return DomainValidationResult.Failure("Unsupported transaction type for money.");
         }
 
         // TODO: Need to be refactored.
-        private static ValidationResult TryGetCurrency(Currency currency, decimal amount, out ICurrency? result)
+        private static DomainValidationResult TryGetCurrency(Currency currency, decimal amount, out ICurrency? result)
         {
             result = null;
 
@@ -370,7 +359,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Services
                 result = new Token(amount);
             }
 
-            return new ValidationResult();
+            return new DomainValidationResult();
         }
 
         private async Task DepositAsync<TCurrency>(

@@ -1,5 +1,5 @@
 ﻿// Filename: DoxatagHistoryController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 
 using IdentityServer4.AccessTokenValidation;
@@ -25,53 +25,51 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 {
+    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/doxatag-history")]
     [ApiExplorerSettings(GroupName = "Doxatag History")]
-    [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
-    public class DoxatagHistoryController : ControllerBase
+    public sealed class DoxatagHistoryController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userService;
+        private readonly IDoxatagService _doxatagService;
         private readonly IMapper _mapper;
 
-        public DoxatagHistoryController(IUserManager userManager, IMapper mapper)
+        public DoxatagHistoryController(IUserService userService, IDoxatagService doxatagService, IMapper mapper)
         {
-            _userManager = userManager;
+            _userService = userService;
+            _doxatagService = doxatagService;
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Find user's Doxatag history.
-        /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxatagResponse>))]
+        [SwaggerOperation("Find user's Doxatag history.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var doxatagHistory = await _userManager.GetDoxatagHistoryAsync(user);
+            var doxatagHistory = await _doxatagService.FetchDoxatagHistoryAsync(user);
 
             if (!doxatagHistory.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserDoxatagResponse>>(doxatagHistory));
+            return this.Ok(_mapper.Map<IEnumerable<DoxatagResponse>>(doxatagHistory));
         }
 
-        /// <summary>
-        ///     Create new user's Doxatag.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Create new user's Doxatag.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] DoxatagPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] ChangeDoxatagRequest request)
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
-            var result = await _userManager.SetDoxatagAsync(user, request.Name);
+            var result = await _doxatagService.ChangeDoxatagAsync(user, request.Name);
 
             if (result.Succeeded)
             {
@@ -80,7 +78,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             ModelState.Bind(result);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

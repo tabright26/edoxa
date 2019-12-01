@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-07-24
+// Date Created: 2019-11-29
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -42,7 +42,11 @@ namespace eDoxa.Seedwork.Monitoring.Extensions
         {
             var validationResults = new List<ValidationResult>();
 
-            var isValid = Validator.TryValidateObject(obj, new ValidationContext(obj), validationResults, true);
+            var isValid = Validator.TryValidateObject(
+                obj,
+                new ValidationContext(obj),
+                validationResults,
+                true);
 
             if (!isValid)
             {

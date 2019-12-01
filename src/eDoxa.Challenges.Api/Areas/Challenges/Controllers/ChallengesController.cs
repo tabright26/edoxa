@@ -1,6 +1,6 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-10-06
-//
+// Date Created: 2019-11-20
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -14,11 +14,10 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.Responses;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
-
-using FluentValidation.AspNetCore;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,10 +28,9 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/challenges")]
-    [ApiExplorerSettings(GroupName = "Challenge")]
+    [ApiExplorerSettings(GroupName = "Challenge", IgnoreApi = true)]
     public class ChallengesController : ControllerBase
     {
         private readonly IChallengeQuery _challengeQuery;
@@ -44,12 +42,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             _challengeService = challengeService;
         }
 
-        /// <summary>
-        ///     Fetch challenges.
-        /// </summary>
         [AllowAnonymous]
         [HttpGet]
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [SwaggerOperation("Fetch challenges.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -65,12 +60,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             return this.Ok(responses);
         }
 
-        /// <summary>
-        ///     Create a challenge.
-        /// </summary>
         [Authorize(Roles = AppRoles.Admin)]
         [HttpPost(Name = "CreateChallenge")]
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [SwaggerOperation("Create a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
@@ -97,17 +89,14 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 //return this.Created(Url.Link("CreateChallenge", null), response);
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
-        /// <summary>
-        ///     Find a challenge.
-        /// </summary>
         [AllowAnonymous]
         [HttpGet("{challengeId}")]
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [SwaggerOperation("Find a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
@@ -123,12 +112,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             return this.Ok(response);
         }
 
-        /// <summary>
-        ///     Synchronize a challenge.
-        /// </summary>
         [Authorize(Roles = AppRoles.Admin)]
         [HttpPost("{challengeId}")]
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [SwaggerOperation("Synchronize a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
@@ -150,9 +136,9 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
                 return this.Ok(response);
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {
@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly string _name;
 
-        public StatName(PropertyInfo propertyInfo) : this(propertyInfo.GetMethod.Name.Substring(4))
+        public StatName(PropertyInfo propertyInfo) : this(propertyInfo.GetMethod!.Name.Substring(4))
         {
         }
 

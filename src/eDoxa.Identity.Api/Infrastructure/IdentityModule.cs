@@ -6,7 +6,9 @@
 
 using Autofac;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.Repositories;
+using eDoxa.Identity.Infrastructure.Repositories;
 
 namespace eDoxa.Identity.Api.Infrastructure
 {
@@ -14,7 +16,13 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Reposiotries
+            builder.RegisterType<AddressRepository>().As<IAddressRepository>().InstancePerLifetimeScope();
+            builder.RegisterType<DoxatagRepository>().As<IDoxatagRepository>().InstancePerLifetimeScope();
+
             // Services
+            builder.RegisterType<AddressService>().As<IAddressService>().InstancePerLifetimeScope();
+            builder.RegisterType<DoxatagService>().As<IDoxatagService>().InstancePerLifetimeScope();
             builder.RegisterType<RedirectService>().As<IRedirectService>().InstancePerDependency();
         }
     }

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Stripe;
 
@@ -44,7 +44,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             await this.CreateAsync(
                 new InvoiceCreateOptions
                 {
-                    CustomerId = customerId,
+                    Customer = customerId,
                     AutoAdvance = true,
                     Metadata = new Dictionary<string, string>
                     {

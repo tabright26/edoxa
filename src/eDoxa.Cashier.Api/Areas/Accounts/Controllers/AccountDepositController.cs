@@ -1,5 +1,5 @@
 ﻿// Filename: AccountDepositController.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,8 +14,6 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 
-using FluentValidation.AspNetCore;
-
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +23,6 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
 {
     [Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/account/deposit/{currency}")]
     [ApiExplorerSettings(GroupName = "Account")]
@@ -42,10 +39,8 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Deposit currency on the account.
-        /// </summary>
         [HttpPost]
+        [SwaggerOperation("Deposit currency on the account.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
@@ -69,12 +64,15 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
                 return this.Ok("Processing the deposit transaction...");
             }
 
-            result.AddToModelState(ModelState, null);
+            result.AddToModelState(ModelState);
 
-            return this.ValidationProblem(ModelState);
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         [HttpGet("bundles")]
+        [SwaggerOperation("Get bundles by currency.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BundleResponse[]))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public IActionResult Get(Currency currency)
         {
             if (currency == Currency.Money)

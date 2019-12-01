@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -29,6 +28,6 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         public Claims Claims { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.RoleClaimAdded;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.RoleClaimAdded;
     }
 }

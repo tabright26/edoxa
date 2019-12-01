@@ -29,7 +29,7 @@ namespace eDoxa.Payment.Api.Infrastructure.Data.Migrations
             return new PaymentDbContext(
                 new DbContextOptionsBuilder<PaymentDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
-                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name))
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name))
                     .Options);
         }
     }

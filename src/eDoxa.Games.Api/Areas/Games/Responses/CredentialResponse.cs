@@ -6,7 +6,7 @@
 
 #nullable disable
 
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Api.Areas.Games.Responses
 {

@@ -4,8 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Newtonsoft.Json;
@@ -47,6 +46,6 @@ namespace eDoxa.Payment.Api.IntegrationEvents
         public long Amount { get; }
 
         [JsonIgnore]
-        public string Name => IntegrationEventNames.UserAccountDeposit;
+        public string Name => Seedwork.Application.Constants.IntegrationEvents.UserAccountDeposit;
     }
 }

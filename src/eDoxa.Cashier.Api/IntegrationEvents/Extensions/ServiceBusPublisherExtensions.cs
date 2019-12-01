@@ -7,7 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions

@@ -10,7 +10,7 @@ using System.Linq;
 
 using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Clans.Domain.Models
 {
@@ -198,7 +198,7 @@ namespace eDoxa.Clans.Domain.Models
             return Members.Single(member => member.Id == memberId);
         }
 
-        public void Update(string summary)
+        public void Update(string? summary)
         {
             Summary = summary;
         }

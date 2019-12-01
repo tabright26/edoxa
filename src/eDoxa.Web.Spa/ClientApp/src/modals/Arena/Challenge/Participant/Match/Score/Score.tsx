@@ -6,7 +6,11 @@ import Format from "components/Shared/Format";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "modals";
 import { compose } from "recompose";
 
-const MatchScoreModal: FunctionComponent<any> = ({ show, handleHide, stats }) => (
+const MatchScoreModal: FunctionComponent<any> = ({
+  show,
+  handleHide,
+  stats
+}) => (
   <Modal isOpen={show} toggle={handleHide} className="modal-primary">
     <ModalHeader toggle={handleHide}>Score Details</ModalHeader>
     <Table className="mb-0" size="sm" responsive striped dark>
@@ -36,7 +40,12 @@ const MatchScoreModal: FunctionComponent<any> = ({ show, handleHide, stats }) =>
         <tr>
           <th colSpan={5}>Score</th>
           <th className="text-center text-primary">
-            <Format.Score score={stats.reduce((totalScore, stat) => totalScore + stat.score, 0)} />
+            <Format.Score
+              score={stats.reduce(
+                (totalScore, stat) => totalScore + stat.score,
+                0
+              )}
+            />
           </th>
         </tr>
       </tbody>
@@ -47,6 +56,8 @@ const MatchScoreModal: FunctionComponent<any> = ({ show, handleHide, stats }) =>
   </Modal>
 );
 
-const enhance = compose<any, any>(connectModal({ name: CHALLENGE_MATCH_SCORE_MODAL }));
+const enhance = compose<any, any>(
+  connectModal({ name: CHALLENGE_MATCH_SCORE_MODAL })
+);
 
 export default enhance(MatchScoreModal);

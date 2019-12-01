@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,59 +7,61 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity;
-using eDoxa.Identity.Api.Areas.Identity.Constants;
-using eDoxa.Identity.Api.Areas.Identity.Extensions;
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Security.DataProtection.Extensions;
+using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
+using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
-using HealthChecks.UI.Client;
+using Hellang.Middleware.ProblemDetails;
 
 using IdentityModel;
 
 using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Services;
 
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -78,7 +80,7 @@ namespace eDoxa.Identity.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
             HostingEnvironment = hostingEnvironment;
@@ -87,7 +89,7 @@ namespace eDoxa.Identity.Api
 
         public IConfiguration Configuration { get; }
 
-        public IHostingEnvironment HostingEnvironment { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         private IdentityAppSettings AppSettings { get; }
 
@@ -97,30 +99,25 @@ namespace eDoxa.Identity.Api
 
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
+            services.AddCustomForwardedHeaders();
+            
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
 
-            services.AddDataProtection(Configuration, AppNames.IdentityApi);
+            services.AddCustomDataProtection(Configuration, AppNames.IdentityApi);
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
                     Configuration.GetSqlServerConnectionString()!,
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
-
-            services.Configure<CookiePolicyOptions>(
-                options =>
-                {
-                    options.CheckConsentNeeded = _ => true;
-                    options.MinimumSameSitePolicy = SameSiteMode.None;
-                });
 
             services.AddIdentity<User, Role>(
                     options =>
@@ -131,43 +128,34 @@ namespace eDoxa.Identity.Api
                         options.Password.RequireLowercase = true;
                         options.Password.RequireNonAlphanumeric = true;
                         options.Password.RequireUppercase = true;
-
                         options.Lockout.AllowedForNewUsers = true;
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                         options.Lockout.MaxFailedAccessAttempts = 5;
-
                         options.User.RequireUniqueEmail = true;
-
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
                         options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Doxatag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
                         options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
-
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
-
-                        options.Tokens.AuthenticatorTokenProvider = CustomTokenProviders.Authenticator;
-                        options.Tokens.ChangeEmailTokenProvider = CustomTokenProviders.ChangeEmail;
-                        options.Tokens.ChangePhoneNumberTokenProvider = CustomTokenProviders.ChangePhoneNumber;
-                        options.Tokens.EmailConfirmationTokenProvider = CustomTokenProviders.EmailConfirmation;
-                        options.Tokens.PasswordResetTokenProvider = CustomTokenProviders.PasswordReset;
                     })
                 .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddUserStore<UserStore>()
-                .AddTokenProviders(
-                    options =>
-                    {
-                        options.Authenticator.TokenLifespan = TimeSpan.FromHours(1);
-                        options.ChangeEmail.TokenLifespan = TimeSpan.FromDays(1);
-                        options.ChangePhoneNumber.TokenLifespan = TimeSpan.FromDays(1);
-                        options.EmailConfirmation.TokenLifespan = TimeSpan.FromDays(2);
-                        options.PasswordReset.TokenLifespan = TimeSpan.FromHours(2);
-                    })
+                .AddDefaultTokenProviders()
+                .AddUserStore<UserRepository>()
                 .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
-                .AddUserManager<UserManager>()
-                .AddSignInManager<SignInManager>()
-                .AddRoleManager<RoleManager>()
-                .BuildCustomServices();
+                .AddUserManager<UserService>()
+                .AddSignInManager<SignInService>()
+                .AddRoleManager<RoleService>();
+
+            services.AddScoped<UserRepository>();
+            services.AddScoped<CustomUserClaimsPrincipalFactory>();
+            services.AddScoped<CustomIdentityErrorDescriber>();
+            services.AddScoped<UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<SignInService>();
+            services.AddScoped<ISignInService, SignInService>();
+            services.AddScoped<RoleService>();
+            services.AddScoped<IRoleService, RoleService>();
 
             services.Configure<PasswordHasherOptions>(
                 option =>
@@ -176,18 +164,19 @@ namespace eDoxa.Identity.Api
                     option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
                 });
 
-            services.AddMvc(
+            services.AddProblemDetails();
+
+            services.AddMvc()
+                .AddNewtonsoftJson(
                     options =>
                     {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
+                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
                 .AddDevTools<IdentityDbContextSeeder, IdentityDbContextCleaner>()
                 .AddRazorPagesOptions(
                     options =>
                     {
-                        options.AllowAreas = true;
                         options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
                         options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
                     })
@@ -207,6 +196,8 @@ namespace eDoxa.Identity.Api
                     options.ApiVersionReader = new HeaderApiVersionReader();
                 });
 
+            services.AddVersionedApiExplorer();
+
             services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
 
             services.AddIdentityServer(
@@ -222,19 +213,28 @@ namespace eDoxa.Identity.Api
                         options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
                         options.UserInteraction.LogoutUrl = "/Account/Logout";
                     })
-                .AddDeveloperSigningCredential()
-                .AddInMemoryPersistedGrants()
-                .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-                .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-                .AddInMemoryClients(IdentityServerConfig.GetClients(AppSettings))
-                .AddCorsPolicyService<CustomCorsPolicyService>()
-                .AddProfileService<CustomProfileService>()
-                .AddAspNetIdentity<User>()
-                .BuildCustomServices();
+                .AddApiAuthorization<User, IdentityDbContext>(
+                    options =>
+                    {
+                        options.IdentityResources.Clear();
+                        options.IdentityResources.AddRange(IdentityServerConfig.GetIdentityResources().ToArray());
+
+                        options.ApiResources.Clear();
+                        options.ApiResources.AddRange(IdentityServerConfig.GetApiResources().ToArray());
+
+                        options.Clients.Clear();
+                        options.Clients.AddRange(IdentityServerConfig.GetClients(AppSettings).ToArray());
+                    })
+                .AddProfileService<CustomProfileService>();
+
+            services.AddTransient<IProfileService, CustomProfileService>();
 
             services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
 
+            //services.AddAuthentication().AddIdentityServerJwt();
+
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                .AddIdentityServerJwt()
                 .AddIdentityServerAuthentication(
                     options =>
                     {
@@ -254,48 +254,40 @@ namespace eDoxa.Identity.Api
             builder.RegisterModule<IdentityModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            subscriber.UseIntegrationEventSubscriptions();
+            application.UseForwardedHeaders();
 
-            if (HostingEnvironment.IsDevelopment())
-            {
-                application.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                //application.UseCustomExceptionHandler();
-                application.UseExceptionHandler("/Home/Error");
-                application.UseHsts();
-            }
+            application.UseCustomMvcOrApiExceptionHandler();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
+            application.UseCustomHsts();
+
+            application.UseCustomPathBase();
 
             application.UseHttpsRedirection();
             application.UseStaticFiles();
-            application.UseForwardedHeaders();
-            application.UseCookiePolicy();
 
+            application.UseRouting();
+
+            application.UseAuthentication();
             application.UseIdentityServer();
+            application.UseAuthorization();
 
-            application.UseMvcWithDefaultRoute();
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapRazorPages();
+
+                    endpoints.MapDefaultControllerRoute();
+
+                    endpoints.MapConfigurationRoute<IdentityAppSettings>(AppSettings.ApiResource);
+
+                    endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+            application.UseSwagger(AppSettings);
 
-            application.UseSwagger(provider, AppSettings);
+            subscriber.UseIntegrationEventSubscriptions();
         }
     }
 }

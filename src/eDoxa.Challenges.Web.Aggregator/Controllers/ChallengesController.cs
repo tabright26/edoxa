@@ -13,7 +13,7 @@ using eDoxa.Challenges.Web.Aggregator.Models;
 using eDoxa.Challenges.Web.Aggregator.Services;
 using eDoxa.Challenges.Web.Aggregator.Transformers;
 using eDoxa.Identity.Responses;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -34,7 +34,6 @@ using CreateChallengeRequest = eDoxa.Challenges.Web.Aggregator.Requests.CreateCh
 namespace eDoxa.Challenges.Web.Aggregator.Controllers
 {
     [Microsoft.AspNetCore.Authorization.Authorize]
-    [ApiController]
     [ApiVersion("1.0")]
     [Route("api/challenges")]
     [ApiExplorerSettings(GroupName = "Challenge")]
@@ -58,8 +57,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             _serviceBusPublisher = serviceBusPublisher;
         }
 
-        [HttpGet]
         [AllowAnonymous]
+        [HttpGet]
+        [SwaggerOperation("Fetch challenges.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel[]))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FetchChallengesAsync()
@@ -73,8 +73,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             return this.Ok(ChallengeTransformer.Transform(challengesFromChallengesService, challengesFromCashierService, doxatagsFromIdentityService));
         }
 
-        [HttpPost]
         [Microsoft.AspNetCore.Authorization.Authorize(Roles = AppRoles.Admin)]
+        [HttpPost]
+        [SwaggerOperation("Create challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallengeRequest request)
@@ -100,7 +101,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                         request.EntryFeeCurrency));
 
                 return this.Ok(
-                    ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, new Collection<UserDoxatagResponse>()));
+                    ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, new Collection<DoxatagResponse>()));
             }
             catch (ApiException exception)
             {
@@ -110,8 +111,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             }
         }
 
-        [HttpGet("{challengeId}")]
         [AllowAnonymous]
+        [HttpGet("{challengeId}")]
+        [SwaggerOperation("Find a challenge.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FindChallengeAsync(Guid challengeId)
@@ -125,8 +127,8 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             return this.Ok(ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, doxatagsFromIdentityService));
         }
 
-        //[HttpPost("{challengeId}")]
         //[Microsoft.AspNetCore.Authorization.Authorize(Roles = AppRoles.Admin)]
+        //[HttpPost("{challengeId}")]
         //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
         //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         //public async Task<IActionResult> SynchronizeChallengeAsync(Guid challengeId)

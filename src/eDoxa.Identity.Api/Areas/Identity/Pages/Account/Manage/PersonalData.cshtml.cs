@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,22 +16,22 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class PersonalDataModel : PageModel
     {
-        private readonly UserManager _userManager;
+        private readonly IUserService _userService;
         private readonly ILogger<PersonalDataModel> _logger;
 
-        public PersonalDataModel(UserManager userManager, ILogger<PersonalDataModel> logger)
+        public PersonalDataModel(IUserService userService, ILogger<PersonalDataModel> logger)
         {
-            _userManager = userManager;
+            _userService = userService;
             _logger = logger;
         }
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
             return this.Page();

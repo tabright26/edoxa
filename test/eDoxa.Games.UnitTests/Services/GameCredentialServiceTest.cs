@@ -16,9 +16,7 @@ using eDoxa.Games.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.Results;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Moq;
 
@@ -119,7 +117,7 @@ namespace eDoxa.Games.UnitTests.Services
 
             mockAuthFactorService
                 .Setup(authFactor => authFactor.ValidateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             mockCredentialRepository

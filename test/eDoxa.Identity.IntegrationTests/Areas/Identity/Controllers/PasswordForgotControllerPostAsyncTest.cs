@@ -9,13 +9,12 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Requests;
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -25,16 +24,16 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
     public sealed class PasswordForgotControllerPostAsyncTest : IntegrationTest
     {
-        public PasswordForgotControllerPostAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public PasswordForgotControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(PasswordForgotPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(ForgotPasswordRequest request)
         {
-            return await _httpClient.PostAsync("api/password/forgot", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync("api/password/forgot", request);
         }
 
         private HttpClient _httpClient;
@@ -44,16 +43,16 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.Informations = null;
+            user.Profile = null;
 
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
                     var result = await userManager.CreateAsync(user);
 
@@ -61,7 +60,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new PasswordForgotPostRequest("admin@edoxa.gg"));
+            using var response = await this.ExecuteAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
 
             // Assert
             response.EnsureSuccessStatusCode();

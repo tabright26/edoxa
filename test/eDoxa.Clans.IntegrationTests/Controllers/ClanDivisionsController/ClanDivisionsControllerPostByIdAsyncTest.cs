@@ -8,15 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
+using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -30,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 {
     public sealed class ClanDivisionsControllerPostByIdAsyncTest : IntegrationTest
     {
-        public ClanDivisionsControllerPostByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public ClanDivisionsControllerPostByIdAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -38,7 +37,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId, DivisionPostRequest request)
         {
-            return await _httpClient.PostAsync($"api/clans/{clanId}/divisions", new JsonContent(request));
+            return await _httpClient.PostAsJsonAsync($"api/clans/{clanId}/divisions", request);
         }
 
         [Fact]
@@ -48,7 +47,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -75,7 +74,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -94,7 +93,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

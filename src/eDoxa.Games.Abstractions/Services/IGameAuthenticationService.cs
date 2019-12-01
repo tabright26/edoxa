@@ -7,9 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.Results;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Abstractions.Services
 {
@@ -22,8 +21,8 @@ namespace eDoxa.Games.Abstractions.Services
 
         Task<bool> AuthenticationExistsAsync(UserId userId, Game game);
 
-        Task<ValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request);
+        Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request);
 
-        Task<ValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication);
+        Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication);
     }
 }

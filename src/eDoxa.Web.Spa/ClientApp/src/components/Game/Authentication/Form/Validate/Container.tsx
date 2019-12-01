@@ -10,7 +10,6 @@ import Link from "./Validate";
 import { Game } from "types";
 import { toastr } from "react-redux-toastr";
 import authorize from "utils/oidc/AuthorizeService";
-import { async } from "q";
 
 interface OwnProps {
   game: Game;

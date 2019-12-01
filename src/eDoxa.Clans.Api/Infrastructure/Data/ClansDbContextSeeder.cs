@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Infrastructure.Data.Storage;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.Infrastructure;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -25,7 +25,7 @@ namespace eDoxa.Clans.Api.Infrastructure.Data
         public ClansDbContextSeeder(
             ClansDbContext context,
             IClanRepository clanRepository,
-            IHostingEnvironment environment,
+            IWebHostEnvironment environment,
             ILogger<ClansDbContextSeeder> logger
         ) : base(environment, logger)
         {

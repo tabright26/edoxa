@@ -7,8 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,7 +19,7 @@ namespace eDoxa.Payment.Api.Infrastructure.Data
     {
         private readonly IStripeReferenceService _stripeReferenceService;
 
-        public PaymentDbContextSeeder(IStripeReferenceService stripeReferenceService, IHostingEnvironment environment, ILogger<PaymentDbContextSeeder> logger) : base(
+        public PaymentDbContextSeeder(IStripeReferenceService stripeReferenceService, IWebHostEnvironment environment, ILogger<PaymentDbContextSeeder> logger) : base(
             environment,
             logger)
         {

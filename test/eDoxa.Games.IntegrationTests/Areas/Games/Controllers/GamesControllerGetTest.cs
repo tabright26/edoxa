@@ -15,7 +15,7 @@ using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -30,7 +30,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
 {
     public sealed class GamesControllerGetTest : IntegrationTest
     {
-        public GamesControllerGetTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
+        public GamesControllerGetTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
         {
         }
 
@@ -47,7 +47,7 @@ namespace eDoxa.Games.IntegrationTests.Areas.Games.Controllers
             // Arrange
             var userId = new UserId();
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>

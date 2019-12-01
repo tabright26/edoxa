@@ -13,7 +13,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
     // TODO: Avoid using Theory in integration tests.
     public sealed class AccountRepositoryTest : IntegrationTest
     {
-        public AccountRepositoryTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(testApi, testData, testMapper)
+        public AccountRepositoryTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
         {
         }
 
@@ -40,10 +40,10 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
 
             var fakeAccount = accountFaker.FakeAccount();
 
-            TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
-
+            
             await testServer.UsingScopeAsync(
                 async scope =>
                 {

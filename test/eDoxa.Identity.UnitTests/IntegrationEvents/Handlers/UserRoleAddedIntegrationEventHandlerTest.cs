@@ -6,13 +6,13 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
-using eDoxa.Identity.Api.Infrastructure.Models;
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -32,7 +32,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
         public async Task UserRoleAddedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserManager>();
+            var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(roleManager => roleManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(new User()).Verifiable();
 

@@ -14,8 +14,8 @@ using eDoxa.Challenges.Api.Infrastructure.Data.Fakers;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.UserAggregate;
 using eDoxa.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
 {
@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<User>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
 
@@ -48,7 +48,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<IChallenge>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/challenges.csv"));
 

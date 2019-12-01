@@ -15,7 +15,7 @@ using AutoMapper;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using LinqKit;
 
@@ -47,11 +47,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<TransactionModel?> FindTransactionModelAsync(IDictionary<string, string> metadata)
         {
-            var transactionModels = from transaction in _context.Transactions.AsExpandable()
+            var transactionModels = from transaction in await _context.Transactions.AsExpandable().ToListAsync()
                                     where transaction.Metadata.Any(item => metadata.Contains(new KeyValuePair<string, string>(item.Key, item.Value)))
                                     select transaction;
 
-            return await transactionModels.SingleOrDefaultAsync();
+            return transactionModels.SingleOrDefault();
         }
     }
 

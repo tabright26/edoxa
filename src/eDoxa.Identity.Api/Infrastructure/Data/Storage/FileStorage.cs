@@ -1,21 +1,21 @@
 ﻿// Filename: FileStorage.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Immutable;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Infrastructure.Extensions;
-
-using UserClaim = eDoxa.Identity.Api.Infrastructure.Models.UserClaim;
+using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
 {
@@ -27,7 +27,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<Role>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/roles.csv"));
 
@@ -54,7 +54,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<RoleClaim>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/roles.claims.csv"));
 
@@ -83,7 +83,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<UserClaim>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.claims.csv"));
 
@@ -108,11 +108,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                         .ToImmutableHashSet();
                 });
 
-        private static Lazy<IImmutableSet<User>> LazyUsers =>
-            new Lazy<IImmutableSet<User>>(
+        private static Lazy<IImmutableSet<Doxatag>> LazyDoxatags =>
+            new Lazy<IImmutableSet<Doxatag>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
 
@@ -131,30 +131,63 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                 Gender = default(int)
                             })
                         .Select(
-                            record => new User
+                            record => new Doxatag(
+                                UserId.FromGuid(record.Id),
+                                record.Doxatag!,
+                                Random.Next(100, 10000),
+                                new UtcNowDateTimeProvider()))
+                        .ToImmutableHashSet();
+                });
+
+        private static Lazy<IImmutableSet<User>> LazyUsers =>
+            new Lazy<IImmutableSet<User>>(
+                () =>
+                {
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
+
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
+
+                    using var csvReader = file.OpenCsvReader();
+
+                    return csvReader.GetRecords(
+                            new
                             {
-                                Id = record.Id,
-                                UserName = record.Email,
-                                Country = Country.Canada, // FRANCIS: Should be inside users.csv
-                                Email = record.Email,
-                                PhoneNumber = record.Phone,
-                                DoxatagHistory = new Collection<UserDoxatag>
+                                Id = default(Guid),
+                                Doxatag = default(string),
+                                FirstName = default(string),
+                                LastName = default(string),
+                                Email = default(string),
+                                Phone = default(string),
+                                BirthDate = default(long),
+                                Gender = default(int)
+                            })
+                        .Select(
+                            record =>
+                            {
+                                //var doxatag = new Doxatag(
+                                //    UserId.FromGuid(record.Id),
+                                //    record.Doxatag,
+                                //    Random.Next(100, 10000),
+                                //    new UtcNowDateTimeProvider());
+
+                                var user = new User
                                 {
-                                    new UserDoxatag
-                                    {
-                                        Id = Guid.NewGuid(),
-                                        UserId = record.Id,
-                                        Name = record.Doxatag,
-                                        Code = Random.Next(100, 10000),
-                                        Timestamp = DateTime.UtcNow
-                                    }
-                                },
-                                SecurityStamp = Guid.NewGuid().ToString("N"),
-                                Informations = new UserInformations(
-                                    record.FirstName,
-                                    record.LastName,
-                                    Gender.FromValue(record.Gender),
-                                    new Dob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
+                                    Id = record.Id,
+                                    UserName = record.Email,
+                                    Country = Country.Canada, // FRANCIS: Should be inside users.csv
+                                    Email = record.Email,
+                                    PhoneNumber = record.Phone,
+                                    SecurityStamp = Guid.NewGuid().ToString("N"),
+                                    Profile = new UserProfile(
+                                        record.FirstName,
+                                        record.LastName,
+                                        Gender.FromValue(record.Gender),
+                                        new Dob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
+                                };
+
+                                //user.DoxatagHistory.Add(doxatag);
+
+                                return user;
                             })
                         .ToImmutableHashSet();
                 });
@@ -163,7 +196,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<UserRole>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.roles.csv"));
 
@@ -193,7 +226,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         public static IImmutableSet<Role> Roles => LazyRoles.Value;
 
         public static IImmutableSet<RoleClaim> RoleClaims => LazyRoleClaims.Value;
-        
+
+        public static IImmutableSet<Doxatag> Doxatags => LazyDoxatags.Value;
+
         public IImmutableSet<RoleClaim> GetRoleClaims()
         {
             return RoleClaims;
@@ -217,6 +252,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
         public IImmutableSet<UserRole> GetUserRoles()
         {
             return UserRoles;
+        }
+
+        public IImmutableSet<Doxatag> GetDoxatags()
+        {
+            return Doxatags;
         }
     }
 }

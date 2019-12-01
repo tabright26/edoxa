@@ -13,9 +13,8 @@ using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -29,7 +28,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 {
     public sealed class InvitationsControllerPostByIdAsyncTest : IntegrationTest
     {
-        public InvitationsControllerPostByIdAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public InvitationsControllerPostByIdAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -37,7 +36,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 
         private async Task<HttpResponseMessage> ExecuteAsync(InvitationId invitationId)
         {
-            return await _httpClient.PostAsync($"api/invitations/{invitationId}", JsonContent.EmptyBody);
+            return await _httpClient.PostAsJsonAsync($"api/invitations/{invitationId}", new {});
         }
 
         // Do I need to test out all single bad request possible ?
@@ -49,7 +48,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var clan = new Clan("ClanName", new UserId());
             var invitation = new Invitation(new UserId(), clan.Id);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -77,7 +76,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -97,7 +96,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var userId = new UserId();
             var invitation = new Invitation(userId, clan.Id);
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

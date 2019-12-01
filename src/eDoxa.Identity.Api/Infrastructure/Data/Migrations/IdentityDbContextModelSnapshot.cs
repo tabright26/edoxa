@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+using eDoxa.Identity.Infrastructure;
+
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
@@ -13,22 +15,172 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "3.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.Role", b =>
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
+                {
+                    b.Property<string>("UserCode")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(50000);
+
+                    b.Property<string>("DeviceCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime?>("Expiration")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.HasKey("UserCode");
+
+                    b.HasIndex("DeviceCode")
+                        .IsUnique();
+
+                    b.HasIndex("Expiration");
+
+                    b.ToTable("DeviceCodes");
+                });
+
+            modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.PersistedGrant", b =>
+                {
+                    b.Property<string>("Key")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(50000);
+
+                    b.Property<DateTime?>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Key");
+
+                    b.HasIndex("Expiration");
+
+                    b.HasIndex("SubjectId", "ClientId", "Type");
+
+                    b.ToTable("PersistedGrants");
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.AddressAggregate.Address", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Line1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Line2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate.Doxatag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Timestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Doxatag");
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -41,17 +193,21 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("Role");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.RoleClaim", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.RoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -60,47 +216,62 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("RoleClaim");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.User", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("AccessFailedCount");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken();
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("EmailConfirmed");
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<bool>("LockoutEnabled");
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset?>("LockoutEnd");
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
                         .IsRequired()
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<string>("PasswordHash");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("PhoneNumberConfirmed");
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("SecurityStamp");
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("TwoFactorEnabled");
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
@@ -116,48 +287,21 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserAddress", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("City")
-                        .IsRequired();
-
-                    b.Property<string>("Country")
-                        .IsRequired();
-
-                    b.Property<string>("Line1")
-                        .IsRequired();
-
-                    b.Property<string>("Line2");
-
-                    b.Property<string>("PostalCode");
-
-                    b.Property<string>("State");
-
-                    b.Property<int>("Type");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserAddress");
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserClaim", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ClaimType");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ClaimValue");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -166,36 +310,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserClaim");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxatag", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserLogin", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Code");
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("Timestamp");
-
-                    b.Property<Guid>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserDoxatag");
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserLogin", b =>
-                {
-                    b.Property<string>("LoginProvider");
-
-                    b.Property<string>("ProviderKey");
-
-                    b.Property<string>("ProviderDisplayName");
-
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -204,11 +331,13 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserLogin");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserRole", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserRole", b =>
                 {
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("RoleId");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -217,128 +346,155 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                     b.ToTable("UserRole");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserToken", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserToken", b =>
                 {
-                    b.Property<Guid>("UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("LoginProvider");
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Value");
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("UserToken");
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.RoleClaim", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.AddressAggregate.Address", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.Role")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", null)
                         .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.User", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate.Doxatag", b =>
                 {
-                    b.OwnsOne("eDoxa.Identity.Api.Infrastructure.Models.UserInformations", "Informations", b1 =>
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.RoleClaim", b =>
+                {
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", b =>
+                {
+                    b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserProfile", "Profile", b1 =>
                         {
-                            b1.Property<Guid>("UserId");
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("FirstName")
-                                .IsRequired();
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
 
-                            b1.Property<int>("Gender");
+                            b1.Property<int>("Gender")
+                                .HasColumnType("int");
 
                             b1.Property<string>("LastName")
-                                .IsRequired();
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
 
-                            b1.HasKey("UserId");
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
 
-                            b1.ToTable("UserInformations");
+                            b1.HasKey("Id");
 
-                            b1.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                                .WithOne("Informations")
-                                .HasForeignKey("eDoxa.Identity.Api.Infrastructure.Models.UserInformations", "UserId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.HasIndex("UserId")
+                                .IsUnique();
+
+                            b1.ToTable("UserProfile");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
 
                             b1.OwnsOne("eDoxa.Seedwork.Domain.Miscs.Dob", "Dob", b2 =>
                                 {
-                                    b2.Property<Guid>("UserInformationsUserId");
+                                    b2.Property<Guid>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("uniqueidentifier");
 
                                     b2.Property<int>("Day")
-                                        .HasColumnName("Dob_Day");
+                                        .HasColumnType("int");
 
                                     b2.Property<int>("Month")
-                                        .HasColumnName("Dob_Month");
+                                        .HasColumnType("int");
+
+                                    b2.Property<Guid>("UserId")
+                                        .HasColumnType("uniqueidentifier");
 
                                     b2.Property<int>("Year")
-                                        .HasColumnName("Dob_Year");
+                                        .HasColumnType("int");
 
-                                    b2.HasKey("UserInformationsUserId");
+                                    b2.HasKey("Id");
 
-                                    b2.ToTable("UserInformations");
+                                    b2.HasIndex("UserId")
+                                        .IsUnique();
 
-                                    b2.HasOne("eDoxa.Identity.Api.Infrastructure.Models.UserInformations")
-                                        .WithOne("Dob")
-                                        .HasForeignKey("eDoxa.Seedwork.Domain.Miscs.Dob", "UserInformationsUserId")
-                                        .OnDelete(DeleteBehavior.Cascade);
+                                    b2.ToTable("UserDob");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("UserId");
                                 });
                         });
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserAddress", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserClaim", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                        .WithMany("AddressBook")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserClaim", b =>
-                {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserDoxatag", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserLogin", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
-                        .WithMany("DoxatagHistory")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserLogin", b =>
-                {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserRole", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserRole", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.Role")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.RoleAggregate.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("eDoxa.Identity.Api.Infrastructure.Models.UserToken", b =>
+            modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserToken", b =>
                 {
-                    b.HasOne("eDoxa.Identity.Api.Infrastructure.Models.User")
+                    b.HasOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

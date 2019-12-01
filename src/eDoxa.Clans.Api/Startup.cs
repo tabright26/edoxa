@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-20
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -19,18 +19,21 @@ using eDoxa.Clans.Api.IntegrationEvents.Extensions;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Application.Validations;
+using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
+using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
+using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
-using FluentValidation.AspNetCore;
 
-using HealthChecks.UI.Client;
+using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -38,17 +41,10 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-
-using Newtonsoft.Json;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -67,16 +63,13 @@ namespace eDoxa.Clans.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IHostingEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<ClansAppSettings>(ClansApi);
         }
 
         public IConfiguration Configuration { get; }
-
-        public IHostingEnvironment HostingEnvironment { get; }
 
         private ClansAppSettings AppSettings { get; }
 
@@ -85,7 +78,7 @@ namespace eDoxa.Clans.Api
             services.AddAppSettings<ClansAppSettings>(Configuration);
 
             services.AddHealthChecks()
-                .AddCheck("liveness", () => HealthCheckResult.Healthy())
+                .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
                 .AddIdentityServer(AppSettings)
                 .AddAzureBlobStorage(Configuration)
@@ -97,45 +90,23 @@ namespace eDoxa.Clans.Api
                     Configuration.GetSqlServerConnectionString(),
                     sqlServerOptions =>
                     {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name);
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
             services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
 
-            services.AddCors(
-                options =>
-                {
-                    options.AddPolicy("default", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(_ => true));
-                });
+            services.AddCustomCors();
 
-            services.AddMvc(
-                    options =>
-                    {
-                        options.Filters.Add(new ProducesAttribute("application/json"));
-                    })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore)
-                .AddDevTools<ClansDbContextSeeder, ClansDbContextCleaner>()
-                .AddFluentValidation(
-                    config =>
-                    {
-                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
-                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    });
+            services.AddCustomProblemDetails();
 
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.ReportApiVersions = true;
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader();
-                });
+            services.AddCustomControllers<Startup>().AddDevTools<ClansDbContextSeeder, ClansDbContextCleaner>();
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(ClansDbContext)));
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
+            services.AddAutoMapper(typeof(Startup), typeof(ClansDbContext));
+
+            services.AddMediatR(typeof(Startup));
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
@@ -157,36 +128,31 @@ namespace eDoxa.Clans.Api
             builder.RegisterModule<ClansModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber, IApiVersionDescriptionProvider provider)
+        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
         {
-            subscriber.UseIntegrationEventSubscriptions();
+            application.UseProblemDetails();
 
-            application.UseCustomExceptionHandler();
+            application.UseCustomPathBase();
 
-            application.UsePathBase(Configuration["ASPNETCORE_PATHBASE"]);
-
-            application.UseCors("default");
+            application.UseRouting();
+            application.UseCustomCors();
 
             application.UseAuthentication();
+            application.UseAuthorization();
 
-            application.UseMvc();
-
-            application.UseHealthChecks(
-                "/liveness",
-                new HealthCheckOptions
+            application.UseEndpoints(
+                endpoints =>
                 {
-                    Predicate = registration => registration.Name.Contains("liveness")
+                    endpoints.MapControllers();
+                    
+                    endpoints.MapConfigurationRoute<ClansAppSettings>(AppSettings.ApiResource);
+
+                    endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseHealthChecks(
-                "/health",
-                new HealthCheckOptions
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+            application.UseSwagger(AppSettings);
 
-            application.UseSwagger(provider, AppSettings);
+            subscriber.UseIntegrationEventSubscriptions();
         }
     }
 }

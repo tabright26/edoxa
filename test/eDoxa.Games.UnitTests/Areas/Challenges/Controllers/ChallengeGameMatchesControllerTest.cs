@@ -11,7 +11,7 @@ using eDoxa.Games.Api.Areas.Challenges.Controllers;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Games.TestHelper.Mocks;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 

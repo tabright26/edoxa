@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable("Challenge");
 
-            builder.Property(challenge => challenge.Id);
+            builder.Property(challenge => challenge.Id).ValueGeneratedNever();
 
             builder.Property(challenge => challenge.EntryFeeAmount).HasColumnType("decimal(11, 2)");
 
@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 {
                     challengeStats.ToTable("Bucket");
 
-                    challengeStats.HasForeignKey("ChallengeId");
+                    challengeStats.WithOwner().HasForeignKey("ChallengeId");
 
                     challengeStats.Property(bucket => bucket.PrizeAmount).HasColumnType("decimal(11, 2)");
 

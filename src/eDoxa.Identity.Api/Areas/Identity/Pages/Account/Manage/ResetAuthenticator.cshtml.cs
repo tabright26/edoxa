@@ -8,7 +8,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,14 +18,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        private readonly SignInManager _signInManager;
-        private UserManager _userManager;
+        private readonly ISignInService _signInService;
+        private IUserService _userService;
         private ILogger<ResetAuthenticatorModel> _logger;
 
-        public ResetAuthenticatorModel(UserManager userManager, SignInManager signInManager, ILogger<ResetAuthenticatorModel> logger)
+        public ResetAuthenticatorModel(IUserService userService, ISignInService signInService, ILogger<ResetAuthenticatorModel> logger)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
+            _signInService = signInService;
             _logger = logger;
         }
 
@@ -34,11 +34,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnGet()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
             return this.Page();
@@ -46,18 +46,18 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
         public async Task<IActionResult> OnPostAsync()
         {
-            var user = await _userManager.GetUserAsync(User);
+            var user = await _userService.GetUserAsync(User);
 
             if (user == null)
             {
-                return this.NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            await _userManager.SetTwoFactorEnabledAsync(user, false);
-            await _userManager.ResetAuthenticatorKeyAsync(user);
+            await _userService.SetTwoFactorEnabledAsync(user, false);
+            await _userService.ResetAuthenticatorKeyAsync(user);
             _logger.LogInformation("User with ID '{UserId}' has reset their authentication app key.", user.Id);
 
-            await _signInManager.RefreshSignInAsync(user);
+            await _signInService.RefreshSignInAsync(user);
             StatusMessage = "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.";
 
             return this.RedirectToPage("./EnableAuthenticator");

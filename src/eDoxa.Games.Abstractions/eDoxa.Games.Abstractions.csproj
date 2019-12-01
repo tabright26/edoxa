@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <AssemblyName>eDoxa.Games.Abstractions</AssemblyName>
     <RootNamespace>eDoxa.Games.Abstractions</RootNamespace>
+    <Nullable>Enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

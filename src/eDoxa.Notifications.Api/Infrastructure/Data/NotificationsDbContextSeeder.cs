@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Notifications.Infrastructure;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
@@ -16,7 +16,7 @@ namespace eDoxa.Notifications.Api.Infrastructure.Data
     {
         private readonly NotificationsDbContext _context;
 
-        public NotificationsDbContextSeeder(NotificationsDbContext context, IHostingEnvironment environment, ILogger<NotificationsDbContextSeeder> logger) : base(environment, logger)
+        public NotificationsDbContextSeeder(NotificationsDbContext context, IWebHostEnvironment environment, ILogger<NotificationsDbContextSeeder> logger) : base(environment, logger)
         {
             _context = context;
         }

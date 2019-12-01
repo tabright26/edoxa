@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using LinqKit;
 

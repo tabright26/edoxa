@@ -10,7 +10,7 @@ using System.Linq;
 
 using eDoxa.Challenges.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 {

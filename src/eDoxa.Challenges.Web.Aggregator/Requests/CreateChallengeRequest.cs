@@ -4,13 +4,14 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Web.Aggregator.Requests
 {
-    [DataContract]
+    [JsonObject]
     public sealed class CreateChallengeRequest
     {
+        [JsonConstructor]
         public CreateChallengeRequest(
             string name,
             string game,
@@ -30,25 +31,25 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
             EntryFeeCurrency = entryFeeCurrency;
         }
 
-        [DataMember(Name = "name")]
-        public string Name { get; private set; }
+        [JsonProperty("name")]
+        public string Name { get; }
 
-        [DataMember(Name = "game")]
-        public string Game { get; private set; }
+        [JsonProperty("game")]
+        public string Game { get; }
 
-        [DataMember(Name = "bestOf")]
-        public int BestOf { get; private set; }
+        [JsonProperty("bestOf")]
+        public int BestOf { get; }
 
-        [DataMember(Name = "entries")]
-        public int Entries { get; private set; }
+        [JsonProperty("entries")]
+        public int Entries { get; }
 
-        [DataMember(Name = "duration")]
-        public int Duration { get; private set; }
+        [JsonProperty("duration")]
+        public int Duration { get; }
 
-        [DataMember(Name = "entryFeeAmount")]
-        public decimal EntryFeeAmount { get; private set; }
+        [JsonProperty("entryFeeAmount")]
+        public decimal EntryFeeAmount { get; }
 
-        [DataMember(Name = "entryFeeCurrency")]
-        public string EntryFeeCurrency { get; private set; }
+        [JsonProperty("entryFeeCurrency")]
+        public string EntryFeeCurrency { get; }
     }
 }

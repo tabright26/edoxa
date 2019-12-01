@@ -11,7 +11,7 @@ using Bogus;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
 using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
 {

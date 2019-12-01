@@ -26,7 +26,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             return await this.ListAsync(
                 new PaymentMethodListOptions
                 {
-                    CustomerId = customerId,
+                    Customer = customerId,
                     Type = type,
                     Limit = 100
                 });
@@ -52,7 +52,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 paymentMethodId,
                 new PaymentMethodAttachOptions
                 {
-                    CustomerId = customerId
+                    Customer = customerId
                 });
 
             if (defaultPaymentMethod || !await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))

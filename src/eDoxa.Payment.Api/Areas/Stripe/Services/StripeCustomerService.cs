@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Repositories;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 
 using Stripe;
 
@@ -69,7 +69,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 {
                     InvoiceSettings = new CustomerInvoiceSettingsOptions
                     {
-                        DefaultPaymentMethodId = paymentMethodId
+                        DefaultPaymentMethod = paymentMethodId
                     }
                 });
         }

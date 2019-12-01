@@ -11,20 +11,18 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Clans.Domain.Models;
-using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 namespace eDoxa.Clans.Api.Infrastructure.Data.Storage
 {
     public sealed class FileStorage
     {
-        private static readonly Random Random = new Random();
-
         private static Lazy<IImmutableSet<Clan>> LazyClans =>
             new Lazy<IImmutableSet<Clan>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/clans.csv"));
 

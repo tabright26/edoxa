@@ -1,6 +1,7 @@
-﻿@inject SignInManager SignInManager
+﻿@using eDoxa.Identity.Api.Services
+@inject ISignInService ISignInService
 @{
-    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+    var hasExternalLogins = (await ISignInService.GetExternalAuthenticationSchemesAsync()).Any();
 }
 <ul class="nav nav-pills flex-column">
     <li class="nav-item">

@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.Infrastructure;
-using eDoxa.Seedwork.Infrastructure;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Clans.Api.Infrastructure.Data
 {
@@ -18,9 +19,9 @@ namespace eDoxa.Clans.Api.Infrastructure.Data
     {
         private readonly ClansDbContext _context;
         private readonly IClanRepository _clanRepository;
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
 
-        public ClansDbContextCleaner(IClanRepository clanRepository, IHostingEnvironment environment, ClansDbContext context)
+        public ClansDbContextCleaner(IClanRepository clanRepository, IWebHostEnvironment environment, ClansDbContext context)
         {
             _clanRepository = clanRepository;
             _environment = environment;

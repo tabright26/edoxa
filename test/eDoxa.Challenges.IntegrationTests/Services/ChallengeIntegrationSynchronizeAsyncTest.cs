@@ -11,8 +11,8 @@ namespace eDoxa.Challenges.IntegrationTests.Services
 {
     public sealed class ChallengeIntegrationSynchronizeAsyncTest : IntegrationTest
     {
-        public ChallengeIntegrationSynchronizeAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public ChallengeIntegrationSynchronizeAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {

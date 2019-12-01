@@ -8,18 +8,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Api.Areas.Clans.Controllers;
-using eDoxa.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.Models;
+using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Clans.TestHelper.Mocks;
-using eDoxa.Seedwork.Application.Validations.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -99,7 +97,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
                 .Verifiable();
 
             mockClanService.Setup(clanService => clanService.CreateDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new ValidationFailure(string.Empty, "Test error").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("Test error"))
                 .Verifiable();
 
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
@@ -158,7 +156,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
                 .Verifiable();
 
             mockClanService.Setup(clanService => clanService.CreateDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
@@ -193,7 +191,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
                 .Verifiable();
 
             mockClanService.Setup(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()))
-                .ReturnsAsync(new ValidationFailure(string.Empty, "Test error").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("Test error"))
                 .Verifiable();
 
 
@@ -253,7 +251,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
                 .Verifiable();
 
             mockClanService.Setup(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
@@ -290,7 +288,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             mockClanService.Setup(clanService => clanService.UpdateDivisionAsync(
                     It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new ValidationFailure(string.Empty, "Test error").ToResult())
+                .ReturnsAsync(DomainValidationResult.Failure("Test error"))
                 .Verifiable();
 
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
@@ -346,7 +344,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             mockClanService.Setup(clanService => clanService.UpdateDivisionAsync(
                     It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new ValidationResult())
+                .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);

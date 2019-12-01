@@ -218,13 +218,13 @@ export interface ChallengePayoutBucket {
 export interface ChallengeParticipant extends Entity<ParticipantId> {
   readonly score: number;
   readonly challengeId: ChallengeId;
-  readonly user?: ChallengeParticipantUser;
+  readonly user: ChallengeParticipantUser;
   readonly matches: ChallengeParticipantMatch[];
 }
 
 export interface ChallengeParticipantUser {
   readonly id: UserId;
-  readonly doxatag: ChallengeParticipantUserDoxatag;
+  readonly doxatag?: ChallengeParticipantUserDoxatag;
 }
 
 export interface ChallengeParticipantUserDoxatag {

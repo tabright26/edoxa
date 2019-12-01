@@ -12,16 +12,16 @@ using Xunit;
 
 namespace eDoxa.Cashier.TestHelper
 {
-    public abstract class IntegrationTest : IClassFixture<TestApiFixture>, IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>
+    public abstract class IntegrationTest : IClassFixture<TestHostFixture>, IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>
     {
-        protected IntegrationTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper)
+        protected IntegrationTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper)
         {
-            TestApi = testApi;
+            TestHost = testHost;
             TestData = testData;
             TestMapper = testMapper.Instance;
         }
 
-        protected TestApiFixture TestApi { get; }
+        protected TestHostFixture TestHost { get; }
 
         protected TestDataFixture TestData { get; }
 

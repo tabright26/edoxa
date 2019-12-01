@@ -13,11 +13,10 @@ using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
-
-using FluentValidation.Results;
 
 using Moq;
 
@@ -137,7 +136,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.SendCandidatureAsync(new UserId(), new ClanId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
             mockCandidatureRepository.Verify(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
             mockCandidatureRepository.Verify(repository => repository.Create(It.IsAny<Candidature>()), Times.Once);
@@ -161,7 +160,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.SendCandidatureAsync(new UserId(), new ClanId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
         }
@@ -187,7 +186,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.SendCandidatureAsync(new UserId(), new ClanId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
             mockCandidatureRepository.Verify(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
@@ -216,7 +215,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.AcceptCandidatureAsync(candidature, new UserId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
             mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -240,7 +239,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.AcceptCandidatureAsync(candidature, new UserId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
         }
@@ -271,7 +270,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.DeclineCandidatureAsync(candidature, new UserId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
             mockCandidatureRepository.Verify(repository => repository.Delete(It.IsAny<Candidature>()), Times.Once);
             mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -296,7 +295,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Services
             var result = await service.DeclineCandidatureAsync(candidature, new UserId());
 
             // Assert
-            result.Should().BeOfType<ValidationResult>();
+            result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
         }

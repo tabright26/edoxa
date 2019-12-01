@@ -11,8 +11,8 @@ using System.Linq;
 using System.Reflection;
 
 using eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
-using eDoxa.Seedwork.Infrastructure.Extensions;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
 namespace eDoxa.Payment.Api.Infrastructure.Data.Storage
 {
@@ -22,7 +22,7 @@ namespace eDoxa.Payment.Api.Infrastructure.Data.Storage
             new Lazy<IImmutableSet<StripeReference>>(
                 () =>
                 {
-                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
                     var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
 

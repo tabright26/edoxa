@@ -7,7 +7,7 @@
 using System;
 
 using eDoxa.Challenges.Api.Infrastructure;
-using eDoxa.Seedwork.Application.DelegatingHandlers;
+using eDoxa.Seedwork.Application.Refit.DelegatingHandlers;
 
 using Microsoft.Extensions.DependencyInjection;
 

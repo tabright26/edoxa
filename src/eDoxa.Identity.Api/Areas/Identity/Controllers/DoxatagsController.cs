@@ -1,5 +1,5 @@
 ﻿// Filename: DoxatagsController.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-10-06
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Responses;
 
 using Microsoft.AspNetCore.Authorization;
@@ -26,33 +26,31 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiVersion("1.0")]
     [Route("api/doxatags")]
     [ApiExplorerSettings(GroupName = "Doxatags")]
-    public class DoxatagsController : ControllerBase
+    public sealed class DoxatagsController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IDoxatagService _doxatagService;
         private readonly IMapper _mapper;
 
-        public DoxatagsController(IUserManager userManager, IMapper mapper)
+        public DoxatagsController(IDoxatagService doxatagService, IMapper mapper)
         {
-            _userManager = userManager;
+            _doxatagService = doxatagService;
             _mapper = mapper;
         }
 
-        /// <summary>
-        ///     Fetch Doxatags.
-        /// </summary>
         [HttpGet]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(IEnumerable<UserDoxatagResponse>))]
+        [SwaggerOperation("Fetch Doxatags.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagResponse[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
-            var doxatags = await _userManager.FetchDoxatagsAsync();
+            var doxatags = await _doxatagService.FetchDoxatagsAsync();
 
             if (!doxatags.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<UserDoxatagResponse>>(doxatags));
+            return this.Ok(_mapper.Map<IEnumerable<DoxatagResponse>>(doxatags));
         }
     }
 }

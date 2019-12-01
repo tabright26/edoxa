@@ -8,17 +8,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using FluentValidation.Results;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Abstractions.Services
 {
     public interface IGameCredentialService
     {
-        Task<ValidationResult> LinkCredentialAsync(UserId userId, Game game);
+        Task<DomainValidationResult> LinkCredentialAsync(UserId userId, Game game);
 
-        Task<ValidationResult> UnlinkCredentialAsync(Credential credential);
+        Task<DomainValidationResult> UnlinkCredentialAsync(Credential credential);
 
         Task<IReadOnlyCollection<Credential>> FetchCredentialsAsync(UserId userId);
 

@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
             return new ChallengesDbContext(
                 new DbContextOptionsBuilder<ChallengesDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
-                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup)).GetName().Name))
+                        builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name))
                     .Options);
         }
     }

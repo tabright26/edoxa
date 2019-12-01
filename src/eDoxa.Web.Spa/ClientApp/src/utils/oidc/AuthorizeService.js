@@ -251,7 +251,9 @@ export class AuthorizeService {
     if (this.userManager !== undefined) {
       return;
     }
-    
+
+    // https://github.com/maxmantz/redux-oidc/issues/35
+
     const settings = {
       client_id: REACT_APP_CLIENT_ID,
       redirect_uri: REACT_APP_WEB_SPA + ApplicationPaths.LoginCallback,
@@ -266,7 +268,14 @@ export class AuthorizeService {
       includeIdTokenInSilentRenew: true,
       userStore: new WebStorageStateStore({
         prefix: ApplicationName
-      })
+      }),
+      loadUserInfo: false,
+      // metadata: {
+      //   issuer: REACT_APP_AUTHORITY,
+      //   jwks_uri: `${REACT_APP_AUTHORITY}/.well-known/openid-configuration/jwks`,
+      //   end_session_endpoint: `${REACT_APP_AUTHORITY}/connect/endsession`,
+      //   authorization_endpoint: `${REACT_APP_AUTHORITY}/connect/authorize`
+      // }
     };
 
     this.userManager = new UserManager(settings);

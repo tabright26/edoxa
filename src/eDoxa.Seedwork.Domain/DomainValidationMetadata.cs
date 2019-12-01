@@ -1,0 +1,14 @@
+﻿// Filename: DomainValidationMetadata.cs
+// Date Created: 2019-11-30
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System.Collections.Generic;
+
+namespace eDoxa.Seedwork.Domain
+{
+    public sealed class DomainValidationMetadata : Dictionary<string, object>
+    {
+    }
+}

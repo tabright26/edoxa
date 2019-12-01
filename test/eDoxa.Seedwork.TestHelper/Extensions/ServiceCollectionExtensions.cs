@@ -5,11 +5,9 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Security.Claims;
 
 using eDoxa.Seedwork.TestHelper.Fakes;
 
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.TestHelper.Extensions
@@ -21,23 +19,11 @@ namespace eDoxa.Seedwork.TestHelper.Extensions
             services.AddAuthentication(
                     options =>
                     {
-                        options.DefaultAuthenticateScheme = FakeAuthenticationDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = FakeAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultAuthenticateScheme = nameof(FakeAuthenticationHandler);
+                        options.DefaultChallengeScheme = nameof(FakeAuthenticationHandler);
                     }
                 )
-                .AddScheme<FakeAuthenticationOptions, FakeAuthenticationHandler>(FakeAuthenticationDefaults.AuthenticationScheme, configureOptions);
-        }
-
-        // TODO: Must be remove in .Net Core 3.0 (Fixed in AspNetCore.Identity)
-        internal static void AddFakeAuthenticationFilter(this IServiceCollection services, params Claim[] claims)
-        {
-            services.AddMvc(
-                options =>
-                {
-                    options.Filters.Add(new AllowAnonymousFilter());
-                    options.Filters.Add(new FakeClaimsPrincipalFilter(claims));
-                }
-            );
+                .AddScheme<FakeAuthenticationOptions, FakeAuthenticationHandler>(nameof(FakeAuthenticationHandler), configureOptions);
         }
     }
 }

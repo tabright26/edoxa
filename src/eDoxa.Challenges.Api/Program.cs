@@ -9,8 +9,9 @@ using System;
 using Autofac.Extensions.DependencyInjection;
 
 using eDoxa.Challenges.Infrastructure;
-using eDoxa.Seedwork.Infrastructure.Extensions;
-using eDoxa.Seedwork.Security.Extensions;
+using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
+using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +21,7 @@ using Serilog;
 
 namespace eDoxa.Challenges.Api
 {
-    public class Program
+    public sealed class Program
     {
         public static int Main(string[] args)
         {
@@ -65,18 +66,7 @@ namespace eDoxa.Challenges.Api
                         services.AddAutofac();
                     })
                 .UseAzureKeyVault()
-                .UseSerilog(
-                    (context, config) =>
-                    {
-                        var seqServerUrl = context.Configuration["Serilog:Sink:Seq"];
-
-                        config.MinimumLevel.Verbose()
-                            .Enrich.WithProperty("Application", typeof(Program).Namespace)
-                            .Enrich.FromLogContext()
-                            .WriteTo.Console()
-                            .WriteTo.Seq(string.IsNullOrWhiteSpace(seqServerUrl) ? "http://seq" : seqServerUrl)
-                            .ReadFrom.Configuration(context.Configuration);
-                    });
+                .UseCustomSerilog<Program>();
         }
     }
 }

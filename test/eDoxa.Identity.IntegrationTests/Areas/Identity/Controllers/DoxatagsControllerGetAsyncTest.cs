@@ -1,5 +1,5 @@
 ﻿// Filename: DoxatagsControllerGetAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -9,13 +9,13 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Areas.Identity.Services;
+using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http.Extensions;
 
 using FluentAssertions;
 
@@ -25,8 +25,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
     public sealed class DoxatagsControllerGetAsyncTest : IntegrationTest
     {
-        public DoxatagsControllerGetAsyncTest(TestApiFixture testApi, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testApi,
+        public DoxatagsControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
             testData,
             testMapper)
         {
@@ -43,8 +43,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             // Act
@@ -60,22 +60,30 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            _httpClient = TestApi.CreateClient();
-            var testServer = TestApi.Server;
+            _httpClient = TestHost.CreateClient();
+            var testServer = TestHost.Server;
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
-                    var userManager = scope.GetRequiredService<UserManager>();
+                    var userManager = scope.GetRequiredService<IUserService>();
 
-                    var testUsers = TestData.FileStorage.GetUsers();
+                    var doxatagService = scope.GetRequiredService<IDoxatagRepository>();
 
-                    foreach (var testUser in testUsers.Take(100).ToList())
+                    var users = TestData.FileStorage.GetUsers();
+
+                    var doxatags = TestData.FileStorage.GetDoxatags();
+
+                    foreach (var testUser in users.Take(100).ToList())
                     {
                         var result = await userManager.CreateAsync(testUser);
 
                         result.Succeeded.Should().BeTrue();
+
+                        doxatagService.Create(doxatags.Single(doxatag => doxatag.UserId == testUser.Id));
+
+                        await doxatagService.UnitOfWork.CommitAsync();
                     }
                 });
 
@@ -87,9 +95,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var users = await response.DeserializeAsync<UserDoxatagResponse[]>();
+            var doxatagResponses = await response.Content.ReadAsAsync<DoxatagResponse[]>();
 
-            users.Should().HaveCount(100);
+            doxatagResponses.Should().HaveCount(100);
         }
     }
 }

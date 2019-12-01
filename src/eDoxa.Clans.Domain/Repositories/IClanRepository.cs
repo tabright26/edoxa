@@ -10,9 +10,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Miscs;
-
-using Microsoft.AspNetCore.Http;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Clans.Domain.Repositories
 {
@@ -32,7 +30,7 @@ namespace eDoxa.Clans.Domain.Repositories
 
         Task<Stream> DownloadLogoAsync(ClanId clanId);
 
-        Task UploadLogoAsync(ClanId clanId, IFormFile logo);
+        Task UploadLogoAsync(ClanId clanId, Stream stream, string fileName);
 
         Task DeleteLogoAsync(ClanId clanId);
 

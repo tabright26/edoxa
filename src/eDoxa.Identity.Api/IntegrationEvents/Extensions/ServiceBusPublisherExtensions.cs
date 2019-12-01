@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Infrastructure.Models;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
@@ -40,7 +40,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(new UserCreatedIntegrationEvent(userId, email, country));
         }
 
-        public static async Task PublishUserAddressChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, UserAddress address)
+        public static async Task PublishUserAddressChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, Address address)
         {
             await publisher.PublishAsync(
                 new UserAddressChangedIntegrationEvent(

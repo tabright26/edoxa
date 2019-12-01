@@ -8,15 +8,14 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Clans.Api.Areas.Clans.Requests;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
+using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Miscs;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Http;
 
 using FluentAssertions;
 
@@ -30,7 +29,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
 {
     public sealed class ClansControllerPostAsyncTest : IntegrationTest
     {
-        public ClansControllerPostAsyncTest(TestApiFixture testApi, TestMapperFixture testMapper) : base(testApi, testMapper)
+        public ClansControllerPostAsyncTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
         }
 
@@ -38,7 +37,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
 
         private async Task<HttpResponseMessage> ExecuteAsync(ClanPostRequest clanPostRequest)
         {
-            return await _httpClient.PostAsync("api/clans", new JsonContent(clanPostRequest));
+            return await _httpClient.PostAsJsonAsync("api/clans", clanPostRequest);
         }
 
         [Fact]
@@ -48,7 +47,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -74,7 +73,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             // Arrange
             var userId = new UserId();
 
-            var factory = TestApi.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
