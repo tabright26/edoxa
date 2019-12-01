@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace eDoxa.Notifications.Api.Areas.Email.Services
+namespace eDoxa.Notifications.Api.Services
 {
     public sealed class EmailService : IEmailService
     {
