@@ -14,13 +14,10 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 
-using Hellang.Middleware.ProblemDetails;
-
 using IdentityServer4.Models;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -38,16 +35,13 @@ namespace eDoxa.Gateway
             TelemetryDebugWriter.IsTracingDisabled = true;
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<GatewayAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment HostingEnvironment { get; }
 
         public GatewayAppSettings AppSettings { get; set; }
 
@@ -65,9 +59,7 @@ namespace eDoxa.Gateway
                 .AddUrlGroup(AppSettings.Endpoints.ChallengesWebAggregatorUrl, AppNames.ChallengesWebAggregator);
 
             services.AddCustomCors();
-
-            services.AddProblemDetails();
-
+            
             services.AddAuthentication(
                 AppSettings,
                 new Dictionary<string, ApiResource>
@@ -88,15 +80,10 @@ namespace eDoxa.Gateway
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseProblemDetails();
-
             application.UseCustomPathBase();
 
             application.UseRouting();
             application.UseCustomCors();
-
-            //application.UseHttpsRedirection(); // TODO: To verify.
-            //application.UseForwardedHeaders(); // TODO: To verify.
 
             application.UseEndpoints(
                 endpoints =>

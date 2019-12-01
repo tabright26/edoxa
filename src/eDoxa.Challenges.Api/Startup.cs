@@ -22,6 +22,7 @@ using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -42,7 +43,6 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -65,18 +65,15 @@ namespace eDoxa.Challenges.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<ChallengesAppSettings>(ChallengesApi);
         }
 
         private ChallengesAppSettings AppSettings { get; }
 
         public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment HostingEnvironment { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {

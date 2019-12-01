@@ -31,11 +31,15 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
+using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
+using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
+
+using Hellang.Middleware.ProblemDetails;
 
 using IdentityModel;
 
@@ -48,7 +52,6 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -94,23 +97,10 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
-            if (Configuration.GetValue<bool>("ASPNETCORE_FORWARDEDHEADERS_ENABLED"))
-            {
-                services.Configure<ForwardedHeadersOptions>(
-                    options =>
-                    {
-                        options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-
-                        // Only loopback proxies are allowed by default.
-                        // Clear that restriction because forwarders are enabled by explicit 
-                        // configuration.
-                        options.KnownNetworks.Clear();
-                        options.KnownProxies.Clear();
-                    });
-            }
-
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
+            services.AddCustomForwardedHeaders();
+            
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
@@ -173,6 +163,8 @@ namespace eDoxa.Identity.Api
                     option.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
                     option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
                 });
+
+            services.AddProblemDetails();
 
             services.AddMvc()
                 .AddNewtonsoftJson(
@@ -266,16 +258,9 @@ namespace eDoxa.Identity.Api
         {
             application.UseForwardedHeaders();
 
-            if (HostingEnvironment.IsDevelopment())
-            {
-                application.UseDeveloperExceptionPage();
-                //application.UseDatabaseErrorPage();
-            }
-            else
-            {
-                application.UseExceptionHandler("/Home/Error");
-                application.UseHsts();
-            }
+            application.UseCustomMvcOrApiExceptionHandler();
+
+            application.UseCustomHsts();
 
             application.UseCustomPathBase();
 

@@ -17,8 +17,10 @@ using AutoMapper;
 
 using eDoxa.Challenges.Web.Aggregator.Infrastructure;
 using eDoxa.Challenges.Web.Aggregator.Services;
+using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Refit.DelegatingHandlers;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -39,7 +41,6 @@ using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,18 +70,15 @@ namespace eDoxa.Challenges.Web.Aggregator
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
         }
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            HostingEnvironment = hostingEnvironment;
             AppSettings = configuration.GetAppSettings<ChallengesWebAggregatorAppSettings>(ChallengesWebAggregator);
         }
 
         private ChallengesWebAggregatorAppSettings AppSettings { get; }
 
         public IConfiguration Configuration { get; }
-
-        public IWebHostEnvironment HostingEnvironment { get; }
 
         private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
         {

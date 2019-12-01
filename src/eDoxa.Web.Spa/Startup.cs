@@ -4,11 +4,14 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
+using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
+using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -44,6 +47,8 @@ namespace eDoxa.Web.Spa
         {
             services.Configure<WebSpaAppSettings>(Configuration);
 
+            services.AddCustomForwardedHeaders();
+
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddIdentityServer(AppSettings)
@@ -59,17 +64,15 @@ namespace eDoxa.Web.Spa
 
         public void Configure(IApplicationBuilder application)
         {
-            if (HostingEnvironment.IsDevelopment())
-            {
-                application.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                application.UseHsts();
-            }
+            application.UseForwardedHeaders();
+
+            application.UseCustomMvcExceptionHandler();
+
+            application.UseCustomHsts();
 
             application.UseCustomPathBase();
 
+            application.UseHttpsRedirection();
             application.UseStaticFiles();
             application.UseSpaStaticFiles();
 

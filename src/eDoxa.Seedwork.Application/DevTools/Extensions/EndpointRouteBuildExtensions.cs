@@ -1,5 +1,5 @@
 ﻿// Filename: EndpointRouteBuildExtensions.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-01
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -18,12 +18,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Seedwork.Application.Extensions
+namespace eDoxa.Seedwork.Application.DevTools.Extensions
 {
     public static class EndpointRouteBuildExtensions
     {
-        private const string Pattern = "/api/_configuration";
-
         public static void MapConfigurationRoute<T>(this IEndpointRouteBuilder endpoints, ApiResource? apiResource = null)
         where T : class, new()
         {
@@ -41,7 +39,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 }
 
                 endpoints.MapGet(
-                    Pattern,
+                    "/api/_configuration",
                     async context =>
                     {
                         await context.Response.WriteAsync(

@@ -1,5 +1,5 @@
 ﻿// Filename: EnumerationErrorDescribers.cs
-// Date Created: 2019-10-12
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
