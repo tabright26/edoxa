@@ -19,7 +19,7 @@ namespace eDoxa.Identity.Api.Services
             IRoleStore<Role> store,
             IEnumerable<IRoleValidator<Role>> roleValidators,
             ILookupNormalizer keyNormalizer,
-            CustomIdentityErrorDescriber errors,
+            IdentityErrorDescriber errors,
             ILogger<RoleService> logger
         ) : base(
             store,

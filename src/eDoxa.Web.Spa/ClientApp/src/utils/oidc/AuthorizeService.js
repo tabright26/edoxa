@@ -269,7 +269,7 @@ export class AuthorizeService {
       userStore: new WebStorageStateStore({
         prefix: ApplicationName
       }),
-      loadUserInfo: false,
+      loadUserInfo: true
       // metadata: {
       //   issuer: REACT_APP_AUTHORITY,
       //   jwks_uri: `${REACT_APP_AUTHORITY}/.well-known/openid-configuration/jwks`,

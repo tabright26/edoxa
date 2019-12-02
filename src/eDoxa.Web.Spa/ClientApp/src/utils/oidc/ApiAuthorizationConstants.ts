@@ -1,3 +1,5 @@
+import { REACT_APP_AUTHORITY } from "keys";
+
 export const ApplicationName: string = "edoxa";
 
 interface QueryParameterNames {
@@ -63,7 +65,7 @@ export const ApplicationPaths: ApplicationPaths = {
   Login: `${prefix}/${LoginActions.Login}`,
   LoginFailed: `${prefix}/${LoginActions.LoginFailed}`,
   LoginCallback: `${prefix}/${LoginActions.LoginCallback}`,
-  Register: `${prefix}/${LoginActions.Register}`,
+  Register: `${REACT_APP_AUTHORITY}/Identity/Account/Register`,
   Profile: `${prefix}/${LoginActions.Profile}`,
   LogOut: `${prefix}/${LogoutActions.Logout}`,
   LoggedOut: `${prefix}/${LogoutActions.LoggedOut}`,

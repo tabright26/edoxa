@@ -12,13 +12,8 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 
 using IdentityModel;
 
-using IdentityServer4;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
 
@@ -36,12 +31,12 @@ namespace eDoxa.Identity.Api.Services
         )
         {
             _doxatagService = doxatagService;
-            IUserService = userService;
+            UserService = userService;
             RoleService = roleService;
             Options = optionsAccessor.Value;
         }
 
-        private IUserService IUserService { get; }
+        private IUserService UserService { get; }
 
         private IRoleService RoleService { get; }
 
@@ -67,9 +62,9 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task GenerateUserClaimsAsync(User user)
         {
-            Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await IUserService.GetUserIdAsync(user)));
+            Identity!.AddClaim(new Claim(Options.ClaimsIdentity.UserIdClaimType, await UserService.GetUserIdAsync(user)));
 
-            var country = await IUserService.GetCountryAsync(user);
+            var country = await UserService.GetCountryAsync(user);
 
             Identity!.AddClaim(new Claim(ClaimTypes.Country, country.TwoDigitIso));
 
@@ -87,14 +82,14 @@ namespace eDoxa.Identity.Api.Services
 
             await this.TryGeneratePhoneNumberClaimsAsync(user);
 
-            if (IUserService.SupportsUserSecurityStamp)
+            if (UserService.SupportsUserSecurityStamp)
             {
-                Identity.AddClaim(new Claim(Options.ClaimsIdentity.SecurityStampClaimType, await IUserService.GetSecurityStampAsync(user)));
+                Identity.AddClaim(new Claim(Options.ClaimsIdentity.SecurityStampClaimType, await UserService.GetSecurityStampAsync(user)));
             }
 
-            if (IUserService.SupportsUserClaim)
+            if (UserService.SupportsUserClaim)
             {
-                Identity.AddClaims(await IUserService.GetClaimsAsync(user));
+                Identity.AddClaims(await UserService.GetClaimsAsync(user));
             }
         }
 
@@ -104,25 +99,15 @@ namespace eDoxa.Identity.Api.Services
 
             if (doxatag != null)
             {
-                Identity!.AddClaim(
-                    new Claim(
-                        ClaimTypes.Doxatag,
-                        JsonConvert.SerializeObject(
-                            doxatag,
-                            Formatting.Indented,
-                            new JsonSerializerSettings
-                            {
-                                ContractResolver = new CamelCasePropertyNamesContractResolver()
-                            }),
-                        IdentityServerConstants.ClaimValueTypes.Json));
+                Identity!.AddClaim(new Claim(ClaimTypes.Doxatag, doxatag.ToString()));
             }
         }
 
         private async Task TryGenerateNameClaimAsync(User user)
         {
-            var firstName = await IUserService.GetFirstNameAsync(user);
+            var firstName = await UserService.GetFirstNameAsync(user);
 
-            var lastName = await IUserService.GetLastNameAsync(user);
+            var lastName = await UserService.GetLastNameAsync(user);
 
             if (firstName != null && lastName != null)
             {
@@ -132,7 +117,7 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateFirstNameClaimAsync(User user)
         {
-            var firstName = await IUserService.GetFirstNameAsync(user);
+            var firstName = await UserService.GetFirstNameAsync(user);
 
             if (firstName != null)
             {
@@ -142,7 +127,7 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateLastNameClaimAsync(User user)
         {
-            var lastName = await IUserService.GetLastNameAsync(user);
+            var lastName = await UserService.GetLastNameAsync(user);
 
             if (lastName != null)
             {
@@ -152,7 +137,7 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateBirthDateClaimAsync(User user)
         {
-            var dob = await IUserService.GetDobAsync(user);
+            var dob = await UserService.GetDobAsync(user);
 
             if (dob != null)
             {
@@ -162,11 +147,11 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGenerateEmailClaimsAsync(User user)
         {
-            if (IUserService.SupportsUserEmail)
+            if (UserService.SupportsUserEmail)
             {
-                var email = await IUserService.GetEmailAsync(user);
+                var email = await UserService.GetEmailAsync(user);
 
-                var emailConfirmed = await IUserService.IsEmailConfirmedAsync(user);
+                var emailConfirmed = await UserService.IsEmailConfirmedAsync(user);
 
                 Identity!.AddClaim(new Claim(JwtClaimTypes.Email, email));
 
@@ -176,13 +161,13 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task TryGeneratePhoneNumberClaimsAsync(User user)
         {
-            if (IUserService.SupportsUserPhoneNumber)
+            if (UserService.SupportsUserPhoneNumber)
             {
-                var phoneNumber = await IUserService.GetPhoneNumberAsync(user);
+                var phoneNumber = await UserService.GetPhoneNumberAsync(user);
 
                 if (phoneNumber != null)
                 {
-                    var phoneNumberConfirmed = await IUserService.IsPhoneNumberConfirmedAsync(user);
+                    var phoneNumberConfirmed = await UserService.IsPhoneNumberConfirmedAsync(user);
 
                     Identity!.AddClaim(new Claim(JwtClaimTypes.PhoneNumber, phoneNumber));
 
@@ -193,9 +178,9 @@ namespace eDoxa.Identity.Api.Services
 
         private async Task GenerateRoleClaimsAsync(User user)
         {
-            if (IUserService.SupportsUserRole)
+            if (UserService.SupportsUserRole)
             {
-                var roles = await IUserService.GetRolesAsync(user);
+                var roles = await UserService.GetRolesAsync(user);
 
                 foreach (var roleName in roles)
                 {
