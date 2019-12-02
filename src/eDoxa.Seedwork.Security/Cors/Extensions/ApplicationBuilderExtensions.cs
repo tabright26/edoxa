@@ -6,7 +6,6 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -20,19 +19,12 @@ namespace eDoxa.Seedwork.Security.Cors.Extensions
 
             var environment = services.GetRequiredService<IWebHostEnvironment>();
 
-            var configuration = services.GetRequiredService<IConfiguration>();
-
-            if (configuration.IsCorsEnabled())
+            if (environment.IsProduction())
             {
-                if (environment.IsProduction())
-                {
-                    return application.UseCors(Environments.Production);
-                }
-
-                return application.UseCors();
+                return application.UseCors(Environments.Production);
             }
 
-            return application;
+            return application.UseCors();
         }
     }
 }

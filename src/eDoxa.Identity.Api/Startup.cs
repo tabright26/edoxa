@@ -31,7 +31,6 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
-using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Modules;
@@ -52,6 +51,7 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -98,6 +98,16 @@ namespace eDoxa.Identity.Api
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
+            
+            services.Configure<ForwardedHeadersOptions>(
+                options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+                    // Only loopback proxies are allowed by default. Clear that restriction because forwarders are enabled by explicit configuration.
+                    options.KnownNetworks.Clear();
+                    options.KnownProxies.Clear();
+                });
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
@@ -105,8 +115,6 @@ namespace eDoxa.Identity.Api
                 .AddSqlServer(Configuration)
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
-
-            services.AddCustomForwardedHeaders();
 
             services.AddCustomDataProtection(Configuration, AppNames.IdentityApi);
 
