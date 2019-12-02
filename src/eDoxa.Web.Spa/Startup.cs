@@ -10,7 +10,6 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
-using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.Web.Spa.Infrastructure;
 
@@ -53,8 +52,6 @@ namespace eDoxa.Web.Spa
                 .AddAzureKeyVault(Configuration)
                 .AddUrlGroup(AppSettings.ChallengesWebGatewayUrl, AppNames.ChallengesWebGateway);
 
-            services.AddCustomForwardedHeaders();
-
             services.AddCustomDataProtection(Configuration, AppNames.WebSpa);
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
@@ -64,8 +61,6 @@ namespace eDoxa.Web.Spa
 
         public void Configure(IApplicationBuilder application)
         {
-            application.UseForwardedHeaders();
-
             application.UseCustomMvcExceptionHandler();
 
             application.UseCustomHsts();
