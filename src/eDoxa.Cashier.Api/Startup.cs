@@ -76,6 +76,10 @@ namespace eDoxa.Cashier.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry();
+
+            services.AddApplicationInsightsKubernetesEnricher();
+
             services.AddAppSettings<CashierAppSettings>(Configuration);
 
             services.Configure<BundlesOptions>(Configuration.GetSection("Bundles"));

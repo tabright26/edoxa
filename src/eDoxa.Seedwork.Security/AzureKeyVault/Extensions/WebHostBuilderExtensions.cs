@@ -11,7 +11,7 @@ namespace eDoxa.Seedwork.Security.AzureKeyVault.Extensions
 {
     public static class WebHostBuilderExtensions
     {
-        public static IWebHostBuilder UseAzureKeyVault(this IWebHostBuilder hostBuilder)
+        public static IWebHostBuilder UseCustomAzureKeyVault(this IWebHostBuilder hostBuilder)
         {
             return hostBuilder.ConfigureAppConfiguration(
                 configurationBuilder =>

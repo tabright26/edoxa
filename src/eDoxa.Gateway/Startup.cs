@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,7 +13,6 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
-using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
 
 using IdentityServer4.Models;
 
@@ -48,8 +47,6 @@ namespace eDoxa.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCustomForwardedHeaders();
-
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
@@ -62,7 +59,7 @@ namespace eDoxa.Gateway
                 .AddUrlGroup(AppSettings.Endpoints.ChallengesWebAggregatorUrl, AppNames.ChallengesWebAggregator);
 
             services.AddCustomCors();
-            
+
             services.AddAuthentication(
                 AppSettings,
                 new Dictionary<string, ApiResource>
@@ -75,16 +72,13 @@ namespace eDoxa.Gateway
                     ["GamesApiKey"] = GamesApi,
                     ["ClansApiKey"] = ClansApi,
                     ["ChallengesWebAggregatorKey"] = ChallengesWebAggregator
-                }
-            );
+                });
 
             services.AddOcelot(Configuration);
         }
 
-        public void Configure(IApplicationBuilder application)
+        public async void Configure(IApplicationBuilder application)
         {
-            application.UseForwardedHeaders();
-
             application.UseCustomPathBase();
 
             application.UseRouting();
@@ -96,7 +90,7 @@ namespace eDoxa.Gateway
                     endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseOcelot().Wait();
+            await application.UseOcelot();
         }
     }
 }
