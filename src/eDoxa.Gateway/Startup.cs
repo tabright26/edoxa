@@ -13,6 +13,7 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
+using eDoxa.Seedwork.Security.ForwardedHeaders.Extensions;
 
 using IdentityServer4.Models;
 
@@ -47,6 +48,8 @@ namespace eDoxa.Gateway
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCustomForwardedHeaders();
+
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
@@ -80,6 +83,8 @@ namespace eDoxa.Gateway
 
         public void Configure(IApplicationBuilder application)
         {
+            application.UseForwardedHeaders();
+
             application.UseCustomPathBase();
 
             application.UseRouting();

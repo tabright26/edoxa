@@ -11,7 +11,6 @@ import {
 import authService from "./AuthorizeService";
 import { ApplicationPaths } from "./ApiAuthorizationConstants";
 import { LinkContainer } from "react-router-bootstrap";
-import { REACT_APP_AUTHORITY } from "keys";
 
 export class LoginMenu extends Component {
   constructor(props) {
@@ -64,9 +63,7 @@ export class LoginMenu extends Component {
       <Nav className="ml-auto mr-3" navbar>
         <UncontrolledDropdown nav direction="down">
           <DropdownToggle nav caret>
-            {user["doxatag"]
-              ? `${user["doxatag"].name}#${user["doxatag"].code}`
-              : user["email"]}
+            {user["doxatag"] ? user["doxatag"] : user["email"]}
           </DropdownToggle>
           <DropdownMenu right style={{ right: 0 }}>
             <Form inline>
@@ -108,17 +105,9 @@ export class LoginMenu extends Component {
             Login
           </Button>
         </LinkContainer>
-        <LinkContainer to={registerPath}>
-          <Button
-            href={`${REACT_APP_AUTHORITY}/Identity/Account/Register`}
-            size="sm"
-            tag="a"
-            color="primary"
-            outline
-          >
-            Register
-          </Button>
-        </LinkContainer>
+        <Button href={registerPath} size="sm" tag="a" color="primary" outline>
+          Register
+        </Button>
       </Nav>
     );
   }

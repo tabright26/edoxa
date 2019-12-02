@@ -13,12 +13,14 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Domain.Misc;
 
+using Microsoft.AspNetCore.Identity;
+
 namespace eDoxa.Identity.Api.Services
 {
     public sealed class UserRepository : Microsoft.AspNetCore.Identity.EntityFrameworkCore.UserStore<User, Role, IdentityDbContext, Guid, UserClaim, UserRole,
         UserLogin, UserToken, RoleClaim>
     {
-        public UserRepository(IdentityDbContext context, CustomIdentityErrorDescriber describer) : base(context, describer)
+        public UserRepository(IdentityDbContext context, IdentityErrorDescriber describer) : base(context, describer)
         {
         }
 

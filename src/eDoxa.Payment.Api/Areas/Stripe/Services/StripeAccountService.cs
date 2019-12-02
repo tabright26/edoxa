@@ -1,5 +1,5 @@
 ﻿// Filename: StripeAccountService.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -80,6 +80,11 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                     {
                         Date = DateTime.UtcNow,
                         Ip = "10.10.10.10"
+                    },
+                    RequestedCapabilities = new List<string>
+                    {
+                        "card_payments",
+                        "transfers"
                     },
                     Metadata = new Dictionary<string, string>
                     {

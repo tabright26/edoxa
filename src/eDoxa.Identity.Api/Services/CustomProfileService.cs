@@ -20,19 +20,19 @@ namespace eDoxa.Identity.Api.Services
         public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, IUserService userService, IOptions<IdentityOptions> optionsAccessor)
         {
             PrincipalFactory = principalFactory;
-            IUserService = userService;
+            UserService = userService;
             Options = optionsAccessor.Value;
         }
 
         private CustomUserClaimsPrincipalFactory PrincipalFactory { get; }
 
-        private IUserService IUserService { get; }
+        private IUserService UserService { get; }
 
         private IdentityOptions Options { get; }
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {
-            var user = await IUserService.GetUserAsync(context.Subject);
+            var user = await UserService.GetUserAsync(context.Subject);
 
             var principal = await PrincipalFactory.CreateAsync(user);
 
@@ -44,19 +44,19 @@ namespace eDoxa.Identity.Api.Services
 
         public async Task IsActiveAsync(IsActiveContext context)
         {
-            var user = await IUserService.GetUserAsync(context.Subject);
+            var user = await UserService.GetUserAsync(context.Subject);
 
             if (user != null)
             {
-                context.IsActive = !await IUserService.IsLockedOutAsync(user);
+                context.IsActive = !await UserService.IsLockedOutAsync(user);
 
-                if (IUserService.SupportsUserSecurityStamp)
+                if (UserService.SupportsUserSecurityStamp)
                 {
-                    var claims = await IUserService.GetClaimsAsync(user);
+                    var claims = await UserService.GetClaimsAsync(user);
 
                     var securityStamp = claims.SingleOrDefault(claim => claim.Type == Options.ClaimsIdentity.SecurityStampClaimType)?.Value;
 
-                    context.IsActive = securityStamp != await IUserService.GetSecurityStampAsync(user);
+                    context.IsActive = securityStamp != await UserService.GetSecurityStampAsync(user);
                 }
             }
             else
