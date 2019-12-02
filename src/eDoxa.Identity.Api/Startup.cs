@@ -99,14 +99,14 @@ namespace eDoxa.Identity.Api
 
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
-            services.AddCustomForwardedHeaders();
-            
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
+
+            services.AddCustomForwardedHeaders();
 
             services.AddCustomDataProtection(Configuration, AppNames.IdentityApi);
 
@@ -149,7 +149,6 @@ namespace eDoxa.Identity.Api
 
             services.AddScoped<UserRepository>();
             services.AddScoped<CustomUserClaimsPrincipalFactory>();
-            services.AddScoped<CustomIdentityErrorDescriber>();
             services.AddScoped<UserService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<SignInService>();

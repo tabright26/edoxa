@@ -47,13 +47,13 @@ namespace eDoxa.Web.Spa
         {
             services.Configure<WebSpaAppSettings>(Configuration);
 
-            services.AddCustomForwardedHeaders();
-
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
                 .AddUrlGroup(AppSettings.ChallengesWebGatewayUrl, AppNames.ChallengesWebGateway);
+
+            services.AddCustomForwardedHeaders();
 
             services.AddCustomDataProtection(Configuration, AppNames.WebSpa);
 

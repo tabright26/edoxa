@@ -6,6 +6,7 @@
 
 #nullable disable
 
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -65,6 +66,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 var result = await _userService.CreateAsync(
                     new User
                     {
+                        Id = Guid.NewGuid(),
                         Email = Input.Email,
                         UserName = Input.Email,
                         Country = Input.Country
