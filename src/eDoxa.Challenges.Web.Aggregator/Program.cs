@@ -1,19 +1,18 @@
 ﻿// Filename: Program.cs
-// Date Created: 2019-11-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 
-using Autofac.Extensions.DependencyInjection;
-
+using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
@@ -53,13 +52,9 @@ namespace eDoxa.Challenges.Web.Aggregator
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
-                .ConfigureServices(
-                    services =>
-                    {
-                        services.AddApplicationInsightsTelemetry();
-                        services.AddAutofac();
-                    })
-                .UseAzureKeyVault()
+                .UseCustomAutofac()
+                .UseCustomAzureKeyVault()
+                .UseCustomApplicationInsights()
                 .UseCustomSerilog<Program>();
         }
     }

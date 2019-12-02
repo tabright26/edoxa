@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -59,7 +59,7 @@ namespace eDoxa.Gateway
                 .AddUrlGroup(AppSettings.Endpoints.ChallengesWebAggregatorUrl, AppNames.ChallengesWebAggregator);
 
             services.AddCustomCors();
-            
+
             services.AddAuthentication(
                 AppSettings,
                 new Dictionary<string, ApiResource>
@@ -72,13 +72,12 @@ namespace eDoxa.Gateway
                     ["GamesApiKey"] = GamesApi,
                     ["ClansApiKey"] = ClansApi,
                     ["ChallengesWebAggregatorKey"] = ChallengesWebAggregator
-                }
-            );
+                });
 
             services.AddOcelot(Configuration);
         }
 
-        public void Configure(IApplicationBuilder application)
+        public async void Configure(IApplicationBuilder application)
         {
             application.UseCustomPathBase();
 
@@ -91,7 +90,7 @@ namespace eDoxa.Gateway
                     endpoints.MapCustomHealthChecks();
                 });
 
-            application.UseOcelot().Wait();
+            await application.UseOcelot();
         }
     }
 }

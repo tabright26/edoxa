@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -144,7 +144,7 @@ namespace eDoxa.Clans.Api
                 endpoints =>
                 {
                     endpoints.MapControllers();
-                    
+
                     endpoints.MapConfigurationRoute<ClansAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();

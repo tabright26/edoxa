@@ -98,7 +98,7 @@ namespace eDoxa.Identity.Api
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
-            
+
             services.Configure<ForwardedHeadersOptions>(
                 options =>
                 {
