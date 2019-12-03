@@ -1,9 +1,10 @@
 ﻿// Filename: AccountWithdrawalControllerPostAsyncTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
@@ -13,6 +14,7 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -38,9 +40,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Currency currency, decimal amount)
+        private async Task<HttpResponseMessage> ExecuteAsync(CreateTransactionRequest request)
         {
-            return await _httpClient.PostAsJsonAsync($"api/account/withdrawal/{currency}", amount);
+            return await _httpClient.PostAsJsonAsync("api/transactions", request);
         }
 
         [Fact]
@@ -64,7 +66,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
+            using var response = await this.ExecuteAsync(
+                new CreateTransactionRequest(
+                    "Withdrawal",
+                    Currency.Money.Name,
+                    Money.Fifty.Amount));
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -80,7 +86,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             server.CleanupDbContext();
 
             // Act
-            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
+            using var response = await this.ExecuteAsync(
+                new CreateTransactionRequest(
+                    "Withdrawal",
+                    Currency.Money.Name,
+                    Money.Fifty.Amount));
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -120,7 +130,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(Currency.Money, Money.Fifty);
+            using var response = await this.ExecuteAsync(
+                new CreateTransactionRequest(
+                    "Withdrawal",
+                    Currency.Money.Name,
+                    Money.Fifty.Amount,
+                    new Dictionary<string, string>
+                    {
+                        ["UserId"] = account.UserId.ToString(),
+                        ["Email"] = "noreply@edoxa.gg"
+                    }));
 
             // Assert
             response.EnsureSuccessStatusCode();

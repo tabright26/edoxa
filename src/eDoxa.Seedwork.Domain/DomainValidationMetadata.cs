@@ -10,5 +10,12 @@ namespace eDoxa.Seedwork.Domain
 {
     public sealed class DomainValidationMetadata : Dictionary<string, object>
     {
+        public const string Response = nameof(Response);
+
+        public void AddResponse<TResponse>(TResponse value)
+        where TResponse : class
+        {
+            this.Add(Response, value);
+        }
     }
 }

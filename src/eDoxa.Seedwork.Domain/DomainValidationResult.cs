@@ -4,12 +4,13 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace eDoxa.Seedwork.Domain
 {
-    public sealed class DomainValidationResult
+    public sealed class DomainValidationResult : IDomainValidationResult
     {
         public static readonly DomainValidationResult Succeded = new DomainValidationResult();
 
@@ -20,7 +21,16 @@ namespace eDoxa.Seedwork.Domain
 
         public IReadOnlyCollection<DomainValidationError> Errors => _errors;
 
-        public IReadOnlyDictionary<string, object> Metadata => _metadata;
+        public object GetMetadataResponse()
+        {
+            if (IsValid)
+            {
+                return _metadata[DomainValidationMetadata.Response] ??
+                       throw new NullReferenceException("The response metadata has not been added to the validation result.");
+            }
+
+            throw new InvalidOperationException("The validation result must be valid to return the response from the metadata.");
+        }
 
         public static DomainValidationResult Failure(string propertyName, string errorMessage)
         {
@@ -48,6 +58,12 @@ namespace eDoxa.Seedwork.Domain
         public void AddDomainValidationError(string errorMessage)
         {
             _errors.Add(new DomainValidationError(errorMessage));
+        }
+
+        public void AddMetadataResponse<TResponse>(TResponse response)
+        where TResponse : class
+        {
+            _metadata.AddResponse(response);
         }
     }
 }

@@ -70,11 +70,8 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                 [nameof(ParticipantId)] = participantId.ToString()
             };
 
-            var transactionId = new TransactionId();
-
-            await _cashierService.CreateTransactionAsync(
+            var transaction = await _cashierService.CreateTransactionAsync(
                 new CashierRequests.CreateTransactionRequest(
-                    transactionId,
                     TransactionType.Charge.Name,
                     challenge.EntryFee.Currency,
                     challenge.EntryFee.Amount,
@@ -90,7 +87,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             }
             catch (ApiException exception)
             {
-                await _serviceBusPublisher.PublishTransactionCanceledIntegrationEventAsync(transactionId);
+                await _serviceBusPublisher.PublishTransactionCanceledIntegrationEventAsync(TransactionId.FromGuid(transaction.Id));
 
                 return this.BadRequest(JsonConvert.DeserializeObject<ValidationProblemDetails>(exception.Content));
             }

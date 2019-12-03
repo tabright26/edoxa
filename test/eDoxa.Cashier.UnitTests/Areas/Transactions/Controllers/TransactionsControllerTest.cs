@@ -1,21 +1,20 @@
 ﻿// Filename: TransactionsControllerTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Api.Areas.Transactions.Controllers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
@@ -57,7 +56,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
 
-            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -93,7 +92,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
 
-            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -125,26 +124,20 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                         It.IsAny<IAccount>(),
                         It.IsAny<decimal>(),
                         It.IsAny<Currency>(),
-                        It.IsAny<TransactionId>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionMetadata>(),
                         It.IsAny<CancellationToken>()))
                 .ReturnsAsync(DomainValidationResult.Failure("test", "test message"))
                 .Verifiable();
 
-            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(
-                new CreateTransactionRequest(
-                    new Guid(),
-                    "Deposit",
-                    "Money",
-                    50));
+            var result = await controller.PostAsync(new CreateTransactionRequest("Deposit", "Money", 50));
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -155,7 +148,6 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                     It.IsAny<IAccount>(),
                     It.IsAny<decimal>(),
                     It.IsAny<Currency>(),
-                    It.IsAny<TransactionId>(),
                     It.IsAny<TransactionType>(),
                     It.IsAny<TransactionMetadata>(),
                     It.IsAny<CancellationToken>()),
@@ -171,19 +163,14 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
 
-            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(
-                new CreateTransactionRequest(
-                    new Guid(),
-                    "Deposit",
-                    "Money",
-                    50));
+            var result = await controller.PostAsync(new CreateTransactionRequest("Deposit", "Money", 50));
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -205,6 +192,10 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                 TransactionType.Deposit,
                 new UtcNowDateTimeProvider());
 
+            var validationResult = new DomainValidationResult();
+
+            validationResult.AddMetadataResponse(transaction);
+
             mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
             mockAccountService.Setup(
@@ -212,32 +203,20 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                         It.IsAny<IAccount>(),
                         It.IsAny<decimal>(),
                         It.IsAny<Currency>(),
-                        It.IsAny<TransactionId>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionMetadata>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(validationResult)
                 .Verifiable();
 
-            mockTransactionQuery.Setup(transactionQuery => transactionQuery.FindTransactionAsync(It.IsAny<TransactionId>()))
-                .ReturnsAsync(transaction)
-                .Verifiable();
-
-            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
-
-            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await controller.PostAsync(
-                new CreateTransactionRequest(
-                    new Guid(),
-                    "Deposit",
-                    "Money",
-                    50));
+            var result = await controller.PostAsync(new CreateTransactionRequest("Deposit", "Money", 50));
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -249,15 +228,10 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
                     It.IsAny<IAccount>(),
                     It.IsAny<decimal>(),
                     It.IsAny<Currency>(),
-                    It.IsAny<TransactionId>(),
                     It.IsAny<TransactionType>(),
                     It.IsAny<TransactionMetadata>(),
                     It.IsAny<CancellationToken>()),
                 Times.Once);
-
-            mockTransactionQuery.Verify(transactionQuery => transactionQuery.FindTransactionAsync(It.IsAny<TransactionId>()), Times.Once);
-
-            mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
         }
     }
 }

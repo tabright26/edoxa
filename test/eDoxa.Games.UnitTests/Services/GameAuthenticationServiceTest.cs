@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Abstractions.Adapters;
 using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;

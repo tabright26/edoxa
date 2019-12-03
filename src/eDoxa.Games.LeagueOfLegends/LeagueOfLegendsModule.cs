@@ -6,7 +6,7 @@
 
 using Autofac;
 
-using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Abstractions.Adapters;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
 using eDoxa.Games.LeagueOfLegends.Services;

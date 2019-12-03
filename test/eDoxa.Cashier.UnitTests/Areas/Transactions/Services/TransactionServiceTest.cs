@@ -7,7 +7,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Transactions.Services;
+using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;

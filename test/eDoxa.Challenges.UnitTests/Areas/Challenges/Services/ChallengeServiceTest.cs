@@ -12,8 +12,8 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Services;
 using eDoxa.Challenges.Api.HttpClients;
+using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.TestHelper;

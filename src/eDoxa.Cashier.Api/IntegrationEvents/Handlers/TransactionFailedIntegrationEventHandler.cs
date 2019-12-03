@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Transactions.Services.Abstractions;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers

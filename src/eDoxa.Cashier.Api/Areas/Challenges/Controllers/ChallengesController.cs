@@ -7,11 +7,11 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Application.Extensions;

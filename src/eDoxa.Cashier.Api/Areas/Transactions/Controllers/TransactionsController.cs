@@ -1,5 +1,5 @@
 ﻿// Filename: TransactionsController.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,11 +7,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
+using AutoMapper;
+
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.Responses;
 using eDoxa.Seedwork.Application.Extensions;
@@ -33,11 +35,13 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
     {
         private readonly ITransactionQuery _transactionQuery;
         private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
 
-        public TransactionsController(ITransactionQuery transactionQuery, IAccountService accountService)
+        public TransactionsController(ITransactionQuery transactionQuery, IAccountService accountService, IMapper mapper)
         {
             _transactionQuery = transactionQuery;
             _accountService = accountService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -63,8 +67,6 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync([FromBody] CreateTransactionRequest request)
         {
-            var transactionId = TransactionId.FromGuid(request.Id);
-
             var account = await _accountService.FindUserAccountAsync(HttpContext.GetUserId());
 
             if (account == null)
@@ -76,15 +78,12 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
                 account,
                 request.Amount,
                 Currency.FromName(request.Currency),
-                transactionId,
                 TransactionType.FromName(request.Type),
                 new TransactionMetadata(request.Metadata));
 
             if (result.IsValid)
             {
-                var response = await _transactionQuery.FindTransactionResponseAsync(transactionId);
-
-                return this.Ok(response);
+                return this.Ok(_mapper.Map<TransactionResponse>(result.GetMetadataResponse()));
             }
 
             result.AddToModelState(ModelState);

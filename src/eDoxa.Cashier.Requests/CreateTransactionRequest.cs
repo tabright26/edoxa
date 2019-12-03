@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 
 using Newtonsoft.Json;
@@ -16,14 +15,12 @@ namespace eDoxa.Cashier.Requests
     {
         [JsonConstructor]
         public CreateTransactionRequest(
-            Guid id,
             string type,
             string currency,
             decimal amount,
             IDictionary<string, string> metadata = null
         )
         {
-            Id = id;
             Type = type;
             Currency = currency;
             Amount = amount;
@@ -34,9 +31,6 @@ namespace eDoxa.Cashier.Requests
         {
             // Required by Fluent Validation.
         }
-
-        [JsonProperty("id")]
-        public Guid Id { get; private set; }
 
         [JsonProperty("type")]
         public string Type { get; private set; }

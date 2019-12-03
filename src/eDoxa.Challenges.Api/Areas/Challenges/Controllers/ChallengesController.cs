@@ -8,10 +8,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Application.Extensions;

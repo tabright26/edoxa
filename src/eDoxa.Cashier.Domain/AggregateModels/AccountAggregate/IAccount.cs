@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         ITransaction Deposit(TCurrency amount, IImmutableSet<Bundle> bundles);
 
-        ITransaction Charge(TransactionId transactionId, TCurrency amount, TransactionMetadata? metadata = null);
+        ITransaction Charge(TCurrency amount, TransactionMetadata? metadata = null);
 
         ITransaction Payout(TCurrency amount);
     }

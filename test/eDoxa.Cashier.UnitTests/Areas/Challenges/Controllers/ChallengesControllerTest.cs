@@ -10,10 +10,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Areas.Challenges.Controllers;
-using eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;

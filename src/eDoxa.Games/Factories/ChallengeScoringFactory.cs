@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Abstractions.Adapters;
 using eDoxa.Games.Abstractions.Factories;
 using eDoxa.Seedwork.Domain.Misc;
 

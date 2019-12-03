@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Abstractions.Adapters;
 using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 

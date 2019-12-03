@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Abstractions.Adapters;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Abstractions.Factories

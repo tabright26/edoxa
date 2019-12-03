@@ -9,10 +9,10 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Areas.Challenges.Controllers;
-using eDoxa.Challenges.Api.Areas.Challenges.Services.Abstractions;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
+using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;

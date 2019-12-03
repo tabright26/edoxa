@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
-        public ITransaction Charge(TransactionId transactionId, Token amount, TransactionMetadata? metadata = null)
+        public ITransaction Charge(Token amount, TransactionMetadata? metadata = null)
         {
             if (!this.CanCharge(amount))
             {
@@ -57,8 +57,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             }
 
             var transaction = new TokenChargeTransaction(amount, metadata);
-
-            transaction.SetEntityId(transactionId);
 
             _account.CreateTransaction(transaction);
 

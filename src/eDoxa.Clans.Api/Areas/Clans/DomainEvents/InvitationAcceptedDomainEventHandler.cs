@@ -7,8 +7,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
 using eDoxa.Clans.Domain.DomainEvents;
+using eDoxa.Clans.Domain.Services;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Clans.Api.Areas.Clans.DomainEvents

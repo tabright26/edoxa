@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 
 using eDoxa.Cashier.Api.Areas.Accounts;
-using eDoxa.Cashier.Api.Areas.Accounts.Services;
+using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             var options = new OptionsWrapper<BundlesOptions>(bundlesOptions);
 
-            var service = new BundlesService(options);
+            var service = new BundleService(options);
 
             // Act
             var result = service.FetchDepositMoneyBundles();
@@ -86,7 +86,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             var options = new OptionsWrapper<BundlesOptions>(bundlesOptions);
 
-            var service = new BundlesService(options);
+            var service = new BundleService(options);
 
             // Act
             var result = service.FetchDepositTokenBundles();
@@ -120,7 +120,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             var options = new OptionsWrapper<BundlesOptions>(bundlesOptions);
 
-            var service = new BundlesService(options);
+            var service = new BundleService(options);
 
             // Act
             var result = service.FetchWithdrawalMoneyBundles();

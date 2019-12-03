@@ -5,14 +5,12 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Responses;
-using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,46 +26,57 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
     [ApiExplorerSettings(GroupName = "Account")]
     public sealed class AccountWithdrawalController : ControllerBase
     {
-        private readonly IAccountService _accountService;
-        private readonly IBundlesService _bundlesService;
+        private readonly IBundleService _bundleService;
         private readonly IMapper _mapper;
 
-        public AccountWithdrawalController(IAccountService accountService, IBundlesService bundlesService, IMapper mapper)
+        public AccountWithdrawalController(IBundleService bundleService, IMapper mapper)
         {
-            _accountService = accountService;
-            _bundlesService = bundlesService;
+            _bundleService = bundleService;
             _mapper = mapper;
         }
 
-        [HttpPost]
-        [SwaggerOperation("Withdrawal money from the account.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync(Currency currency, [FromBody] decimal amount)
-        {
-            var userId = HttpContext.GetUserId();
+        //[HttpPost]
+        //[SwaggerOperation("Withdrawal money from the account.")]
+        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        //[SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        //public async Task<IActionResult> PostAsync(Currency currency, [FromBody] decimal amount)
+        //{
+        //    var userId = HttpContext.GetUserId();
 
-            var email = HttpContext.GetEmail();
+        //    var email = HttpContext.GetEmail();
 
-            var account = await _accountService.FindUserAccountAsync(userId);
+        //    var account = await _accountService.FindUserAccountAsync(userId);
 
-            if (account == null)
-            {
-                return this.NotFound("User's account not found.");
-            }
+        //    if (account == null)
+        //    {
+        //        return this.NotFound("User's account not found.");
+        //    }
+            
+        //    var metadata = new TransactionMetadata
+        //    {
+        //        {"UserId", userId.ToString()},
+        //        {"Email", email}
+        //    };
 
-            var result = await _accountService.WithdrawalAsync(account, currency.Format(amount), email);
+        //    var type = TransactionType.Withdrawal;
 
-            if (result.IsValid)
-            {
-                return this.Ok("Processing the deposit transaction...");
-            }
+        //    var result = await _accountService.CreateTransactionAsync(
+        //        account,
+        //        amount,
+        //        currency,
+        //        type,
+        //        metadata);
 
-            result.AddToModelState(ModelState);
+        //    if (result.IsValid)
+        //    {
+        //        return this.Ok("Processing the deposit transaction...");
+        //    }
 
-            return this.BadRequest(new ValidationProblemDetails(ModelState));
-        }
+        //    result.AddToModelState(ModelState);
+
+        //    return this.BadRequest(new ValidationProblemDetails(ModelState));
+        //}
 
         [HttpGet("bundles")]
         [SwaggerOperation("Get bundles by currency.")]
@@ -77,7 +86,7 @@ namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
         {
             if (currency == Currency.Money)
             {
-                return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundlesService.FetchWithdrawalMoneyBundles()));
+                return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundleService.FetchWithdrawalMoneyBundles()));
             }
 
             return this.BadRequest("Invalid or unsuported currency.");

@@ -8,12 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -29,14 +29,14 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
     internal sealed class CashierDbContextSeeder : DbContextSeeder
     {
         private readonly CashierDbContext _context;
-        private readonly IBundlesService _bundlesService;
+        private readonly IBundleService _bundleService;
         private readonly IAccountRepository _accountRepository;
         private readonly IChallengeRepository _challengeRepository;
         private readonly IChallengePayoutFactory _challengePayoutFactory;
 
         public CashierDbContextSeeder(
             CashierDbContext context,
-            IBundlesService bundlesService,
+            IBundleService bundleService,
             IAccountRepository accountRepository,
             IChallengeRepository challengeRepository,
             IWebHostEnvironment environment,
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             _challengeRepository = challengeRepository;
             _challengePayoutFactory = challengePayoutFactory;
             _context = context;
-            _bundlesService = bundlesService;
+            _bundleService = bundleService;
         }
 
         protected override async Task SeedDevelopmentAsync()
@@ -63,57 +63,57 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                     {
                         var moneyAccount = new MoneyAccount(adminAccount);
 
-                        moneyAccount.Deposit(Money.FiveHundred, _bundlesService.FetchDepositMoneyBundles()).MarkAsSucceded(); // 500
+                        moneyAccount.Deposit(Money.FiveHundred, _bundleService.FetchDepositMoneyBundles()).MarkAsSucceded(); // 500
 
-                        moneyAccount.Charge(new TransactionId(), Money.Ten).MarkAsSucceded(); // 490
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 490
 
-                        moneyAccount.Charge(new TransactionId(), Money.Ten).MarkAsSucceded(); // 480
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 480
 
-                        moneyAccount.Charge(new TransactionId(), Money.Five).MarkAsSucceded(); // 475
+                        moneyAccount.Charge(Money.Five).MarkAsSucceded(); // 475
 
-                        moneyAccount.Charge(new TransactionId(), Money.Fifty).MarkAsSucceded(); // 425
+                        moneyAccount.Charge(Money.Fifty).MarkAsSucceded(); // 425
 
                         moneyAccount.Payout(Money.Twenty).MarkAsSucceded(); // 445
 
-                        moneyAccount.Charge(new TransactionId(), Money.Ten).MarkAsSucceded(); // 435
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 435
 
-                        moneyAccount.Charge(new TransactionId(), Money.Ten).MarkAsSucceded(); // 425
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 425
 
-                        moneyAccount.Charge(new TransactionId(), Money.Ten).MarkAsSucceded(); // 415
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 415
 
                         moneyAccount.Payout(Money.Twenty).MarkAsSucceded(); // 435
 
-                        moneyAccount.Withdrawal(Money.OneHundred, _bundlesService.FetchWithdrawalMoneyBundles()).MarkAsSucceded(); // 335
+                        moneyAccount.Withdrawal(Money.OneHundred, _bundleService.FetchWithdrawalMoneyBundles()).MarkAsSucceded(); // 335
 
-                        moneyAccount.Charge(new TransactionId(), Money.Ten).MarkAsSucceded(); // 325
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 325
 
-                        moneyAccount.Charge(new TransactionId(), Money.Five).MarkAsSucceded(); // 320
+                        moneyAccount.Charge(Money.Five).MarkAsSucceded(); // 320
 
-                        moneyAccount.Charge(new TransactionId(), Money.Fifty).MarkAsSucceded(); // 270
+                        moneyAccount.Charge(Money.Fifty).MarkAsSucceded(); // 270
 
-                        moneyAccount.Charge(new TransactionId(), Money.Ten).MarkAsSucceded(); // 260
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 260
 
                         var tokenAccount = new TokenAccount(adminAccount);
 
-                        tokenAccount.Deposit(Token.OneMillion, _bundlesService.FetchDepositTokenBundles()).MarkAsSucceded(); // 1000000
+                        tokenAccount.Deposit(Token.OneMillion, _bundleService.FetchDepositTokenBundles()).MarkAsSucceded(); // 1000000
 
                         tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceded(); // 1050000
 
-                        tokenAccount.Charge(new TransactionId(), Token.FiftyThousand).MarkAsSucceded(); // 1000000
+                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceded(); // 1000000
 
-                        tokenAccount.Charge(new TransactionId(), Token.FiftyThousand).MarkAsSucceded(); // 950000
+                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceded(); // 950000
 
-                        tokenAccount.Charge(new TransactionId(), Token.TwoHundredFiftyThousand).MarkAsSucceded(); // 700000
+                        tokenAccount.Charge(Token.TwoHundredFiftyThousand).MarkAsSucceded(); // 700000
 
-                        tokenAccount.Charge(new TransactionId(), Token.FiveHundredThousand).MarkAsSucceded(); // 200000
+                        tokenAccount.Charge(Token.FiveHundredThousand).MarkAsSucceded(); // 200000
 
-                        tokenAccount.Charge(new TransactionId(), Token.FiftyThousand).MarkAsSucceded(); // 150000
+                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceded(); // 150000
 
                         tokenAccount.Payout(Token.OneHundredThousand).MarkAsSucceded(); // 250000
 
                         tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceded(); // 300000
 
-                        tokenAccount.Charge(new TransactionId(), Token.OneHundredThousand).MarkAsSucceded(); // 200000
+                        tokenAccount.Charge(Token.OneHundredThousand).MarkAsSucceded(); // 200000
 
                         _accountRepository.Create(adminAccount);
                     }
@@ -156,11 +156,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                 var moneyAccount = new MoneyAccount(account);
 
-                moneyAccount.Deposit(Money.FiveHundred, _bundlesService.FetchDepositMoneyBundles()).MarkAsSucceded();
+                moneyAccount.Deposit(Money.FiveHundred, _bundleService.FetchDepositMoneyBundles()).MarkAsSucceded();
 
                 var tokenAccount = new TokenAccount(account);
 
-                tokenAccount.Deposit(Token.FiveMillions, _bundlesService.FetchDepositTokenBundles()).MarkAsSucceded();
+                tokenAccount.Deposit(Token.FiveMillions, _bundleService.FetchDepositTokenBundles()).MarkAsSucceded();
 
                 _accountRepository.Create(account);
 

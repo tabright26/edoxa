@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Abstractions.Adapters;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.Factories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
