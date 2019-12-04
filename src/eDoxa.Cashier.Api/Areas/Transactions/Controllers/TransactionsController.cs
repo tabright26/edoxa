@@ -11,6 +11,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
@@ -67,7 +68,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync([FromBody] CreateTransactionRequest request)
         {
-            var account = await _accountService.FindUserAccountAsync(HttpContext.GetUserId());
+            var account = await _accountService.FindAccountAsync(HttpContext.GetUserId());
 
             if (account == null)
             {

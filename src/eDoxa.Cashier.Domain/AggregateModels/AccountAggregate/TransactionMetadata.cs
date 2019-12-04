@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TransactionMetadata : Dictionary<string, string>
     {

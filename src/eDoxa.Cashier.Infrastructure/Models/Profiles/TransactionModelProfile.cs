@@ -9,6 +9,7 @@ using System.Linq;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 
 namespace eDoxa.Cashier.Infrastructure.Models.Profiles

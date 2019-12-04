@@ -1,11 +1,10 @@
-﻿// Filename: MoneyAccount.cs
-// Date Created: 2019-06-25
+﻿// Filename: MoneyAccountDecorator.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -13,40 +12,33 @@ using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public class MoneyAccount : IMoneyAccount
+    public sealed class MoneyAccountDecorator : AccountDecorator, IMoneyAccount
     {
-        private readonly IAccount _account;
-
-        public MoneyAccount(IAccount account)
+        public MoneyAccountDecorator(IAccount account) : base(account)
         {
-            _account = account;
         }
 
-        public Balance Balance => new Balance(_account.Transactions, Currency.Money);
+        public Balance Balance => new Balance(Transactions, Currency.Money);
 
         public DateTime? LastDeposit =>
-            _account.Transactions
-                .Where(
+            Transactions.Where(
                     transaction => transaction.Currency.Type == Currency.Money &&
                                    transaction.Type == TransactionType.Deposit &&
-                                   transaction.Status == TransactionStatus.Succeded
-                )
+                                   transaction.Status == TransactionStatus.Succeded)
                 .OrderByDescending(transaction => transaction.Timestamp)
                 .FirstOrDefault()
                 ?.Timestamp;
 
         public DateTime? LastWithdraw =>
-            _account.Transactions
-                .Where(
+            Transactions.Where(
                     transaction => transaction.Currency.Type == Currency.Money &&
                                    transaction.Type == TransactionType.Withdrawal &&
-                                   transaction.Status == TransactionStatus.Succeded
-                )
+                                   transaction.Status == TransactionStatus.Succeded)
                 .OrderByDescending(transaction => transaction.Timestamp)
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(Money amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Deposit(Money amount)
         {
             if (!this.CanDeposit())
             {
@@ -55,7 +47,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             var transaction = new MoneyDepositTransaction(amount);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }
@@ -69,21 +61,21 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             var transaction = new MoneyChargeTransaction(amount, metadata);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Payout(Money amount)
+        public ITransaction Payout(Money amount, TransactionMetadata? metadata = null)
         {
             var transaction = new MoneyPayoutTransaction(amount);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Withdrawal(Money amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Withdrawal(Money amount)
         {
             if (!this.CanWithdraw(amount))
             {
@@ -92,7 +84,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             var transaction = new MoneyWithdrawTransaction(amount);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }

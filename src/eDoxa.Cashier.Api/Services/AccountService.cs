@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +17,6 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.Services
 {
@@ -26,53 +24,14 @@ namespace eDoxa.Cashier.Api.Services
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IBundleService _bundleService;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public AccountService(IAccountRepository accountRepository, IBundleService bundleService, IServiceBusPublisher serviceBusPublisher)
+        public AccountService(IAccountRepository accountRepository, IBundleService bundleService)
         {
             _accountRepository = accountRepository;
             _bundleService = bundleService;
-            _serviceBusPublisher = serviceBusPublisher;
         }
 
-        public async Task<DomainValidationResult> CreateTransactionAsync(
-            IAccount account,
-            decimal amount,
-            Currency currency,
-            TransactionType transactionType,
-            TransactionMetadata? transactionMetadata = null,
-            CancellationToken cancellationToken = default
-        )
-        {
-            var result = TryGetCurrency(currency, amount, out var value);
-
-            if (result.IsValid)
-            {
-                if (value is Money money)
-                {
-                    return await this.CreateTransactionAsync(
-                        new MoneyAccount(account),
-                        money,
-                        transactionType,
-                        transactionMetadata,
-                        cancellationToken);
-                }
-
-                if (value is Token token)
-                {
-                    return await this.CreateTransactionAsync(
-                        new TokenAccount(account),
-                        token,
-                        transactionType,
-                        transactionMetadata,
-                        cancellationToken);
-                }
-            }
-
-            return DomainValidationResult.Failure("Invalid currency.");
-        }
-
-        public async Task<IAccount?> FindUserAccountAsync(UserId userId)
+        public async Task<IAccount?> FindAccountAsync(UserId userId)
         {
             return await _accountRepository.FindUserAccountAsync(userId);
         }
@@ -145,180 +104,272 @@ namespace eDoxa.Cashier.Api.Services
 
             if (currency == Currency.Money)
             {
-                var moneyAccount = new MoneyAccount(account!);
+                var moneyAccount = new MoneyAccountDecorator(account!);
 
                 moneyAccount.Payout(new Money(amount));
             }
 
             if (currency == Currency.Token)
             {
-                var tokenAccount = new TokenAccount(account!);
+                var tokenAccount = new TokenAccountDecorator(account!);
 
                 tokenAccount.Payout(new Token(amount));
             }
         }
 
-        private async Task<DomainValidationResult> CreateTransactionAsync(
-            IMoneyAccount account,
-            Money money,
+        public async Task<DomainValidationResult> CreateTransactionAsync(
+            IAccount account,
+            decimal amount,
+            Currency currency,
             TransactionType transactionType,
             TransactionMetadata? transactionMetadata = null,
             CancellationToken cancellationToken = default
         )
         {
-            if (transactionType == TransactionType.Deposit)
+            var result = TryGetCurrency(currency, amount, out var value);
+
+            if (result.IsValid)
             {
-                var result = new DomainValidationResult();
-
-                var bundles = _bundleService.FetchDepositMoneyBundles();
-
-                if (bundles.All(deposit => deposit.Currency.Amount != money.Amount))
+                if (value is Money money)
                 {
-                    result.AddDomainValidationError(
-                        "_error",
-                        $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
+                    return await this.CreateTransactionAsync(
+                        new MoneyAccountDecorator(account),
+                        money,
+                        transactionType,
+                        transactionMetadata,
+                        cancellationToken);
                 }
 
-                if (!account.IsDepositAvailable())
+                if (value is Token token)
                 {
-                    result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+                    return await this.CreateTransactionAsync(
+                        new TokenAccountDecorator(account),
+                        token,
+                        transactionType,
+                        transactionMetadata,
+                        cancellationToken);
                 }
-
-                if (result.IsValid)
-                {
-                    var transaction = account.Deposit(money, bundles);
-
-                    await _accountRepository.CommitAsync(cancellationToken);
-
-                    result.AddMetadataResponse(transaction);
-                }
-
-                return result;
             }
 
-            if (transactionType == TransactionType.Withdrawal)
+            return DomainValidationResult.Failure("Invalid currency.");
+        }
+
+        private async Task<DomainValidationResult> CreateTransactionAsync(
+            IMoneyAccount account,
+            Money money,
+            TransactionType type,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            if (type == TransactionType.Deposit)
             {
-                var result = new DomainValidationResult();
-
-                var bundles = _bundleService.FetchWithdrawalMoneyBundles();
-
-                if (bundles.All(withdrawal => withdrawal.Currency.Amount != money.Amount))
-                {
-                    result.AddDomainValidationError(
-                        "_error",
-                        $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
-                }
-
-                if (!account.HaveSufficientMoney(money))
-                {
-                    result.AddDomainValidationError("_error", "Insufficient funds.");
-                }
-
-                if (!account.IsWithdrawalAvailable())
-                {
-                    result.AddDomainValidationError("_error", $"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
-                }
-
-                if (result.IsValid)
-                {
-                    var transaction = account.Withdrawal(money, bundles);
-
-                    await _accountRepository.CommitAsync(cancellationToken);
-
-                    result.AddMetadataResponse(transaction);
-
-                    //await _serviceBusPublisher.PublishUserAccountWithdrawalIntegrationEventAsync(
-                    //    UserId.Parse(transactionMetadata["USERID"]),
-                    //    transactionMetadata["EMAIL"],
-                    //    transaction.Id,
-                    //    transaction.Description.Text,
-                    //    transaction.Price.ToCents()); 
-                }
-
-                return result;
+                return await this.CreateDepositTransactionAsync(account, money, cancellationToken);
             }
 
-            if (transactionType == TransactionType.Charge)
+            if (type == TransactionType.Withdrawal)
             {
-                var result = new DomainValidationResult();
+                return await this.CreateWithdrawalTransactionAsync(account, money, cancellationToken);
+            }
 
-                if (!account.HaveSufficientMoney(money))
-                {
-                    result.AddDomainValidationError("_error", "Insufficient funds.");
-                }
-
-                if (result.IsValid)
-                {
-                    var transaction = account.Charge(money, transactionMetadata);
-
-                    await _accountRepository.CommitAsync(cancellationToken);
-
-                    result.AddMetadataResponse(transaction);
-                }
-
-                return result;
+            if (type == TransactionType.Charge)
+            {
+                return await this.CreateChargeTransactionAsync(
+                    account,
+                    money,
+                    metadata,
+                    cancellationToken);
             }
 
             return DomainValidationResult.Failure("Unsupported transaction type for money currency.");
         }
 
-        private async Task<DomainValidationResult> CreateTransactionAsync(
-            ITokenAccount account,
-            Token token,
-            TransactionType transactionType,
-            TransactionMetadata? transactionMetadata = null,
+        private async Task<DomainValidationResult> CreateDepositTransactionAsync(
+            IMoneyAccount account,
+            Money money,
             CancellationToken cancellationToken = default
         )
         {
-            if (transactionType == TransactionType.Deposit)
+            var result = new DomainValidationResult();
+
+            var bundles = _bundleService.FetchDepositMoneyBundles();
+
+            if (bundles.All(deposit => deposit.Currency.Amount != money.Amount))
             {
-                var result = new DomainValidationResult();
-
-                var bundles = _bundleService.FetchDepositTokenBundles();
-
-                if (bundles.All(deposit => deposit.Currency.Amount != token.Amount))
-                {
-                    result.AddDomainValidationError(
-                        "_error",
-                        $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
-                }
-
-                if (!account.IsDepositAvailable())
-                {
-                    result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
-                }
-
-                if (result.IsValid)
-                {
-                    var transaction = account.Deposit(token, bundles);
-
-                    await _accountRepository.CommitAsync(cancellationToken);
-
-                    result.AddMetadataResponse(transaction);
-                }
-
-                return result;
+                result.AddDomainValidationError(
+                    "_error",
+                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
-            if (transactionType == TransactionType.Charge)
+            if (!account.IsDepositAvailable())
             {
-                var result = new DomainValidationResult();
+                result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+            }
 
-                if (!account.HaveSufficientMoney(token))
-                {
-                    result.AddDomainValidationError("_error", "Insufficient funds.");
-                }
+            if (result.IsValid)
+            {
+                var transaction = account.Deposit(money);
 
-                if (result.IsValid)
-                {
-                    var transaction = account.Charge(token, transactionMetadata);
+                await _accountRepository.CommitAsync(cancellationToken);
 
-                    await _accountRepository.CommitAsync(cancellationToken);
+                result.AddMetadataResponse(transaction);
+            }
 
-                    result.AddMetadataResponse(transaction);
-                }
+            return result;
+        }
 
-                return result;
+        private async Task<DomainValidationResult> CreateWithdrawalTransactionAsync(
+            IMoneyAccount account,
+            Money money,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            var bundles = _bundleService.FetchWithdrawalMoneyBundles();
+
+            if (bundles.All(withdrawal => withdrawal.Currency.Amount != money.Amount))
+            {
+                result.AddDomainValidationError(
+                    "_error",
+                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
+            }
+
+            if (!account.HaveSufficientMoney(money))
+            {
+                result.AddDomainValidationError("_error", "Insufficient funds.");
+            }
+
+            if (!account.IsWithdrawalAvailable())
+            {
+                result.AddDomainValidationError("_error", $"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.Withdrawal(money);
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddMetadataResponse(transaction);
+
+                //await _serviceBusPublisher.PublishUserAccountWithdrawalIntegrationEventAsync(
+                //    UserId.Parse(transactionMetadata["USERID"]),
+                //    transactionMetadata["EMAIL"],
+                //    transaction.Id,
+                //    transaction.Description.Text,
+                //    transaction.Price.ToCents()); 
+            }
+
+            return result;
+        }
+
+        private async Task<DomainValidationResult> CreateChargeTransactionAsync(
+            IMoneyAccount account,
+            Money money,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.HaveSufficientMoney(money))
+            {
+                result.AddDomainValidationError("_error", "Insufficient funds.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.Charge(money, metadata);
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddMetadataResponse(transaction);
+            }
+
+            return result;
+        }
+
+        private async Task<DomainValidationResult> CreateDepositTransactionAsync(
+            ITokenAccount account,
+            Token token,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            var bundles = _bundleService.FetchDepositTokenBundles();
+
+            if (bundles.All(deposit => deposit.Currency.Amount != token.Amount))
+            {
+                result.AddDomainValidationError(
+                    "_error",
+                    $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
+            }
+
+            if (!account.IsDepositAvailable())
+            {
+                result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.Deposit(token);
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddMetadataResponse(transaction);
+            }
+
+            return result;
+        }
+
+        private async Task<DomainValidationResult> CreateChargeTransactionAsync(
+            ITokenAccount account,
+            Token token,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.HaveSufficientMoney(token))
+            {
+                result.AddDomainValidationError("_error", "Insufficient funds.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.Charge(token, metadata);
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddMetadataResponse(transaction);
+            }
+
+            return result;
+        }
+
+        private async Task<DomainValidationResult> CreateTransactionAsync(
+            ITokenAccount account,
+            Token token,
+            TransactionType type,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            if (type == TransactionType.Deposit)
+            {
+                return await this.CreateDepositTransactionAsync(account, token, cancellationToken);
+            }
+
+            if (type == TransactionType.Charge)
+            {
+                return await this.CreateChargeTransactionAsync(
+                    account,
+                    token,
+                    metadata,
+                    cancellationToken);
             }
 
             return DomainValidationResult.Failure("Unsupported transaction type for token currency.");
@@ -344,27 +395,6 @@ namespace eDoxa.Cashier.Api.Services
             }
 
             return new DomainValidationResult();
-        }
-
-        private async Task DepositAsync<TCurrency>(
-            IAccount<TCurrency> account,
-            TCurrency currency,
-            IImmutableSet<Bundle> bundles,
-            CancellationToken cancellationToken = default
-        )
-        where TCurrency : ICurrency
-        {
-            var transaction = account.Deposit(currency, bundles);
-
-            await _accountRepository.CommitAsync(cancellationToken);
-
-            //// TODO: Need to be refactored as DomainEvent
-            //await _serviceBusPublisher.PublishUserAccountDepositIntegrationEventAsync(
-            //    userId,
-            //    email,
-            //    transaction.Id,
-            //    transaction.Description.Text,
-            //    transaction.Price.ToCents());
         }
     }
 }

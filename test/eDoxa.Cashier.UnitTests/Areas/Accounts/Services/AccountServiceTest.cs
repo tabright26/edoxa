@@ -4,13 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -21,7 +19,6 @@ using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 using FluentAssertions;
 
@@ -43,7 +40,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var userId = new UserId();
 
@@ -53,7 +50,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             await service.CreateAccountAsync(userId);
@@ -70,29 +67,22 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-
+            
             var account = new Account(new UserId());
-
-            var transaction = new Transaction(
-                Money.OneHundred,
-                new TransactionDescription("test"),
-                TransactionType.Deposit,
-                new UtcNowDateTimeProvider());
+            var moneyAccount = new MoneyAccountDecorator(account);
+            var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceded();
-
-            account.CreateTransaction(transaction);
 
             mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
-                account,
+                moneyAccount,
                 Money.Twenty.Amount,
                 Currency.Money,
                 TransactionType.Charge);
@@ -109,11 +99,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -133,29 +123,22 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
             var account = new Account(new UserId());
-
-            var transaction = new Transaction(
-                Token.TwoHundredFiftyThousand,
-                new TransactionDescription("test"),
-                TransactionType.Deposit,
-                new UtcNowDateTimeProvider());
+            var tokenAccount = new TokenAccountDecorator(account);
+            var transaction = tokenAccount.Deposit(Token.TwoHundredFiftyThousand);
 
             transaction.MarkAsSucceded();
-
-            account.CreateTransaction(transaction);
 
             mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
-                account,
+                tokenAccount,
                 Token.FiftyThousand.Amount,
                 Currency.Token,
                 TransactionType.Charge);
@@ -172,11 +155,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -196,11 +179,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -220,13 +203,13 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             mockBundlesService.Setup(x => x.FetchDepositMoneyBundles()).Returns(new List<Bundle>().ToImmutableHashSet()).Verifiable();
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -245,13 +228,13 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             mockBundlesService.Setup(x => x.FetchDepositTokenBundles()).Returns(new List<Bundle>().ToImmutableHashSet()).Verifiable();
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -270,10 +253,10 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -293,7 +276,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
@@ -312,7 +295,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             mockBundlesService.Setup(bundleService => bundleService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(account, Money.OneHundred.Amount, Currency.Money, TransactionType.Deposit);
@@ -333,19 +316,12 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-
+            
             var account = new Account(new UserId());
-
-            var transaction = new Transaction(
-                Money.OneHundred,
-                new TransactionDescription("test"),
-                TransactionType.Deposit,
-                new UtcNowDateTimeProvider());
+            var moneyAccount = new MoneyAccountDecorator(account);
+            var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceded();
-
-            account.CreateTransaction(transaction);
 
             var bundle = new List<Bundle>
             {
@@ -354,10 +330,10 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             mockBundlesService.Setup(bundleService => bundleService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
-            var result = await service.CreateTransactionAsync(account, Money.OneHundred.Amount, Currency.Money, TransactionType.Deposit);
+            var result = await service.CreateTransactionAsync(moneyAccount, Money.OneHundred.Amount, Currency.Money, TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
@@ -372,7 +348,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
@@ -382,7 +358,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             };
 
             mockBundlesService.Setup(bundleService => bundleService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(account, Money.OneHundred.Amount, Currency.Money, TransactionType.Deposit);
@@ -401,11 +377,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
         //    // Arrange
         //    var mockAccountRepository = new Mock<IAccountRepository>();
         //    var mockBundlesService = new Mock<IBundlesService>();
-        //    var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+        //    
 
         //    var account = new Account(new UserId());
 
-        //    var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+        //    var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
         //    // Act
         //    var action = new Func<Task<DomainValidationResult>>(async () => await service.CreateTransactionAsync(account, 0, null, TransactionType.Deposit));
@@ -420,7 +396,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
@@ -439,7 +415,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             mockBundlesService.Setup(bundleService => bundleService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(account, Token.FiftyThousand.Amount, Currency.Token, TransactionType.Deposit);
@@ -457,18 +433,12 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-
+            
             var account = new Account(new UserId());
-
-            var transaction = new Transaction(
-                Token.FiftyThousand,
-                new TransactionDescription("test"),
-                TransactionType.Deposit,
-                new UtcNowDateTimeProvider());
+            var tokenAccount = new TokenAccountDecorator(account);
+            var transaction = tokenAccount.Deposit(Token.FiftyThousand);
 
             transaction.MarkAsSucceded();
-            account.CreateTransaction(transaction);
 
             var bundle = new List<Bundle>
             {
@@ -477,10 +447,10 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             mockBundlesService.Setup(bundleService => bundleService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
-            var result = await service.CreateTransactionAsync(account, Token.FiftyThousand.Amount, Currency.Token, TransactionType.Deposit);
+            var result = await service.CreateTransactionAsync(tokenAccount, Token.FiftyThousand.Amount, Currency.Token, TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
@@ -495,7 +465,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
@@ -506,7 +476,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             mockBundlesService.Setup(bundleService => bundleService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(account, Token.FiftyThousand.Amount, Currency.Token, TransactionType.Deposit);
@@ -524,17 +494,17 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var userId = new UserId();
             var account = new Account(userId);
 
             mockAccountRepository.Setup(accountRepository => accountRepository.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
-            var result = await service.FindUserAccountAsync(userId);
+            var result = await service.FindAccountAsync(userId);
 
             // Assert
             result.Should().BeOfType<Account>();
@@ -548,19 +518,12 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-
+            
             var account = new Account(new UserId());
-
-            var transaction = new Transaction(
-                Money.OneHundred,
-                new TransactionDescription("test"),
-                TransactionType.Deposit,
-                new UtcNowDateTimeProvider());
+            var moneyAccount = new MoneyAccountDecorator(account);
+            var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceded();
-
-            account.CreateTransaction(transaction);
 
             mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -579,15 +542,15 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             var metadata = new TransactionMetadata
             {
-                {"UserId", account.UserId.ToString()},
+                {"UserId", account.Id.ToString()},
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
-                account,
+                moneyAccount,
                 Money.Twenty.Amount,
                 Currency.Money,
                 TransactionType.Withdrawal,
@@ -613,17 +576,17 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             mockBundlesService.Setup(x => x.FetchWithdrawalMoneyBundles()).Returns(new List<Bundle>().ToImmutableHashSet).Verifiable();
 
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
             var metadata = new TransactionMetadata
             {
-                {"UserId", account.UserId.ToString()},
+                {"UserId", account.Id.ToString()},
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -646,7 +609,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             var mockBundlesService = new Mock<IBundleService>();
 
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
@@ -659,11 +622,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             var metadata = new TransactionMetadata
             {
-                {"UserId", account.UserId.ToString()},
+                {"UserId", account.Id.ToString()},
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -686,19 +649,12 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-
+            
             var account = new Account(new UserId());
-
-            var transaction = new Transaction(
-                Money.OneHundred,
-                new TransactionDescription("test"),
-                TransactionType.Withdrawal,
-                new UtcNowDateTimeProvider());
+            var moneyAccount = new MoneyAccountDecorator(account);
+            var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceded();
-
-            account.CreateTransaction(transaction);
 
             var bundle = new List<Bundle>
             {
@@ -707,21 +663,14 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
             
-            var metadata = new TransactionMetadata
-            {
-                {"UserId", account.UserId.ToString()},
-                {"Email", "gabriel@edoxa.gg"}
-            };
-
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
                 account,
-                Money.Twenty.Amount,
+                Money.Fifty.Amount,
                 Currency.Money,
-                TransactionType.Withdrawal,
-                metadata);
+                TransactionType.Withdrawal);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
@@ -736,7 +685,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
             var mockBundlesService = new Mock<IBundleService>();
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            
 
             var account = new Account(new UserId());
 
@@ -749,11 +698,11 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
 
             var metadata = new TransactionMetadata
             {
-                {"UserId", account.UserId.ToString()},
+                {"UserId", account.Id.ToString()},
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object, mockServiceBusPublisher.Object);
+            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(

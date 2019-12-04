@@ -19,8 +19,6 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.Property(account => account.Id).IsRequired().ValueGeneratedNever();
 
-            builder.Property(account => account.UserId).IsRequired();
-
             builder.HasMany(account => account.Transactions).WithOne(transaction => transaction.Account).IsRequired().OnDelete(DeleteBehavior.Cascade);
 
             builder.HasKey(account => account.Id);

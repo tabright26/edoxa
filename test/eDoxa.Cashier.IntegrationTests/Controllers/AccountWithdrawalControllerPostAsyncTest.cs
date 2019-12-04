@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Requests;
 using eDoxa.Cashier.TestHelper;
@@ -51,7 +50,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -102,11 +101,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            ITransaction transaction = new MoneyDepositTransaction(Money.Fifty);
+            var moneyAccount = new MoneyAccountDecorator(account);
 
-            account.CreateTransaction(transaction);
+            var transaction = moneyAccount.Deposit(Money.Fifty);
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -116,7 +115,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
+                    accountRepository.Create(moneyAccount);
                     await accountRepository.CommitAsync();
                 });
 
@@ -137,7 +136,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     Money.Fifty.Amount,
                     new Dictionary<string, string>
                     {
-                        ["UserId"] = account.UserId.ToString(),
+                        ["UserId"] = account.Id.ToString(),
                         ["Email"] = "noreply@edoxa.gg"
                     }));
 

@@ -117,7 +117,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             var account = new Account(new UserId());
 
-            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+            mockAccountService.Setup(accountService => accountService.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
             mockAccountService.Setup(
                     accountService => accountService.CreateTransactionAsync(
@@ -141,7 +141,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
-            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
             mockAccountService.Verify(
                 accountService => accountService.CreateTransactionAsync(
@@ -161,7 +161,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
             var mockTransactionQuery = new Mock<ITransactionQuery>();
             var mockAccountService = new Mock<IAccountService>();
 
-            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
+            mockAccountService.Setup(accountService => accountService.FindAccountAsync(It.IsAny<UserId>())).Verifiable();
 
             var controller = new TransactionsController(mockTransactionQuery.Object, mockAccountService.Object, TestMapper);
 
@@ -174,7 +174,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
@@ -196,7 +196,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             validationResult.AddMetadataResponse(transaction);
 
-            mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+            mockAccountService.Setup(accountService => accountService.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
             mockAccountService.Setup(
                     accountService => accountService.CreateTransactionAsync(
@@ -221,7 +221,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
             mockAccountService.Verify(
                 accountService => accountService.CreateTransactionAsync(

@@ -1,11 +1,10 @@
-﻿// Filename: TokenAccount.cs
-// Date Created: 2019-06-25
+﻿// Filename: TokenAccountDecorator.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Immutable;
 using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
@@ -13,29 +12,24 @@ using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public sealed class TokenAccount : ITokenAccount
+    public sealed class TokenAccountDecorator : AccountDecorator, ITokenAccount
     {
-        private readonly IAccount _account;
-
-        public TokenAccount(IAccount account)
+        public TokenAccountDecorator(IAccount account) : base(account)
         {
-            _account = account;
         }
 
-        public Balance Balance => new Balance(_account.Transactions, Currency.Token);
+        public Balance Balance => new Balance(Transactions, Currency.Token);
 
         public DateTime? LastDeposit =>
-            _account.Transactions
-                .Where(
+            Transactions.Where(
                     transaction => transaction.Currency.Type == Currency.Token &&
                                    transaction.Type == TransactionType.Deposit &&
-                                   transaction.Status == TransactionStatus.Succeded
-                )
+                                   transaction.Status == TransactionStatus.Succeded)
                 .OrderByDescending(transaction => transaction)
                 .FirstOrDefault()
                 ?.Timestamp;
 
-        public ITransaction Deposit(Token amount, IImmutableSet<Bundle> bundles)
+        public ITransaction Deposit(Token amount)
         {
             if (!this.CanDeposit())
             {
@@ -44,7 +38,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             var transaction = new TokenDepositTransaction(amount);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }
@@ -58,25 +52,25 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             var transaction = new TokenChargeTransaction(amount, metadata);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Payout(Token amount)
+        public ITransaction Payout(Token amount, TransactionMetadata? metadata = null)
         {
             var transaction = new TokenPayoutTransaction(amount);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }
 
-        public ITransaction Reward(Token amount)
+        public ITransaction Reward(Token amount, TransactionMetadata? metadata = null)
         {
             var transaction = new TokenRewardTransaction(amount);
 
-            _account.CreateTransaction(transaction);
+            this.CreateTransaction(transaction);
 
             return transaction;
         }

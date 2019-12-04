@@ -13,7 +13,6 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -29,14 +28,12 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
     internal sealed class CashierDbContextSeeder : DbContextSeeder
     {
         private readonly CashierDbContext _context;
-        private readonly IBundleService _bundleService;
         private readonly IAccountRepository _accountRepository;
         private readonly IChallengeRepository _challengeRepository;
         private readonly IChallengePayoutFactory _challengePayoutFactory;
 
         public CashierDbContextSeeder(
             CashierDbContext context,
-            IBundleService bundleService,
             IAccountRepository accountRepository,
             IChallengeRepository challengeRepository,
             IWebHostEnvironment environment,
@@ -48,7 +45,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             _challengeRepository = challengeRepository;
             _challengePayoutFactory = challengePayoutFactory;
             _context = context;
-            _bundleService = bundleService;
         }
 
         protected override async Task SeedDevelopmentAsync()
@@ -57,13 +53,13 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             {
                 var adminAccount = new Account(UserId.FromGuid(AppAdmin.Id));
 
-                foreach (var user in Users)
+                foreach (var userId in Users)
                 {
-                    if (user.Id == adminAccount.UserId)
+                    if (userId == adminAccount.Id)
                     {
-                        var moneyAccount = new MoneyAccount(adminAccount);
+                        var moneyAccount = new MoneyAccountDecorator(adminAccount);
 
-                        moneyAccount.Deposit(Money.FiveHundred, _bundleService.FetchDepositMoneyBundles()).MarkAsSucceded(); // 500
+                        moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceded(); // 500
 
                         moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 490
 
@@ -83,7 +79,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                         moneyAccount.Payout(Money.Twenty).MarkAsSucceded(); // 435
 
-                        moneyAccount.Withdrawal(Money.OneHundred, _bundleService.FetchWithdrawalMoneyBundles()).MarkAsSucceded(); // 335
+                        moneyAccount.Withdrawal(Money.OneHundred).MarkAsSucceded(); // 335
 
                         moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 325
 
@@ -93,9 +89,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                         moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 260
 
-                        var tokenAccount = new TokenAccount(adminAccount);
+                        var tokenAccount = new TokenAccountDecorator(adminAccount);
 
-                        tokenAccount.Deposit(Token.OneMillion, _bundleService.FetchDepositTokenBundles()).MarkAsSucceded(); // 1000000
+                        tokenAccount.Deposit(Token.OneMillion).MarkAsSucceded(); // 1000000
 
                         tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceded(); // 1050000
 
@@ -119,7 +115,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                     }
                     else
                     {
-                        var account = new Account(user.Id);
+                        var account = new Account(userId);
 
                         _accountRepository.Create(account);
                     }
@@ -150,17 +146,17 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
         protected override async Task SeedProductionAsync()
         {
-            if (!_context.Accounts.Any(account => account.UserId == UserId.FromGuid(AppAdmin.Id)))
+            if (!_context.Accounts.Any(account => account.Id == UserId.FromGuid(AppAdmin.Id)))
             {
                 var account = new Account(UserId.FromGuid(AppAdmin.Id));
 
-                var moneyAccount = new MoneyAccount(account);
+                var moneyAccount = new MoneyAccountDecorator(account);
 
-                moneyAccount.Deposit(Money.FiveHundred, _bundleService.FetchDepositMoneyBundles()).MarkAsSucceded();
+                moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceded();
 
-                var tokenAccount = new TokenAccount(account);
+                var tokenAccount = new TokenAccountDecorator(account);
 
-                tokenAccount.Deposit(Token.FiveMillions, _bundleService.FetchDepositTokenBundles()).MarkAsSucceded();
+                tokenAccount.Deposit(Token.FiveMillions).MarkAsSucceded();
 
                 _accountRepository.Create(account);
 

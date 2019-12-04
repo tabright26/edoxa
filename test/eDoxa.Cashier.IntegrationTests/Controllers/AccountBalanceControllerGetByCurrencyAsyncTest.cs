@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var account = accountFaker.FakeAccount();
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;
@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
             var account = accountFaker.FakeAccount();
             var balance = account.GetBalanceFor(currency);
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.UserId.ToString()));
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();

@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
         private async Task<AccountModel?> FindUserAccountModelAsync(Guid userId)
         {
             var accountModels = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
-                                where account.UserId == userId
+                                where account.Id == userId
                                 select account;
 
             return await accountModels.SingleOrDefaultAsync();
@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
             foreach (var (account, accountModel) in _materializedObjects)
             {
-                _materializedIds[accountModel.UserId] = account;
+                _materializedIds[accountModel.Id] = account;
             }
         }
 

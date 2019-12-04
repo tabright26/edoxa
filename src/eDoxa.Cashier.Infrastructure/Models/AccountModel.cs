@@ -1,5 +1,5 @@
 ﻿// Filename: AccountModel.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,8 +17,6 @@ namespace eDoxa.Cashier.Infrastructure.Models
     public class AccountModel
     {
         public Guid Id { get; set; }
-
-        public Guid UserId { get; set; }
 
         public ICollection<TransactionModel> Transactions { get; set; }
     }

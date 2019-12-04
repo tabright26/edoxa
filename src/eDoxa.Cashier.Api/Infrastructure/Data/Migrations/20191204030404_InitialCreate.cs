@@ -11,8 +11,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 name: "Account",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    UserId = table.Column<Guid>()
+                    Id = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -23,9 +22,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 name: "Challenge",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    EntryFeeCurrency = table.Column<int>(),
-                    EntryFeeAmount = table.Column<decimal>(type: "decimal(11, 2)")
+                    Id = table.Column<Guid>(nullable: false),
+                    EntryFeeCurrency = table.Column<int>(nullable: false),
+                    EntryFeeAmount = table.Column<decimal>(type: "decimal(11, 2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,14 +35,14 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 name: "Transaction",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    Timestamp = table.Column<DateTime>(),
-                    Amount = table.Column<decimal>(type: "decimal(10, 2)"),
-                    Currency = table.Column<int>(),
-                    Type = table.Column<int>(),
-                    Status = table.Column<int>(),
-                    Description = table.Column<string>(),
-                    AccountId = table.Column<Guid>()
+                    Id = table.Column<Guid>(nullable: false),
+                    Timestamp = table.Column<DateTime>(nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
+                    Currency = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    AccountId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -60,11 +59,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 name: "Bucket",
                 columns: table => new
                 {
-                    ChallengeId = table.Column<Guid>(),
-                    Id = table.Column<Guid>(),
-                    Size = table.Column<int>(),
-                    PrizeCurrency = table.Column<int>(),
-                    PrizeAmount = table.Column<decimal>(type: "decimal(11, 2)")
+                    ChallengeId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
+                    Size = table.Column<int>(nullable: false),
+                    PrizeCurrency = table.Column<int>(nullable: false),
+                    PrizeAmount = table.Column<decimal>(type: "decimal(11, 2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -81,8 +80,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 name: "TransactionMetadata",
                 columns: table => new
                 {
-                    TransactionId = table.Column<Guid>(),
-                    Id = table.Column<Guid>(),
+                    TransactionId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Key = table.Column<string>(nullable: true),
                     Value = table.Column<string>(nullable: true)
                 },

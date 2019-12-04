@@ -1,11 +1,12 @@
 ﻿// Filename: Account.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
@@ -13,41 +14,40 @@ using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public sealed partial class Account : Entity<AccountId>, IAccount
+    public partial class Account : Entity<UserId>, IAccount
     {
-        private HashSet<ITransaction> _transactions = new HashSet<ITransaction>();
+        private readonly HashSet<ITransaction> _transactions;
 
-        public Account(UserId userId)
+        public Account(UserId userId, IEnumerable<ITransaction>? transactions = null)
         {
-            UserId = userId;
+            this.SetEntityId(userId);
+            _transactions = transactions?.ToHashSet() ?? new HashSet<ITransaction>();
         }
-
-        public UserId UserId { get; }
 
         public IReadOnlyCollection<ITransaction> Transactions => _transactions;
-
-        public void CreateTransaction(ITransaction transaction)
-        {
-            _transactions.Add(transaction);
-        }
 
         public Balance GetBalanceFor(Currency currency)
         {
             if (currency == Currency.Money)
             {
-                var accountMoney = new MoneyAccount(this);
+                var accountMoney = new MoneyAccountDecorator(this);
 
                 return accountMoney.Balance;
             }
 
             if (currency == Currency.Token)
             {
-                var accountToken = new TokenAccount(this);
+                var accountToken = new TokenAccountDecorator(this);
 
                 return accountToken.Balance;
             }
 
             throw new ArgumentException(nameof(currency));
+        }
+
+        public void CreateTransaction(ITransaction transaction)
+        {
+            _transactions.Add(transaction);
         }
     }
 

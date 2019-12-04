@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Domain.Services
     {
         Task CreateAccountAsync(UserId userId);
 
-        Task<IAccount?> FindUserAccountAsync(UserId userId);
+        Task<IAccount?> FindAccountAsync(UserId userId);
 
         Task<DomainValidationResult> CreateTransactionAsync(
             IAccount account,

@@ -6,10 +6,11 @@
 
 using System;
 
+using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public interface ITransaction : IEntity<TransactionId>
     {

@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.Cashier.Infrastructure;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
@@ -15,16 +15,14 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
+                .HasAnnotation("ProductVersion", "3.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.AccountModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<Guid>("UserId");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -34,12 +32,13 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("EntryFeeAmount")
                         .HasColumnType("decimal(11, 2)");
 
-                    b.Property<int>("EntryFeeCurrency");
+                    b.Property<int>("EntryFeeCurrency")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -49,23 +48,29 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.TransactionModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AccountId");
+                    b.Property<Guid>("AccountId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<int>("Currency");
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("Timestamp");
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Type");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -78,26 +83,28 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 {
                     b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.BucketModel", "Buckets", b1 =>
                         {
-                            b1.Property<Guid>("ChallengeId");
+                            b1.Property<Guid>("ChallengeId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd();
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<decimal>("PrizeAmount")
                                 .HasColumnType("decimal(11, 2)");
 
-                            b1.Property<int>("PrizeCurrency");
+                            b1.Property<int>("PrizeCurrency")
+                                .HasColumnType("int");
 
-                            b1.Property<int>("Size");
+                            b1.Property<int>("Size")
+                                .HasColumnType("int");
 
                             b1.HasKey("ChallengeId", "Id");
 
                             b1.ToTable("Bucket");
 
-                            b1.HasOne("eDoxa.Cashier.Infrastructure.Models.ChallengeModel")
-                                .WithMany("Buckets")
-                                .HasForeignKey("ChallengeId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("ChallengeId");
                         });
                 });
 
@@ -106,27 +113,30 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.HasOne("eDoxa.Cashier.Infrastructure.Models.AccountModel", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.TransactionMetadataModel", "Metadata", b1 =>
                         {
-                            b1.Property<Guid>("TransactionId");
+                            b1.Property<Guid>("TransactionId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd();
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("Key");
+                            b1.Property<string>("Key")
+                                .HasColumnType("nvarchar(max)");
 
-                            b1.Property<string>("Value");
+                            b1.Property<string>("Value")
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("TransactionId", "Id");
 
                             b1.ToTable("TransactionMetadata");
 
-                            b1.HasOne("eDoxa.Cashier.Infrastructure.Models.TransactionModel")
-                                .WithMany("Metadata")
-                                .HasForeignKey("TransactionId")
-                                .OnDelete(DeleteBehavior.Cascade);
+                            b1.WithOwner()
+                                .HasForeignKey("TransactionId");
                         });
                 });
 #pragma warning restore 612, 618

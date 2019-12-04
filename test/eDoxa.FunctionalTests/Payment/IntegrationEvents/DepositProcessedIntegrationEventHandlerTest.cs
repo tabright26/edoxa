@@ -10,6 +10,7 @@ using Autofac;
 
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.FunctionalTests.Cashier;
@@ -106,8 +107,8 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
             using (paymentWebApplicationFactory.CreateClient())
             {
                 var account = new Account(new UserId());
-                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                account.CreateTransaction(moneyDepositTransaction);
+                var moneyAccount = new MoneyAccountDecorator(account);
+                var depositTransaction = moneyAccount.Deposit(Money.Fifty);
 
                 await _testServer.UsingScopeAsync(
                     async scope =>
@@ -124,14 +125,14 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
 
                         await integrationEventService.PublishAsync(
                             new UserAccountDepositIntegrationEvent(
-                                account.UserId,
+                                account.Id,
                                 "noreply@edoxa.gg",
-                                moneyDepositTransaction.Id,
-                                moneyDepositTransaction.Description.Text,
+                                depositTransaction.Id,
+                                depositTransaction.Description.Text,
                                 5000));
                     });
 
-                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
+                var transaction = await this.TryGetPublishedTransaction(depositTransaction.Id);
 
                 transaction.Should().NotBeNull();
 
@@ -174,8 +175,8 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
             using (paymentWebApplicationFactory.CreateClient())
             {
                 var account = new Account(new UserId());
-                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                account.CreateTransaction(moneyDepositTransaction);
+                var moneyAccount = new MoneyAccountDecorator(account);
+                var depositTransaction = moneyAccount.Deposit(Money.Fifty);
 
                 await _testServer.UsingScopeAsync(
                     async scope =>
@@ -192,14 +193,14 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
 
                         await integrationEventService.PublishAsync(
                             new UserAccountDepositIntegrationEvent(
-                                account.UserId,
+                                account.Id,
                                 "noreply@edoxa.gg",
-                                moneyDepositTransaction.Id,
-                                moneyDepositTransaction.Description.Text,
+                                depositTransaction.Id,
+                                depositTransaction.Description.Text,
                                 5000));
                     });
 
-                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
+                var transaction = await this.TryGetPublishedTransaction(depositTransaction.Id);
 
                 transaction.Should().NotBeNull();
 
