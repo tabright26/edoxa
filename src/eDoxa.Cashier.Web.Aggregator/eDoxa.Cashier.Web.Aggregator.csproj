@@ -2,21 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <AssemblyName>eDoxa.Gateway</AssemblyName>
-    <RootNamespace>eDoxa.Gateway</RootNamespace>
     <Nullable>Enable</Nullable>
-    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.3" />
-    <PackageReference Include="Ocelot" Version="13.8.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Security\eDoxa.Seedwork.Security.csproj" />
   </ItemGroup>
 
 </Project>

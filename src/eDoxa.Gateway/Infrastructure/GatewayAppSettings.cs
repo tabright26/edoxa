@@ -44,5 +44,8 @@ namespace eDoxa.Gateway.Infrastructure
 
         [Required]
         public string ChallengesWebAggregatorUrl { get; set; }
+
+        [Required]
+        public string CashierWebAggregatorUrl { get; set; }
     }
 }

@@ -1,22 +1,22 @@
-﻿// Filename: Program.cs
-// Date Created: 2019-11-25
+// Filename: Program.cs
+// Date Created: 2019-12-04
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright � 2019, eDoxa. All rights reserved.
 
 using System;
-using System.IO;
 
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
+using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
 using Serilog;
 
-namespace eDoxa.Gateway
+namespace eDoxa.Cashier.Web.Aggregator
 {
     public sealed class Program
     {
@@ -52,7 +52,8 @@ namespace eDoxa.Gateway
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
-                .ConfigureAppConfiguration(builder => builder.AddJsonFile(Path.Combine("Configuration", "ocelot.json"), false, true))
+                .UseCustomAutofac()
+                .UseCustomAzureKeyVault()
                 .UseCustomApplicationInsights()
                 .UseCustomSerilog<Program>();
         }

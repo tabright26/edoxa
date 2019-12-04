@@ -56,7 +56,8 @@ namespace eDoxa.Gateway
                 .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppNames.ChallengesApi)
                 .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi)
                 .AddUrlGroup(AppSettings.Endpoints.ClansUrl, AppNames.ClansApi)
-                .AddUrlGroup(AppSettings.Endpoints.ChallengesWebAggregatorUrl, AppNames.ChallengesWebAggregator);
+                .AddUrlGroup(AppSettings.Endpoints.ChallengesWebAggregatorUrl, AppNames.ChallengesWebAggregator)
+                .AddUrlGroup(AppSettings.Endpoints.CashierWebAggregatorUrl, AppNames.CashierWebAggregator);
 
             services.AddCustomCors();
 
@@ -71,7 +72,8 @@ namespace eDoxa.Gateway
                     ["ChallengesApiKey"] = ChallengesApi,
                     ["GamesApiKey"] = GamesApi,
                     ["ClansApiKey"] = ClansApi,
-                    ["ChallengesWebAggregatorKey"] = ChallengesWebAggregator
+                    ["ChallengesWebAggregatorKey"] = ChallengesWebAggregator,
+                    ["CashierWebAggregatorKey"] = CashierWebAggregator
                 });
 
             services.AddOcelot(Configuration);

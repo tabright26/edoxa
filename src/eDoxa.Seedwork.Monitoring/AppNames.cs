@@ -10,6 +10,8 @@ namespace eDoxa.Seedwork.Monitoring
     {
         public const string IdentityApi = "identity.api";
         public const string CashierApi = "cashier.api";
+        public const string CashierWebAggregator = "cashier.web.aggregator";
+        public const string CashierWebGateway = "cashier.web.gateway";
         public const string PaymentApi = "payment.api";
         public const string NotificationsApi = "notifications.api";
         public const string GamesApi = "games.api";
