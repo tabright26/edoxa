@@ -11,8 +11,8 @@ using Autofac;
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.FunctionalTests.Cashier;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
@@ -29,7 +29,6 @@ using Moq;
 using Stripe;
 
 using Xunit;
-
 using Account = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account;
 
 namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
@@ -46,7 +45,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
         private readonly TestServer _testServer;
 
         // TODO: Create an helper method for functional assertions with a retry policy. (Maybe with Polly)
-        private async Task<ITransaction> TryGetPublishedTransaction(TransactionId transactionId)
+        private async Task<ITransaction> TryGetPublishedTransaction(UserId userId, TransactionId transactionId)
         {
             var counter = 0;
 
@@ -55,9 +54,11 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
                 var transaction = await _testServer.UsingScopeAsync(
                     async scope =>
                     {
-                        var transactionRepository = scope.GetRequiredService<ITransactionRepository>();
+                        var transactionRepository = scope.GetRequiredService<IAccountService>();
 
-                        return await transactionRepository.FindTransactionAsync(transactionId);
+                        var account = await transactionRepository.FindAccountAsync(userId);
+
+                        return account.FindTransaction(transactionId);
                     });
 
                 if (transaction == null || transaction.Status == TransactionStatus.Pending)
@@ -131,7 +132,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
                                 5000));
                     });
 
-                var transaction = await this.TryGetPublishedTransaction(depositTransaction.Id);
+                var transaction = await this.TryGetPublishedTransaction(account.Id, depositTransaction.Id);
 
                 transaction.Should().NotBeNull();
 
@@ -198,7 +199,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
                                 5000));
                     });
 
-                var transaction = await this.TryGetPublishedTransaction(depositTransaction.Id);
+                var transaction = await this.TryGetPublishedTransaction(account.Id, depositTransaction.Id);
 
                 transaction.Should().NotBeNull();
 

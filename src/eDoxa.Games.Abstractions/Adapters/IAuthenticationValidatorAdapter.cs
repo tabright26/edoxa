@@ -15,13 +15,13 @@ namespace eDoxa.Games.Abstractions.Adapters
     public interface IAuthenticationValidatorAdapter<in TAuthentication> : IAuthenticationValidatorAdapter
     where TAuthentication : GameAuthentication
     {
-        Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
+        Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
     }
 
     public interface IAuthenticationValidatorAdapter
     {
         Game Game { get; }
 
-        Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication);
+        Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication);
     }
 }

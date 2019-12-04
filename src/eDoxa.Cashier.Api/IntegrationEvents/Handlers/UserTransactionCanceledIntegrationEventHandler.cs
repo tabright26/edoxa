@@ -1,4 +1,4 @@
-﻿// Filename: UserTransactionFailedIntegrationEventHandler.cs
+﻿// Filename: UserTransactionSuccededIntegrationEventHandler.cs
 // Date Created: 2019-10-06
 // 
 // ================================================
@@ -15,16 +15,16 @@ using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {
-    public sealed class UserTransactionFailedIntegrationEventHandler : IIntegrationEventHandler<UserTransactionFailedIntegrationEvent>
+    public sealed class UserTransactionCanceledIntegrationEventHandler : IIntegrationEventHandler<UserTransactionCanceledIntegrationEvent>
     {
         private readonly IAccountService _accountService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly ILogger _logger;
 
-        public UserTransactionFailedIntegrationEventHandler(
+        public UserTransactionCanceledIntegrationEventHandler(
             IAccountService accountService,
             IServiceBusPublisher serviceBusPublisher,
-            ILogger<UserTransactionFailedIntegrationEventHandler> logger
+            ILogger<UserTransactionSuccededIntegrationEventHandler> logger
         )
         {
             _accountService = accountService;
@@ -32,13 +32,13 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
             _logger = logger;
         }
 
-        public async Task HandleAsync(UserTransactionFailedIntegrationEvent integrationEvent)
+        public async Task HandleAsync(UserTransactionCanceledIntegrationEvent integrationEvent)
         {
             var account = await _accountService.FindAccountAsync(integrationEvent.UserId);
 
             if (account != null)
             {
-                var result = await _accountService.MarkAccountTransactionAsFailedAsync(account, integrationEvent.TransactionId);
+                var result = await _accountService.MarkAccountTransactionAsCanceledAsync(account, integrationEvent.TransactionId);
 
                 if (result.IsValid)
                 {

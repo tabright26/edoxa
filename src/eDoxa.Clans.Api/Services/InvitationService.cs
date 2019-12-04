@@ -41,7 +41,7 @@ namespace eDoxa.Clans.Api.Services
             return await _invitationRepository.FindAsync(invitationId);
         }
 
-        public async Task<DomainValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
+        public async Task<IDomainValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
         {
             if (!await _clanRepository.IsOwnerAsync(clanId, ownerId))
             {
@@ -67,7 +67,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId)
+        public async Task<IDomainValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId)
         {
             if (invitation.UserId != userId)
             {
@@ -81,7 +81,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> DeclineInvitationAsync(Invitation invitation, UserId userId)
+        public async Task<IDomainValidationResult> DeclineInvitationAsync(Invitation invitation, UserId userId)
         {
             if (invitation.UserId != userId)
             {

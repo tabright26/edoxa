@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
@@ -384,7 +383,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
         //    var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
         //    // Act
-        //    var action = new Func<Task<DomainValidationResult>>(async () => await service.CreateTransactionAsync(account, 0, null, TransactionType.Deposit));
+        //    var action = new Func<Task<IDomainValidationResult>>(async () => await service.CreateTransactionAsync(account, 0, null, TransactionType.Deposit));
 
         //    // Assert
         //    action.Should().Throw<InvalidOperationException>();
@@ -499,7 +498,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             var userId = new UserId();
             var account = new Account(userId);
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.FindUserAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+            mockAccountRepository.Setup(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
             var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
@@ -509,7 +508,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
             // Assert
             result.Should().BeOfType<Account>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountRepository.Verify(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]

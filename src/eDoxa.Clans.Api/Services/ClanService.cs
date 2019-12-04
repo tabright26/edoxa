@@ -37,7 +37,7 @@ namespace eDoxa.Clans.Api.Services
             return await _clanRepository.FindClanAsync(clanId);
         }
 
-        public async Task<DomainValidationResult> CreateClanAsync(UserId userId, string name)
+        public async Task<IDomainValidationResult> CreateClanAsync(UserId userId, string name)
         {
             if (await _clanRepository.IsMemberAsync(userId))
             {
@@ -58,7 +58,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> UpdateClanAsync(Clan clan, UserId userId, string? summary)
+        public async Task<IDomainValidationResult> UpdateClanAsync(Clan clan, UserId userId, string? summary)
         {
             if (!clan.MemberIsOwner(userId))
             {
@@ -76,7 +76,7 @@ namespace eDoxa.Clans.Api.Services
             return await _clanRepository.DownloadLogoAsync(clan.Id);
         }
 
-        public async Task<DomainValidationResult> UploadLogoAsync(
+        public async Task<IDomainValidationResult> UploadLogoAsync(
             Clan clan,
             UserId userId,
             Stream stream,
@@ -117,7 +117,7 @@ namespace eDoxa.Clans.Api.Services
             await _clanRepository.UnitOfWork.CommitAsync();
         }
 
-        public async Task<DomainValidationResult> KickMemberFromClanAsync(Clan clan, UserId userId, MemberId memberId)
+        public async Task<IDomainValidationResult> KickMemberFromClanAsync(Clan clan, UserId userId, MemberId memberId)
         {
             if (!clan.MemberIsOwner(userId))
             {
@@ -138,7 +138,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> LeaveClanAsync(Clan clan, UserId userId)
+        public async Task<IDomainValidationResult> LeaveClanAsync(Clan clan, UserId userId)
         {
             if (!clan.HasMember(userId))
             {
@@ -181,7 +181,7 @@ namespace eDoxa.Clans.Api.Services
             return division.Members.ToList();
         }
 
-        public async Task<DomainValidationResult> CreateDivisionAsync(
+        public async Task<IDomainValidationResult> CreateDivisionAsync(
             Clan clan,
             UserId userId,
             string name,
@@ -199,7 +199,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> DeleteDivisionAsync(Clan clan, UserId userId, DivisionId divisionId)
+        public async Task<IDomainValidationResult> DeleteDivisionAsync(Clan clan, UserId userId, DivisionId divisionId)
         {
             if (!clan.MemberIsOwner(userId))
             {
@@ -212,7 +212,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> UpdateDivisionAsync(
+        public async Task<IDomainValidationResult> UpdateDivisionAsync(
             Clan clan,
             UserId userId,
             DivisionId divisionId,
@@ -231,7 +231,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> AddMemberToDivisionAsync(
+        public async Task<IDomainValidationResult> AddMemberToDivisionAsync(
             Clan clan,
             UserId userId,
             DivisionId divisionId,
@@ -249,7 +249,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> RemoveMemberFromDivisionAsync(
+        public async Task<IDomainValidationResult> RemoveMemberFromDivisionAsync(
             Clan clan,
             UserId userId,
             DivisionId divisionId,

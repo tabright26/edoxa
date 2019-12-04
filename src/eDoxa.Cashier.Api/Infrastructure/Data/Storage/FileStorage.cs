@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Factories;
+using eDoxa.Cashier.Api.Factories;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Misc;

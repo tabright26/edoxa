@@ -74,8 +74,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var accountFaker = TestData.FakerFactory.CreateAccountFaker(1);
-            var account = accountFaker.FakeAccount();
+            var account = new Account(new UserId());
+            var moneyAccount = new MoneyAccountDecorator(account);
+            moneyAccount.Deposit(Money.Fifty);
 
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
             _httpClient = factory.CreateClient();

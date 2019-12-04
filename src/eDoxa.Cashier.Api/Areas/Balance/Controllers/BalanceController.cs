@@ -17,22 +17,22 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace eDoxa.Cashier.Api.Areas.Accounts.Controllers
+namespace eDoxa.Cashier.Api.Areas.Balance.Controllers
 {
     [Authorize]
     [ApiVersion("1.0")]
-    [Route("api/account/balance")]
-    [ApiExplorerSettings(GroupName = "Account")]
-    public sealed class AccountBalanceController : ControllerBase
+    [Route("api/balance")]
+    [ApiExplorerSettings(GroupName = "Balance")]
+    public sealed class BalanceController : ControllerBase
     {
         private readonly IAccountQuery _accountQuery;
 
-        public AccountBalanceController(IAccountQuery accountQuery)
+        public BalanceController(IAccountQuery accountQuery)
         {
             _accountQuery = accountQuery;
         }
 
-        [HttpGet("{currency}")]
+        [HttpGet("{currency}", Name = "Test")]
         [SwaggerOperation("Get account balance by currency.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceResponse))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]

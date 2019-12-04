@@ -105,6 +105,8 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 
             var transaction = moneyAccount.Deposit(Money.Fifty);
 
+            transaction.MarkAsSucceded();
+
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()), new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"));
 
             _httpClient = factory.CreateClient();
@@ -117,15 +119,6 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
                     accountRepository.Create(moneyAccount);
                     await accountRepository.CommitAsync();
-                });
-
-            await server.UsingScopeAsync(
-                async scope =>
-                {
-                    var transactionRepository = scope.GetRequiredService<ITransactionRepository>();
-                    transaction = await transactionRepository.FindTransactionAsync(transaction.Id);
-                    transaction?.MarkAsSucceded();
-                    await transactionRepository.CommitAsync();
                 });
 
             // Act

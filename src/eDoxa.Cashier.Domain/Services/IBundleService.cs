@@ -6,7 +6,7 @@
 
 using System.Collections.Immutable;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.Domain.Services
 {

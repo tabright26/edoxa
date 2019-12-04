@@ -6,11 +6,13 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
+using eDoxa.Cashier.Api.Areas.Balance.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -63,7 +65,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var controller = new AccountBalanceController(mockAccountQuery.Object);
+            var controller = new BalanceController(mockAccountQuery.Object);
 
             // Act
             var result = await controller.GetByCurrencyAsync(Currency.Money);
@@ -82,7 +84,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
             // Arrange
             var mockAccountQuery = new Mock<IAccountQuery>();
 
-            var account = TestData.FakerFactory.CreateAccountFaker(null).FakeAccount();
+            var account = new Account(new UserId());
 
             mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>()))
                 .ReturnsAsync(account.GetBalanceFor(Currency.Money))
@@ -90,7 +92,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper);
 
-            var controller = new AccountBalanceController(mockAccountQuery.Object);
+            var controller = new BalanceController(mockAccountQuery.Object);
 
             // Act
             var result = await controller.GetByCurrencyAsync(Currency.Money);

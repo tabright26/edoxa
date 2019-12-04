@@ -6,7 +6,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -26,6 +25,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         public void CreateTransaction(ITransaction transaction)
         {
             _account.CreateTransaction(transaction);
+        }
+
+        public bool TransactionExists(TransactionId transactionId)
+        {
+            return _account.TransactionExists(transactionId);
+        }
+
+        public ITransaction FindTransaction(TransactionId transactionId)
+        {
+            return _account.FindTransaction(transactionId);
         }
 
         public Balance GetBalanceFor(Currency currency)

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed class Price : ValueObject
     {

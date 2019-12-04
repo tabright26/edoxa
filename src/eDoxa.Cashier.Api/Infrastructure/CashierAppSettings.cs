@@ -8,7 +8,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Cashier.Api.Areas.Accounts;
+using eDoxa.Cashier.Api.Areas.Bundles;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 

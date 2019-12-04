@@ -4,23 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.TestHelper.Extensions;
-
-using FluentAssertions;
-
-using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Repositories
 {
@@ -32,189 +17,189 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
         {
         }
 
-        [Fact]
-        public async Task TransactionScenario_MarkAsSucceded()
-        {
-            var account = new Account(new UserId());
-            var moneyAccount = new MoneyAccountDecorator(account);
-            var depositTransaction = moneyAccount.Deposit(Money.Fifty);
+        //[Fact]
+        //public async Task TransactionScenario_MarkAsSucceded()
+        //{
+        //    var account = new Account(new UserId());
+        //    var moneyAccount = new MoneyAccountDecorator(account);
+        //    var depositTransaction = moneyAccount.Deposit(Money.Fifty);
 
-            TestHost.CreateClient();
-            var testServer = TestHost.Server;
-            testServer.CleanupDbContext();
+        //    TestHost.CreateClient();
+        //    var testServer = TestHost.Server;
+        //    testServer.CleanupDbContext();
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(moneyAccount);
-                    await accountRepository.CommitAsync();
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<IAccountRepository>();
+        //            accountRepository.Create(moneyAccount);
+        //            await accountRepository.CommitAsync();
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(transaction);
-                    transaction?.Status.Should().Be(TransactionStatus.Pending);
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionRepository>();
+        //            var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
+        //            transaction.Should().NotBeNull();
+        //            transaction.Should().Be(transaction);
+        //            transaction?.Status.Should().Be(TransactionStatus.Pending);
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(depositTransaction);
-                    transaction?.MarkAsSucceded();
-                    await accountRepository.CommitAsync();
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionRepository>();
+        //            var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
+        //            transaction.Should().NotBeNull();
+        //            transaction.Should().Be(depositTransaction);
+        //            transaction?.MarkAsSucceded();
+        //            await accountRepository.CommitAsync();
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(depositTransaction);
-                    transaction?.Status.Should().Be(TransactionStatus.Succeded);
-                });
-        }
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionRepository>();
+        //            var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
+        //            transaction.Should().NotBeNull();
+        //            transaction.Should().Be(depositTransaction);
+        //            transaction?.Status.Should().Be(TransactionStatus.Succeded);
+        //        });
+        //}
 
-        [Theory]
-        [InlineData(1)]
-        [InlineData(10)]
-        [InlineData(100)]
-        [InlineData(1000)]
-        public async Task TransactionScenario_MarkAsFailed(int seed)
-        {
-            var account = new Account(new UserId());
-            var moneyAccount = new MoneyAccountDecorator(account);
-            var depositTransaction = moneyAccount.Deposit(Money.Fifty);
+        //[Theory]
+        //[InlineData(1)]
+        //[InlineData(10)]
+        //[InlineData(100)]
+        //[InlineData(1000)]
+        //public async Task TransactionScenario_MarkAsFailed(int seed)
+        //{
+        //    var account = new Account(new UserId());
+        //    var moneyAccount = new MoneyAccountDecorator(account);
+        //    var depositTransaction = moneyAccount.Deposit(Money.Fifty);
 
-            TestHost.CreateClient();
-            var testServer = TestHost.Server;
-            testServer.CleanupDbContext();
+        //    TestHost.CreateClient();
+        //    var testServer = TestHost.Server;
+        //    testServer.CleanupDbContext();
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(moneyAccount);
-                    await accountRepository.CommitAsync();
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<IAccountRepository>();
+        //            accountRepository.Create(moneyAccount);
+        //            await accountRepository.CommitAsync();
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(depositTransaction);
-                    transaction?.Status.Should().Be(TransactionStatus.Pending);
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionRepository>();
+        //            var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
+        //            transaction.Should().NotBeNull();
+        //            transaction.Should().Be(depositTransaction);
+        //            transaction?.Status.Should().Be(TransactionStatus.Pending);
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(depositTransaction);
-                    transaction?.MarkAsFailed();
-                    await accountRepository.CommitAsync();
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionRepository>();
+        //            var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
+        //            transaction.Should().NotBeNull();
+        //            transaction.Should().Be(depositTransaction);
+        //            transaction?.MarkAsFailed();
+        //            await accountRepository.CommitAsync();
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionRepository>();
-                    var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
-                    transaction.Should().NotBeNull();
-                    transaction.Should().Be(depositTransaction);
-                    transaction?.Status.Should().Be(TransactionStatus.Failed);
-                });
-        }
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionRepository>();
+        //            var transaction = await accountRepository.FindTransactionAsync(depositTransaction.Id);
+        //            transaction.Should().NotBeNull();
+        //            transaction.Should().Be(depositTransaction);
+        //            transaction?.Status.Should().Be(TransactionStatus.Failed);
+        //        });
+        //}
 
-        [Fact]
-        public async Task TransactionScenario()
-        {
-            var transaction1 = new Transaction(
-                Money.Fifty,
-                new TransactionDescription("Test"),
-                TransactionType.Charge,
-                new UtcNowDateTimeProvider(),
-                new TransactionMetadata
-                {
-                    ["ChallengeId"] = new ChallengeId().ToString(),
-                    ["ParticipantId"] = new ParticipantId().ToString()
-                });
+        //[Fact]
+        //public async Task TransactionScenario()
+        //{
+        //    var transaction1 = new Transaction(
+        //        Money.Fifty,
+        //        new TransactionDescription("Test"),
+        //        TransactionType.Charge,
+        //        new UtcNowDateTimeProvider(),
+        //        new TransactionMetadata
+        //        {
+        //            ["ChallengeId"] = new ChallengeId().ToString(),
+        //            ["ParticipantId"] = new ParticipantId().ToString()
+        //        });
 
-            var transaction2 = new Transaction(
-                Money.Fifty,
-                new TransactionDescription("Test"),
-                TransactionType.Charge,
-                new UtcNowDateTimeProvider(),
-                new TransactionMetadata
-                {
-                    ["ChallengeId"] = new ChallengeId().ToString(),
-                    ["ParticipantId"] = new ParticipantId().ToString()
-                });
+        //    var transaction2 = new Transaction(
+        //        Money.Fifty,
+        //        new TransactionDescription("Test"),
+        //        TransactionType.Charge,
+        //        new UtcNowDateTimeProvider(),
+        //        new TransactionMetadata
+        //        {
+        //            ["ChallengeId"] = new ChallengeId().ToString(),
+        //            ["ParticipantId"] = new ParticipantId().ToString()
+        //        });
 
-            var account = new Account(new UserId(), new ITransaction[] { transaction1, transaction2 });
+        //    var account = new Account(new UserId(), new ITransaction[] { transaction1, transaction2 });
 
-            TestHost.CreateClient();
-            var testServer = TestHost.Server;
-            testServer.CleanupDbContext();
+        //    TestHost.CreateClient();
+        //    var testServer = TestHost.Server;
+        //    testServer.CleanupDbContext();
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    accountRepository.Create(account);
-                    await accountRepository.CommitAsync();
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<IAccountRepository>();
+        //            accountRepository.Create(account);
+        //            await accountRepository.CommitAsync();
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionService>();
-                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
-                    transactionQuery.Should().NotBeNull();
-                    transactionQuery.Should().Be(transaction1);
-                    transactionQuery?.Status.Should().Be(TransactionStatus.Pending);
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionService>();
+        //            var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
+        //            transactionQuery.Should().NotBeNull();
+        //            transactionQuery.Should().Be(transaction1);
+        //            transactionQuery?.Status.Should().Be(TransactionStatus.Pending);
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionService>();
-                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
-                    await accountRepository.MarkTransactionAsSuccededAsync(transactionQuery);
-                    transactionQuery.Status.Should().Be(TransactionStatus.Succeded);
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionService>();
+        //            var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
+        //            await accountRepository.MarkTransactionAsSuccededAsync(transactionQuery);
+        //            transactionQuery.Status.Should().Be(TransactionStatus.Succeded);
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionService>();
-                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
-                    transactionQuery.Should().NotBeNull();
-                    transactionQuery.Should().Be(transaction1);
-                    transactionQuery?.Status.Should().Be(TransactionStatus.Succeded);
-                });
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionService>();
+        //            var transactionQuery = await accountRepository.FindTransactionAsync(transaction1.Metadata);
+        //            transactionQuery.Should().NotBeNull();
+        //            transactionQuery.Should().Be(transaction1);
+        //            transactionQuery?.Status.Should().Be(TransactionStatus.Succeded);
+        //        });
 
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var accountRepository = scope.GetRequiredService<ITransactionService>();
-                    var transactionQuery = await accountRepository.FindTransactionAsync(transaction2.Metadata);
-                    transactionQuery.Should().NotBeNull();
-                    transactionQuery.Should().Be(transaction2);
-                    transactionQuery?.Status.Should().Be(TransactionStatus.Pending);
-                });
-        }
+        //    await testServer.UsingScopeAsync(
+        //        async scope =>
+        //        {
+        //            var accountRepository = scope.GetRequiredService<ITransactionService>();
+        //            var transactionQuery = await accountRepository.FindTransactionAsync(transaction2.Metadata);
+        //            transactionQuery.Should().NotBeNull();
+        //            transactionQuery.Should().Be(transaction2);
+        //            transactionQuery?.Status.Should().Be(TransactionStatus.Pending);
+        //        });
+        //}
     }
 }

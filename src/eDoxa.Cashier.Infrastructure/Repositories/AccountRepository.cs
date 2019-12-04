@@ -1,23 +1,25 @@
 ﻿// Filename: AccountRepository.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using AutoMapper;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Infrastructure.Models;
-
-using LinqKit;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Misc;
+
+using LinqKit;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Infrastructure.Repositories
 {
@@ -55,7 +57,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _materializedObjects[account] = accountModel;
         }
 
-        public async Task<IAccount?> FindUserAccountAsync(UserId userId)
+        public async Task<IAccount?> FindAccountAsync(UserId userId)
         {
             if (_materializedIds.TryGetValue(userId, out var account))
             {
@@ -95,13 +97,30 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         private void CopyChanges(IAccount account, AccountModel accountModel)
         {
-            var transactions =
-                account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
+            accountModel.DomainEvents = account.DomainEvents.ToList();
+
+            account.ClearDomainEvents();
+
+            foreach (var transactionModel in accountModel.Transactions)
+            {
+                this.CopyChanges(account.Transactions.Single(transaction => transaction.Id == transactionModel.Id), transactionModel);
+            }
+
+            var transactions = account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
 
             foreach (var transaction in _mapper.Map<ICollection<TransactionModel>>(transactions))
             {
                 accountModel.Transactions.Add(transaction);
             }
+        }
+
+        private void CopyChanges(ITransaction transaction, TransactionModel transactionModel)
+        {
+            transactionModel.DomainEvents = transaction.DomainEvents.ToList();
+
+            transaction.ClearDomainEvents();
+
+            transactionModel.Status = transaction.Status.Value;
         }
     }
 }

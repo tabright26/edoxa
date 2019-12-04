@@ -13,9 +13,9 @@ namespace eDoxa.Games.Abstractions.Adapters
     {
         public abstract Game Game { get; }
 
-        public abstract Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
+        public abstract Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
 
-        public async Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication)
+        public async Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication)
         {
             return await this.ValidateAuthenticationAsync(userId, JsonConvert.DeserializeObject<TAuthentication>(JsonConvert.SerializeObject(gameAuthentication)));
         }

@@ -7,13 +7,14 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
+using eDoxa.Cashier.Api.Areas.Bundles.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Cashier.TestHelper.Mocks;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -37,14 +38,14 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
             // Arrange
             var mockBundlesService = new Mock<IBundleService>();
 
-            var controller = new AccountDepositController(mockBundlesService.Object, TestMapper);
+            var controller = new BundlesController(mockBundlesService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = controller.Get(Currency.All);
+            var result = controller.Get(Currency.All, TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -63,14 +64,14 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockBundlesService.Setup(accountService => accountService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var controller = new AccountDepositController(mockBundlesService.Object, TestMapper);
+            var controller = new BundlesController(mockBundlesService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = controller.Get(Currency.Money);
+            var result = controller.Get(Currency.Money, TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -91,14 +92,14 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 
             mockBundlesService.Setup(accountService => accountService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var controller = new AccountDepositController(mockBundlesService.Object, TestMapper);
+            var controller = new BundlesController(mockBundlesService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
             controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = controller.Get(Currency.Token);
+            var result = controller.Get(Currency.Token, TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

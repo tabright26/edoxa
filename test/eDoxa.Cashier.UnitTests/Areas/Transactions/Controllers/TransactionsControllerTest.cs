@@ -12,7 +12,6 @@ using eDoxa.Cashier.Api.Areas.Transactions.Controllers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Requests;
@@ -194,7 +193,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Transactions.Controllers
 
             var validationResult = new DomainValidationResult();
 
-            validationResult.AddMetadataResponse(transaction);
+            validationResult.AddEntityToMetadata(transaction);
 
             mockAccountService.Setup(accountService => accountService.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 

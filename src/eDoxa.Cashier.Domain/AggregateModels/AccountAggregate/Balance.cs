@@ -7,12 +7,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Balance : ValueObject
     {

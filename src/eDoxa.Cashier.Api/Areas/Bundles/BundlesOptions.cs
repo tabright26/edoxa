@@ -8,7 +8,7 @@
 
 using System.Collections.Generic;
 
-namespace eDoxa.Cashier.Api.Areas.Accounts
+namespace eDoxa.Cashier.Api.Areas.Bundles
 {
     public sealed class BundlesOptions
     {

@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain.AggregateModels
+namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Bundle : ValueObject
     {

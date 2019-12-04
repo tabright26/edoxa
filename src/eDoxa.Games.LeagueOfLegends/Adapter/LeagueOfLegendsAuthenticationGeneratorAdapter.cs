@@ -42,7 +42,7 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
+        public override async Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
         {
             var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
 

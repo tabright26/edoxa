@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
 
-        Task<DomainValidationResult> CreateChallengeAsync(
+        Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId challengeId,
             PayoutEntries payoutEntries,
             EntryFee entryFee,

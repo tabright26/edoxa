@@ -17,6 +17,7 @@ namespace eDoxa.Seedwork.Application.Constants
         public const string TransactionCanceled = "transaction.canceled";
         public const string UserAccountDeposit = "user.account.deposit";
         public const string UserAccountWithdrawal = "user.account.withdrawal";
+        public const string UserTransactionCanceled = "user.transaction.canceled";
         public const string UserTransactionSucceded = "user.transaction.succeded";
         public const string UserTransactionFailed = "user.transaction.failed";
 

@@ -4,11 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
+using eDoxa.Cashier.Api.Strategies;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Strategies;
 
-namespace eDoxa.Cashier.Api.Areas.Challenges.Factories
+namespace eDoxa.Cashier.Api.Factories
 {
     public sealed class ChallengePayoutFactory : IChallengePayoutFactory
     {

@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Domain.Services
     {
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
 
-        Task<DomainValidationResult> CreateChallengeAsync(
+        Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId id,
             ChallengeName name,
             Game game,
@@ -29,7 +29,7 @@ namespace eDoxa.Challenges.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<DomainValidationResult> RegisterChallengeParticipantAsync(
+        Task<IDomainValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             ParticipantId participantId,
             UserId userId,
@@ -40,7 +40,7 @@ namespace eDoxa.Challenges.Domain.Services
 
         Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
 
-        Task<DomainValidationResult> SynchronizeChallengeAsync(IChallenge challenge, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
+        Task<IDomainValidationResult> SynchronizeChallengeAsync(IChallenge challenge, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
 
         Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
     }

@@ -40,7 +40,7 @@ namespace eDoxa.Challenges.Api.Services
             return await _challengeRepository.FindChallengeAsync(challengeId);
         }
 
-        public async Task<DomainValidationResult> CreateChallengeAsync(
+        public async Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId id,
             ChallengeName name,
             Game game,
@@ -69,7 +69,7 @@ namespace eDoxa.Challenges.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> RegisterChallengeParticipantAsync(
+        public async Task<IDomainValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             ParticipantId participantId,
             UserId userId,
@@ -122,7 +122,7 @@ namespace eDoxa.Challenges.Api.Services
             }
         }
 
-        public async Task<DomainValidationResult> SynchronizeChallengeAsync(
+        public async Task<IDomainValidationResult> SynchronizeChallengeAsync(
             IChallenge challenge,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default

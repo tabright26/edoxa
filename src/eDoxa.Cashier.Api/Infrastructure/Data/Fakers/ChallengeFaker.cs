@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 using Bogus;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Factories;
+using eDoxa.Cashier.Api.Factories;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;

@@ -4,12 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    var account = await accountRepository.FindUserAccountAsync(userAccount.Id);
+                    var account = await accountRepository.FindAccountAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(account);
                     account?.Transactions.Should().HaveCount(account.Transactions.Count);
@@ -65,7 +65,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    var account = await accountRepository.FindUserAccountAsync(userAccount.Id);
+                    var account = await accountRepository.FindAccountAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
                     var moneyAccount = new MoneyAccountDecorator(account);
@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    var account = await accountRepository.FindUserAccountAsync(userAccount.Id);
+                    var account = await accountRepository.FindAccountAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
                     account?.Transactions.Should().HaveCount(userAccount.Transactions.Count + 1);
@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    var account = await accountRepository.FindUserAccountAsync(userAccount.Id);
+                    var account = await accountRepository.FindAccountAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
                     var transaction = account?.Transactions.Single(accountTransaction => accountTransaction.Id == moneyDepositTransaction.Id);
@@ -102,24 +102,24 @@ namespace eDoxa.Cashier.IntegrationTests.Repositories
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    var account = await accountRepository.FindUserAccountAsync(userAccount.Id);
+                    var account = await accountRepository.FindAccountAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
                     var transaction = account?.Transactions.Single(accountTransaction => accountTransaction.Id == moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
-                    transaction?.MarkAsFailed();
-                    await accountRepository.CommitAsync();
+                    var action = new Action(() => transaction?.MarkAsFailed());
+                    action.Should().Throw<InvalidOperationException>();
                 });
 
             await testServer.UsingScopeAsync(
                 async scope =>
                 {
                     var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                    var account = await accountRepository.FindUserAccountAsync(userAccount.Id);
+                    var account = await accountRepository.FindAccountAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
                     account?.Transactions.Should().Contain(moneyDepositTransaction);
-                    account?.Transactions.Should().ContainSingle(transaction => transaction.Status == TransactionStatus.Pending);
+                    account?.Transactions.Should().ContainSingle(transaction => transaction.Status == TransactionStatus.Succeded);
                 });
         }
     }

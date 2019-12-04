@@ -13,7 +13,7 @@ using eDoxa.Cashier.Domain.Strategies;
 
 using IdentityServer4.Extensions;
 
-namespace eDoxa.Cashier.Api.Areas.Challenges.Strategies
+namespace eDoxa.Cashier.Api.Strategies
 {
     public sealed class ChallengePayoutStrategy : IChallengePayoutStrategy
     {

@@ -13,7 +13,7 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Areas.Accounts;
+using eDoxa.Cashier.Api.Areas.Bundles;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;

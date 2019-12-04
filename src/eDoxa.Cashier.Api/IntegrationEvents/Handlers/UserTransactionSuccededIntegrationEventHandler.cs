@@ -4,12 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -18,43 +17,37 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 {
     public sealed class UserTransactionSuccededIntegrationEventHandler : IIntegrationEventHandler<UserTransactionSuccededIntegrationEvent>
     {
-        private readonly ITransactionRepository _transactionRepository;
+        private readonly IAccountService _accountService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly ILogger _logger;
 
         public UserTransactionSuccededIntegrationEventHandler(
-            ITransactionRepository transactionRepository,
+            IAccountService accountService,
             IServiceBusPublisher serviceBusPublisher,
             ILogger<UserTransactionSuccededIntegrationEventHandler> logger
         )
         {
-            _transactionRepository = transactionRepository;
+            _accountService = accountService;
             _serviceBusPublisher = serviceBusPublisher;
             _logger = logger;
         }
 
         public async Task HandleAsync(UserTransactionSuccededIntegrationEvent integrationEvent)
         {
-            try
-            {
-                var transaction = await _transactionRepository!.FindTransactionAsync(TransactionId.FromGuid(integrationEvent.TransactionId));
+            var account = await _accountService.FindAccountAsync(integrationEvent.UserId);
 
-                if (transaction == null)
+            if (account != null)
+            {
+                var result = await _accountService.MarkAccountTransactionAsSuccededAsync(account, integrationEvent.TransactionId);
+
+                if (result.IsValid)
                 {
-                    _logger.LogDebug("The transaction does not exist.");
+                    await _serviceBusPublisher.PublishUserTransactionEmailSentIntegrationEventAsync(integrationEvent.UserId, result.GetEntityFromMetadata<ITransaction>());
                 }
                 else
                 {
-                    transaction.MarkAsSucceded();
-
-                    await _transactionRepository.CommitAsync();
-
-                    await _serviceBusPublisher.PublishUserTransactionEmailSentIntegrationEventAsync(integrationEvent.UserId, transaction);
+                    _logger.LogCritical("Something wrong happened when the user transaction integration event was successful.");
                 }
-            }
-            catch (Exception exception)
-            {
-                _logger.LogCritical(exception, "Something wrong happened when the user transaction integration event was successful.");
             }
         }
     }

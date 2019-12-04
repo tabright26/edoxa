@@ -39,7 +39,7 @@ namespace eDoxa.Cashier.Api.Services
             await _challengeRepository.CommitAsync(cancellationToken);
         }
 
-        public async Task<DomainValidationResult> CreateChallengeAsync(
+        public async Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId challengeId,
             PayoutEntries payoutEntries,
             EntryFee entryFee,

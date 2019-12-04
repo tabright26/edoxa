@@ -6,10 +6,10 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Factories;
-using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
+using eDoxa.Cashier.Api.Factories;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Api.Services;
+using eDoxa.Cashier.Api.Strategies;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
@@ -26,7 +26,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
@@ -37,7 +36,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
             builder.RegisterType<BundleService>().As<IBundleService>().InstancePerLifetimeScope();
-            builder.RegisterType<TransactionService>().As<ITransactionService>().InstancePerLifetimeScope();
 
             // Strategies
             builder.RegisterType<ChallengePayoutStrategy>().As<IChallengePayoutStrategy>().SingleInstance();

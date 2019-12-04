@@ -48,14 +48,14 @@ namespace eDoxa.Games.Services
             return await _gameAuthenticationRepository.AuthenticationExistsAsync(userId, game);
         }
 
-        public async Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request)
+        public async Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request)
         {
             var adapter = _gameAuthenticationGeneratorFactory.CreateInstance(game);
 
             return await adapter.GenerateAuthenticationAsync(userId, request);
         }
 
-        public async Task<DomainValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication)
+        public async Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication)
         {
             var adapter = _gameAuthenticationValidatorFactory.CreateInstance(game);
 

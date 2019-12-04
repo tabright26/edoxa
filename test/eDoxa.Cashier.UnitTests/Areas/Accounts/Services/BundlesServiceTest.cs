@@ -7,9 +7,9 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using eDoxa.Cashier.Api.Areas.Accounts;
+using eDoxa.Cashier.Api.Areas.Bundles;
 using eDoxa.Cashier.Api.Services;
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 

@@ -4,24 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
-
-using eDoxa.Cashier.Api.Areas.Accounts.Controllers;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Cashier.TestHelper.Mocks;
-
-using FluentAssertions;
-
-using Microsoft.AspNetCore.Mvc;
-
-using Moq;
-
-using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
 {
@@ -31,52 +15,52 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
         {
         }
 
-        [Fact]
-        public void GetAsync_WithCurrencyAll_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockBundlesService = new Mock<IBundleService>();
+        //[Fact]
+        //public void GetAsync_WithCurrencyAll_ShouldBeOfTypeBadRequestObjectResult()
+        //{
+        //    // Arrange
+        //    var mockBundlesService = new Mock<IBundleService>();
 
-            var controller = new AccountWithdrawalController(mockBundlesService.Object, TestMapper);
+        //    var controller = new AccountWithdrawalController(mockBundlesService.Object, TestMapper);
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
+        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            // Act
-            var result = controller.Get(Currency.All);
+        //    // Act
+        //    var result = controller.Get(Currency.All);
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-        }
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
+        //}
 
-        [Fact]
-        public void GetAsync_WithCurrencyMoney_ShouldBeOfTypeOkObjectResult()
-        {
-            // Arrange
-            var mockBundlesService = new Mock<IBundleService>();
+        //[Fact]
+        //public void GetAsync_WithCurrencyMoney_ShouldBeOfTypeOkObjectResult()
+        //{
+        //    // Arrange
+        //    var mockBundlesService = new Mock<IBundleService>();
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Token(100), new Price(new Money(50)))
-            };
+        //    var bundle = new List<Bundle>
+        //    {
+        //        new Bundle(new Token(100), new Price(new Money(50)))
+        //    };
 
-            mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
+        //    mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
-            var controller = new AccountWithdrawalController(mockBundlesService.Object, TestMapper);
+        //    var controller = new AccountWithdrawalController(mockBundlesService.Object, TestMapper);
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
+        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            // Act
-            var result = controller.Get(Currency.Money);
+        //    // Act
+        //    var result = controller.Get(Currency.Money);
 
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<OkObjectResult>();
 
-            mockBundlesService.Verify(accountService => accountService.FetchWithdrawalMoneyBundles(), Times.Once);
-        }
+        //    mockBundlesService.Verify(accountService => accountService.FetchWithdrawalMoneyBundles(), Times.Once);
+        //}
 
         //[Fact]
         //public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()

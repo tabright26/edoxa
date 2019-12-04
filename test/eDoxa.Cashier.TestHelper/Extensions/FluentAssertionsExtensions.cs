@@ -6,7 +6,6 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Responses;
 

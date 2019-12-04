@@ -6,7 +6,7 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Responses;
 
 namespace eDoxa.Cashier.Api.Profiles

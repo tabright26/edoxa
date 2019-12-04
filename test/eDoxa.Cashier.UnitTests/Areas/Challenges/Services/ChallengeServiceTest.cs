@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
 using eDoxa.Cashier.Api.Services;
+using eDoxa.Cashier.Api.Strategies;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;

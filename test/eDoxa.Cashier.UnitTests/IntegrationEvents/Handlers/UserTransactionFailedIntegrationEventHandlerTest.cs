@@ -11,8 +11,7 @@ using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
@@ -30,20 +29,22 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserTransactionFailedIntegrationEvent_ShouldBeCompletedTask()
         {
             // Arrange
-            var transaction = new Transaction(
-                Money.Ten,
-                new TransactionDescription("Description"),
-                TransactionType.Deposit,
-                new UtcNowDateTimeProvider());
+            var account = new Account(new UserId());
+            var moneyAccount = new MoneyAccountDecorator(account);
+            var transaction = moneyAccount.Deposit(Money.Ten);
 
-            var mockTransactionRepository = new Mock<ITransactionRepository>();
+            var mockAccountService = new Mock<IAccountService>();
 
-            mockTransactionRepository.Setup(transcationRepository => transcationRepository.FindTransactionAsync(It.IsAny<TransactionId>()))
-                .ReturnsAsync(transaction)
+            mockAccountService.Setup(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()))
+                .ReturnsAsync(moneyAccount)
                 .Verifiable();
 
-            mockTransactionRepository.Setup(transactionRepository => transactionRepository.CommitAsync(It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
+            var result = new DomainValidationResult();
+
+            result.AddEntityToMetadata(transaction);
+
+            mockAccountService.Setup(accountService => accountService.MarkAccountTransactionAsFailedAsync(It.IsAny<IAccount>(), It.IsAny<TransactionId>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(result)
                 .Verifiable();
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
@@ -54,7 +55,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new UserTransactionFailedIntegrationEventHandler(mockTransactionRepository.Object, mockServiceBusPublisher.Object, mockLogger.Object);
+            var handler = new UserTransactionFailedIntegrationEventHandler(mockAccountService.Object, mockServiceBusPublisher.Object, mockLogger.Object);
 
             var integrationEvent = new UserTransactionFailedIntegrationEvent(new UserId(), transaction.Id);
 
@@ -62,9 +63,9 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockTransactionRepository.Verify(transcationRepository => transcationRepository.FindTransactionAsync(It.IsAny<TransactionId>()), Times.Once);
+            mockAccountService.Verify(transcationRepository => transcationRepository.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
-            mockTransactionRepository.Verify(transactionRepository => transactionRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.MarkAccountTransactionAsFailedAsync(It.IsAny<IAccount>(), It.IsAny<TransactionId>(), It.IsAny<CancellationToken>()), Times.Once);
 
             mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserEmailSentIntegrationEvent>()), Times.Once);
 

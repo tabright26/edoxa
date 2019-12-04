@@ -41,7 +41,7 @@ namespace eDoxa.Clans.Api.Services
             return await _candidatureRepository.FindAsync(candidatureId);
         }
 
-        public async Task<DomainValidationResult> SendCandidatureAsync(UserId userId, ClanId clanId)
+        public async Task<IDomainValidationResult> SendCandidatureAsync(UserId userId, ClanId clanId)
         {
             if (await _clanRepository.IsMemberAsync(userId))
             {
@@ -62,7 +62,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId)
+        public async Task<IDomainValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId)
         {
             if (!await _clanRepository.IsOwnerAsync(candidature.ClanId, ownerId))
             {
@@ -76,7 +76,7 @@ namespace eDoxa.Clans.Api.Services
             return new DomainValidationResult();
         }
 
-        public async Task<DomainValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId userId)
+        public async Task<IDomainValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId userId)
         {
             if (!await _clanRepository.IsOwnerAsync(candidature.ClanId, userId))
             {

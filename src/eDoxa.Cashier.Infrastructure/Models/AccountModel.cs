@@ -9,6 +9,8 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Seedwork.Domain;
+
 namespace eDoxa.Cashier.Infrastructure.Models
 {
     /// <remarks>
@@ -19,5 +21,7 @@ namespace eDoxa.Cashier.Infrastructure.Models
         public Guid Id { get; set; }
 
         public ICollection<TransactionModel> Transactions { get; set; }
+
+        public ICollection<IDomainEvent> DomainEvents { get; set; }
     }
 }

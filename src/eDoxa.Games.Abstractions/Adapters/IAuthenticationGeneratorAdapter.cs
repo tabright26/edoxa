@@ -14,13 +14,13 @@ namespace eDoxa.Games.Abstractions.Adapters
     public interface IAuthenticationGeneratorAdapter<in TRequest> : IAuthenticationGeneratorAdapter
     where TRequest : class
     {
-        Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
+        Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
     }
 
     public interface IAuthenticationGeneratorAdapter
     {
         Game Game { get; }
 
-        Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, object request);
+        Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, object request);
     }
 }

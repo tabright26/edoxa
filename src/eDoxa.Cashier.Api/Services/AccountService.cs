@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Seedwork.Domain;
@@ -33,7 +32,7 @@ namespace eDoxa.Cashier.Api.Services
 
         public async Task<IAccount?> FindAccountAsync(UserId userId)
         {
-            return await _accountRepository.FindUserAccountAsync(userId);
+            return await _accountRepository.FindAccountAsync(userId);
         }
 
         // TODO: Need to be refactored.
@@ -100,7 +99,7 @@ namespace eDoxa.Cashier.Api.Services
 
         private async Task PayoutChallengeAsync(UserId userId, Currency currency, decimal amount)
         {
-            var account = await _accountRepository.FindUserAccountAsync(userId);
+            var account = await _accountRepository.FindAccountAsync(userId);
 
             if (currency == Currency.Money)
             {
@@ -117,7 +116,7 @@ namespace eDoxa.Cashier.Api.Services
             }
         }
 
-        public async Task<DomainValidationResult> CreateTransactionAsync(
+        public async Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
             decimal amount,
             Currency currency,
@@ -154,7 +153,7 @@ namespace eDoxa.Cashier.Api.Services
             return DomainValidationResult.Failure("Invalid currency.");
         }
 
-        private async Task<DomainValidationResult> CreateTransactionAsync(
+        private async Task<IDomainValidationResult> CreateTransactionAsync(
             IMoneyAccount account,
             Money money,
             TransactionType type,
@@ -184,7 +183,7 @@ namespace eDoxa.Cashier.Api.Services
             return DomainValidationResult.Failure("Unsupported transaction type for money currency.");
         }
 
-        private async Task<DomainValidationResult> CreateDepositTransactionAsync(
+        private async Task<IDomainValidationResult> CreateDepositTransactionAsync(
             IMoneyAccount account,
             Money money,
             CancellationToken cancellationToken = default
@@ -212,13 +211,13 @@ namespace eDoxa.Cashier.Api.Services
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
-                result.AddMetadataResponse(transaction);
+                result.AddEntityToMetadata(transaction);
             }
 
             return result;
         }
 
-        private async Task<DomainValidationResult> CreateWithdrawalTransactionAsync(
+        private async Task<IDomainValidationResult> CreateWithdrawalTransactionAsync(
             IMoneyAccount account,
             Money money,
             CancellationToken cancellationToken = default
@@ -251,7 +250,7 @@ namespace eDoxa.Cashier.Api.Services
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
-                result.AddMetadataResponse(transaction);
+                result.AddEntityToMetadata(transaction);
 
                 //await _serviceBusPublisher.PublishUserAccountWithdrawalIntegrationEventAsync(
                 //    UserId.Parse(transactionMetadata["USERID"]),
@@ -264,7 +263,7 @@ namespace eDoxa.Cashier.Api.Services
             return result;
         }
 
-        private async Task<DomainValidationResult> CreateChargeTransactionAsync(
+        private async Task<IDomainValidationResult> CreateChargeTransactionAsync(
             IMoneyAccount account,
             Money money,
             TransactionMetadata? metadata = null,
@@ -284,13 +283,13 @@ namespace eDoxa.Cashier.Api.Services
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
-                result.AddMetadataResponse(transaction);
+                result.AddEntityToMetadata(transaction);
             }
 
             return result;
         }
 
-        private async Task<DomainValidationResult> CreateDepositTransactionAsync(
+        private async Task<IDomainValidationResult> CreateDepositTransactionAsync(
             ITokenAccount account,
             Token token,
             CancellationToken cancellationToken = default
@@ -318,13 +317,13 @@ namespace eDoxa.Cashier.Api.Services
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
-                result.AddMetadataResponse(transaction);
+                result.AddEntityToMetadata(transaction);
             }
 
             return result;
         }
 
-        private async Task<DomainValidationResult> CreateChargeTransactionAsync(
+        private async Task<IDomainValidationResult> CreateChargeTransactionAsync(
             ITokenAccount account,
             Token token,
             TransactionMetadata? metadata = null,
@@ -344,13 +343,13 @@ namespace eDoxa.Cashier.Api.Services
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
-                result.AddMetadataResponse(transaction);
+                result.AddEntityToMetadata(transaction);
             }
 
             return result;
         }
 
-        private async Task<DomainValidationResult> CreateTransactionAsync(
+        private async Task<IDomainValidationResult> CreateTransactionAsync(
             ITokenAccount account,
             Token token,
             TransactionType type,
@@ -395,6 +394,80 @@ namespace eDoxa.Cashier.Api.Services
             }
 
             return new DomainValidationResult();
+        }
+
+        public async Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId)
+        {
+            return await Task.FromResult(account.TransactionExists(transactionId) ? account.FindTransaction(transactionId) : null);
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(IAccount account, TransactionId transactionId, CancellationToken cancellationToken = default)
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(transactionId))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(transactionId);
+
+                transaction.MarkAsSucceded();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(IAccount account, TransactionId transactionId, CancellationToken cancellationToken = default)
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(transactionId))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(transactionId);
+
+                transaction.MarkAsFailed();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(IAccount account, TransactionId transactionId, CancellationToken cancellationToken = default)
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(transactionId))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(transactionId);
+
+                transaction.MarkAsCanceled();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
         }
     }
 }

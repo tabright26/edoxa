@@ -12,7 +12,6 @@ using AutoMapper;
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Requests;
@@ -84,7 +83,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<TransactionResponse>(result.GetMetadataResponse()));
+                return this.Ok(_mapper.Map<TransactionResponse>(result.GetEntityFromMetadata<ITransaction>()));
             }
 
             result.AddToModelState(ModelState);

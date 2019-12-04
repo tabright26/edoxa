@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -48,6 +47,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         public void CreateTransaction(ITransaction transaction)
         {
             _transactions.Add(transaction);
+        }
+
+        public bool TransactionExists(TransactionId transactionId)
+        {
+            return Transactions.Any(transaction => transaction.Id == transactionId);
+        }
+
+        public ITransaction FindTransaction(TransactionId transactionId)
+        {
+            return Transactions.Single(transaction => transaction.Id == transactionId);
         }
     }
 

@@ -27,7 +27,7 @@ namespace eDoxa.Games.Services
             _gameAuthenticationService = gameAuthenticationService;
         }
 
-        public async Task<DomainValidationResult> LinkCredentialAsync(UserId userId, Game game)
+        public async Task<IDomainValidationResult> LinkCredentialAsync(UserId userId, Game game)
         {
             if (await _gameCredentialRepository.CredentialExistsAsync(userId, game))
             {
@@ -59,7 +59,7 @@ namespace eDoxa.Games.Services
             return result;
         }
 
-        public async Task<DomainValidationResult> UnlinkCredentialAsync(Credential credential)
+        public async Task<IDomainValidationResult> UnlinkCredentialAsync(Credential credential)
         {
             credential.Delete();
 

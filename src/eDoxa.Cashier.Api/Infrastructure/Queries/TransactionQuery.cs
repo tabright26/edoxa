@@ -13,7 +13,6 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;

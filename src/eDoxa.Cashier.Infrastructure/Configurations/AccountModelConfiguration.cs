@@ -17,6 +17,8 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable("Account");
 
+            builder.Ignore(challenge => challenge.DomainEvents);
+
             builder.Property(account => account.Id).IsRequired().ValueGeneratedNever();
 
             builder.HasMany(account => account.Transactions).WithOne(transaction => transaction.Account).IsRequired().OnDelete(DeleteBehavior.Cascade);

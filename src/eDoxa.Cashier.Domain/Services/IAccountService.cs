@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -23,7 +22,7 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<IAccount?> FindAccountAsync(UserId userId);
 
-        Task<DomainValidationResult> CreateTransactionAsync(
+        Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
             decimal amount,
             Currency currency,
@@ -33,5 +32,25 @@ namespace eDoxa.Cashier.Domain.Services
         );
 
         Task PayoutChallengeAsync(IChallenge challenge, IDictionary<UserId, decimal?> scoreboard, CancellationToken cancellationToken = default);
+
+        Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId);
+
+        Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+            IAccount account,
+            TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        );
+
+        Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(
+            IAccount account,
+            TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        );
+
+        Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(
+            IAccount account,
+            TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        );
     }
 }

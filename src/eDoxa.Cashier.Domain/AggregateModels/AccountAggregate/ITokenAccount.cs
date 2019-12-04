@@ -6,8 +6,6 @@
 
 using System;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public interface ITokenAccount : IAccount

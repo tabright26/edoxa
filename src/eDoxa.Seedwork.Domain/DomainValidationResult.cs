@@ -12,8 +12,6 @@ namespace eDoxa.Seedwork.Domain
 {
     public sealed class DomainValidationResult : IDomainValidationResult
     {
-        public static readonly DomainValidationResult Succeded = new DomainValidationResult();
-
         private readonly HashSet<DomainValidationError> _errors = new HashSet<DomainValidationError>();
         private readonly DomainValidationMetadata _metadata = new DomainValidationMetadata();
 
@@ -21,18 +19,34 @@ namespace eDoxa.Seedwork.Domain
 
         public IReadOnlyCollection<DomainValidationError> Errors => _errors;
 
-        public object GetMetadataResponse()
+        public TEntity GetEntityFromMetadata<TEntity>()
+        where TEntity : IEntity
         {
             if (IsValid)
             {
-                return _metadata[DomainValidationMetadata.Response] ??
-                       throw new NullReferenceException("The response metadata has not been added to the validation result.");
+                return _metadata.GetEntity<TEntity>();
             }
 
             throw new InvalidOperationException("The validation result must be valid to return the response from the metadata.");
         }
 
-        public static DomainValidationResult Failure(string propertyName, string errorMessage)
+        public void AddEntityToMetadata<TEntity>(TEntity entity)
+        where TEntity : IEntity
+        {
+            _metadata.AddEntity(entity);
+        }
+
+        public static IDomainValidationResult Succeded<TEntity>(TEntity entity)
+        where TEntity : IEntity
+        {
+            var result = new DomainValidationResult();
+
+            result.AddEntityToMetadata(entity);
+
+            return result;
+        }
+
+        public static IDomainValidationResult Failure(string propertyName, string errorMessage)
         {
             var result = new DomainValidationResult();
 
@@ -41,7 +55,7 @@ namespace eDoxa.Seedwork.Domain
             return result;
         }
 
-        public static DomainValidationResult Failure(string errorMessage)
+        public static IDomainValidationResult Failure(string errorMessage)
         {
             var result = new DomainValidationResult();
 
@@ -58,12 +72,6 @@ namespace eDoxa.Seedwork.Domain
         public void AddDomainValidationError(string errorMessage)
         {
             _errors.Add(new DomainValidationError(errorMessage));
-        }
-
-        public void AddMetadataResponse<TResponse>(TResponse response)
-        where TResponse : class
-        {
-            _metadata.AddResponse(response);
         }
     }
 }
