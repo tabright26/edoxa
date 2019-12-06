@@ -61,6 +61,7 @@ services:
       - Endpoints__IdentityUrl=http://identity.api
     ports:
       - "5001:80"
+      - "9001:81"
 
   cashier.api:
     environment:

@@ -21,6 +21,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         bool TransactionExists(TransactionId transactionId);
 
+        bool TransactionExists(TransactionMetadata metadata);
+
         ITransaction FindTransaction(TransactionId transactionId);
+
+        ITransaction FindTransaction(TransactionMetadata metadata);
     }
 }

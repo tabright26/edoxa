@@ -33,6 +33,8 @@ using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 
+using Grpc.Core;
+
 using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
@@ -53,6 +55,7 @@ using Polly.Extensions.Http;
 
 using Refit;
 
+using static eDoxa.Grpc.Protos.PaymentService;
 using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Cashier.Web.Aggregator
@@ -163,6 +166,15 @@ namespace eDoxa.Cashier.Web.Aggregator
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+
+            services.AddGrpcClient<PaymentServiceClient>(
+                factoryOptions =>
+                {
+                    factoryOptions.Address = new Uri("http://payment.api:81");
+                    factoryOptions.ChannelOptionsActions.Add(options => options.Credentials = ChannelCredentials.Insecure);
+                });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Net;
 
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
@@ -14,6 +15,7 @@ using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 using Serilog;
 
@@ -57,6 +59,25 @@ namespace eDoxa.Payment.Api
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
+                .ConfigureKestrel(
+                    options =>
+                    {
+                        options.Listen(
+                            IPAddress.Any,
+                            80,
+                            listenOptions =>
+                            {
+                                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
+                            });
+
+                        options.Listen(
+                            IPAddress.Any,
+                            81,
+                            listenOptions =>
+                            {
+                                listenOptions.Protocols = HttpProtocols.Http2;
+                            });
+                    })
                 .UseCustomAutofac()
                 .UseCustomAzureKeyVault()
                 .UseCustomApplicationInsights()

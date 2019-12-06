@@ -32,9 +32,19 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return _account.TransactionExists(transactionId);
         }
 
+        public bool TransactionExists(TransactionMetadata metadata)
+        {
+            return _account.TransactionExists(metadata);
+        }
+
         public ITransaction FindTransaction(TransactionId transactionId)
         {
             return _account.FindTransaction(transactionId);
+        }
+
+        public ITransaction FindTransaction(TransactionMetadata metadata)
+        {
+            return _account.FindTransaction(metadata);
         }
 
         public Balance GetBalanceFor(Currency currency)

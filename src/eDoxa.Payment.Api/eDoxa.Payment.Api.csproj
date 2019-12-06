@@ -15,10 +15,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.9.1" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.23.2" />
+    <PackageReference Include="Grpc.Tools" Version="2.23.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eDoxa.Grpc\eDoxa.Grpc.csproj" />
     <ProjectReference Include="..\eDoxa.Payment.Infrastructure\eDoxa.Payment.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Payment.Requests\eDoxa.Payment.Requests.csproj" />
     <ProjectReference Include="..\eDoxa.Payment.Responses\eDoxa.Payment.Responses.csproj" />
@@ -28,6 +35,12 @@
 
   <ItemGroup>
     <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment.proto" GrpcServices="Server">
+      <Link>Protos\payment.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

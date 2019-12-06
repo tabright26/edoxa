@@ -17,6 +17,7 @@ using eDoxa.Payment.Api.Areas.Stripe.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
+using eDoxa.Payment.Api.Services;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -119,6 +120,8 @@ namespace eDoxa.Payment.Api
                     });
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
+
+            services.AddGrpc(options => options.EnableDetailedErrors = true);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -143,6 +146,8 @@ namespace eDoxa.Payment.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<PaymentService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<PaymentAppSettings>(AppSettings.ApiResource);

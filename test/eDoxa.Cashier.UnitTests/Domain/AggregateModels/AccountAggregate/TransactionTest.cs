@@ -17,7 +17,7 @@ using FluentAssertions;
 
 using Xunit;
 
-namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.TransactionAggregate
+namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TransactionTest : UnitTest
     {
