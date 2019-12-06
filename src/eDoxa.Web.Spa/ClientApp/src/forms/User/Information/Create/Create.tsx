@@ -5,11 +5,60 @@ import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { CREATE_USER_INFORMATIONS_FORM } from "forms";
 import { compose } from "recompose";
-import { validate } from "./validate";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
 import { createUserInformations } from "store/root/user/information/actions";
 import { throwSubmissionError } from "utils/form/types";
+import {
+  personalInfoNameRegex,
+  personalInfoYearRegex,
+  personalInfoMonthRegex,
+  personalInfoDayRegex,
+  PERSONALINFO_FIRSTNAME_REQUIRED,
+  PERSONALINFO_FIRSTNAME_INVALID,
+  PERSONALINFO_LASTNAME_REQUIRED,
+  PERSONALINFO_LASTNAME_INVALID,
+  PERSONALINFO_YEAR_REQUIRED,
+  PERSONALINFO_YEAR_INVALID,
+  PERSONALINFO_MONTH_REQUIRED,
+  PERSONALINFO_MONTH_INVALID,
+  PERSONALINFO_DAY_REQUIRED,
+  PERSONALINFO_DAY_INVALID,
+  PERSONALINFO_GENDER_REQUIRED
+} from "validation";
+
+const validate = values => {
+  const errors: any = {};
+  if (!values.firstName) {
+    errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
+  } else if (!personalInfoNameRegex.test(values.firstName)) {
+    errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
+  }
+  if (!values.lastName) {
+    errors.lastName = PERSONALINFO_LASTNAME_REQUIRED;
+  } else if (!personalInfoNameRegex.test(values.lastName)) {
+    errors.lastName = PERSONALINFO_LASTNAME_INVALID;
+  }
+  if (!values.year) {
+    errors.year = PERSONALINFO_YEAR_REQUIRED;
+  } else if (!personalInfoYearRegex.test(values.year)) {
+    errors.year = PERSONALINFO_YEAR_INVALID;
+  }
+  if (!values.month) {
+    errors.month = PERSONALINFO_MONTH_REQUIRED;
+  } else if (!personalInfoMonthRegex.test(values.month)) {
+    errors.month = PERSONALINFO_MONTH_INVALID;
+  }
+  if (!values.day) {
+    errors.day = PERSONALINFO_DAY_REQUIRED;
+  } else if (!personalInfoDayRegex.test(values.day)) {
+    errors.day = PERSONALINFO_DAY_INVALID;
+  }
+  if (!values.gender) {
+    errors.gender = PERSONALINFO_GENDER_REQUIRED;
+  }
+  return errors;
+};
 
 async function submit(values, dispatch) {
   try {
@@ -77,8 +126,6 @@ const CreateUserInformationsForm: FunctionComponent<any> = ({
           </Field>
         </FormGroup>
       </dd>
-      <dd className="col-sm-6 mb-0">{""}</dd>
-      <dd className="col-sm-3 mb-0">{""}</dd>
       <dd className="col-sm-9 mb-0">
         <Button.Save />
       </dd>

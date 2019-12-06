@@ -5,7 +5,6 @@ import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_PHONE_FORM } from "forms";
 import { compose } from "recompose";
-import { validate } from "./validate";
 import FormValidation from "components/Shared/Form/Validation";
 import { updateUserPhone } from "store/root/user/phone/actions";
 import { throwSubmissionError } from "utils/form/types";
@@ -49,8 +48,7 @@ const UpdateUserPhoneForm: FunctionComponent<any> = ({
 
 const enhance = compose<any, any>(
   reduxForm<any, { handleCancel: () => any }, string>({
-    form: UPDATE_USER_PHONE_FORM,
-    validate
+    form: UPDATE_USER_PHONE_FORM
   })
 );
 

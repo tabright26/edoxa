@@ -40,6 +40,7 @@
     "codemirror": "^5.49.2",
     "connected-react-router": "^6.6.0",
     "core-js": "^3.4.1",
+    "enzyme-to-json": "^3.4.3",
     "faker": "^4.1.0",
     "flag-icon-css": "^3.4.5",
     "font-awesome": "^4.7.0",

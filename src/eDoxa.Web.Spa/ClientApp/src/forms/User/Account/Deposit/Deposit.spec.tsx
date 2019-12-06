@@ -1,22 +1,52 @@
 import React from "react";
-import Deposit from "./Deposit";
-import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { Bundle } from "types";
+import { ReactWrapper } from "enzyme";
+import Deposit from "./Deposit";
+import { configureStore } from "store";
+import { MONEY } from "types";
 
-it("renders correctly", () => {
-  const bundles: Bundle[] = [];
-  const store: any = {
-    getState: () => {},
-    dispatch: action => {},
-    subscribe: () => {}
-  };
-  const tree = renderer
-    .create(
-      <Provider store={store}>
-        <Deposit bundles={bundles} />
-      </Provider>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+const shallow = global["shallow"];
+const mount = global["mount"];
+
+const initialState: any = {};
+const store = configureStore(initialState);
+
+const createWrapper = (): ReactWrapper | any => {
+  return mount(
+    <Provider store={store}>
+      <Deposit currency={MONEY} bundles={[{}, {}, {}]} />
+    </Provider>
+  );
+};
+
+describe("<UserAccountDepositForm />", () => {
+  it("should match the snapshot", () => {
+    const shallowWrapper = shallow(<Deposit />);
+    expect(shallowWrapper).toMatchSnapshot();
+  });
+
+  describe("defines account deposit form fields", () => {
+    it("renders bundle field", () => {
+      const wrapper = createWrapper();
+      const field = wrapper.findFieldByName("bundle");
+
+      expect(field.prop("type")).toBe("radio");
+    });
+
+    it("renders save button", () => {
+      const wrapper = createWrapper();
+      const saveButton = wrapper.findSaveButton();
+
+      expect(saveButton.prop("type")).toBe("submit");
+      expect(saveButton.text()).toBe("Save");
+    });
+
+    it("renders cancel button", () => {
+      const wrapper = createWrapper();
+      const cancelButton = wrapper.findCancelButton();
+
+      expect(cancelButton.prop("type")).toBe("button");
+      expect(cancelButton.text()).toBe("Cancel");
+    });
+  });
 });

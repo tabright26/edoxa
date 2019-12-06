@@ -10,11 +10,33 @@ import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { RESET_USER_PASSWORD_FORM } from "forms";
-import { validate } from "./validate";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
 import { resetUserPassword } from "store/root/user/password/actions";
+import {
+  emailRegex,
+  passwordRegex,
+  EMAIL_REQUIRED,
+  EMAIL_INVALID,
+  PASSWORD_REQUIRED,
+  PASSWORD_INVALID
+} from "validation";
+
+const validate = values => {
+  const errors: any = {};
+  if (!values.email) {
+    errors.email = EMAIL_REQUIRED;
+  } else if (!emailRegex.test(values.email)) {
+    errors.email = EMAIL_INVALID;
+  }
+  if (!values.password) {
+    errors.password = PASSWORD_REQUIRED;
+  } else if (!passwordRegex.test(values.password)) {
+    errors.password = PASSWORD_INVALID;
+  }
+  return errors;
+};
 
 async function submit(values, dispatch) {
   try {

@@ -1,22 +1,83 @@
 import React from "react";
-import Update from "./Update";
-import renderer from "react-test-renderer";
-import moment from "moment";
 import { Provider } from "react-redux";
+import { ReactWrapper } from "enzyme";
+import Update from "./Update";
+import { configureStore } from "store";
+import Input from "components/Shared/Input";
+import {
+  PERSONALINFO_FIRSTNAME_REQUIRED,
+  PERSONALINFO_FIRSTNAME_INVALID
+} from "validation";
 
-it("renders correctly", () => {
-  const informations = {
-    firstName: "Boby",
-    lastName: "Bob",
-    dob: moment(new Date(2000, 2, 1)).unix(),
-    gender: "Male"
-  };
-  const tree = renderer
-    .create(
-      <Provider store={{ getState: () => {}, dispatch: action => {}, subscribe: () => {} }}>
-        <Update initialValues={informations} />
-      </Provider>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+const shallow = global["shallow"];
+const mount = global["mount"];
+
+const initialState: any = {};
+const store = configureStore(initialState);
+
+const createWrapper = (): ReactWrapper | any => {
+  return mount(
+    <Provider store={store}>
+      <Update />
+    </Provider>
+  );
+};
+
+describe("<UserInformationUpdateForm />", () => {
+  it("should match the snapshot", () => {
+    const shallowWrapper = shallow(<Update />);
+    expect(shallowWrapper).toMatchSnapshot();
+  });
+
+  describe("defines information update form fields", () => {
+    it("renders firstName field", () => {
+      const wrapper = createWrapper();
+      const field = wrapper.findFieldByName("firstName");
+
+      expect(field.prop("label")).toBe("Enter your first name");
+      expect(field.prop("component")).toBe(Input.Text);
+    });
+
+    it("renders save button", () => {
+      const wrapper = createWrapper();
+      const saveButton = wrapper.findSaveButton();
+
+      expect(saveButton.prop("type")).toBe("submit");
+      expect(saveButton.text()).toBe("Save");
+    });
+
+    it("renders cancel button", () => {
+      const wrapper = createWrapper();
+      const cancelButton = wrapper.findCancelButton();
+
+      expect(cancelButton.prop("type")).toBe("button");
+      expect(cancelButton.text()).toBe("Cancel");
+    });
+  });
+
+  describe("form validation", () => {
+    describe("firstName validation", () => {
+      it("shows error when firstName is set to blank", () => {
+        const wrapper = createWrapper();
+        const input = wrapper.findInputByName("firstName");
+        input.simulate("blur");
+
+        const errorPresent = wrapper.findFormFeedback(
+          PERSONALINFO_FIRSTNAME_REQUIRED
+        );
+        expect(errorPresent).toBeTruthy();
+      });
+
+      it("shows error when firstName is set to invalid", () => {
+        const wrapper = createWrapper();
+        const input = wrapper.findInputByName("firstName");
+        input.simulate("change", { target: { value: "_123" } });
+
+        const errorPresent = wrapper.findFormFeedback(
+          PERSONALINFO_FIRSTNAME_INVALID
+        );
+        expect(errorPresent).toBeTruthy();
+      });
+    });
+  });
 });

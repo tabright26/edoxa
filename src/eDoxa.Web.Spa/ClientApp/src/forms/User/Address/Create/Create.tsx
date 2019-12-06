@@ -5,11 +5,56 @@ import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import FormField from "components/Shared/Form/Field";
 import { CREATE_USER_ADDRESS_FORM } from "forms";
-import { validate } from "./validate";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { createUserAddress } from "store/root/user/addressBook/actions";
 import { throwSubmissionError } from "utils/form/types";
+import {
+  countryRegex,
+  line1Regex,
+  line2Regex,
+  cityRegex,
+  stateRegex,
+  postalRegex,
+  COUNTRY_REQUIRED,
+  COUNTRY_INVALID,
+  LINE1_REQUIRED,
+  LINE1_INVALID,
+  LINE2_INVALID,
+  CITY_REQUIRED,
+  CITY_INVALID,
+  STATE_INVALID,
+  POSTAL_INVALID
+} from "validation";
+
+const validate = values => {
+  const errors: any = {};
+  if (!values.country) {
+    errors.country = COUNTRY_REQUIRED;
+  } else if (!countryRegex.test(values.country)) {
+    errors.country = COUNTRY_INVALID;
+  }
+  if (!values.line1) {
+    errors.line1 = LINE1_REQUIRED;
+  } else if (!line1Regex.test(values.line1)) {
+    errors.line1 = LINE1_INVALID;
+  }
+  if (values.line2 && !line2Regex.test(values.line2)) {
+    errors.line2 = LINE2_INVALID;
+  }
+  if (!values.city) {
+    errors.city = CITY_REQUIRED;
+  } else if (!cityRegex.test(values.city)) {
+    errors.city = CITY_INVALID;
+  }
+  if (values.state && !stateRegex.test(values.state)) {
+    errors.state = STATE_INVALID;
+  }
+  if (values.postalCode && !postalRegex.test(values.postalCode)) {
+    errors.postalCode = POSTAL_INVALID;
+  }
+  return errors;
+};
 
 async function submit(values, dispatch) {
   try {

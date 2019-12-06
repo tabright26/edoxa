@@ -1,22 +1,52 @@
 import React from "react";
-import Withdrawal from "./Withdrawal";
-import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { Bundle } from "types";
+import { ReactWrapper } from "enzyme";
+import Withdrawal from "./Withdrawal";
+import { configureStore } from "store";
+import { MONEY } from "types";
 
-it("renders correctly", () => {
-  const bundles: Bundle[] = [];
-  const store: any = {
-    getState: () => {},
-    dispatch: action => {},
-    subscribe: () => {}
-  };
-  const tree = renderer
-    .create(
-      <Provider store={store}>
-        <Withdrawal bundles={bundles} />
-      </Provider>
-    )
-    .toJSON();
-  expect(tree).toMatchSnapshot();
+const shallow = global["shallow"];
+const mount = global["mount"];
+
+const initialState: any = {};
+const store = configureStore(initialState);
+
+const createWrapper = (): ReactWrapper | any => {
+  return mount(
+    <Provider store={store}>
+      <Withdrawal currency={MONEY} bundles={[{}, {}, {}]} />
+    </Provider>
+  );
+};
+
+describe("<UserAccountWithdrawalForm />", () => {
+  it("should match the snapshot", () => {
+    const shallowWrapper = shallow(<Withdrawal />);
+    expect(shallowWrapper).toMatchSnapshot();
+  });
+
+  describe("defines account withdrawal form fields", () => {
+    it("renders bundle field", () => {
+      const wrapper = createWrapper();
+      const field = wrapper.findFieldByName("bundle");
+
+      expect(field.prop("type")).toBe("radio");
+    });
+
+    it("renders save button", () => {
+      const wrapper = createWrapper();
+      const saveButton = wrapper.findSaveButton();
+
+      expect(saveButton.prop("type")).toBe("submit");
+      expect(saveButton.text()).toBe("Save");
+    });
+
+    it("renders cancel button", () => {
+      const wrapper = createWrapper();
+      const cancelButton = wrapper.findCancelButton();
+
+      expect(cancelButton.prop("type")).toBe("button");
+      expect(cancelButton.text()).toBe("Cancel");
+    });
+  });
 });

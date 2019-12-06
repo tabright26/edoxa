@@ -4,11 +4,22 @@ import { reduxForm, Field } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { UPDATE_USER_DOXATAG_FORM } from "forms";
-import { validate } from "./validate";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { updateUserDoxatag } from "store/root/user/doxatagHistory/actions";
 import { throwSubmissionError } from "utils/form/types";
+import { DOXATAG_REGEX, DOXATAG_REQUIRED, DOXATAG_INVALID } from "validation";
+
+const validate = values => {
+  var nameRegExp = new RegExp(DOXATAG_REGEX);
+  const errors: any = {};
+  if (!values.name) {
+    errors.name = DOXATAG_REQUIRED;
+  } else if (!nameRegExp.test(values.name)) {
+    errors.name = DOXATAG_INVALID;
+  }
+  return errors;
+};
 
 async function submit(values, dispatch) {
   try {

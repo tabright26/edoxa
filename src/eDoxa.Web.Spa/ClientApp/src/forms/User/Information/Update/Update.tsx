@@ -4,12 +4,26 @@ import { Field, reduxForm, FormSection } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_INFORMATIONS_FORM } from "forms";
-import { validate } from "./validate";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
 import { updateUserInformations } from "store/root/user/information/actions";
 import { throwSubmissionError } from "utils/form/types";
+import {
+  PERSONALINFO_FIRSTNAME_REQUIRED,
+  PERSONALINFO_FIRSTNAME_INVALID,
+  personalInfoNameRegex
+} from "validation";
+
+const validate = values => {
+  const errors: any = {};
+  if (!values.firstName) {
+    errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
+  } else if (!personalInfoNameRegex.test(values.firstName)) {
+    errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
+  }
+  return errors;
+};
 
 async function submit(values, dispatch) {
   try {
@@ -48,7 +62,7 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({
           <dd className="col-sm-4 mb-0">
             <Field
               name="lastName"
-              label="Enter your first name"
+              label="Last Name"
               component={Input.Text}
               disabled
             />

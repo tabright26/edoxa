@@ -4,11 +4,21 @@ import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { FORGOT_USER_PASSWORD_FORM } from "forms";
-import { validate } from "./validate";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
 import { forgotUserPassword } from "store/root/user/password/actions";
+import { EMAIL_REQUIRED, EMAIL_INVALID, emailRegex } from "validation";
+
+const validate = values => {
+  const errors: any = {};
+  if (!values.email) {
+    errors.email = EMAIL_REQUIRED;
+  } else if (!emailRegex.test(values.email)) {
+    errors.email = EMAIL_INVALID;
+  }
+  return errors;
+};
 
 async function submit(values, dispatch) {
   try {
