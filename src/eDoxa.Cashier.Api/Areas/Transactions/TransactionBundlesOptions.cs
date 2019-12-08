@@ -8,15 +8,15 @@
 
 using System.Collections.Generic;
 
-namespace eDoxa.Cashier.Api.Areas.Bundles
+namespace eDoxa.Cashier.Api.Areas.Transactions
 {
-    public sealed class BundlesOptions
+    public sealed class TransactionBundlesOptions
     {
-        public IDictionary<string, HashSet<BundleOptions>> Deposit { get; set; }
+        public IDictionary<string, HashSet<TransactionBundleOptions>> Deposit { get; set; }
 
-        public IDictionary<string, HashSet<BundleOptions>> Withdrawal { get; set; }
+        public IDictionary<string, HashSet<TransactionBundleOptions>> Withdrawal { get; set; }
 
-        public sealed class BundleOptions
+        public sealed class TransactionBundleOptions
         {
             public decimal Amount { get; set; }
 
