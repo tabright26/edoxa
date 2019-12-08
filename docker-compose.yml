@@ -44,21 +44,6 @@ services:
       - payment.api
       - cashier.api
 
-  cashier.web.gateway:
-    image: ${ACR_REGISTRY:-edoxa}/dev/cashier.web.gateway:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Gateway/Dockerfile
-    depends_on:
-      - seq
-      - identity.api
-      - cashier.api
-      - payment.api
-      - notifications.api
-      - games.api
-      - challenges.api
-      - clans.api
-
   payment.api:
     image: ${ACR_REGISTRY:-edoxa}/dev/payment.api:${ACR_TAG:-latest}
     build:
@@ -139,20 +124,11 @@ services:
       - challenges.api
       - clans.api
 
+  cashier.web.gateway:
+    image: envoyproxy/envoy:v1.11.1
+
   challenges.web.gateway:
-    image: ${ACR_REGISTRY:-edoxa}/dev/challenges.web.gateway:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Gateway/Dockerfile
-    depends_on:
-      - seq
-      - identity.api
-      - cashier.api
-      - payment.api
-      - notifications.api
-      - games.api
-      - challenges.api
-      - clans.api
+    image: envoyproxy/envoy:v1.11.1
 
   web.spa:
     image: ${ACR_REGISTRY:-edoxa}/dev/web.spa:${ACR_TAG:-latest}

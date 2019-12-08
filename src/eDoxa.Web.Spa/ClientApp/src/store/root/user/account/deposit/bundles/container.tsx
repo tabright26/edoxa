@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadUserAccountDepositBundlesFor } from "./actions";
+import { loadTransactionBundles } from "store/actions/cashier";
+import { TRANSACTION_TYPE_DEPOSIT } from "types";
 
 export const withUserAccountDepositBundles = (
   HighOrderComponent: FunctionComponent<any>
@@ -25,7 +26,9 @@ export const withUserAccountDepositBundles = (
   const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     return {
       loadUserAccountDepositBundles: () =>
-        dispatch(loadUserAccountDepositBundlesFor(ownProps.currency))
+        dispatch(
+          loadTransactionBundles(TRANSACTION_TYPE_DEPOSIT, ownProps.currency)
+        )
     };
   };
 

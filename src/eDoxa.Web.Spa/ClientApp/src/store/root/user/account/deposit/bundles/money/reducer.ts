@@ -4,7 +4,7 @@ import {
   LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_FAIL,
   UserAccountDepositBundlesState,
   UserAccountDepositBundlesActions
-} from "../types";
+} from "store/actions/cashier";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 

@@ -8,7 +8,7 @@ describe("cashier actions", () => {
     const expectedCurrency = MONEY;
     const expectedType = [LOAD_USER_MONEY_ACCOUNT_BALANCE, LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS, LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/cashier/api/account/balance/${expectedCurrency}`;
+    const expectedUrl = `/cashier/api/balance/${expectedCurrency}`;
 
     const actionCreator = loadUserAccountBalance(expectedCurrency);
 
@@ -21,7 +21,7 @@ describe("cashier actions", () => {
     const expectedCurrency = TOKEN;
     const expectedType = [LOAD_USER_TOKEN_ACCOUNT_BALANCE, LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS, LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/cashier/api/account/balance/${expectedCurrency}`;
+    const expectedUrl = `/cashier/api/balance/${expectedCurrency}`;
 
     const actionCreator = loadUserAccountBalance(expectedCurrency);
 

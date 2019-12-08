@@ -5,7 +5,7 @@ describe("challenge actions", () => {
   it("should create an action to get all challenges", () => {
     const expectedType = [LOAD_CHALLENGES, LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = "/challenge/api/challenges";
+    const expectedUrl = "/api/challenges";
 
     const actionCreator = loadChallenges();
 
@@ -19,7 +19,7 @@ describe("challenge actions", () => {
 
     const expectedType = [LOAD_CHALLENGE, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL];
     const expectedMethod = "GET";
-    const expectedUrl = `/challenge/api/challenges/${challengeId}`;
+    const expectedUrl = `/api/challenges/${challengeId}`;
 
     const actionCreator = loadChallenge(challengeId);
 

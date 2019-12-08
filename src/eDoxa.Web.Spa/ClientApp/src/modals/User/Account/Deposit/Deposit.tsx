@@ -5,11 +5,20 @@ import { DEPOSIT_MODAL } from "modals";
 import UserAccountForm from "forms/User/Account/Deposit";
 import { compose } from "recompose";
 
-const DepositModal: FunctionComponent<any> = ({ show, handleHide, bundles, currency }) => (
+const DepositModal: FunctionComponent<any> = ({
+  show,
+  handleHide,
+  bundles,
+  currency
+}) => (
   <Modal size="lg" isOpen={show} toggle={handleHide}>
     <ModalHeader toggle={handleHide}>DEPOSIT (MONEY)</ModalHeader>
     <ModalBody>
-      <UserAccountForm currency={currency} bundles={bundles} handleCancel={handleHide} />
+      <UserAccountForm
+        currency={currency}
+        bundles={bundles}
+        handleCancel={handleHide}
+      />
     </ModalBody>
   </Modal>
 );

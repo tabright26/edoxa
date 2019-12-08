@@ -1,6 +1,6 @@
 import { combineEpics } from "redux-observable";
 import { ofType } from "redux-observable";
-import { filter, mapTo } from "rxjs/operators";
+import { mapTo } from "rxjs/operators";
 
 import { throwSubmissionError } from "utils/form/types";
 

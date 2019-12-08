@@ -48,6 +48,7 @@ services:
       - Swagger__Endpoints__CashierWebAggregatorUrl=http://${HOST:-localhost}:5302
     ports:
       - "5000:80"
+      - "9000:81"
 
   payment.api:
     environment:
@@ -76,6 +77,7 @@ services:
       - Endpoints__PaymentUrl=http://payment.api
     ports:
       - "5002:80"
+      - "9002:81"
 
   cashier.web.aggregator:
     environment:
@@ -91,26 +93,6 @@ services:
     ports:
       - "5302:80"
 
-  cashier.web.gateway:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__PaymentUrl=http://payment.api
-      - Endpoints__NotificationsUrl=http://notifications.api
-      - Endpoints__ChallengesUrl=http://challenges.api
-      - Endpoints__GamesUrl=http://games.api
-      - Endpoints__ClansUrl=http://clans.api
-      - Endpoints__ChallengesWebAggregatorUrl=http://challenges.web.aggregator
-      - Endpoints__CashierWebAggregatorUrl=http://cashier.web.aggregator
-    ports:
-      - "5202:80"
-    volumes:
-      - ./src/eDoxa.Gateways/cashier.web.gateway.json:/app/Configuration/ocelot.json
-
   notifications.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
@@ -124,6 +106,7 @@ services:
       - Endpoints__IdentityUrl=http://identity.api    
     ports:
       - "5011:80"
+      - "9011:81"
 
   challenges.api:
     environment:
@@ -140,6 +123,7 @@ services:
       - Endpoints__GamesUrl=http://games.api
     ports:
       - "5003:80"
+      - "9003:81"
 
   games.api:
     environment:
@@ -155,6 +139,7 @@ services:
       - Endpoints__IdentityUrl=http://identity.api
     ports:
       - "5005:80"
+      - "9005:81"
 
   clans.api:
     environment:
@@ -169,6 +154,7 @@ services:
       - Endpoints__IdentityUrl=http://identity.api
     ports:
       - "5010:80"
+      - "9010:81"
 
   challenges.web.jobs:
     environment:
@@ -200,25 +186,19 @@ services:
     ports:
       - "5303:80"
 
-  challenges.web.gateway:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__PaymentUrl=http://payment.api
-      - Endpoints__NotificationsUrl=http://notifications.api
-      - Endpoints__ChallengesUrl=http://challenges.api
-      - Endpoints__GamesUrl=http://games.api
-      - Endpoints__ClansUrl=http://clans.api
-      - Endpoints__ChallengesWebAggregatorUrl=http://challenges.web.aggregator
-      - Endpoints__CashierWebAggregatorUrl=http://cashier.web.aggregator
-    ports:
-      - "5203:80"
+  cashier.web.gateway:
     volumes:
-      - ./src/eDoxa.Gateways/challenges.web.gateway.json:/app/Configuration/ocelot.json
+      - ./src/eDoxa.Gateways/cashier.web.gateway.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "5202:10000"
+      - "15202:9901"
+
+  challenges.web.gateway:
+    volumes:
+      - ./src/eDoxa.Gateways/challenges.web.gateway.yaml:/etc/envoy/envoy.yaml
+    ports:
+      - "5203:10000"
+      - "15203:9901"
 
   web.spa:
     environment:
@@ -272,12 +252,10 @@ services:
       - HealthChecks__Endpoints__7__Uri=http://challenges.api/health
       - HealthChecks__Endpoints__8__Name=Challenges Web Aggregator
       - HealthChecks__Endpoints__8__Uri=http://challenges.web.aggregator/health
-      - HealthChecks__Endpoints__9__Name=Challenges Web Gateway
-      - HealthChecks__Endpoints__9__Uri=http://challenges.web.gateway/health
-      - HealthChecks__Endpoints__10__Name=Challenges Web Jobs
-      - HealthChecks__Endpoints__10__Uri=http://challenges.web.jobs/health
-      - HealthChecks__Endpoints__11__Name=Web Spa
-      - HealthChecks__Endpoints__11__Uri=http://web.spa/health
+      - HealthChecks__Endpoints__9__Name=Challenges Web Jobs
+      - HealthChecks__Endpoints__9__Uri=http://challenges.web.jobs/health
+      - HealthChecks__Endpoints__10__Name=Web Spa
+      - HealthChecks__Endpoints__10__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:
