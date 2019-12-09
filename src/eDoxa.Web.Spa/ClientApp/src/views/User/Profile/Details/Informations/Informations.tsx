@@ -3,7 +3,7 @@ import Moment from "react-moment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { withtUserInformations } from "store/root/user/information/container";
-import UserInformationForm from "forms/User/Information";
+import UserInformationForm from "components/User/Information/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";
@@ -12,7 +12,6 @@ const Informations: FunctionComponent<any> = ({
   className,
   informations: { data, loading, error }
 }) => {
-  console.log(data);
   const [buttonDisabled, setbuttonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>

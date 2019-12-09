@@ -1,4 +1,6 @@
-export const DOXATAG_REGEX = "^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$";
+const DOXATAG_REGEX = "^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$";
+export const doxatagRegex = new RegExp(DOXATAG_REGEX);
+
 export const DOXATAG_REQUIRED = "Doxatag is required";
 export const DOXATAG_INVALID =
   "Invalid format. Must be 2-16 characters long, letters and underscores only";
@@ -84,3 +86,5 @@ export const CITY_INVALID = "Invalid city";
 export const STATE_INVALID = "Invalid state";
 
 export const POSTAL_INVALID = "Invalid postal code";
+
+//-------------------------------------------------------------------------------

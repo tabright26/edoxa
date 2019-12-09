@@ -2,7 +2,7 @@ import React, { useState, FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { withUserDoxatag } from "store/root/user/doxatagHistory/container";
-import DoxatagForm from "forms/User/Doxatag";
+import DoxatagForm from "components/User/Doxatag/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";
