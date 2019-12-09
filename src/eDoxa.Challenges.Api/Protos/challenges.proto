@@ -1,0 +1,114 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Challenges.Grpc.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+service ChallengeService {
+  rpc FetchChallenges(FetchChallengesRequest) returns (FetchChallengesResponse);
+  rpc FindChallenge(FindChallengeRequest) returns (FindChallengeResponse);
+  rpc CreateChallenge(CreateChallengeRequest) returns (CreateChallengeResponse);
+  rpc SynchronizeChallenge(SynchronizeChallengeRequest) returns (SynchronizeChallengeResponse);
+  rpc RegisterChallengeParticipant(RegisterChallengeParticipantRequest) returns (RegisterChallengeParticipantResponse);
+}
+
+message FetchChallengesRequest {
+  Game game = 1;
+  ChallengeType challengeType = 2;
+}
+
+message FetchChallengesResponse {
+  repeated Challenge challenges = 1;
+}
+
+message FindChallengeRequest {
+  string challengeId = 1;
+}
+
+message FindChallengeResponse {
+  Challenge challenge = 1;
+}
+
+message CreateChallengeRequest {
+  string id = 1;
+  string name = 2;
+  Game game = 3;
+  ChallengeType type = 4;
+  int32 bestOf = 5;
+  int32 entries = 6;
+  int32 duration = 7;
+  map<string, float> scoring = 8;
+}
+
+message CreateChallengeResponse {
+  Challenge challenge = 1;
+}
+
+message SynchronizeChallengeRequest {
+}
+
+message SynchronizeChallengeResponse {
+  Challenge challenge = 1;
+}
+
+message RegisterChallengeParticipantRequest {
+}
+
+message RegisterChallengeParticipantResponse {
+  Participant participant = 1;
+}
+
+message Challenge {
+  string id = 1;
+  string name = 2;
+  Game game = 3;
+  ChallengeType type = 4;
+  ChallengeState state = 5;
+  int32 bestOf = 6;
+  int32 entries = 7;
+  google.protobuf.Timestamp synchronizedAt = 8;
+  map<string, float> scoring = 9;
+  Timeline timeline = 10;
+  repeated Participant participants = 11;
+
+  message Timeline {
+    google.protobuf.Timestamp createdAt = 1;
+	google.protobuf.Timestamp startedAt = 2;
+	google.protobuf.Timestamp endedAt = 3;
+	google.protobuf.Timestamp closedAt = 4;
+  }
+}
+
+message Participant {
+  string id = 1;
+  string userId = 2;
+  string challengeId = 3;
+  double score = 4;
+  repeated Match matches = 5;
+
+  message Match {
+	string id = 1;
+	string participantId = 2;
+	string score = 3;
+	repeated Stat stats = 4;
+
+	message Stat {
+	  string name = 1;
+	  double value = 2;
+	  float weighting = 3;
+	  double score = 4;
+	}
+  }
+}
+
+enum ChallengeState {
+  CHALLENGE_STATE_NONE = 0;
+}
+
+enum ChallengeType {
+  CHALLENGE_TYPE_NONE = 0;
+}
+
+enum Game {
+  GAME_NONE = 0;
+}

@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.ErrorDescribers;
+using eDoxa.Identity.Api.Application.ErrorDescribers;
 
 using Xunit;
 

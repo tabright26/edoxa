@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Services;
+using eDoxa.Games.Api.Application.Services;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;
-using eDoxa.Games.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;

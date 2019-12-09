@@ -6,8 +6,8 @@
 
 using Autofac;
 
+using eDoxa.Challenges.Api.Application.Services;
 using eDoxa.Challenges.Api.Infrastructure.Queries;
-using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;

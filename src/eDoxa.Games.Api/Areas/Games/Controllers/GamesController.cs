@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Infrastructure;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 

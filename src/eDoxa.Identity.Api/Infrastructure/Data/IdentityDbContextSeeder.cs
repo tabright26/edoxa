@@ -7,7 +7,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Security;
 

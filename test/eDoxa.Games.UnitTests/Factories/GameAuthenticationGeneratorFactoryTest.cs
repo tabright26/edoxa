@@ -7,8 +7,8 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Games.Abstractions.Adapters;
-using eDoxa.Games.Factories;
+using eDoxa.Games.Api.Application.Factories;
+using eDoxa.Games.Domain.Adapters;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;

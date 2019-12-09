@@ -1,4 +1,4 @@
-﻿@using eDoxa.Identity.Api.Services
+﻿@using eDoxa.Identity.Api.Application.Services
 @inject ISignInService ISignInService
 @{
     var hasExternalLogins = (await ISignInService.GetExternalAuthenticationSchemesAsync()).Any();

@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;

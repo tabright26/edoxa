@@ -6,23 +6,23 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos;
+using eDoxa.Payment.Grpc.Protos;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using static eDoxa.Grpc.Protos.PaymentService;
 
 namespace eDoxa.Cashier.Web.Aggregator.Controllers
 {
+    [Authorize]
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/balance")]
     [ApiExplorerSettings(GroupName = "Balance")]
     public sealed class TransactionControllers : ControllerBase
     {
-        private readonly PaymentServiceClient _paymentServiceClient;
+        private readonly PaymentService.PaymentServiceClient _paymentServiceClient;
 
-        public TransactionControllers(PaymentServiceClient paymentServiceClient)
+        public TransactionControllers(PaymentService.PaymentServiceClient paymentServiceClient)
         {
             _paymentServiceClient = paymentServiceClient;
         }

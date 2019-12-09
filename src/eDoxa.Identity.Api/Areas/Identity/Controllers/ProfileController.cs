@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Requests;
 using eDoxa.Identity.Responses;
 using eDoxa.Seedwork.Domain.Misc;

@@ -6,15 +6,15 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapters;
-using eDoxa.Games.Abstractions.Factories;
+using eDoxa.Games.Api.Application.Services;
+using eDoxa.Games.Domain.Adapters;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
+using eDoxa.Games.Domain.Factories;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
 using eDoxa.Games.LeagueOfLegends.Requests;
-using eDoxa.Games.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;

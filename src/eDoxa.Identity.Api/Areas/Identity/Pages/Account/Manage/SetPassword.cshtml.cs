@@ -9,7 +9,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Api.Application.Services;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

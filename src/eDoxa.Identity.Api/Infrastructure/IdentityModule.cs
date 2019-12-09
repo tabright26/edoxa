@@ -6,7 +6,7 @@
 
 using Autofac;
 
-using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.Infrastructure.Repositories;
 

@@ -1,0 +1,38 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Games.Grpc.Protos";
+
+import "google/protobuf/timestamp.proto";
+
+service ChallengeService {
+  rpc FetchChallengeScoring(FetchChallengeScoringRequest) returns (FetchChallengeScoringResponse);
+  rpc FetchChallengeMatches(FetchChallengeMatchesRequest) returns (FetchChallengeMatchesResponse);
+}
+
+message FetchChallengeScoringRequest {
+  ChallengeType challengeType = 1;
+}
+
+message FetchChallengeScoringResponse {
+  map<string, float> scoring = 1;
+}
+
+message FetchChallengeMatchesRequest {
+  string gamePlayerId = 1;
+  google.protobuf.Timestamp startedAt = 2;
+  google.protobuf.Timestamp endedAt = 3;
+}
+
+message FetchChallengeMatchesResponse {
+  repeated Match matches = 1;
+  message Match {
+    string gameUuid = 1;
+	google.protobuf.Timestamp timestamp = 2;
+	map<string, double> stats = 3;
+	map<string, string> metadata = 4;
+  }
+}
+
+enum ChallengeType {
+  CHALLENGE_TYPE_NONE = 0;
+}

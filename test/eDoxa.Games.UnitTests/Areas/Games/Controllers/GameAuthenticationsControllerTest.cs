@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Areas.Games.Controllers;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;

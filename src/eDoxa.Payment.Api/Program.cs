@@ -5,17 +5,16 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Net;
 
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
+using eDoxa.Seedwork.Security.Kestrel.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 using Serilog;
 
@@ -62,21 +61,8 @@ namespace eDoxa.Payment.Api
                 .ConfigureKestrel(
                     options =>
                     {
-                        options.Listen(
-                            IPAddress.Any,
-                            80,
-                            listenOptions =>
-                            {
-                                listenOptions.Protocols = HttpProtocols.Http1AndHttp2;
-                            });
-
-                        options.Listen(
-                            IPAddress.Any,
-                            81,
-                            listenOptions =>
-                            {
-                                listenOptions.Protocols = HttpProtocols.Http2;
-                            });
+                        options.ListenRest();
+                        options.ListenGrpc();
                     })
                 .UseCustomAutofac()
                 .UseCustomAzureKeyVault()

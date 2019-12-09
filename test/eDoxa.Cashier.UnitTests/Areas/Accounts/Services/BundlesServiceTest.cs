@@ -7,8 +7,8 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-using eDoxa.Cashier.Api.Areas.Bundles;
-using eDoxa.Cashier.Api.Services;
+using eDoxa.Cashier.Api.Application.Services;
+using eDoxa.Cashier.Api.Areas.Transactions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
@@ -31,26 +31,26 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
         public void FetchDepositMoneyBundles_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var depositOptions = new HashSet<BundlesOptions.BundleOptions>
+            var depositOptions = new HashSet<TransactionBundlesOptions.TransactionBundleOptions>
             {
-                new BundlesOptions.BundleOptions
+                new TransactionBundlesOptions.TransactionBundleOptions
                 {
                     Amount = 20,
                     Price = 20
                 }
             };
 
-            var moneyDepositDictionary = new Dictionary<string, HashSet<BundlesOptions.BundleOptions>>
+            var moneyDepositDictionary = new Dictionary<string, HashSet<TransactionBundlesOptions.TransactionBundleOptions>>
             {
                 {"Money", depositOptions}
             };
 
-            var bundlesOptions = new BundlesOptions
+            var bundlesOptions = new TransactionBundlesOptions
             {
                 Deposit = moneyDepositDictionary
             };
 
-            var options = new OptionsWrapper<BundlesOptions>(bundlesOptions);
+            var options = new OptionsWrapper<TransactionBundlesOptions>(bundlesOptions);
 
             var service = new BundleService(options);
 
@@ -65,26 +65,26 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
         public void FetchDepositTokenBundles_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var depositOptions = new HashSet<BundlesOptions.BundleOptions>
+            var depositOptions = new HashSet<TransactionBundlesOptions.TransactionBundleOptions>
             {
-                new BundlesOptions.BundleOptions
+                new TransactionBundlesOptions.TransactionBundleOptions
                 {
                     Amount = 20,
                     Price = 20
                 }
             };
 
-            var moneyDepositDictionary = new Dictionary<string, HashSet<BundlesOptions.BundleOptions>>
+            var moneyDepositDictionary = new Dictionary<string, HashSet<TransactionBundlesOptions.TransactionBundleOptions>>
             {
                 {"Token", depositOptions}
             };
 
-            var bundlesOptions = new BundlesOptions
+            var bundlesOptions = new TransactionBundlesOptions
             {
                 Deposit = moneyDepositDictionary
             };
 
-            var options = new OptionsWrapper<BundlesOptions>(bundlesOptions);
+            var options = new OptionsWrapper<TransactionBundlesOptions>(bundlesOptions);
 
             var service = new BundleService(options);
 
@@ -99,26 +99,26 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Services
         public void FetchWithdrawalMoneyBundles_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var withdrawalOption = new HashSet<BundlesOptions.BundleOptions>
+            var withdrawalOption = new HashSet<TransactionBundlesOptions.TransactionBundleOptions>
             {
-                new BundlesOptions.BundleOptions
+                new TransactionBundlesOptions.TransactionBundleOptions
                 {
                     Amount = 20,
                     Price = 20
                 }
             };
 
-            var moneyWithdrawalDictionary = new Dictionary<string, HashSet<BundlesOptions.BundleOptions>>
+            var moneyWithdrawalDictionary = new Dictionary<string, HashSet<TransactionBundlesOptions.TransactionBundleOptions>>
             {
                 {"Money", withdrawalOption}
             };
 
-            var bundlesOptions = new BundlesOptions
+            var bundlesOptions = new TransactionBundlesOptions
             {
                 Withdrawal = moneyWithdrawalDictionary
             };
 
-            var options = new OptionsWrapper<BundlesOptions>(bundlesOptions);
+            var options = new OptionsWrapper<TransactionBundlesOptions>(bundlesOptions);
 
             var service = new BundleService(options);
 

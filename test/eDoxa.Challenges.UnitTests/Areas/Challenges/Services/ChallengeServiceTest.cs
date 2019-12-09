@@ -12,14 +12,14 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Api.Application.Services;
 using eDoxa.Challenges.Api.HttpClients;
-using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
 

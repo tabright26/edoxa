@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;

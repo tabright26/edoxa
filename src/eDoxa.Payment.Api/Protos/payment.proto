@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Payment.Grpc.Protos";
+
+service PaymentService {
+  rpc Deposit(DepositRequest) returns (DepositResponse);
+  rpc Withdrawal(WithdrawalRequest) returns (WithdrawalResponse);
+}
+
+message DepositRequest {
+  string transactionId = 1;
+  string description = 2;
+  int64 amount = 3;
+}
+
+message DepositResponse {
+}
+
+message WithdrawalRequest {
+  string transactionId = 1;
+  string description = 2;
+  int64 amount = 3;
+}
+
+message WithdrawalResponse {
+}

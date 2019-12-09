@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapters;
-using eDoxa.Seedwork.Application.Dtos;
+using eDoxa.Games.Domain.Adapters;
+using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.Extensions.Options;

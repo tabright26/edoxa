@@ -6,10 +6,10 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Areas.Services;
-using eDoxa.Cashier.Api.Factories;
+using eDoxa.Cashier.Api.Application.Factories;
+using eDoxa.Cashier.Api.Application.Services;
+using eDoxa.Cashier.Api.Application.Strategies;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
-using eDoxa.Cashier.Api.Strategies;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;

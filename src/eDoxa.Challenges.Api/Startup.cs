@@ -18,10 +18,12 @@ using eDoxa.Challenges.Api.HttpClients.Extensions;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
+using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -102,6 +104,8 @@ namespace eDoxa.Challenges.Api
 
             services.AddCustomCors();
 
+            services.AddCustomGrpc();
+
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>().AddDevTools<ChallengesDbContextSeeder, ChallengesDbContextCleaner>();
@@ -154,6 +158,8 @@ namespace eDoxa.Challenges.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<ChallengeGrpcService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<ChallengesAppSettings>(AppSettings.ApiResource);

@@ -10,8 +10,8 @@ using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
-using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Requests;

@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Games\eDoxa.Games.csproj" />
-    <ProjectReference Include="..\eDoxa.Games.Abstractions\eDoxa.Games.Abstractions.csproj" />
+    <ProjectReference Include="..\eDoxa.Games.Domain\eDoxa.Games.Domain.csproj" />
+    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 
 </Project>

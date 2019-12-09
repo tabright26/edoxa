@@ -15,11 +15,13 @@ using AutoMapper;
 
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.Api.Infrastructure.Data;
+using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -104,6 +106,8 @@ namespace eDoxa.Games.Api
 
             services.AddCustomCors();
 
+            services.AddCustomGrpc();
+
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>().AddDevTools<GamesDbContextSeeder, GamesDbContextCleaner>();
@@ -149,6 +153,8 @@ namespace eDoxa.Games.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<ChallengeGrpcService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<GamesAppSettings>(AppSettings.ApiResource);

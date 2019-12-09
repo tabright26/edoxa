@@ -17,9 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.9.1" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.23.2" />
-    <PackageReference Include="Grpc.Tools" Version="2.23.0">
+    <None Remove="Protos\games.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -27,17 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Grpc\eDoxa.Grpc.csproj" />
     <ProjectReference Include="..\eDoxa.Games.LeagueOfLegends\eDoxa.Games.LeagueOfLegends.csproj" />
     <ProjectReference Include="..\eDoxa.Games.Infrastructure\eDoxa.Games.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Games\eDoxa.Games.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\games.proto" GrpcServices="Server">
-      <Link>Protos\games.proto</Link>
-    </Protobuf>
+    <Protobuf Include="Protos\games.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

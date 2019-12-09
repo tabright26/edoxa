@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Games.Abstractions.Services;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;

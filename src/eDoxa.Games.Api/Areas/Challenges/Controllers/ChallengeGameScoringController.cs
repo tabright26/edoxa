@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Services;
-using eDoxa.Seedwork.Application.Dtos;
+using eDoxa.Games.Domain.Services;
+using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;

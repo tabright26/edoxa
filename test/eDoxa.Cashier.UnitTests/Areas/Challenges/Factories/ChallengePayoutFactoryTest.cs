@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Cashier.Api.Factories;
+using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;

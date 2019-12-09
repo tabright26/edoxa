@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Api.Strategies;
+using eDoxa.Cashier.Api.Application.Strategies;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.TestHelper;

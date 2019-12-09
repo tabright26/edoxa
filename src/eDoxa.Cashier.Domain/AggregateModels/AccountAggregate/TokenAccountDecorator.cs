@@ -7,7 +7,6 @@
 using System;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
@@ -36,7 +35,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenDepositTransaction(amount);
+            var builder = new TransactionBuilder(TransactionType.Deposit, amount);
+
+            var transaction = builder.Build();
 
             this.CreateTransaction(transaction);
 
@@ -50,8 +51,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 throw new InvalidOperationException();
             }
 
-            var transaction = new TokenChargeTransaction(amount, metadata);
+            var builder = new TransactionBuilder(TransactionType.Charge, amount);
 
+            var transaction = builder.Build();
+            
             this.CreateTransaction(transaction);
 
             return transaction;
@@ -59,7 +62,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public ITransaction Payout(Token amount, TransactionMetadata? metadata = null)
         {
-            var transaction = new TokenPayoutTransaction(amount);
+            var builder = new TransactionBuilder(TransactionType.Payout, amount);
+
+            var transaction = builder.Build();
 
             this.CreateTransaction(transaction);
 
@@ -68,7 +73,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public ITransaction Reward(Token amount, TransactionMetadata? metadata = null)
         {
-            var transaction = new TokenRewardTransaction(amount);
+            var builder = new TransactionBuilder(TransactionType.Reward, amount);
+
+            var transaction = builder.Build();
 
             this.CreateTransaction(transaction);
 

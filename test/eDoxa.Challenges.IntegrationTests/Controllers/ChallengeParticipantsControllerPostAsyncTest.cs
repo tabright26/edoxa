@@ -19,8 +19,8 @@ using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 

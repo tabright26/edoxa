@@ -8,7 +8,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapters;
+using eDoxa.Games.Domain.Adapters;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Requests;

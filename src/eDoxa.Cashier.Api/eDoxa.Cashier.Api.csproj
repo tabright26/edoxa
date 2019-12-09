@@ -17,9 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.9.1" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.23.2" />
-    <PackageReference Include="Grpc.Tools" Version="2.23.0">
+    <None Remove="Protos\cashier.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -27,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Grpc\eDoxa.Grpc.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Infrastructure\eDoxa.Cashier.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Requests\eDoxa.Cashier.Requests.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Responses\eDoxa.Cashier.Responses.csproj" />
@@ -42,9 +45,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier.proto" GrpcServices="Server">
-      <Link>Protos\cashier.proto</Link>
-    </Protobuf>
+    <Protobuf Include="Protos\cashier.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

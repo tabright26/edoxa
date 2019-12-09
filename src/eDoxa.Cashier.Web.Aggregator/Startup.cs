@@ -17,11 +17,12 @@ using AutoMapper;
 
 using eDoxa.Cashier.Web.Aggregator.Infrastructure;
 using eDoxa.Cashier.Web.Aggregator.Services;
+using eDoxa.Payment.Grpc.Protos;
+using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
-using eDoxa.Seedwork.Application.Refit.DelegatingHandlers;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -46,6 +47,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -55,7 +57,8 @@ using Polly.Extensions.Http;
 
 using Refit;
 
-using static eDoxa.Grpc.Protos.PaymentService;
+using Serilog;
+
 using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Cashier.Web.Aggregator
@@ -71,6 +74,7 @@ namespace eDoxa.Cashier.Web.Aggregator
             TelemetryDebugWriter.IsTracingDisabled = true;
             ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true); // TODO: Check for security is required.
         }
 
         public Startup(IConfiguration configuration)
@@ -167,14 +171,20 @@ namespace eDoxa.Cashier.Web.Aggregator
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri("http://payment.api:81"))
+                .ConfigureChannel(
+                    options =>
+                    {
+                        options.LoggerFactory = LoggerFactory.Create(
+                            logging =>
+                            {
+                                logging.AddSerilog(Log.Logger);
+                                logging.SetMinimumLevel(LogLevel.Debug);
+                            });
 
-            services.AddGrpcClient<PaymentServiceClient>(
-                factoryOptions =>
-                {
-                    factoryOptions.Address = new Uri("http://payment.api:81");
-                    factoryOptions.ChannelOptionsActions.Add(options => options.Credentials = ChannelCredentials.Insecure);
-                });
+                        options.Credentials = ChannelCredentials.Insecure;
+                    })
+                .AddHttpMessageHandler<AccessTokenDelegatingHandler>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

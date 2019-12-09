@@ -7,9 +7,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
-using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;

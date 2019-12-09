@@ -4,8 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.ErrorDescribers;
-using eDoxa.Identity.Api.Validators;
+using eDoxa.Identity.Api.Application.ErrorDescribers;
+using eDoxa.Identity.Api.Application.Validators;
 using eDoxa.Identity.Requests;
 using eDoxa.Seedwork.Domain.Misc;
 

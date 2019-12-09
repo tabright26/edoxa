@@ -1,0 +1,113 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Identity.Grpc.Protos";
+
+service UserService {
+  rpc AddUserClaim(AddUserClaimRequest) returns (AddUserClaimResponse);
+  rpc ReplaceUserClaim(ReplaceUserClaimRequest) returns (ReplaceUserClaimResponse);
+  rpc RemoveUserClaim(RemoveUserClaimRequest) returns (RemoveUserClaimResponse);
+  rpc AddUserToRole(AddUserToRoleRequest) returns (AddUserToRoleResponse);
+  rpc RemoveUserFromRole(RemoveUserFromRoleRequest) returns (RemoveUserFromRoleResponse);
+}
+
+message AddUserClaimRequest {
+  string userId = 1;
+  UserClaim claim = 2;
+}
+
+message AddUserClaimResponse {
+  UserClaim claim = 1;
+}
+
+message ReplaceUserClaimRequest {
+  string userId = 1;
+  UserClaim claim = 2;
+}
+
+message ReplaceUserClaimResponse {
+  UserClaim claim = 1;
+}
+
+message RemoveUserClaimRequest {
+  string userId = 1;
+  UserClaim claim = 2;
+}
+
+message RemoveUserClaimResponse {
+  UserClaim claim = 1;
+}
+
+message AddUserToRoleRequest {
+  string userId = 1;
+  string roleName = 2;
+}
+
+message AddUserToRoleResponse {
+  Role role = 1;
+}
+
+message RemoveUserFromRoleRequest {
+  string userId = 1;
+  string roleName = 2;
+}
+
+message RemoveUserFromRoleResponse {
+  Role role = 1;
+}
+
+message UserClaim {
+  string type = 1;
+  string value = 2;
+}
+
+service RoleService {
+  rpc CreateRole(CreateRoleRequest) returns (CreateRoleResponse);
+  rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse);
+  rpc AddRoleClaim(AddRoleClaimRequest) returns (AddRoleClaimResponse);
+  rpc RemoveRoleClaim(RemoveRoleClaimRequest) returns (RemoveRoleClaimResponse);
+}
+
+message CreateRoleRequest {
+  string roleName = 1;
+}
+
+message CreateRoleResponse {
+  Role role = 1;
+}
+
+message DeleteRoleRequest {
+  string roleName = 1;
+}
+
+message DeleteRoleResponse {
+  Role role = 1;
+}
+
+message AddRoleClaimRequest {
+  string roleName = 1;
+  RoleClaim claim = 2;
+}
+
+message AddRoleClaimResponse {
+  RoleClaim claim = 1;
+}
+
+message RemoveRoleClaimRequest {
+  string roleName = 1;
+  RoleClaim claim = 2;
+}
+
+message RemoveRoleClaimResponse {
+  RoleClaim claim = 1;
+}
+
+message Role {
+  string id = 1;
+  string name = 2;
+  repeated RoleClaim claims = 3;
+}
+
+message RoleClaim {
+  string type = 1;
+  string value = 2;
+}

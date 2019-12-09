@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Areas.Games.Responses;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 

@@ -22,6 +22,7 @@ using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -99,6 +100,8 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomCors();
 
+            services.AddCustomGrpc();
+
             services.AddCustomProblemDetails(options => options.MapStripeException());
 
             services.AddCustomControllers<Startup>().AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>();
@@ -120,8 +123,6 @@ namespace eDoxa.Payment.Api
                     });
 
             services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
-
-            services.AddGrpc(options => options.EnableDetailedErrors = true);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -146,7 +147,7 @@ namespace eDoxa.Payment.Api
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapGrpcService<PaymentService>();
+                    endpoints.MapGrpcService<PaymentGrpcService>();
 
                     endpoints.MapControllers();
 

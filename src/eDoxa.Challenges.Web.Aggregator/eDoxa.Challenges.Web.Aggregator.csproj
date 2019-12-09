@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.9.1" />
-    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.23.2" />
-    <PackageReference Include="Grpc.Tools" Version="2.23.0">
+    <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Grpc\eDoxa.Grpc.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Requests\eDoxa.Cashier.Requests.csproj" />
     <ProjectReference Include="..\eDoxa.Cashier.Responses\eDoxa.Cashier.Responses.csproj" />
@@ -38,8 +37,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges.proto" GrpcServices="Client">
+    <Protobuf Include="..\eDoxa.Cashier.Api\Protos\cashier.proto" GrpcServices="Client">
+      <Link>Protos\cashier.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Challenges.Api\Protos\challenges.proto" GrpcServices="Client">
       <Link>Protos\challenges.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Identity.Api\Protos\identity.proto" GrpcServices="Client">
+      <Link>Protos\identity.proto</Link>
     </Protobuf>
   </ItemGroup>
 

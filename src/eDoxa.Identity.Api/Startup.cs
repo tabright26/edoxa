@@ -14,6 +14,7 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
@@ -24,12 +25,14 @@ using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
@@ -51,6 +54,7 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -127,6 +131,13 @@ namespace eDoxa.Identity.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                    options.Secure = CookieSecurePolicy.SameAsRequest;
+                });
+
             services.AddIdentity<User, Role>(
                     options =>
                     {
@@ -170,6 +181,10 @@ namespace eDoxa.Identity.Api
                     option.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
                     option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
                 });
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
 
             services.AddProblemDetails();
 
@@ -273,8 +288,10 @@ namespace eDoxa.Identity.Api
 
             application.UseHttpsRedirection();
             application.UseStaticFiles();
+            application.UseCookiePolicy();
 
             application.UseRouting();
+            application.UseCustomCors();
 
             application.UseAuthentication();
             application.UseIdentityServer();
@@ -283,6 +300,10 @@ namespace eDoxa.Identity.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<UserGrpcService>();
+
+                    endpoints.MapGrpcService<RoleGrpcService>();
+
                     endpoints.MapRazorPages();
 
                     endpoints.MapDefaultControllerRoute();

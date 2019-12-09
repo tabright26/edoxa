@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapters;
+using eDoxa.Games.Domain.Adapters;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
-using eDoxa.Seedwork.Application.Dtos;
+using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using RiotSharp.Misc;

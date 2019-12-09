@@ -20,6 +20,7 @@ using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -97,6 +98,8 @@ namespace eDoxa.Clans.Api
             services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
 
             services.AddCustomCors();
+
+            services.AddCustomGrpc();
 
             services.AddCustomProblemDetails();
 

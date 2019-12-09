@@ -13,14 +13,16 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Areas.Bundles;
+using eDoxa.Cashier.Api.Areas.Transactions;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
+using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -82,7 +84,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddAppSettings<CashierAppSettings>(Configuration);
 
-            services.Configure<BundlesOptions>(Configuration.GetSection("Bundles"));
+            services.Configure<TransactionBundlesOptions>(Configuration.GetSection("Bundles"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
@@ -102,6 +104,8 @@ namespace eDoxa.Cashier.Api
                     }));
 
             services.AddCustomCors();
+
+            services.AddCustomGrpc();
 
             services.AddCustomProblemDetails();
 
@@ -152,6 +156,10 @@ namespace eDoxa.Cashier.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<AccountGrpcService>();
+
+                    endpoints.MapGrpcService<ChallengeGrpcService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<CashierAppSettings>(AppSettings.ApiResource);

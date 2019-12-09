@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Services;
 using eDoxa.Games.Api.Areas.Challenges.Controllers;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Games.TestHelper.Mocks;

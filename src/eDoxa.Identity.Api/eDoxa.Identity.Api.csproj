@@ -17,9 +17,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.9.1" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.23.2" />
-    <PackageReference Include="Grpc.Tools" Version="2.23.0">
+    <None Remove="Protos\identity.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -28,7 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Grpc\eDoxa.Grpc.csproj" />
     <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
     <ProjectReference Include="..\eDoxa.Identity.Requests\eDoxa.Identity.Requests.csproj" />
     <ProjectReference Include="..\eDoxa.Identity.Responses\eDoxa.Identity.Responses.csproj" />
@@ -45,9 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity.proto" GrpcServices="Server">
-      <Link>Protos\identity.proto</Link>
-    </Protobuf>
+    <Protobuf Include="Protos\identity.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

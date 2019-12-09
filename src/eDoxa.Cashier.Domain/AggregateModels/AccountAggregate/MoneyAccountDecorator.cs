@@ -7,7 +7,6 @@
 using System;
 using System.Linq;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
@@ -45,7 +44,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyDepositTransaction(amount);
+            var builder = new TransactionBuilder(TransactionType.Deposit, amount);
+
+            var transaction = builder.Build();
 
             this.CreateTransaction(transaction);
 
@@ -59,7 +60,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyChargeTransaction(amount, metadata);
+            var builder = new TransactionBuilder(TransactionType.Charge, amount);
+
+            if (metadata != null)
+            {
+                builder.WithMetadata(metadata);
+            }
+
+            var transaction = builder.Build();
 
             this.CreateTransaction(transaction);
 
@@ -68,7 +76,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public ITransaction Payout(Money amount, TransactionMetadata? metadata = null)
         {
-            var transaction = new MoneyPayoutTransaction(amount);
+            var builder = new TransactionBuilder(TransactionType.Payout, amount);
+
+            if (metadata != null)
+            {
+                builder.WithMetadata(metadata);
+            }
+
+            var transaction = builder.Build();
 
             this.CreateTransaction(transaction);
 
@@ -82,7 +97,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 throw new InvalidOperationException();
             }
 
-            var transaction = new MoneyWithdrawTransaction(amount);
+            var builder = new TransactionBuilder(TransactionType.Withdrawal, amount);
+
+            var transaction = builder.Build();
 
             this.CreateTransaction(transaction);
 

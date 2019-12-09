@@ -8,11 +8,9 @@ service PaymentService {
 }
 
 message DepositRequest {
-	string userId = 1;
-	string email = 2;
-	string transactionId = 3;
-	string description = 4;
-	int64 amount = 5;
+	string transactionId = 1;
+	string description = 2;
+	int64 amount = 3;
 }
 
 message DepositResponse {
@@ -20,11 +18,9 @@ message DepositResponse {
 }
 
 message WithdrawalRequest {
-	string userId = 1;
-	string email = 2;
-	string transactionId = 3;
-	string description = 4;
-	int64 amount = 5;
+	string transactionId = 1;
+	string description = 2;
+	int64 amount = 3;
 }
 
 message WithdrawalResponse {

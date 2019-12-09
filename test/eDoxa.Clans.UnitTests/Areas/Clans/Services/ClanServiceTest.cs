@@ -10,7 +10,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Clans.Api.Services;
+using eDoxa.Clans.Api.Application.Services;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.TestHelper;
