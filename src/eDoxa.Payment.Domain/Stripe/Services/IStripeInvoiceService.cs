@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain.Misc;
 
+using Stripe;
+
 namespace eDoxa.Payment.Domain.Stripe.Services
 {
     public interface IStripeInvoiceService
     {
-        Task CreateInvoiceAsync(
+        Task<Invoice> CreateInvoiceAsync(
             string customerId,
             TransactionId transactionId,
             long amount,

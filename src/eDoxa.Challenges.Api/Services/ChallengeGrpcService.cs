@@ -1,37 +1,146 @@
-﻿// Filename: ChallengeService.cs
+﻿// Filename: ChallengeGrpcService.cs
 // Date Created: 2019-12-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Challenges.Domain.Queries;
+using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Grpc.Protos;
+using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
+
+using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
+
+using static eDoxa.Challenges.Grpc.Protos.ChallengeDto.Types;
+using static eDoxa.Challenges.Grpc.Protos.ParticipantDto.Types;
+using static eDoxa.Challenges.Grpc.Protos.ParticipantDto.Types.MatchDto.Types;
+
+using ChallengeState = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeState;
+using Game = eDoxa.Seedwork.Domain.Misc.Game;
 
 namespace eDoxa.Challenges.Api.Services
 {
     public sealed class ChallengeGrpcService : ChallengeService.ChallengeServiceBase
     {
+        private readonly IChallengeService _challengeService;
+        private readonly IChallengeQuery _challengeQuery;
+
+        public ChallengeGrpcService(IChallengeService challengeService, IChallengeQuery challengeQuery)
+        {
+            _challengeService = challengeService;
+            _challengeQuery = challengeQuery;
+        }
+
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
         {
-            return await base.FetchChallenges(request, context);
+            var challenges = await _challengeQuery.FetchChallengesAsync(Game.FromValue((int) request.Game), ChallengeState.FromValue((int) request.State));
+            
+            context.Status = new Status(StatusCode.OK, "");
+
+            return new FetchChallengesResponse
+            {
+                Status = new StatusDto
+                {
+                    Code = (int) context.Status.StatusCode,
+                    Message = context.Status.Detail
+                },
+                Challenges = { challenges.Select(MapChallenge) }
+            };
         }
 
         public override async Task<FindChallengeResponse> FindChallenge(FindChallengeRequest request, ServerCallContext context)
         {
-            return await base.FindChallenge(request, context);
+            var challenge = await _challengeQuery.FindChallengeAsync(ChallengeId.Parse(request.ChallengeId));
+
+            if (challenge == null)
+            {
+                context.Status = new Status(StatusCode.NotFound, "");
+
+                return new FindChallengeResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    }
+                };
+            }
+
+            context.Status = new Status(StatusCode.OK, "");
+
+            return new FindChallengeResponse
+            {
+                Status = new StatusDto
+                {
+                    Code = (int) context.Status.StatusCode,
+                    Message = context.Status.Detail
+                },
+                Challenge = MapChallenge(challenge)
+            };
         }
 
         public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
         {
-            return await base.CreateChallenge(request, context);
+            var result = await _challengeService.CreateChallengeAsync(
+                ChallengeId.Parse(request.Id),
+                new ChallengeName(request.Name),
+                Game.FromValue((int) request.Game),
+                new BestOf(request.BestOf),
+                new Entries(request.Entries),
+                new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
+                new UtcNowDateTimeProvider());
+
+            if (result.IsValid)
+            {
+                context.Status = new Status(StatusCode.OK, "");
+
+                return new CreateChallengeResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    },
+                    Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                };
+            }
+
+            context.Status = new Status(StatusCode.FailedPrecondition, "");
+
+            return new CreateChallengeResponse
+            {
+                Status = new StatusDto
+                {
+                    Code = (int) context.Status.StatusCode,
+                    Message = context.Status.Detail
+                }
+            };
         }
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
-        {
-            return await base.SynchronizeChallenge(request, context);
+        { 
+            await _challengeService.SynchronizeChallengesAsync(Game.FromValue((int) request.Game), new UtcNowDateTimeProvider());
+
+            context.Status = new Status(StatusCode.OK, "");
+
+            return new SynchronizeChallengeResponse
+            {
+                Status = new StatusDto
+                {
+                    Code = (int) context.Status.StatusCode,
+                    Message = context.Status.Detail
+                }
+            };
         }
 
         public override async Task<RegisterChallengeParticipantResponse> RegisterChallengeParticipant(
@@ -39,7 +148,127 @@ namespace eDoxa.Challenges.Api.Services
             ServerCallContext context
         )
         {
-            return await base.RegisterChallengeParticipant(request, context);
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var challenge = await _challengeService.FindChallengeAsync(ChallengeId.Parse(request.ChallengeId));
+
+            if (challenge == null)
+            {
+                context.Status = new Status(StatusCode.NotFound, "Challenge not found.");
+
+                return new RegisterChallengeParticipantResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    }
+                };
+            }
+
+            var result = await _challengeService.RegisterChallengeParticipantAsync(
+                challenge,
+                userId,
+                ParticipantId.Parse(request.ParticipantId),
+                PlayerId.Parse(request.GamePlayerId),
+                new UtcNowDateTimeProvider());
+
+            if (result.IsValid)
+            {
+                context.Status = new Status(StatusCode.OK, "");
+
+                return new RegisterChallengeParticipantResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    },
+                    Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
+                };
+            }
+
+            context.Status = new Status(StatusCode.FailedPrecondition, "");
+
+            return new RegisterChallengeParticipantResponse
+            {
+                Status = new StatusDto
+                {
+                    Code = (int) context.Status.StatusCode,
+                    Message = context.Status.Detail
+                }
+            };
+        }
+
+        public static ChallengeDto MapChallenge(IChallenge challenge)
+        {
+            return new ChallengeDto
+            {
+                Id = challenge.Id.ToString(),
+                Name = challenge.Name,
+                Game = (Grpc.Protos.Game) challenge.Game.Value,
+                State = (Grpc.Protos.ChallengeState) challenge.Timeline.State.Value,
+                BestOf = challenge.BestOf,
+                Entries = challenge.Entries,
+                SynchronizedAt = challenge.SynchronizedAt.HasValue ? Timestamp.FromDateTime(challenge.SynchronizedAt.Value) : null,
+                Timeline = new Timeline
+                {
+                    CreatedAt = Timestamp.FromDateTime(challenge.Timeline.CreatedAt),
+                    StartedAt = challenge.Timeline.StartedAt.HasValue ? Timestamp.FromDateTime(challenge.Timeline.StartedAt.Value) : null,
+                    EndedAt = challenge.Timeline.EndedAt.HasValue ? Timestamp.FromDateTime(challenge.Timeline.EndedAt.Value) : null,
+                    ClosedAt = challenge.Timeline.ClosedAt.HasValue ? Timestamp.FromDateTime(challenge.Timeline.ClosedAt.Value) : null
+                },
+                Scoring =
+                {
+                    challenge.Scoring.ToDictionary(scoring => scoring.Key.ToString(), scoring => Convert.ToSingle(scoring.Value))
+                },
+                Participants =
+                {
+                    challenge.Participants.Select(participant => MapParticipant(challenge, participant))
+                }
+            };
+        }
+
+        public static ParticipantDto MapParticipant(IChallenge challenge, Participant participant)
+        {
+            return new ParticipantDto
+            {
+                Id = participant.Id.ToString(),
+                ChallengeId = challenge.Id.ToString(),
+                UserId = participant.UserId.ToString(),
+                Score = Convert.ToDouble(participant.ComputeScore(challenge.BestOf)),
+                Matches =
+                {
+                    participant.Matches.Select(match => MapMatch(participant, match))
+                }
+            };
+        }
+
+        public static MatchDto MapMatch(Participant participant, IMatch match)
+        {
+            return new MatchDto
+            {
+                Id = match.Id.ToString(),
+                ParticipantId = participant.Id.ToString(),
+                Score = Convert.ToDouble(match.Score),
+                Stats =
+                {
+                    match.Stats.Select(MapStat)
+                }
+            };
+        }
+
+        public static StatDto MapStat(Stat stat)
+        {
+            return new StatDto
+            {
+                Name = stat.Name,
+                Value = stat.Value,
+                Weighting = stat.Weighting,
+                Score = Convert.ToDouble(stat.Score)
+            };
         }
     }
 }

@@ -168,7 +168,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
                                     It.IsAny<TransactionId>(),
                                     It.IsAny<long>(),
                                     It.IsAny<string>()))
-                            .Returns(Task.CompletedTask);
+                            .ReturnsAsync(new Invoice());
 
                         container.RegisterInstance(mockStripeService.Object).As<IStripeInvoiceService>();
                     }));

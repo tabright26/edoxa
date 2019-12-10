@@ -15,8 +15,10 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Challenges.Grpc.Protos;
 using eDoxa.Challenges.Web.Aggregator.Infrastructure;
 using eDoxa.Challenges.Web.Aggregator.Services;
+using eDoxa.Identity.Grpc.Protos;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -32,6 +34,8 @@ using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
+
+using Grpc.Core;
 
 using Hellang.Middleware.ProblemDetails;
 
@@ -68,6 +72,7 @@ namespace eDoxa.Challenges.Web.Aggregator
             TelemetryDebugWriter.IsTracingDisabled = true;
             ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true); // TODO: Check for security is required.
         }
 
         public Startup(IConfiguration configuration)
@@ -189,6 +194,30 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddRefitClient<IPaymentService>(refitSettings)
                 .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.PaymentUrl))
+                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            services.AddGrpcClient<Cashier.Grpc.Protos.ChallengeService.ChallengeServiceClient>("CashierChallengeServiceClient", options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            services.AddGrpcClient<UserService.UserServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            services.AddGrpcClient<RoleService.RoleServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());

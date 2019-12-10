@@ -2,4 +2,12 @@
 
 option csharp_namespace = "eDoxa.Notifications.Grpc.Protos";
 
+import "google/protobuf/any.proto";
+
 service NotificationsService {}
+
+message StatusDto {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Any details = 3;
+}

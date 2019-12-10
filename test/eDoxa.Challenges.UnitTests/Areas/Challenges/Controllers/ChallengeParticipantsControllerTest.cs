@@ -136,8 +136,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Setup(
                     challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
-                        It.IsAny<ParticipantId>(),
                         It.IsAny<UserId>(),
+                        It.IsAny<ParticipantId>(),
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
@@ -160,8 +160,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(
                 challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
-                    It.IsAny<ParticipantId>(),
                     It.IsAny<UserId>(),
+                    It.IsAny<ParticipantId>(),
                     It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),
                     It.IsAny<CancellationToken>()),
@@ -188,8 +188,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                 .Setup(
                     challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
-                        It.IsAny<ParticipantId>(),
                         It.IsAny<UserId>(),
+                        It.IsAny<ParticipantId>(),
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
@@ -215,8 +215,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(
                 challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
-                    It.IsAny<ParticipantId>(),
                     It.IsAny<UserId>(),
+                    It.IsAny<ParticipantId>(),
                     It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),
                     It.IsAny<CancellationToken>()),
@@ -240,8 +240,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
                 .Setup(
                     challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                         It.IsAny<IChallenge>(),
-                        It.IsAny<ParticipantId>(),
                         It.IsAny<UserId>(),
+                        It.IsAny<ParticipantId>(),
                         It.IsAny<PlayerId>(),
                         It.IsAny<UtcNowDateTimeProvider>(),
                         It.IsAny<CancellationToken>()))
@@ -263,8 +263,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockChallengeService.Verify(
                 challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
                     It.IsAny<IChallenge>(),
-                    It.IsAny<ParticipantId>(),
                     It.IsAny<UserId>(),
+                    It.IsAny<ParticipantId>(),
                     It.IsAny<PlayerId>(),
                     It.IsAny<UtcNowDateTimeProvider>(),
                     It.IsAny<CancellationToken>()),

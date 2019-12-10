@@ -17,6 +17,6 @@ namespace eDoxa.Games.Domain.Adapters
     {
         Game Game { get; }
 
-        Task<IReadOnlyCollection<MatchDto>> GetMatchesAsync(PlayerId playerId, DateTime? startedAt, DateTime? endedAt);
+        Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(PlayerId playerId, DateTime? startedAt, DateTime? endedAt);
     }
 }

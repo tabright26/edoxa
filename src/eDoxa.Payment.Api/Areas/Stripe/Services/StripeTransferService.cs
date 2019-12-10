@@ -1,5 +1,5 @@
 ﻿// Filename: StripeTransferService.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -25,14 +25,14 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
 
         private StripeTransferOptions Options { get; }
 
-        public async Task CreateTransferAsync(
+        public async Task<Transfer> CreateTransferAsync(
             string accountId,
             TransactionId transactionId,
             long amount,
             string description
         )
         {
-            await this.CreateAsync(
+            return await this.CreateAsync(
                 new TransferCreateOptions
                 {
                     Destination = accountId,

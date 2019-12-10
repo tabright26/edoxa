@@ -9,7 +9,12 @@ import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
 
-const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformations, handleSubmit, handleCancel, error }) => (
+const UpdateUserInformationsForm: FunctionComponent<any> = ({
+  updateUserInformations,
+  handleSubmit,
+  handleCancel,
+  error
+}) => (
   <Form
     onSubmit={handleSubmit(data =>
       updateUserInformations(data).then(() => {
@@ -23,10 +28,19 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformat
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dt className="col-sm-4 mb-0">
-            <Field name="firstName" label="Enter your first name" component={Input.Text} />
+            <Field
+              name="firstName"
+              label="Enter your first name"
+              component={Input.Text}
+            />
           </dt>
           <dd className="col-sm-4 mb-0">
-            <Field name="lastName" label="Enter your first name" component={Input.Text} disabled />
+            <Field
+              name="lastName"
+              label="Enter your first name"
+              component={Input.Text}
+              disabled
+            />
           </dd>
         </dl>
       </dd>
@@ -56,6 +70,11 @@ const UpdateUserInformationsForm: FunctionComponent<any> = ({ updateUserInformat
   </Form>
 );
 
-const enhance = compose<any, any>(reduxForm<any, { handleCancel: () => any }, string>({ form: UPDATE_USER_INFORMATIONS_FORM, validate }));
+const enhance = compose<any, any>(
+  reduxForm<any, { handleCancel: () => any }, string>({
+    form: UPDATE_USER_INFORMATIONS_FORM,
+    validate
+  })
+);
 
 export default enhance(UpdateUserInformationsForm);

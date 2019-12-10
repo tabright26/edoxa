@@ -31,8 +31,8 @@ namespace eDoxa.Challenges.Domain.Services
 
         Task<IDomainValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
-            ParticipantId participantId,
             UserId userId,
+            ParticipantId participantId,
             PlayerId playerId,
             IDateTimeProvider registeredAt,
             CancellationToken cancellationToken = default

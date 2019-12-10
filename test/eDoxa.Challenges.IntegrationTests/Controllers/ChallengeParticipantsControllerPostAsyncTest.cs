@@ -75,7 +75,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
                                 var mock = new Mock<IGamesHttpClient>();
 
                                 mock.Setup(g => g.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
-                                    .ReturnsAsync(new List<MatchDto>());
+                                    .ReturnsAsync(new List<ChallengeMatch>());
 
                                 t.RegisterInstance(mock.Object).As<IGamesHttpClient>().SingleInstance();
                             });

@@ -81,8 +81,8 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 
             var result = await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
-                participantId,
                 HttpContext.GetUserId(),
+                participantId,
                 playerId,
                 new UtcNowDateTimeProvider());
 

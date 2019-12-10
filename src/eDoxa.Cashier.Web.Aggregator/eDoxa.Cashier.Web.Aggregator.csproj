@@ -34,6 +34,9 @@
     <Protobuf Include="..\eDoxa.Cashier.Api\Protos\cashier.proto" GrpcServices="Client">
       <Link>Protos\cashier.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\eDoxa.Identity.Api\Protos\identity.proto" GrpcServices="Client">
+      <Link>Protos\identity.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\eDoxa.Payment.Api\Protos\payment.proto" GrpcServices="Client">
       <Link>Protos\payment.proto</Link>
     </Protobuf>

@@ -35,7 +35,7 @@ namespace eDoxa.Games.Api.Areas.Challenges.Controllers
         [AllowAnonymous] // TODO: Quick fix.
         [HttpGet]
         [SwaggerOperation("Get matches for challenge participants.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchDto[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeMatch[]))]
         public async Task<IActionResult> GetAsync(
             Game game,
             [FromQuery] string playerId,

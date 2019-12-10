@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeService.cs
+﻿// Filename: ChallengeGrpcService.cs
 // Date Created: 2019-12-08
 // 
 // ================================================
@@ -6,22 +6,70 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Games.Domain.Services;
 using eDoxa.Games.Grpc.Protos;
+using eDoxa.Seedwork.Domain.Misc;
+
+using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
+
+using static eDoxa.Games.Grpc.Protos.FetchChallengeMatchesResponse.Types;
+
+using Game = eDoxa.Seedwork.Domain.Misc.Game;
 
 namespace eDoxa.Games.Api.Services
 {
     public sealed class ChallengeGrpcService : ChallengeService.ChallengeServiceBase
     {
+        private readonly IChallengeService _challengeService;
+
+        public ChallengeGrpcService(IChallengeService challengeService)
+        {
+            _challengeService = challengeService;
+        }
+
         public override async Task<FetchChallengeScoringResponse> FetchChallengeScoring(FetchChallengeScoringRequest request, ServerCallContext context)
         {
-            return await base.FetchChallengeScoring(request, context);
+            var scoring = await _challengeService.GetScoringAsync(Game.FromValue((int) request.Game));
+
+            var response = new FetchChallengeScoringResponse();
+
+            foreach (var (key, value) in scoring)
+            {
+                response.Scoring.Add(key, value);
+            }
+
+            return response;
         }
 
         public override async Task<FetchChallengeMatchesResponse> FetchChallengeMatches(FetchChallengeMatchesRequest request, ServerCallContext context)
         {
-            return await base.FetchChallengeMatches(request, context);
+            var matches = await _challengeService.GetMatchesAsync(
+                Game.FromValue((int) request.Game),
+                PlayerId.Parse(request.GamePlayerId),
+                request.StartedAt.ToDateTime(),
+                request.EndedAt.ToDateTime());
+
+            var response = new FetchChallengeMatchesResponse();
+
+            foreach (var match in matches)
+            {
+                var matchDto = new MatchDto
+                {
+                    GameUuid = match.GameUuid,
+                    Timestamp = Timestamp.FromDateTime(match.Timestamp)
+                };
+
+                foreach (var (key, value) in match.Stats)
+                {
+                    matchDto.Stats.Add(key, value);
+                }
+
+                response.Matches.Add(matchDto);
+            }
+
+            return response;
         }
     }
 }

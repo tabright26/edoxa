@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.Adapters;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -29,7 +30,7 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public Game Game => Game.LeagueOfLegends;
 
-        public async Task<IReadOnlyCollection<MatchDto>> GetMatchesAsync(PlayerId playerId, DateTime? startedAt, DateTime? endedAt)
+        public async Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(PlayerId playerId, DateTime? startedAt, DateTime? endedAt)
         {
             var matchList = await _leagueOfLegendsService.Match.GetMatchListAsync(
                 Region.Na,
@@ -37,7 +38,7 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
                 beginTime: startedAt,
                 endTime: endedAt);
 
-            var matches = new List<MatchDto>();
+            var matches = new List<ChallengeMatch>();
 
             foreach (var reference in matchList.Matches)
             {
@@ -49,8 +50,9 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
                     .Stats;
 
                 matches.Add(
-                    new MatchDto(
+                    new ChallengeMatch(
                         match.GameId.ToString(),
+                        new DateTimeProvider(match.GameCreation.Add(match.GameDuration)), 
                         stats.GetType().GetProperties().ToDictionary(property => property.Name, property => Convert.ToDouble(property.GetValue(stats)))));
             }
 

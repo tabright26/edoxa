@@ -53,53 +53,67 @@ namespace eDoxa.Challenges.Api.Application.Services
         {
             var scoring = await _gamesHttpClient.GetChallengeScoringAsync(game);
 
-            var challenge = new Challenge(
-                id,
-                name,
-                game,
-                bestOf,
-                entries,
-                new ChallengeTimeline(createAt, duration),
-                new Scoring(scoring));
+            var result = new DomainValidationResult();
 
-            _challengeRepository.Create(challenge);
+            if (result.IsValid)
+            {
+                var challenge = new Challenge(
+                    id,
+                    name,
+                    game,
+                    bestOf,
+                    entries,
+                    new ChallengeTimeline(createAt, duration),
+                    new Scoring(scoring));
 
-            await _challengeRepository.CommitAsync(true, cancellationToken);
+                _challengeRepository.Create(challenge);
 
-            return new DomainValidationResult();
+                await _challengeRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(challenge);
+            }
+
+            return result;
         }
 
         public async Task<IDomainValidationResult> RegisterChallengeParticipantAsync(
             IChallenge challenge,
-            ParticipantId participantId,
             UserId userId,
+            ParticipantId participantId,
             PlayerId playerId,
             IDateTimeProvider registeredAt,
             CancellationToken cancellationToken = default
         )
         {
+            var result = new DomainValidationResult();
+
             if (challenge.SoldOut)
             {
-                return DomainValidationResult.Failure("_error", "The challenge was sold out.");
+                result.AddDomainValidationError("_error", "The challenge was sold out.");
             }
 
             if (challenge.ParticipantExists(userId))
             {
-                return DomainValidationResult.Failure("_error", "The user already is registered.");
+                result.AddDomainValidationError("_error", "The user already is registered.");
             }
 
-            var participant = new Participant(participantId, userId, playerId, registeredAt);
-
-            challenge.Register(participant);
-
-            if (challenge.SoldOut)
+            if (result.IsValid)
             {
-                challenge.Start(registeredAt);
+                var participant = new Participant(participantId, userId, playerId, registeredAt);
+
+                challenge.Register(participant);
+
+                if (challenge.SoldOut)
+                {
+                    challenge.Start(registeredAt);
+                }
+
+                await _challengeRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(participant);
             }
 
-            await _challengeRepository.CommitAsync(true, cancellationToken);
-
-            return new DomainValidationResult();
+            return result;
         }
 
         public async Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default)

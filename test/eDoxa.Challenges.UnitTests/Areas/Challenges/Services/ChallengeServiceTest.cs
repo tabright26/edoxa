@@ -43,9 +43,6 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
         public async Task CreateChallengeAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(39042334, Game.LeagueOfLegends, ChallengeState.Inscription);
-            var challenge = challengeFaker.FakeChallenge();
-
             var mockChallengeRepository = new Mock<IChallengeRepository>();
             var mockGamesHttpClient = new Mock<IGamesHttpClient>();
             var mockLogger = new MockLogger<ChallengeService>();
@@ -173,8 +170,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             // Act
             var result = await challengeService.RegisterChallengeParticipantAsync(
                 challenge,
-                new ParticipantId(),
                 new UserId(),
+                new ParticipantId(),
                 new PlayerId(),
                 new UtcNowDateTimeProvider());
 
@@ -208,8 +205,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             // Act
             var result = await challengeService.RegisterChallengeParticipantAsync(
                 challenge,
-                new ParticipantId(),
                 userId,
+                new ParticipantId(),
                 new PlayerId(),
                 new UtcNowDateTimeProvider());
 
@@ -245,8 +242,8 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
             // Act
             var result = await challengeService.RegisterChallengeParticipantAsync(
                 challenge,
-                new ParticipantId(),
                 new UserId(),
+                new ParticipantId(),
                 new PlayerId(),
                 new UtcNowDateTimeProvider());
 
@@ -289,7 +286,7 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                         It.IsAny<string>(),
                         It.IsAny<DateTime?>(),
                         It.IsAny<DateTime?>()))
-                .ReturnsAsync(new List<MatchDto>())
+                .ReturnsAsync(new List<ChallengeMatch>())
                 .Verifiable();
 
             var challengeService = new ChallengeService(mockChallengeRepository.Object, mockGamesHttpClient.Object, mockLogger.Object);
@@ -339,11 +336,11 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                         It.IsAny<DateTime>(),
                         It.IsAny<DateTime>()))
                 .ReturnsAsync(
-                    new List<MatchDto>
+                    new List<ChallengeMatch>
                     {
-                        new MatchDto("test1", scoreDictionnary),
-                        new MatchDto("test2", scoreDictionnary),
-                        new MatchDto("test3", scoreDictionnary)
+                        new ChallengeMatch("test1", new UtcNowDateTimeProvider(), scoreDictionnary),
+                        new ChallengeMatch("test2", new UtcNowDateTimeProvider(), scoreDictionnary),
+                        new ChallengeMatch("test3", new UtcNowDateTimeProvider(), scoreDictionnary)
                     })
                 .Verifiable();
 
@@ -395,11 +392,11 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Services
                         It.IsAny<DateTime>(),
                         It.IsAny<DateTime>()))
                 .ReturnsAsync(
-                    new List<MatchDto>
+                    new List<ChallengeMatch>
                     {
-                        new MatchDto("test1", scoreDictionnary),
-                        new MatchDto("test2", scoreDictionnary),
-                        new MatchDto("test3", scoreDictionnary)
+                        new ChallengeMatch("test1", new UtcNowDateTimeProvider(), scoreDictionnary),
+                        new ChallengeMatch("test2", new UtcNowDateTimeProvider(), scoreDictionnary),
+                        new ChallengeMatch("test3", new UtcNowDateTimeProvider(), scoreDictionnary)
                     })
                 .Verifiable();
 

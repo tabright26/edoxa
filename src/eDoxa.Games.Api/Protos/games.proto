@@ -2,6 +2,7 @@
 
 option csharp_namespace = "eDoxa.Games.Grpc.Protos";
 
+import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 service ChallengeService {
@@ -10,22 +11,26 @@ service ChallengeService {
 }
 
 message FetchChallengeScoringRequest {
-  ChallengeType challengeType = 1;
+  Game game = 1;
+  ChallengeType challengeType = 2;
 }
 
 message FetchChallengeScoringResponse {
-  map<string, float> scoring = 1;
+  StatusDto status = 1;
+  map<string, float> scoring = 2;
 }
 
 message FetchChallengeMatchesRequest {
-  string gamePlayerId = 1;
-  google.protobuf.Timestamp startedAt = 2;
-  google.protobuf.Timestamp endedAt = 3;
+  Game game = 1;
+  string gamePlayerId = 2;
+  google.protobuf.Timestamp startedAt = 3;
+  google.protobuf.Timestamp endedAt = 4;
 }
 
 message FetchChallengeMatchesResponse {
-  repeated Match matches = 1;
-  message Match {
+  StatusDto status = 1;
+  repeated MatchDto matches = 2;
+  message MatchDto {
     string gameUuid = 1;
 	google.protobuf.Timestamp timestamp = 2;
 	map<string, double> stats = 3;
@@ -35,4 +40,24 @@ message FetchChallengeMatchesResponse {
 
 enum ChallengeType {
   CHALLENGE_TYPE_NONE = 0;
+}
+
+enum Game {
+  GAME_NONE = 0;
+  GAME_LEAGUE_OF_LEGENDS = 1;
+  GAME_SMITE = 2;
+  GAME_STAR_CRAFT_2 = 4;
+  GAME_DOTA_2 = 8;
+  GAME_CSGO = 16;
+  GAME_ROCKET_LEAGUE = 32;
+  GAME_OVERWATCH = 64;
+  GAME_FORTNITE = 128;
+  GAME_PUBG = 256;
+  GAME_ALL = -1;
+}
+
+message StatusDto {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Any details = 3;
 }

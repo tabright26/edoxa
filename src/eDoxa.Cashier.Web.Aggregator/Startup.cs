@@ -15,8 +15,8 @@ using Autofac;
 
 using AutoMapper;
 
+using eDoxa.Cashier.Grpc.Protos;
 using eDoxa.Cashier.Web.Aggregator.Infrastructure;
-using eDoxa.Cashier.Web.Aggregator.Services;
 using eDoxa.Payment.Grpc.Protos;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
@@ -47,7 +47,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -56,8 +55,6 @@ using Polly;
 using Polly.Extensions.Http;
 
 using Refit;
-
-using Serilog;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -144,47 +141,29 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddTransient<AccessTokenDelegatingHandler>();
 
-            var refitSettings = new RefitSettings
-            {
-                ContentSerializer = new JsonContentSerializer(
-                    new JsonSerializerSettings
-                    {
-                        ContractResolver = new CamelCasePropertyNamesContractResolver()
-                    })
-            };
-
-            services.AddRefitClient<ICashierService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.CashierUrl))
+            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddRefitClient<IIdentityService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.IdentityUrl))
+            //services.AddGrpcClient<UserService.UserServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+            //    .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+            //    .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+            //    .AddPolicyHandler(GetRetryPolicy())
+            //    .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            //services.AddGrpcClient<RoleService.RoleServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+            //    .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+            //    .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+            //    .AddPolicyHandler(GetRetryPolicy())
+            //    .AddPolicyHandler(GetCircuitBreakerPolicy());
+
+            services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.PaymentUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            services.AddRefitClient<IPaymentService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.PaymentUrl))
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri("http://payment.api:81"))
-                .ConfigureChannel(
-                    options =>
-                    {
-                        options.LoggerFactory = LoggerFactory.Create(
-                            logging =>
-                            {
-                                logging.AddSerilog(Log.Logger);
-                                logging.SetMinimumLevel(LogLevel.Debug);
-                            });
-
-                        options.Credentials = ChannelCredentials.Insecure;
-                    })
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

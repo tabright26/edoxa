@@ -169,7 +169,7 @@ services:
     ports:
       - "5003:80"
 
-  challenges.web.jobs:
+  challenges.worker:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80
@@ -265,7 +265,7 @@ services:
       - HealthChecks__Endpoints__9__Name=Challenges Web Gateway
       - HealthChecks__Endpoints__9__Uri=http://challenges.web.gateway/health
       - HealthChecks__Endpoints__10__Name=Challenges Web Jobs
-      - HealthChecks__Endpoints__10__Uri=http://challenges.web.jobs/health
+      - HealthChecks__Endpoints__10__Uri=http://challenges.worker/health
       - HealthChecks__Endpoints__11__Name=Web Spa
       - HealthChecks__Endpoints__11__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=60

@@ -1,4 +1,4 @@
-﻿// Filename: PaymentService.cs
+﻿// Filename: PaymentGrpcService.cs
 // Date Created: 2019-12-05
 // 
 // ================================================
@@ -7,7 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.IntegrationEvents;
+using eDoxa.Payment.Api.Areas.Stripe.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
@@ -58,51 +58,56 @@ namespace eDoxa.Payment.Api.Services
 
             var userId = httpContext.GetUserId();
 
+            var customerId = httpContext.GetStripeCustomertId();
+
+            var email = httpContext.GetEmail();
+
             try
             {
-                _logger.LogInformation($"Processing {nameof(UserAccountDepositIntegrationEvent)}...");
-
-                var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
-
                 if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
                 {
-                    throw new InvalidOperationException(
-                        "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.");
+                    const string detail = "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.";
+
+                    var exception = new RpcException(new Status(StatusCode.FailedPrecondition, detail));
+
+                    _logger.LogError(exception, detail);
+
+                    throw exception;
                 }
 
-                await _stripeInvoiceService.CreateInvoiceAsync(
+                var invoice = await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
                     TransactionId.Parse(request.TransactionId),
                     request.Amount,
                     request.Description);
 
-                _logger.LogInformation($"Processed {nameof(UserAccountDepositIntegrationEvent)}.");
+                var message = $"A Stripe invoice '{invoice.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
 
-                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(
-                    userId,
-                    TransactionId.Parse(request.TransactionId));
+                context.Status = new Status(StatusCode.OK, message);
 
-                _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
+                _logger.LogInformation(message);
+
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+
+                return new DepositResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    }
+                };
             }
             catch (Exception exception)
             {
-                if (exception is StripeException stripeException)
-                {
-                    _logger.LogCritical(stripeException, stripeException.StripeError?.ToJson());
-                }
-                else
-                {
-                    _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
-                }
+                var message = $"Failed to process deposit for the user '{email}'. (userId=\"{userId}\")";
 
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(
-                    userId,
-                    TransactionId.Parse(request.TransactionId));
+                var rpcException = this.RpcExceptionWithInternalStatus(exception, message);
 
-                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+
+                throw rpcException;
             }
-
-            return new DepositResponse();
         }
 
         public override async Task<WithdrawalResponse> Withdrawal(WithdrawalRequest request, ServerCallContext context)
@@ -111,50 +116,72 @@ namespace eDoxa.Payment.Api.Services
 
             var userId = httpContext.GetUserId();
 
+            var email = httpContext.GetEmail();
+
+            var accountId = httpContext.GetStripeAccountId();
+
             try
             {
-                _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
-
-                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
-
                 if (!await _stripeAccountService.HasAccountVerifiedAsync(accountId))
                 {
-                    throw new InvalidOperationException("The user's Stripe Account isn't verified. The user's cannot process a withdrawal transaction.");
+                    const string detail = "The user's Stripe Account isn't verified. The user's cannot process a withdrawal transaction.";
+
+                    var exception = new RpcException(new Status(StatusCode.FailedPrecondition, detail));
+
+                    _logger.LogError(exception, detail);
+
+                    throw exception;
                 }
 
-                await _stripeTransferService.CreateTransferAsync(
+                var transfer = await _stripeTransferService.CreateTransferAsync(
                     accountId,
                     TransactionId.Parse(request.TransactionId),
                     request.Amount,
                     request.Description);
 
-                _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
+                var message = $"A Stripe transfer '{transfer.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
+                
+                context.Status = new Status(StatusCode.OK, message);
 
-                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(
-                    userId,
-                    TransactionId.Parse(request.TransactionId));
+                _logger.LogInformation(message);
 
-                _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+
+                return new WithdrawalResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    }
+                };
             }
             catch (Exception exception)
             {
-                if (exception is StripeException stripeException)
-                {
-                    _logger.LogCritical(stripeException, stripeException.StripeError?.ToJson());
-                }
-                else
-                {
-                    _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
-                }
+                var message = $"Failed to process withdrawal for the user '{email}'. (userId=\"{userId}\")";
 
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(
-                    userId,
-                    TransactionId.Parse(request.TransactionId));
+                var rpcException = this.RpcExceptionWithInternalStatus(exception, message);
 
-                _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+
+                throw rpcException;
             }
+        }
 
-            return new WithdrawalResponse();
+        private RpcException RpcExceptionWithInternalStatus(Exception exception, string message)
+        {
+            _logger.LogError(exception, message);
+
+            if (exception is StripeException stripeException)
+            {
+                return new RpcException(
+                    new Status(StatusCode.Internal, message),
+                    new Metadata
+                    {
+                        {nameof(StripeException), stripeException.StripeError?.ToJson()}
+                    });
+            }
+            return new RpcException(new Status(StatusCode.Internal, message));
         }
     }
 }

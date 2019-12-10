@@ -23,7 +23,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
             _stripeInvoiceItemService = stripeInvoiceItemService;
         }
 
-        public async Task CreateInvoiceAsync(
+        public async Task<Invoice> CreateInvoiceAsync(
             string customerId,
             TransactionId transactionId,
             long amount,
@@ -36,12 +36,12 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Services
                 customerId,
                 amount);
 
-            await this.CreateInvoiceAsync(transactionId, customerId);
+            return await this.CreateInvoiceAsync(transactionId, customerId);
         }
 
-        private async Task CreateInvoiceAsync(TransactionId transactionId, string customerId)
+        private async Task<Invoice> CreateInvoiceAsync(TransactionId transactionId, string customerId)
         {
-            await this.CreateAsync(
+            return await this.CreateAsync(
                 new InvoiceCreateOptions
                 {
                     Customer = customerId,

@@ -304,6 +304,8 @@ namespace eDoxa.Identity.Api
 
                     endpoints.MapGrpcService<RoleGrpcService>();
 
+                    endpoints.MapGrpcService<DoxatagGrpcService>();
+
                     endpoints.MapRazorPages();
 
                     endpoints.MapDefaultControllerRoute();

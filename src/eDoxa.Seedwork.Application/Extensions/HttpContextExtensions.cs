@@ -17,7 +17,7 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class HttpContextExtensions
     {
-        private static string? GetClaimOrDefault(this HttpContext httpContext, string claimType)
+        public static string? GetClaimOrDefault(this HttpContext httpContext, string claimType)
         {
             return httpContext.User?.Claims?.SingleOrDefault(claim => claim.Type == claimType)?.Value;
         }

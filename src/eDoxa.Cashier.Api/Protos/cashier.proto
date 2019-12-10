@@ -2,6 +2,7 @@
 
 option csharp_namespace = "eDoxa.Cashier.Grpc.Protos";
 
+import "google/protobuf/any.proto";
 import "google/protobuf/timestamp.proto";
 
 service AccountService {
@@ -19,7 +20,8 @@ message FetchChallengesRequest {
 }
 
 message FetchChallengesResponse {
-  repeated Challenge challenges = 1;
+  StatusDto status = 1;
+  repeated ChallengeDto challenges = 2;
 }
 
 message FindChallengeRequest {
@@ -27,17 +29,19 @@ message FindChallengeRequest {
 }
 
 message FindChallengeResponse {
-  Challenge challenge = 1;
+  StatusDto status = 1;
+  ChallengeDto challenge = 2;
 }
 
 message CreateChallengeRequest {
   string id = 1;
   int32 payoutEntries = 2;
-  EntryFee entryFee = 3;
+  EntryFeeDto entryFee = 3;
 }
 
 message CreateChallengeResponse {
-  Challenge challenge = 1;
+  StatusDto status = 1;
+  ChallengeDto challenge = 2;
 }
 
 message CreateTransactionRequest {
@@ -48,35 +52,36 @@ message CreateTransactionRequest {
 }
 
 message CreateTransactionResponse {
-  Transaction Transaction = 1;
+  StatusDto status = 1;
+  TransactionDto Transaction = 2;
 }
 
-message Challenge {
+message ChallengeDto {
   string id = 1;
-  EntryFee entryFee = 2;
-  Payout payout = 3;
+  EntryFeeDto entryFee = 2;
+  PayoutDto payout = 3;
 }
 
-message Payout {
-  PrizePool prizePool = 1;
-  repeated Bucket buckets = 2;
+message PayoutDto {
+  PrizePoolDto prizePool = 1;
+  repeated BucketDto buckets = 2;
   
-  message PrizePool {
+  message PrizePoolDto {
     Currency currency = 1;
     double amount = 2;
   }
-  message Bucket {
+  message BucketDto {
     int32 size = 1;
     double prize = 2;
   }
 }
 
-message EntryFee {
+message EntryFeeDto {
   double amount = 1;
   Currency currency = 2;
 }
 
-message Transaction {
+message TransactionDto {
   string id = 1;
   google.protobuf.Timestamp timestamp = 2;
   Currency currency = 3;
@@ -110,4 +115,10 @@ enum TransactionStatus {
   TRANSACTION_STATUS_FAILED = 4;
   TRANSACTION_STATUS_CANCELED = 8;
   TRANSACTION_STATUS_ALL = -1;
+}
+
+message StatusDto {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Any details = 3;
 }

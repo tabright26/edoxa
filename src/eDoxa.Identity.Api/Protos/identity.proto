@@ -2,6 +2,8 @@
 
 option csharp_namespace = "eDoxa.Identity.Grpc.Protos";
 
+import "google/protobuf/any.proto";
+
 service UserService {
   rpc AddUserClaim(AddUserClaimRequest) returns (AddUserClaimResponse);
   rpc ReplaceUserClaim(ReplaceUserClaimRequest) returns (ReplaceUserClaimResponse);
@@ -12,29 +14,32 @@ service UserService {
 
 message AddUserClaimRequest {
   string userId = 1;
-  UserClaim claim = 2;
+  UserClaimDto claim = 2;
 }
 
 message AddUserClaimResponse {
-  UserClaim claim = 1;
+  StatusDto status = 1;
+  UserClaimDto claim = 2;
 }
 
 message ReplaceUserClaimRequest {
   string userId = 1;
-  UserClaim claim = 2;
+  UserClaimDto claim = 2;
 }
 
 message ReplaceUserClaimResponse {
-  UserClaim claim = 1;
+  StatusDto status = 1;
+  UserClaimDto claim = 2;
 }
 
 message RemoveUserClaimRequest {
   string userId = 1;
-  UserClaim claim = 2;
+  UserClaimDto claim = 2;
 }
 
 message RemoveUserClaimResponse {
-  UserClaim claim = 1;
+  StatusDto status = 1;
+  UserClaimDto claim = 2;
 }
 
 message AddUserToRoleRequest {
@@ -43,7 +48,8 @@ message AddUserToRoleRequest {
 }
 
 message AddUserToRoleResponse {
-  Role role = 1;
+  StatusDto status = 1;
+  RoleDto role = 2;
 }
 
 message RemoveUserFromRoleRequest {
@@ -52,10 +58,11 @@ message RemoveUserFromRoleRequest {
 }
 
 message RemoveUserFromRoleResponse {
-  Role role = 1;
+  StatusDto status = 1;
+  RoleDto role = 2;
 }
 
-message UserClaim {
+message UserClaimDto {
   string type = 1;
   string value = 2;
 }
@@ -72,7 +79,8 @@ message CreateRoleRequest {
 }
 
 message CreateRoleResponse {
-  Role role = 1;
+  StatusDto status = 1;
+  RoleDto role = 2;
 }
 
 message DeleteRoleRequest {
@@ -80,34 +88,60 @@ message DeleteRoleRequest {
 }
 
 message DeleteRoleResponse {
-  Role role = 1;
+  StatusDto status = 1;
+  RoleDto role = 2;
 }
 
 message AddRoleClaimRequest {
   string roleName = 1;
-  RoleClaim claim = 2;
+  RoleClaimDto claim = 2;
 }
 
 message AddRoleClaimResponse {
-  RoleClaim claim = 1;
+  StatusDto status = 1;
+  RoleClaimDto claim = 2;
 }
 
 message RemoveRoleClaimRequest {
   string roleName = 1;
-  RoleClaim claim = 2;
+  RoleClaimDto claim = 2;
 }
 
 message RemoveRoleClaimResponse {
-  RoleClaim claim = 1;
+  StatusDto status = 1;
+  RoleClaimDto claim = 2;
 }
 
-message Role {
+message RoleDto {
   string id = 1;
   string name = 2;
-  repeated RoleClaim claims = 3;
+  repeated RoleClaimDto claims = 3;
 }
 
-message RoleClaim {
+message RoleClaimDto {
   string type = 1;
   string value = 2;
+}
+
+service DoxatagService {
+  rpc FetchDoxatags(FetchDoxatagsRequest) returns (FetchDoxatagsResponse);
+}
+
+message FetchDoxatagsRequest {
+}
+
+message FetchDoxatagsResponse {
+  StatusDto status = 1;
+  repeated DoxatagDto doxatags = 2;
+}
+
+message DoxatagDto {
+  string name = 1;
+  int32 code = 2;
+}
+
+message StatusDto {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Any details = 3;
 }

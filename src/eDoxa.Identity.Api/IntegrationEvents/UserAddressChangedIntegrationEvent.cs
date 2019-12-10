@@ -21,7 +21,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents
             string? line2,
             string? state,
             string city,
-            string postalCode
+            string? postalCode
         )
         {
             UserId = userId;
@@ -48,7 +48,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents
         public string City { get; }
 
         [JsonProperty]
-        public string PostalCode { get; }
+        public string? PostalCode { get; }
 
         [JsonIgnore]
         public string Name => Seedwork.Application.Constants.IntegrationEvents.UserAddressChanged;

@@ -156,7 +156,7 @@ services:
       - "5010:80"
       - "9010:81"
 
-  challenges.web.jobs:
+  challenges.worker:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -253,7 +253,7 @@ services:
       - HealthChecks__Endpoints__8__Name=Challenges Web Aggregator
       - HealthChecks__Endpoints__8__Uri=http://challenges.web.aggregator/health
       - HealthChecks__Endpoints__9__Name=Challenges Web Jobs
-      - HealthChecks__Endpoints__9__Uri=http://challenges.web.jobs/health
+      - HealthChecks__Endpoints__9__Uri=http://challenges.worker/health
       - HealthChecks__Endpoints__10__Name=Web Spa
       - HealthChecks__Endpoints__10__Uri=http://web.spa/health
       - HealthChecks__EvaluationTimeInSeconds=60

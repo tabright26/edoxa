@@ -2,6 +2,8 @@
 
 option csharp_namespace = "eDoxa.Payment.Grpc.Protos";
 
+import "google/protobuf/any.proto";
+
 service PaymentService {
   rpc Deposit(DepositRequest) returns (DepositResponse);
   rpc Withdrawal(WithdrawalRequest) returns (WithdrawalResponse);
@@ -14,6 +16,7 @@ message DepositRequest {
 }
 
 message DepositResponse {
+  StatusDto status = 1;
 }
 
 message WithdrawalRequest {
@@ -23,4 +26,11 @@ message WithdrawalRequest {
 }
 
 message WithdrawalResponse {
+  StatusDto status = 1;
+}
+
+message StatusDto {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Any details = 3;
 }

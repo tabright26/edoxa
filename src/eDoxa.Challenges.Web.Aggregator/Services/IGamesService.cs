@@ -23,7 +23,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Services
         Task<ScoringDto> GetChallengeScoringAsync([AliasAs("game")] Game game);
 
         [Get("/api/challenge/games/{game}/matches")]
-        Task<IReadOnlyCollection<MatchDto>> GetChallengeMatchesAsync(
+        Task<IReadOnlyCollection<ChallengeMatch>> GetChallengeMatchesAsync(
             [AliasAs("game")] Game game,
             [AliasAs("playerId")]
             string playerId,

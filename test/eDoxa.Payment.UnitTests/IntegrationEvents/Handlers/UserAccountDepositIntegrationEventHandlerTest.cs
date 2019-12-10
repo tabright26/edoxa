@@ -17,6 +17,8 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Moq;
 
+using Stripe;
+
 using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
@@ -45,7 +47,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                         It.IsAny<TransactionId>(),
                         It.IsAny<long>(),
                         It.IsAny<string>()))
-                .Returns(Task.CompletedTask)
+                .ReturnsAsync(new Invoice())
                 .Verifiable();
 
             var mockCustomerService = new Mock<IStripeCustomerService>();
