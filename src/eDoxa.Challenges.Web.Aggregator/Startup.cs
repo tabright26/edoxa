@@ -17,6 +17,7 @@ using AutoMapper;
 
 using eDoxa.Challenges.Web.Aggregator.Infrastructure;
 using eDoxa.Challenges.Web.Aggregator.Services;
+using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
@@ -198,19 +199,13 @@ namespace eDoxa.Challenges.Web.Aggregator
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddGrpcClient<Grpc.Protos.Cashier.Services.ChallengeService.ChallengeServiceClient>("CashierChallengeServiceClient", options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+            services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddGrpcClient<UserService.UserServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
-                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            services.AddGrpcClient<RoleService.RoleServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+            services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())

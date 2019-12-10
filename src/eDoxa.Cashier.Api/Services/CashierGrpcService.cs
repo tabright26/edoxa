@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
@@ -17,21 +18,96 @@ using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Responses;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Shared.Dtos;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+
+using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
 
 namespace eDoxa.Cashier.Api.Services
 {
-    public sealed class ChallengeGrpcService : ChallengeService.ChallengeServiceBase
+    public sealed class CashierGrpcService : CashierService.CashierServiceBase
     {
         private readonly IChallengeQuery _challengeQuery;
         private readonly IChallengeService _challengeService;
+        private readonly IAccountService _accountService;
 
-        public ChallengeGrpcService(IChallengeQuery challengeQuery, IChallengeService challengeService)
+        public CashierGrpcService(IChallengeQuery challengeQuery, IChallengeService challengeService, IAccountService accountService)
         {
             _challengeQuery = challengeQuery;
             _challengeService = challengeService;
+            _accountService = accountService;
+        }
+
+                public override async Task<CreateTransactionResponse> CreateTransaction(CreateTransactionRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var account = await _accountService.FindAccountAsync(userId);
+
+            if (account == null)
+            {
+                context.Status = new Status(StatusCode.NotFound, "User account not found.");
+
+                return new CreateTransactionResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    }
+                };
+            }
+
+            var result = await _accountService.CreateTransactionAsync(
+                account,
+                new decimal(request.Amount),
+                Domain.AggregateModels.Currency.FromValue((int) request.Currency),
+                Seedwork.Domain.Misc.TransactionType.FromValue((int) request.Type),
+                new TransactionMetadata(request.Metadata));
+
+            if (result.IsValid)
+            {
+                context.Status = new Status(StatusCode.OK, "");
+
+                return new CreateTransactionResponse
+                {
+                    Status = new StatusDto
+                    {
+                        Code = (int) context.Status.StatusCode,
+                        Message = context.Status.Detail
+                    },
+                    Transaction = MapTransaction(result.GetEntityFromMetadata<ITransaction>())
+                };
+            }
+
+            context.Status = new Status(StatusCode.FailedPrecondition, "");
+
+            return new CreateTransactionResponse
+            {
+                Status = new StatusDto
+                {
+                    Code = (int) context.Status.StatusCode,
+                    Message = context.Status.Detail
+                }
+            };
+        }
+
+        public static TransactionDto MapTransaction(ITransaction transaction)
+        {
+            return new TransactionDto
+            {
+                Id = transaction.Id.ToString(),
+                Timestamp = Timestamp.FromDateTime(transaction.Timestamp),
+                Currency = (Currency) transaction.Currency.Type.Value,
+                Amount = Convert.ToDouble(transaction.Currency.Amount),
+                Type = (Grpc.Protos.Cashier.Enums.TransactionType) transaction.Type.Value,
+                Status = (Grpc.Protos.Cashier.Enums.TransactionStatus) transaction.Status.Value,
+                Description = transaction.Description.Text
+            };
         }
 
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)

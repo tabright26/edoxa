@@ -300,11 +300,7 @@ namespace eDoxa.Identity.Api
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapGrpcService<UserGrpcService>();
-
-                    endpoints.MapGrpcService<RoleGrpcService>();
-
-                    endpoints.MapGrpcService<DoxatagGrpcService>();
+                    endpoints.MapGrpcService<IdentityGrpcService>();
 
                     endpoints.MapRazorPages();
 

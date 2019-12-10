@@ -3,3 +3,5 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Clans.Services";
 
 package edoxa.services.clans;
+
+service ClanService {}

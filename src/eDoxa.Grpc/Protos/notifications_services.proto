@@ -3,3 +3,5 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Notifications.Services";
 
 package edoxa.services.notifications;
+
+service NotificationService {}

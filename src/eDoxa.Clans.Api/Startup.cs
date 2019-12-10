@@ -16,6 +16,7 @@ using AutoMapper;
 using eDoxa.Clans.Api.Infrastructure;
 using eDoxa.Clans.Api.Infrastructure.Data;
 using eDoxa.Clans.Api.IntegrationEvents.Extensions;
+using eDoxa.Clans.Api.Services;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -146,6 +147,8 @@ namespace eDoxa.Clans.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<ClanGrpcService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<ClansAppSettings>(AppSettings.ApiResource);

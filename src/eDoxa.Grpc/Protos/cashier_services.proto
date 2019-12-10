@@ -7,11 +7,8 @@ import "cashier_responses.proto";
 
 package edoxa.services.cashier;
 
-service AccountService {
+service CashierService {
   rpc CreateTransaction (CreateTransactionRequest) returns (CreateTransactionResponse);
-}
-
-service ChallengeService {
   rpc FetchChallenges (FetchChallengesRequest) returns (FetchChallengesResponse);
   rpc FindChallenge (FindChallengeRequest) returns (FindChallengeResponse);
   rpc CreateChallenge (CreateChallengeRequest) returns (CreateChallengeResponse);

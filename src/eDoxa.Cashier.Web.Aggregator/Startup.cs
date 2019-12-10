@@ -17,6 +17,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Web.Aggregator.Infrastructure;
 using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
@@ -141,23 +142,17 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddTransient<AccessTokenDelegatingHandler>();
 
-            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+            services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            //services.AddGrpcClient<UserService.UserServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
-            //    .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
-            //    .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-            //    .AddPolicyHandler(GetRetryPolicy())
-            //    .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            //services.AddGrpcClient<RoleService.RoleServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
-            //    .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
-            //    .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-            //    .AddPolicyHandler(GetRetryPolicy())
-            //    .AddPolicyHandler(GetCircuitBreakerPolicy());
+            services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
+                .AddPolicyHandler(GetRetryPolicy())
+                .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.PaymentUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)

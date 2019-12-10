@@ -153,7 +153,7 @@ namespace eDoxa.Games.Api
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapGrpcService<ChallengeGrpcService>();
+                    endpoints.MapGrpcService<GameGrpcService>();
 
                     endpoints.MapControllers();
 

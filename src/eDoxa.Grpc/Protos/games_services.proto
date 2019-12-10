@@ -7,7 +7,7 @@ import "games_responses.proto";
 
 package edoxa.services.games;
 
-service ChallengeService {
+service GameService {
   rpc FetchChallengeScoring(FetchChallengeScoringRequest) returns (FetchChallengeScoringResponse);
   rpc FetchChallengeMatches(FetchChallengeMatchesRequest) returns (FetchChallengeMatchesResponse);
 }

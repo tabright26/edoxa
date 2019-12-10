@@ -156,9 +156,7 @@ namespace eDoxa.Cashier.Api
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapGrpcService<AccountGrpcService>();
-
-                    endpoints.MapGrpcService<ChallengeGrpcService>();
+                    endpoints.MapGrpcService<CashierGrpcService>();
 
                     endpoints.MapControllers();
 

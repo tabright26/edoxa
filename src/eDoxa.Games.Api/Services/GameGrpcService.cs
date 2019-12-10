@@ -21,11 +21,11 @@ using Game = eDoxa.Seedwork.Domain.Misc.Game;
 
 namespace eDoxa.Games.Api.Services
 {
-    public sealed class ChallengeGrpcService : ChallengeService.ChallengeServiceBase
+    public sealed class GameGrpcService : GameService.GameServiceBase
     {
         private readonly IChallengeService _challengeService;
 
-        public ChallengeGrpcService(IChallengeService challengeService)
+        public GameGrpcService(IChallengeService challengeService)
         {
             _challengeService = challengeService;
         }
