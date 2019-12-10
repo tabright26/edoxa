@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Shared.Dtos";
+
+import "google/protobuf/any.proto";
+
+package edoxa.shared.dtos;
+
+message StatusDto {
+  int32 code = 1;
+  string message = 2;
+  google.protobuf.Any details = 3;
+}

@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Services";
+
+import "Protos/identity_requests.proto";
+import "Protos/identity_responses.proto";
+
+package edoxa.services.identity;
+
+service UserService {
+  rpc AddUserClaim(AddUserClaimRequest) returns (AddUserClaimResponse);
+  rpc ReplaceUserClaim(ReplaceUserClaimRequest) returns (ReplaceUserClaimResponse);
+  rpc RemoveUserClaim(RemoveUserClaimRequest) returns (RemoveUserClaimResponse);
+  rpc AddUserToRole(AddUserToRoleRequest) returns (AddUserToRoleResponse);
+  rpc RemoveUserFromRole(RemoveUserFromRoleRequest) returns (RemoveUserFromRoleResponse);
+}
+
+service RoleService {
+  rpc CreateRole(CreateRoleRequest) returns (CreateRoleResponse);
+  rpc DeleteRole(DeleteRoleRequest) returns (DeleteRoleResponse);
+  rpc AddRoleClaim(AddRoleClaimRequest) returns (AddRoleClaimResponse);
+  rpc RemoveRoleClaim(RemoveRoleClaimRequest) returns (RemoveRoleClaimResponse);
+}
+
+service DoxatagService {
+  rpc FetchDoxatags(FetchDoxatagsRequest) returns (FetchDoxatagsResponse);
+}

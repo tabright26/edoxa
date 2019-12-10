@@ -1,0 +1,26 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Dtos";
+
+package edoxa.services.identity;
+
+message UserClaimDto {
+  string type = 1;
+  string value = 2;
+}
+
+message RoleDto {
+  string id = 1;
+  string name = 2;
+  repeated RoleClaimDto claims = 3;
+}
+
+message RoleClaimDto {
+  string type = 1;
+  string value = 2;
+}
+
+message DoxatagDto {
+  string name = 1;
+  int32 code = 2;
+}

@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Responses";
+
+import "Protos/shared_dtos.proto";
+
+package edoxa.services.payment;
+
+message DepositResponse {
+  shared.dtos.StatusDto status = 1;
+}
+
+message WithdrawalResponse {
+  shared.dtos.StatusDto status = 1;
+}

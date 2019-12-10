@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Requests";
+
+import "Protos/cashier_dtos.proto";
+import "Protos/cashier_enums.proto";
+
+package edoxa.services.cashier;
+
+message FetchChallengesRequest {}
+
+message FindChallengeRequest {
+  string challengeId = 1;
+}
+
+message CreateChallengeRequest {
+  string id = 1;
+  int32 payoutEntries = 2;
+  EntryFeeDto entryFee = 3;
+}
+
+message CreateTransactionRequest {
+  TransactionType type = 1;
+  Currency currency = 2;
+  double amount = 3;
+  map<string, string> metadata = 4;
+}

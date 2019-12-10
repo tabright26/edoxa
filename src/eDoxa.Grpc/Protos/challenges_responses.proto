@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Responses";
+
+import "Protos/challenges_dtos.proto";
+import "Protos/shared_dtos.proto";
+
+package edoxa.services.challenges;
+
+message FetchChallengesResponse {
+  shared.dtos.StatusDto status = 1;
+  repeated ChallengeDto challenges = 2;
+}
+
+message FindChallengeResponse {
+  shared.dtos.StatusDto status = 1;
+  ChallengeDto challenge = 2;
+}
+
+message CreateChallengeResponse {
+  shared.dtos.StatusDto status = 1;
+  ChallengeDto challenge = 2;
+}
+
+message SynchronizeChallengeResponse {
+  shared.dtos.StatusDto status = 1;
+  ChallengeDto challenge = 2;
+}
+
+message RegisterChallengeParticipantResponse {
+  shared.dtos.StatusDto status = 1;
+  ParticipantDto participant = 2;
+}

@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Services";
+
+import "Protos/cashier_requests.proto";
+import "Protos/cashier_responses.proto";
+
+package edoxa.services.cashier;
+
+service AccountService {
+  rpc CreateTransaction (CreateTransactionRequest) returns (CreateTransactionResponse);
+}
+
+service ChallengeService {
+  rpc FetchChallenges (FetchChallengesRequest) returns (FetchChallengesResponse);
+  rpc FindChallenge (FindChallengeRequest) returns (FindChallengeResponse);
+  rpc CreateChallenge (CreateChallengeRequest) returns (CreateChallengeResponse);
+}

@@ -1,6 +1,8 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "eDoxa.Grpc.Protos";
+option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Enums";
+
+package edoxa.services.cashier;
 
 enum Currency {
   CURRENCY_NONE = 0;

@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Dtos";
+
+import "google/protobuf/timestamp.proto";
+
+import "Protos/cashier_enums.proto";
+
+package edoxa.services.cashier;
+
+message ChallengeDto {
+  string id = 1;
+  EntryFeeDto entryFee = 2;
+  PayoutDto payout = 3;
+}
+
+message PayoutDto {
+  PrizePoolDto prizePool = 1;
+  repeated BucketDto buckets = 2;
+  
+  message PrizePoolDto {
+    Currency currency = 1;
+    double amount = 2;
+  }
+
+  message BucketDto {
+    int32 size = 1;
+    double prize = 2;
+  }
+}
+
+message EntryFeeDto {
+  double amount = 1;
+  Currency currency = 2;
+}
+
+message TransactionDto {
+  string id = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  Currency currency = 3;
+  double amount = 4;
+  string description = 5;
+  TransactionType type = 6;
+  TransactionStatus status = 7;
+}

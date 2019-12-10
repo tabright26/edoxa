@@ -5,12 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\enumerations.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.1" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -18,7 +13,46 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\enumerations.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\clans_dtos.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\clans_enums.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\clans_integration_events.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\clans_requests.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\clans_responses.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\clans_services.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\challenges_dtos.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\challenges_enums.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\challenges_integration_events.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\challenges_requests.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\challenges_responses.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\challenges_services.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\shared_enums.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\shared_dtos.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\cashier_integration_events.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\cashier_enums.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\cashier_dtos.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\cashier_requests.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\cashier_responses.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\cashier_services.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\games_dtos.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\games_integration_events.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\games_requests.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\games_responses.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\games_services.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\identity_dtos.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\identity_integration_events.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\identity_requests.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\identity_responses.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\identity_services.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\notifications_dtos.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\notifications_enums.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\notifications_integration_events.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\notifications_requests.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\notifications_responses.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\notifications_services.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\payment_integration_events.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\payment_requests.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\payment_responses.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\payment_services.proto" GrpcServices="None" />
   </ItemGroup>
 
 </Project>

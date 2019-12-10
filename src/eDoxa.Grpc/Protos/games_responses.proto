@@ -1,0 +1,18 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Responses";
+
+import "Protos/games_dtos.proto";
+import "Protos/shared_dtos.proto";
+
+package edoxa.services.games;
+
+message FetchChallengeScoringResponse {
+  shared.dtos.StatusDto status = 1;
+  map<string, float> scoring = 2;
+}
+
+message FetchChallengeMatchesResponse {
+  shared.dtos.StatusDto status = 1;
+  repeated MatchDto matches = 2;
+}

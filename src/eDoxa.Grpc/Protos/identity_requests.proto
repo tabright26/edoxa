@@ -1,0 +1,53 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Requests";
+
+import "Protos/identity_dtos.proto";
+
+package edoxa.services.identity;
+
+message AddUserClaimRequest {
+  string userId = 1;
+  UserClaimDto claim = 2;
+}
+
+message ReplaceUserClaimRequest {
+  string userId = 1;
+  UserClaimDto claim = 2;
+}
+
+message RemoveUserClaimRequest {
+  string userId = 1;
+  UserClaimDto claim = 2;
+}
+
+message AddUserToRoleRequest {
+  string userId = 1;
+  string roleName = 2;
+}
+
+message RemoveUserFromRoleRequest {
+  string userId = 1;
+  string roleName = 2;
+}
+
+message CreateRoleRequest {
+  string roleName = 1;
+}
+
+message DeleteRoleRequest {
+  string roleName = 1;
+}
+
+message AddRoleClaimRequest {
+  string roleName = 1;
+  RoleClaimDto claim = 2;
+}
+
+message RemoveRoleClaimRequest {
+  string roleName = 1;
+  RoleClaimDto claim = 2;
+}
+
+message FetchDoxatagsRequest {
+}
