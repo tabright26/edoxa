@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>eDoxa.Challenges.Web.Aggregator</AssemblyName>
     <RootNamespace>eDoxa.Challenges.Web.Aggregator</RootNamespace>
     <Nullable>Enable</Nullable>
