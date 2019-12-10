@@ -77,14 +77,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 Metadata);
         }
 
-        public ITransactionBuilder WithMetadata(TransactionMetadata metadata)
+        public ITransactionBuilder WithMetadata(TransactionMetadata? metadata)
         {
-            return new TransactionBuilder(
-                Currency,
-                Type,
-                Description,
-                Provider,
-                metadata);
+            return metadata != null
+                ? new TransactionBuilder(
+                    Currency,
+                    Type,
+                    Description,
+                    Provider,
+                    metadata)
+                : this;
         }
 
         private static TransactionDescription GetDefaultDescriptionByType(TransactionType type, ICurrency currency)

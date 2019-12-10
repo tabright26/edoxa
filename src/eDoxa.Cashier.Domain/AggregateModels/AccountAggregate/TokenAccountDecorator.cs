@@ -51,10 +51,10 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 throw new InvalidOperationException();
             }
 
-            var builder = new TransactionBuilder(TransactionType.Charge, amount);
+            var builder = new TransactionBuilder(TransactionType.Charge, amount).WithMetadata(metadata);
 
             var transaction = builder.Build();
-            
+
             this.CreateTransaction(transaction);
 
             return transaction;
@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public ITransaction Payout(Token amount, TransactionMetadata? metadata = null)
         {
-            var builder = new TransactionBuilder(TransactionType.Payout, amount);
+            var builder = new TransactionBuilder(TransactionType.Payout, amount).WithMetadata(metadata);
 
             var transaction = builder.Build();
 
@@ -73,7 +73,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public ITransaction Reward(Token amount, TransactionMetadata? metadata = null)
         {
-            var builder = new TransactionBuilder(TransactionType.Reward, amount);
+            var builder = new TransactionBuilder(TransactionType.Reward, amount).WithMetadata(metadata);
 
             var transaction = builder.Build();
 

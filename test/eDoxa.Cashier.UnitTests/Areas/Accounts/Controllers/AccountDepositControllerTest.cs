@@ -33,7 +33,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
         }
 
         [Fact]
-        public void GetAsync_WithCurrencyAll_ShouldBeOfTypeBadRequestObjectResult()
+        public void GetAsync_WithCurrencyAll_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
             var mockBundlesService = new Mock<IBundleService>();
@@ -48,7 +48,7 @@ namespace eDoxa.Cashier.UnitTests.Areas.Accounts.Controllers
             var result = controller.Get(TransactionType.Deposit, Currency.All);
 
             // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+            result.Should().BeOfType<NotFoundObjectResult>();
         }
 
         [Fact]
