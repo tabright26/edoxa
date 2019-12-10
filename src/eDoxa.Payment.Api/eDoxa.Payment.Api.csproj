@@ -15,10 +15,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\payment.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Google.Api.CommonProtos" Version="1.7.0" />
     <PackageReference Include="Google.Protobuf" Version="3.11.1" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
@@ -42,7 +38,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\payment.proto" GrpcServices="Server" />
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_integration_events.proto" GrpcServices="None">
+      <Link>Protos\payment_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_requests.proto" GrpcServices="None">
+      <Link>Protos\payment_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_responses.proto" GrpcServices="None">
+      <Link>Protos\payment_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_services.proto" GrpcServices="Server">
+      <Link>Protos\payment_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
+      <Link>Protos\shared_dtos.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

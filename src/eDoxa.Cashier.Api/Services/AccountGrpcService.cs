@@ -9,7 +9,12 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Grpc.Protos;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.Cashier.Requests;
+using eDoxa.Grpc.Protos.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 
 using Google.Protobuf.WellKnownTypes;

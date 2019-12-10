@@ -2,8 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Services";
 
-import "Protos/challenges_requests.proto";
-import "Protos/challenges_responses.proto";
+import "challenges_requests.proto";
+import "challenges_responses.proto";
 
 package edoxa.services.challenges;
 

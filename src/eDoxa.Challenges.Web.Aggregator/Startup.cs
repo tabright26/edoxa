@@ -15,10 +15,10 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Challenges.Grpc.Protos;
 using eDoxa.Challenges.Web.Aggregator.Infrastructure;
 using eDoxa.Challenges.Web.Aggregator.Services;
-using eDoxa.Identity.Grpc.Protos;
+using eDoxa.Grpc.Protos.Challenges.Services;
+using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -198,7 +198,7 @@ namespace eDoxa.Challenges.Web.Aggregator
                 .AddPolicyHandler(GetRetryPolicy())
                 .AddPolicyHandler(GetCircuitBreakerPolicy());
 
-            services.AddGrpcClient<Cashier.Grpc.Protos.ChallengeService.ChallengeServiceClient>("CashierChallengeServiceClient", options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+            services.AddGrpcClient<Grpc.Protos.Cashier.Services.ChallengeService.ChallengeServiceClient>("CashierChallengeServiceClient", options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
                 .AddPolicyHandler(GetRetryPolicy())

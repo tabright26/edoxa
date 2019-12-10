@@ -7,11 +7,14 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Payment.Requests;
+using eDoxa.Grpc.Protos.Payment.Responses;
+using eDoxa.Grpc.Protos.Payment.Services;
+using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Payment.Api.Areas.Stripe.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.Grpc.Protos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;

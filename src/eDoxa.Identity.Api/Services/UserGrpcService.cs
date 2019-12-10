@@ -8,15 +8,18 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Grpc.Protos.Identity.Responses;
+using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Grpc.Protos;
 
 using Grpc.Core;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-using UserService = eDoxa.Identity.Grpc.Protos.UserService;
+using UserService = eDoxa.Grpc.Protos.Identity.Services.UserService;
 
 namespace eDoxa.Identity.Api.Services
 {

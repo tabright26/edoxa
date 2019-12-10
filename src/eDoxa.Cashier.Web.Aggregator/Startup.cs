@@ -15,9 +15,9 @@ using Autofac;
 
 using AutoMapper;
 
-using eDoxa.Cashier.Grpc.Protos;
 using eDoxa.Cashier.Web.Aggregator.Infrastructure;
-using eDoxa.Payment.Grpc.Protos;
+using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;

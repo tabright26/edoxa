@@ -11,14 +11,15 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Grpc.Protos;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.Cashier.Requests;
+using eDoxa.Grpc.Protos.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Grpc.Core;
-
-using static eDoxa.Cashier.Grpc.Protos.PayoutDto.Types;
-
-using Currency = eDoxa.Cashier.Domain.AggregateModels.Currency;
 
 namespace eDoxa.Cashier.Api.Services
 {
@@ -89,7 +90,7 @@ namespace eDoxa.Cashier.Api.Services
             var result = await _challengeService.CreateChallengeAsync(
                 ChallengeId.Parse(request.Id),
                 new PayoutEntries(request.PayoutEntries),
-                new EntryFee(Convert.ToDecimal(request.EntryFee.Amount), Currency.FromValue((int) request.EntryFee.Currency)));
+                new EntryFee(Convert.ToDecimal(request.EntryFee.Amount), Domain.AggregateModels.Currency.FromValue((int) request.EntryFee.Currency)));
 
             if (result.IsValid)
             {
@@ -126,19 +127,19 @@ namespace eDoxa.Cashier.Api.Services
                 EntryFee = new EntryFeeDto
                 {
                     Amount = Convert.ToDouble(challenge.EntryFee.Amount),
-                    Currency = (Grpc.Protos.Currency) challenge.EntryFee.Currency.Value
+                    Currency = (Currency) challenge.EntryFee.Currency.Value
                 },
                 Payout = new PayoutDto
                 {
-                    PrizePool = new PrizePoolDto
+                    PrizePool = new PayoutDto.Types.PrizePoolDto
                     {
                         Amount = Convert.ToDouble(challenge.Payout.PrizePool.Amount),
-                        Currency = (Grpc.Protos.Currency) challenge.Payout.PrizePool.Currency.Value
+                        Currency = (Currency) challenge.Payout.PrizePool.Currency.Value
                     },
                     Buckets =
                     {
                         challenge.Payout.Buckets.Select(
-                                bucket => new BucketDto
+                                bucket => new PayoutDto.Types.BucketDto
                                 {
                                     Prize = Convert.ToDouble(bucket.Prize.Amount),
                                     Size = bucket.Size

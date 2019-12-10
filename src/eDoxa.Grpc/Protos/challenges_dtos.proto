@@ -4,8 +4,8 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Dtos";
 
 import "google/protobuf/timestamp.proto";
 
-import "Protos/challenges_enums.proto";
-import "Protos/shared_enums.proto";
+import "challenges_enums.proto";
+import "shared_enums.proto";
 
 package edoxa.services.challenges;
 

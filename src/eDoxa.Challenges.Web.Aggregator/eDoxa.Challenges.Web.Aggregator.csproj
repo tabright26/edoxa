@@ -37,14 +37,53 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Cashier.Api\Protos\cashier.proto" GrpcServices="Client">
-      <Link>Protos\cashier.proto</Link>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None">
+      <Link>Protos\cashier_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Challenges.Api\Protos\challenges.proto" GrpcServices="Client">
-      <Link>Protos\challenges.proto</Link>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_enums.proto" GrpcServices="None">
+      <Link>Protos\cashier_enums.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Identity.Api\Protos\identity.proto" GrpcServices="Client">
-      <Link>Protos\identity.proto</Link>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_requests.proto" GrpcServices="None">
+      <Link>Protos\cashier_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_responses.proto" GrpcServices="None">
+      <Link>Protos\cashier_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_services.proto" GrpcServices="Client">
+      <Link>Protos\cashier_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None">
+      <Link>Protos\challenges_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_enums.proto" GrpcServices="None">
+      <Link>Protos\challenges_enums.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_requests.proto" GrpcServices="None">
+      <Link>Protos\challenges_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_responses.proto" GrpcServices="None">
+      <Link>Protos\challenges_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_services.proto" GrpcServices="Client">
+      <Link>Protos\challenges_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
+      <Link>Protos\identity_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_requests.proto" GrpcServices="None">
+      <Link>Protos\identity_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_responses.proto" GrpcServices="None">
+      <Link>Protos\identity_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_services.proto" GrpcServices="Client">
+      <Link>Protos\identity_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
+      <Link>Protos\shared_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_enums.proto" GrpcServices="None">
+      <Link>Protos\shared_enums.proto</Link>
     </Protobuf>
   </ItemGroup>
 

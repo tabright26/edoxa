@@ -9,16 +9,19 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Grpc.Protos.Identity.Responses;
+using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
-using eDoxa.Identity.Grpc.Protos;
 
 using Grpc.Core;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-using RoleService = eDoxa.Identity.Grpc.Protos.RoleService;
+using RoleService = eDoxa.Grpc.Protos.Identity.Services.RoleService;
 
 namespace eDoxa.Identity.Api.Services
 {

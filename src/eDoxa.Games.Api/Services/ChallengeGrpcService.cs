@@ -7,14 +7,15 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.Services;
-using eDoxa.Games.Grpc.Protos;
+using eDoxa.Grpc.Protos.Games.Dtos;
+using eDoxa.Grpc.Protos.Games.Requests;
+using eDoxa.Grpc.Protos.Games.Responses;
+using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
-
-using static eDoxa.Games.Grpc.Protos.FetchChallengeMatchesResponse.Types;
 
 using Game = eDoxa.Seedwork.Domain.Misc.Game;
 

@@ -2,8 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Services";
 
-import "Protos/identity_requests.proto";
-import "Protos/identity_responses.proto";
+import "identity_requests.proto";
+import "identity_responses.proto";
 
 package edoxa.services.identity;
 

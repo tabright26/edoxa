@@ -6,7 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Grpc.Protos;
+using eDoxa.Grpc.Protos.Payment.Requests;
+using eDoxa.Grpc.Protos.Payment.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

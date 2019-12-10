@@ -2,8 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Games.Services";
 
-import "Protos/games_requests.proto";
-import "Protos/games_responses.proto";
+import "games_requests.proto";
+import "games_responses.proto";
 
 package edoxa.services.games;
 

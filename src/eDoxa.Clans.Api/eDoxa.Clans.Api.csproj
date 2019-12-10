@@ -17,10 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\clans.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.1" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
@@ -42,7 +38,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\clans.proto" GrpcServices="Server" />
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_dtos.proto" GrpcServices="None">
+      <Link>Protos\clans_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_enums.proto" GrpcServices="None">
+      <Link>Protos\clans_enums.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_integration_events.proto" GrpcServices="None">
+      <Link>Protos\clans_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_requests.proto" GrpcServices="None">
+      <Link>Protos\clans_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_responses.proto" GrpcServices="None">
+      <Link>Protos\clans_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_services.proto" GrpcServices="Server">
+      <Link>Protos\clans_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
+      <Link>Protos\shared_dtos.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

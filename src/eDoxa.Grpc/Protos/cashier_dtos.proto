@@ -4,7 +4,7 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Dtos";
 
 import "google/protobuf/timestamp.proto";
 
-import "Protos/cashier_enums.proto";
+import "cashier_enums.proto";
 
 package edoxa.services.cashier;
 

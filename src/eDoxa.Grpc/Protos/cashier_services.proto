@@ -2,8 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Services";
 
-import "Protos/cashier_requests.proto";
-import "Protos/cashier_responses.proto";
+import "cashier_requests.proto";
+import "cashier_responses.proto";
 
 package edoxa.services.cashier;
 

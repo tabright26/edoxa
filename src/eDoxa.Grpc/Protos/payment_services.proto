@@ -2,8 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Services";
 
-import "Protos/payment_requests.proto";
-import "Protos/payment_responses.proto";
+import "payment_requests.proto";
+import "payment_responses.proto";
 
 package edoxa.services.payment;
 

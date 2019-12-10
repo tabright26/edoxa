@@ -2,8 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Responses";
 
-import "Protos/identity_dtos.proto";
-import "Protos/shared_dtos.proto";
+import "identity_dtos.proto";
+import "shared_dtos.proto";
 
 package edoxa.services.identity;
 
