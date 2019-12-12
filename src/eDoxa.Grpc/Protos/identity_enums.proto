@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Enums";
+
+package edoxa.services.identity;
+
+enum Country {
+  COUNTRY_NONE = 0;
+  COUNTRY_CANADA = 1;
+  COUNTRY_UNITED_STATES = 2;
+  COUNTRY_ALL = -1;
+}
+
+enum Gender {
+  GENDER_NONE = 0;
+  GENDER_MALE = 1;
+  GENDER_FEMALE = 2;
+  GENDER_OTHER = 4;
+  GENDER_ALL = -1;
+}

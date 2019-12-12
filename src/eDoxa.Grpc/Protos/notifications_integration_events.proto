@@ -3,3 +3,10 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Notifications.IntegrationEvents";
 
 package edoxa.services.notifications;
+
+message EmailSentIntegrationEvent {
+  string userId = 1;
+  string email = 2;
+  string subject = 3;
+  string htmlMessage = 4;
+}

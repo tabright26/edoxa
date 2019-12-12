@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.23.2" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
@@ -47,6 +48,9 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
       <Link>Protos\identity_dtos.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_enums.proto" GrpcServices="None">
+      <Link>Protos\identity_enums.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
       <Link>Protos\identity_integration_events.proto</Link>
     </Protobuf>
@@ -58,6 +62,9 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_services.proto" GrpcServices="Server">
       <Link>Protos\identity_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\notifications_integration_events.proto" GrpcServices="None">
+      <Link>Protos\notifications_integration_events.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
       <Link>Protos\shared_dtos.proto</Link>

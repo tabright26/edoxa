@@ -2,4 +2,97 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Identity.IntegrationEvents";
 
+import "identity_dtos.proto";
+import "identity_enums.proto";
+
 package edoxa.services.identity;
+
+message RoleClaimsAddedIntegrationEvent {
+  string roleName = 1;
+  repeated RoleClaimDto claims = 2;
+}
+
+message RoleClaimsRemovedIntegrationEvent {
+  string roleName = 1;
+  repeated RoleClaimDto claims = 2;
+}
+
+message RoleCreatedIntegrationEvent {
+  string roleName = 1;
+}
+
+message RoleDeletedIntegrationEvent {
+  string roleName = 1;
+}
+
+message UserAddressChangedIntegrationEvent {
+  string userId = 1;
+  string line1 = 2;
+  string line2 = 3;
+  string state = 4;
+  string city = 5;
+  string postalCode = 6;
+}
+
+message UserClaimsAddedIntegrationEvent {
+  string roleName = 1;
+  repeated UserClaimDto claims = 2;
+}
+
+message UserClaimsRemovedIntegrationEvent {
+  string roleName = 1;
+  repeated UserClaimDto claims = 2;
+}
+
+message UserClaimsReplacedIntegrationEvent {
+  string roleName = 1;
+  int32 claimCount = 2;
+  repeated UserClaimDto claims = 3;
+  repeated UserClaimDto newClaims = 4;
+}
+
+message UserCreatedIntegrationEvent {
+  string userId = 1;
+  string email = 2;
+  Country country = 3;
+}
+
+message UserEmailChangedIntegrationEvent {
+  string userId = 1;
+  string email = 2;
+}
+
+message UserEmailSentIntegrationEvent {
+  string userId = 1;
+  string subject = 2;
+  string htmlMessage = 3;
+}
+
+message UserInformationChangedIntegrationEvent {
+  string userId = 1;
+  string firstName = 2;
+  string lastName = 3;
+  Gender gender = 4;
+  Dob dob = 5;
+
+  message Dob {
+    int32 year = 1;
+    int32 month = 2;
+    int32 day = 3;
+  }
+}
+
+message UserPhoneChangedIntegrationEvent {
+  string userId = 1;
+  string phoneNumber = 2;
+}
+
+message UserRoleAddedIntegrationEvent {
+  string userId = 1;
+  string roleName = 2;
+}
+
+message UserRoleRemovedIntegrationEvent {
+  string userId = 1;
+  string roleName = 2;
+}

@@ -3,3 +3,21 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.IntegrationEvents";
 
 package edoxa.services.cashier;
+
+message UserTransactionCanceledIntegrationEvent {
+  string userId = 1;
+  string transaction = 2;
+}
+
+message UserTransactionFailedIntegrationEvent {
+  string userId = 1;
+  string transaction = 2;
+}
+
+message UserTransactionSuccededIntegrationEvent {
+  string userId = 1;
+  string transaction = 2;
+}
+
+message TransactionSuccededIntegrationEvent {
+}

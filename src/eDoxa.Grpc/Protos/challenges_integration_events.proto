@@ -2,4 +2,19 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.IntegrationEvents";
 
+import "shared_enums.proto";
+
 package edoxa.services.challenges;
+
+message ChallengeClosedIntegrationEvent {
+  string challengeId = 1;
+  map<string, double> scoreboard = 2;
+}
+
+message ChallengeDeletedIntegrationEvent {
+  string challengeId = 1;
+}
+
+message ChallengesSynchronizedIntegrationEvent {
+  shared.enums.Game game = 1;
+}

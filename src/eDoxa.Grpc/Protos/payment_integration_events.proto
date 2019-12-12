@@ -3,3 +3,19 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Payment.IntegrationEvents";
 
 package edoxa.services.payment;
+
+message UserAccountDepositIntegrationEvent {
+  string userId = 1;
+  string email = 2;
+  string transactionId = 3;
+  string description = 4;
+  int64 amount = 5;
+}
+
+message UserAccountWithdrawalIntegrationEvent {
+  string userId = 1;
+  string email = 2;
+  string transactionId = 3;
+  string description = 4;
+  int64 amount = 5;
+}
