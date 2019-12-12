@@ -18,7 +18,7 @@ using eDoxa.Grpc.Protos.Challenges.Enums;
 using eDoxa.Grpc.Protos.Challenges.Requests;
 using eDoxa.Grpc.Protos.Challenges.Responses;
 using eDoxa.Grpc.Protos.Challenges.Services;
-using eDoxa.Grpc.Protos.Shared.Enums;
+using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;

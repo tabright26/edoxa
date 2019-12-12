@@ -5,16 +5,16 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Dtos";
 import "google/protobuf/timestamp.proto";
 
 import "challenges_enums.proto";
+import "games_enums.proto";
 import "custom_types.proto";
-import "shared_enums.proto";
 
 package edoxa.services.challenges;
 
 message ChallengeDto {
   string id = 1;
   string name = 2;
-  shared.enums.GameDto game = 3;
-  shared.enums.ChallengeTypeDto type = 4;
+  games.GameDto game = 3;
+  ChallengeTypeDto type = 4;
   ChallengeStateDto state = 5;
   int32 bestOf = 6;
   int32 entries = 7;

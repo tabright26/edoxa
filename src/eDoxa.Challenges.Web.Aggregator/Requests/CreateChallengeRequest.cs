@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Protos.Cashier.Enums;
-using eDoxa.Grpc.Protos.Shared.Enums;
+using eDoxa.Grpc.Protos.Games.Enums;
 
 using Newtonsoft.Json;
 

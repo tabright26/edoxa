@@ -12,3 +12,8 @@ enum ChallengeStateDto {
   CHALLENGE_STATE_DTO_CLOSED = 8;
   CHALLENGE_STATE_DTO_ALL = -1;
 }
+
+enum ChallengeTypeDto {
+  CHALLENGE_TYPE_DTO_NONE = 0;
+  CHALLENGE_TYPE_DTO_ALL = -1;
+}

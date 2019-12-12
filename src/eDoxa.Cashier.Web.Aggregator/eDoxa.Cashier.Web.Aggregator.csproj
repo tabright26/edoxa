@@ -33,9 +33,6 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None">
       <Link>Protos\cashier_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_enums.proto" GrpcServices="None">
-      <Link>Protos\cashier_enums.proto</Link>
-    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_requests.proto" GrpcServices="None">
       <Link>Protos\cashier_requests.proto</Link>
     </Protobuf>
@@ -65,9 +62,6 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\payment_services.proto" GrpcServices="Client">
       <Link>Protos\payment_services.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_enums.proto" GrpcServices="None">
-      <Link>Protos\shared_enums.proto</Link>
     </Protobuf>
   </ItemGroup>
 

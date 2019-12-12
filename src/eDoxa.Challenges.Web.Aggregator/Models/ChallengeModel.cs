@@ -9,7 +9,7 @@
 using System.Collections.Generic;
 
 using eDoxa.Grpc.Protos.Challenges.Enums;
-using eDoxa.Grpc.Protos.Shared.Enums;
+using eDoxa.Grpc.Protos.Games.Enums;
 
 namespace eDoxa.Challenges.Web.Aggregator.Models
 {

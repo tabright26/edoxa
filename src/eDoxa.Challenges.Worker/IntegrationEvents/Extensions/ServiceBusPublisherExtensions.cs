@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -18,7 +19,7 @@ namespace eDoxa.Challenges.Worker.IntegrationEvents.Extensions
         {
             await publisher.PublishAsync(new ChallengesSynchronizedIntegrationEvent
             {
-                Game = (Grpc.Protos.Shared.Enums.GameDto) game.Value
+                Game = (GameDto) game.Value
             });
         }
     }

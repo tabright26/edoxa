@@ -1,8 +1,8 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "eDoxa.Grpc.Protos.Shared.Enums";
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Enums";
 
-package edoxa.shared.enums;
+package edoxa.services.games;
 
 enum GameDto {
   GAME_DTO_NONE = 0;
@@ -16,9 +16,4 @@ enum GameDto {
   GAME_DTO_FORTNITE = 128;
   GAME_DTO_PUBG = 256;
   GAME_DTO_ALL = -1;
-}
-
-enum ChallengeTypeDto {
-  CHALLENGE_TYPE_DTO_NONE = 0;
-  CHALLENGE_TYPE_DTO_ALL = -1;
 }

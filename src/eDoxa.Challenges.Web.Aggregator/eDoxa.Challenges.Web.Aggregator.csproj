@@ -35,9 +35,6 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None">
       <Link>Protos\cashier_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_enums.proto" GrpcServices="None">
-      <Link>Protos\cashier_enums.proto</Link>
-    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None">
       <Link>Protos\cashier_integration_events.proto</Link>
     </Protobuf>
@@ -52,9 +49,6 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None">
       <Link>Protos\challenges_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_enums.proto" GrpcServices="None">
-      <Link>Protos\challenges_enums.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_integration_events.proto" GrpcServices="None">
       <Link>Protos\challenges_integration_events.proto</Link>
@@ -94,9 +88,6 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_services.proto" GrpcServices="Client">
       <Link>Protos\identity_services.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_enums.proto" GrpcServices="None">
-      <Link>Protos\shared_enums.proto</Link>
     </Protobuf>
   </ItemGroup>
 

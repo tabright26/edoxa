@@ -34,9 +34,6 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\notifications_dtos.proto" GrpcServices="None">
       <Link>Protos\notifications_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\notifications_enums.proto" GrpcServices="None">
-      <Link>Protos\notifications_enums.proto</Link>
-    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\notifications_integration_events.proto" GrpcServices="None">
       <Link>Protos\notifications_integration_events.proto</Link>
     </Protobuf>
