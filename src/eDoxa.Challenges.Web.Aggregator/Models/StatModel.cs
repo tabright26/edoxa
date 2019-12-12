@@ -14,6 +14,6 @@ namespace eDoxa.Challenges.Web.Aggregator.Models
 
         public float Weighting { get; set; }
 
-        public decimal Score { get; set; }
+        public double Score { get; set; }
     }
 }

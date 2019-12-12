@@ -23,4 +23,5 @@ message RoleClaimDto {
 message DoxatagDto {
   string name = 1;
   int32 code = 2;
+  string userId = 3;
 }

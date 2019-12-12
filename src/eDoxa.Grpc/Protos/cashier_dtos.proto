@@ -8,15 +8,11 @@ import "cashier_enums.proto";
 
 package edoxa.services.cashier;
 
-message ChallengeDto {
-  string id = 1;
+message ChallengePayoutDto {
+  string challengeId = 1;
   EntryFeeDto entryFee = 2;
-  PayoutDto payout = 3;
-}
-
-message PayoutDto {
-  PrizePoolDto prizePool = 1;
-  repeated BucketDto buckets = 2;
+  PrizePoolDto prizePool = 3;
+  repeated BucketDto buckets = 4;
   
   message PrizePoolDto {
     Currency currency = 1;

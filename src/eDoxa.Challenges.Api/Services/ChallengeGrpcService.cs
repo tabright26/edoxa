@@ -25,8 +25,8 @@ using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
 
-using ChallengeState = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.ChallengeState;
-using Game = eDoxa.Seedwork.Domain.Misc.Game;
+using ChallengeState = eDoxa.Grpc.Protos.Challenges.Enums.ChallengeState;
+using Game = eDoxa.Grpc.Protos.Shared.Enums.Game;
 
 namespace eDoxa.Challenges.Api.Services
 {
@@ -43,8 +43,12 @@ namespace eDoxa.Challenges.Api.Services
 
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
         {
-            var challenges = await _challengeQuery.FetchChallengesAsync(Game.FromValue((int) request.Game), ChallengeState.FromValue((int) request.State));
-            
+            var game = request.Game == Game.None ? null : Seedwork.Domain.Misc.Game.FromValue((int) request.Game);
+
+            var state = request.State == ChallengeState.None ? null : Domain.AggregateModels.ChallengeAggregate.ChallengeState.FromValue((int) request.State);
+
+            var challenges = await _challengeQuery.FetchChallengesAsync(game, state);
+
             context.Status = new Status(StatusCode.OK, "");
 
             return new FetchChallengesResponse
@@ -54,7 +58,10 @@ namespace eDoxa.Challenges.Api.Services
                     Code = (int) context.Status.StatusCode,
                     Message = context.Status.Detail
                 },
-                Challenges = { challenges.Select(MapChallenge) }
+                Challenges =
+                {
+                    challenges.Select(MapChallenge)
+                }
             };
         }
 
@@ -92,13 +99,13 @@ namespace eDoxa.Challenges.Api.Services
         public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
         {
             var result = await _challengeService.CreateChallengeAsync(
-                ChallengeId.Parse(request.Id),
                 new ChallengeName(request.Name),
-                Game.FromValue((int) request.Game),
+                Seedwork.Domain.Misc.Game.FromValue((int) request.Game),
                 new BestOf(request.BestOf),
                 new Entries(request.Entries),
                 new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
-                new UtcNowDateTimeProvider());
+                new UtcNowDateTimeProvider(),
+                new Scoring(request.Scoring));
 
             if (result.IsValid)
             {
@@ -128,8 +135,8 @@ namespace eDoxa.Challenges.Api.Services
         }
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
-        { 
-            await _challengeService.SynchronizeChallengesAsync(Game.FromValue((int) request.Game), new UtcNowDateTimeProvider());
+        {
+            await _challengeService.SynchronizeChallengesAsync(Seedwork.Domain.Misc.Game.FromValue((int) request.Game), new UtcNowDateTimeProvider());
 
             context.Status = new Status(StatusCode.OK, "");
 
@@ -208,17 +215,17 @@ namespace eDoxa.Challenges.Api.Services
             {
                 Id = challenge.Id.ToString(),
                 Name = challenge.Name,
-                Game = (Grpc.Protos.Shared.Enums.Game) challenge.Game.Value,
-                State = (Grpc.Protos.Challenges.Enums.ChallengeState) challenge.Timeline.State.Value,
+                Game = (Game) challenge.Game.Value,
+                State = (ChallengeState) challenge.Timeline.State.Value,
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
-                SynchronizedAt = challenge.SynchronizedAt.HasValue ? Timestamp.FromDateTime(challenge.SynchronizedAt.Value) : null,
+                SynchronizedAt = challenge.SynchronizedAt.HasValue ? DateTime.SpecifyKind(challenge.SynchronizedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
                 Timeline = new ChallengeDto.Types.Timeline
                 {
-                    CreatedAt = Timestamp.FromDateTime(challenge.Timeline.CreatedAt),
-                    StartedAt = challenge.Timeline.StartedAt.HasValue ? Timestamp.FromDateTime(challenge.Timeline.StartedAt.Value) : null,
-                    EndedAt = challenge.Timeline.EndedAt.HasValue ? Timestamp.FromDateTime(challenge.Timeline.EndedAt.Value) : null,
-                    ClosedAt = challenge.Timeline.ClosedAt.HasValue ? Timestamp.FromDateTime(challenge.Timeline.ClosedAt.Value) : null
+                    CreatedAt = DateTime.SpecifyKind(challenge.Timeline.CreatedAt, DateTimeKind.Utc).ToTimestamp(),
+                    StartedAt = challenge.Timeline.StartedAt.HasValue ? DateTime.SpecifyKind(challenge.Timeline.StartedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
+                    EndedAt = challenge.Timeline.EndedAt.HasValue ? DateTime.SpecifyKind(challenge.Timeline.EndedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
+                    ClosedAt = challenge.Timeline.ClosedAt.HasValue ? DateTime.SpecifyKind(challenge.Timeline.ClosedAt.Value, DateTimeKind.Utc).ToTimestamp() : null
                 },
                 Scoring =
                 {
@@ -238,7 +245,7 @@ namespace eDoxa.Challenges.Api.Services
                 Id = participant.Id.ToString(),
                 ChallengeId = challenge.Id.ToString(),
                 UserId = participant.UserId.ToString(),
-                Score = Convert.ToDouble(participant.ComputeScore(challenge.BestOf)),
+                Score = Convert.ToDouble(participant.ComputeScore(challenge.BestOf)?.ToDecimal() ?? 0M),
                 Matches =
                 {
                     participant.Matches.Select(match => MapMatch(participant, match))
@@ -252,7 +259,7 @@ namespace eDoxa.Challenges.Api.Services
             {
                 Id = match.Id.ToString(),
                 ParticipantId = participant.Id.ToString(),
-                Score = Convert.ToDouble(match.Score),
+                Score = Convert.ToDouble(match.Score.ToDecimal()),
                 Stats =
                 {
                     match.Stats.Select(MapStat)
@@ -267,7 +274,7 @@ namespace eDoxa.Challenges.Api.Services
                 Name = stat.Name,
                 Value = stat.Value,
                 Weighting = stat.Weighting,
-                Score = Convert.ToDouble(stat.Score)
+                Score = Convert.ToDouble(stat.Score.ToDecimal())
             };
         }
     }

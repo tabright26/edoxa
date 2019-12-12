@@ -6,8 +6,6 @@
 
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 namespace eDoxa.Games.Domain.AggregateModels.GameAggregate
 {
     public sealed class Scoring : Dictionary<string, float>

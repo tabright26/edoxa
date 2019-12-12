@@ -19,13 +19,13 @@ namespace eDoxa.Challenges.Domain.Services
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
 
         Task<IDomainValidationResult> CreateChallengeAsync(
-            ChallengeId id,
             ChallengeName name,
             Game game,
             BestOf bestOf,
             Entries entries,
             ChallengeDuration duration,
             IDateTimeProvider createAt,
+            Scoring scoring,
             CancellationToken cancellationToken = default
         );
 

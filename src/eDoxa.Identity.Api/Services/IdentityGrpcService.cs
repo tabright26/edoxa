@@ -700,6 +700,8 @@ namespace eDoxa.Identity.Api.Services
         {
             var doxatags = await _doxatagService.FetchDoxatagsAsync();
 
+            context.Status = new Status(StatusCode.OK, "");
+
             return new FetchDoxatagsResponse
             {
                 Status = new StatusDto
@@ -719,7 +721,8 @@ namespace eDoxa.Identity.Api.Services
             return new DoxatagDto
             {
                 Code = doxatag.Code,
-                Name = doxatag.Name
+                Name = doxatag.Name,
+                UserId = doxatag.UserId.ToString()
             };
         }
 

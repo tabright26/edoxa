@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +11,6 @@ using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
-using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
@@ -60,39 +58,39 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             return this.Ok(responses);
         }
 
-        [Authorize(Roles = AppRoles.Admin)]
-        [HttpPost(Name = "CreateChallenge")]
-        [SwaggerOperation("Create a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
-        [SwaggerResponse(StatusCodes.Status204NoContent)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] CreateChallengeRequest request)
-        {
-            var challengeId = ChallengeId.FromGuid(request.ChallengeId);
+        //[Authorize(Roles = AppRoles.Admin)]
+        //[HttpPost(Name = "CreateChallenge")]
+        //[SwaggerOperation("Create a challenge.")]
+        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
+        //[SwaggerResponse(StatusCodes.Status204NoContent)]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        //public async Task<IActionResult> PostAsync([FromBody] CreateChallengeRequest request)
+        //{
+        //    var challengeId = ChallengeId.FromGuid(request.ChallengeId);
 
-            var result = await _challengeService.CreateChallengeAsync(
-                challengeId,
-                new ChallengeName(request.Name),
-                Game.FromName(request.Game),
-                new BestOf(request.BestOf),
-                new Entries(request.Entries),
-                new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
-                new UtcNowDateTimeProvider());
+        //    var result = await _challengeService.CreateChallengeAsync(
+        //        challengeId,
+        //        new ChallengeName(request.Name),
+        //        Game.FromName(request.Game),
+        //        new BestOf(request.BestOf),
+        //        new Entries(request.Entries),
+        //        new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
+        //        new UtcNowDateTimeProvider());
 
-            if (result.IsValid)
-            {
-                var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+        //    if (result.IsValid)
+        //    {
+        //        var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
 
-                return this.Ok(response);
+        //        return this.Ok(response);
 
-                //Todo: This cause error in the test, try to check if it breaks on the real version.
-                //return this.Created(Url.Link("CreateChallenge", null), response);
-            }
+        //        //Todo: This cause error in the test, try to check if it breaks on the real version.
+        //        //return this.Created(Url.Link("CreateChallenge", null), response);
+        //    }
 
-            result.AddToModelState(ModelState);
+        //    result.AddToModelState(ModelState);
 
-            return this.BadRequest(new ValidationProblemDetails(ModelState));
-        }
+        //    return this.BadRequest(new ValidationProblemDetails(ModelState));
+        //}
 
         [AllowAnonymous]
         [HttpGet("{challengeId}")]

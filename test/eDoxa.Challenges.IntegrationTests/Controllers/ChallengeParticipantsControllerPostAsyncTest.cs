@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Requests;
@@ -65,21 +64,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             var playerId = PlayerId.Parse(Guid.NewGuid().ToString());
 
             // Need extension methods for complex claims.
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim($"games/{challenge.Game.NormalizedName}", playerId))
-                .WithWebHostBuilder(
-                    x =>
-                    {
-                        x.ConfigureTestContainer<ContainerBuilder>(
-                            t =>
-                            {
-                                var mock = new Mock<IGamesHttpClient>();
-
-                                mock.Setup(g => g.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
-                                    .ReturnsAsync(new List<ChallengeMatch>());
-
-                                t.RegisterInstance(mock.Object).As<IGamesHttpClient>().SingleInstance();
-                            });
-                    });
+            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim($"games/{challenge.Game.NormalizedName}", playerId));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;

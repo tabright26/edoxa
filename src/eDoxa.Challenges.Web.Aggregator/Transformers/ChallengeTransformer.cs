@@ -1,38 +1,31 @@
 ﻿// Filename: ChallengeTransformer.cs
-// Date Created: 2019-11-07
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Challenges.Web.Aggregator.Models;
 
-using ChallengeResponses = eDoxa.Challenges.Responses;
-using CashierResponses = eDoxa.Cashier.Responses;
-using IdentityResponses = eDoxa.Identity.Responses;
+using ChallengeDtos = eDoxa.Grpc.Protos.Challenges.Dtos;
+using CashierDtos = eDoxa.Grpc.Protos.Cashier.Dtos;
+using IdentityDtos = eDoxa.Grpc.Protos.Identity.Dtos;
 
 namespace eDoxa.Challenges.Web.Aggregator.Transformers
 {
     public static class ChallengeTransformer
     {
-        public static ParticipantModel Transform(
-            Guid challengeId,
-            ChallengeResponses.ParticipantResponse participantFromChallengesService,
-            IEnumerable<IdentityResponses.DoxatagResponse> doxatags
-        )
+        public static ParticipantModel Transform(string challengeId, ChallengeDtos.ParticipantDto participant, IEnumerable<IdentityDtos.DoxatagDto> doxatags)
         {
-            doxatags ??= new List<IdentityResponses.DoxatagResponse>();
-
             return new ParticipantModel
             {
-                Id = participantFromChallengesService.Id,
+                Id = participant.Id,
                 User = new UserModel
                 {
-                    Id = participantFromChallengesService.UserId,
-                    Doxatag = doxatags.Where(doxatag => doxatag.UserId == participantFromChallengesService.UserId)
+                    Id = participant.UserId,
+                    Doxatag = doxatags.Where(doxatag => doxatag.UserId == participant.UserId)
                         .Select(
                             doxatag => new DoxatagModel
                             {
@@ -41,9 +34,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                             })
                         .SingleOrDefault()
                 },
-                Score = participantFromChallengesService.Score,
+                Score = participant.Score,
                 ChallengeId = challengeId,
-                Matches = participantFromChallengesService.Matches.Select(
+                Matches = participant.Matches.Select(
                         match => new MatchModel
                         {
                             Id = match.Id,
@@ -64,9 +57,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
         }
 
         public static ChallengeModel Transform(
-            ChallengeResponses.ChallengeResponse challenge,
-            CashierResponses.ChallengeResponse challengeFromCashier,
-            IEnumerable<IdentityResponses.DoxatagResponse> doxatags
+            ChallengeDtos.ChallengeDto challenge,
+            CashierDtos.ChallengePayoutDto payout,
+            IEnumerable<IdentityDtos.DoxatagDto> doxatags
         )
         {
             return new ChallengeModel
@@ -79,32 +72,27 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                 Entries = challenge.Entries,
                 EntryFee = new EntryFeeModel
                 {
-                    Amount = challengeFromCashier.EntryFee.Amount,
-                    Currency = challengeFromCashier.EntryFee.Currency
+                    Amount = payout.EntryFee.Amount,
+                    Currency = payout.EntryFee.Currency
                 },
                 Timeline = new TimelineModel
                 {
-                    CreatedAt = new DateTimeOffset(challenge.Timeline.CreatedAt).ToUnixTimeSeconds(),
-                    StartedAt = challenge.Timeline.StartedAt.HasValue
-                        ? new DateTimeOffset(challenge.Timeline.StartedAt.Value).ToUnixTimeSeconds()
-                        : (long?) null,
-                    EndedAt =
-                        challenge.Timeline.EndedAt.HasValue ? new DateTimeOffset(challenge.Timeline.EndedAt.Value).ToUnixTimeSeconds() : (long?) null,
-                    ClosedAt = challenge.Timeline.ClosedAt.HasValue
-                        ? new DateTimeOffset(challenge.Timeline.ClosedAt.Value).ToUnixTimeSeconds()
-                        : (long?) null
+                    CreatedAt = challenge.Timeline.CreatedAt.ToDateTimeOffset().ToUnixTimeSeconds(),
+                    StartedAt = challenge.Timeline.StartedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
+                    EndedAt = challenge.Timeline.EndedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
+                    ClosedAt = challenge.Timeline.ClosedAt?.ToDateTimeOffset().ToUnixTimeSeconds()
                 },
-                PayoutEntries = challengeFromCashier.Payout.Buckets.Sum(bucket => bucket.Size),
-                SynchronizedAt = challenge.SynchronizedAt.HasValue ? new DateTimeOffset(challenge.SynchronizedAt.Value).ToUnixTimeSeconds() : (long?) null,
+                PayoutEntries = payout.Buckets.Sum(bucket => bucket.Size),
+                SynchronizedAt = challenge.SynchronizedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
                 Scoring = challenge.Scoring,
                 Payout = new PayoutModel
                 {
                     PrizePool = new PrizePoolModel
                     {
-                        Currency = challengeFromCashier.Payout.PrizePool.Currency,
-                        Amount = challengeFromCashier.Payout.PrizePool.Amount
+                        Currency = payout.PrizePool.Currency,
+                        Amount = payout.PrizePool.Amount
                     },
-                    Buckets = challengeFromCashier.Payout.Buckets.Select(
+                    Buckets = payout.Buckets.Select(
                             bucket => new BucketModel
                             {
                                 Prize = bucket.Prize,
@@ -117,15 +105,14 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
         }
 
         public static IReadOnlyCollection<ChallengeModel> Transform(
-            IReadOnlyCollection<ChallengeResponses.ChallengeResponse> challengesFromChallengesService,
-            IReadOnlyCollection<CashierResponses.ChallengeResponse> challengesFromCashierService,
-            IReadOnlyCollection<IdentityResponses.DoxatagResponse> doxatagsFromIdentityService
+            IReadOnlyCollection<ChallengeDtos.ChallengeDto> challenges,
+            IReadOnlyCollection<CashierDtos.ChallengePayoutDto> payouts,
+            IReadOnlyCollection<IdentityDtos.DoxatagDto> doxatags
         )
         {
-            var challengeModels = from challengeFromChallengesService in challengesFromChallengesService
-                                  let challengeFromCashierService =
-                                      challengesFromCashierService.Single(challenge => challenge.Id == challengeFromChallengesService.Id)
-                                  select Transform(challengeFromChallengesService, challengeFromCashierService, doxatagsFromIdentityService);
+            var challengeModels = from challenge in challenges
+                                  let challengePayout = payouts.Single(payout => payout.ChallengeId == challenge.Id)
+                                  select Transform(challenge, challengePayout, doxatags);
 
             return challengeModels.ToList();
         }

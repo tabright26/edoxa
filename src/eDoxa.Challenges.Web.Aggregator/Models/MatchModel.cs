@@ -4,17 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-
 namespace eDoxa.Challenges.Web.Aggregator.Models
 {
     public class MatchModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
-        public decimal Score { get; set; }
+        public double Score { get; set; }
 
-        public Guid ParticipantId { get; set; }
+        public string ParticipantId { get; set; }
 
         public StatModel[] Stats { get; set; }
     }

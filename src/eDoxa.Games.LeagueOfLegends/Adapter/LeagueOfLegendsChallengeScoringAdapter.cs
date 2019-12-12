@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.Adapters;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.Extensions.Options;

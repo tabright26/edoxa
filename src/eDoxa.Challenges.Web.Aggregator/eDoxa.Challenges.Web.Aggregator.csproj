@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.23.2" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
@@ -27,12 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Cashier.Domain\eDoxa.Cashier.Domain.csproj" />
-    <ProjectReference Include="..\eDoxa.Cashier.Requests\eDoxa.Cashier.Requests.csproj" />
-    <ProjectReference Include="..\eDoxa.Cashier.Responses\eDoxa.Cashier.Responses.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Requests\eDoxa.Challenges.Requests.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Responses\eDoxa.Challenges.Responses.csproj" />
-    <ProjectReference Include="..\eDoxa.Identity.Responses\eDoxa.Identity.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
   </ItemGroup>
 
@@ -66,6 +61,21 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_services.proto" GrpcServices="Client">
       <Link>Protos\challenges_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None">
+      <Link>Protos\games_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_integration_events.proto" GrpcServices="None">
+      <Link>Protos\games_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_requests.proto" GrpcServices="None">
+      <Link>Protos\games_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_responses.proto" GrpcServices="None">
+      <Link>Protos\games_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_services.proto" GrpcServices="Client">
+      <Link>Protos\games_services.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
       <Link>Protos\identity_dtos.proto</Link>

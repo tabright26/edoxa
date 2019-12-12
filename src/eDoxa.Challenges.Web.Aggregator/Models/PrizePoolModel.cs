@@ -4,12 +4,14 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Grpc.Protos.Cashier.Enums;
+
 namespace eDoxa.Challenges.Web.Aggregator.Models
 {
     public class PrizePoolModel
     {
-        public string Currency { get; set; }
+        public Currency Currency { get; set; }
 
-        public decimal Amount { get; set; }
+        public double Amount { get; set; }
     }
 }

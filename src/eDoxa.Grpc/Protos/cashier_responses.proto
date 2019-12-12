@@ -7,19 +7,19 @@ import "shared_dtos.proto";
 
 package edoxa.services.cashier;
 
-message FetchChallengesResponse {
+message FetchChallengePayoutsResponse {
   shared.dtos.StatusDto status = 1;
-  repeated ChallengeDto challenges = 2;
+  repeated ChallengePayoutDto payouts = 2;
 }
 
-message FindChallengeResponse {
+message FindChallengePayoutResponse {
   shared.dtos.StatusDto status = 1;
-  ChallengeDto challenge = 2;
+  ChallengePayoutDto payout = 2;
 }
 
-message CreateChallengeResponse {
+message CreateChallengePayoutResponse {
   shared.dtos.StatusDto status = 1;
-  ChallengeDto challenge = 2;
+  ChallengePayoutDto payout = 2;
 }
 
 message CreateTransactionResponse {

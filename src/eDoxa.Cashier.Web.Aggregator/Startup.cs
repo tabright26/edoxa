@@ -49,13 +49,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-
 using Polly;
 using Polly.Extensions.Http;
-
-using Refit;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 

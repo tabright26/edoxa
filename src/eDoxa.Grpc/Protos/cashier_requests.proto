@@ -7,14 +7,14 @@ import "cashier_enums.proto";
 
 package edoxa.services.cashier;
 
-message FetchChallengesRequest {}
+message FetchChallengePayoutsRequest {}
 
-message FindChallengeRequest {
+message FindChallengePayoutRequest {
   string challengeId = 1;
 }
 
-message CreateChallengeRequest {
-  string id = 1;
+message CreateChallengePayoutRequest {
+  string challengeId = 1;
   int32 payoutEntries = 2;
   EntryFeeDto entryFee = 3;
 }

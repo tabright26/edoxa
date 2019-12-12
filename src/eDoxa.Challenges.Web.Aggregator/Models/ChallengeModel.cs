@@ -4,20 +4,22 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
+
+using eDoxa.Grpc.Protos.Challenges.Enums;
+using eDoxa.Grpc.Protos.Shared.Enums;
 
 namespace eDoxa.Challenges.Web.Aggregator.Models
 {
     public class ChallengeModel
     {
-        public Guid Id { get; set; }
+        public string Id { get; set; }
 
         public string Name { get; set; }
 
-        public string Game { get; set; }
+        public Game Game { get; set; }
 
-        public string State { get; set; }
+        public ChallengeState State { get; set; }
 
         public int BestOf { get; set; }
 

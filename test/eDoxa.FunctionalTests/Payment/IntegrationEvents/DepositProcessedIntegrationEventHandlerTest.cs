@@ -107,7 +107,7 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
 
             using (paymentWebApplicationFactory.CreateClient())
             {
-                var account = new eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account(new UserId());
+                var account = new Account(new UserId());
                 var moneyAccount = new MoneyAccountDecorator(account);
                 var depositTransaction = moneyAccount.Deposit(Money.Fifty);
 

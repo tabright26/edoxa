@@ -14,7 +14,6 @@ using Autofac;
 using AutoMapper;
 
 using eDoxa.Challenges.Api.Areas.Challenges;
-using eDoxa.Challenges.Api.HttpClients.Extensions;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
@@ -132,8 +131,6 @@ namespace eDoxa.Challenges.Api
                 AppSettings,
                 Scopes.CashierApi,
                 Scopes.GamesApi);
-
-            services.AddHttpClients(AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

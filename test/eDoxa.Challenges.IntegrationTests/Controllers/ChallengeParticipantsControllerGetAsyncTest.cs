@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Responses;
@@ -57,19 +56,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
-            var factory = TestHost.WithClaims().WithWebHostBuilder(
-                x =>
-                {
-                    x.ConfigureTestContainer<ContainerBuilder>(
-                        y =>
-                        {
-                            var mock = new Mock<IGamesHttpClient>();
-
-                            mock.Setup(t => t.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>())).ReturnsAsync(new List<ChallengeMatch>());
-
-                            y.RegisterInstance(mock.Object).As<IGamesHttpClient>().SingleInstance();
-                        });
-                });
+            var factory = TestHost.WithClaims();
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

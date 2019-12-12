@@ -9,7 +9,7 @@ package edoxa.services.cashier;
 
 service CashierService {
   rpc CreateTransaction (CreateTransactionRequest) returns (CreateTransactionResponse);
-  rpc FetchChallenges (FetchChallengesRequest) returns (FetchChallengesResponse);
-  rpc FindChallenge (FindChallengeRequest) returns (FindChallengeResponse);
-  rpc CreateChallenge (CreateChallengeRequest) returns (CreateChallengeResponse);
+  rpc FetchChallengePayouts (FetchChallengePayoutsRequest) returns (FetchChallengePayoutsResponse);
+  rpc FindChallengePayout (FindChallengePayoutRequest) returns (FindChallengePayoutResponse);
+  rpc CreateChallengePayout (CreateChallengePayoutRequest) returns (CreateChallengePayoutResponse);
 }

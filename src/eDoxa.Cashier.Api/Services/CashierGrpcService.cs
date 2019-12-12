@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeGrpcService.cs
+﻿// Filename: CashierGrpcService.cs
 // Date Created: 2019-12-07
 // 
 // ================================================
@@ -8,12 +8,12 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
-using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Responses;
 using eDoxa.Grpc.Protos.Cashier.Services;
@@ -24,6 +24,8 @@ using eDoxa.Seedwork.Domain.Misc;
 using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
+
+using TransactionStatus = eDoxa.Grpc.Protos.Cashier.Enums.TransactionStatus;
 
 namespace eDoxa.Cashier.Api.Services
 {
@@ -40,7 +42,7 @@ namespace eDoxa.Cashier.Api.Services
             _accountService = accountService;
         }
 
-                public override async Task<CreateTransactionResponse> CreateTransaction(CreateTransactionRequest request, ServerCallContext context)
+        public override async Task<CreateTransactionResponse> CreateTransaction(CreateTransactionRequest request, ServerCallContext context)
         {
             var httpContext = context.GetHttpContext();
 
@@ -65,8 +67,8 @@ namespace eDoxa.Cashier.Api.Services
             var result = await _accountService.CreateTransactionAsync(
                 account,
                 new decimal(request.Amount),
-                Domain.AggregateModels.Currency.FromValue((int) request.Currency),
-                Seedwork.Domain.Misc.TransactionType.FromValue((int) request.Type),
+                Currency.FromValue((int) request.Currency),
+                TransactionType.FromValue((int) request.Type),
                 new TransactionMetadata(request.Metadata));
 
             if (result.IsValid)
@@ -102,35 +104,35 @@ namespace eDoxa.Cashier.Api.Services
             {
                 Id = transaction.Id.ToString(),
                 Timestamp = Timestamp.FromDateTime(transaction.Timestamp),
-                Currency = (Currency) transaction.Currency.Type.Value,
+                Currency = (Grpc.Protos.Cashier.Enums.Currency) transaction.Currency.Type.Value,
                 Amount = Convert.ToDouble(transaction.Currency.Amount),
                 Type = (Grpc.Protos.Cashier.Enums.TransactionType) transaction.Type.Value,
-                Status = (Grpc.Protos.Cashier.Enums.TransactionStatus) transaction.Status.Value,
+                Status = (TransactionStatus) transaction.Status.Value,
                 Description = transaction.Description.Text
             };
         }
 
-        public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
+        public override async Task<FetchChallengePayoutsResponse> FetchChallengePayouts(FetchChallengePayoutsRequest request, ServerCallContext context)
         {
             var challenges = await _challengeQuery.FetchChallengesAsync();
 
             context.Status = new Status(StatusCode.OK, "");
 
-            return new FetchChallengesResponse
+            return new FetchChallengePayoutsResponse
             {
                 Status = new StatusDto
                 {
                     Code = (int) context.Status.StatusCode,
                     Message = context.Status.Detail
                 },
-                Challenges =
+                Payouts =
                 {
                     challenges.Select(MapChallenge)
                 }
             };
         }
 
-        public override async Task<FindChallengeResponse> FindChallenge(FindChallengeRequest request, ServerCallContext context)
+        public override async Task<FindChallengePayoutResponse> FindChallengePayout(FindChallengePayoutRequest request, ServerCallContext context)
         {
             var challenge = await _challengeQuery.FindChallengeAsync(ChallengeId.Parse(request.ChallengeId));
 
@@ -138,54 +140,54 @@ namespace eDoxa.Cashier.Api.Services
             {
                 context.Status = new Status(StatusCode.NotFound, "");
 
-                return new FindChallengeResponse
+                return new FindChallengePayoutResponse
                 {
                     Status = new StatusDto
                     {
                         Code = (int) context.Status.StatusCode,
                         Message = context.Status.Detail
                     }
-                }; 
+                };
             }
 
             context.Status = new Status(StatusCode.OK, "");
 
-            return new FindChallengeResponse
+            return new FindChallengePayoutResponse
             {
                 Status = new StatusDto
                 {
                     Code = (int) context.Status.StatusCode,
                     Message = context.Status.Detail
                 },
-                Challenge = MapChallenge(challenge)
+                Payout = MapChallenge(challenge)
             };
         }
 
-        public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
+        public override async Task<CreateChallengePayoutResponse> CreateChallengePayout(CreateChallengePayoutRequest request, ServerCallContext context)
         {
             var result = await _challengeService.CreateChallengeAsync(
-                ChallengeId.Parse(request.Id),
+                ChallengeId.Parse(request.ChallengeId),
                 new PayoutEntries(request.PayoutEntries),
-                new EntryFee(Convert.ToDecimal(request.EntryFee.Amount), Domain.AggregateModels.Currency.FromValue((int) request.EntryFee.Currency)));
+                new EntryFee(Convert.ToDecimal(request.EntryFee.Amount), Currency.FromValue((int) request.EntryFee.Currency)));
 
             if (result.IsValid)
             {
                 context.Status = new Status(StatusCode.OK, "");
 
-                return new CreateChallengeResponse
+                return new CreateChallengePayoutResponse
                 {
                     Status = new StatusDto
                     {
                         Code = (int) context.Status.StatusCode,
                         Message = context.Status.Detail
                     },
-                    Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                    Payout = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
                 };
             }
 
             context.Status = new Status(StatusCode.FailedPrecondition, "");
 
-            return new CreateChallengeResponse
+            return new CreateChallengePayoutResponse
             {
                 Status = new StatusDto
                 {
@@ -195,33 +197,30 @@ namespace eDoxa.Cashier.Api.Services
             };
         }
 
-        public static ChallengeDto MapChallenge(IChallenge challenge)
+        public static ChallengePayoutDto MapChallenge(IChallenge challenge)
         {
-            return new ChallengeDto
+            return new ChallengePayoutDto
             {
-                Id = challenge.Id.ToString(),
+                ChallengeId = challenge.Id.ToString(),
                 EntryFee = new EntryFeeDto
                 {
                     Amount = Convert.ToDouble(challenge.EntryFee.Amount),
-                    Currency = (Currency) challenge.EntryFee.Currency.Value
+                    Currency = (Grpc.Protos.Cashier.Enums.Currency) challenge.EntryFee.Currency.Value
                 },
-                Payout = new PayoutDto
+                PrizePool = new ChallengePayoutDto.Types.PrizePoolDto
                 {
-                    PrizePool = new PayoutDto.Types.PrizePoolDto
-                    {
-                        Amount = Convert.ToDouble(challenge.Payout.PrizePool.Amount),
-                        Currency = (Currency) challenge.Payout.PrizePool.Currency.Value
-                    },
-                    Buckets =
-                    {
-                        challenge.Payout.Buckets.Select(
-                                bucket => new PayoutDto.Types.BucketDto
-                                {
-                                    Prize = Convert.ToDouble(bucket.Prize.Amount),
-                                    Size = bucket.Size
-                                })
-                            .ToList()
-                    }
+                    Amount = Convert.ToDouble(challenge.Payout.PrizePool.Amount),
+                    Currency = (Grpc.Protos.Cashier.Enums.Currency) challenge.Payout.PrizePool.Currency.Value
+                },
+                Buckets =
+                {
+                    challenge.Payout.Buckets.Select(
+                            bucket => new ChallengePayoutDto.Types.BucketDto
+                            {
+                                Prize = Convert.ToDouble(bucket.Prize.Amount),
+                                Size = bucket.Size
+                            })
+                        .ToList()
                 }
             };
         }

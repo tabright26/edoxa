@@ -17,14 +17,13 @@ message FindChallengeRequest {
 }
 
 message CreateChallengeRequest {
-  string id = 1;
-  string name = 2;
-  shared.enums.Game game = 3;
-  shared.enums.ChallengeType type = 4;
-  int32 bestOf = 5;
-  int32 entries = 6;
-  int32 duration = 7;
-  map<string, float> scoring = 8;
+  string name = 1;
+  shared.enums.Game game = 2;
+  shared.enums.ChallengeType type = 3;
+  int32 bestOf = 4;
+  int32 entries = 5;
+  int32 duration = 6;
+  map<string, float> scoring = 7;
 }
 
 message SynchronizeChallengeRequest {

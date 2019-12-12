@@ -4,6 +4,9 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.Shared.Enums;
+
 using Newtonsoft.Json;
 
 namespace eDoxa.Challenges.Web.Aggregator.Requests
@@ -14,12 +17,12 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
         [JsonConstructor]
         public CreateChallengeRequest(
             string name,
-            string game,
+            Game game,
             int bestOf,
             int entries,
             int duration,
-            decimal entryFeeAmount,
-            string entryFeeCurrency
+            double entryFeeAmount,
+            Currency entryFeeCurrency
         )
         {
             Name = name;
@@ -35,7 +38,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
         public string Name { get; }
 
         [JsonProperty("game")]
-        public string Game { get; }
+        public Game Game { get; }
 
         [JsonProperty("bestOf")]
         public int BestOf { get; }
@@ -47,9 +50,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
         public int Duration { get; }
 
         [JsonProperty("entryFeeAmount")]
-        public decimal EntryFeeAmount { get; }
+        public double EntryFeeAmount { get; }
 
         [JsonProperty("entryFeeCurrency")]
-        public string EntryFeeCurrency { get; }
+        public Currency EntryFeeCurrency { get; }
     }
 }
