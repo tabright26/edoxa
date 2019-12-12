@@ -1,4 +1,4 @@
-﻿// Filename: UserGrpcService.cs
+﻿// Filename: IdentityGrpcService.cs
 // Date Created: 2019-12-08
 // 
 // ================================================
@@ -13,16 +13,12 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Responses;
 using eDoxa.Grpc.Protos.Identity.Services;
-using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Api.Services.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 
 using Grpc.Core;
-
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
-
 
 namespace eDoxa.Identity.Api.Services
 {
@@ -31,14 +27,12 @@ namespace eDoxa.Identity.Api.Services
         private readonly IUserService _userService;
         private readonly IRoleService _roleService;
         private readonly IDoxatagService _doxatagService;
-        private readonly ILogger _logger;
 
-        public IdentityGrpcService(IUserService userService, IRoleService roleService, IDoxatagService doxatagService, ILogger<IdentityGrpcService> logger)
+        public IdentityGrpcService(IUserService userService, IRoleService roleService, IDoxatagService doxatagService)
         {
             _userService = userService;
             _roleService = roleService;
             _doxatagService = doxatagService;
-            _logger = logger;
         }
 
         public override async Task<AddUserClaimResponse> AddUserClaim(AddUserClaimRequest request, ServerCallContext context)
@@ -49,18 +43,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The user '{request.UserId}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new AddUserClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var claims = await _userService.GetClaimsAsync(user);
@@ -71,23 +54,16 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") already exists in user '{user.Email}'. (userId=${user.Id})";
 
-                context.Status = new Status(StatusCode.AlreadyExists, detail);
-
-                _logger.LogWarning(detail);
-
-                return new AddUserClaimResponse
-                {
-                    Status = new StatusDto
+                return context.AlreadyExists(
+                    new AddUserClaimResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Claim = new UserClaimDto
+                        {
+                            Type = claim.Type,
+                            Value = claim.Value
+                        }
                     },
-                    Claim = new UserClaimDto
-                    {
-                        Type = claim.Type,
-                        Value = claim.Value
-                    }
-                };
+                    detail);
             }
 
             var result = await _userService.AddClaimAsync(user, claim);
@@ -96,28 +72,23 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") as been added to the user '{user.Email}'. (userId=${user.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new AddUserClaimResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new AddUserClaimResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Claim = new UserClaimDto
+                        {
+                            Type = claim.Type,
+                            Value = claim.Value
+                        }
                     },
-                    Claim = new UserClaimDto
-                    {
-                        Type = claim.Type,
-                        Value = claim.Value
-                    }
-                };
+                    detail);
             }
 
             var message = $"Failed to add the claim type '{claim.Type}' (value=\"{claim.Value}\") to the user '{user.Email}'. (userId=${user.Id})";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<RemoveUserClaimResponse> RemoveUserClaim(RemoveUserClaimRequest request, ServerCallContext context)
@@ -128,18 +99,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The user '{request.UserId}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new RemoveUserClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var claims = await _userService.GetClaimsAsync(user);
@@ -150,18 +110,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") not found in user '{user.Email}'. (userId=${user.Id})";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new RemoveUserClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var result = await _userService.RemoveClaimAsync(user, claim);
@@ -170,28 +119,23 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") as been removed to the user '{user.Email}'. (userId=${user.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new RemoveUserClaimResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new RemoveUserClaimResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Claim = new UserClaimDto
+                        {
+                            Type = claim.Type,
+                            Value = claim.Value
+                        }
                     },
-                    Claim = new UserClaimDto
-                    {
-                        Type = claim.Type,
-                        Value = claim.Value
-                    }
-                };
+                    detail);
             }
 
             var message = $"Failed to remove the claim type '{claim.Type}' (value=\"{claim.Value}\") from the user '{user.Email}'. (userId=${user.Id})";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<ReplaceUserClaimResponse> ReplaceUserClaim(ReplaceUserClaimRequest request, ServerCallContext context)
@@ -202,18 +146,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The user '{request.UserId}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new ReplaceUserClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var claims = await _userService.GetClaimsAsync(user);
@@ -224,18 +157,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{request.Claim.Type}' (value=\"{request.Claim.Value}\") not found in user '{user.Email}'. (userId=${user.Id})";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new ReplaceUserClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var newClaim = new Claim(request.Claim.Type, request.Claim.Value);
@@ -246,28 +168,23 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{newClaim.Type}' (value=\"{newClaim.Value}\") as been replaced for the user '{user.Email}'. (userId=${user.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new ReplaceUserClaimResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new ReplaceUserClaimResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Claim = new UserClaimDto
+                        {
+                            Type = newClaim.Type,
+                            Value = newClaim.Value
+                        }
                     },
-                    Claim = new UserClaimDto
-                    {
-                        Type = newClaim.Type,
-                        Value = newClaim.Value
-                    }
-                };
+                    detail);
             }
 
             var message = $"Failed to replace the claim type '{newClaim.Type}' (value=\"{newClaim.Value}\") from the user '{user.Email}'. (userId=${user.Id})";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<AddUserToRoleResponse> AddUserToRole(AddUserToRoleRequest request, ServerCallContext context)
@@ -278,18 +195,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The user '{request.UserId}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new AddUserToRoleResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             if (await _userService.IsInRoleAsync(user, request.RoleName))
@@ -298,23 +204,16 @@ namespace eDoxa.Identity.Api.Services
 
                 var detail = $"The role '{existingRole.Name}' already exists. (roleId=${existingRole.Id})";
 
-                context.Status = new Status(StatusCode.AlreadyExists, detail);
-
-                _logger.LogInformation(detail);
-
-                return new AddUserToRoleResponse
-                {
-                    Status = new StatusDto
+                return context.AlreadyExists(
+                    new AddUserToRoleResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Role = new RoleDto
+                        {
+                            Id = existingRole.Id.ToString(),
+                            Name = existingRole.Name
+                        }
                     },
-                    Role = new RoleDto
-                    {
-                        Id = existingRole.Id.ToString(),
-                        Name = existingRole.Name
-                    }
-                };
+                    detail);
             }
 
             var result = await _userService.AddToRoleAsync(user, request.RoleName);
@@ -325,28 +224,23 @@ namespace eDoxa.Identity.Api.Services
 
                 var detail = $"The role '{role.Name}' as been created. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new AddUserToRoleResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new AddUserToRoleResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Role = new RoleDto
+                        {
+                            Id = role.Id.ToString(),
+                            Name = role.Name
+                        }
                     },
-                    Role = new RoleDto
-                    {
-                        Id = role.Id.ToString(),
-                        Name = role.Name
-                    }
-                };
+                    detail);
             }
 
             var message = "";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<RemoveUserFromRoleResponse> RemoveUserFromRole(RemoveUserFromRoleRequest request, ServerCallContext context)
@@ -357,18 +251,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The user '{request.UserId}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new RemoveUserFromRoleResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             if (!await _userService.IsInRoleAsync(user, request.RoleName))
@@ -377,23 +260,7 @@ namespace eDoxa.Identity.Api.Services
 
                 var detail = $"The role '{existingRole.Name}' already exists. (roleId=${existingRole.Id})";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogInformation(detail);
-
-                return new RemoveUserFromRoleResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    },
-                    Role = new RoleDto
-                    {
-                        Id = existingRole.Id.ToString(),
-                        Name = existingRole.Name
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var result = await _userService.RemoveFromRoleAsync(user, request.RoleName);
@@ -404,31 +271,26 @@ namespace eDoxa.Identity.Api.Services
 
                 var detail = $"The role '{role.Name}' as been created. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new RemoveUserFromRoleResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new RemoveUserFromRoleResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Role = new RoleDto
+                        {
+                            Id = role.Id.ToString(),
+                            Name = role.Name
+                        }
                     },
-                    Role = new RoleDto
-                    {
-                        Id = role.Id.ToString(),
-                        Name = role.Name
-                    }
-                };
+                    detail);
             }
 
             var message = "";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
-                public override async Task<CreateRoleResponse> CreateRole(CreateRoleRequest request, ServerCallContext context)
+        public override async Task<CreateRoleResponse> CreateRole(CreateRoleRequest request, ServerCallContext context)
         {
             if (!await _roleService.RoleExistsAsync(request.RoleName))
             {
@@ -436,23 +298,16 @@ namespace eDoxa.Identity.Api.Services
 
                 var detail = $"The role '{existingRole.Name}' already exists. (roleId=${existingRole.Id})";
 
-                context.Status = new Status(StatusCode.AlreadyExists, detail);
-
-                _logger.LogInformation(detail);
-
-                return new CreateRoleResponse
-                {
-                    Status = new StatusDto
+                return context.AlreadyExists(
+                    new CreateRoleResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Role = new RoleDto
+                        {
+                            Id = existingRole.Id.ToString(),
+                            Name = existingRole.Name
+                        }
                     },
-                    Role = new RoleDto
-                    {
-                        Id = existingRole.Id.ToString(),
-                        Name = existingRole.Name
-                    }
-                };
+                    detail);
             }
 
             var role = new Role
@@ -467,28 +322,23 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The role '{role.Name}' as been created. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new CreateRoleResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new CreateRoleResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Role = new RoleDto
+                        {
+                            Id = role.Id.ToString(),
+                            Name = role.Name
+                        }
                     },
-                    Role = new RoleDto
-                    {
-                        Id = role.Id.ToString(),
-                        Name = role.Name
-                    }
-                };
+                    detail);
             }
 
             var message = $"Failed to create the role '{role.Name}'. (roleId=${role.Id})";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<DeleteRoleResponse> DeleteRole(DeleteRoleRequest request, ServerCallContext context)
@@ -497,18 +347,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The role '{request.RoleName}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new DeleteRoleResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var role = await _roleService.FindByNameAsync(request.RoleName);
@@ -519,28 +358,23 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The role '{role.Name}' as been deleted. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new DeleteRoleResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new DeleteRoleResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Role = new RoleDto
+                        {
+                            Id = role.Id.ToString(),
+                            Name = role.Name
+                        }
                     },
-                    Role = new RoleDto
-                    {
-                        Id = role.Id.ToString(),
-                        Name = role.Name
-                    }
-                };
+                    detail);
             }
 
             var message = $"Failed to delete the role '{role.Name}'. (roleId=${role.Id})";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<AddRoleClaimResponse> AddRoleClaim(AddRoleClaimRequest request, ServerCallContext context)
@@ -549,18 +383,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The role '{request.RoleName}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new AddRoleClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var role = await _roleService.FindByNameAsync(request.RoleName);
@@ -573,23 +396,16 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") already exists in role '{role.Name}'. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.AlreadyExists, detail);
-
-                _logger.LogWarning(detail);
-
-                return new AddRoleClaimResponse
-                {
-                    Status = new StatusDto
+                return context.AlreadyExists(
+                    new AddRoleClaimResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Claim = new RoleClaimDto
+                        {
+                            Type = claim.Type,
+                            Value = claim.Value
+                        }
                     },
-                    Claim = new RoleClaimDto
-                    {
-                        Type = claim.Type,
-                        Value = claim.Value
-                    }
-                };
+                    detail);
             }
 
             var result = await _roleService.AddClaimAsync(role, claim);
@@ -598,28 +414,23 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") as been added to the role '{role.Name}'. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new AddRoleClaimResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new AddRoleClaimResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Claim = new RoleClaimDto
+                        {
+                            Type = claim.Type,
+                            Value = claim.Value
+                        }
                     },
-                    Claim = new RoleClaimDto
-                    {
-                        Type = claim.Type,
-                        Value = claim.Value
-                    }
-                };
+                    detail);
             }
 
             var message = $"Failed to add the claim type '{claim.Type}' (value=\"{claim.Value}\") to the role '{role.Name}'. (roleId=${role.Id})";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<RemoveRoleClaimResponse> RemoveRoleClaim(RemoveRoleClaimRequest request, ServerCallContext context)
@@ -628,18 +439,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The role '{request.RoleName}' wasn't found.";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new RemoveRoleClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var role = await _roleService.FindByNameAsync(request.RoleName);
@@ -652,18 +452,7 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") not found in role '{role.Name}'. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.NotFound, detail);
-
-                _logger.LogWarning(detail);
-
-                return new RemoveRoleClaimResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, detail));
             }
 
             var result = await _roleService.RemoveClaimAsync(role, claim);
@@ -672,28 +461,23 @@ namespace eDoxa.Identity.Api.Services
             {
                 var detail = $"The claim type '{claim.Type}' (value=\"{claim.Value}\") as been removed from the role '{role.Name}'. (roleId=${role.Id})";
 
-                context.Status = new Status(StatusCode.OK, detail);
-
-                _logger.LogInformation(detail);
-
-                return new RemoveRoleClaimResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new RemoveRoleClaimResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
+                        Claim = new RoleClaimDto
+                        {
+                            Type = claim.Type,
+                            Value = claim.Value
+                        }
                     },
-                    Claim = new RoleClaimDto
-                    {
-                        Type = claim.Type,
-                        Value = claim.Value
-                    }
-                };
+                    detail);
             }
 
             var message = $"Failed to remove the claim type '{claim.Type}' (value=\"{claim.Value}\") from the role '{role.Name}'. (roleId=${role.Id})";
 
-            throw this.RpcExceptionWithDataLossStatus(result, message);
+            context.AddIdentityResultToResponseTrailers(result);
+
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, message));
         }
 
         public override async Task<FetchDoxatagsResponse> FetchDoxatags(FetchDoxatagsRequest request, ServerCallContext context)
@@ -704,11 +488,6 @@ namespace eDoxa.Identity.Api.Services
 
             return new FetchDoxatagsResponse
             {
-                Status = new StatusDto
-                {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                },
                 Doxatags =
                 {
                     doxatags.Select(MapDoxatag)
@@ -724,20 +503,6 @@ namespace eDoxa.Identity.Api.Services
                 Name = doxatag.Name,
                 UserId = doxatag.UserId.ToString()
             };
-        }
-
-        private RpcException RpcExceptionWithDataLossStatus(IdentityResult result, string message)
-        {
-            var metadata = new Metadata
-            {
-                {nameof(IdentityResult), result.ToString()}
-            };
-
-            var exception = new RpcException(new Status(StatusCode.DataLoss, message), metadata);
-
-            _logger.LogCritical(exception, message);
-
-            return exception;
         }
     }
 }

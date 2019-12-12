@@ -3,56 +3,45 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Responses";
 
 import "identity_dtos.proto";
-import "shared_dtos.proto";
 
 package edoxa.services.identity;
 
 message AddUserClaimResponse {
-  shared.dtos.StatusDto status = 1;
-  UserClaimDto claim = 2;
+  UserClaimDto claim = 1;
 }
 
 message ReplaceUserClaimResponse {
-  shared.dtos.StatusDto status = 1;
-  UserClaimDto claim = 2;
+  UserClaimDto claim = 1;
 }
 
 message RemoveUserClaimResponse {
-  shared.dtos.StatusDto status = 1;
-  UserClaimDto claim = 2;
+  UserClaimDto claim = 1;
 }
 
 message AddUserToRoleResponse {
-  shared.dtos.StatusDto status = 1;
-  RoleDto role = 2;
+  RoleDto role = 1;
 }
 
 message RemoveUserFromRoleResponse {
-  shared.dtos.StatusDto status = 1;
-  RoleDto role = 2;
+  RoleDto role = 1;
 }
 
 message CreateRoleResponse {
-  shared.dtos.StatusDto status = 1;
-  RoleDto role = 2;
+  RoleDto role = 1;
 }
 
 message DeleteRoleResponse {
-  shared.dtos.StatusDto status = 1;
-  RoleDto role = 2;
+  RoleDto role = 1;
 }
 
 message AddRoleClaimResponse {
-  shared.dtos.StatusDto status = 1;
-  RoleClaimDto claim = 2;
+  RoleClaimDto claim = 1;
 }
 
 message RemoveRoleClaimResponse {
-  shared.dtos.StatusDto status = 1;
-  RoleClaimDto claim = 2;
+  RoleClaimDto claim = 1;
 }
 
 message FetchDoxatagsResponse {
-  shared.dtos.StatusDto status = 1;
-  repeated DoxatagDto doxatags = 2;
+  repeated DoxatagDto doxatags = 1;
 }
