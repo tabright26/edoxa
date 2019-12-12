@@ -18,7 +18,7 @@ namespace eDoxa.Challenges.Worker.IntegrationEvents.Extensions
         {
             await publisher.PublishAsync(new ChallengesSynchronizedIntegrationEvent
             {
-                Game = (Grpc.Protos.Shared.Enums.Game) game.Value
+                Game = (Grpc.Protos.Shared.Enums.GameDto) game.Value
             });
         }
     }

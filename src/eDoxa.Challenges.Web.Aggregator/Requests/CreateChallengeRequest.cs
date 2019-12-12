@@ -17,12 +17,12 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
         [JsonConstructor]
         public CreateChallengeRequest(
             string name,
-            Game game,
+            GameDto game,
             int bestOf,
             int entries,
             int duration,
             double entryFeeAmount,
-            Currency entryFeeCurrency
+            CurrencyDto entryFeeCurrency
         )
         {
             Name = name;
@@ -38,7 +38,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
         public string Name { get; }
 
         [JsonProperty("game")]
-        public Game Game { get; }
+        public GameDto Game { get; }
 
         [JsonProperty("bestOf")]
         public int BestOf { get; }
@@ -53,6 +53,6 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
         public double EntryFeeAmount { get; }
 
         [JsonProperty("entryFeeCurrency")]
-        public Currency EntryFeeCurrency { get; }
+        public CurrencyDto EntryFeeCurrency { get; }
     }
 }

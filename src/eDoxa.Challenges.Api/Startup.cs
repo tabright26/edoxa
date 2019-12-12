@@ -33,7 +33,6 @@ using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
-using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
 

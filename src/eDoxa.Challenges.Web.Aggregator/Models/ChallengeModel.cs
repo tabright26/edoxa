@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 using System.Collections.Generic;
 
 using eDoxa.Grpc.Protos.Challenges.Enums;
@@ -17,9 +19,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Models
 
         public string Name { get; set; }
 
-        public Game Game { get; set; }
+        public GameDto Game { get; set; }
 
-        public ChallengeState State { get; set; }
+        public ChallengeStateDto State { get; set; }
 
         public int BestOf { get; set; }
 

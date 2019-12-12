@@ -7,7 +7,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -61,8 +60,8 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserTransactionSuccededIntegrationEvent
             {
-                UserId = account.Id.ToString(),
-                TransactionId = transaction.Id.ToString()
+                UserId = account.Id,
+                TransactionId = transaction.Id
             };
 
             // Act

@@ -8,7 +8,6 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
@@ -53,7 +52,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             var integrationEvent = new UserCreatedIntegrationEvent {
                 UserId = Guid.NewGuid().ToString(),
                 Email = "gabriel@edoxa.gg",
-                Country = Grpc.Protos.Identity.Enums.Country.Canada
+                Country = Grpc.Protos.Identity.Enums.CountryDto.Canada
             };
 
             // Act

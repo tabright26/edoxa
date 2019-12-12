@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.TestHelper
             TestHost = testHost;
             TestData = testData;
             TestMapper = testMapper.Instance;
-            ExecuteAsync = executeAsync ?? ((httpClient, linkGenerator, values) => Task.FromResult(new HttpResponseMessage()));
+            ExecuteFuncAsync = executeAsync ?? ((httpClient, linkGenerator, values) => Task.FromResult(new HttpResponseMessage()));
         }
 
         protected TestHostFixture TestHost { get; }
@@ -34,6 +34,6 @@ namespace eDoxa.Cashier.TestHelper
 
         protected IMapper TestMapper { get; }
 
-        protected Func<HttpClient, LinkGenerator, object, Task<HttpResponseMessage>> ExecuteAsync { get; }
+        protected Func<HttpClient, LinkGenerator, object, Task<HttpResponseMessage>> ExecuteFuncAsync { get; }
     }
 }

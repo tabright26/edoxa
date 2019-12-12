@@ -8,7 +8,6 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
@@ -20,7 +19,8 @@ using Moq;
 using Stripe;
 
 using Xunit;
-using Dob = eDoxa.Seedwork.Domain.Misc.Dob;
+
+using static eDoxa.Grpc.Protos.Identity.IntegrationEvents.UserInformationChangedIntegrationEvent.Types;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
@@ -52,8 +52,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 UserId = Guid.NewGuid().ToString(),
                 FirstName = "Gabriel",
                 LastName = "Roy",
-                Gender = Grpc.Protos.Identity.Enums.Gender.Male,
-                Dob = new UserInformationChangedIntegrationEvent.Types.Dob
+                Gender = Grpc.Protos.Identity.Enums.GenderDto.Male,
+                Dob = new DobDto
                 {
                     Day = 1,
                     Month = 2,

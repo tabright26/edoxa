@@ -165,7 +165,7 @@ namespace eDoxa.Challenges.Api.Application.Services
             //            _logger.LogError(
             //                exception,
             //                $"Synchronize challenge ({challenge}) thrown an exception when fetching participant ({participant}) matches.");
-            //        } 
+            //        }
             //    }
             //}
 
@@ -178,7 +178,9 @@ namespace eDoxa.Challenges.Api.Application.Services
             //    await _challengeRepository.CommitAsync(true, cancellationToken);
             //}
 
-            return new DomainValidationResult();
+            //return new DomainValidationResult();
+
+            return await Task.FromResult(new DomainValidationResult());
         }
 
         public async Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)

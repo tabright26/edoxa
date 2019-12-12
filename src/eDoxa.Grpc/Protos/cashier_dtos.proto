@@ -15,7 +15,7 @@ message ChallengePayoutDto {
   repeated BucketDto buckets = 4;
   
   message PrizePoolDto {
-    Currency currency = 1;
+    CurrencyDto currency = 1;
     double amount = 2;
   }
 
@@ -27,15 +27,15 @@ message ChallengePayoutDto {
 
 message EntryFeeDto {
   double amount = 1;
-  Currency currency = 2;
+  CurrencyDto currency = 2;
 }
 
 message TransactionDto {
   string id = 1;
   google.protobuf.Timestamp timestamp = 2;
-  Currency currency = 3;
+  CurrencyDto currency = 3;
   double amount = 4;
   string description = 5;
-  TransactionType type = 6;
-  TransactionStatus status = 7;
+  TransactionTypeDto type = 6;
+  TransactionStatusDto status = 7;
 }

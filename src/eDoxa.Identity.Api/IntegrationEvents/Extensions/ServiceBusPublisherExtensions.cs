@@ -12,6 +12,8 @@ using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
+using static eDoxa.Grpc.Protos.Identity.IntegrationEvents.UserInformationChangedIntegrationEvent.Types;
+
 namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
@@ -46,7 +48,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                 {
                     UserId = userId,
                     Email = email,
-                    Country = (Grpc.Protos.Identity.Enums.Country) country.Value
+                    Country = (Grpc.Protos.Identity.Enums.CountryDto) country.Value
                 });
         }
 
@@ -89,8 +91,8 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     UserId = userId,
                     FirstName = firstName,
                     LastName = lastName,
-                    Gender = (Grpc.Protos.Identity.Enums.Gender) gender.Value,
-                    Dob = new UserInformationChangedIntegrationEvent.Types.Dob
+                    Gender = (Grpc.Protos.Identity.Enums.GenderDto) gender.Value,
+                    Dob = new DobDto
                     {
                         Day = dob.Day,
                         Month = dob.Month,

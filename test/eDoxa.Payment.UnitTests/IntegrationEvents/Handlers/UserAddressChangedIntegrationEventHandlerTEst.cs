@@ -8,7 +8,6 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
@@ -50,8 +49,6 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             {
                 UserId = Guid.NewGuid().ToString(),
                 Line1 = "This is address",
-                Line2 = null,
-                State = null,
                 City = "Montreal",
                 PostalCode =  "A1B2C3"
             };

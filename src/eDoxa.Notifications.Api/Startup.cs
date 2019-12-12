@@ -31,7 +31,6 @@ using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
-using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;

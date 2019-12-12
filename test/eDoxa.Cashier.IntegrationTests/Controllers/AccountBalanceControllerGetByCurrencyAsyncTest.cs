@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 });
             
             // Act
-            using var response = await ExecuteAsync(factory.CreateClient(), server.Services.GetRequiredService<LinkGenerator>(), new { currency = Currency.All });
+            using var response = await ExecuteFuncAsync(factory.CreateClient(), server.Services.GetRequiredService<LinkGenerator>(), new { currency = Currency.All });
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
@@ -94,7 +94,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 });
 
             // Act
-            using var response = await ExecuteAsync(factory.CreateClient(), server.Services.GetRequiredService<LinkGenerator>(), new { currency });
+            using var response = await ExecuteFuncAsync(factory.CreateClient(), server.Services.GetRequiredService<LinkGenerator>(), new { currency });
 
             // Assert
             response.EnsureSuccessStatusCode();

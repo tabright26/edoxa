@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Web.Aggregator.Models;
 using eDoxa.Challenges.Web.Aggregator.Transformers;
+using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Identity.Requests;
@@ -28,7 +29,6 @@ using Swashbuckle.AspNetCore.Annotations;
 
 using CashierRequests = eDoxa.Grpc.Protos.Cashier.Requests;
 using ChallengeRequests = eDoxa.Grpc.Protos.Challenges.Requests;
-using TransactionType = eDoxa.Grpc.Protos.Cashier.Enums.TransactionType;
 
 namespace eDoxa.Challenges.Web.Aggregator.Controllers
 {
@@ -81,7 +81,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             var createTransactionResponse = await _cashierServiceClient.CreateTransactionAsync(
                 new CashierRequests.CreateTransactionRequest
                 {
-                    Type = TransactionType.Charge,
+                    Type = TransactionTypeDto.Charge,
                     Amount = findChallengeResponse.Payout.EntryFee.Amount,
                     Currency = findChallengeResponse.Payout.EntryFee.Currency,
                     Metadata =
@@ -102,7 +102,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
 
                 return this.Ok(ChallengeTransformer.Transform(findChallengeResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
             }
-            catch (RpcException exception)
+            catch (RpcException)
             {
                 await _serviceBusPublisher.PublishTransactionCanceledIntegrationEventAsync(TransactionId.Parse(createTransactionResponse.Transaction.Id));
 

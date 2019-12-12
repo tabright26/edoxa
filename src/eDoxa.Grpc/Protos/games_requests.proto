@@ -9,12 +9,12 @@ import "shared_enums.proto";
 package edoxa.services.games;
 
 message FetchChallengeScoringRequest {
-  shared.enums.Game game = 1;
-  shared.enums.ChallengeType challengeType = 2;
+  shared.enums.GameDto game = 1;
+  shared.enums.ChallengeTypeDto challengeType = 2;
 }
 
 message FetchChallengeMatchesRequest {
-  shared.enums.Game game = 1;
+  shared.enums.GameDto game = 1;
   string gamePlayerId = 2;
   google.protobuf.Timestamp startedAt = 3;
   google.protobuf.Timestamp endedAt = 4;

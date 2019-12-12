@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Identity;
 

@@ -10,7 +10,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Models
 {
     public class PrizePoolModel
     {
-        public Currency Currency { get; set; }
+        public CurrencyDto Currency { get; set; }
 
         public double Amount { get; set; }
     }

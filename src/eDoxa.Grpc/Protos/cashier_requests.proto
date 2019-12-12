@@ -20,8 +20,8 @@ message CreateChallengePayoutRequest {
 }
 
 message CreateTransactionRequest {
-  TransactionType type = 1;
-  Currency currency = 2;
+  TransactionTypeDto type = 1;
+  CurrencyDto currency = 2;
   double amount = 3;
   map<string, string> metadata = 4;
 }

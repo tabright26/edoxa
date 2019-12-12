@@ -13,10 +13,12 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
+using eDoxa.Grpc.Protos.Challenges.Enums;
 using eDoxa.Grpc.Protos.Challenges.Requests;
 using eDoxa.Grpc.Protos.Challenges.Responses;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Shared.Dtos;
+using eDoxa.Grpc.Protos.Shared.Enums;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
@@ -25,8 +27,8 @@ using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
 
-using ChallengeState = eDoxa.Grpc.Protos.Challenges.Enums.ChallengeState;
-using Game = eDoxa.Grpc.Protos.Shared.Enums.Game;
+using static eDoxa.Grpc.Protos.Challenges.Dtos.ChallengeDto.Types;
+using static eDoxa.Grpc.Protos.Challenges.Dtos.MatchDto.Types;
 
 namespace eDoxa.Challenges.Api.Services
 {
@@ -43,9 +45,9 @@ namespace eDoxa.Challenges.Api.Services
 
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
         {
-            var game = request.Game == Game.None ? null : Seedwork.Domain.Misc.Game.FromValue((int) request.Game);
+            var game = request.Game == GameDto.None ? null : Game.FromValue((int) request.Game);
 
-            var state = request.State == ChallengeState.None ? null : Domain.AggregateModels.ChallengeAggregate.ChallengeState.FromValue((int) request.State);
+            var state = request.State == ChallengeStateDto.None ? null : ChallengeState.FromValue((int) request.State);
 
             var challenges = await _challengeQuery.FetchChallengesAsync(game, state);
 
@@ -100,7 +102,7 @@ namespace eDoxa.Challenges.Api.Services
         {
             var result = await _challengeService.CreateChallengeAsync(
                 new ChallengeName(request.Name),
-                Seedwork.Domain.Misc.Game.FromValue((int) request.Game),
+                Game.FromValue((int) request.Game),
                 new BestOf(request.BestOf),
                 new Entries(request.Entries),
                 new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
@@ -136,7 +138,7 @@ namespace eDoxa.Challenges.Api.Services
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
         {
-            await _challengeService.SynchronizeChallengesAsync(Seedwork.Domain.Misc.Game.FromValue((int) request.Game), new UtcNowDateTimeProvider());
+            await _challengeService.SynchronizeChallengesAsync(Game.FromValue((int) request.Game), new UtcNowDateTimeProvider());
 
             context.Status = new Status(StatusCode.OK, "");
 
@@ -215,12 +217,12 @@ namespace eDoxa.Challenges.Api.Services
             {
                 Id = challenge.Id.ToString(),
                 Name = challenge.Name,
-                Game = (Game) challenge.Game.Value,
-                State = (ChallengeState) challenge.Timeline.State.Value,
+                Game = (GameDto) challenge.Game.Value,
+                State = (ChallengeStateDto) challenge.Timeline.State.Value,
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
                 SynchronizedAt = challenge.SynchronizedAt.HasValue ? DateTime.SpecifyKind(challenge.SynchronizedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
-                Timeline = new ChallengeDto.Types.Timeline
+                Timeline = new TimelineDto
                 {
                     CreatedAt = DateTime.SpecifyKind(challenge.Timeline.CreatedAt, DateTimeKind.Utc).ToTimestamp(),
                     StartedAt = challenge.Timeline.StartedAt.HasValue ? DateTime.SpecifyKind(challenge.Timeline.StartedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
@@ -253,9 +255,9 @@ namespace eDoxa.Challenges.Api.Services
             };
         }
 
-        public static ParticipantDto.Types.MatchDto MapMatch(Participant participant, IMatch match)
+        public static MatchDto MapMatch(Participant participant, IMatch match)
         {
-            return new ParticipantDto.Types.MatchDto
+            return new MatchDto
             {
                 Id = match.Id.ToString(),
                 ParticipantId = participant.Id.ToString(),
@@ -267,9 +269,9 @@ namespace eDoxa.Challenges.Api.Services
             };
         }
 
-        public static ParticipantDto.Types.MatchDto.Types.StatDto MapStat(Stat stat)
+        public static StatDto MapStat(Stat stat)
         {
-            return new ParticipantDto.Types.MatchDto.Types.StatDto
+            return new StatDto
             {
                 Name = stat.Name,
                 Value = stat.Value,

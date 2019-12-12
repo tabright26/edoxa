@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
@@ -16,7 +17,11 @@ namespace eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions
     {
         public static async Task PublishTransactionCanceledIntegrationEventAsync(this IServiceBusPublisher publisher, TransactionId transactionId)
         {
-            //TODO: //await publisher.PublishAsync(new TransactionCanceledIntegrationEvent(transactionId));
+            await publisher.PublishAsync(
+                new TransactionCanceledIntegrationEvent
+                {
+                    TransactionId = transactionId
+                });
         }
 
         public static async Task PublishChallengeDeletedIntegrationEventAsync(this IServiceBusPublisher publisher, ChallengeId challengeId)
@@ -24,7 +29,7 @@ namespace eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions
             await publisher.PublishAsync(
                 new ChallengeDeletedIntegrationEvent
                 {
-                    ChallengeId = challengeId.ToString()
+                    ChallengeId = challengeId
                 });
         }
     }

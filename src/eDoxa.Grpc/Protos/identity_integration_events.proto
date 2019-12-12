@@ -54,7 +54,7 @@ message UserClaimsReplacedIntegrationEvent {
 message UserCreatedIntegrationEvent {
   string userId = 1;
   string email = 2;
-  Country country = 3;
+  CountryDto country = 3;
 }
 
 message UserEmailChangedIntegrationEvent {
@@ -72,10 +72,10 @@ message UserInformationChangedIntegrationEvent {
   string userId = 1;
   string firstName = 2;
   string lastName = 3;
-  Gender gender = 4;
-  Dob dob = 5;
+  GenderDto gender = 4;
+  DobDto dob = 5;
 
-  message Dob {
+  message DobDto {
     int32 year = 1;
     int32 month = 2;
     int32 day = 3;

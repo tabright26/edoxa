@@ -7,17 +7,15 @@
 using System;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Moq;
 
 using Xunit;
-
-using Country = eDoxa.Grpc.Protos.Identity.Enums.Country;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
@@ -37,7 +35,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             {
                 UserId = Guid.NewGuid().ToString(),
                 Email = "noreply@edoxa.gg",
-                Country = Country.Canada
+                Country = CountryDto.Canada
             };
 
             // Act

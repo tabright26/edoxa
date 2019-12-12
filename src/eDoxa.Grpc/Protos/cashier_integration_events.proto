@@ -23,3 +23,7 @@ message TransactionSuccededIntegrationEvent {
   string userId = 1;
   map<string, string> metadata = 2;
 }
+
+message TransactionCanceledIntegrationEvent {
+  string transactionId = 1;
+}

@@ -12,17 +12,17 @@ package edoxa.services.challenges;
 message ChallengeDto {
   string id = 1;
   string name = 2;
-  shared.enums.Game game = 3;
-  shared.enums.ChallengeType type = 4;
-  ChallengeState state = 5;
+  shared.enums.GameDto game = 3;
+  shared.enums.ChallengeTypeDto type = 4;
+  ChallengeStateDto state = 5;
   int32 bestOf = 6;
   int32 entries = 7;
   google.protobuf.Timestamp synchronizedAt = 8;
   map<string, float> scoring = 9;
-  Timeline timeline = 10;
+  TimelineDto timeline = 10;
   repeated ParticipantDto participants = 11;
 
-  message Timeline {
+  message TimelineDto {
     google.protobuf.Timestamp createdAt = 1;
 	google.protobuf.Timestamp startedAt = 2;
 	google.protobuf.Timestamp endedAt = 3;
@@ -36,18 +36,18 @@ message ParticipantDto {
   string challengeId = 3;
   double score = 4;
   repeated MatchDto matches = 5;
+}
 
-  message MatchDto {
-	string id = 1;
-	string participantId = 2;
-	double score = 3;
-	repeated StatDto stats = 4;
+message MatchDto {
+  string id = 1;
+  string participantId = 2;
+  double score = 3;
+  repeated StatDto stats = 4;
 
-	message StatDto {
-	  string name = 1;
-	  double value = 2;
-	  float weighting = 3;
-	  double score = 4;
-	}
+  message StatDto {
+	string name = 1;
+	double value = 2;
+	float weighting = 3;
+	double score = 4;
   }
 }

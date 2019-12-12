@@ -4,12 +4,14 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+#nullable disable
+
 namespace eDoxa.Challenges.Web.Aggregator.Models
 {
     public class UserModel
     {
         public string Id { get; set; }
 
-        public DoxatagModel? Doxatag { get; set; }
+        public DoxatagModel Doxatag { get; set; }
     }
 }

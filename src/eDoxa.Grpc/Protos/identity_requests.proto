@@ -50,4 +50,5 @@ message RemoveRoleClaimRequest {
 }
 
 message FetchDoxatagsRequest {
+  repeated string users = 1;
 }

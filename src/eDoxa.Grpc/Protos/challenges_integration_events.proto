@@ -16,5 +16,5 @@ message ChallengeDeletedIntegrationEvent {
 }
 
 message ChallengesSynchronizedIntegrationEvent {
-  shared.enums.Game game = 1;
+  shared.enums.GameDto game = 1;
 }

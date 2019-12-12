@@ -8,10 +8,8 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
-using eDoxa.Notifications.Api.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents.Handlers;
 using eDoxa.Notifications.Domain.Services;
-using eDoxa.Seedwork.Domain.Misc;
 
 using Moq;
 
