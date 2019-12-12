@@ -58,7 +58,7 @@ namespace eDoxa.Cashier.Api.Services
 
             var result = await _accountService.CreateTransactionAsync(
                 account,
-                new decimal(request.Amount),
+                request.Amount,
                 Currency.FromValue((int) request.Currency),
                 TransactionType.FromValue((int) request.Type),
                 new TransactionMetadata(request.Metadata));
@@ -82,7 +82,7 @@ namespace eDoxa.Cashier.Api.Services
                 Id = transaction.Id.ToString(),
                 Timestamp = Timestamp.FromDateTime(transaction.Timestamp),
                 Currency = (CurrencyDto) transaction.Currency.Type.Value,
-                Amount = Convert.ToDouble(transaction.Currency.Amount),
+                Amount = transaction.Currency.Amount,
                 Type = (TransactionTypeDto) transaction.Type.Value,
                 Status = (TransactionStatusDto) transaction.Status.Value,
                 Description = transaction.Description.Text
@@ -145,12 +145,12 @@ namespace eDoxa.Cashier.Api.Services
                 ChallengeId = challenge.Id,
                 EntryFee = new EntryFeeDto
                 {
-                    Amount = Convert.ToDouble(challenge.EntryFee.Amount),
+                    Amount = challenge.EntryFee.Amount,
                     Currency = (CurrencyDto) challenge.EntryFee.Currency.Value
                 },
                 PrizePool = new PrizePoolDto
                 {
-                    Amount = Convert.ToDouble(challenge.Payout.PrizePool.Amount),
+                    Amount = challenge.Payout.PrizePool.Amount,
                     Currency = (CurrencyDto) challenge.Payout.PrizePool.Currency.Value
                 },
                 Buckets =
@@ -158,7 +158,7 @@ namespace eDoxa.Cashier.Api.Services
                     challenge.Payout.Buckets.Select(
                             bucket => new BucketDto
                             {
-                                Prize = Convert.ToDouble(bucket.Prize.Amount),
+                                Prize = bucket.Prize.Amount,
                                 Size = bucket.Size
                             })
                         .ToList()

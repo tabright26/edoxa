@@ -35,14 +35,14 @@ message ParticipantDto {
   string id = 1;
   string userId = 2;
   string challengeId = 3;
-  double score = 4;
+  customTypes.DecimalValue score = 4;
   repeated MatchDto matches = 5;
 }
 
 message MatchDto {
   string id = 1;
   string participantId = 2;
-  double score = 3;
+  customTypes.DecimalValue score = 3;
   repeated StatDto stats = 4;
 
   message StatDto {

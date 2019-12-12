@@ -12,7 +12,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Models
     {
         public string Id { get; set; }
 
-        public double? Score { get; set; }
+        public decimal? Score { get; set; }
 
         public string ChallengeId { get; set; }
 

@@ -185,7 +185,7 @@ namespace eDoxa.Challenges.Api.Services
                 Id = participant.Id.ToString(),
                 ChallengeId = challenge.Id.ToString(),
                 UserId = participant.UserId.ToString(),
-                Score = Convert.ToDouble(participant.ComputeScore(challenge.BestOf)?.ToDecimal() ?? 0M),
+                Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal() ?? 0M,
                 Matches =
                 {
                     participant.Matches.Select(match => MapMatch(participant, match))
@@ -199,7 +199,7 @@ namespace eDoxa.Challenges.Api.Services
             {
                 Id = match.Id.ToString(),
                 ParticipantId = participant.Id.ToString(),
-                Score = Convert.ToDouble(match.Score.ToDecimal()),
+                Score = match.Score.ToDecimal(),
                 Stats =
                 {
                     match.Stats.Select(MapStat)

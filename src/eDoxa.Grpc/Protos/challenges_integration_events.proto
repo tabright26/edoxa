@@ -3,12 +3,13 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.IntegrationEvents";
 
 import "games_enums.proto";
+import "custom_types.proto";
 
 package edoxa.services.challenges;
 
 message ChallengeClosedIntegrationEvent {
   string challengeId = 1;
-  map<string, double> scoreboard = 2;
+  map<string, customTypes.DecimalValue> scoreboard = 2;
 }
 
 message ChallengeDeletedIntegrationEvent {

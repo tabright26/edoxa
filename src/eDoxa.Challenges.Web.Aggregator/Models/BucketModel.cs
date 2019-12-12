@@ -10,6 +10,6 @@ namespace eDoxa.Challenges.Web.Aggregator.Models
     {
         public int Size { get; set; }
 
-        public double Prize { get; set; }
+        public decimal Prize { get; set; }
     }
 }

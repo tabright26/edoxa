@@ -12,6 +12,6 @@ namespace eDoxa.Challenges.Web.Aggregator.Models
     {
         public CurrencyDto Currency { get; set; }
 
-        public double Amount { get; set; }
+        public decimal Amount { get; set; }
     }
 }

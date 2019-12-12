@@ -5,6 +5,7 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Dtos";
 import "google/protobuf/timestamp.proto";
 
 import "cashier_enums.proto";
+import "custom_types.proto";
 
 package edoxa.services.cashier;
 
@@ -16,17 +17,17 @@ message ChallengePayoutDto {
   
   message PrizePoolDto {
     CurrencyDto currency = 1;
-    double amount = 2;
+    customTypes.DecimalValue amount = 2;
   }
 
   message BucketDto {
     int32 size = 1;
-    double prize = 2;
+    customTypes.DecimalValue prize = 2;
   }
 }
 
 message EntryFeeDto {
-  double amount = 1;
+  customTypes.DecimalValue amount = 1;
   CurrencyDto currency = 2;
 }
 
@@ -34,7 +35,7 @@ message TransactionDto {
   string id = 1;
   google.protobuf.Timestamp timestamp = 2;
   CurrencyDto currency = 3;
-  double amount = 4;
+  customTypes.DecimalValue amount = 4;
   string description = 5;
   TransactionTypeDto type = 6;
   TransactionStatusDto status = 7;

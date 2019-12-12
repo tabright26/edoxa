@@ -21,7 +21,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
             int bestOf,
             int entries,
             int duration,
-            double entryFeeAmount,
+            decimal entryFeeAmount,
             CurrencyDto entryFeeCurrency
         )
         {
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Requests
         public int Duration { get; }
 
         [JsonProperty("entryFeeAmount")]
-        public double EntryFeeAmount { get; }
+        public decimal EntryFeeAmount { get; }
 
         [JsonProperty("entryFeeCurrency")]
         public CurrencyDto EntryFeeCurrency { get; }

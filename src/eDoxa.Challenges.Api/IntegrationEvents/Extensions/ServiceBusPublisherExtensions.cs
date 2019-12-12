@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
@@ -32,7 +33,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
                     ChallengeId = challengeId,
                     Scoreboard =
                     {
-                        scoreboard.ToDictionary(item => item.Key.ToString(), item => Convert.ToDouble(item.Value?.ToDecimal() ?? 0))
+                        scoreboard.ToDictionary(item => item.Key.ToString(), item => DecimalValue.FromDecimal(item.Value?.ToDecimal() ?? 0M))
                     }
                 });
         }
