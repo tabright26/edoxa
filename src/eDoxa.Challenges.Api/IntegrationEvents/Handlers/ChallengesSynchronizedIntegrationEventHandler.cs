@@ -7,7 +7,9 @@
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Services;
+using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
@@ -23,7 +25,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(ChallengesSynchronizedIntegrationEvent integrationEvent)
         {
-            await _challengeService.SynchronizeChallengesAsync(integrationEvent.Game, new UtcNowDateTimeProvider());
+            await _challengeService.SynchronizeChallengesAsync(Game.FromValue((int) integrationEvent.Game), new UtcNowDateTimeProvider());
         }
     }
 }

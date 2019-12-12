@@ -13,6 +13,7 @@ using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
 using eDoxa.ServiceBus.Abstractions;
@@ -38,7 +39,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
             var mockInvitationService = new Mock<IInvitationService>();
             var mockLogger = new MockLogger<ClanMemberAddedDomainEventHandler>();
 
-            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()))
+            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<UserClaimsAddedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -56,7 +57,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
             await domainEventHandler.Handle(new ClanMemberAddedDomainEvent(new UserId(), new ClanId()), CancellationToken.None);
 
             // Assert
-            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()), Times.Once);
+            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<UserClaimsAddedIntegrationEvent>()), Times.Once);
             mockCandidationService.Verify(service => service.DeleteCandidaturesAsync(It.IsAny<UserId>()), Times.Once);
             mockInvitationService.Verify(service => service.DeleteInvitationsAsync(It.IsAny<UserId>()), Times.Once);
         }
@@ -70,7 +71,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
             var mockInvitationService = new Mock<IInvitationService>();
             var mockLogger = new MockLogger<ClanMemberAddedDomainEventHandler>();
 
-            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()))
+            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<UserClaimsAddedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -88,7 +89,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
             await domainEventHandler.Handle(new ClanMemberAddedDomainEvent(new UserId(), new ClanId()), CancellationToken.None);
 
             // Assert
-            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()), Times.Once);
+            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<UserClaimsAddedIntegrationEvent>()), Times.Once);
             mockCandidationService.Verify(service => service.DeleteCandidaturesAsync(It.IsAny<UserId>()), Times.Once);
             mockInvitationService.Verify(service => service.DeleteInvitationsAsync(It.IsAny<UserId>()), Times.Once);
             mockLogger.Verify(Times.Exactly(2));

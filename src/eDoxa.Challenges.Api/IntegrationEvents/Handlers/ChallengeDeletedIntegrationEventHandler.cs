@@ -7,6 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Services;
+using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
@@ -22,7 +24,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(ChallengeDeletedIntegrationEvent integrationEvent)
         {
-            var challenge = await _challengeService.FindChallengeAsync(integrationEvent.ChallengeId);
+            var challenge = await _challengeService.FindChallengeAsync(ChallengeId.Parse(integrationEvent.ChallengeId));
 
             if (challenge != null)
             {

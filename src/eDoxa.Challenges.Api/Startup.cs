@@ -32,6 +32,7 @@ using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
+using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
@@ -135,7 +136,7 @@ namespace eDoxa.Challenges.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.ChallengesApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ChallengesApi);
 
             builder.RegisterModule<ChallengesModule>();
         }

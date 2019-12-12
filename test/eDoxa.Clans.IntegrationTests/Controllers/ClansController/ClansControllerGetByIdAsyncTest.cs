@@ -86,7 +86,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var clanResponse = await response.Content.ReadAsAsync<ClanResponse>();
-            clanResponse!.Id.Should().Be(clan.Id);
+            clanResponse!.Id.Should().Be(clan.Id.ToGuid());
         }
     }
 }

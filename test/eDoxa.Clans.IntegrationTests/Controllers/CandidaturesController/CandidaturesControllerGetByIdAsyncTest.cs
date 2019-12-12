@@ -88,7 +88,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeResponse = await response.Content.ReadAsAsync<CandidatureResponse>();
-            challengeResponse!.Id.Should().Be(candidature.Id);
+            challengeResponse!.Id.Should().Be(candidature.Id.ToGuid());
         }
     }
 }

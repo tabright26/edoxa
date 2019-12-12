@@ -6,7 +6,9 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Stripe;
@@ -24,7 +26,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserAddressChangedIntegrationEvent integrationEvent)
         {
-            var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
+            var accountId = await _stripeAccountService.GetAccountIdAsync(UserId.Parse(integrationEvent.UserId));
 
             await _stripeAccountService.UpdateIndividualAsync(
                 accountId,

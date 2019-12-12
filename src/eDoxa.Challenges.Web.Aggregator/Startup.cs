@@ -32,7 +32,7 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
-using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Azure.Extensions;
 
 using FluentValidation;
 
@@ -170,7 +170,7 @@ namespace eDoxa.Challenges.Web.Aggregator
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.ChallengesWebAggregator));
+            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ChallengesWebAggregator);
         }
 
         public void Configure(IApplicationBuilder application)

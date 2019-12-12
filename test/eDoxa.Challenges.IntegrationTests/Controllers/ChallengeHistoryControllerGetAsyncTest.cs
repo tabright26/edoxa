@@ -74,7 +74,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var challengeResponse = (await response.Content.ReadAsAsync<ChallengeResponse[]>()).First();
-            challengeResponse.Id.Should().Be(challenge.Id);
+            challengeResponse.Id.Should().Be(challenge.Id.ToGuid());
         }
     }
 }

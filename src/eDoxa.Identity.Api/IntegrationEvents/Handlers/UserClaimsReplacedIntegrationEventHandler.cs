@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.ServiceBus.Abstractions;
 

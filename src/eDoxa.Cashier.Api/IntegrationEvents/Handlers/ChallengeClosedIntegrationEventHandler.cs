@@ -1,7 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿// Filename: ChallengeClosedIntegrationEventHandler.cs
+// Date Created: 2019-11-25
+// 
+// ================================================
+// Copyright © 2019, eDoxa. All rights reserved.
+
+using System.Linq;
+using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
@@ -19,9 +28,11 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(ChallengeClosedIntegrationEvent integrationEvent)
         {
-            var challenge = await _challengeQuery.FindChallengeAsync(integrationEvent.ChallengeId);
-            
-            await _transactionService.PayoutChallengeAsync(challenge, integrationEvent.Scoreboard);
+            var challenge = await _challengeQuery.FindChallengeAsync(ChallengeId.Parse(integrationEvent.ChallengeId));
+
+            await _transactionService.PayoutChallengeAsync(
+                challenge,
+                integrationEvent.Scoreboard.ToDictionary(x => UserId.Parse(x.Key), x => (decimal?) x.Value));
         }
     }
 }

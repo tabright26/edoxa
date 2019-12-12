@@ -1,26 +1,25 @@
-﻿// Filename: RoleClaimAddedIntegrationEventHandlerTest.cs
-// Date Created: 2019-10-06
+﻿// Filename: RoleClaimsAddedIntegrationEventHandlerTest.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
-using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Identity;
 
 using Moq;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
@@ -46,7 +45,18 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             var handler = new RoleClaimsAddedIntegrationEventHandler(mockRoleManager.Object);
 
-            var integrationEvent = new RoleClaimsAddedIntegrationEvent("role", new Claims(new Seedwork.Security.Claim( "admin", "allow")));
+            var integrationEvent = new RoleClaimsAddedIntegrationEvent
+            {
+                RoleName = "role",
+                Claims =
+                {
+                    new RoleClaimDto
+                    {
+                        Type = "admin",
+                        Value = "allow"
+                    }
+                }
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

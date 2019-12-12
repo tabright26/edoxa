@@ -11,14 +11,17 @@ namespace eDoxa.Challenges.Domain.DomainEvents
 {
     public sealed class ChallengeParticipantRegisteredDomainEvent : IDomainEvent
     {
-        public ChallengeParticipantRegisteredDomainEvent(ChallengeId challengeId, ParticipantId participantId)
+        public ChallengeParticipantRegisteredDomainEvent(ChallengeId challengeId, ParticipantId participantId, UserId userId)
         {
             ChallengeId = challengeId;
             ParticipantId = participantId;
+            UserId = userId;
         }
 
         public ChallengeId ChallengeId { get; }
 
         public ParticipantId ParticipantId { get; }
+
+        public UserId UserId { get; }
     }
 }

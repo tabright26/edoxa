@@ -35,17 +35,17 @@ message UserAddressChangedIntegrationEvent {
 }
 
 message UserClaimsAddedIntegrationEvent {
-  string roleName = 1;
+  string userId = 1;
   repeated UserClaimDto claims = 2;
 }
 
 message UserClaimsRemovedIntegrationEvent {
-  string roleName = 1;
+  string userId = 1;
   repeated UserClaimDto claims = 2;
 }
 
 message UserClaimsReplacedIntegrationEvent {
-  string roleName = 1;
+  string userId = 1;
   int32 claimCount = 2;
   repeated UserClaimDto claims = 3;
   repeated UserClaimDto newClaims = 4;

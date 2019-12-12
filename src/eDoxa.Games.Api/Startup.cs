@@ -30,6 +30,7 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
+using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
@@ -133,7 +134,7 @@ namespace eDoxa.Games.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.GamesApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppNames.GamesApi);
 
             builder.RegisterModule<GamesModule>();
         }

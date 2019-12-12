@@ -32,7 +32,7 @@ using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Azure.Extensions;
 
 using FluentValidation;
 
@@ -136,7 +136,7 @@ namespace eDoxa.Cashier.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.CashierApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppNames.CashierApi);
 
             builder.RegisterModule<CashierModule>();
         }

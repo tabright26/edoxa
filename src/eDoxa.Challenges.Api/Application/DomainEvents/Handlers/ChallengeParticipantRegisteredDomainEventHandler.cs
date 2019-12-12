@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Api.Application.DomainEvents.Handlers
                 [nameof(ParticipantId)] = domainEvent.ParticipantId.ToString()
             };
 
-            await _serviceBusPublisher.PublishTransactionSuccededIntegrationEventAsync(metadata);
+            await _serviceBusPublisher.PublishTransactionSuccededIntegrationEventAsync(domainEvent.UserId, metadata);
         }
     }
 }

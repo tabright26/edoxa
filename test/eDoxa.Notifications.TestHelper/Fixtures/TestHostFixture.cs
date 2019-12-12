@@ -13,7 +13,8 @@ using eDoxa.Notifications.Api;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.ServiceBus.Moq;
+using eDoxa.ServiceBus.TestHelper.Extensions;
+using eDoxa.ServiceBus.TestHelper.Mocks;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -39,7 +40,7 @@ namespace eDoxa.Notifications.TestHelper.Fixtures
 
         protected override void ContainerTestBuilder(ContainerBuilder builder)
         {
-            builder.RegisterModule<MockServiceBusModule>();
+            builder.RegisterMockServiceBusModule();
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

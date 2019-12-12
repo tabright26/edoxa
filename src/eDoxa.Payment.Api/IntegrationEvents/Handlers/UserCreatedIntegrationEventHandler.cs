@@ -6,7 +6,9 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
@@ -31,15 +33,17 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
         // TODO: Logger is missing.
         public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
-            var customerId = await _stripeCustomerService.CreateCustomerAsync(integrationEvent.UserId, integrationEvent.Email);
+            var userId = UserId.Parse(integrationEvent.UserId);
+
+            var customerId = await _stripeCustomerService.CreateCustomerAsync(userId, integrationEvent.Email);
 
             var accountId = await _stripeAccountService.CreateAccountAsync(
-                integrationEvent.UserId,
+                userId,
                 integrationEvent.Email,
-                integrationEvent.Country,
+                Country.FromValue((int) integrationEvent.Country),
                 customerId);
 
-            await _stripeReferenceService.CreateReferenceAsync(integrationEvent.UserId, customerId, accountId);
+            await _stripeReferenceService.CreateReferenceAsync(userId, customerId, accountId);
         }
     }
 }

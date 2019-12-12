@@ -1,11 +1,13 @@
 ﻿// Filename: ServiceBusPublisherExtensions.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
@@ -16,12 +18,36 @@ namespace eDoxa.Clans.Api.IntegrationEvents.Extensions
     {
         public static async Task PublishUserClaimClanIdAddedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, ClanId clanId)
         {
-            await publisher.PublishAsync(new UserClaimsAddedIntegrationEvent(userId, new Claims(new Claim(ClaimTypes.ClanId, clanId.ToString()))));
+            await publisher.PublishAsync(
+                new UserClaimsAddedIntegrationEvent
+                {
+                    UserId = userId,
+                    Claims =
+                    {
+                        new UserClaimDto
+                        {
+                            Type = ClaimTypes.ClanId,
+                            Value = clanId
+                        }
+                    }
+                });
         }
 
         public static async Task PublishUserClaimClanIdRemovedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, ClanId clanId)
         {
-            await publisher.PublishAsync(new UserClaimsRemovedIntegrationEvent(userId, new Claims(new Claim(ClaimTypes.ClanId, clanId.ToString()))));
+            await publisher.PublishAsync(
+                new UserClaimsRemovedIntegrationEvent
+                {
+                    UserId = userId.ToString(),
+                    Claims =
+                    {
+                        new UserClaimDto
+                        {
+                            Type = ClaimTypes.ClanId,
+                            Value = clanId
+                        }
+                    }
+                });
         }
 
         public static async Task PublishUserEmailSentIntegrationEventAsync(
@@ -31,7 +57,13 @@ namespace eDoxa.Clans.Api.IntegrationEvents.Extensions
             string htmlMessage
         )
         {
-            await publisher.PublishAsync(new UserEmailSentIntegrationEvent(userId, subject, htmlMessage));
+            await publisher.PublishAsync(
+                new UserEmailSentIntegrationEvent
+                {
+                    UserId = userId,
+                    Subject = subject,
+                    HtmlMessage = htmlMessage
+                });
         }
     }
 }

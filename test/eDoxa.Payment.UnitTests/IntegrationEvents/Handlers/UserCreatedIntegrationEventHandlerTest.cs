@@ -4,8 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
@@ -48,9 +50,11 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserCreatedIntegrationEventHandler(mockCustomerService.Object, mockAccountService.Object, mockReferenceService.Object);
 
-            var integrationEvent = new UserCreatedIntegrationEvent(
-                new UserId(),
-                "gabriel@edoxa.gg", Country.Canada);
+            var integrationEvent = new UserCreatedIntegrationEvent {
+                UserId = Guid.NewGuid().ToString(),
+                Email = "gabriel@edoxa.gg",
+                Country = Grpc.Protos.Identity.Enums.Country.Canada
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

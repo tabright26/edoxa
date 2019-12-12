@@ -7,8 +7,11 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
+using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -39,11 +42,15 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserAccountWithdrawalIntegrationEvent integrationEvent)
         {
+            var userId = UserId.Parse(integrationEvent.UserId);
+
+            var transactionId = TransactionId.Parse(integrationEvent.TransactionId);
+
             try
             {
                 _logger.LogInformation($"Processing {nameof(UserAccountWithdrawalIntegrationEvent)}...");
 
-                var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
+                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
 
                 if (!await _stripeAccountService.HasAccountVerifiedAsync(accountId))
                 {
@@ -52,13 +59,13 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
                 await _stripeTransferService.CreateTransferAsync(
                     accountId,
-                    integrationEvent.TransactionId,
+                    transactionId,
                     integrationEvent.Amount,
                     integrationEvent.Description);
 
                 _logger.LogInformation($"Processed {nameof(UserAccountWithdrawalIntegrationEvent)}.");
 
-                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
+                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, transactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionSuccededIntegrationEvent)}.");
             }
@@ -73,7 +80,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     _logger.LogCritical(exception, $"Another exception type that {nameof(StripeException)} occurred.");
                 }
 
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(integrationEvent.UserId, integrationEvent.TransactionId);
+                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(userId, transactionId);
 
                 _logger.LogInformation($"Published {nameof(UserTransactionFailedIntegrationEvent)}.");
             }

@@ -1,14 +1,18 @@
 ﻿// Filename: ServiceBusPublisherExtensions.cs
-// Date Created: 2019-11-11
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
+using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -23,12 +27,31 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
         )
         {
             await publisher.PublishAsync(
-                new ChallengeClosedIntegrationEvent(challengeId, scoreboard.ToDictionary(item => item.Key, item => item.Value?.ToDecimal())));
+                new ChallengeClosedIntegrationEvent
+                {
+                    ChallengeId = challengeId,
+                    Scoreboard =
+                    {
+                        scoreboard.ToDictionary(item => item.Key.ToString(), item => Convert.ToDouble(item.Value?.ToDecimal() ?? 0))
+                    }
+                });
         }
 
-        public static async Task PublishTransactionSuccededIntegrationEventAsync(this IServiceBusPublisher publisher, IDictionary<string, string> metadata)
+        public static async Task PublishTransactionSuccededIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            UserId userId,
+            IDictionary<string, string> metadata
+        )
         {
-            await publisher.PublishAsync(new TransactionSuccededIntegrationEvent(metadata));
+            await publisher.PublishAsync(
+                new TransactionSuccededIntegrationEvent
+                {
+                    UserId = userId,
+                    Metadata =
+                    {
+                        metadata
+                    }
+                });
         }
 
         public static async Task PublishUserEmailSentIntegrationEventAsync(
@@ -38,7 +61,13 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
             string htmlMessage
         )
         {
-            await publisher.PublishAsync(new UserEmailSentIntegrationEvent(userId, subject, htmlMessage));
+            await publisher.PublishAsync(
+                new UserEmailSentIntegrationEvent
+                {
+                    UserId = userId,
+                    Subject = subject,
+                    HtmlMessage = htmlMessage
+                });
         }
     }
 }

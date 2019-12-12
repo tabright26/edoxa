@@ -17,6 +17,7 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
+using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using Hangfire;
@@ -79,7 +80,7 @@ namespace eDoxa.Challenges.Worker
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.ChallengesWorker));
+            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ChallengesWorker);
         }
 
         public void Configure(IApplicationBuilder application)

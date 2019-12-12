@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
 

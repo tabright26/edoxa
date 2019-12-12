@@ -13,7 +13,8 @@ using eDoxa.Cashier.Api;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.ServiceBus.Moq;
+using eDoxa.ServiceBus.TestHelper.Extensions;
+using eDoxa.ServiceBus.TestHelper.Mocks;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -48,7 +49,7 @@ namespace eDoxa.Cashier.TestHelper.Fixtures
 
         protected override void ContainerTestBuilder(ContainerBuilder builder)
         {
-            builder.RegisterModule<MockServiceBusModule>();
+            builder.RegisterMockServiceBusModule();
         }
     }
 }

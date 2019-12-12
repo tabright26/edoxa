@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents.Handlers;
 using eDoxa.ServiceBus.Abstractions;
 

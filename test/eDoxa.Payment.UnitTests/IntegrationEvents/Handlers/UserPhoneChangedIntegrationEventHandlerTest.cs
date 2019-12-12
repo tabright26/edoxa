@@ -4,8 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
@@ -44,9 +46,11 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserPhoneChangedIntegrationEventHandler(mockAccountService.Object);
 
-            var integrationEvent = new UserPhoneChangedIntegrationEvent(
-                new UserId(),
-                "514-420-6969");
+            var integrationEvent = new UserPhoneChangedIntegrationEvent
+            {
+                UserId = Guid.NewGuid().ToString(),
+                PhoneNumber = "514-420-6969"
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

@@ -36,6 +36,7 @@ using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
+using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
@@ -271,7 +272,7 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.IdentityApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppNames.IdentityApi);
 
             builder.RegisterModule<IdentityModule>();
         }

@@ -1,5 +1,5 @@
 ﻿// Filename: WithdrawalProcessedIntegrationEventHandlerTest.cs
-// Date Created: 2019-11-02
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Cashier.Api.IntegrationEvents;
+using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
@@ -29,6 +29,7 @@ using Moq;
 using Stripe;
 
 using Xunit;
+
 using Account = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account;
 
 namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
@@ -123,13 +124,12 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
                     {
                         var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                        await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(
-                                account.Id,
-                                "noreply@edoxa.gg",
-                                depositTransaction.Id,
-                                depositTransaction.Description.Text,
-                                5000));
+                        await integrationEventService.PublishUserAccountWithdrawalIntegrationEventAsync(
+                            account.Id,
+                            "noreply@edoxa.gg",
+                            depositTransaction.Id,
+                            depositTransaction.Description.Text,
+                            5000);
                     });
 
                 var transaction = await this.TryGetPublishedTransaction(account.Id, depositTransaction.Id);
@@ -190,13 +190,12 @@ namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
                     {
                         var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                        await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(
-                                account.Id,
-                                "noreply@edoxa.gg",
-                                depositTransaction.Id,
-                                depositTransaction.Description.Text,
-                                5000));
+                        await integrationEventService.PublishUserAccountWithdrawalIntegrationEventAsync(
+                            account.Id,
+                            "noreply@edoxa.gg",
+                            depositTransaction.Id,
+                            depositTransaction.Description.Text,
+                            5000);
                     });
 
                 var transaction = await this.TryGetPublishedTransaction(account.Id, depositTransaction.Id);

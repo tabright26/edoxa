@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Challenges.Api.IntegrationEvents.Handlers;
+using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions

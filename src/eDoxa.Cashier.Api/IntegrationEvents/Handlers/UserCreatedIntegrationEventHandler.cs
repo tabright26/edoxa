@@ -7,6 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
@@ -22,7 +24,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
-            await _accountService.CreateAccountAsync(integrationEvent.UserId);
+            await _accountService.CreateAccountAsync(UserId.Parse(integrationEvent.UserId));
         }
     }
 }

@@ -4,8 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
@@ -44,9 +46,11 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserEmailChangedIntegrationEventHandler(mockAccountService.Object);
 
-            var integrationEvent = new UserEmailChangedIntegrationEvent(
-                new UserId(),
-                "gabriel@edoxa.gg");
+            var integrationEvent = new UserEmailChangedIntegrationEvent
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Email = "gabriel@edoxa.gg"
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

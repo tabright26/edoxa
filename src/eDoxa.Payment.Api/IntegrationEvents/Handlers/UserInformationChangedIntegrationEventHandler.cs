@@ -6,8 +6,10 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Domain.Stripe.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Stripe;
@@ -25,7 +27,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserInformationChangedIntegrationEvent integrationEvent)
         {
-            var accountId = await _stripeAccountService.GetAccountIdAsync(integrationEvent.UserId);
+            var accountId = await _stripeAccountService.GetAccountIdAsync(UserId.Parse(integrationEvent.UserId));
 
             await _stripeAccountService.UpdateIndividualAsync(
                 accountId,
@@ -33,8 +35,13 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                 {
                     FirstName = integrationEvent.FirstName,
                     LastName = integrationEvent.LastName,
-                    Gender = integrationEvent.Gender.ToStripe(),
-                    Dob = integrationEvent.Dob.ToStripe()
+                    Gender = Gender.FromValue((int) integrationEvent.Gender).ToStripe(),
+                    Dob = new DobOptions
+                    {
+                        Day = integrationEvent.Dob.Day,
+                        Month = integrationEvent.Dob.Month,
+                        Year = integrationEvent.Dob.Year
+                    }
                 });
         }
     }

@@ -4,8 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
+using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
@@ -58,12 +61,14 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object, mockStripeAccountService.Object);
 
-            var integrationEvent = new UserAccountWithdrawalIntegrationEvent(
-                new UserId(),
-                "noreply@edoxa.gg",
-                new TransactionId(),
-                "test",
-                100);
+            var integrationEvent = new UserAccountWithdrawalIntegrationEvent
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Email = "noreply@edoxa.gg",
+                TransactionId = Guid.NewGuid().ToString(),
+                Description = "Test",
+                Amount = 100
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);
@@ -106,12 +111,14 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserAccountWithdrawalIntegrationEventHandler(mockLogger.Object, mockServiceBusPublisher.Object, mockStripeService.Object, mockStripeAccountService.Object);
 
-            var integrationEvent = new UserAccountWithdrawalIntegrationEvent(
-                new UserId(),
-                "noreply@edoxa.gg",
-                new TransactionId(),
-                "test",
-                100);
+            var integrationEvent = new UserAccountWithdrawalIntegrationEvent
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Email = "noreply@edoxa.gg",
+                TransactionId = Guid.NewGuid().ToString(),
+                Description = "Test",
+                Amount = 100
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
@@ -34,15 +36,17 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserTransactionSuccededIntegrationEvent integrationEvent)
         {
-            var account = await _accountService.FindAccountAsync(integrationEvent.UserId);
+            var userId = UserId.Parse(integrationEvent.UserId);
+
+            var account = await _accountService.FindAccountAsync(userId);
 
             if (account != null)
             {
-                var result = await _accountService.MarkAccountTransactionAsSuccededAsync(account, integrationEvent.TransactionId);
+                var result = await _accountService.MarkAccountTransactionAsSuccededAsync(account, TransactionId.Parse(integrationEvent.TransactionId));
 
                 if (result.IsValid)
                 {
-                    await _serviceBusPublisher.PublishUserTransactionEmailSentIntegrationEventAsync(integrationEvent.UserId, result.GetEntityFromMetadata<ITransaction>());
+                    await _serviceBusPublisher.PublishUserTransactionEmailSentIntegrationEventAsync(userId, result.GetEntityFromMetadata<ITransaction>());
                 }
                 else
                 {

@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.1" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.23.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
@@ -38,6 +38,9 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_enums.proto" GrpcServices="None">
       <Link>Protos\cashier_enums.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None">
+      <Link>Protos\cashier_integration_events.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_requests.proto" GrpcServices="None">
       <Link>Protos\cashier_requests.proto</Link>
     </Protobuf>
@@ -52,6 +55,9 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_enums.proto" GrpcServices="None">
       <Link>Protos\challenges_enums.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_integration_events.proto" GrpcServices="None">
+      <Link>Protos\challenges_integration_events.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_requests.proto" GrpcServices="None">
       <Link>Protos\challenges_requests.proto</Link>

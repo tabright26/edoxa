@@ -12,6 +12,8 @@ using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
@@ -57,7 +59,11 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserTransactionSuccededIntegrationEventHandler(mockAccountService.Object, mockServiceBusPublisher.Object, mockLogger.Object);
 
-            var integrationEvent = new UserTransactionSuccededIntegrationEvent(account.Id, transaction.Id);
+            var integrationEvent = new UserTransactionSuccededIntegrationEvent
+            {
+                UserId = account.Id.ToString(),
+                TransactionId = transaction.Id.ToString()
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

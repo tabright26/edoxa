@@ -4,8 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents.Handlers;
 using eDoxa.Notifications.Domain.Services;
@@ -29,11 +31,13 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             var handler = new EmailSentIntegrationEventHandler(mockEmailService.Object);
 
-            var integrationEvent = new EmailSentIntegrationEvent(
-                new UserId(),
-                "gabriel@edoxa.gg",
-                "mange Dla Baloney",
-                "Mah man");
+            var integrationEvent = new EmailSentIntegrationEvent
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Email =  "gabriel@edoxa.gg",
+                Subject = "mange Dla Baloney",
+                HtmlMessage = "Mah man"
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

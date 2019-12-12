@@ -11,6 +11,7 @@ using eDoxa.Clans.Api.Areas.Clans.DomainEvents;
 using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -32,7 +33,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
             // Arrange
             var mockServiceBus = new Mock<IServiceBusPublisher>();
 
-            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()))
+            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<UserClaimsRemovedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -42,7 +43,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.DomainEvents
             await domainEventHandler.Handle(new ClanMemberRemovedDomainEvent(new UserId(), new ClanId()), CancellationToken.None);
 
             // Assert
-            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<IIntegrationEvent>()), Times.Once);
+            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<UserClaimsRemovedIntegrationEvent>()), Times.Once);
         }
     }
 }

@@ -4,16 +4,20 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Moq;
 
 using Xunit;
+
+using Country = eDoxa.Grpc.Protos.Identity.Enums.Country;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
@@ -29,7 +33,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserCreatedIntegrationEventHandler(mockAccountService.Object);
 
-            var integrationEvent = new UserCreatedIntegrationEvent(new UserId(), "noreply@edoxa.gg", "CA");
+            var integrationEvent = new UserCreatedIntegrationEvent
+            {
+                UserId = Guid.NewGuid().ToString(),
+                Email = "noreply@edoxa.gg",
+                Country = Country.Canada
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

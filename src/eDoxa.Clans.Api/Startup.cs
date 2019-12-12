@@ -30,6 +30,7 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
+using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.Azure.Modules;
 using eDoxa.Storage.Azure.Extensions;
 
@@ -127,7 +128,7 @@ namespace eDoxa.Clans.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.ClansApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ClansApi);
 
             builder.RegisterModule<ClansModule>();
         }

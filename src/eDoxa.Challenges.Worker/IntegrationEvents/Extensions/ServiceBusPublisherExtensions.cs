@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -15,7 +16,10 @@ namespace eDoxa.Challenges.Worker.IntegrationEvents.Extensions
     {
         public static async Task PublishChallengesSynchronizedIntegrationEventAsync(this IServiceBusPublisher publisher, Game game)
         {
-            await publisher.PublishAsync(new ChallengesSynchronizedIntegrationEvent(game));
+            await publisher.PublishAsync(new ChallengesSynchronizedIntegrationEvent
+            {
+                Game = (Grpc.Protos.Shared.Enums.Game) game.Value
+            });
         }
     }
 }

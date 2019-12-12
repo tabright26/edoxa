@@ -6,18 +6,20 @@ package edoxa.services.cashier;
 
 message UserTransactionCanceledIntegrationEvent {
   string userId = 1;
-  string transaction = 2;
+  string transactionId = 2;
 }
 
 message UserTransactionFailedIntegrationEvent {
   string userId = 1;
-  string transaction = 2;
+  string transactionId = 2;
 }
 
 message UserTransactionSuccededIntegrationEvent {
   string userId = 1;
-  string transaction = 2;
+  string transactionId = 2;
 }
 
 message TransactionSuccededIntegrationEvent {
+  string userId = 1;
+  map<string, string> metadata = 2;
 }

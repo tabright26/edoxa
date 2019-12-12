@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
@@ -39,7 +40,10 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             var handler = new RoleCreatedIntegrationEventHandler(mockRoleManager.Object);
 
-            var integrationEvent = new RoleCreatedIntegrationEvent("role");
+            var integrationEvent = new RoleCreatedIntegrationEvent
+            {
+                RoleName = "role"
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

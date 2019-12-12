@@ -6,8 +6,10 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
@@ -25,12 +27,12 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserEmailSentIntegrationEvent integrationEvent)
         {
-            var user = await _userService.FindByIdAsync(integrationEvent.UserId.ToString());
+            var user = await _userService.FindByIdAsync(integrationEvent.UserId);
 
             var email = await _userService.GetEmailAsync(user);
 
             await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                integrationEvent.UserId,
+                UserId.Parse(integrationEvent.UserId),
                 email,
                 integrationEvent.Subject,
                 integrationEvent.HtmlMessage);
