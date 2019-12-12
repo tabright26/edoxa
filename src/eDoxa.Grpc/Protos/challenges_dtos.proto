@@ -5,6 +5,7 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Dtos";
 import "google/protobuf/timestamp.proto";
 
 import "challenges_enums.proto";
+import "custom_types.proto";
 import "shared_enums.proto";
 
 package edoxa.services.challenges;
@@ -48,6 +49,6 @@ message MatchDto {
 	string name = 1;
 	double value = 2;
 	float weighting = 3;
-	double score = 4;
+	customTypes.DecimalValue score = 4;
   }
 }

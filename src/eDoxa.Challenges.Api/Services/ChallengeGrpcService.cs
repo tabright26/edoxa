@@ -276,7 +276,7 @@ namespace eDoxa.Challenges.Api.Services
                 Name = stat.Name,
                 Value = stat.Value,
                 Weighting = stat.Weighting,
-                Score = Convert.ToDouble(stat.Score.ToDecimal())
+                Score = stat.Score.ToDecimal()
             };
         }
     }
