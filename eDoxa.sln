@@ -108,13 +108,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{63922276
 		build\docker-compose.ci.test.yml = build\docker-compose.ci.test.yml
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "powershell", "powershell", "{EDC9E143-7B40-40BE-9AB8-10EE8A346EB9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{EDC9E143-7B40-40BE-9AB8-10EE8A346EB9}"
 	ProjectSection(SolutionItems) = preProject
-		powershell\az-acr-login.ps1 = powershell\az-acr-login.ps1
-		powershell\az-login.ps1 = powershell\az-login.ps1
-		powershell\docker-compose.test-up.ps1 = powershell\docker-compose.test-up.ps1
-		powershell\docker-container-rm.ps1 = powershell\docker-container-rm.ps1
-		powershell\firewall-rule.ps1 = powershell\firewall-rule.ps1
+		scripts\az-acr-login.ps1 = scripts\az-acr-login.ps1
+		scripts\az-login.ps1 = scripts\az-login.ps1
+		scripts\docker-compose.test-up.ps1 = scripts\docker-compose.test-up.ps1
+		scripts\docker-container-rm.ps1 = scripts\docker-container-rm.ps1
+		scripts\firewall-rule.ps1 = scripts\firewall-rule.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Api", "src\eDoxa.Challenges.Api\eDoxa.Challenges.Api.csproj", "{FA3CA3A6-8F54-47D3-B289-3E2B55EF71FB}"
@@ -197,7 +197,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Worker", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2ECF65D6-4C8D-4065-912F-9C24A7964CA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Grpc", "src\eDoxa.Grpc\eDoxa.Grpc.csproj", "{7853D7EF-7CF3-4C6C-8851-B938C1E55CFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Grpc", "src\eDoxa.Grpc\eDoxa.Grpc.csproj", "{7853D7EF-7CF3-4C6C-8851-B938C1E55CFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
