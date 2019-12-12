@@ -3,16 +3,13 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Games.Responses";
 
 import "games_dtos.proto";
-import "shared_dtos.proto";
 
 package edoxa.services.games;
 
 message FetchChallengeScoringResponse {
-  shared.dtos.StatusDto status = 1;
-  map<string, float> scoring = 2;
+  map<string, float> scoring = 1;
 }
 
 message FetchChallengeMatchesResponse {
-  shared.dtos.StatusDto status = 1;
-  repeated MatchDto matches = 2;
+  repeated MatchDto matches = 1;
 }

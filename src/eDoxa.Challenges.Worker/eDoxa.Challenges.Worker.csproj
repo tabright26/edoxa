@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.11.1" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.23.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
     <PackageReference Include="Grpc.Net.ClientFactory" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
       <PrivateAssets>all</PrivateAssets>
@@ -61,9 +61,6 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\games_services.proto" GrpcServices="Client">
       <Link>Protos\games_services.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
-      <Link>Protos\shared_dtos.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\shared_enums.proto" GrpcServices="None">
       <Link>Protos\shared_enums.proto</Link>

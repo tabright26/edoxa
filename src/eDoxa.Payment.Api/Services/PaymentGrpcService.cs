@@ -7,10 +7,10 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
-using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Payment.Api.Areas.Stripe.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
@@ -86,20 +86,9 @@ namespace eDoxa.Payment.Api.Services
 
                 var message = $"A Stripe invoice '{invoice.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
 
-                context.Status = new Status(StatusCode.OK, message);
-
-                _logger.LogInformation(message);
-
                 await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
 
-                return new DepositResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                return context.Ok(new DepositResponse(), message);
             }
             catch (Exception exception)
             {
@@ -144,20 +133,9 @@ namespace eDoxa.Payment.Api.Services
 
                 var message = $"A Stripe transfer '{transfer.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
                 
-                context.Status = new Status(StatusCode.OK, message);
-
-                _logger.LogInformation(message);
-
                 await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
 
-                return new WithdrawalResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                return context.Ok(new WithdrawalResponse(), message);
             }
             catch (Exception exception)
             {

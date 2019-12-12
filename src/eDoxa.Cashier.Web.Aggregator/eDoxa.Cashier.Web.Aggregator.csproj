@@ -66,9 +66,6 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\payment_services.proto" GrpcServices="Client">
       <Link>Protos\payment_services.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
-      <Link>Protos\shared_dtos.proto</Link>
-    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\shared_enums.proto" GrpcServices="None">
       <Link>Protos\shared_enums.proto</Link>
     </Protobuf>

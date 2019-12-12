@@ -12,12 +12,12 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
+using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Challenges.Enums;
 using eDoxa.Grpc.Protos.Challenges.Requests;
 using eDoxa.Grpc.Protos.Challenges.Responses;
 using eDoxa.Grpc.Protos.Challenges.Services;
-using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Grpc.Protos.Shared.Enums;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
@@ -51,20 +51,14 @@ namespace eDoxa.Challenges.Api.Services
 
             var challenges = await _challengeQuery.FetchChallengesAsync(game, state);
 
-            context.Status = new Status(StatusCode.OK, "");
-
-            return new FetchChallengesResponse
-            {
-                Status = new StatusDto
+            return context.Ok(
+                new FetchChallengesResponse
                 {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                },
-                Challenges =
-                {
-                    challenges.Select(MapChallenge)
-                }
-            };
+                    Challenges =
+                    {
+                        challenges.Select(MapChallenge)
+                    }
+                });
         }
 
         public override async Task<FindChallengeResponse> FindChallenge(FindChallengeRequest request, ServerCallContext context)
@@ -73,29 +67,14 @@ namespace eDoxa.Challenges.Api.Services
 
             if (challenge == null)
             {
-                context.Status = new Status(StatusCode.NotFound, "");
-
-                return new FindChallengeResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, ""));
             }
 
-            context.Status = new Status(StatusCode.OK, "");
-
-            return new FindChallengeResponse
-            {
-                Status = new StatusDto
+            return context.Ok(
+                new FindChallengeResponse
                 {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                },
-                Challenge = MapChallenge(challenge)
-            };
+                    Challenge = MapChallenge(challenge)
+                });
         }
 
         public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
@@ -111,45 +90,21 @@ namespace eDoxa.Challenges.Api.Services
 
             if (result.IsValid)
             {
-                context.Status = new Status(StatusCode.OK, "");
-
-                return new CreateChallengeResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new CreateChallengeResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    },
-                    Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
-                };
+                        Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                    });
             }
 
-            context.Status = new Status(StatusCode.FailedPrecondition, "");
-
-            return new CreateChallengeResponse
-            {
-                Status = new StatusDto
-                {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                }
-            };
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
         }
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
         {
             await _challengeService.SynchronizeChallengesAsync(Game.FromValue((int) request.Game), new UtcNowDateTimeProvider());
 
-            context.Status = new Status(StatusCode.OK, "");
-
-            return new SynchronizeChallengeResponse
-            {
-                Status = new StatusDto
-                {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                }
-            };
+            return context.Ok(new SynchronizeChallengeResponse());
         }
 
         public override async Task<RegisterChallengeParticipantResponse> RegisterChallengeParticipant(
@@ -165,16 +120,7 @@ namespace eDoxa.Challenges.Api.Services
 
             if (challenge == null)
             {
-                context.Status = new Status(StatusCode.NotFound, "Challenge not found.");
-
-                return new RegisterChallengeParticipantResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, "Challenge not found."));
             }
 
             var result = await _challengeService.RegisterChallengeParticipantAsync(
@@ -186,29 +132,14 @@ namespace eDoxa.Challenges.Api.Services
 
             if (result.IsValid)
             {
-                context.Status = new Status(StatusCode.OK, "");
-
-                return new RegisterChallengeParticipantResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new RegisterChallengeParticipantResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    },
-                    Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
-                };
+                        Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
+                    });
             }
 
-            context.Status = new Status(StatusCode.FailedPrecondition, "");
-
-            return new RegisterChallengeParticipantResponse
-            {
-                Status = new StatusDto
-                {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                }
-            };
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
         }
 
         public static ChallengeDto MapChallenge(IChallenge challenge)
@@ -221,13 +152,20 @@ namespace eDoxa.Challenges.Api.Services
                 State = (ChallengeStateDto) challenge.Timeline.State.Value,
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
-                SynchronizedAt = challenge.SynchronizedAt.HasValue ? DateTime.SpecifyKind(challenge.SynchronizedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
+                SynchronizedAt =
+                    challenge.SynchronizedAt.HasValue ? DateTime.SpecifyKind(challenge.SynchronizedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
                 Timeline = new TimelineDto
                 {
                     CreatedAt = DateTime.SpecifyKind(challenge.Timeline.CreatedAt, DateTimeKind.Utc).ToTimestamp(),
-                    StartedAt = challenge.Timeline.StartedAt.HasValue ? DateTime.SpecifyKind(challenge.Timeline.StartedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
-                    EndedAt = challenge.Timeline.EndedAt.HasValue ? DateTime.SpecifyKind(challenge.Timeline.EndedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
-                    ClosedAt = challenge.Timeline.ClosedAt.HasValue ? DateTime.SpecifyKind(challenge.Timeline.ClosedAt.Value, DateTimeKind.Utc).ToTimestamp() : null
+                    StartedAt = challenge.Timeline.StartedAt.HasValue
+                        ? DateTime.SpecifyKind(challenge.Timeline.StartedAt.Value, DateTimeKind.Utc).ToTimestamp()
+                        : null,
+                    EndedAt = challenge.Timeline.EndedAt.HasValue
+                        ? DateTime.SpecifyKind(challenge.Timeline.EndedAt.Value, DateTimeKind.Utc).ToTimestamp()
+                        : null,
+                    ClosedAt = challenge.Timeline.ClosedAt.HasValue
+                        ? DateTime.SpecifyKind(challenge.Timeline.ClosedAt.Value, DateTimeKind.Utc).ToTimestamp()
+                        : null
                 },
                 Scoring =
                 {

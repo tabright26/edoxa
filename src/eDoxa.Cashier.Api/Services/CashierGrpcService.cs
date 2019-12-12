@@ -13,12 +13,12 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Responses;
 using eDoxa.Grpc.Protos.Cashier.Services;
-using eDoxa.Grpc.Protos.Shared.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -53,16 +53,7 @@ namespace eDoxa.Cashier.Api.Services
 
             if (account == null)
             {
-                context.Status = new Status(StatusCode.NotFound, "User account not found.");
-
-                return new CreateTransactionResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, "User account not found."));
             }
 
             var result = await _accountService.CreateTransactionAsync(
@@ -74,29 +65,14 @@ namespace eDoxa.Cashier.Api.Services
 
             if (result.IsValid)
             {
-                context.Status = new Status(StatusCode.OK, "");
-
-                return new CreateTransactionResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new CreateTransactionResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    },
-                    Transaction = MapTransaction(result.GetEntityFromMetadata<ITransaction>())
-                };
+                        Transaction = MapTransaction(result.GetEntityFromMetadata<ITransaction>())
+                    });
             }
 
-            context.Status = new Status(StatusCode.FailedPrecondition, "");
-
-            return new CreateTransactionResponse
-            {
-                Status = new StatusDto
-                {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                }
-            };
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
         }
 
         public static TransactionDto MapTransaction(ITransaction transaction)
@@ -117,20 +93,14 @@ namespace eDoxa.Cashier.Api.Services
         {
             var challenges = await _challengeQuery.FetchChallengesAsync();
 
-            context.Status = new Status(StatusCode.OK, "");
-
-            return new FetchChallengePayoutsResponse
-            {
-                Status = new StatusDto
+            return context.Ok(
+                new FetchChallengePayoutsResponse
                 {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                },
-                Payouts =
-                {
-                    challenges.Select(MapChallenge)
-                }
-            };
+                    Payouts =
+                    {
+                        challenges.Select(MapChallenge)
+                    }
+                });
         }
 
         public override async Task<FindChallengePayoutResponse> FindChallengePayout(FindChallengePayoutRequest request, ServerCallContext context)
@@ -139,29 +109,14 @@ namespace eDoxa.Cashier.Api.Services
 
             if (challenge == null)
             {
-                context.Status = new Status(StatusCode.NotFound, "");
-
-                return new FindChallengePayoutResponse
-                {
-                    Status = new StatusDto
-                    {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    }
-                };
+                throw context.RpcException(new Status(StatusCode.NotFound, ""));
             }
 
-            context.Status = new Status(StatusCode.OK, "");
-
-            return new FindChallengePayoutResponse
-            {
-                Status = new StatusDto
+            return context.Ok(
+                new FindChallengePayoutResponse
                 {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                },
-                Payout = MapChallenge(challenge)
-            };
+                    Payout = MapChallenge(challenge)
+                });
         }
 
         public override async Task<CreateChallengePayoutResponse> CreateChallengePayout(CreateChallengePayoutRequest request, ServerCallContext context)
@@ -173,29 +128,14 @@ namespace eDoxa.Cashier.Api.Services
 
             if (result.IsValid)
             {
-                context.Status = new Status(StatusCode.OK, "");
-
-                return new CreateChallengePayoutResponse
-                {
-                    Status = new StatusDto
+                return context.Ok(
+                    new CreateChallengePayoutResponse
                     {
-                        Code = (int) context.Status.StatusCode,
-                        Message = context.Status.Detail
-                    },
-                    Payout = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
-                };
+                        Payout = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                    });
             }
 
-            context.Status = new Status(StatusCode.FailedPrecondition, "");
-
-            return new CreateChallengePayoutResponse
-            {
-                Status = new StatusDto
-                {
-                    Code = (int) context.Status.StatusCode,
-                    Message = context.Status.Detail
-                }
-            };
+            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
         }
 
         public static ChallengePayoutDto MapChallenge(IChallenge challenge)

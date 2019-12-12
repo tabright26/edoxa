@@ -3,26 +3,21 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Responses";
 
 import "cashier_dtos.proto";
-import "shared_dtos.proto";
 
 package edoxa.services.cashier;
 
 message FetchChallengePayoutsResponse {
-  shared.dtos.StatusDto status = 1;
-  repeated ChallengePayoutDto payouts = 2;
+  repeated ChallengePayoutDto payouts = 1;
 }
 
 message FindChallengePayoutResponse {
-  shared.dtos.StatusDto status = 1;
-  ChallengePayoutDto payout = 2;
+  ChallengePayoutDto payout = 1;
 }
 
 message CreateChallengePayoutResponse {
-  shared.dtos.StatusDto status = 1;
-  ChallengePayoutDto payout = 2;
+  ChallengePayoutDto payout = 1;
 }
 
 message CreateTransactionResponse {
-  shared.dtos.StatusDto status = 1;
-  TransactionDto Transaction = 2;
+  TransactionDto Transaction = 1;
 }

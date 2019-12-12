@@ -49,9 +49,6 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\notifications_services.proto" GrpcServices="Server">
       <Link>Protos\notifications_services.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
-      <Link>Protos\shared_dtos.proto</Link>
-    </Protobuf>
   </ItemGroup>
 
 </Project>

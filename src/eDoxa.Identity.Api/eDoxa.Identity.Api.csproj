@@ -66,9 +66,6 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\notifications_integration_events.proto" GrpcServices="None">
       <Link>Protos\notifications_integration_events.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\shared_dtos.proto" GrpcServices="None">
-      <Link>Protos\shared_dtos.proto</Link>
-    </Protobuf>
   </ItemGroup>
 
 </Project>
