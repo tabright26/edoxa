@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Protos\clans_dtos.proto" />
     <None Include="Protos\identity_enums.proto" />
     <None Include="Protos\clans_enums.proto" />
@@ -45,6 +53,10 @@
     <None Include="Protos\payment_requests.proto" />
     <None Include="Protos\payment_responses.proto" />
     <None Include="Protos\payment_services.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\custom_types.proto" GrpcServices="None" />
   </ItemGroup>
 
 </Project>
