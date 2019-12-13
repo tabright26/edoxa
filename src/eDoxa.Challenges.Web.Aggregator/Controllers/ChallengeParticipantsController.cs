@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions;
-using eDoxa.Challenges.Web.Aggregator.Models;
 using eDoxa.Challenges.Web.Aggregator.Transformers;
 using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Services;
@@ -27,6 +26,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
+using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
+
 using CashierRequests = eDoxa.Grpc.Protos.Cashier.Requests;
 using ChallengeRequests = eDoxa.Grpc.Protos.Challenges.Requests;
 
@@ -35,7 +36,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
     [Authorize]
     [ApiVersion("1.0")]
     [Route("api/challenges/{challengeId}/participants")]
-    [ApiExplorerSettings(GroupName = "Challenge")]
+    [ApiExplorerSettings(GroupName = "Challenges")]
     public sealed class ChallengeParticipantsController : ControllerBase
     {
         private readonly ChallengeService.ChallengeServiceClient _challengesServiceClient;
@@ -58,7 +59,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
 
         [HttpPost]
         [SwaggerOperation("Register a participant to a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantAggregate))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(string challengeId)
         {

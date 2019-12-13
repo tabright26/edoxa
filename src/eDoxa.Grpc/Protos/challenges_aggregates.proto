@@ -1,0 +1,89 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Aggregates";
+
+import "google/protobuf/wrappers.proto";
+
+import "challenges_enums.proto";
+import "games_enums.proto";
+import "cashier_enums.proto";
+import "custom_types.proto";
+
+package edoxa.services.challenges;
+
+message ChallengeAggregate {
+  string id = 1;
+  string name = 2;
+  games.GameDto game = 3;
+  ChallengeTypeDto type = 4;
+  ChallengeStateDto state = 5;
+  int32 bestOf = 6;
+  int32 entries = 7;
+  int32 payoutEntries = 8;
+  google.protobuf.Int64Value synchronizedAt = 9;
+  map<string, float> scoring = 10;
+  TimelineAggregate timeline = 11;
+  PayoutAggregate payout = 12;
+  repeated ParticipantAggregate participants = 13;
+
+  message TimelineAggregate {
+    int64 createdAt = 1;
+	google.protobuf.Int64Value startedAt = 2;
+	google.protobuf.Int64Value endedAt = 3;
+	google.protobuf.Int64Value closedAt = 4;
+  }
+
+  message ParticipantAggregate {
+    string id = 1;
+    UserAggregate user = 2;
+    string challengeId = 3;
+    customTypes.DecimalValue score = 4;
+    repeated MatchAggregate matches = 5;
+
+    message UserAggregate {
+      string id = 1;
+      DoxatagAggregate doxatag = 2;
+
+      message DoxatagAggregate {
+        string name = 1;
+        int32 code = 2;
+      }
+    }
+  }
+
+  message MatchAggregate {
+    string id = 1;
+    string participantId = 2;
+    customTypes.DecimalValue score = 3;
+    repeated StatAggregate stats = 4;
+
+    message StatAggregate {
+	  string name = 1;
+	  double value = 2;
+	  float weighting = 3;
+      customTypes.DecimalValue score = 4;
+    }
+  }
+
+  message PayoutAggregate {
+    string challengeId = 1;
+    EntryFeeAggregate entryFee = 2;
+    PrizePoolAggregate prizePool = 3;
+    repeated BucketAggregate buckets = 4;
+  
+    message PrizePoolAggregate {
+      cashier.CurrencyDto currency = 1;
+      customTypes.DecimalValue amount = 2;
+    }
+
+    message BucketAggregate {
+      int32 size = 1;
+      customTypes.DecimalValue prize = 2;
+    }
+
+    message EntryFeeAggregate {
+      customTypes.DecimalValue amount = 1;
+      cashier.CurrencyDto currency = 2;
+    }
+  }
+}

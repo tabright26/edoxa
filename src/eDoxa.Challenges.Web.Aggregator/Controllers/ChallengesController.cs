@@ -7,11 +7,11 @@
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions;
-using eDoxa.Challenges.Web.Aggregator.Models;
 using eDoxa.Challenges.Web.Aggregator.Requests;
 using eDoxa.Challenges.Web.Aggregator.Transformers;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Challenges.Aggregates;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Services;
@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
     [Authorize]
     [ApiVersion("1.0")]
     [Route("api/challenges")]
-    [ApiExplorerSettings(GroupName = "Challenge")]
+    [ApiExplorerSettings(GroupName = "Challenges")]
     public sealed class ChallengesController : ControllerBase
     {
         private readonly IdentityService.IdentityServiceClient _identityServiceClient;
@@ -64,7 +64,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [AllowAnonymous]
         [HttpGet]
         [SwaggerOperation("Fetch challenges.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate[]))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FetchChallengesAsync()
         {
@@ -81,7 +81,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [Authorize(Roles = AppRoles.Admin)]
         [HttpPost]
         [SwaggerOperation("Create challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallengeRequest request)
         {
@@ -132,7 +132,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [AllowAnonymous]
         [HttpGet("{challengeId}")]
         [SwaggerOperation("Find a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FindChallengeAsync(string challengeId)
         {

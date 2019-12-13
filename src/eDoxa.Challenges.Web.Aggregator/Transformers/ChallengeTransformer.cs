@@ -7,27 +7,32 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using eDoxa.Challenges.Web.Aggregator.Models;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Challenges.Aggregates;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
+using eDoxa.Grpc.Protos.Identity.Dtos;
 
-using ChallengeDtos = eDoxa.Grpc.Protos.Challenges.Dtos;
-using CashierDtos = eDoxa.Grpc.Protos.Cashier.Dtos;
-using IdentityDtos = eDoxa.Grpc.Protos.Identity.Dtos;
+using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
+using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.MatchAggregate.Types;
+using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types;
+using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types.UserAggregate.Types;
+using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.PayoutAggregate.Types;
 
 namespace eDoxa.Challenges.Web.Aggregator.Transformers
 {
     public static class ChallengeTransformer
     {
-        public static ParticipantModel Transform(string challengeId, ChallengeDtos.ParticipantDto participant, IEnumerable<IdentityDtos.DoxatagDto> doxatags)
+        public static ParticipantAggregate Transform(string challengeId, ParticipantDto participant, IEnumerable<DoxatagDto> doxatags)
         {
-            return new ParticipantModel
+            return new ParticipantAggregate
             {
                 Id = participant.Id,
-                User = new UserModel
+                User = new UserAggregate
                 {
                     Id = participant.UserId,
                     Doxatag = doxatags.Where(doxatag => doxatag.UserId == participant.UserId)
                         .Select(
-                            doxatag => new DoxatagModel
+                            doxatag => new DoxatagAggregate
                             {
                                 Name = doxatag.Name,
                                 Code = doxatag.Code
@@ -36,33 +41,33 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                 },
                 Score = participant.Score,
                 ChallengeId = challengeId,
-                Matches = participant.Matches.Select(
-                        match => new MatchModel
+                Matches =
+                {
+                    participant.Matches.Select(
+                        match => new MatchAggregate
                         {
                             Id = match.Id,
                             Score = match.Score,
                             ParticipantId = match.ParticipantId,
-                            Stats = match.Stats.Select(
-                                    stat => new StatModel
+                            Stats =
+                            {
+                                match.Stats.Select(
+                                    stat => new StatAggregate
                                     {
                                         Name = stat.Name,
                                         Value = stat.Value,
                                         Weighting = stat.Weighting,
                                         Score = stat.Score
                                     })
-                                .ToArray()
+                            }
                         })
-                    .ToArray()
+                }
             };
         }
 
-        public static ChallengeModel Transform(
-            ChallengeDtos.ChallengeDto challenge,
-            CashierDtos.ChallengePayoutDto payout,
-            IEnumerable<IdentityDtos.DoxatagDto> doxatags
-        )
+        public static ChallengeAggregate Transform(ChallengeDto challenge, ChallengePayoutDto payout, IEnumerable<DoxatagDto> doxatags)
         {
-            return new ChallengeModel
+            return new ChallengeAggregate
             {
                 Id = challenge.Id,
                 Name = challenge.Name,
@@ -70,12 +75,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                 State = challenge.State,
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
-                EntryFee = new EntryFeeModel
-                {
-                    Amount = payout.EntryFee.Amount,
-                    Currency = payout.EntryFee.Currency
-                },
-                Timeline = new TimelineModel
+                Timeline = new TimelineAggregate
                 {
                     CreatedAt = challenge.Timeline.CreatedAt.ToDateTimeOffset().ToUnixTimeSeconds(),
                     StartedAt = challenge.Timeline.StartedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
@@ -84,30 +84,44 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                 },
                 PayoutEntries = payout.Buckets.Sum(bucket => bucket.Size),
                 SynchronizedAt = challenge.SynchronizedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
-                Scoring = challenge.Scoring,
-                Payout = new PayoutModel
+                Scoring =
                 {
-                    PrizePool = new PrizePoolModel
+                    challenge.Scoring
+                },
+                Payout = new PayoutAggregate
+                {
+                    ChallengeId = challenge.Id,
+                    EntryFee = new EntryFeeAggregate
+                    {
+                        Amount = payout.EntryFee.Amount,
+                        Currency = payout.EntryFee.Currency
+                    },
+                    PrizePool = new PrizePoolAggregate
                     {
                         Currency = payout.PrizePool.Currency,
                         Amount = payout.PrizePool.Amount
                     },
-                    Buckets = payout.Buckets.Select(
-                            bucket => new BucketModel
+                    Buckets =
+                    {
+                        payout.Buckets.Select(
+                            bucket => new BucketAggregate
                             {
                                 Prize = bucket.Prize,
                                 Size = bucket.Size
                             })
-                        .ToArray()
+                    }
                 },
-                Participants = challenge.Participants.Select(participant => Transform(challenge.Id, participant, doxatags)).ToArray()
+                Participants =
+                {
+                    challenge.Participants.Select(participant => Transform(challenge.Id, participant, doxatags))
+                }
             };
         }
 
-        public static IReadOnlyCollection<ChallengeModel> Transform(
-            IReadOnlyCollection<ChallengeDtos.ChallengeDto> challenges,
-            IReadOnlyCollection<CashierDtos.ChallengePayoutDto> payouts,
-            IReadOnlyCollection<IdentityDtos.DoxatagDto> doxatags
+        public static IReadOnlyCollection<ChallengeAggregate> Transform(
+            IEnumerable<ChallengeDto> challenges,
+            IEnumerable<ChallengePayoutDto> payouts,
+            IEnumerable<DoxatagDto> doxatags
         )
         {
             var challengeModels = from challenge in challenges

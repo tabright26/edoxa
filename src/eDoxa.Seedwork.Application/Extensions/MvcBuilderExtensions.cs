@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Application.Converters;
+
 using FluentValidation.AspNetCore;
 
 using Microsoft.Extensions.DependencyInjection;

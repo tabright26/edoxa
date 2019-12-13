@@ -175,7 +175,7 @@ namespace eDoxa.Challenges.Api.Services
                 },
                 Scoring =
                 {
-                    challenge.Scoring.ToDictionary(scoring => scoring.Key.ToString(), scoring => Convert.ToSingle(scoring.Value))
+                    challenge.Scoring.ToDictionary(scoring => scoring.Key.ToString(), scoring => scoring.Value.ToSingle())
                 },
                 Participants =
                 {
@@ -191,7 +191,7 @@ namespace eDoxa.Challenges.Api.Services
                 Id = participant.Id.ToString(),
                 ChallengeId = challenge.Id.ToString(),
                 UserId = participant.UserId.ToString(),
-                Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal() ?? 0M, // TODO
+                Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal(),
                 Matches =
                 {
                     participant.Matches.Select(match => MapMatch(participant, match))

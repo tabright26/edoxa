@@ -47,6 +47,9 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_services.proto" GrpcServices="Client">
       <Link>Protos\cashier_services.proto</Link>
     </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_aggregates.proto" GrpcServices="None">
+      <Link>Protos\challenges_aggregates.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None">
       <Link>Protos\challenges_dtos.proto</Link>
     </Protobuf>

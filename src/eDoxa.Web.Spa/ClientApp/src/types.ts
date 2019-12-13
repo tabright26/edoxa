@@ -169,7 +169,6 @@ export interface Challenge extends Entity<ChallengeId> {
   readonly payoutEntries: number;
   readonly synchronizedAt?: number;
   readonly timeline: ChallengeTimeline;
-  readonly entryFee: ChallengeEntryFee;
   readonly scoring: ChallengeScoring;
   readonly payout: ChallengePayout;
   readonly participants: ChallengeParticipant[];
@@ -201,6 +200,8 @@ export interface ChallengeEntryFee {
 export type ChallengeScoring = Map<string, string>;
 
 export interface ChallengePayout {
+  readonly challengeId: ChallengeId;
+  readonly entryFee: ChallengeEntryFee;
   readonly prizePool: ChallengePayoutPrizePool;
   readonly buckets: ChallengePayoutBucket[];
 }

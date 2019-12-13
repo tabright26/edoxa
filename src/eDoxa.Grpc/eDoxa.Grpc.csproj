@@ -20,6 +20,7 @@
     <None Include="Protos\clans_requests.proto" />
     <None Include="Protos\clans_responses.proto" />
     <None Include="Protos\clans_services.proto" />
+    <None Include="Protos\challenges_aggregates.proto" />
     <None Include="Protos\challenges_dtos.proto" />
     <None Include="Protos\challenges_integration_events.proto" />
     <None Include="Protos\challenges_requests.proto" />
