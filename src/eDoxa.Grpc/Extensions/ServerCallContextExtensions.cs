@@ -45,6 +45,11 @@ namespace eDoxa.Grpc.Extensions
             return httpContext.RequestServices.GetRequiredService<ILogger>();
         }
 
+        public static RpcException NotFoundRpcException(this ServerCallContext context, string detail)
+        {
+            return context.RpcException(new Status(StatusCode.NotFound, detail));
+        }
+
         public static RpcException RpcException(this ServerCallContext context, Status status)
         {
             var logger = context.GetLogger();

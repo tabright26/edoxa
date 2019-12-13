@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels.GameAggregate;
+using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Domain.Adapters

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +32,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
                     ChallengeId = challengeId,
                     Scoreboard =
                     {
-                        scoreboard.ToDictionary(item => item.Key.ToString(), item => DecimalValue.FromDecimal(item.Value?.ToDecimal() ?? 0M))
+                        scoreboard.ToDictionary(item => item.Key.ToString(), item => DecimalValue.FromDecimal(item.Value?.ToDecimal() ?? 0M)) // TODO
                     }
                 });
         }

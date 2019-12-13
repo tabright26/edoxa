@@ -48,9 +48,6 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
       <Link>Protos\identity_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_enums.proto" GrpcServices="None">
-      <Link>Protos\identity_enums.proto</Link>
-    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
       <Link>Protos\identity_integration_events.proto</Link>
     </Protobuf>

@@ -9,13 +9,14 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-using ClaimTypes = eDoxa.Seedwork.Security.ClaimTypes;
+using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.Api.Application.Services
 {
@@ -66,7 +67,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
             var country = await UserService.GetCountryAsync(user);
 
-            Identity!.AddClaim(new Claim(ClaimTypes.Country, country.TwoDigitIso));
+            Identity!.AddClaim(new Claim(CustomClaimTypes.Country, country.TwoDigitIso));
 
             await this.TryGenerateDoxatagClaimAsync(user);
 
@@ -99,7 +100,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
             if (doxatag != null)
             {
-                Identity!.AddClaim(new Claim(ClaimTypes.Doxatag, doxatag.ToString()));
+                Identity!.AddClaim(new Claim(CustomClaimTypes.Doxatag, doxatag.ToString()));
             }
         }
 

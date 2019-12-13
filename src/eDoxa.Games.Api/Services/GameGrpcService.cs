@@ -11,13 +11,12 @@ using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Responses;
 using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
-
-using Game = eDoxa.Seedwork.Domain.Misc.Game;
 
 namespace eDoxa.Games.Api.Services
 {
@@ -32,7 +31,7 @@ namespace eDoxa.Games.Api.Services
 
         public override async Task<FetchChallengeScoringResponse> FetchChallengeScoring(FetchChallengeScoringRequest request, ServerCallContext context)
         {
-            var scoring = await _challengeService.GetScoringAsync(Game.FromValue((int) request.Game));
+            var scoring = await _challengeService.GetScoringAsync(request.Game.ToEnumeration<Game>());
 
             var response = new FetchChallengeScoringResponse();
 
@@ -47,8 +46,8 @@ namespace eDoxa.Games.Api.Services
         public override async Task<FetchChallengeMatchesResponse> FetchChallengeMatches(FetchChallengeMatchesRequest request, ServerCallContext context)
         {
             var matches = await _challengeService.GetMatchesAsync(
-                Game.FromValue((int) request.Game),
-                PlayerId.Parse(request.GamePlayerId),
+                request.Game.ToEnumeration<Game>(),
+                request.GamePlayerId.ParseStringId<PlayerId>(),
                 request.StartedAt.ToDateTime(),
                 request.EndedAt.ToDateTime());
 
@@ -59,7 +58,7 @@ namespace eDoxa.Games.Api.Services
                 var matchDto = new MatchDto
                 {
                     GameUuid = match.GameUuid,
-                    Timestamp = Timestamp.FromDateTime(match.Timestamp)
+                    Timestamp = match.Timestamp.ToTimestamp()
                 };
 
                 foreach (var (key, value) in match.Stats)

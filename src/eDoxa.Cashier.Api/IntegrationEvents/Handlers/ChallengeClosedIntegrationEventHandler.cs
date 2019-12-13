@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -32,7 +33,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
             await _transactionService.PayoutChallengeAsync(
                 challenge,
-                integrationEvent.Scoreboard.ToDictionary(x => UserId.Parse(x.Key), x => (decimal?) x.Value));
+                integrationEvent.Scoreboard.ToDictionary(x => x.Key.ParseEntityId<UserId>(), x => (decimal?) x.Value)); // TODO
         }
     }
 }

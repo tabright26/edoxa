@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +19,8 @@ using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Responses;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Google.Protobuf.WellKnownTypes;
@@ -53,70 +54,59 @@ namespace eDoxa.Cashier.Api.Services
 
             if (account == null)
             {
-                throw context.RpcException(new Status(StatusCode.NotFound, "User account not found."));
+                throw context.NotFoundRpcException("User account not found.");
             }
 
             var result = await _accountService.CreateTransactionAsync(
                 account,
                 request.Amount,
-                Currency.FromValue((int) request.Currency),
-                TransactionType.FromValue((int) request.Type),
+                request.Currency.ToEnumeration<Currency>(),
+                request.Type.ToEnumeration<TransactionType>(),
                 new TransactionMetadata(request.Metadata));
 
             if (result.IsValid)
             {
-                return context.Ok(
-                    new CreateTransactionResponse
-                    {
-                        Transaction = MapTransaction(result.GetEntityFromMetadata<ITransaction>())
-                    });
+                var response = new CreateTransactionResponse
+                {
+                    Transaction = MapTransaction(result.GetEntityFromMetadata<ITransaction>())
+                };
+
+                return context.Ok(response);
             }
 
-            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
-        }
-
-        public static TransactionDto MapTransaction(ITransaction transaction)
-        {
-            return new TransactionDto
-            {
-                Id = transaction.Id.ToString(),
-                Timestamp = Timestamp.FromDateTime(transaction.Timestamp),
-                Currency = (CurrencyDto) transaction.Currency.Type.Value,
-                Amount = transaction.Currency.Amount,
-                Type = (TransactionTypeDto) transaction.Type.Value,
-                Status = (TransactionStatusDto) transaction.Status.Value,
-                Description = transaction.Description.Text
-            };
+            throw context.FailedPreconditionRpcException(result, string.Empty);
         }
 
         public override async Task<FetchChallengePayoutsResponse> FetchChallengePayouts(FetchChallengePayoutsRequest request, ServerCallContext context)
         {
             var challenges = await _challengeQuery.FetchChallengesAsync();
 
-            return context.Ok(
-                new FetchChallengePayoutsResponse
+            var response = new FetchChallengePayoutsResponse
+            {
+                Payouts =
                 {
-                    Payouts =
-                    {
-                        challenges.Select(MapChallenge)
-                    }
-                });
+                    challenges.Select(MapChallenge)
+                }
+            };
+
+            return context.Ok(response);
         }
 
         public override async Task<FindChallengePayoutResponse> FindChallengePayout(FindChallengePayoutRequest request, ServerCallContext context)
         {
-            var challenge = await _challengeQuery.FindChallengeAsync(ChallengeId.Parse(request.ChallengeId));
+            var challenge = await _challengeQuery.FindChallengeAsync(request.ChallengeId.ParseEntityId<ChallengeId>());
 
             if (challenge == null)
             {
-                throw context.RpcException(new Status(StatusCode.NotFound, ""));
+                throw context.NotFoundRpcException("Challenge not found.");
             }
 
-            return context.Ok(
-                new FindChallengePayoutResponse
-                {
-                    Payout = MapChallenge(challenge)
-                });
+            var response = new FindChallengePayoutResponse
+            {
+                Payout = MapChallenge(challenge)
+            };
+
+            return context.Ok(response);
         }
 
         public override async Task<CreateChallengePayoutResponse> CreateChallengePayout(CreateChallengePayoutRequest request, ServerCallContext context)
@@ -124,21 +114,36 @@ namespace eDoxa.Cashier.Api.Services
             var result = await _challengeService.CreateChallengeAsync(
                 ChallengeId.Parse(request.ChallengeId),
                 new PayoutEntries(request.PayoutEntries),
-                new EntryFee(Convert.ToDecimal(request.EntryFee.Amount), Currency.FromValue((int) request.EntryFee.Currency)));
+                new EntryFee(request.EntryFee.Amount, request.EntryFee.Currency.ToEnumeration<Currency>()));
 
             if (result.IsValid)
             {
-                return context.Ok(
-                    new CreateChallengePayoutResponse
-                    {
-                        Payout = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
-                    });
+                var response = new CreateChallengePayoutResponse
+                {
+                    Payout = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                };
+
+                return context.Ok(response);
             }
 
-            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
+            throw context.FailedPreconditionRpcException(result, string.Empty);
         }
 
-        public static ChallengePayoutDto MapChallenge(IChallenge challenge)
+        private static TransactionDto MapTransaction(ITransaction transaction)
+        {
+            return new TransactionDto
+            {
+                Id = transaction.Id.ToString(),
+                Timestamp = transaction.Timestamp.ToTimestamp(),
+                Currency = transaction.Currency.Type.ToEnum<CurrencyDto>(),
+                Amount = transaction.Currency.Amount,
+                Type = transaction.Type.ToEnum<TransactionTypeDto>(),
+                Status = transaction.Status.ToEnum<TransactionStatusDto>(),
+                Description = transaction.Description.Text
+            };
+        }
+
+        private static ChallengePayoutDto MapChallenge(IChallenge challenge)
         {
             return new ChallengePayoutDto
             {
@@ -146,12 +151,12 @@ namespace eDoxa.Cashier.Api.Services
                 EntryFee = new EntryFeeDto
                 {
                     Amount = challenge.EntryFee.Amount,
-                    Currency = (CurrencyDto) challenge.EntryFee.Currency.Value
+                    Currency = challenge.EntryFee.Currency.ToEnum<CurrencyDto>()
                 },
                 PrizePool = new PrizePoolDto
                 {
                     Amount = challenge.Payout.PrizePool.Amount,
-                    Currency = (CurrencyDto) challenge.Payout.PrizePool.Currency.Value
+                    Currency = challenge.Payout.PrizePool.Currency.ToEnum<CurrencyDto>()
                 },
                 Buckets =
                 {

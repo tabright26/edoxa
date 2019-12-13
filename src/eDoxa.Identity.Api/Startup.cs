@@ -152,9 +152,9 @@ namespace eDoxa.Identity.Api
                         options.Lockout.MaxFailedAccessAttempts = 5;
                         options.User.RequireUniqueEmail = true;
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Doxatag;
+                        options.ClaimsIdentity.UserNameClaimType = CustomClaimTypes.Doxatag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
+                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
                     })

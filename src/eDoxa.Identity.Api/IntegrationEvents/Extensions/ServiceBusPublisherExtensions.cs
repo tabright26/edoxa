@@ -6,9 +6,11 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -48,7 +50,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                 {
                     UserId = userId,
                     Email = email,
-                    Country = (Grpc.Protos.Identity.Enums.CountryDto) country.Value
+                    Country = country.ToEnum<CountryDto>()
                 });
         }
 
@@ -91,7 +93,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     UserId = userId,
                     FirstName = firstName,
                     LastName = lastName,
-                    Gender = (Grpc.Protos.Identity.Enums.GenderDto) gender.Value,
+                    Gender = gender.ToEnum<GenderDto>(),
                     Dob = new DobDto
                     {
                         Day = dob.Day,

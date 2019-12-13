@@ -8,10 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Seedwork.Domain.Dtos;
+using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Misc;
-
 
 namespace eDoxa.Games.Domain.Services
 {
@@ -21,7 +19,7 @@ namespace eDoxa.Games.Domain.Services
 
         Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(
             Game game,
-            PlayerId playerId,
+            PlayerId gamePlayerId,
             DateTime? startedAt,
             DateTime? endedAt
         );

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Domain.Dtos;
+using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Domain.Adapters

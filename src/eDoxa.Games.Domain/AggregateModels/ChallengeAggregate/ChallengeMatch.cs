@@ -7,7 +7,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace eDoxa.Seedwork.Domain.Dtos
+using eDoxa.Seedwork.Domain;
+
+namespace eDoxa.Games.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeMatch
     {

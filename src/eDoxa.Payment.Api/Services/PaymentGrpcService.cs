@@ -16,6 +16,7 @@ using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -71,34 +72,30 @@ namespace eDoxa.Payment.Api.Services
                 {
                     const string detail = "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.";
 
-                    var exception = new RpcException(new Status(StatusCode.FailedPrecondition, detail));
-
-                    _logger.LogError(exception, detail);
-
-                    throw exception;
+                    throw context.RpcException(new Status(StatusCode.FailedPrecondition, detail));
                 }
 
                 var invoice = await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
-                    TransactionId.Parse(request.TransactionId),
+                    request.TransactionId.ParseEntityId<TransactionId>(),
                     request.Amount,
                     request.Description);
 
-                var message = $"A Stripe invoice '{invoice.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
-
                 await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
 
-                return context.Ok(new DepositResponse(), message);
+                var response = new DepositResponse();
+
+                var message = $"A Stripe invoice '{invoice.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
+
+                return context.Ok(response, message);
             }
             catch (Exception exception)
             {
-                var message = $"Failed to process deposit for the user '{email}'. (userId=\"{userId}\")";
-
-                var rpcException = this.RpcExceptionWithInternalStatus(exception, message);
-
                 await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
 
-                throw rpcException;
+                var message = $"Failed to process deposit for the user '{email}'. (userId=\"{userId}\")";
+
+                throw this.RpcExceptionWithInternalStatus(exception, message); // TODO
             }
         }
 
@@ -118,38 +115,34 @@ namespace eDoxa.Payment.Api.Services
                 {
                     const string detail = "The user's Stripe Account isn't verified. The user's cannot process a withdrawal transaction.";
 
-                    var exception = new RpcException(new Status(StatusCode.FailedPrecondition, detail));
-
-                    _logger.LogError(exception, detail);
-
-                    throw exception;
+                    throw context.RpcException(new Status(StatusCode.FailedPrecondition, detail));
                 }
 
                 var transfer = await _stripeTransferService.CreateTransferAsync(
                     accountId,
-                    TransactionId.Parse(request.TransactionId),
+                    request.TransactionId.ParseEntityId<TransactionId>(),
                     request.Amount,
                     request.Description);
 
-                var message = $"A Stripe transfer '{transfer.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
-                
                 await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
 
-                return context.Ok(new WithdrawalResponse(), message);
+                var response = new WithdrawalResponse();
+
+                var message = $"A Stripe transfer '{transfer.Id}' was created for the user '{email}'. (userId=\"{userId}\")";
+
+                return context.Ok(response, message);
             }
             catch (Exception exception)
             {
-                var message = $"Failed to process withdrawal for the user '{email}'. (userId=\"{userId}\")";
-
-                var rpcException = this.RpcExceptionWithInternalStatus(exception, message);
-
                 await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
 
-                throw rpcException;
+                var message = $"Failed to process withdrawal for the user '{email}'. (userId=\"{userId}\")";
+
+                throw this.RpcExceptionWithInternalStatus(exception, message); // TODO
             }
         }
 
-        private RpcException RpcExceptionWithInternalStatus(Exception exception, string message)
+        private RpcException RpcExceptionWithInternalStatus(Exception exception, string message) // TODO
         {
             _logger.LogError(exception, message);
 
@@ -162,6 +155,7 @@ namespace eDoxa.Payment.Api.Services
                         {nameof(StripeException), stripeException.StripeError?.ToJson()}
                     });
             }
+
             return new RpcException(new Status(StatusCode.Internal, message));
         }
     }

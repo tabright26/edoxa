@@ -30,7 +30,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
     [Authorize]
     [ApiVersion("1.0")]
     [Route("api/transactions")]
-    [ApiExplorerSettings(GroupName = "Transaction")]
+    [ApiExplorerSettings(GroupName = "Transactions")]
     public sealed class TransactionsController : ControllerBase
     {
         private readonly ITransactionQuery _transactionQuery;

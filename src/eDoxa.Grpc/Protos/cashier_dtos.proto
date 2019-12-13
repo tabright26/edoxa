@@ -40,3 +40,9 @@ message TransactionDto {
   TransactionTypeDto type = 6;
   TransactionStatusDto status = 7;
 }
+
+message BalanceDto {
+  CurrencyDto currency = 1;
+  customTypes.DecimalValue available = 2;
+  customTypes.DecimalValue pending = 3;
+}

@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-namespace eDoxa.Games.Domain.AggregateModels.GameAggregate
+namespace eDoxa.Games.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class Scoring : Dictionary<string, float>
     {

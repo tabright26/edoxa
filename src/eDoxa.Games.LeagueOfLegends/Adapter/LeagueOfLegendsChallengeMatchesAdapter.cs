@@ -10,9 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.Adapters;
+using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using RiotSharp.Misc;

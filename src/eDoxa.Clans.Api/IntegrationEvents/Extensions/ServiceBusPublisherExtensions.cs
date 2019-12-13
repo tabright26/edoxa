@@ -26,7 +26,7 @@ namespace eDoxa.Clans.Api.IntegrationEvents.Extensions
                     {
                         new UserClaimDto
                         {
-                            Type = ClaimTypes.ClanId,
+                            Type = CustomClaimTypes.Clan,
                             Value = clanId
                         }
                     }
@@ -38,12 +38,12 @@ namespace eDoxa.Clans.Api.IntegrationEvents.Extensions
             await publisher.PublishAsync(
                 new UserClaimsRemovedIntegrationEvent
                 {
-                    UserId = userId.ToString(),
+                    UserId = userId,
                     Claims =
                     {
                         new UserClaimDto
                         {
-                            Type = ClaimTypes.ClanId,
+                            Type = CustomClaimTypes.Clan,
                             Value = clanId
                         }
                     }

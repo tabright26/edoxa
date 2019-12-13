@@ -7,7 +7,10 @@
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.CustomTypes;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Cashier.Api.Application.Profiles
 {
@@ -15,10 +18,10 @@ namespace eDoxa.Cashier.Api.Application.Profiles
     {
         public BalanceResponseProfile()
         {
-            this.CreateMap<Balance, BalanceResponse>()
-                .ForMember(balance => balance.Currency, config => config.MapFrom(balance => balance.Currency.Name))
-                .ForMember(balance => balance.Available, config => config.MapFrom(balance => balance.Available))
-                .ForMember(balance => balance.Pending, config => config.MapFrom(balance => balance.Pending));
+            this.CreateMap<Balance, BalanceDto>()
+                .ForMember(balance => balance.Currency, config => config.MapFrom(balance => balance.Currency.ToEnum<CurrencyDto>()))
+                .ForMember(balance => balance.Available, config => config.MapFrom<DecimalValue>(balance => balance.Available))
+                .ForMember(balance => balance.Pending, config => config.MapFrom<DecimalValue>(balance => balance.Pending));
         }
     }
 }

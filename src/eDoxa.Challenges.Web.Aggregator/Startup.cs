@@ -7,8 +7,6 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
 
 using Autofac;
@@ -20,10 +18,12 @@ using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
+using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Monitoring;
@@ -49,9 +49,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Polly;
-using Polly.Extensions.Http;
-
 using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Challenges.Web.Aggregator
@@ -76,21 +73,9 @@ namespace eDoxa.Challenges.Web.Aggregator
             AppSettings = configuration.GetAppSettings<ChallengesWebAggregatorAppSettings>(ChallengesWebAggregator);
         }
 
-        private ChallengesWebAggregatorAppSettings AppSettings { get; }
-
         public IConfiguration Configuration { get; }
 
-        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            return HttpPolicyExtensions.HandleTransientHttpError()
-                .OrResult(message => message.StatusCode == HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-        }
-
-        private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
-        {
-            return HttpPolicyExtensions.HandleTransientHttpError().CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-        }
+        private ChallengesWebAggregatorAppSettings AppSettings { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -110,7 +95,7 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddCustomCors();
 
-            services.AddCustomProblemDetails();
+            services.AddCustomProblemDetails(options => options.MapRpcException());
 
             services.AddCustomControllers<Startup>();
 
@@ -145,26 +130,26 @@ namespace eDoxa.Challenges.Web.Aggregator
             services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(PolicyHandlers.GetRetryPolicy())
+                .AddPolicyHandler(PolicyHandlers.GetCircuitBreakerPolicy());
 
             services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(PolicyHandlers.GetRetryPolicy())
+                .AddPolicyHandler(PolicyHandlers.GetCircuitBreakerPolicy());
 
             services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(PolicyHandlers.GetRetryPolicy())
+                .AddPolicyHandler(PolicyHandlers.GetCircuitBreakerPolicy());
 
             services.AddGrpcClient<GameService.GameServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.GamesUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddPolicyHandler(PolicyHandlers.GetRetryPolicy())
+                .AddPolicyHandler(PolicyHandlers.GetCircuitBreakerPolicy());
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

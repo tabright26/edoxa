@@ -20,7 +20,9 @@ using eDoxa.Grpc.Protos.Challenges.Responses;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Google.Protobuf.WellKnownTypes;
@@ -45,20 +47,19 @@ namespace eDoxa.Challenges.Api.Services
 
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
         {
-            var game = request.Game == GameDto.None ? null : Game.FromValue((int) request.Game);
+            var challenges = await _challengeQuery.FetchChallengesAsync(
+                request.Game.ToEnumerationOrDefault<Game>(),
+                request.State.ToEnumerationOrDefault<ChallengeState>());
 
-            var state = request.State == ChallengeStateDto.None ? null : ChallengeState.FromValue((int) request.State);
-
-            var challenges = await _challengeQuery.FetchChallengesAsync(game, state);
-
-            return context.Ok(
-                new FetchChallengesResponse
+            var response = new FetchChallengesResponse
+            {
+                Challenges =
                 {
-                    Challenges =
-                    {
-                        challenges.Select(MapChallenge)
-                    }
-                });
+                    challenges.Select(MapChallenge)
+                }
+            };
+
+            return context.Ok(response);
         }
 
         public override async Task<FindChallengeResponse> FindChallenge(FindChallengeRequest request, ServerCallContext context)
@@ -67,21 +68,22 @@ namespace eDoxa.Challenges.Api.Services
 
             if (challenge == null)
             {
-                throw context.RpcException(new Status(StatusCode.NotFound, ""));
+                throw context.NotFoundRpcException("Challenge not found.");
             }
 
-            return context.Ok(
-                new FindChallengeResponse
-                {
-                    Challenge = MapChallenge(challenge)
-                });
+            var response = new FindChallengeResponse
+            {
+                Challenge = MapChallenge(challenge)
+            };
+
+            return context.Ok(response);
         }
 
         public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
         {
             var result = await _challengeService.CreateChallengeAsync(
                 new ChallengeName(request.Name),
-                Game.FromValue((int) request.Game),
+                request.Game.ToEnumeration<Game>(),
                 new BestOf(request.BestOf),
                 new Entries(request.Entries),
                 new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
@@ -90,21 +92,24 @@ namespace eDoxa.Challenges.Api.Services
 
             if (result.IsValid)
             {
-                return context.Ok(
-                    new CreateChallengeResponse
-                    {
-                        Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
-                    });
+                var response = new CreateChallengeResponse
+                {
+                    Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                };
+
+                return context.Ok(response);
             }
 
-            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
+            throw context.FailedPreconditionRpcException(result, string.Empty);
         }
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
         {
-            await _challengeService.SynchronizeChallengesAsync(Game.FromValue((int) request.Game), new UtcNowDateTimeProvider());
+            await _challengeService.SynchronizeChallengesAsync(request.Game.ToEnumeration<Game>(), new UtcNowDateTimeProvider());
 
-            return context.Ok(new SynchronizeChallengeResponse());
+            var response = new SynchronizeChallengeResponse();
+
+            return context.Ok(response);
         }
 
         public override async Task<RegisterChallengeParticipantResponse> RegisterChallengeParticipant(
@@ -116,40 +121,41 @@ namespace eDoxa.Challenges.Api.Services
 
             var userId = httpContext.GetUserId();
 
-            var challenge = await _challengeService.FindChallengeAsync(ChallengeId.Parse(request.ChallengeId));
+            var challenge = await _challengeService.FindChallengeAsync(request.ChallengeId.ParseEntityId<ChallengeId>());
 
             if (challenge == null)
             {
-                throw context.RpcException(new Status(StatusCode.NotFound, "Challenge not found."));
+                throw context.NotFoundRpcException("Challenge not found.");
             }
 
             var result = await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
                 userId,
-                ParticipantId.Parse(request.ParticipantId),
-                PlayerId.Parse(request.GamePlayerId),
+                request.ParticipantId.ParseEntityId<ParticipantId>(),
+                request.GamePlayerId.ParseStringId<PlayerId>(),
                 new UtcNowDateTimeProvider());
 
             if (result.IsValid)
             {
-                return context.Ok(
-                    new RegisterChallengeParticipantResponse
-                    {
-                        Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
-                    });
+                var response = new RegisterChallengeParticipantResponse
+                {
+                    Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
+                };
+
+                return context.Ok(response);
             }
 
-            throw context.RpcException(new Status(StatusCode.FailedPrecondition, ""));
+            throw context.FailedPreconditionRpcException(result, string.Empty);
         }
 
-        public static ChallengeDto MapChallenge(IChallenge challenge)
+        private static ChallengeDto MapChallenge(IChallenge challenge)
         {
             return new ChallengeDto
             {
                 Id = challenge.Id.ToString(),
                 Name = challenge.Name,
-                Game = (GameDto) challenge.Game.Value,
-                State = (ChallengeStateDto) challenge.Timeline.State.Value,
+                Game = challenge.Game.ToEnum<GameDto>(),
+                State = challenge.Timeline.State.ToEnum<ChallengeStateDto>(),
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
                 SynchronizedAt =
@@ -178,14 +184,14 @@ namespace eDoxa.Challenges.Api.Services
             };
         }
 
-        public static ParticipantDto MapParticipant(IChallenge challenge, Participant participant)
+        private static ParticipantDto MapParticipant(IChallenge challenge, Participant participant)
         {
             return new ParticipantDto
             {
                 Id = participant.Id.ToString(),
                 ChallengeId = challenge.Id.ToString(),
                 UserId = participant.UserId.ToString(),
-                Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal() ?? 0M,
+                Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal() ?? 0M, // TODO
                 Matches =
                 {
                     participant.Matches.Select(match => MapMatch(participant, match))
@@ -193,7 +199,7 @@ namespace eDoxa.Challenges.Api.Services
             };
         }
 
-        public static MatchDto MapMatch(Participant participant, IMatch match)
+        private static MatchDto MapMatch(Participant participant, IMatch match)
         {
             return new MatchDto
             {
@@ -207,7 +213,7 @@ namespace eDoxa.Challenges.Api.Services
             };
         }
 
-        public static StatDto MapStat(Stat stat)
+        private static StatDto MapStat(Stat stat)
         {
             return new StatDto
             {
