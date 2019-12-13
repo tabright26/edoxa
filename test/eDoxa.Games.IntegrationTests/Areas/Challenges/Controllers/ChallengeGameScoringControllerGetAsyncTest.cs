@@ -4,53 +4,53 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Net;
-using System.Net.Http;
-using System.Security.Claims;
-using System.Threading.Tasks;
+//using System.Net;
+//using System.Net.Http;
+//using System.Security.Claims;
+//using System.Threading.Tasks;
 
-using eDoxa.Games.TestHelper;
-using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Misc;
+//using eDoxa.Games.TestHelper;
+//using eDoxa.Games.TestHelper.Fixtures;
+//using eDoxa.Seedwork.Domain.Misc;
 
-using FluentAssertions;
+//using FluentAssertions;
 
-using IdentityModel;
+//using IdentityModel;
 
-using Xunit;
+//using Xunit;
 
-namespace eDoxa.Games.IntegrationTests.Areas.Challenges.Controllers
-{
-    public sealed class ChallengeGameScoringControllerGetAsyncTest : IntegrationTest
-    {
-        public ChallengeGameScoringControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
-            testHost,
-            testData,
-            testMapper)
-        {
-        }
+//namespace eDoxa.Games.IntegrationTests.Areas.Challenges.Controllers
+//{
+//    public sealed class ChallengeGameScoringControllerGetAsyncTest : IntegrationTest
+//    {
+//        public ChallengeGameScoringControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+//            testHost,
+//            testData,
+//            testMapper)
+//        {
+//        }
 
-        private HttpClient _httpClient;
+//        private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Game game)
-        {
-            return await _httpClient.GetAsync($"api/challenge/games/{game}/scoring");
-        }
+//        private async Task<HttpResponseMessage> ExecuteAsync(Game game)
+//        {
+//            return await _httpClient.GetAsync($"api/challenge/games/{game}/scoring");
+//        }
 
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeOk()
-        {
-            // Arrange
-            var userId = new UserId();
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
-            _httpClient = factory.CreateClient();
+//        [Fact]
+//        public async Task ShouldBeHttpStatusCodeOk()
+//        {
+//            // Arrange
+//            var userId = new UserId();
+//            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+//            _httpClient = factory.CreateClient();
 
-            // Act
-            using var response = await this.ExecuteAsync(Game.LeagueOfLegends);
+//            // Act
+//            using var response = await this.ExecuteAsync(Game.LeagueOfLegends);
 
-            // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
-        }
-    }
-}
+//            // Assert
+//            response.EnsureSuccessStatusCode();
+//            response.StatusCode.Should().Be(HttpStatusCode.OK);
+//        }
+//    }
+//}

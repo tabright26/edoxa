@@ -23,6 +23,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.Converters.Add(new DecimalValueConverter());
                 });
         }
 

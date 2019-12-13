@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Api.Areas.Balance.Controllers
 
         [HttpGet("{currency}", Name = "Test")]
         [SwaggerOperation("Get account balance by currency.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByCurrencyAsync(Currency currency)
         {

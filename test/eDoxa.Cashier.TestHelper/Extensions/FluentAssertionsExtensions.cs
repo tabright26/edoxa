@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.CustomTypes;
 
 using FluentAssertions;
 
@@ -47,15 +49,15 @@ namespace eDoxa.Cashier.TestHelper.Extensions
             transaction.Description.Should().NotBeNullOrEmpty();
         }
 
-        public static void AssertStateIsValid(this BalanceResponse balance)
+        public static void AssertStateIsValid(this BalanceDto balance)
         {
             balance.Should().NotBeNull();
 
             balance.Currency.Should().NotBeNull();
 
-            balance.Available.Should().BeGreaterOrEqualTo(decimal.Zero);
+            (balance.Available >= DecimalValue.FromDecimal(decimal.Zero)).Should().BeTrue();
 
-            balance.Pending.Should().BeGreaterOrEqualTo(decimal.Zero);
+            (balance.Pending >= DecimalValue.FromDecimal(decimal.Zero)).Should().BeTrue();
         }
     }
 }

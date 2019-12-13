@@ -12,10 +12,13 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Responses;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
@@ -99,11 +102,11 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var balanceResponse = await response.Content.ReadAsAsync<BalanceResponse>();
+            var balanceResponse = await response.Content.ReadAsAsync<BalanceDto>();
             balanceResponse.Should().NotBeNull();
-            balanceResponse?.Currency.Should().Be(currency.Name);
-            balanceResponse?.Available.Should().Be(balance.Available);
-            balanceResponse?.Pending.Should().Be(balance.Pending);
+            balanceResponse?.Currency.Should().Be(currency.ToEnum<CurrencyDto>());
+            balanceResponse?.Available.Should().Be(DecimalValue.FromDecimal(balance.Available));
+            balanceResponse?.Pending.Should().Be(DecimalValue.FromDecimal(balance.Pending));
         }
     }
 }
