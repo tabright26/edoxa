@@ -7,7 +7,7 @@ import {
   UPDATE_USER_DOXATAG_FAIL,
   UserDoxatagHistoryActions,
   UserDoxatagHistoryState
-} from "./types";
+} from "store/actions/identity/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 

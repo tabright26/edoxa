@@ -1,4 +1,6 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
+import { Promise } from "q";
+import { Interface } from "readline";
 
 export interface AxiosPayload {
   request: AxiosRequestConfig;
@@ -6,7 +8,7 @@ export interface AxiosPayload {
 export interface AxiosActionCreator<T> {
   types: T[];
   payload: AxiosPayload;
-  meta?: any;
+  meta?: AxiosActionCreatorMeta;
 }
 
 export interface AxiosErrorData {
@@ -20,6 +22,7 @@ export interface AxiosAction<ActionType, TData = any> {
   type: ActionType;
   payload: AxiosResponse<TData>;
   error: AxiosError<AxiosErrorData>;
+  meta: AxiosActionMeta;
 }
 
 export interface AxiosState<
@@ -29,4 +32,20 @@ export interface AxiosState<
   readonly data: AxiosDataState;
   readonly loading: boolean;
   readonly error?: AxiosErrorState;
+}
+
+export type Resolve = (result: any) => void;
+export type Reject = (error: any) => void;
+
+interface PreviousAction {
+  meta: AxiosActionCreatorMeta;
+}
+
+export interface AxiosActionMeta {
+  previousAction: PreviousAction;
+}
+
+export interface AxiosActionCreatorMeta {
+  resolve: Resolve | null;
+  reject: Reject | null;
 }

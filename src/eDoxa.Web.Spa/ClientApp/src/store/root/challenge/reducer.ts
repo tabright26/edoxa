@@ -8,11 +8,11 @@ import {
   REGISTER_CHALLENGE_PARTICIPANT,
   REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
   REGISTER_CHALLENGE_PARTICIPANT_FAIL,
-  ChallengesState,
   ChallengesActions
-} from "store/root/challenge/types";
+} from "store/actions/challenge/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { ChallengesState } from "./types";
 
 export const initialState: ChallengesState = {
   data: [],

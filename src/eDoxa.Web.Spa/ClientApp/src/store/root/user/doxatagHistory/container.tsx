@@ -1,9 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserDoxatagHistory } from "store/root/user/doxatagHistory/actions";
+import { loadUserDoxatagHistory } from "store/actions/identity/actions";
 import { RootState } from "store/types";
 
-export const withUserDoxatagHistory = (HighOrderComponent: FunctionComponent<any>) => {
+export const withUserDoxatagHistory = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       props.loadUserDoxatagHistory();
@@ -24,10 +26,7 @@ export const withUserDoxatagHistory = (HighOrderComponent: FunctionComponent<any
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };
 
 export const withUserDoxatag = (HighOrderComponent: FunctionComponent<any>) => {
@@ -41,7 +40,12 @@ export const withUserDoxatag = (HighOrderComponent: FunctionComponent<any>) => {
 
   const mapStateToProps = (state: RootState) => {
     const { data, error, loading } = state.root.user.doxatagHistory;
-    const doxatag = data.slice().sort((left: any, right: any) => (left.timestamp < right.timestamp ? 1 : -1))[0] || null;
+    const doxatag =
+      data
+        .slice()
+        .sort((left: any, right: any) =>
+          left.timestamp < right.timestamp ? 1 : -1
+        )[0] || null;
     return {
       doxatag: {
         data: doxatag,
@@ -57,8 +61,5 @@ export const withUserDoxatag = (HighOrderComponent: FunctionComponent<any>) => {
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

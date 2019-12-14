@@ -13,7 +13,7 @@ import {
   UPDATE_USER_ADDRESS_FAIL,
   UserAddressBookActions,
   UserAddressBookState
-} from "./types";
+} from "store/actions/identity/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 

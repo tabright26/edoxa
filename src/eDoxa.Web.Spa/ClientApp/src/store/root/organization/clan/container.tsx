@@ -1,15 +1,13 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import {
-  loadClans,
-  loadClan,
-  createClan
-} from "store/root/organization/clan/actions";
 import { ClansState } from "store/root/organization/clan/types";
 import {
+  loadClans,
   downloadClanLogo,
-  uploadClanLogo
-} from "store/root/organization/logo/actions";
+  uploadClanLogo,
+  loadClan,
+  createClan
+} from "store/actions/clan/actions";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";
 import { UserId, ClanId } from "types";

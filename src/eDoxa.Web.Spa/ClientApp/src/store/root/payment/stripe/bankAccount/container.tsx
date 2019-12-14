@@ -1,9 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadStripeBankAccount } from "./actions";
+import { loadStripeBankAccount } from "store/actions/payment/actions";
 import { RootState } from "store/types";
 
-export const withStripeBankAccount = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeBankAccount = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       if (!props.bankAccount.data) {
@@ -27,8 +29,5 @@ export const withStripeBankAccount = (HighOrderComponent: FunctionComponent<any>
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

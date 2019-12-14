@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import {
+  leaveClan,
   loadClanMembers,
   kickClanMember
-} from "store/root/organization/member/actions";
+} from "store/actions/clan/actions";
 import { ClanMembersState } from "store/root/organization/member/types";
-import { leaveClan } from "store/root/organization/clan/actions";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";
 

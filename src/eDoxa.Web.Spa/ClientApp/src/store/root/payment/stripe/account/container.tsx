@@ -1,9 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadStripeAccount } from "./actions";
+import { loadStripeAccount } from "store/actions/payment/actions";
 
-export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeAccount = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       if (!props.account.data) {
@@ -26,13 +28,12 @@ export const withStripeAccount = (HighOrderComponent: FunctionComponent<any>) =>
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };
 
-export const withStripeHasAccountEnabled = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeHasAccountEnabled = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       if (!props.loaded) {
@@ -57,8 +58,5 @@ export const withStripeHasAccountEnabled = (HighOrderComponent: FunctionComponen
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

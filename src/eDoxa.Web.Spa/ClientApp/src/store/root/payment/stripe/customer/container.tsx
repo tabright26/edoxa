@@ -1,9 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadStripeCustomer } from "./actions";
+import { loadStripeCustomer } from "store/actions/payment/actions";
 
-export const withStripeCustomer = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeCustomer = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       if (!props.customer.data) {
@@ -26,13 +28,12 @@ export const withStripeCustomer = (HighOrderComponent: FunctionComponent<any>) =
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };
 
-export const withStripeCustomerHasDefaultPaymentMethod = (HighOrderComponent: FunctionComponent<any>) => {
+export const withStripeCustomerHasDefaultPaymentMethod = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       if (!props.loaded) {
@@ -47,7 +48,8 @@ export const withStripeCustomerHasDefaultPaymentMethod = (HighOrderComponent: Fu
     const { data, error } = state.root.payment.stripe.customer;
     return {
       loaded: data,
-      hasDefaultPaymentMethod: (!error && data && data.defaultPaymentMethodId) || false
+      hasDefaultPaymentMethod:
+        (!error && data && data.defaultPaymentMethodId) || false
     };
   };
 
@@ -57,8 +59,5 @@ export const withStripeCustomerHasDefaultPaymentMethod = (HighOrderComponent: Fu
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

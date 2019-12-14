@@ -4,7 +4,7 @@ import {
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL,
   UserAccountWithdrawalBundlesState,
   UserAccountWithdrawalBundlesActions
-} from "../types";
+} from "store/actions/account/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 
@@ -14,8 +14,14 @@ export const initialState: UserAccountWithdrawalBundlesState = {
   loading: false
 };
 
-export const reducer: Reducer<UserAccountWithdrawalBundlesState, UserAccountWithdrawalBundlesActions> = produce(
-  (draft: Draft<UserAccountWithdrawalBundlesState>, action: UserAccountWithdrawalBundlesActions) => {
+export const reducer: Reducer<
+  UserAccountWithdrawalBundlesState,
+  UserAccountWithdrawalBundlesActions
+> = produce(
+  (
+    draft: Draft<UserAccountWithdrawalBundlesState>,
+    action: UserAccountWithdrawalBundlesActions
+  ) => {
     switch (action.type) {
       case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES:
         draft.error = null;

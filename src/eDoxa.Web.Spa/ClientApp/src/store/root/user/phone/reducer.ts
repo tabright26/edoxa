@@ -8,7 +8,7 @@ import {
   UPDATE_USER_PHONE_FAIL,
   UserPhoneActions,
   UserPhoneState
-} from "./types";
+} from "store/actions/identity/types";
 import produce, { Draft } from "immer";
 
 export const initialState: UserPhoneState = {

@@ -6,7 +6,7 @@ import {
   sendClanCandidature,
   acceptClanCandidature,
   declineClanCandidature
-} from "store/root/organization/candidature/actions";
+} from "store/actions/clan/actions";
 import { ClanCandidaturesState } from "store/root/organization/candidature/types";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";
