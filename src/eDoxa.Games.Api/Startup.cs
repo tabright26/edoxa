@@ -11,13 +11,12 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.Api.Infrastructure.Data;
 using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
 using eDoxa.Games.LeagueOfLegends;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
@@ -114,7 +113,7 @@ namespace eDoxa.Games.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(GamesDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(GamesDbContext));
 
             services.AddMediatR(typeof(Startup));
 

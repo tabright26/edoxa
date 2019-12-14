@@ -12,8 +12,6 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
@@ -22,6 +20,7 @@ using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
@@ -220,7 +219,7 @@ namespace eDoxa.Identity.Api
 
             services.AddVersionedApiExplorer();
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(IdentityDbContext));
 
             services.AddIdentityServer(
                     options =>

@@ -17,7 +17,6 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
-using eDoxa.ServiceBus.Azure.Extensions;
 
 using Hangfire;
 using Hangfire.SqlServer;

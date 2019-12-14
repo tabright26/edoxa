@@ -5,7 +5,6 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -35,14 +34,16 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
 {
     public sealed class AccountBalanceControllerGetByCurrencyAsyncTest : IntegrationTest
     {
-        public AccountBalanceControllerGetByCurrencyAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) :
-            base(testHost, testData, testMapper,
-                async (httpClient, linkGenerator, values) =>
-                {
-                    var path = linkGenerator.GetPathByName("Test", values);
+        public AccountBalanceControllerGetByCurrencyAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testHost,
+            testData,
+            testMapper,
+            async (httpClient, linkGenerator, values) =>
+            {
+                var path = linkGenerator.GetPathByName("Test", values);
 
-                    return await httpClient.GetAsync(path);
-                })
+                return await httpClient.GetAsync(path);
+            })
         {
         }
 
@@ -69,9 +70,15 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                     accountRepository.Create(account);
                     await accountRepository.CommitAsync();
                 });
-            
+
             // Act
-            using var response = await ExecuteFuncAsync(factory.CreateClient(), server.Services.GetRequiredService<LinkGenerator>(), new { currency = Currency.All });
+            using var response = await ExecuteFuncAsync(
+                factory.CreateClient(),
+                server.Services.GetRequiredService<LinkGenerator>(),
+                new
+                {
+                    currency = Currency.All
+                });
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
@@ -97,16 +104,24 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
                 });
 
             // Act
-            using var response = await ExecuteFuncAsync(factory.CreateClient(), server.Services.GetRequiredService<LinkGenerator>(), new { currency });
+            using var response = await ExecuteFuncAsync(
+                factory.CreateClient(),
+                server.Services.GetRequiredService<LinkGenerator>(),
+                new
+                {
+                    currency
+                });
 
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var balanceResponse = await response.Content.ReadAsAsync<BalanceDto>();
-            balanceResponse.Should().NotBeNull();
-            balanceResponse?.Currency.Should().Be(currency.ToEnum<CurrencyDto>());
-            balanceResponse?.Available.Should().Be(DecimalValue.FromDecimal(balance.Available));
-            balanceResponse?.Pending.Should().Be(DecimalValue.FromDecimal(balance.Pending));
+            
+            var balanceDto = await response.Content.ReadAsJsonAsync<BalanceDto>();
+
+            balanceDto.Should().NotBeNull();
+            balanceDto?.Currency.Should().Be(currency.ToEnum<CurrencyDto>());
+            balanceDto?.Available.Should().Be(DecimalValue.FromDecimal(balance.Available));
+            balanceDto?.Pending.Should().Be(DecimalValue.FromDecimal(balance.Pending));
         }
     }
 }

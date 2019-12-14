@@ -11,13 +11,12 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Clans.Api.Infrastructure;
 using eDoxa.Clans.Api.Infrastructure.Data;
 using eDoxa.Clans.Api.IntegrationEvents.Extensions;
 using eDoxa.Clans.Api.Services;
 using eDoxa.Clans.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
@@ -108,7 +107,7 @@ namespace eDoxa.Clans.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(ClansDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(ClansDbContext));
 
             services.AddMediatR(typeof(Startup));
 

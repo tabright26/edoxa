@@ -81,26 +81,35 @@ namespace eDoxa.Challenges.Api.Services
 
         public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
         {
-            var result = await _challengeService.CreateChallengeAsync(
-                new ChallengeName(request.Name),
-                request.Game.ToEnumeration<Game>(),
-                new BestOf(request.BestOf),
-                new Entries(request.Entries),
-                new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
-                new UtcNowDateTimeProvider(),
-                new Scoring(request.Scoring));
-
-            if (result.IsValid)
+            try
             {
-                var response = new CreateChallengeResponse
+                var result = await _challengeService.CreateChallengeAsync(
+                    new ChallengeName(request.Name),
+                    request.Game.ToEnumeration<Game>(),
+                    new BestOf(request.BestOf),
+                    new Entries(request.Entries),
+                    new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
+                    new UtcNowDateTimeProvider(),
+                    new Scoring(request.Scoring));
+
+                if (result.IsValid)
                 {
-                    Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
-                };
+                    var response = new CreateChallengeResponse
+                    {
+                        Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                    };
 
-                return context.Ok(response);
+                    return context.Ok(response);
+                }
+
+                throw context.FailedPreconditionRpcException(result, string.Empty);
             }
+            catch (Exception exception)
+            {
+                // TODO: Integration required. SAGA PATTERN.
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+                throw exception.Capture();
+            }
         }
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
@@ -117,35 +126,44 @@ namespace eDoxa.Challenges.Api.Services
             ServerCallContext context
         )
         {
-            var httpContext = context.GetHttpContext();
-
-            var userId = httpContext.GetUserId();
-
-            var challenge = await _challengeService.FindChallengeAsync(request.ChallengeId.ParseEntityId<ChallengeId>());
-
-            if (challenge == null)
+            try
             {
-                throw context.NotFoundRpcException("Challenge not found.");
-            }
+                var httpContext = context.GetHttpContext();
 
-            var result = await _challengeService.RegisterChallengeParticipantAsync(
-                challenge,
-                userId,
-                request.ParticipantId.ParseEntityId<ParticipantId>(),
-                request.GamePlayerId.ParseStringId<PlayerId>(),
-                new UtcNowDateTimeProvider());
+                var userId = httpContext.GetUserId();
 
-            if (result.IsValid)
-            {
-                var response = new RegisterChallengeParticipantResponse
+                var challenge = await _challengeService.FindChallengeAsync(request.ChallengeId.ParseEntityId<ChallengeId>());
+
+                if (challenge == null)
                 {
-                    Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
-                };
+                    throw context.NotFoundRpcException("Challenge not found.");
+                }
 
-                return context.Ok(response);
+                var result = await _challengeService.RegisterChallengeParticipantAsync(
+                    challenge,
+                    userId,
+                    request.ParticipantId.ParseEntityId<ParticipantId>(),
+                    request.GamePlayerId.ParseStringId<PlayerId>(),
+                    new UtcNowDateTimeProvider());
+
+                if (result.IsValid)
+                {
+                    var response = new RegisterChallengeParticipantResponse
+                    {
+                        Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
+                    };
+
+                    return context.Ok(response);
+                }
+
+                throw context.FailedPreconditionRpcException(result, string.Empty);
             }
+            catch (Exception exception)
+            {
+                // TODO: Integration required. SAGA PATTERN.
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+                throw exception.Capture();
+            }
         }
 
         private static ChallengeDto MapChallenge(IChallenge challenge)
@@ -159,7 +177,7 @@ namespace eDoxa.Challenges.Api.Services
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
                 SynchronizedAt =
-                    challenge.SynchronizedAt.HasValue ? DateTime.SpecifyKind(challenge.SynchronizedAt.Value, DateTimeKind.Utc).ToTimestamp() : null,
+                    challenge.SynchronizedAt.HasValue ? DateTime.SpecifyKind(challenge.SynchronizedAt.Value, DateTimeKind.Utc).ToTimestamp() : null, // TODO: Timestamp convertion should be fixed.
                 Timeline = new TimelineDto
                 {
                     CreatedAt = DateTime.SpecifyKind(challenge.Timeline.CreatedAt, DateTimeKind.Utc).ToTimestamp(),

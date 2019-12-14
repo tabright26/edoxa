@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionModel>>(transactions);
         }
 
-        public static async Task<IReadOnlyCollection<TransactionResponse>> FetchUserTransactionResponsesAsync(
+        public static async Task<IReadOnlyCollection<TransactionDto>> FetchUserTransactionResponsesAsync(
             this ITransactionQuery transactionQuery,
             UserId userId,
             Currency? currency = null,
@@ -60,10 +60,10 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
                 type,
                 status);
 
-            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionResponse>>(transactions);
+            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionDto>>(transactions);
         }
 
-        public static async Task<IReadOnlyCollection<TransactionResponse>> FetchUserTransactionResponsesAsync(
+        public static async Task<IReadOnlyCollection<TransactionDto>> FetchUserTransactionResponsesAsync(
             this ITransactionQuery transactionQuery,
             Currency? currency = null,
             TransactionType? type = null,
@@ -72,7 +72,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
         {
             var transactions = await transactionQuery.FetchUserTransactionsAsync(currency, type, status);
 
-            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionResponse>>(transactions);
+            return transactionQuery.Mapper.Map<IReadOnlyCollection<TransactionDto>>(transactions);
         }
 
         public static async Task<TransactionModel?> FindTransactionModelAsync(this ITransactionQuery transactionQuery, TransactionId transactionId)
@@ -82,11 +82,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             return transactionQuery.Mapper.Map<TransactionModel?>(transactions);
         }
 
-        public static async Task<TransactionResponse?> FindTransactionResponseAsync(this ITransactionQuery transactionQuery, TransactionId transactionId)
+        public static async Task<TransactionDto?> FindTransactionResponseAsync(this ITransactionQuery transactionQuery, TransactionId transactionId)
         {
             var transactions = await transactionQuery.FindTransactionAsync(transactionId);
 
-            return transactionQuery.Mapper.Map<TransactionResponse?>(transactions);
+            return transactionQuery.Mapper.Map<TransactionDto?>(transactions);
         }
     }
 }

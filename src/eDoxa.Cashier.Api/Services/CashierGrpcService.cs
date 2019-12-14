@@ -4,8 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -14,7 +17,6 @@ using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
-using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Responses;
 using eDoxa.Grpc.Protos.Cashier.Services;
@@ -23,11 +25,7 @@ using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
-using Google.Protobuf.WellKnownTypes;
-
 using Grpc.Core;
-
-using static eDoxa.Grpc.Protos.Cashier.Dtos.ChallengePayoutDto.Types;
 
 namespace eDoxa.Cashier.Api.Services
 {
@@ -36,12 +34,14 @@ namespace eDoxa.Cashier.Api.Services
         private readonly IChallengeQuery _challengeQuery;
         private readonly IChallengeService _challengeService;
         private readonly IAccountService _accountService;
+        private readonly IMapper _mapper;
 
-        public CashierGrpcService(IChallengeQuery challengeQuery, IChallengeService challengeService, IAccountService accountService)
+        public CashierGrpcService(IChallengeQuery challengeQuery, IChallengeService challengeService, IAccountService accountService, IMapper mapper)
         {
             _challengeQuery = challengeQuery;
             _challengeService = challengeService;
             _accountService = accountService;
+            _mapper = mapper;
         }
 
         public override async Task<CreateTransactionResponse> CreateTransaction(CreateTransactionRequest request, ServerCallContext context)
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.Api.Services
             {
                 var response = new CreateTransactionResponse
                 {
-                    Transaction = MapTransaction(result.GetEntityFromMetadata<ITransaction>())
+                    Transaction = _mapper.Map<TransactionDto>(result.GetEntityFromMetadata<ITransaction>())
                 };
 
                 return context.Ok(response);
@@ -85,7 +85,7 @@ namespace eDoxa.Cashier.Api.Services
             {
                 Payouts =
                 {
-                    challenges.Select(MapChallenge)
+                    _mapper.Map<IEnumerable<ChallengePayoutDto>>(challenges)
                 }
             };
 
@@ -103,7 +103,7 @@ namespace eDoxa.Cashier.Api.Services
 
             var response = new FindChallengePayoutResponse
             {
-                Payout = MapChallenge(challenge)
+                Payout = _mapper.Map<ChallengePayoutDto>(challenge)
             };
 
             return context.Ok(response);
@@ -111,64 +111,73 @@ namespace eDoxa.Cashier.Api.Services
 
         public override async Task<CreateChallengePayoutResponse> CreateChallengePayout(CreateChallengePayoutRequest request, ServerCallContext context)
         {
-            var result = await _challengeService.CreateChallengeAsync(
-                ChallengeId.Parse(request.ChallengeId),
-                new PayoutEntries(request.PayoutEntries),
-                new EntryFee(request.EntryFee.Amount, request.EntryFee.Currency.ToEnumeration<Currency>()));
-
-            if (result.IsValid)
+            try
             {
-                var response = new CreateChallengePayoutResponse
-                {
-                    Payout = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
-                };
+                var result = await _challengeService.CreateChallengeAsync(
+                    ChallengeId.Parse(request.ChallengeId),
+                    new PayoutEntries(request.PayoutEntries),
+                    new EntryFee(request.EntryFee.Amount, request.EntryFee.Currency.ToEnumeration<Currency>()));
 
-                return context.Ok(response);
-            }
-
-            throw context.FailedPreconditionRpcException(result, string.Empty);
-        }
-
-        private static TransactionDto MapTransaction(ITransaction transaction)
-        {
-            return new TransactionDto
-            {
-                Id = transaction.Id.ToString(),
-                Timestamp = transaction.Timestamp.ToTimestamp(),
-                Currency = transaction.Currency.Type.ToEnum<CurrencyDto>(),
-                Amount = transaction.Currency.Amount,
-                Type = transaction.Type.ToEnum<TransactionTypeDto>(),
-                Status = transaction.Status.ToEnum<TransactionStatusDto>(),
-                Description = transaction.Description.Text
-            };
-        }
-
-        private static ChallengePayoutDto MapChallenge(IChallenge challenge)
-        {
-            return new ChallengePayoutDto
-            {
-                ChallengeId = challenge.Id,
-                EntryFee = new EntryFeeDto
+                if (result.IsValid)
                 {
-                    Amount = challenge.EntryFee.Amount,
-                    Currency = challenge.EntryFee.Currency.ToEnum<CurrencyDto>()
-                },
-                PrizePool = new PrizePoolDto
-                {
-                    Amount = challenge.Payout.PrizePool.Amount,
-                    Currency = challenge.Payout.PrizePool.Currency.ToEnum<CurrencyDto>()
-                },
-                Buckets =
-                {
-                    challenge.Payout.Buckets.Select(
-                            bucket => new BucketDto
-                            {
-                                Prize = bucket.Prize.Amount,
-                                Size = bucket.Size
-                            })
-                        .ToList()
+                    var response = new CreateChallengePayoutResponse
+                    {
+                        Payout = _mapper.Map<ChallengePayoutDto>(result.GetEntityFromMetadata<IChallenge>())
+                    };
+
+                    return context.Ok(response);
                 }
-            };
+
+                throw context.FailedPreconditionRpcException(result, string.Empty);
+            }
+            catch (Exception exception)
+            {
+                // TODO: Integration required. SAGA PATTERN.
+
+                throw exception.Capture();
+            }
         }
+
+        //private static TransactionDto MapTransaction(ITransaction transaction)
+        //{
+        //    return new TransactionDto
+        //    {
+        //        Id = transaction.Id.ToString(),
+        //        Timestamp = transaction.Timestamp.ToTimestamp(),
+        //        Currency = transaction.Currency.Type.ToEnum<CurrencyDto>(),
+        //        Amount = transaction.Currency.Amount,
+        //        Type = transaction.Type.ToEnum<TransactionTypeDto>(),
+        //        Status = transaction.Status.ToEnum<TransactionStatusDto>(),
+        //        Description = transaction.Description.Text
+        //    };
+        //}
+
+        //private static ChallengePayoutDto MapChallenge(IChallenge challenge)
+        //{
+        //    return new ChallengePayoutDto
+        //    {
+        //        ChallengeId = challenge.Id,
+        //        EntryFee = new EntryFeeDto
+        //        {
+        //            Amount = challenge.EntryFee.Amount,
+        //            Currency = challenge.EntryFee.Currency.ToEnum<CurrencyDto>()
+        //        },
+        //        PrizePool = new PrizePoolDto
+        //        {
+        //            Amount = challenge.Payout.PrizePool.Amount,
+        //            Currency = challenge.Payout.PrizePool.Currency.ToEnum<CurrencyDto>()
+        //        },
+        //        Buckets =
+        //        {
+        //            challenge.Payout.Buckets.Select(
+        //                    bucket => new BucketDto
+        //                    {
+        //                        Prize = bucket.Prize.Amount,
+        //                        Size = bucket.Size
+        //                    })
+        //                .ToList()
+        //        }
+        //    };
+        //}
     }
 }

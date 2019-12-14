@@ -11,14 +11,13 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Payment.Api.Areas.Stripe.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.Services;
 using eDoxa.Payment.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
@@ -108,7 +107,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(PaymentDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(PaymentDbContext));
 
             services.AddMediatR(typeof(Startup));
 

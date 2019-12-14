@@ -11,13 +11,12 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Web.Aggregator.Infrastructure;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Seedwork.Application;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -94,7 +93,7 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 

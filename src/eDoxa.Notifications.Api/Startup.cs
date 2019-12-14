@@ -11,13 +11,12 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Notifications.Api.Infrastructure;
 using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Api.Services;
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
@@ -108,7 +107,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
 
             services.AddMediatR(typeof(Startup));
 

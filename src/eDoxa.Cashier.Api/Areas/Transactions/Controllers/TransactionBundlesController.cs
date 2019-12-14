@@ -10,7 +10,7 @@ using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Services;
-using eDoxa.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
 
         [HttpGet]
         [SwaggerOperation("Get bundles by currency.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BundleResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionBundleDto[]))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public IActionResult Get(TransactionType transactionType, [FromQuery] Currency currency)
         {
@@ -46,12 +46,12 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
             {
                 if (transactionType == TransactionType.Deposit)
                 {
-                    return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundleService.FetchDepositMoneyBundles()));
+                    return this.Ok(_mapper.Map<IEnumerable<TransactionBundleDto>>(_bundleService.FetchDepositMoneyBundles()));
                 }
 
                 if (transactionType == TransactionType.Withdrawal)
                 {
-                    return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundleService.FetchWithdrawalMoneyBundles()));
+                    return this.Ok(_mapper.Map<IEnumerable<TransactionBundleDto>>(_bundleService.FetchWithdrawalMoneyBundles()));
                 }
             }
 
@@ -59,7 +59,7 @@ namespace eDoxa.Cashier.Api.Areas.Transactions.Controllers
             {
                 if (transactionType == TransactionType.Deposit)
                 {
-                    return this.Ok(_mapper.Map<IEnumerable<BundleResponse>>(_bundleService.FetchDepositTokenBundles()));
+                    return this.Ok(_mapper.Map<IEnumerable<TransactionBundleDto>>(_bundleService.FetchDepositTokenBundles()));
                 }
             }
 

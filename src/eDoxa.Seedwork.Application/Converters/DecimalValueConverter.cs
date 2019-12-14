@@ -34,7 +34,14 @@ namespace eDoxa.Seedwork.Application.Converters
             JsonSerializer serializer
         )
         {
-            return reader.Value is decimal value ? DecimalValue.FromDecimal(value) : null;
+            if (reader.Value is double value)
+            {
+                return DecimalValue.FromDecimal(new decimal(value));
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

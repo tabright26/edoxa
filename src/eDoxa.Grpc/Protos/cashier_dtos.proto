@@ -46,3 +46,8 @@ message BalanceDto {
   customTypes.DecimalValue available = 2;
   customTypes.DecimalValue pending = 3;
 }
+
+message TransactionBundleDto {
+  customTypes.DecimalValue amount = 1;
+  customTypes.DecimalValue price = 2;
+}

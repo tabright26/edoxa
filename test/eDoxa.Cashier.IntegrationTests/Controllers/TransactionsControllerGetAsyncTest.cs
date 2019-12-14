@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Responses;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -97,7 +97,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var transactions = await response.Content.ReadAsAsync<TransactionResponse[]>();
+            var transactions = await response.Content.ReadAsJsonAsync<TransactionDto[]>();
             transactions.Should().HaveCount(account.Transactions.Count);
         }
     }

@@ -11,14 +11,13 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Api.Areas.Challenges;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
@@ -108,7 +107,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(ChallengesDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(ChallengesDbContext));
 
             services.AddMediatR(typeof(Startup));
 
