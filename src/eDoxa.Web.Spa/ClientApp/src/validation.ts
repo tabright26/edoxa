@@ -1,13 +1,20 @@
-const DOXATAG_REGEX = "^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$";
-export const doxatagRegex = new RegExp(DOXATAG_REGEX);
+export const DOXATAG_MINIMUM_LENGTH = 2;
+export const DOXATAG_MAXIMUM_LENGTH = 16;
+
+const DOXATAG_SPECIAL_REGEX = "^[a-zA-Z0-9_ -]{2,16}$";
+export const doxatagSpecialRegex = new RegExp(DOXATAG_SPECIAL_REGEX);
 
 export const DOXATAG_REQUIRED = "Doxatag is required";
+export const DOXATAG_LENGTH_UNDER_INVALID =
+  "DoxaTag must have at least 2 characters (Min. 2)";
+export const DOXATAG_LENGTH_OVER_INVALID =
+  "DoxaTag must be less or equal to 16 characters (Max. 16)";
 export const DOXATAG_INVALID =
-  "Invalid format. Must be 2-16 characters long, letters and underscores only";
+  "Allowed characters are upper/lower case letters, numbers, -, _ and space.";
 
 //-------------------------------------------------------------------------------
 
-const PERSONALINFO_NAME_REGEX = "^[A-Z](((-)[A-Z])|[a-z]){1,15}$";
+const PERSONALINFO_NAME_REGEX = "^[A-Z]((-)[a-zA-Z]|[a-z]){1,15}$";
 export const personalInfoNameRegex = new RegExp(PERSONALINFO_NAME_REGEX);
 
 const PERSONALINFO_YEAR_REGEX = "^[0-9]{4}$";

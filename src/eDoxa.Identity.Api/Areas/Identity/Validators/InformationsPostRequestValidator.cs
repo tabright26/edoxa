@@ -1,6 +1,6 @@
 ﻿// Filename: InformationsPostRequestValidator.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -27,7 +27,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
                 .WithMessage(InformationsErrorDescriber.FirstNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
                 .WithMessage(InformationsErrorDescriber.FirstNameInvalid())
-                .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
+                .Matches(new Regex("^[A-Z]((-)[a-zA-Z]|[a-z]){1,15}$"))
                 .WithMessage(InformationsErrorDescriber.FirstNameUppercase());
 
             this.RuleFor(request => request.LastName)
@@ -39,7 +39,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Validators
                 .WithMessage(InformationsErrorDescriber.LastNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
                 .WithMessage(InformationsErrorDescriber.LastNameInvalid())
-                .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
+                .Matches(new Regex("^[A-Z]((-)[a-zA-Z]|[a-z]){1,15}$"))
                 .WithMessage(InformationsErrorDescriber.LastNameUppercase());
 
             this.RuleFor(request => request.Gender)

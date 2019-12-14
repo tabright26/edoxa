@@ -1,6 +1,6 @@
 ﻿// Filename: InformationsPostRequestValidatorTest.cs
 // Date Created: 2019-10-06
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -24,6 +24,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             {
                 "Gabriel",
                 "Gabriel-Roy",
+                "Gabriel-roy",
+                "Gabriel-roy-R",
                 "Gabriel-Roy-R"
             };
 
@@ -32,6 +34,8 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
             {
                 "Gabriel",
                 "Gabriel-Roy",
+                "Gabriel-roy",
+                "Gabriel-roy-R",
                 "Gabriel-Roy-R"
             };
 
@@ -45,7 +49,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
                 {"Gab123", InformationsErrorDescriber.FirstNameInvalid()},
                 {"Gabriel-Ro_Roy", InformationsErrorDescriber.FirstNameInvalid()},
                 {"gabriel-Roy", InformationsErrorDescriber.FirstNameUppercase()},
-                {"Gabriel-roy", InformationsErrorDescriber.FirstNameUppercase()}
             };
 
         public static TheoryData<string, string> InvalidLastNames =>
@@ -58,7 +61,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Validators
                 {"Gab123", InformationsErrorDescriber.LastNameInvalid()},
                 {"Gabriel-Ro_Roy", InformationsErrorDescriber.LastNameInvalid()},
                 {"gabriel-Roy", InformationsErrorDescriber.LastNameUppercase()},
-                {"Gabriel-roy", InformationsErrorDescriber.LastNameUppercase()}
             };
 
         public static TheoryData<Gender> ValidGenders =>

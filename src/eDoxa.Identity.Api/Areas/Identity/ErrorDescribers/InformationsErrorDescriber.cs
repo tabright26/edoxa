@@ -19,7 +19,7 @@
 
         public static string FirstNameUppercase()
         {
-            return "First name invalid. Every part must start with an uppercase";
+            return "First name invalid. Must start with an uppercase";
         }
 
         public static string LastNameRequired()
@@ -39,7 +39,7 @@
 
         public static string LastNameUppercase()
         {
-            return "Last name invalid. Every part must start with an uppercase";
+            return "Last name invalid. Must start with an uppercase";
         }
 
         public static string GenderRequired()
