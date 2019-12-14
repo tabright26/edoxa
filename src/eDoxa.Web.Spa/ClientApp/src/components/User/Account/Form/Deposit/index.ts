@@ -1,3 +1,3 @@
-import DepositContainer from "./Container";
+import DepositForm from "./Deposit";
 
-export default DepositContainer;
+export default DepositForm;

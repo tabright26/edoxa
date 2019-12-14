@@ -1,17 +1,22 @@
 import React, { FunctionComponent } from "react";
 import { Label, FormGroup, Form } from "reactstrap";
-import { reduxForm } from "redux-form";
+import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import { DELETE_USER_ADDRESS_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { deleteUserAddress } from "store/root/user/addressBook/actions";
+import { deleteUserAddress } from "store/actions/identity/actions";
 import { throwSubmissionError } from "utils/form/types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
+
+interface Props {}
+
+interface FormData {}
 
 async function submit(values, dispatch) {
   try {
     return await new Promise((resolve, reject) => {
-      const meta: any = { resolve, reject };
+      const meta: AxiosActionCreatorMeta = { resolve, reject };
       dispatch(deleteUserAddress(values, meta));
     });
   } catch (error) {
@@ -19,12 +24,9 @@ async function submit(values, dispatch) {
   }
 }
 
-const DeleteUserAddressForm: FunctionComponent<any> = ({
-  handleSubmit,
-  handleCancel,
-  dispatch,
-  error
-}) => (
+const DeleteUserAddressForm: FunctionComponent<InjectedFormProps<FormData> &
+  Props &
+  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
       submit(data, dispatch).then(() => handleCancel())
@@ -40,7 +42,7 @@ const DeleteUserAddressForm: FunctionComponent<any> = ({
 );
 
 const enhance = compose<any, any>(
-  reduxForm<any, { handleCancel: () => {} }, string>({
+  reduxForm<FormData, Props>({
     form: DELETE_USER_ADDRESS_FORM
   })
 );

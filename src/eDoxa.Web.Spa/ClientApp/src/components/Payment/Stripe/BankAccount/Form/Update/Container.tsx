@@ -1,6 +1,9 @@
 import { connect } from "react-redux";
-import { updateStripeBankAccount } from "store/root/payment/stripe/bankAccount/actions";
-import { UPDATE_STRIPE_BANKACCOUNT_FAIL, StripeBankAccountActions } from "store/root/payment/stripe/bankAccount/types";
+import { updateStripeBankAccount } from "store/actions/payment/actions";
+import {
+  UPDATE_STRIPE_BANKACCOUNT_FAIL,
+  StripeBankAccountActions
+} from "store/actions/payment/types";
 import Update from "./Update";
 import { compose } from "recompose";
 import { injectStripe } from "react-stripe-elements";
@@ -19,14 +22,16 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
         })
         .then(result => {
           if (result.token) {
-            return dispatch(updateStripeBankAccount(result.token.id)).then((action: StripeBankAccountActions) => {
-              switch (action.type) {
-                case UPDATE_STRIPE_BANKACCOUNT_FAIL: {
-                  throwSubmissionError(action.error);
-                  break;
+            return dispatch(updateStripeBankAccount(result.token.id)).then(
+              (action: StripeBankAccountActions) => {
+                switch (action.type) {
+                  case UPDATE_STRIPE_BANKACCOUNT_FAIL: {
+                    throwSubmissionError(action.error);
+                    break;
+                  }
                 }
               }
-            });
+            );
           } else {
             return Promise.reject(result.error);
           }
@@ -36,10 +41,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
 
 const enhance = compose<any, any>(
   injectStripe,
-  connect(
-    null,
-    mapDispatchToProps
-  )
+  connect(null, mapDispatchToProps)
 );
 
 export default enhance(Update);

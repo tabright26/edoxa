@@ -1,26 +1,29 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_PHONE_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { updateUserPhone } from "store/root/user/phone/actions";
+import { updateUserPhone } from "store/actions/identity/actions";
 import { throwSubmissionError } from "utils/form/types";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
+import { RootState } from "store/types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-const mapStateToProps = (state: RootState) => {
-  const { data } = state.root.user.phone;
-  return {
-    initialValues: data
-  };
-};
+interface Props {}
+
+interface FormData {
+  number: number;
+}
+
+interface StateProps {}
 
 async function submit(values, dispatch) {
   try {
     return await new Promise((resolve, reject) => {
-      const meta: any = { resolve, reject };
+      const meta: AxiosActionCreatorMeta = { resolve, reject };
       dispatch(updateUserPhone(values, meta));
     });
   } catch (error) {
@@ -28,12 +31,9 @@ async function submit(values, dispatch) {
   }
 }
 
-const UpdateUserPhoneForm: FunctionComponent<any> = ({
-  handleSubmit,
-  handleCancel,
-  dispatch,
-  error
-}) => (
+const UpdateUserPhoneForm: FunctionComponent<InjectedFormProps<FormData> &
+  Props &
+  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
       submit(data, dispatch).then(() => handleCancel())
@@ -54,10 +54,20 @@ const UpdateUserPhoneForm: FunctionComponent<any> = ({
   </Form>
 );
 
+const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
+  state: RootState
+) => {
+  const { data } = state.root.user.phone;
+  return {
+    initialValues: data
+  };
+};
+
 const enhance = compose<any, any>(
-  reduxForm<any, { handleCancel: () => any }, string>({
+  reduxForm<FormData, Props>({
     form: UPDATE_USER_PHONE_FORM
-  })
+  }),
+  connect(mapStateToProps)
 );
 
-export default connect(mapStateToProps)(enhance(UpdateUserPhoneForm));
+export default enhance(UpdateUserPhoneForm);

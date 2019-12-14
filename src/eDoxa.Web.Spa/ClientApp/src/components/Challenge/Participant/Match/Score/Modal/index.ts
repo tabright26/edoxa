@@ -1,9 +1,3 @@
-import Create from "./Create";
-import Update from "./Update";
-import Delete from "./Delete";
+import MatchScoreModal from "./Score";
 
-export default {
-  Create,
-  Update,
-  Delete
-};
+export default MatchScoreModal;

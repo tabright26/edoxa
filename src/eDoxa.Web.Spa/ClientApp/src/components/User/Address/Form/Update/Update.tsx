@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Col, Form } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import FormField from "components/Shared/Form/Field";
-import { DELETE_USER_ADDRESS_FORM } from "forms";
+import { UPDATE_USER_ADDRESS_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { updateUserAddress } from "store/root/user/addressBook/actions";
+import { updateUserAddress } from "store/actions/identity/actions";
 import { throwSubmissionError } from "utils/form/types";
 import {
   COUNTRY_REQUIRED,
@@ -26,20 +26,24 @@ import {
   postalRegex,
   POSTAL_INVALID
 } from "validation";
-import { connect } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { AddressId } from "types";
 import { RootState } from "store/types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-interface OwnProps {
+interface Props {
   addressId: AddressId;
 }
 
-const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
-  const { data } = state.root.user.addressBook;
-  return {
-    initialValues: data.find(address => address.id === ownProps.addressId)
-  };
-};
+interface FormData {
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+}
+
+interface StateProps {}
 
 const validate = values => {
   const errors: any = {};
@@ -73,7 +77,7 @@ const validate = values => {
 async function submit(values, dispatch, addressId) {
   try {
     return await new Promise((resolve, reject) => {
-      const meta: any = { resolve, reject };
+      const meta: AxiosActionCreatorMeta = { resolve, reject };
       dispatch(updateUserAddress(addressId, values, meta));
     });
   } catch (error) {
@@ -81,13 +85,9 @@ async function submit(values, dispatch, addressId) {
   }
 }
 
-const UpdateUserAddressForm: FunctionComponent<any> = ({
-  dispatch,
-  handleSubmit,
-  handleCancel,
-  addressId,
-  error
-}) => (
+const UpdateUserAddressForm: FunctionComponent<InjectedFormProps<FormData> &
+  Props &
+  any> = ({ dispatch, handleSubmit, handleCancel, addressId, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
       submit(data, dispatch, addressId).then(() => handleCancel())
@@ -145,11 +145,22 @@ const UpdateUserAddressForm: FunctionComponent<any> = ({
   </Form>
 );
 
+const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
+  state: RootState,
+  ownProps: Props
+) => {
+  const { data } = state.root.user.addressBook;
+  return {
+    initialValues: data.find(address => address.id === ownProps.addressId)
+  };
+};
+
 const enhance = compose<any, any>(
-  reduxForm<any, { handleCancel: () => {} }, string>({
-    form: DELETE_USER_ADDRESS_FORM,
+  reduxForm<FormData, Props>({
+    form: UPDATE_USER_ADDRESS_FORM,
     validate
-  })
+  }),
+  connect(mapStateToProps)
 );
 
-export default connect(mapStateToProps)(enhance(UpdateUserAddressForm));
+export default enhance(UpdateUserAddressForm);

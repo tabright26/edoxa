@@ -5,7 +5,7 @@ import { withClans } from "store/root/organization/clan/container";
 import ClanCard from "components/Clan/Card/Card";
 import CandidatureList from "components/Clan/Candidature/List/List";
 import InvitationList from "components/Clan/Invitation/List/List";
-import ClanModal from "modals/Organization/Clan";
+import ClanModal from "components/Clan/Modal";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { withModals } from "utils/modal/container";
 import { compose } from "recompose";

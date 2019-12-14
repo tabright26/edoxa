@@ -1,14 +1,21 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { FORGOT_USER_PASSWORD_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
-import { forgotUserPassword } from "store/root/user/password/actions";
+import { forgotUserPassword } from "store/actions/identity/actions";
 import { EMAIL_REQUIRED, EMAIL_INVALID, emailRegex } from "validation";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
+
+interface Props {}
+
+interface FormData {
+  email: string;
+}
 
 const validate = values => {
   const errors: any = {};
@@ -23,7 +30,7 @@ const validate = values => {
 async function submit(values, dispatch) {
   try {
     return await new Promise((resolve, reject) => {
-      const meta: any = { resolve, reject };
+      const meta: AxiosActionCreatorMeta = { resolve, reject };
       dispatch(forgotUserPassword(values, meta));
     });
   } catch (error) {
@@ -31,12 +38,9 @@ async function submit(values, dispatch) {
   }
 }
 
-const ForgotUserPasswordForm: FunctionComponent<any> = ({
-  handleSubmit,
-  handleCancel,
-  dispatch,
-  error
-}) => (
+const ForgotUserPasswordForm: FunctionComponent<InjectedFormProps<FormData> &
+  Props &
+  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
       submit(data, dispatch).then(() => handleCancel())
@@ -57,7 +61,7 @@ const ForgotUserPasswordForm: FunctionComponent<any> = ({
 );
 
 const enhance = compose<any, any>(
-  reduxForm<any, { handleCancel: () => any }, string>({
+  reduxForm<FormData, Props>({
     form: FORGOT_USER_PASSWORD_FORM,
     validate
   })

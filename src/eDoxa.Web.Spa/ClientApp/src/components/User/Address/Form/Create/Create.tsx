@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Col, Form } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import FormField from "components/Shared/Form/Field";
 import { CREATE_USER_ADDRESS_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { createUserAddress } from "store/root/user/addressBook/actions";
+import { createUserAddress } from "store/actions/identity/actions";
 import { throwSubmissionError } from "utils/form/types";
 import {
   countryRegex,
@@ -26,6 +26,18 @@ import {
   STATE_INVALID,
   POSTAL_INVALID
 } from "validation";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
+
+interface Props {}
+
+interface FormData {
+  country: string;
+  line1: string;
+  line2: string;
+  city: string;
+  state: string;
+  postalCode: string;
+}
 
 const validate = values => {
   const errors: any = {};
@@ -59,7 +71,7 @@ const validate = values => {
 async function submit(values, dispatch) {
   try {
     return await new Promise((resolve, reject) => {
-      const meta: any = { resolve, reject };
+      const meta: AxiosActionCreatorMeta = { resolve, reject };
       dispatch(createUserAddress(values, meta));
     });
   } catch (error) {
@@ -67,12 +79,9 @@ async function submit(values, dispatch) {
   }
 }
 
-const CreateUserAddressForm: FunctionComponent<any> = ({
-  handleSubmit,
-  handleCancel,
-  dispatch,
-  error
-}) => (
+const CreateUserAddressForm: FunctionComponent<InjectedFormProps<FormData> &
+  Props &
+  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
       submit(data, dispatch).then(() => handleCancel())
@@ -131,7 +140,7 @@ const CreateUserAddressForm: FunctionComponent<any> = ({
 );
 
 const enhance = compose<any, any>(
-  reduxForm<any, { handleCancel: () => {} }, string>({
+  reduxForm<FormData, Props>({
     form: CREATE_USER_ADDRESS_FORM,
     validate
   })

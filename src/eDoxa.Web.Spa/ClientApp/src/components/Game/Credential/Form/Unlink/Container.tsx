@@ -1,11 +1,11 @@
 import { connect } from "react-redux";
-import { unlinkGameCredential } from "store/root/user/game/credential/actions";
-import { loadGames } from "store/root/game/actions";
+import { unlinkGameCredential } from "store/actions/identity/actions";
+import { loadGames } from "store/actions/game/actions";
 import {
   UNLINK_GAME_CREDENTIAL_SUCCESS,
   UNLINK_GAME_CREDENTIAL_FAIL,
   UnlinkGameCredentialAction
-} from "store/root/user/game/credential/types";
+} from "store/actions/identity/types";
 import Unlink from "./Unlink";
 import { throwSubmissionError } from "utils/form/types";
 import { Game } from "types";

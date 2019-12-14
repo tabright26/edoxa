@@ -1,7 +1,10 @@
 import { connect } from "react-redux";
 import { injectStripe } from "react-stripe-elements";
-import { attachStripePaymentMethod } from "store/root/payment/stripe/paymentMethod/actions";
-import { ATTACH_STRIPE_PAYMENTMETHOD_FAIL, StripePaymentMethodsActions } from "store/root/payment/stripe/paymentMethod/types";
+import { attachStripePaymentMethod } from "store/actions/payment/actions";
+import {
+  ATTACH_STRIPE_PAYMENTMETHOD_FAIL,
+  StripePaymentMethodsActions
+} from "store/actions/payment/types";
 import Create from "./Create";
 import { compose } from "recompose";
 import { throwSubmissionError } from "utils/form/types";
@@ -11,7 +14,9 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     createStripePaymentMethod: () =>
       ownProps.stripe.createPaymentMethod(ownProps.type).then(result => {
         if (result.paymentMethod) {
-          return dispatch(attachStripePaymentMethod(result.paymentMethod.id)).then((action: StripePaymentMethodsActions) => {
+          return dispatch(
+            attachStripePaymentMethod(result.paymentMethod.id)
+          ).then((action: StripePaymentMethodsActions) => {
             switch (action.type) {
               case ATTACH_STRIPE_PAYMENTMETHOD_FAIL: {
                 throwSubmissionError(action.error);
@@ -28,10 +33,7 @@ const mapDispatchToProps = (dispatch: any, ownProps: any) => {
 
 const enhance = compose<any, any>(
   injectStripe,
-  connect(
-    null,
-    mapDispatchToProps
-  )
+  connect(null, mapDispatchToProps)
 );
 
 export default enhance(Create);

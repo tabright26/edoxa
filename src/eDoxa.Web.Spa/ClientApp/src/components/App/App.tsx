@@ -3,11 +3,11 @@ import React, { Suspense, FunctionComponent } from "react";
 import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/config";
-import UserAccountModal from "modals/User/Account";
-import MatchScoreModal from "modals/Arena/Challenge/Participant/Match/Score";
+import UserAccountModal from "components/User/Account/Modal";
+import MatchScoreModal from "components/Challenge/Participant/Match/Score/Modal";
 import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
-import StripePaymentMethodModal from "modals/Payment/Stripe/PaymentMethod";
+import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";
 import { Elements } from "react-stripe-elements";
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 

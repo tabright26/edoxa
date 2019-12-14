@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from "react";
 import { Form, FormGroup } from "reactstrap";
-import { Field, FormSection, reduxForm } from "redux-form";
+import { Field, FormSection, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { CREATE_USER_INFORMATIONS_FORM } from "forms";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
-import { createUserInformations } from "store/root/user/information/actions";
+import { createUserInformations } from "store/actions/identity/actions";
 import { throwSubmissionError } from "utils/form/types";
 import {
   personalInfoNameRegex,
@@ -26,6 +26,18 @@ import {
   PERSONALINFO_DAY_INVALID,
   PERSONALINFO_GENDER_REQUIRED
 } from "validation";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
+
+interface Props {}
+
+interface FormData {
+  firstName: string;
+  lastName: string;
+  year: number;
+  month: number;
+  day: number;
+  gender: string;
+}
 
 const validate = values => {
   const errors: any = {};
@@ -63,7 +75,7 @@ const validate = values => {
 async function submit(values, dispatch) {
   try {
     return await new Promise((resolve, reject) => {
-      const meta: any = { resolve, reject };
+      const meta: AxiosActionCreatorMeta = { resolve, reject };
       dispatch(createUserInformations(values, meta));
     });
   } catch (error) {
@@ -71,12 +83,11 @@ async function submit(values, dispatch) {
   }
 }
 
-const CreateUserInformationsForm: FunctionComponent<any> = ({
-  handleSubmit,
-  handleCancel,
-  dispatch,
-  error
-}) => (
+const CreateUserInformationsForm: FunctionComponent<InjectedFormProps<
+  FormData
+> &
+  Props &
+  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
       submit(data, dispatch).then(() => handleCancel())
@@ -134,7 +145,10 @@ const CreateUserInformationsForm: FunctionComponent<any> = ({
 );
 
 const enhance = compose<any, any>(
-  reduxForm({ form: CREATE_USER_INFORMATIONS_FORM, validate })
+  reduxForm<FormData, Props>({
+    form: CREATE_USER_INFORMATIONS_FORM,
+    validate
+  })
 );
 
 export default enhance(CreateUserInformationsForm);

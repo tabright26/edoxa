@@ -4,7 +4,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import Address from "utils/localize/components/Address";
 import AddressForm from "components/User/Address/Form";
 import { withUserAddressBook } from "store/root/user/addressBook/container";
-import UserAddressModal from "modals/User/Address";
+import UserAddressModal from "components/User/Address/Modal";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import { withModals } from "utils/modal/container";

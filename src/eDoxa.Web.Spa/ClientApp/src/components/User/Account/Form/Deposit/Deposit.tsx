@@ -1,20 +1,25 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
-import { reduxForm } from "redux-form";
+import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import { USER_ACCOUNT_DEPOSIT_FORM } from "forms";
 import FormField from "components/Shared/Form/Field";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
-import { accountDeposit } from "store/root/user/account/deposit/actions";
+import { accountDeposit } from "store/actions/account/actions";
 import { Currency, Bundle } from "types";
 import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-interface OwnProps {
+interface Props {
   currency: Currency;
   bundles: Bundle[];
+}
+
+interface FormData {
+  bundle: number;
 }
 
 interface StateProps {
@@ -23,21 +28,10 @@ interface StateProps {
   };
 }
 
-const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
-  state: RootState,
-  ownProps: OwnProps
-) => {
-  return {
-    initialValues: {
-      bundle: ownProps.bundles[0].amount
-    }
-  };
-};
-
 async function submit(values, currency, dispatch) {
   try {
     return await new Promise((resolve, reject) => {
-      const meta: any = { resolve, reject };
+      const meta: AxiosActionCreatorMeta = { resolve, reject };
       dispatch(accountDeposit(currency, values.amount, meta));
     });
   } catch (error) {
@@ -45,7 +39,9 @@ async function submit(values, currency, dispatch) {
   }
 }
 
-const DepositForm: FunctionComponent<any> = ({
+const DepositForm: FunctionComponent<InjectedFormProps<FormData> &
+  Props &
+  any> = ({
   bundles,
   dispatch,
   currency,
@@ -70,10 +66,22 @@ const DepositForm: FunctionComponent<any> = ({
   </Form>
 );
 
+const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
+  state: RootState,
+  ownProps: Props
+) => {
+  return {
+    initialValues: {
+      bundle: ownProps.bundles[0].amount
+    }
+  };
+};
+
 const enhance = compose<any, any>(
-  reduxForm<any, { handleCancel: () => any }, string>({
+  reduxForm<FormData, Props>({
     form: USER_ACCOUNT_DEPOSIT_FORM
-  })
+  }),
+  connect(mapStateToProps)
 );
 
-export default connect(mapStateToProps)(enhance(DepositForm));
+export default enhance(DepositForm);

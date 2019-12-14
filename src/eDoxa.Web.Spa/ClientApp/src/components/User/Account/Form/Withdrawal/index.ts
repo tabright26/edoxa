@@ -1,3 +1,3 @@
-import WithdrawalContainer from "./Container";
+import WithdrawalForm from "./Withdrawal";
 
-export default WithdrawalContainer;
+export default WithdrawalForm;
