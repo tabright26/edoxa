@@ -32,7 +32,5 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
     public sealed class EndpointsOptions : AuthorityEndpointsOptions
     {
-        [Required]
-        public string PaymentUrl { get; set; }
     }
 }

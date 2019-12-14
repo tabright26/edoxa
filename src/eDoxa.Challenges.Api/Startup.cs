@@ -29,7 +29,6 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
@@ -88,9 +87,7 @@ namespace eDoxa.Challenges.Api
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
                 .AddRedis(Configuration)
-                .AddAzureServiceBusTopic(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi);
+                .AddAzureServiceBusTopic(Configuration);
 
             services.AddDbContext<ChallengesDbContext>(
                 options => options.UseSqlServer(
@@ -128,9 +125,7 @@ namespace eDoxa.Challenges.Api
             services.AddSwagger(
                 XmlCommentsFilePath,
                 AppSettings,
-                AppSettings,
-                Scopes.CashierApi,
-                Scopes.GamesApi);
+                AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

@@ -31,7 +31,6 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
-using eDoxa.ServiceBus.Azure.Extensions;
 
 using FluentValidation;
 
@@ -84,14 +83,10 @@ namespace eDoxa.Challenges.Web.Aggregator
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
-                .AddAzureServiceBusTopic(Configuration)
                 .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
                 .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppNames.PaymentApi)
-                .AddUrlGroup(AppSettings.Endpoints.NotificationsUrl, AppNames.NotificationsApi)
                 .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppNames.ChallengesApi)
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi)
-                .AddUrlGroup(AppSettings.Endpoints.ClansUrl, AppNames.ClansApi);
+                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi);
 
             services.AddCustomCors();
 
@@ -154,7 +149,6 @@ namespace eDoxa.Challenges.Web.Aggregator
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ChallengesWebAggregator);
         }
 
         public void Configure(IApplicationBuilder application)

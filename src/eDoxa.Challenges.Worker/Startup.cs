@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Worker
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks().AddCustomSelfCheck().AddAzureKeyVault(Configuration).AddAzureServiceBusTopic(Configuration);
+            services.AddHealthChecks().AddCustomSelfCheck().AddAzureKeyVault(Configuration);
 
             services.AddDbContext<HangfireDbContext>(
                 builder => builder.UseSqlServer(
@@ -79,7 +79,6 @@ namespace eDoxa.Challenges.Worker
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ChallengesWorker);
         }
 
         public void Configure(IApplicationBuilder application)

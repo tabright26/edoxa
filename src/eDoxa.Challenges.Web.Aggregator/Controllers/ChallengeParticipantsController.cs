@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Web.Aggregator.Transformers;
 using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Services;
@@ -16,9 +15,6 @@ using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
-
-using Grpc.Core;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -42,19 +38,16 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         private readonly ChallengeService.ChallengeServiceClient _challengesServiceClient;
         private readonly CashierService.CashierServiceClient _cashierServiceClient;
         private readonly IdentityService.IdentityServiceClient _identityServiceClient;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
 
         public ChallengeParticipantsController(
             ChallengeService.ChallengeServiceClient challengesServiceClient,
             CashierService.CashierServiceClient cashierServiceClient,
-            IdentityService.IdentityServiceClient identityServiceClient,
-            IServiceBusPublisher serviceBusPublisher
+            IdentityService.IdentityServiceClient identityServiceClient
         )
         {
             _challengesServiceClient = challengesServiceClient;
             _cashierServiceClient = cashierServiceClient;
             _identityServiceClient = identityServiceClient;
-            _serviceBusPublisher = serviceBusPublisher;
         }
 
         [HttpPost]
@@ -79,7 +72,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                 [nameof(ParticipantId)] = participantId
             };
 
-            var createTransactionResponse = await _cashierServiceClient.CreateTransactionAsync(
+            await _cashierServiceClient.CreateTransactionAsync(
                 new CashierRequests.CreateTransactionRequest
                 {
                     Type = TransactionTypeDto.Charge,
@@ -91,24 +84,15 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                     }
                 });
 
-            try
-            {
-                var participant = await _challengesServiceClient.RegisterChallengeParticipantAsync(
-                    new ChallengeRequests.RegisterChallengeParticipantRequest
-                    {
-                        ChallengeId = challengeId,
-                        GamePlayerId = Guid.NewGuid().ToString(),
-                        ParticipantId = participantId
-                    });
+            var participant = await _challengesServiceClient.RegisterChallengeParticipantAsync(
+                new ChallengeRequests.RegisterChallengeParticipantRequest
+                {
+                    ChallengeId = challengeId,
+                    GamePlayerId = Guid.NewGuid().ToString(),
+                    ParticipantId = participantId
+                });
 
-                return this.Ok(ChallengeTransformer.Transform(findChallengeResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
-            }
-            catch (RpcException)
-            {
-                await _serviceBusPublisher.PublishTransactionCanceledIntegrationEventAsync(TransactionId.Parse(createTransactionResponse.Transaction.Id));
-
-                return this.BadRequest();
-            }
+            return this.Ok(ChallengeMapper.Map(findChallengeResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
         }
     }
 }

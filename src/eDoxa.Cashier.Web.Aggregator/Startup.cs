@@ -30,7 +30,6 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
-using eDoxa.ServiceBus.Azure.Extensions;
 
 using FluentValidation;
 
@@ -83,7 +82,6 @@ namespace eDoxa.Cashier.Web.Aggregator
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
-                .AddAzureServiceBusTopic(Configuration)
                 .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
                 .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
                 .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppNames.PaymentApi);
@@ -142,7 +140,6 @@ namespace eDoxa.Cashier.Web.Aggregator
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.CashierWebAggregator);
         }
 
         public void Configure(IApplicationBuilder application)

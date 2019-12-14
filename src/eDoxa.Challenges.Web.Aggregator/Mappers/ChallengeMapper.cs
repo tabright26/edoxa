@@ -1,4 +1,4 @@
-﻿// Filename: ChallengeTransformer.cs
+﻿// Filename: ChallengeMapper.cs
 // Date Created: 2019-11-25
 // 
 // ================================================
@@ -20,9 +20,9 @@ using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.Pa
 
 namespace eDoxa.Challenges.Web.Aggregator.Transformers
 {
-    public static class ChallengeTransformer
+    public static class ChallengeMapper
     {
-        public static ParticipantAggregate Transform(string challengeId, ParticipantDto participant, IEnumerable<DoxatagDto> doxatags)
+        public static ParticipantAggregate Map(string challengeId, ParticipantDto participant, IEnumerable<DoxatagDto> doxatags)
         {
             return new ParticipantAggregate
             {
@@ -65,7 +65,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
             };
         }
 
-        public static ChallengeAggregate Transform(ChallengeDto challenge, ChallengePayoutDto payout, IEnumerable<DoxatagDto> doxatags)
+        public static ChallengeAggregate Map(ChallengeDto challenge, ChallengePayoutDto payout, IEnumerable<DoxatagDto> doxatags)
         {
             return new ChallengeAggregate
             {
@@ -113,12 +113,12 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
                 },
                 Participants =
                 {
-                    challenge.Participants.Select(participant => Transform(challenge.Id, participant, doxatags))
+                    challenge.Participants.Select(participant => Map(challenge.Id, participant, doxatags))
                 }
             };
         }
 
-        public static IReadOnlyCollection<ChallengeAggregate> Transform(
+        public static IReadOnlyCollection<ChallengeAggregate> Map(
             IEnumerable<ChallengeDto> challenges,
             IEnumerable<ChallengePayoutDto> payouts,
             IEnumerable<DoxatagDto> doxatags
@@ -126,7 +126,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Transformers
         {
             var challengeModels = from challenge in challenges
                                   let challengePayout = payouts.Single(payout => payout.ChallengeId == challenge.Id)
-                                  select Transform(challenge, challengePayout, doxatags);
+                                  select Map(challenge, challengePayout, doxatags);
 
             return challengeModels.ToList();
         }

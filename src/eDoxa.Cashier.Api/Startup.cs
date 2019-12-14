@@ -29,7 +29,6 @@ using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
@@ -91,8 +90,7 @@ namespace eDoxa.Cashier.Api
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
-                .AddAzureServiceBusTopic(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, "paymentapi");
+                .AddAzureServiceBusTopic(Configuration);
 
             services.AddDbContext<CashierDbContext>(
                 options => options.UseSqlServer(
@@ -130,8 +128,7 @@ namespace eDoxa.Cashier.Api
             services.AddSwagger(
                 XmlCommentsFilePath,
                 AppSettings,
-                AppSettings,
-                Scopes.PaymentApi);
+                AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

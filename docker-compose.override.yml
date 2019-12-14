@@ -74,7 +74,6 @@ services:
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__PaymentUrl=http://payment.api
     ports:
       - "5002:80"
       - "9002:81"
@@ -119,8 +118,6 @@ services:
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__GamesUrl=http://games.api
     ports:
       - "5003:80"
       - "9003:81"
@@ -163,7 +160,6 @@ services:
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
     ports:
       - "5403:80"
@@ -174,15 +170,11 @@ services:
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity.api
       - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__PaymentUrl=http://payment.api
-      - Endpoints__NotificationsUrl=http://notifications.api
       - Endpoints__ChallengesUrl=http://challenges.api
       - Endpoints__GamesUrl=http://games.api
-      - Endpoints__ClansUrl=http://clans.api
     ports:
       - "5303:80"
 

@@ -6,24 +6,15 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Worker.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Worker.Application.RecurringJobs
 {
     public sealed class ChallengeRecurringJob
     {
-        private readonly IServiceBusPublisher _serviceBusPublisher;
-
-        public ChallengeRecurringJob(IServiceBusPublisher serviceBusPublisher)
+        public Task SynchronizeChallengeAsync(Game game)
         {
-            _serviceBusPublisher = serviceBusPublisher;
-        }
-
-        public async Task SynchronizeChallengeAsync(Game game)
-        {
-            await _serviceBusPublisher.PublishChallengesSynchronizedIntegrationEventAsync(game);
+            return Task.CompletedTask;
         }
     }
 }
