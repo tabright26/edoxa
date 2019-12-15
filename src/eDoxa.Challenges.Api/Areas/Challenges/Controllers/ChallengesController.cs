@@ -4,24 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
-using System.Threading.Tasks;
-
-using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
-using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
-using eDoxa.Challenges.Responses;
-using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 {
@@ -40,23 +27,23 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
             _challengeService = challengeService;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        [SwaggerOperation("Fetch challenges.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
-        [SwaggerResponse(StatusCodes.Status204NoContent)]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)
-        {
-            var responses = await _challengeQuery.FetchChallengeResponsesAsync(game, state);
+        //[AllowAnonymous]
+        //[HttpGet]
+        //[SwaggerOperation("Fetch challenges.")]
+        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeDto[]))]
+        //[SwaggerResponse(StatusCodes.Status204NoContent)]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        //public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)
+        //{
+        //    var responses = await _challengeQuery.FetchChallengeResponsesAsync(game, state);
 
-            if (!responses.Any())
-            {
-                return this.NoContent();
-            }
+        //    if (!responses.Any())
+        //    {
+        //        return this.NoContent();
+        //    }
 
-            return this.Ok(responses);
-        }
+        //    return this.Ok(responses);
+        //}
 
         //[Authorize(Roles = AppRoles.Admin)]
         //[HttpPost(Name = "CreateChallenge")]
@@ -92,51 +79,51 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
         //    return this.BadRequest(new ValidationProblemDetails(ModelState));
         //}
 
-        [AllowAnonymous]
-        [HttpGet("{challengeId}")]
-        [SwaggerOperation("Find a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
-        {
-            var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+        //[AllowAnonymous]
+        //[HttpGet("{challengeId}")]
+        //[SwaggerOperation("Find a challenge.")]
+        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeDto))]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        //[SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        //public async Task<IActionResult> GetByIdAsync(ChallengeId challengeId)
+        //{
+        //    var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
 
-            if (response == null)
-            {
-                return this.NotFound("Challenge not found.");
-            }
+        //    if (response == null)
+        //    {
+        //        return this.NotFound("Challenge not found.");
+        //    }
 
-            return this.Ok(response);
-        }
+        //    return this.Ok(response);
+        //}
 
-        [Authorize(Roles = AppRoles.Admin)]
-        [HttpPost("{challengeId}")]
-        [SwaggerOperation("Synchronize a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse))]
-        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostByIdAsync(ChallengeId challengeId)
-        {
-            var challenge = await _challengeService.FindChallengeAsync(challengeId);
+        //[Authorize(Roles = AppRoles.Admin)]
+        //[HttpPost("{challengeId}")]
+        //[SwaggerOperation("Synchronize a challenge.")]
+        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeDto))]
+        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        //[SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
+        //public async Task<IActionResult> PostByIdAsync(ChallengeId challengeId)
+        //{
+        //    var challenge = await _challengeService.FindChallengeAsync(challengeId);
 
-            if (challenge == null)
-            {
-                return this.NotFound("Challenge not found.");
-            }
+        //    if (challenge == null)
+        //    {
+        //        return this.NotFound("Challenge not found.");
+        //    }
 
-            var result = await _challengeService.SynchronizeChallengeAsync(challenge, new UtcNowDateTimeProvider());
+        //    var result = await _challengeService.SynchronizeChallengeAsync(challenge, new UtcNowDateTimeProvider());
 
-            if (result.IsValid)
-            {
-                var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
+        //    if (result.IsValid)
+        //    {
+        //        var response = await _challengeQuery.FindChallengeResponseAsync(challengeId);
 
-                return this.Ok(response);
-            }
+        //        return this.Ok(response);
+        //    }
 
-            result.AddToModelState(ModelState);
+        //    result.AddToModelState(ModelState);
 
-            return this.BadRequest(new ValidationProblemDetails(ModelState));
-        }
+        //    return this.BadRequest(new ValidationProblemDetails(ModelState));
+        //}
     }
 }

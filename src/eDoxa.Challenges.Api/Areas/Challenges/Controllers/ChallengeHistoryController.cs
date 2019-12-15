@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
-using eDoxa.Challenges.Responses;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find the challenge history of a user.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)
         {

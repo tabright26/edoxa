@@ -87,7 +87,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var invitationResponse = await response.Content.ReadAsAsync<InvitationResponse>();
+            var invitationResponse = await response.Content.ReadAsJsonAsync<InvitationResponse>();
             invitationResponse!.Id.Should().Be(invitation.Id.ToGuid());
         }
     }

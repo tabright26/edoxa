@@ -5,19 +5,14 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Areas.Challenges.Controllers;
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
-using eDoxa.Challenges.Requests;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Challenges.TestHelper.Mocks;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -123,152 +118,152 @@ namespace eDoxa.Challenges.UnitTests.Areas.Challenges.Controllers
             mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
         }
 
-        [Fact]
-        public async Task PostAsync_ShouldBeNotFoundObjectResult()
-        {
-            // Arrange
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
+        //[Fact]
+        //public async Task PostAsync_ShouldBeNotFoundObjectResult()
+        //{
+        //    // Arrange
+        //    var mockParticipantQuery = new Mock<IParticipantQuery>();
 
-            var mockChallengeService = new Mock<IChallengeService>();
+        //    var mockChallengeService = new Mock<IChallengeService>();
 
-            mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
+        //    mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).Verifiable();
 
-            mockChallengeService.Setup(
-                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
-                        It.IsAny<IChallenge>(),
-                        It.IsAny<UserId>(),
-                        It.IsAny<ParticipantId>(),
-                        It.IsAny<PlayerId>(),
-                        It.IsAny<UtcNowDateTimeProvider>(),
-                        It.IsAny<CancellationToken>()))
-                .Verifiable();
+        //    mockChallengeService.Setup(
+        //            challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+        //                It.IsAny<IChallenge>(),
+        //                It.IsAny<UserId>(),
+        //                It.IsAny<ParticipantId>(),
+        //                It.IsAny<PlayerId>(),
+        //                It.IsAny<UtcNowDateTimeProvider>(),
+        //                It.IsAny<CancellationToken>()))
+        //        .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
+        //    var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
+        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            // Act
-            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
+        //    // Act
+        //    var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
 
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+        //    mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
-            mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
-                    It.IsAny<IChallenge>(),
-                    It.IsAny<UserId>(),
-                    It.IsAny<ParticipantId>(),
-                    It.IsAny<PlayerId>(),
-                    It.IsAny<UtcNowDateTimeProvider>(),
-                    It.IsAny<CancellationToken>()),
-                Times.Never);
-        }
+        //    mockChallengeService.Verify(
+        //        challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+        //            It.IsAny<IChallenge>(),
+        //            It.IsAny<UserId>(),
+        //            It.IsAny<ParticipantId>(),
+        //            It.IsAny<PlayerId>(),
+        //            It.IsAny<UtcNowDateTimeProvider>(),
+        //            It.IsAny<CancellationToken>()),
+        //        Times.Never);
+        //}
 
-        [Fact]
-        public async Task PostAsync_ShouldBeOkObjectResult()
-        {
-            // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000, Game.LeagueOfLegends);
+        //[Fact]
+        //public async Task PostAsync_ShouldBeOkObjectResult()
+        //{
+        //    // Arrange
+        //    var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000, Game.LeagueOfLegends);
 
-            var challenge = challengeFaker.FakeChallenge();
+        //    var challenge = challengeFaker.FakeChallenge();
 
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
+        //    var mockParticipantQuery = new Mock<IParticipantQuery>();
 
-            mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
+        //    mockParticipantQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
 
-            var mockChallengeService = new Mock<IChallengeService>();
+        //    var mockChallengeService = new Mock<IChallengeService>();
 
-            mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
+        //    mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
-            mockChallengeService
-                .Setup(
-                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
-                        It.IsAny<IChallenge>(),
-                        It.IsAny<UserId>(),
-                        It.IsAny<ParticipantId>(),
-                        It.IsAny<PlayerId>(),
-                        It.IsAny<UtcNowDateTimeProvider>(),
-                        It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
-                .Verifiable();
+        //    mockChallengeService
+        //        .Setup(
+        //            challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+        //                It.IsAny<IChallenge>(),
+        //                It.IsAny<UserId>(),
+        //                It.IsAny<ParticipantId>(),
+        //                It.IsAny<PlayerId>(),
+        //                It.IsAny<UtcNowDateTimeProvider>(),
+        //                It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(new DomainValidationResult())
+        //        .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
+        //    var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
+        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            // Act
-            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
+        //    // Act
+        //    var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
 
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<OkObjectResult>();
 
-            mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
+        //    mockParticipantQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
 
-            mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+        //    mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
-            mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
-                    It.IsAny<IChallenge>(),
-                    It.IsAny<UserId>(),
-                    It.IsAny<ParticipantId>(),
-                    It.IsAny<PlayerId>(),
-                    It.IsAny<UtcNowDateTimeProvider>(),
-                    It.IsAny<CancellationToken>()),
-                Times.Once);
-        }
+        //    mockChallengeService.Verify(
+        //        challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+        //            It.IsAny<IChallenge>(),
+        //            It.IsAny<UserId>(),
+        //            It.IsAny<ParticipantId>(),
+        //            It.IsAny<PlayerId>(),
+        //            It.IsAny<UtcNowDateTimeProvider>(),
+        //            It.IsAny<CancellationToken>()),
+        //        Times.Once);
+        //}
 
-        [Fact]
-        public async Task PostAsync_ShouldBeBadRequestObjectResult()
-        {
-            // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000, Game.LeagueOfLegends);
+        //[Fact]
+        //public async Task PostAsync_ShouldBeBadRequestObjectResult()
+        //{
+        //    // Arrange
+        //    var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(1000, Game.LeagueOfLegends);
 
-            var challenge = challengeFaker.FakeChallenge();
+        //    var challenge = challengeFaker.FakeChallenge();
 
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
+        //    var mockParticipantQuery = new Mock<IParticipantQuery>();
 
-            var mockChallengeService = new Mock<IChallengeService>();
-            mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
+        //    var mockChallengeService = new Mock<IChallengeService>();
+        //    mockChallengeService.Setup(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
-            mockChallengeService
-                .Setup(
-                    challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
-                        It.IsAny<IChallenge>(),
-                        It.IsAny<UserId>(),
-                        It.IsAny<ParticipantId>(),
-                        It.IsAny<PlayerId>(),
-                        It.IsAny<UtcNowDateTimeProvider>(),
-                        It.IsAny<CancellationToken>()))
-                .ReturnsAsync(DomainValidationResult.Failure("test", "test message"))
-                .Verifiable();
+        //    mockChallengeService
+        //        .Setup(
+        //            challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+        //                It.IsAny<IChallenge>(),
+        //                It.IsAny<UserId>(),
+        //                It.IsAny<ParticipantId>(),
+        //                It.IsAny<PlayerId>(),
+        //                It.IsAny<UtcNowDateTimeProvider>(),
+        //                It.IsAny<CancellationToken>()))
+        //        .ReturnsAsync(DomainValidationResult.Failure("test", "test message"))
+        //        .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+        //    var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, mockChallengeService.Object);
+        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
+        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            // Act
-            var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
+        //    // Act
+        //    var result = await controller.PostAsync(new ChallengeId(), new RegisterChallengeParticipantRequest(new ParticipantId()));
 
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
+        //    // Assert
+        //    result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+        //    mockChallengeService.Verify(challengeQuery => challengeQuery.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
-            mockChallengeService.Verify(
-                challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
-                    It.IsAny<IChallenge>(),
-                    It.IsAny<UserId>(),
-                    It.IsAny<ParticipantId>(),
-                    It.IsAny<PlayerId>(),
-                    It.IsAny<UtcNowDateTimeProvider>(),
-                    It.IsAny<CancellationToken>()),
-                Times.Once);
-        }
+        //    mockChallengeService.Verify(
+        //        challengeQuery => challengeQuery.RegisterChallengeParticipantAsync(
+        //            It.IsAny<IChallenge>(),
+        //            It.IsAny<UserId>(),
+        //            It.IsAny<ParticipantId>(),
+        //            It.IsAny<PlayerId>(),
+        //            It.IsAny<UtcNowDateTimeProvider>(),
+        //            It.IsAny<CancellationToken>()),
+        //        Times.Once);
+        //}
     }
 }

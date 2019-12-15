@@ -88,7 +88,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.Content.ReadAsAsync<DivisionResponse[]>();
+            var challengeResponses = await response.Content.ReadAsJsonAsync<DivisionResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

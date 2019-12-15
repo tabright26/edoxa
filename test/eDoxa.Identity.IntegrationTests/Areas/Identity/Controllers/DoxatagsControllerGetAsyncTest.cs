@@ -95,7 +95,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var doxatagResponses = await response.Content.ReadAsAsync<DoxatagResponse[]>();
+            var doxatagResponses = await response.Content.ReadAsJsonAsync<DoxatagResponse[]>();
 
             doxatagResponses.Should().HaveCount(100);
         }

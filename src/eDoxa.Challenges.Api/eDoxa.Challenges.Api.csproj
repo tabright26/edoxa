@@ -29,8 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Challenges.Infrastructure\eDoxa.Challenges.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Requests\eDoxa.Challenges.Requests.csproj" />
-    <ProjectReference Include="..\eDoxa.Challenges.Responses\eDoxa.Challenges.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>

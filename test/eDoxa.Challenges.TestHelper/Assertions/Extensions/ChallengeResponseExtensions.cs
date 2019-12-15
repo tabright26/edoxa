@@ -4,13 +4,13 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Challenges.Responses;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 
 namespace eDoxa.Challenges.TestHelper.Assertions.Extensions
 {
     public static class ChallengeResponseExtensions
     {
-        public static ChallengeResponseAssertions Should(this ChallengeResponse response)
+        public static ChallengeResponseAssertions Should(this ChallengeDto response)
         {
             return new ChallengeResponseAssertions(response);
         }

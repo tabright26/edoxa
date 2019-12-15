@@ -83,7 +83,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.Content.ReadAsAsync<ClanResponse[]>();
+            var challengeResponses = await response.Content.ReadAsJsonAsync<ClanResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

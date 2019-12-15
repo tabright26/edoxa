@@ -72,6 +72,8 @@ namespace eDoxa.Cashier.UnitTests
             };
 
             var challengeDto = TestMapper.Map<IEnumerable<ChallengePayoutDto>>(challenges);
+
+            challengeDto.Should().HaveCount(2);
         }
 
         public IChallenge CreateChallenge()

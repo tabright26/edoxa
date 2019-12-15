@@ -93,7 +93,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.Content.ReadAsAsync<InvitationResponse[]>();
+            var challengeResponses = await response.Content.ReadAsJsonAsync<InvitationResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
 
@@ -145,7 +145,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.Content.ReadAsAsync<InvitationResponse[]>();
+            var challengeResponses = await response.Content.ReadAsJsonAsync<InvitationResponse[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }

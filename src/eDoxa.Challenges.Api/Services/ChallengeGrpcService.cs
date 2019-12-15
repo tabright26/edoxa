@@ -8,29 +8,22 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Api.Application.Profiles;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Grpc.Extensions;
-using eDoxa.Grpc.Protos.Challenges.Dtos;
-using eDoxa.Grpc.Protos.Challenges.Enums;
 using eDoxa.Grpc.Protos.Challenges.Requests;
 using eDoxa.Grpc.Protos.Challenges.Responses;
 using eDoxa.Grpc.Protos.Challenges.Services;
-using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
-using Google.Protobuf.WellKnownTypes;
-
 using Grpc.Core;
-
-using static eDoxa.Grpc.Protos.Challenges.Dtos.ChallengeDto.Types;
-using static eDoxa.Grpc.Protos.Challenges.Dtos.MatchDto.Types;
 
 namespace eDoxa.Challenges.Api.Services
 {
@@ -55,7 +48,7 @@ namespace eDoxa.Challenges.Api.Services
             {
                 Challenges =
                 {
-                    challenges.Select(MapChallenge)
+                    (challenges.Select(ChallengeProfile.Map))
                 }
             };
 
@@ -73,7 +66,7 @@ namespace eDoxa.Challenges.Api.Services
 
             var response = new FindChallengeResponse
             {
-                Challenge = MapChallenge(challenge)
+                Challenge = ChallengeProfile.Map(challenge)
             };
 
             return context.Ok(response);
@@ -96,7 +89,7 @@ namespace eDoxa.Challenges.Api.Services
                 {
                     var response = new CreateChallengeResponse
                     {
-                        Challenge = MapChallenge(result.GetEntityFromMetadata<IChallenge>())
+                        Challenge = ChallengeProfile.Map(result.GetEntityFromMetadata<IChallenge>())
                     };
 
                     return context.Ok(response);
@@ -150,7 +143,7 @@ namespace eDoxa.Challenges.Api.Services
                 {
                     var response = new RegisterChallengeParticipantResponse
                     {
-                        Participant = MapParticipant(challenge, result.GetEntityFromMetadata<Participant>())
+                        Participant = ChallengeProfile.Map(challenge, result.GetEntityFromMetadata<Participant>())
                     };
 
                     return context.Ok(response);
@@ -164,82 +157,6 @@ namespace eDoxa.Challenges.Api.Services
 
                 throw exception.Capture();
             }
-        }
-
-        private static ChallengeDto MapChallenge(IChallenge challenge)
-        {
-            return new ChallengeDto
-            {
-                Id = challenge.Id.ToString(),
-                Name = challenge.Name,
-                Game = challenge.Game.ToEnum<GameDto>(),
-                State = challenge.Timeline.State.ToEnum<ChallengeStateDto>(),
-                BestOf = challenge.BestOf,
-                Entries = challenge.Entries,
-                SynchronizedAt =
-                    challenge.SynchronizedAt.HasValue ? DateTime.SpecifyKind(challenge.SynchronizedAt.Value, DateTimeKind.Utc).ToTimestamp() : null, // TODO: Timestamp convertion should be fixed.
-                Timeline = new TimelineDto
-                {
-                    CreatedAt = DateTime.SpecifyKind(challenge.Timeline.CreatedAt, DateTimeKind.Utc).ToTimestamp(),
-                    StartedAt = challenge.Timeline.StartedAt.HasValue
-                        ? DateTime.SpecifyKind(challenge.Timeline.StartedAt.Value, DateTimeKind.Utc).ToTimestamp()
-                        : null,
-                    EndedAt = challenge.Timeline.EndedAt.HasValue
-                        ? DateTime.SpecifyKind(challenge.Timeline.EndedAt.Value, DateTimeKind.Utc).ToTimestamp()
-                        : null,
-                    ClosedAt = challenge.Timeline.ClosedAt.HasValue
-                        ? DateTime.SpecifyKind(challenge.Timeline.ClosedAt.Value, DateTimeKind.Utc).ToTimestamp()
-                        : null
-                },
-                Scoring =
-                {
-                    challenge.Scoring.ToDictionary(scoring => scoring.Key.ToString(), scoring => scoring.Value.ToSingle())
-                },
-                Participants =
-                {
-                    challenge.Participants.Select(participant => MapParticipant(challenge, participant))
-                }
-            };
-        }
-
-        private static ParticipantDto MapParticipant(IChallenge challenge, Participant participant)
-        {
-            return new ParticipantDto
-            {
-                Id = participant.Id.ToString(),
-                ChallengeId = challenge.Id.ToString(),
-                UserId = participant.UserId.ToString(),
-                Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal(),
-                Matches =
-                {
-                    participant.Matches.Select(match => MapMatch(participant, match))
-                }
-            };
-        }
-
-        private static MatchDto MapMatch(Participant participant, IMatch match)
-        {
-            return new MatchDto
-            {
-                Id = match.Id.ToString(),
-                ParticipantId = participant.Id.ToString(),
-                Score = match.Score.ToDecimal(),
-                Stats =
-                {
-                    match.Stats.Select(MapStat)
-                }
-            };
-        }
-
-        private static StatDto MapStat(Stat stat)
-        {
-            return new StatDto
-            {
-                Name = stat.Name,
-                Value = stat.Value,
-                Weighting = stat.Weighting,
-                Score = stat.Score.ToDecimal()
-            };
         }
     }
 }

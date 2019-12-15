@@ -1,5 +1,5 @@
 // Filename: ScoringResponseConverter.cs
-// Date Created: 2019-08-28
+// Date Created: 2019-12-14
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,15 +7,16 @@
 using AutoMapper;
 
 using eDoxa.Challenges.Domain.AggregateModels;
-using eDoxa.Challenges.Responses;
+
+using Google.Protobuf.Collections;
 
 namespace eDoxa.Challenges.Api.Application.Profiles.Converters
 {
-    internal sealed class ScoringResponseConverter : IValueConverter<IScoring, ScoringResponse>
+    internal sealed class ScoringConverter : IValueConverter<IScoring, MapField<string, float>>
     {
-        public ScoringResponse Convert(IScoring scoring, ResolutionContext context)
+        public MapField<string, float> Convert(IScoring scoring, ResolutionContext context)
         {
-            var response = new ScoringResponse();
+            var response = new MapField<string, float>();
 
             foreach (var (statName, statWeighting) in scoring)
             {

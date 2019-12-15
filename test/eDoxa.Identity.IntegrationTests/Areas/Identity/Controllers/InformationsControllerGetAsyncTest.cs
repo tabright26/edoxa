@@ -106,7 +106,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.Content.ReadAsAsync<UserProfileResponse>();
+                    var profileResponse = await response.Content.ReadAsJsonAsync<UserProfileResponse>();
 
                     //profileResponse.Should().BeEquivalentTo(mapper.Map<UserInformationsResponse>(profile));
                 });

@@ -119,7 +119,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.Content.ReadAsAsync<ICollection<AddressResponse>>();
+                    var addressResponse = await response.Content.ReadAsJsonAsync<ICollection<AddressResponse>>();
 
                     addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
                 });

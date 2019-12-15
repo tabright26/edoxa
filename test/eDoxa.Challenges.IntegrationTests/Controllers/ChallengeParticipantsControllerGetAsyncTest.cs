@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
-using eDoxa.Challenges.Responses;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -66,7 +66,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var participantResponses = await response.Content.ReadAsAsync<ParticipantResponse[]>();
+            var participantResponses = await response.Content.ReadAsJsonAsync<ParticipantDto[]>();
             participantResponses.Should().HaveCount(challenge.Participants.Count);
         }
     }

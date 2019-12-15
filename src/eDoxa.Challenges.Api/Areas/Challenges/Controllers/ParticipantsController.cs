@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.Queries;
-using eDoxa.Challenges.Responses;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +34,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
 
         [HttpGet("{participantId}")]
         [SwaggerOperation("Find a participant.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
         {

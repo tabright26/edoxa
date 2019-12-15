@@ -4,10 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 
 using eDoxa.Challenges.Api.Areas.Challenges.ErrorDescribers;
-using eDoxa.Challenges.Requests;
+using eDoxa.Grpc.Protos.Challenges.Requests;
 
 using FluentValidation;
 
@@ -27,7 +28,7 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Validators
                 .Matches(options.Value.Name)
                 .WithMessage(ChallengeErrorDescriber.NameInvalid());
 
-            this.RuleFor(request => request.Game).Must(game => options.Value.Game.Contains(game)).WithMessage(ChallengeErrorDescriber.GameInvalid());
+            this.RuleFor(request => request.Game).Must(game => options.Value.Game.Any(gameName => string.Equals(gameName, game.ToString(), StringComparison.InvariantCultureIgnoreCase))).WithMessage(ChallengeErrorDescriber.GameInvalid());
             this.RuleFor(request => request.BestOf).Must(bestOf => options.Value.BestOf.Contains(bestOf)).WithMessage(ChallengeErrorDescriber.BestOfInvalid());
 
             this.RuleFor(request => request.Entries)

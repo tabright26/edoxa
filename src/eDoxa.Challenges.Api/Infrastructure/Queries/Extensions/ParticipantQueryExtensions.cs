@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Infrastructure.Models;
-using eDoxa.Challenges.Responses;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Queries.Extensions
@@ -33,21 +33,21 @@ namespace eDoxa.Challenges.Api.Infrastructure.Queries.Extensions
             return participantQuery.Mapper.Map<ParticipantModel>(participant);
         }
 
-        public static async Task<IReadOnlyCollection<ParticipantResponse>> FetchChallengeParticipantResponsesAsync(
+        public static async Task<IReadOnlyCollection<ParticipantDto>> FetchChallengeParticipantResponsesAsync(
             this IParticipantQuery participantQuery,
             ChallengeId challengeId
         )
         {
             var participants = await participantQuery.FetchChallengeParticipantsAsync(challengeId);
 
-            return participantQuery.Mapper.Map<IReadOnlyCollection<ParticipantResponse>>(participants);
+            return participantQuery.Mapper.Map<IReadOnlyCollection<ParticipantDto>>(participants);
         }
 
-        public static async Task<ParticipantResponse?> FindParticipantResponseAsync(this IParticipantQuery participantQuery, ParticipantId participantId)
+        public static async Task<ParticipantDto?> FindParticipantResponseAsync(this IParticipantQuery participantQuery, ParticipantId participantId)
         {
             var participant = await participantQuery.FindParticipantAsync(participantId);
 
-            return participantQuery.Mapper.Map<ParticipantResponse>(participant);
+            return participantQuery.Mapper.Map<ParticipantDto>(participant);
         }
     }
 }
