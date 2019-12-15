@@ -17,7 +17,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Clans.Api.Areas.Clans.DomainEvents
+namespace eDoxa.Clans.Api.Application.DomainEvents
 {
     public sealed class ClanMemberAddedDomainEventHandler : IDomainEventHandler<ClanMemberAddedDomainEvent>
     {

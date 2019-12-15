@@ -8,7 +8,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Clans.Api.Areas.Clans.DomainEvents;
+using eDoxa.Clans.Api.Application.DomainEvents;
 using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;

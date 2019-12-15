@@ -1,6 +1,6 @@
 // Filename: CandidaturesControllerTest.cs
-// Date Created: 2019-10-02
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Areas.Clans.Controllers;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Clans.TestHelper.Mocks;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -260,21 +260,6 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
         }
 
         [Fact]
-        public async Task GetByUserIdAsync_WithNullParameters_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockCandidatureService = new Mock<ICandidatureService>();
-
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            // Act
-            var result = await candidatureController.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-        }
-
-        [Fact]
         public async Task GetByUserIdAsync_WithAllParameters_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
@@ -284,6 +269,21 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             // Act
             var result = await candidatureController.GetAsync(new ClanId(), new UserId());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task GetByUserIdAsync_WithNullParameters_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockCandidatureService = new Mock<ICandidatureService>();
+
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
+
+            // Act
+            var result = await candidatureController.GetAsync();
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -306,7 +306,12 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await candidatureController.PostAsync(new CandidaturePostRequest(new UserId(), new ClanId()));
+            var result = await candidatureController.PostAsync(
+                new SendCandidatureRequest
+                {
+                    ClanId = new ClanId(),
+                    UserId = new UserId()
+                });
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -331,7 +336,12 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await candidatureController.PostAsync(new CandidaturePostRequest(new UserId(), new ClanId()));
+            var result = await candidatureController.PostAsync(
+                new SendCandidatureRequest
+                {
+                    ClanId = new ClanId(),
+                    UserId = new UserId()
+                });
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

@@ -1,18 +1,19 @@
 ﻿// Filename: CandidaturesControllerPostAsyncTest.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
-using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -22,8 +23,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
 {
@@ -35,7 +34,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(CandidaturePostRequest candidaturePostRequest)
+        private async Task<HttpResponseMessage> ExecuteAsync(SendCandidatureRequest candidaturePostRequest)
         {
             return await _httpClient.PostAsJsonAsync("api/candidatures", candidaturePostRequest);
         }
@@ -61,7 +60,12 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new CandidaturePostRequest(userId, clan.Id));
+            using var response = await this.ExecuteAsync(
+                new SendCandidatureRequest
+                {
+                    UserId = userId,
+                    ClanId = clan.Id
+                });
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -88,7 +92,12 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new CandidaturePostRequest(userId, clan.Id));
+            using var response = await this.ExecuteAsync(
+                new SendCandidatureRequest
+                {
+                    UserId = userId,
+                    ClanId = clan.Id
+                });
 
             // Assert
             response.EnsureSuccessStatusCode();

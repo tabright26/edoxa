@@ -1,5 +1,5 @@
 // Filename: ClansControllerTest.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Areas.Clans.Controllers;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Clans.TestHelper.Mocks;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -132,7 +132,11 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             clansController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            var request = new ClanPostRequest("DONTINVADE", "URSSINWINTER");
+            var request = new CreateClanRequest
+            {
+                Name = "DONTINVADE",
+                Summary = "URSSINWINTER"
+            };
 
             // Act
             var result = await clansController.PostAsync(request);
@@ -159,7 +163,11 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             clansController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
-            var request = new ClanPostRequest("DONTINVADE", "URSSINWINTER");
+            var request = new CreateClanRequest
+            {
+                Name = "DONTINVADE",
+                Summary = "URSSINWINTER"
+            };
 
             // Act
             var result = await clansController.PostAsync(request);

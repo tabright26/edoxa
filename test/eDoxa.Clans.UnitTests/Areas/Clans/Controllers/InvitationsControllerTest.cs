@@ -1,6 +1,6 @@
 // Filename: InvitationsControllerTest.cs
-// Date Created: 2019-10-02
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Areas.Clans.Controllers;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Clans.TestHelper.Mocks;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -122,6 +122,36 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             mockInvitationService.Verify(clanService => clanService.FindInvitationAsync(It.IsAny<InvitationId>()), Times.Once);
 
             mockInvitationService.Verify(clanService => clanService.DeclineInvitationAsync(It.IsAny<Invitation>(), It.IsAny<UserId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetAsync_WithAllParameters_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockInvitationService = new Mock<IInvitationService>();
+
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
+
+            // Act
+            var result = await invitationController.GetAsync(new ClanId(), new UserId());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task GetAsync_WithNullParameters_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var mockInvitationService = new Mock<IInvitationService>();
+
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
+
+            // Act
+            var result = await invitationController.GetAsync();
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
         }
 
         [Fact]
@@ -261,35 +291,6 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_WithNullParameters_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockInvitationService = new Mock<IInvitationService>();
-
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            // Act
-            var result = await invitationController.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-        }
-        [Fact]
-        public async Task GetAsync_WithAllParameters_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var mockInvitationService = new Mock<IInvitationService>();
-
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            // Act
-            var result = await invitationController.GetAsync(new ClanId(), new UserId());
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-        }
-
-        [Fact]
         public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
@@ -306,7 +307,12 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await invitationController.PostAsync(new InvitationPostRequest(new UserId(), new ClanId()));
+            var result = await invitationController.PostAsync(
+                new SendInvitationRequest
+                {
+                    UserId = new UserId(),
+                    ClanId = new ClanId()
+                });
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -333,7 +339,12 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await invitationController.PostAsync(new InvitationPostRequest(new UserId(), new ClanId()));
+            var result = await invitationController.PostAsync(
+                new SendInvitationRequest
+                {
+                    UserId = new UserId(),
+                    ClanId = new ClanId()
+                });
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

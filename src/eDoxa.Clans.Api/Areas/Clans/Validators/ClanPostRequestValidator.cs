@@ -7,13 +7,13 @@
 using System.Text.RegularExpressions;
 
 using eDoxa.Clans.Api.Areas.Clans.ErrorDescribers;
-using eDoxa.Clans.Requests;
+using eDoxa.Grpc.Protos.Clans.Requests;
 
 using FluentValidation;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Validators
 {
-    public sealed class ClanPostRequestValidator : AbstractValidator<ClanPostRequest>
+    public sealed class ClanPostRequestValidator : AbstractValidator<CreateClanRequest>
     {
         public ClanPostRequestValidator()
         {

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Web.Aggregator.Transformers;
+using eDoxa.Challenges.Web.Aggregator.Mappers;
 using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Challenges.Services;

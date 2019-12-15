@@ -12,9 +12,10 @@ using AutoMapper;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
-using eDoxa.Clans.Responses;
+using eDoxa.Grpc.Protos.Clans.Dtos;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
@@ -41,7 +42,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 
         [HttpGet]
         [SwaggerOperation("Get candidatures.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> GetAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
@@ -74,12 +75,12 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<CandidatureResponse>>(candidatures));
+            return this.Ok(_mapper.Map<IEnumerable<CandidatureDto>>(candidatures));
         }
 
         [HttpGet("{candidatureId}")]
         [SwaggerOperation("Get a specific candidature from the Id.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(CandidatureId candidatureId)
         {
@@ -90,18 +91,18 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Candidature not found.");
             }
 
-            return this.Ok(_mapper.Map<CandidatureResponse>(candidature));
+            return this.Ok(_mapper.Map<CandidatureDto>(candidature));
         }
 
         [HttpPost]
         [SwaggerOperation("Create candidature from a user to a clan.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync(CandidaturePostRequest request)
+        public async Task<IActionResult> PostAsync(SendCandidatureRequest request)
         {
             var userId = HttpContext.GetUserId();
 
-            var result = await _candidatureService.SendCandidatureAsync(userId, ClanId.FromGuid(request.ClanId));
+            var result = await _candidatureService.SendCandidatureAsync(userId, request.ClanId.ParseEntityId<ClanId>());
 
             if (result.IsValid)
             {

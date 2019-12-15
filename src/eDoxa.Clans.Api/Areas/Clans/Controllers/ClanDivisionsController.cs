@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
-using eDoxa.Clans.Responses;
+using eDoxa.Grpc.Protos.Clans.Dtos;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -40,7 +40,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 
         [HttpGet]
         [SwaggerOperation("Get all divisions of a specific clan.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DivisionResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DivisionDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(ClanId clanId)
         {
@@ -51,7 +51,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<DivisionResponse>>(divisions));
+            return this.Ok(_mapper.Map<IEnumerable<DivisionDto>>(divisions));
         }
 
         [HttpPost]
@@ -59,7 +59,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync(ClanId clanId, DivisionPostRequest request)
+        public async Task<IActionResult> PostAsync(ClanId clanId, CreateDivisionRequest request)
         {
             var userId = HttpContext.GetUserId();
 
@@ -119,7 +119,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> UpdateByIdAsync(ClanId clanId, DivisionId divisionId, DivisionPostRequest request)
+        public async Task<IActionResult> UpdateByIdAsync(ClanId clanId, DivisionId divisionId, UpdateDivisionRequest request)
         {
             var userId = HttpContext.GetUserId();
 

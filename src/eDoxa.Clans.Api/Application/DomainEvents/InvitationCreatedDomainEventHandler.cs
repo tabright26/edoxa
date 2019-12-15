@@ -14,7 +14,7 @@ using eDoxa.Clans.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.ServiceBus.Abstractions;
 
-namespace eDoxa.Clans.Api.Areas.Clans.DomainEvents
+namespace eDoxa.Clans.Api.Application.DomainEvents
 {
     public sealed class InvitationCreatedDomainEventHandler : IDomainEventHandler<InvitationCreatedDomainEvent>
     {

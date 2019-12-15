@@ -12,9 +12,10 @@ using AutoMapper;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
-using eDoxa.Clans.Responses;
+using eDoxa.Grpc.Protos.Clans.Dtos;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
@@ -41,7 +42,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 
         [HttpGet]
         [SwaggerOperation("Get invitations.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         public async Task<IActionResult> GetAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
@@ -73,12 +74,12 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<InvitationResponse>>(invitations));
+            return this.Ok(_mapper.Map<IEnumerable<InvitationDto>>(invitations));
         }
 
         [HttpGet("{invitationId}")]
         [SwaggerOperation("Get invitation by id.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(InvitationId invitationId)
         {
@@ -89,18 +90,18 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound();
             }
 
-            return this.Ok(_mapper.Map<InvitationResponse>(invitation));
+            return this.Ok(_mapper.Map<InvitationDto>(invitation));
         }
 
         [HttpPost]
         [SwaggerOperation("Create invitation from a clan to a user.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync(InvitationPostRequest request)
+        public async Task<IActionResult> PostAsync(SendInvitationRequest request)
         {
             var ownerId = HttpContext.GetUserId();
 
-            var result = await _invitationService.SendInvitationAsync(ClanId.FromGuid(request.ClanId), UserId.FromGuid(request.UserId), ownerId);
+            var result = await _invitationService.SendInvitationAsync(request.ClanId.ParseEntityId<ClanId>(),  request.UserId.ParseEntityId<UserId>(), ownerId);
 
             if (result.IsValid)
             {

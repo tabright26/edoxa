@@ -5,13 +5,13 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Clans.Api.Areas.Clans.ErrorDescribers;
-using eDoxa.Clans.Requests;
+using eDoxa.Grpc.Protos.Clans.Requests;
 
 using FluentValidation;
 
 namespace eDoxa.Clans.Api.Areas.Clans.Validators
 {
-    public sealed class InvitationPostRequestValidator : AbstractValidator<InvitationPostRequest>
+    public sealed class InvitationPostRequestValidator : AbstractValidator<SendInvitationRequest>
     {
         public InvitationPostRequestValidator()
         {

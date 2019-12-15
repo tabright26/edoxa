@@ -8,7 +8,6 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Identity.Api.Application.ErrorDescribers;
 using eDoxa.Identity.Api.Application.Validators;
-using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 

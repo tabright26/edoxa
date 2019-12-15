@@ -1,6 +1,6 @@
-// Filename: ClansControllerTest.cs
-// Date Created: 2019-10-02
-//
+// Filename: ClanDivisionsControllerTest.cs
+// Date Created: 2019-11-25
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Areas.Clans.Controllers;
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Clans.TestHelper.Mocks;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -31,6 +31,95 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
     {
         public ClanDivisionsControllerTest(TestMapperFixture testMapper) : base(testMapper)
         {
+        }
+
+        [Fact]
+        public async Task DeleteByIdAsync_ShouldBeOfTypeBadRequestObjectResult()
+        {
+            // Arrange
+            var userId = new UserId();
+
+            var clan = new Clan("testClan", userId);
+
+            var mockClanService = new Mock<IClanService>();
+
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
+
+            mockClanService.Setup(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()))
+                .ReturnsAsync(DomainValidationResult.Failure("Test error"))
+                .Verifiable();
+
+            var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await clanDivisionsController.DeleteByIdAsync(new ClanId(), new DivisionId());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>();
+
+            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
+
+            mockClanService.Verify(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteByIdAsync_ShouldBeOfTypeNotFoundObjectResult()
+        {
+            // Arrange
+            var mockClanService = new Mock<IClanService>();
+
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).Verifiable();
+
+            var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await clanDivisionsController.DeleteByIdAsync(new ClanId(), new DivisionId());
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+
+            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteByIdAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var userId = new UserId();
+
+            var clan = new Clan("testClan", userId);
+
+            var mockClanService = new Mock<IClanService>();
+
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
+
+            mockClanService.Setup(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()))
+                .ReturnsAsync(new DomainValidationResult())
+                .Verifiable();
+
+            var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await clanDivisionsController.DeleteByIdAsync(new ClanId(), new DivisionId());
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
+
+            mockClanService.Verify(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()), Times.Once);
         }
 
         [Fact]
@@ -60,12 +149,13 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             var mockClanService = new Mock<IClanService>();
 
             mockClanService.Setup(clanService => clanService.FetchDivisionsAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new List<Division>
-            {
-                new Division(clanId, "Test", "Division"),
-                new Division(clanId, "Test", "Division"),
-                new Division(clanId, "Test", "Division")
-            })
+                .ReturnsAsync(
+                    new List<Division>
+                    {
+                        new Division(clanId, "Test", "Division"),
+                        new Division(clanId, "Test", "Division"),
+                        new Division(clanId, "Test", "Division")
+                    })
                 .Verifiable();
 
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
@@ -92,11 +182,14 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             var mockClanService = new Mock<IClanService>();
 
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(clan)
-                .Verifiable();
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
 
-            mockClanService.Setup(clanService => clanService.CreateDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockClanService.Setup(
+                    clanService => clanService.CreateDivisionAsync(
+                        It.IsAny<Clan>(),
+                        It.IsAny<UserId>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(DomainValidationResult.Failure("Test error"))
                 .Verifiable();
 
@@ -107,14 +200,26 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await clanDivisionsController.PostAsync(new ClanId(), new DivisionPostRequest("test", "division"));
+            var result = await clanDivisionsController.PostAsync(
+                new ClanId(),
+                new CreateDivisionRequest
+                {
+                    Name = "test",
+                    Description = "division"
+                });
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockClanService.Verify(clanService => clanService.CreateDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockClanService.Verify(
+                clanService => clanService.CreateDivisionAsync(
+                    It.IsAny<Clan>(),
+                    It.IsAny<UserId>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
         }
 
         [Fact]
@@ -123,8 +228,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             // Arrange
             var mockClanService = new Mock<IClanService>();
 
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .Verifiable();
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).Verifiable();
 
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
 
@@ -133,7 +237,13 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await clanDivisionsController.PostAsync(new ClanId(), new DivisionPostRequest("test", "division"));
+            var result = await clanDivisionsController.PostAsync(
+                new ClanId(),
+                new CreateDivisionRequest
+                {
+                    Name = "test",
+                    Description = "division"
+                });
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -151,11 +261,14 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             var mockClanService = new Mock<IClanService>();
 
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(clan)
-                .Verifiable();
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
 
-            mockClanService.Setup(clanService => clanService.CreateDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockClanService.Setup(
+                    clanService => clanService.CreateDivisionAsync(
+                        It.IsAny<Clan>(),
+                        It.IsAny<UserId>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
@@ -166,110 +279,26 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await clanDivisionsController.PostAsync(new ClanId(), new DivisionPostRequest("test", "division"));
+            var result = await clanDivisionsController.PostAsync(
+                new ClanId(),
+                new CreateDivisionRequest
+                {
+                    Name = "test",
+                    Description = "division"
+                });
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockClanService.Verify(clanService => clanService.CreateDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteByIdAsync_ShouldBeOfTypeBadRequestObjectResult()
-        {
-            // Arrange
-            var userId = new UserId();
-
-            var clan = new Clan("testClan", userId);
-
-            var mockClanService = new Mock<IClanService>();
-
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(clan)
-                .Verifiable();
-
-            mockClanService.Setup(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()))
-                .ReturnsAsync(DomainValidationResult.Failure("Test error"))
-                .Verifiable();
-
-
-            var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await clanDivisionsController.DeleteByIdAsync(new ClanId(), new DivisionId());
-
-            // Assert
-            result.Should().BeOfType<BadRequestObjectResult>();
-
-            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
-            mockClanService.Verify(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteByIdAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var mockClanService = new Mock<IClanService>();
-
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .Verifiable();
-
-            var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await clanDivisionsController.DeleteByIdAsync(new ClanId(), new DivisionId());
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteByIdAsync_ShouldBeOfTypeOkObjectResult()
-        {
-            // Arrange
-            var userId = new UserId();
-
-            var clan = new Clan("testClan", userId);
-
-            var mockClanService = new Mock<IClanService>();
-
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(clan)
-                .Verifiable();
-
-            mockClanService.Setup(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()))
-                .ReturnsAsync(new DomainValidationResult())
-                .Verifiable();
-
-            var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await clanDivisionsController.DeleteByIdAsync(new ClanId(), new DivisionId());
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-
-            mockClanService.Verify(clanService => clanService.DeleteDivisionAsync(It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>()), Times.Once);
-
+            mockClanService.Verify(
+                clanService => clanService.CreateDivisionAsync(
+                    It.IsAny<Clan>(),
+                    It.IsAny<UserId>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
         }
 
         [Fact]
@@ -282,12 +311,15 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             var mockClanService = new Mock<IClanService>();
 
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(clan)
-                .Verifiable();
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
 
-            mockClanService.Setup(clanService => clanService.UpdateDivisionAsync(
-                    It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockClanService.Setup(
+                    clanService => clanService.UpdateDivisionAsync(
+                        It.IsAny<Clan>(),
+                        It.IsAny<UserId>(),
+                        It.IsAny<DivisionId>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(DomainValidationResult.Failure("Test error"))
                 .Verifiable();
 
@@ -298,15 +330,28 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await clanDivisionsController.UpdateByIdAsync(new ClanId(), new DivisionId(), new DivisionPostRequest("test", "division"));
+            var result = await clanDivisionsController.UpdateByIdAsync(
+                new ClanId(),
+                new DivisionId(),
+                new UpdateDivisionRequest
+                {
+                    Name = "test",
+                    Description = "division"
+                });
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockClanService.Verify(clanService => clanService.UpdateDivisionAsync(
-                It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockClanService.Verify(
+                clanService => clanService.UpdateDivisionAsync(
+                    It.IsAny<Clan>(),
+                    It.IsAny<UserId>(),
+                    It.IsAny<DivisionId>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
         }
 
         [Fact]
@@ -314,8 +359,7 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
         {
             // Arrange
             var mockClanService = new Mock<IClanService>();
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .Verifiable();
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).Verifiable();
             var clanDivisionsController = new ClanDivisionsController(mockClanService.Object, TestMapper);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
@@ -324,10 +368,12 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             // Act
             var result = await clanDivisionsController.DeleteByIdAsync(new ClanId(), new DivisionId());
+
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
         }
+
         [Fact]
         public async Task UpdateByIdAsync_ShouldBeOfTypeOkObjectResult()
         {
@@ -338,12 +384,15 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
 
             var mockClanService = new Mock<IClanService>();
 
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(clan)
-                .Verifiable();
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(clan).Verifiable();
 
-            mockClanService.Setup(clanService => clanService.UpdateDivisionAsync(
-                    It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockClanService.Setup(
+                    clanService => clanService.UpdateDivisionAsync(
+                        It.IsAny<Clan>(),
+                        It.IsAny<UserId>(),
+                        It.IsAny<DivisionId>(),
+                        It.IsAny<string>(),
+                        It.IsAny<string>()))
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
@@ -354,15 +403,28 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Controllers
             clanDivisionsController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await clanDivisionsController.UpdateByIdAsync(new ClanId(), new DivisionId(), new DivisionPostRequest("test", "division"));
+            var result = await clanDivisionsController.UpdateByIdAsync(
+                new ClanId(),
+                new DivisionId(),
+                new UpdateDivisionRequest
+                {
+                    Name = "test",
+                    Description = "division"
+                });
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
             mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockClanService.Verify(clanService => clanService.UpdateDivisionAsync(
-                It.IsAny<Clan>(), It.IsAny<UserId>(), It.IsAny<DivisionId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockClanService.Verify(
+                clanService => clanService.UpdateDivisionAsync(
+                    It.IsAny<Clan>(),
+                    It.IsAny<UserId>(),
+                    It.IsAny<DivisionId>(),
+                    It.IsAny<string>(),
+                    It.IsAny<string>()),
+                Times.Once);
         }
     }
 }

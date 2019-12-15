@@ -11,7 +11,7 @@ using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Clans.Api.Areas.Clans.DomainEvents
+namespace eDoxa.Clans.Api.Application.DomainEvents
 {
     public sealed class InvitationAcceptedDomainEventHandler : IDomainEventHandler<InvitationAcceptedDomainEvent>
     {

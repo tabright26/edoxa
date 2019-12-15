@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Web.Aggregator.Transformers;
+using eDoxa.Challenges.Web.Aggregator.Mappers;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Services;

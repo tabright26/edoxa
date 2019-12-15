@@ -18,7 +18,7 @@ using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.Pa
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types.UserAggregate.Types;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.PayoutAggregate.Types;
 
-namespace eDoxa.Challenges.Web.Aggregator.Transformers
+namespace eDoxa.Challenges.Web.Aggregator.Mappers
 {
     public static class ChallengeMapper
     {

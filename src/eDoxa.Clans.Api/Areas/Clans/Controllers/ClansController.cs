@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Requests;
-using eDoxa.Clans.Responses;
+using eDoxa.Grpc.Protos.Clans.Dtos;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -40,7 +40,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 
         [HttpGet]
         [SwaggerOperation("Get all clans.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
@@ -51,14 +51,14 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<ClanResponse>>(clans));
+            return this.Ok(_mapper.Map<IEnumerable<ClanDto>>(clans));
         }
 
         [HttpPost]
         [SwaggerOperation("Create a clan.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync(ClanPostRequest request)
+        public async Task<IActionResult> PostAsync(CreateClanRequest request)
         {
             var userId = HttpContext.GetUserId();
 
@@ -76,7 +76,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 
         [HttpGet("{clanId}")]
         [SwaggerOperation("Get a specific clan.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ClanId clanId)
         {
@@ -87,7 +87,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NotFound("Clan not found.");
             }
 
-            return this.Ok(_mapper.Map<ClanResponse>(clan));
+            return this.Ok(_mapper.Map<ClanDto>(clan));
         }
 
         [HttpPut]
@@ -95,7 +95,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> UpdateAsync(ClanId clanId, ClanPostRequest request)
+        public async Task<IActionResult> UpdateAsync(ClanId clanId, UpdateClanRequest request)
         {
             var userId = HttpContext.GetUserId();
 

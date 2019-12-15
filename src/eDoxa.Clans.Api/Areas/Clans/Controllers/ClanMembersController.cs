@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Clans.Domain.Services;
-using eDoxa.Clans.Responses;
+using eDoxa.Grpc.Protos.Clans.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -39,7 +39,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
 
         [HttpGet]
         [SwaggerOperation("Get all members of a specific clan.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MemberResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MemberDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync(ClanId clanId)
@@ -58,7 +58,7 @@ namespace eDoxa.Clans.Api.Areas.Clans.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<MemberResponse>>(members));
+            return this.Ok(_mapper.Map<IEnumerable<MemberDto>>(members));
         }
 
         [HttpDelete]

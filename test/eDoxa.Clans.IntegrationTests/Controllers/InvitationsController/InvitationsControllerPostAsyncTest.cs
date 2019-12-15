@@ -1,18 +1,19 @@
 ﻿// Filename: InvitationsControllerPostAsyncTest.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
-using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -22,8 +23,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 {
@@ -35,7 +34,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(InvitationPostRequest invitationPostRequest )
+        private async Task<HttpResponseMessage> ExecuteAsync(SendInvitationRequest invitationPostRequest)
         {
             return await _httpClient.PostAsJsonAsync("api/invitations", invitationPostRequest);
         }
@@ -61,7 +60,12 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new InvitationPostRequest(userId, clan.Id));
+            using var response = await this.ExecuteAsync(
+                new SendInvitationRequest
+                {
+                    ClanId = clan.Id,
+                    UserId = userId
+                });
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -88,7 +92,12 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new InvitationPostRequest(new UserId(), clan.Id));
+            using var response = await this.ExecuteAsync(
+                new SendInvitationRequest
+                {
+                    UserId = new UserId(),
+                    ClanId = clan.Id
+                });
 
             // Assert
             response.EnsureSuccessStatusCode();

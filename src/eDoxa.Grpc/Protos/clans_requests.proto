@@ -2,4 +2,36 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Clans.Requests";
 
+import "google/protobuf/wrappers.proto";
+
 package edoxa.services.clans;
+
+message CreateClanRequest {
+  string name = 1;
+  google.protobuf.StringValue summary = 2;
+}
+
+message UpdateClanRequest {
+  string name = 1;
+  google.protobuf.StringValue summary = 2;
+}
+
+message CreateDivisionRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message UpdateDivisionRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message SendCandidatureRequest {
+  string userId = 1;
+  string clanId = 2;
+}
+
+message SendInvitationRequest {
+  string userId = 1;
+  string clanId = 2;
+}

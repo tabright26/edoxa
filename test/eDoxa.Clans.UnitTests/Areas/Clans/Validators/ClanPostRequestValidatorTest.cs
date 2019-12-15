@@ -33,7 +33,6 @@ namespace eDoxa.Clans.UnitTests.Areas.Clans.Validators
         public static TheoryData<string, string> InvalidNames =>
             new TheoryData<string, string>
             {
-                {null, ClanErrorDescriber.NameRequired()},
                 {"", ClanErrorDescriber.NameRequired()},
                 {"Ba", ClanErrorDescriber.NameLength()},
                 {"Ba!", ClanErrorDescriber.NameInvalid()}

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
-using eDoxa.Clans.Responses;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Clans.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -88,7 +88,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var challengeResponses = await response.Content.ReadAsJsonAsync<DivisionResponse[]>();
+            var challengeResponses = await response.Content.ReadAsJsonAsync<DivisionDto[]>();
             challengeResponses.Should().HaveCount(1);
         }
     }
