@@ -6,8 +6,8 @@
 
 using System.Text.RegularExpressions;
 
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.ErrorDescribers;
-using eDoxa.Identity.Requests;
 
 using FluentValidation;
 

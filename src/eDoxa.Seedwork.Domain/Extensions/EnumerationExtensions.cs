@@ -14,5 +14,10 @@ namespace eDoxa.Seedwork.Domain.Extensions
         {
             return (TEnum) Enum.ToObject(typeof(TEnum), enumeration.Value);
         }
+
+        public static TEnum ToEnumOrDefault<TEnum>(this IEnumeration? enumeration)
+        {
+            return (TEnum) Enum.ToObject(typeof(TEnum), enumeration?.Value ?? 0);
+        }
     }
 }

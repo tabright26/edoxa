@@ -4,9 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Identity.Api.Application.ErrorDescribers;
 using eDoxa.Identity.Api.Application.Validators;
-using eDoxa.Identity.Requests;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -38,7 +39,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidFirstNames =>
             new TheoryData<string, string>
             {
-                {null, InformationsErrorDescriber.FirstNameRequired()},
                 {"", InformationsErrorDescriber.FirstNameRequired()},
                 {"G", InformationsErrorDescriber.FirstNameLength()},
                 {"Gabriel-Roy-Gab-R", InformationsErrorDescriber.FirstNameLength()},
@@ -51,7 +51,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidLastNames =>
             new TheoryData<string, string>
             {
-                {null, InformationsErrorDescriber.LastNameRequired()},
                 {"", InformationsErrorDescriber.LastNameRequired()},
                 {"G", InformationsErrorDescriber.LastNameLength()},
                 {"Gabriel-Roy-Gab-R", InformationsErrorDescriber.LastNameLength()},
@@ -61,24 +60,29 @@ namespace eDoxa.Identity.UnitTests.Validators
                 {"Gabriel-roy", InformationsErrorDescriber.LastNameUppercase()}
             };
 
-        public static TheoryData<Gender> ValidGenders =>
-            new TheoryData<Gender>
+        public static TheoryData<GenderDto> ValidGenders =>
+            new TheoryData<GenderDto>
             {
-                Gender.Male,
-                Gender.Female,
-                Gender.Other
+                GenderDto.Male,
+                GenderDto.Female,
+                GenderDto.Other
             };
 
-        public static TheoryData<Gender, string> InvalidGenders =>
-            new TheoryData<Gender, string>
+        public static TheoryData<GenderDto, string> InvalidGenders =>
+            new TheoryData<GenderDto, string>
             {
-                {null, InformationsErrorDescriber.GenderRequired()}
+                {GenderDto.None, InformationsErrorDescriber.GenderRequired()}
             };
 
-        public static TheoryData<DobRequest> ValidDob =>
-            new TheoryData<DobRequest>
+        public static TheoryData<DobDto> ValidDob =>
+            new TheoryData<DobDto>
             {
-                new DobRequest(1995, 8, 4)
+                new DobDto
+                {
+                    Year = 1995,
+                    Month = 8,
+                    Day = 4
+                }
             };
 
         //public static TheoryData<DobRequest, string> InvalidDob
@@ -142,30 +146,30 @@ namespace eDoxa.Identity.UnitTests.Validators
 
         [Theory]
         [MemberData(nameof(ValidGenders))]
-        public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(Gender gender)
+        public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(GenderDto gender)
         {
             // Arrange
             var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender.Name);
+            validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender);
         }
 
         [Theory(Skip = "TODO")]
         [MemberData(nameof(InvalidGenders))]
-        public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(Gender gender, string errorMessage)
+        public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(GenderDto gender, string errorMessage)
         {
             // Arrange
             var validator = new CreateProfileRequestValidator();
 
             // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender.Name);
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
 
         [Theory]
         [MemberData(nameof(ValidDob))]
-        public void Validate_WhenDobIsValid_ShouldNotHaveValidationErrorFor(DobRequest dob)
+        public void Validate_WhenDobIsValid_ShouldNotHaveValidationErrorFor(DobDto dob)
         {
             // Arrange
             var validator = new CreateProfileRequestValidator();

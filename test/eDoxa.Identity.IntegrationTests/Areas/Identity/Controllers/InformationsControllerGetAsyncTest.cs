@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -106,7 +106,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var profileResponse = await response.Content.ReadAsJsonAsync<UserProfileResponse>();
+                    var profileResponse = await response.Content.ReadAsJsonAsync<ProfileDto>();
 
                     //profileResponse.Should().BeEquivalentTo(mapper.Map<UserInformationsResponse>(profile));
                 });

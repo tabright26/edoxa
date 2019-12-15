@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Responses;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +39,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Fetch Doxatags.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
@@ -50,7 +50,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<DoxatagResponse>>(doxatags));
+            return this.Ok(_mapper.Map<IEnumerable<DoxatagDto>>(doxatags));
         }
     }
 }

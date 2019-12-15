@@ -8,11 +8,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
@@ -82,7 +82,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<DoxatagResponse>>(doxatagHistory));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<DoxatagDto>>(doxatagHistory));
 
             mockDoxatagService.Verify(doxatagService => doxatagService.FetchDoxatagsAsync(), Times.Once);
         }

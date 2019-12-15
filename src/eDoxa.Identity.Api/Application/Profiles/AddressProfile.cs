@@ -6,8 +6,10 @@
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
-using eDoxa.Identity.Responses;
+using eDoxa.Seedwork.Domain.Extensions;
 
 namespace eDoxa.Identity.Api.Application.Profiles
 {
@@ -15,10 +17,10 @@ namespace eDoxa.Identity.Api.Application.Profiles
     {
         public AddressProfile()
         {
-            this.CreateMap<Address, AddressResponse>()
-                .ForMember(address => address.Id, config => config.MapFrom(address => address.Id.ToGuid()))
-                .ForMember(address => address.Type, config => config.MapFrom(address => address.Type == null ? null : address.Type.Name))
-                .ForMember(address => address.Country, config => config.MapFrom(address => address.Country.Name))
+            this.CreateMap<Address, AddressDto>()
+                .ForMember(address => address.Id, config => config.MapFrom(address => address.Id.ToString()))
+                .ForMember(address => address.Type, config => config.MapFrom(address => address.Type.ToEnumOrDefault<AddressTypeDto>()))
+                .ForMember(address => address.Country, config => config.MapFrom(address => address.Country.ToEnum<CountryDto>()))
                 .ForMember(address => address.Line1, config => config.MapFrom(address => address.Line1))
                 .ForMember(address => address.Line2, config => config.MapFrom(address => address.Line2))
                 .ForMember(address => address.City, config => config.MapFrom(address => address.City))

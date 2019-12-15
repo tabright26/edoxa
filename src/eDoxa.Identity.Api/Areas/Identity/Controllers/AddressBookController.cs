@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using IdentityServer4.AccessTokenValidation;
@@ -46,7 +47,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find user's address book.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
@@ -59,7 +60,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<AddressResponse>>(addressBook));
+            return this.Ok(_mapper.Map<IEnumerable<AddressDto>>(addressBook));
         }
 
         [HttpPost]
@@ -72,7 +73,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             var result = await _addressService.AddAddressAsync(
                 user,
-                Country.FromName(request.Country),
+                request.Country.ToEnumeration<Country>(),
                 request.Line1,
                 request.Line2,
                 request.City,

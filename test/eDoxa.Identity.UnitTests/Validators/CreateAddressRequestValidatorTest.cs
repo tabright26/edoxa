@@ -1,9 +1,10 @@
-﻿// Filename: AddressPostRequestValidatorTest.cs
-// Date Created: 2019-09-16
+﻿// Filename: CreateAddressRequestValidatorTest.cs
+// Date Created: 2019-11-28
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Identity.Api.Application.ErrorDescribers;
 using eDoxa.Identity.Api.Application.Validators;
 using eDoxa.Seedwork.Application.FluentValidation.ErrorDescribers;
@@ -19,19 +20,18 @@ namespace eDoxa.Identity.UnitTests.Validators
 {
     public sealed class CreateAddressRequestValidatorTest
     {
-        public static TheoryData<Country> ValidCountries =>
-            new TheoryData<Country>
+        public static TheoryData<CountryDto> ValidCountries =>
+            new TheoryData<CountryDto>
             {
-                Country.Canada,
-                Country.UnitedStates
+                CountryDto.Canada,
+                CountryDto.UnitedStates
             };
 
-        public static TheoryData<Country, string> InvalidCountries =>
-            new TheoryData<Country, string>
+        public static TheoryData<CountryDto, string> InvalidCountries =>
+            new TheoryData<CountryDto, string>
             {
-                {null, EnumerationErrorDescribers.NotNull<Country>()},
-                {Country.All, EnumerationErrorDescribers.NotAll<Country>()},
-                {new Country(), EnumerationErrorDescribers.IsInEnumeration<Country>()},
+                {CountryDto.None, EnumerationErrorDescribers.NotNull<Country>()},
+                {CountryDto.All, EnumerationErrorDescribers.NotAll<Country>()}
             };
 
         public static TheoryData<string> ValidLine1Address =>
@@ -43,7 +43,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidLine1Address =>
             new TheoryData<string, string>
             {
-                {null, AddressBookErrorDescriber.Line1Required()},
                 {"", AddressBookErrorDescriber.Line1Required()},
                 {"This_is_an_adress", AddressBookErrorDescriber.Line1Invalid()}
             };
@@ -70,7 +69,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidCities =>
             new TheoryData<string, string>
             {
-                {null, AddressBookErrorDescriber.CityRequired()},
                 {"", AddressBookErrorDescriber.CityRequired()},
                 {"123City", AddressBookErrorDescriber.CityInvalid()},
                 {"OK_Test", AddressBookErrorDescriber.CityInvalid()}
@@ -110,24 +108,24 @@ namespace eDoxa.Identity.UnitTests.Validators
 
         [Theory(Skip = "TODO")]
         [MemberData(nameof(ValidCountries))]
-        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(Country country)
+        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(CountryDto country)
         {
             // Arrange
             var validator = new CreateAddressRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Country, country.Name);
+            validator.ShouldNotHaveValidationErrorFor(request => request.Country, country);
         }
 
         [Theory(Skip = "TODO")]
         [MemberData(nameof(InvalidCountries))]
-        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(Country country, string errorMessage)
+        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(CountryDto country, string errorMessage)
         {
             // Arrange
             var validator = new CreateAddressRequestValidator();
 
             // Act
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Country, country.Name);
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.Country, country);
 
             // Assert
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);

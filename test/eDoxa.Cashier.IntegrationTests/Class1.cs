@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.IntegrationTests
             TestHostFixture testHost,
             TestDataFixture testData,
             TestMapperFixture testMapper,
-            Func<HttpClient, LinkGenerator, object, Task<HttpResponseMessage>>? executeAsync = null
+            Func<HttpClient, LinkGenerator, object, Task<HttpResponseMessage>> executeAsync = null
         ) : base(
             testHost,
             testData,

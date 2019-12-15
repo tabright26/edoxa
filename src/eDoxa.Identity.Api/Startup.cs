@@ -188,12 +188,7 @@ namespace eDoxa.Identity.Api
             services.AddProblemDetails();
 
             services.AddMvc()
-                .AddNewtonsoftJson(
-                    options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    })
+                .AddCustomNewtonsoftJson()
                 .AddDevTools<IdentityDbContextSeeder, IdentityDbContextCleaner>()
                 .AddRazorPagesOptions(
                     options =>

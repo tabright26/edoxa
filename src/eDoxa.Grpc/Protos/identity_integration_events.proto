@@ -2,6 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Identity.IntegrationEvents";
 
+import "google/protobuf/wrappers.proto";
+
 import "identity_dtos.proto";
 import "identity_enums.proto";
 
@@ -28,10 +30,10 @@ message RoleDeletedIntegrationEvent {
 message UserAddressChangedIntegrationEvent {
   string userId = 1;
   string line1 = 2;
-  string line2 = 3;
-  string state = 4;
+  google.protobuf.StringValue line2 = 3;
+  google.protobuf.StringValue state = 4;
   string city = 5;
-  string postalCode = 6;
+  google.protobuf.StringValue postalCode = 6;
 }
 
 message UserClaimsAddedIntegrationEvent {
@@ -74,12 +76,6 @@ message UserInformationChangedIntegrationEvent {
   string lastName = 3;
   GenderDto gender = 4;
   DobDto dob = 5;
-
-  message DobDto {
-    int32 year = 1;
-    int32 month = 2;
-    int32 day = 3;
-  }
 }
 
 message UserPhoneChangedIntegrationEvent {

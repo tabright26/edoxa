@@ -27,7 +27,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidEmails =>
             new TheoryData<string, string>
             {
-                {null, PasswordForgotErrorDescriber.EmailRequired()},
                 {"", PasswordForgotErrorDescriber.EmailRequired()},
                 {"gabrieledoxa.gg", PasswordForgotErrorDescriber.EmailInvalid()},
                 {"!gab_riel/$@edoxa.gg", PasswordForgotErrorDescriber.EmailInvalid()}

@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -119,9 +119,9 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     var mapper = scope.GetRequiredService<IMapper>();
 
-                    var addressResponse = await response.Content.ReadAsJsonAsync<ICollection<AddressResponse>>();
+                    var addressResponse = await response.Content.ReadAsJsonAsync<ICollection<AddressDto>>();
 
-                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressResponse>>(addressBook));
+                    addressResponse.Should().BeEquivalentTo(mapper.Map<ICollection<AddressDto>>(addressBook));
                 });
         }
     }

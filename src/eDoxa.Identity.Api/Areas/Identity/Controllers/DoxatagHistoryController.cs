@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -45,7 +45,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find user's Doxatag history.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagResponse[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
@@ -58,7 +58,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NoContent();
             }
 
-            return this.Ok(_mapper.Map<IEnumerable<DoxatagResponse>>(doxatagHistory));
+            return this.Ok(_mapper.Map<IEnumerable<DoxatagDto>>(doxatagHistory));
         }
 
         [HttpPost]

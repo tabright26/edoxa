@@ -8,11 +8,12 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Enums;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -82,7 +83,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<UserProfileResponse>(user.Profile));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<ProfileDto>(user.Profile));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -166,13 +167,18 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             // Act
             var result = await controller.PostAsync(
-                new CreateProfileRequest(
-                    "Bob",
-                    "Bob",
-                    Gender.Male.Name,
-                    2000,
-                    1,
-                    1));
+                new CreateProfileRequest
+                {
+                    FirstName = "Bob",
+                    LastName = "Bob",
+                    Gender = GenderDto.Male,
+                    Dob = new DobDto
+                    {
+                        Year = 2000,
+                        Day = 1,
+                        Month = 1
+                    }
+                });
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -259,7 +265,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new ProfileController(mockUserManager.Object, TestMapper);
 
             // Act
-            var result = await controller.PutAsync(new UpdateProfileRequest("Bob"));
+            var result = await controller.PutAsync(new UpdateProfileRequest
+            {
+                FirstName = "Bob"
+            });
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

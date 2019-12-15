@@ -10,8 +10,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -71,7 +71,8 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new ChangeDoxatagRequest("New"));
+            using var response = await this.ExecuteAsync(new ChangeDoxatagRequest{
+                Name = "New"});
 
             // Assert
             response.EnsureSuccessStatusCode();

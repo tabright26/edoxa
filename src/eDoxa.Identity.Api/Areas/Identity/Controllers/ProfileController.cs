@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using IdentityServer4.AccessTokenValidation;
@@ -42,7 +43,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find user's profile informations.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserProfileResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProfileDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
@@ -55,7 +56,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NotFound("User profile not found.");
             }
 
-            return this.Ok(_mapper.Map<UserProfileResponse>(profile));
+            return this.Ok(_mapper.Map<ProfileDto>(profile));
         }
 
         [HttpPost]
@@ -78,7 +79,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 user,
                 request.FirstName,
                 request.LastName,
-               Gender.FromName(request.Gender),
+                request.Gender.ToEnumeration<Gender>(),
                 new Dob(request.Dob.Year, request.Dob.Month, request.Dob.Day));
 
             if (result.Succeeded)

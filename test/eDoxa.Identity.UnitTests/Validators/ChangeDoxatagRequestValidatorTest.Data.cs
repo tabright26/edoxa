@@ -23,7 +23,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidNameData =>
             new TheoryData<string, string>
             {
-                {null, DoxatagErrorDescriber.Required()},
                 {"", DoxatagErrorDescriber.Required()},
                 {"D", DoxatagErrorDescriber.Length()},
                 {"aaaaaaaaaaaaaaaaa", DoxatagErrorDescriber.Length()},

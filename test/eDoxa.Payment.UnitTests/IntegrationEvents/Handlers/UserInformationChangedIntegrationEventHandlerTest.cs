@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
@@ -19,8 +20,6 @@ using Moq;
 using Stripe;
 
 using Xunit;
-
-using static eDoxa.Grpc.Protos.Identity.IntegrationEvents.UserInformationChangedIntegrationEvent.Types;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {

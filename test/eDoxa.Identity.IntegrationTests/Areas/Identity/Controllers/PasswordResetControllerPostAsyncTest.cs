@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordResetControllerPostAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,8 +10,8 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -65,7 +65,13 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     var code = await userManager.GeneratePasswordResetTokenAsync(user);
 
                     // Act
-                    using var response = await this.ExecuteAsync(new ResetPasswordRequest("admin@edoxa.gg", "Pass@word1", code));
+                    using var response = await this.ExecuteAsync(
+                        new ResetPasswordRequest
+                        {
+                            Email = "admin@edoxa.gg",
+                            Password = "Pass@word1",
+                            Code = code
+                        });
 
                     // Assert
                     response.EnsureSuccessStatusCode();

@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
@@ -13,8 +14,6 @@ using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
-
-using static eDoxa.Grpc.Protos.Identity.IntegrationEvents.UserInformationChangedIntegrationEvent.Types;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
 {

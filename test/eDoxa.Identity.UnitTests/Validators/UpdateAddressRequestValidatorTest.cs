@@ -20,7 +20,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidLine1Address =>
             new TheoryData<string, string>
             {
-                {null, AddressBookErrorDescriber.Line1Required()},
                 {"", AddressBookErrorDescriber.Line1Required()},
                 {"This_is_an_adress", AddressBookErrorDescriber.Line1Invalid()}
             };
@@ -28,7 +27,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidCities =>
             new TheoryData<string, string>
             {
-                {null, AddressBookErrorDescriber.CityRequired()},
                 {"", AddressBookErrorDescriber.CityRequired()},
                 {"123City", AddressBookErrorDescriber.CityInvalid()},
                 {"OK_Test", AddressBookErrorDescriber.CityInvalid()}

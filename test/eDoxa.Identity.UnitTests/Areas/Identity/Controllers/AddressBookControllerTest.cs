@@ -11,12 +11,13 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Enums;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -181,9 +182,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var mockAddressService = new Mock<IAddressService>();
 
-            mockAddressService.Setup(addressService => addressService.GetAddressBookAsync(It.IsAny<User>()))
-                .ReturnsAsync(addressBook)
-                .Verifiable();
+            mockAddressService.Setup(addressService => addressService.GetAddressBookAsync(It.IsAny<User>())).ReturnsAsync(addressBook).Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
 
@@ -193,7 +192,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<ICollection<AddressResponse>>(addressBook));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<ICollection<AddressDto>>(addressBook));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -243,13 +242,15 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
 
-            var request = new CreateAddressRequest(
-                Country.Canada.Name,
-                "New",
-                "New",
-                "New",
-                "New",
-                "New");
+            var request = new CreateAddressRequest
+            {
+                Country = CountryDto.Canada,
+                Line1 = "1234 Test Street",
+                Line2 = null,
+                City = "Toronto",
+                State = "Ontario",
+                PostalCode = "A1A1A1"
+            };
 
             // Act
             var result = await controller.PostAsync(request);
@@ -369,12 +370,14 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
 
-            var request = new UpdateAddressRequest(
-                "New",
-                "New",
-                "New",
-                "New",
-                "New");
+            var request = new UpdateAddressRequest
+            {
+                Line1 = "1234 Test Street",
+                Line2 = null,
+                City = "Toronto",
+                State = "Ontario",
+                PostalCode = "A1A1A1"
+            };
 
             // Act
             var result = await controller.PutAsync(addressBook.First().Id, request);

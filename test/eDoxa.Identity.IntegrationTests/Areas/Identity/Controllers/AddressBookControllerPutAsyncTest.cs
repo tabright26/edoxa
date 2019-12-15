@@ -10,8 +10,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -81,12 +81,14 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                     // Act
                     using var response = await this.ExecuteAsync(
                         addressBook.First().Id,
-                        new UpdateAddressRequest(
-                            "1234 Rue Test",
-                            null,
-                            "Montreal",
-                            "Quebec",
-                            "Z9Z9Z9"));
+                        new UpdateAddressRequest
+                        {
+                            Line1 = "1234 Test Street",
+                            Line2 = null,
+                            City = "Toronto",
+                            State = "Ontario",
+                            PostalCode = "A1A1A1"
+                        });
 
                     // Assert
                     response.EnsureSuccessStatusCode();

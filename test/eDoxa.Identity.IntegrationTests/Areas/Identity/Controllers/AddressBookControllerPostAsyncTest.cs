@@ -1,5 +1,5 @@
 ﻿// Filename: AddressBookControllerPostAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,14 +7,15 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Enums;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -22,8 +23,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
@@ -64,13 +63,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
                     // Act
                     using var response = await this.ExecuteAsync(
-                        new CreateAddressRequest(
-                            Country.Canada.Name,
-                            "1234 Test Street",
-                            null,
-                            "Toronto",
-                            "Ontario",
-                            "A1A1A1"));
+                        new CreateAddressRequest
+                        {
+                            Country = CountryDto.Canada,
+                            Line1 = "1234 Test Street",
+                            Line2 = null,
+                            City = "Toronto",
+                            State = "Ontario",
+                            PostalCode = "A1A1A1"
+                        });
 
                     // Assert
                     response.EnsureSuccessStatusCode();

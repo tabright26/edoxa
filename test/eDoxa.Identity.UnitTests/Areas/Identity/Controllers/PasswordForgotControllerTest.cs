@@ -1,5 +1,5 @@
 ﻿// Filename: PasswordForgotControllerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,11 +7,11 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Requests;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.ServiceBus.Abstractions;
@@ -26,8 +26,12 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 {
-    public sealed class PasswordForgotControllerTest: UnitTest
+    public sealed class PasswordForgotControllerTest : UnitTest
     {
+        public PasswordForgotControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        {
+        }
+
         [Fact]
         public async Task PostAsync_ShouldBeBadRequestObjectResult()
         {
@@ -42,7 +46,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
             var mockRedirectService = new Mock<IRedirectService>();
 
@@ -53,7 +59,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             controller.ModelState.AddModelError("error", "error");
 
             // Act
-            var result = await controller.PostAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
+            var result = await controller.PostAsync(
+                new ForgotPasswordRequest
+                {
+                    Email = "admin@edoxa.gg"
+                });
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -88,7 +98,9 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
             var mockRedirectService = new Mock<IRedirectService>();
 
@@ -97,7 +109,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var controller = new PasswordForgotController(mockUserManager.Object, mockServiceBusPublisher.Object, mockRedirectService.Object);
 
             // Act
-            var result = await controller.PostAsync(new ForgotPasswordRequest("admin@edoxa.gg"));
+            var result = await controller.PostAsync(
+                new ForgotPasswordRequest
+                {
+                    Email = "admin@edoxa.gg"
+                });
 
             // Assert
             result.Should().BeOfType<OkResult>();
@@ -111,10 +127,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()), Times.Once);
 
             mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>()), Times.Once);
-        }
-
-        public PasswordForgotControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
         }
     }
 }

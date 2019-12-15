@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Responses;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -39,13 +39,13 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find user's address book.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(EmailResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(EmailDto))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userService.GetUserAsync(User);
 
-            return this.Ok(_mapper.Map<EmailResponse>(user));
+            return this.Ok(_mapper.Map<EmailDto>(user));
         }
     }
 }

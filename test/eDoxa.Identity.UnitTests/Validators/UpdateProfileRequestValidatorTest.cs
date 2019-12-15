@@ -27,7 +27,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidFirstNames =>
             new TheoryData<string, string>
             {
-                {null, "First name is required"},
                 {"", "First name is required"},
                 {"G", "First name must be between 2 and 16 characters long"},
                 {"Gabriel-Roy-Gab-R", "First name must be between 2 and 16 characters long"},

@@ -6,8 +6,9 @@
 
 using AutoMapper;
 
+using eDoxa.Grpc.Extensions;
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
-using eDoxa.Identity.Responses;
 
 namespace eDoxa.Identity.Api.Application.Profiles
 {
@@ -15,11 +16,11 @@ namespace eDoxa.Identity.Api.Application.Profiles
     {
         public DoxatagProfile()
         {
-            this.CreateMap<Doxatag, DoxatagResponse>()
-                .ForMember(doxatag => doxatag.UserId, config => config.MapFrom(doxatag => doxatag.UserId))
+            this.CreateMap<Doxatag, DoxatagDto>()
+                .ForMember(doxatag => doxatag.UserId, config => config.MapFrom(doxatag => doxatag.UserId.ToString()))
                 .ForMember(doxatag => doxatag.Name, config => config.MapFrom(doxatag => doxatag.Name))
                 .ForMember(doxatag => doxatag.Code, config => config.MapFrom(doxatag => doxatag.Code))
-                .ForMember(doxatag => doxatag.Timestamp, config => config.MapFrom(doxatag => doxatag.Timestamp));
+                .ForMember(doxatag => doxatag.Timestamp, config => config.MapFrom(doxatag => doxatag.Timestamp.ToTimestampUtc()));
         }
     }
 }

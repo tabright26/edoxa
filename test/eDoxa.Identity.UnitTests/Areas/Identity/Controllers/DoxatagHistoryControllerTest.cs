@@ -10,12 +10,12 @@ using System.Collections.ObjectModel;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
@@ -98,7 +98,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<DoxatagResponse>>(doxatagHistory));
+            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<DoxatagDto>>(doxatagHistory));
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
@@ -166,7 +166,10 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var controller = new DoxatagHistoryController(mockUserManager.Object, mockDoxatagService.Object, TestMapper);
 
-            var request = new ChangeDoxatagRequest("Doxatag");
+            var request = new ChangeDoxatagRequest
+            {
+                Name = "Doxatag"
+            };
 
             // Act
             var result = await controller.PostAsync(request);

@@ -27,7 +27,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidEmails =>
             new TheoryData<string, string>
             {
-                {null, PasswordForgotErrorDescriber.EmailRequired()},
                 {"", PasswordForgotErrorDescriber.EmailRequired()},
                 {"gabrieledoxa.gg", PasswordForgotErrorDescriber.EmailInvalid()},
                 {"!gab_riel/$@edoxa.gg", PasswordForgotErrorDescriber.EmailInvalid()}
@@ -43,7 +42,6 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidPasswords =>
             new TheoryData<string, string>
             {
-                {null, PasswordResetErrorDescriber.PasswordRequired()},
                 {"", PasswordResetErrorDescriber.PasswordRequired()},
                 {"short", PasswordResetErrorDescriber.PasswordLength()},
                 {"shorting", PasswordResetErrorDescriber.PasswordInvalid()},
@@ -76,25 +74,25 @@ namespace eDoxa.Identity.UnitTests.Validators
         }
 
         [Theory]
-        [MemberData(nameof(ValidEmails))]
-        public void Validate_WhenPasswordIsValid_ShouldNotHaveValidationErrorFor(string email)
+        [MemberData(nameof(ValidPasswords))]
+        public void Validate_WhenPasswordIsValid_ShouldNotHaveValidationErrorFor(string password)
         {
             // Arrange
             var validator = new ResetPasswordRequestValidator();
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Email, email);
+            validator.ShouldNotHaveValidationErrorFor(request => request.Password, password);
         }
 
         [Theory]
-        [MemberData(nameof(InvalidEmails))]
-        public void Validate_WhenPasswordIsInvalid_ShouldNotHaveValidationErrorFor(string email, string errorMessage)
+        [MemberData(nameof(InvalidPasswords))]
+        public void Validate_WhenPasswordIsInvalid_ShouldNotHaveValidationErrorFor(string password, string errorMessage)
         {
             // Arrange
             var validator = new ResetPasswordRequestValidator();
 
             // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Email, email);
+            var failures = validator.ShouldHaveValidationErrorFor(request => request.Password, password);
 
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }

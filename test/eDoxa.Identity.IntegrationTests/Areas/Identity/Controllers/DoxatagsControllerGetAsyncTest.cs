@@ -9,9 +9,9 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Repositories;
-using eDoxa.Identity.Responses;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -95,7 +95,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            var doxatagResponses = await response.Content.ReadAsJsonAsync<DoxatagResponse[]>();
+            var doxatagResponses = await response.Content.ReadAsJsonAsync<DoxatagDto[]>();
 
             doxatagResponses.Should().HaveCount(100);
         }
