@@ -1,5 +1,5 @@
 ﻿// Filename: StripePaymentMethodDetachController.cs
-// Date Created: 2019-10-25
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Payment.Dtos;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
@@ -43,7 +43,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
         [HttpPost]
         [SwaggerOperation("Detach a payment method.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripePaymentMethodResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripePaymentMethodDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PostAsync(string paymentMethodId)
@@ -57,7 +57,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
             var paymentMethod = await _stripePaymentMethodService.DetachPaymentMethodAsync(paymentMethodId);
 
-            return this.Ok(_mapper.Map<StripePaymentMethodResponse>(paymentMethod));
+            return this.Ok(_mapper.Map<StripePaymentMethodDto>(paymentMethod));
         }
     }
 }

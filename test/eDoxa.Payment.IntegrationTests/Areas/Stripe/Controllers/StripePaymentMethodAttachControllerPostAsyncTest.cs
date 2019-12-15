@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 
 using Autofac;
 
+using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.Requests;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -40,7 +40,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(string paymentMethodId, StripePaymentMethodAttachPostRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(string paymentMethodId, AttachStripePaymentMethodRequest request)
         {
             return await _httpClient.PostAsJsonAsync($"api/stripe/payment-methods/{paymentMethodId}/attach", request);
         }
@@ -63,7 +63,19 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
                     mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerId");
 
                     mockStripePaymentMethodService.Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                        .ReturnsAsync(new PaymentMethod());
+                        .ReturnsAsync(new PaymentMethod
+                        {
+                            Id = "PaymentMethodId",
+                            Type = "card",
+                            Card = new PaymentMethodCard
+                            {
+                                Brand = "Brand",
+                                Country = "CA",
+                                Last4 = "1234",
+                                ExpMonth = 11,
+                                ExpYear = 22
+                            }
+                        });
 
                     container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
                     container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
@@ -72,7 +84,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
             _httpClient = factory.CreateClient();
 
             // Act
-            using var response = await this.ExecuteAsync("paymentMethodId", new StripePaymentMethodAttachPostRequest());
+            using var response = await this.ExecuteAsync("paymentMethodId", new AttachStripePaymentMethodRequest());
 
             // Assert
             response.EnsureSuccessStatusCode();
@@ -101,7 +113,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
             _httpClient = factory.CreateClient();
 
             // Act
-            using var response = await this.ExecuteAsync("paymentMethodId", new StripePaymentMethodAttachPostRequest());
+            using var response = await this.ExecuteAsync("paymentMethodId", new AttachStripePaymentMethodRequest());
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -131,7 +143,7 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
             _httpClient = factory.CreateClient();
 
             // Act
-            using var response = await this.ExecuteAsync("paymentMethodId", new StripePaymentMethodAttachPostRequest());
+            using var response = await this.ExecuteAsync("paymentMethodId", new AttachStripePaymentMethodRequest());
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);

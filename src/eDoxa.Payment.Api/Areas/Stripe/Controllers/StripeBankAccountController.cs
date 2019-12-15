@@ -1,5 +1,5 @@
 ﻿// Filename: StripeBankAccountController.cs
-// Date Created: 2019-10-25
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Payment.Dtos;
+using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.Requests;
-using eDoxa.Payment.Responses;
 using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
@@ -47,7 +47,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find bank account.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripeBankAccountResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripeBankAccountDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
@@ -68,15 +68,15 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
                 return this.NotFound("Bank account not found.");
             }
 
-            return this.Ok(_mapper.Map<StripeBankAccountResponse>(bankAccount));
+            return this.Ok(_mapper.Map<StripeBankAccountDto>(bankAccount));
         }
 
         [HttpPost]
         [SwaggerOperation("Update bank account.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripeBankAccountResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(StripeBankAccountDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync([FromBody] StripeBankAccountPostRequest request)
+        public async Task<IActionResult> PostAsync([FromBody] CreateStripeBankAccountRequest request)
         {
             var userId = HttpContext.GetUserId();
 
@@ -89,7 +89,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Controllers
 
             var bankAccount = await _externalAccountService.UpdateBankAccountAsync(accountId, request.Token);
 
-            return this.Ok(_mapper.Map<StripeBankAccountResponse>(bankAccount));
+            return this.Ok(_mapper.Map<StripeBankAccountDto>(bankAccount));
         }
     }
 }

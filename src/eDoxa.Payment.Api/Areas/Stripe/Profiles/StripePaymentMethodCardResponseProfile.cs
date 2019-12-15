@@ -1,12 +1,12 @@
 ﻿// Filename: StripePaymentMethodCardResponseProfile.cs
-// Date Created: 2019-10-23
+// Date Created: 2019-11-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using AutoMapper;
 
-using eDoxa.Payment.Responses;
+using eDoxa.Grpc.Protos.Payment.Dtos;
 
 using Stripe;
 
@@ -16,7 +16,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Profiles
     {
         public StripePaymentMethodCardResponseProfile()
         {
-            this.CreateMap<PaymentMethodCard, StripePaymentMethodCardResponse>()
+            this.CreateMap<PaymentMethodCard, StripePaymentMethodCardDto>()
                 .ForMember(card => card.Brand, config => config.MapFrom(card => card.Brand))
                 .ForMember(card => card.Country, config => config.MapFrom(card => card.Country))
                 .ForMember(card => card.ExpMonth, config => config.MapFrom(card => card.ExpMonth))

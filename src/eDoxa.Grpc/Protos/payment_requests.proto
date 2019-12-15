@@ -15,3 +15,16 @@ message WithdrawalRequest {
   string description = 2;
   int64 amount = 3;
 }
+
+message CreateStripeBankAccountRequest {
+  string token = 1;
+}
+
+message AttachStripePaymentMethodRequest {
+  bool defaultPaymentMethod = 1;
+}
+
+message UpdateStripePaymentMethodRequest {
+  int64 expMonth = 1;
+  int64 expYear = 2;
+}

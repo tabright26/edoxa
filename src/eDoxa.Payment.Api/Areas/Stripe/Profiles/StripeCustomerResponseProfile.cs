@@ -1,12 +1,12 @@
 ﻿// Filename: StripeCustomerResponseProfile.cs
-// Date Created: 2019-10-23
+// Date Created: 2019-11-30
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using AutoMapper;
 
-using eDoxa.Payment.Responses;
+using eDoxa.Grpc.Protos.Payment.Dtos;
 
 using Stripe;
 
@@ -16,7 +16,7 @@ namespace eDoxa.Payment.Api.Areas.Stripe.Profiles
     {
         public StripeCustomerResponseProfile()
         {
-            this.CreateMap<Customer, StripeCustomerResponse>()
+            this.CreateMap<Customer, StripeCustomerDto>()
                 .ForMember(customer => customer.DefaultPaymentMethodId, config => config.MapFrom(customer => customer.InvoiceSettings.DefaultPaymentMethodId));
         }
     }

@@ -6,9 +6,9 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Payment.Api.Areas.Stripe.Controllers;
 using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.Requests;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Payment.TestHelper.Mocks;
@@ -52,7 +52,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodAttachController.PostAsync("PaymentMethod", new StripePaymentMethodAttachPostRequest());
+            var result = await paymentMethodAttachController.PostAsync("PaymentMethod", new AttachStripePaymentMethodRequest());
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -73,7 +73,19 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
 
             mockPaymentMethodService
                 .Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .ReturnsAsync(new PaymentMethod())
+                .ReturnsAsync(new PaymentMethod
+                {
+                    Id = "PaymentMethodId",
+                    Type = "card",
+                    Card = new PaymentMethodCard
+                    {
+                        Brand = "Brand",
+                        Country = "CA",
+                        Last4 = "1234",
+                        ExpMonth = 11,
+                        ExpYear = 22
+                    }
+                })
                 .Verifiable();
 
             var paymentMethodAttachController = new StripePaymentMethodAttachController(
@@ -86,7 +98,7 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             paymentMethodAttachController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodAttachController.PostAsync("paymentMethodId", new StripePaymentMethodAttachPostRequest());
+            var result = await paymentMethodAttachController.PostAsync("paymentMethodId", new AttachStripePaymentMethodRequest());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

@@ -1,6 +1,6 @@
 ﻿// Filename: StripeCustomerControllerTest.cs
-// Date Created: 2019-10-24
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -63,7 +63,16 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
 
             mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerID").Verifiable();
 
-            mockCustomerService.Setup(customerService => customerService.FindCustomerAsync(It.IsAny<string>())).ReturnsAsync(new Customer()).Verifiable();
+            mockCustomerService.Setup(customerService => customerService.FindCustomerAsync(It.IsAny<string>()))
+                .ReturnsAsync(
+                    new Customer
+                    {
+                        InvoiceSettings = new CustomerInvoiceSettings
+                        {
+                            DefaultPaymentMethodId = "DefaultPaymentMethodId"
+                        }
+                    })
+                .Verifiable();
 
             var customerController = new StripeCustomerController(mockCustomerService.Object, mockReferenceService.Object, TestMapper);
             var mockHttpContextAccessor = new MockHttpContextAccessor();
@@ -77,7 +86,6 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.FindCustomerAsync(It.IsAny<string>()), Times.Once);
-
         }
     }
 }

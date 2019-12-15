@@ -59,7 +59,19 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
                     mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
                     mockStripePaymentMethodService.Setup(paymentMethodService => paymentMethodService.DetachPaymentMethodAsync(It.IsAny<string>()))
-                        .ReturnsAsync(new PaymentMethod());
+                        .ReturnsAsync(new PaymentMethod
+                        {
+                            Id = "PaymentMethodId",
+                            Type = "card",
+                            Card = new PaymentMethodCard
+                            {
+                                Brand = "Brand",
+                                Country = "CA",
+                                Last4 = "1234",
+                                ExpMonth = 11,
+                                ExpYear = 22
+                            }
+                        });
 
                     container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
                     container.RegisterInstance(mockStripePaymentMethodService.Object).As<IStripePaymentMethodService>().SingleInstance();

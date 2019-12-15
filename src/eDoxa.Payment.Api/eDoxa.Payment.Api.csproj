@@ -28,8 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Payment.Infrastructure\eDoxa.Payment.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Payment.Requests\eDoxa.Payment.Requests.csproj" />
-    <ProjectReference Include="..\eDoxa.Payment.Responses\eDoxa.Payment.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>
@@ -47,6 +45,9 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
       <Link>Protos\identity_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_dtos.proto" GrpcServices="None">
+      <Link>Protos\payment_dtos.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\payment_integration_events.proto" GrpcServices="None">
       <Link>Protos\payment_integration_events.proto</Link>

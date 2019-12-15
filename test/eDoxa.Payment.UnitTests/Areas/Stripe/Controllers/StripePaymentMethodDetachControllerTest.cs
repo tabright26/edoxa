@@ -66,7 +66,19 @@ namespace eDoxa.Payment.UnitTests.Areas.Stripe.Controllers
             mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
             mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.DetachPaymentMethodAsync(It.IsAny<string>()))
-                .ReturnsAsync(new PaymentMethod())
+                .ReturnsAsync(new PaymentMethod
+                {
+                    Id = "PaymentMethodId",
+                    Type = "card",
+                    Card = new PaymentMethodCard
+                    {
+                        Brand = "Brand",
+                        Country = "CA",
+                        Last4 = "1234",
+                        ExpMonth = 11,
+                        ExpYear = 22
+                    }
+                })
                 .Verifiable();
 
             var paymentMethodDetachController = new StripePaymentMethodDetachController(

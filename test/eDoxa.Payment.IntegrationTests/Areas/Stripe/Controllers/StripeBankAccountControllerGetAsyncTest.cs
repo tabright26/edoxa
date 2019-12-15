@@ -62,7 +62,15 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
                     mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("acct_123eqwqw12");
 
                     mockStripeExternalAccountService.Setup(externalAccountService => externalAccountService.FindBankAccountAsync(It.IsAny<string>()))
-                        .ReturnsAsync(new BankAccount());
+                        .ReturnsAsync(new BankAccount
+                        {
+                            BankName = "BankName",
+                            Country = "CA",
+                            Currency = "CAD",
+                            Last4 = "1234",
+                            Status = "pending",
+                            DefaultForCurrency = true
+                        });
 
                     container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
                     container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();

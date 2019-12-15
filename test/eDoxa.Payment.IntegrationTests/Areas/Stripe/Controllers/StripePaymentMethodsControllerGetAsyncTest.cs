@@ -139,7 +139,16 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
                                         {
                                             new PaymentMethod
                                             {
-                                                Card = new PaymentMethodCard()
+                                                Id = "PaymentMethodId",
+                                                Type = "card",
+                                                Card = new PaymentMethodCard
+                                                {
+                                                    Brand = "Brand",
+                                                    Country = "CA",
+                                                    Last4 = "1234",
+                                                    ExpMonth = 11,
+                                                    ExpYear = 22
+                                                }
                                             }
                                         }
                                     });

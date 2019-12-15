@@ -60,7 +60,13 @@ namespace eDoxa.Payment.IntegrationTests.Areas.Stripe.Controllers
 
                         mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerId");
 
-                        mockStripeCustomerService.Setup(customerService => customerService.FindCustomerAsync(It.IsAny<string>())).ReturnsAsync(new Customer());
+                        mockStripeCustomerService.Setup(customerService => customerService.FindCustomerAsync(It.IsAny<string>())).ReturnsAsync(new Customer
+                        {
+                            InvoiceSettings = new CustomerInvoiceSettings
+                            {
+                                DefaultPaymentMethodId = "DefaultPaymentMethodId"
+                            }
+                        });
 
                         container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
                         container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();
