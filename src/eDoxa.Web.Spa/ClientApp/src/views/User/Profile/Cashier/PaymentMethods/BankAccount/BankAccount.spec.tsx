@@ -8,20 +8,12 @@ it("renders without crashing", () => {
   //Arrange
   const bankAccount: StripeBankAccountState = {
     data: {
-      account: null,
-      default_for_currency: true,
-      metadata: {},
-      object: "bank_account",
-      account_holder_name: "Test Name",
-      account_holder_type: "individual",
-      bank_name: "RBC",
+      bankName: "RBC",
       country: "Canada",
       currency: "CAD",
-      fingerprint: "Test",
       last4: "4242",
-      routing_number: "1234567890",
       status: "verified",
-      id: "accountID"
+      defaultForCurrency: true
     },
     loading: false,
     error: null

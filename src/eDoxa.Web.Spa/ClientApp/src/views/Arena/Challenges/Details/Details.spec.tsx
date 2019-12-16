@@ -17,7 +17,6 @@ it("renders without crashing", () => {
         entries: 10,
         game: "LeagueOfLegends",
         payoutEntries: 5,
-        entryFee: { currency: "token", amount: 0 },
         participants: [],
         timeline: {
           createdAt: 123123123,
@@ -27,6 +26,8 @@ it("renders without crashing", () => {
         },
         scoring: new Map<string, string>(),
         payout: {
+          challengeId: "123",
+          entryFee: { currency: "token", amount: 0 },
           prizePool: { currency: "token", amount: 200000 },
           buckets: []
         }
@@ -39,7 +40,6 @@ it("renders without crashing", () => {
         entries: 10,
         game: "LeagueOfLegends",
         payoutEntries: 5,
-        entryFee: { currency: "token", amount: 0 },
         participants: [],
         timeline: {
           createdAt: 123123123,
@@ -49,6 +49,8 @@ it("renders without crashing", () => {
         },
         scoring: new Map<string, string>(),
         payout: {
+          challengeId: "456",
+          entryFee: { currency: "token", amount: 0 },
           prizePool: { currency: "token", amount: 200000 },
           buckets: []
         }
@@ -61,7 +63,6 @@ it("renders without crashing", () => {
         entries: 10,
         game: "LeagueOfLegends",
         payoutEntries: 5,
-        entryFee: { currency: "token", amount: 0 },
         participants: [],
         timeline: {
           createdAt: 123123123,
@@ -71,6 +72,8 @@ it("renders without crashing", () => {
         },
         scoring: new Map<string, string>(),
         payout: {
+          challengeId: "678",
+          entryFee: { currency: "token", amount: 0 },
           prizePool: { currency: "token", amount: 200000 },
           buckets: []
         }
