@@ -11,7 +11,7 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.Areas.Challenges;
+using eDoxa.Challenges.Api.Application;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;

@@ -11,7 +11,7 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Areas.Transactions;
+using eDoxa.Cashier.Api.Application;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;

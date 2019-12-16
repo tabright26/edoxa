@@ -7,7 +7,6 @@
 using System.Collections.Immutable;
 using System.Linq;
 
-using eDoxa.Cashier.Api.Areas.Transactions;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
