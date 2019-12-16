@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
@@ -23,7 +23,6 @@ using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Moq;
@@ -145,14 +144,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 Id = Guid.NewGuid()
             };
 
-            //var address = new Address(
-            //    UserId.FromGuid(user.Id),
-            //    Country.Canada,
-            //    "Line1",
-            //    null,
-            //    "City",
-            //    "State",
-            //    "PostalCode");
+            var doxatag = new Doxatag(
+                UserId.FromGuid(user.Id),
+                "Name",
+                1000,
+                new UtcNowDateTimeProvider());
 
             var mockUserManager = new Mock<IUserService>();
 
@@ -161,14 +157,14 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             var mockDoxatagService = new Mock<IDoxatagService>();
 
             mockDoxatagService.Setup(doxatagService => doxatagService.ChangeDoxatagAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Success)
+                .ReturnsAsync(DomainValidationResult.Succeded(doxatag))
                 .Verifiable();
 
             var controller = new DoxatagHistoryController(mockUserManager.Object, mockDoxatagService.Object, TestMapper);
 
             var request = new ChangeDoxatagRequest
             {
-                Name = "Doxatag"
+                Name = doxatag.Name
             };
 
             // Act
@@ -176,8 +172,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
 
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 

@@ -10,10 +10,9 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Repositories;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-
-using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Api.Application.Services
 {
@@ -41,27 +40,34 @@ namespace eDoxa.Identity.Api.Application.Services
             return await _doxatagRepository.FetchDoxatagHistoryAsync(UserId.FromGuid(user.Id));
         }
 
-        public async Task<IdentityResult> ChangeDoxatagAsync(User user, string doxatagName)
+        public async Task<IDomainValidationResult> ChangeDoxatagAsync(User user, string doxatagName)
         {
-            var codes = await _doxatagRepository.FetchDoxatagCodesByNameAsync(doxatagName);
+            var result = new DomainValidationResult();
 
-            var code = Doxatag.GenerateUniqueCode(codes);
+            if (result.IsValid)
+            {
+                var codes = await _doxatagRepository.FetchDoxatagCodesByNameAsync(doxatagName);
 
-            var doxatag = new Doxatag(
-                UserId.FromGuid(user.Id),
-                doxatagName,
-                code,
-                new UtcNowDateTimeProvider());
+                var code = Doxatag.GenerateUniqueCode(codes);
 
-            _doxatagRepository.Create(doxatag);
+                var doxatag = new Doxatag(
+                    UserId.FromGuid(user.Id),
+                    doxatagName,
+                    code,
+                    new UtcNowDateTimeProvider());
 
-            await _doxatagRepository.UnitOfWork.CommitAsync();
+                _doxatagRepository.Create(doxatag);
 
-            //await this.UpdateSecurityStampAsync(user);
+                await _doxatagRepository.UnitOfWork.CommitAsync();
 
-            //return await this.UpdateUserAsync(user);
+                result.AddEntityToMetadata(doxatag);
 
-            return IdentityResult.Success;
+                //await this.UpdateSecurityStampAsync(user);
+
+                //await this.UpdateUserAsync(user);
+            }
+
+            return result;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: StripeInvoiceItemService.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-12-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,7 +7,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Application.Stripe;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -15,7 +14,7 @@ using Microsoft.Extensions.Options;
 
 using Stripe;
 
-namespace eDoxa.Payment.Api.Areas.Stripe.Services
+namespace eDoxa.Payment.Api.Application.Stripe.Services
 {
     public sealed class StripeInvoiceItemService : InvoiceItemService, IStripeInvoiceItemService
     {

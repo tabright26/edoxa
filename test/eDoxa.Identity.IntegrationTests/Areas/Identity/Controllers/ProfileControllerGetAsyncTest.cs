@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -27,9 +27,9 @@ using Xunit;
 
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class InformationsControllerGetAsyncTest : IntegrationTest
+    public sealed class ProfileControllerGetAsyncTest : IntegrationTest
     {
-        public InformationsControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        public ProfileControllerGetAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testHost,
             testData,
             testMapper)

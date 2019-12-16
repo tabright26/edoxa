@@ -1,5 +1,5 @@
-﻿// Filename: UserManager.cs
-// Date Created: 2019-11-27
+﻿// Filename: UserService.cs
+// Date Created: 2019-12-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -52,9 +54,9 @@ namespace eDoxa.Identity.Api.Application.Services
 
         public UserRepository Repository { get; }
 
-        public override async Task<IdentityResult> SetEmailAsync(User user, string email)
+        public async Task<IdentityResult> UpdateEmailAsync(User user, string email)
         {
-            var result = await base.SetEmailAsync(user, email);
+            var result = await this.SetEmailAsync(user, email);
 
             if (result.Succeeded)
             {
@@ -64,9 +66,9 @@ namespace eDoxa.Identity.Api.Application.Services
             return result;
         }
 
-        public override async Task<IdentityResult> SetPhoneNumberAsync(User user, string phoneNumber)
+        public async Task<IdentityResult> UpdatePhoneNumberAsync(User user, string phoneNumber)
         {
-            var result = await base.SetPhoneNumberAsync(user, phoneNumber);
+            var result = await this.SetPhoneNumberAsync(user, phoneNumber);
 
             if (result.Succeeded)
             {
@@ -76,93 +78,70 @@ namespace eDoxa.Identity.Api.Application.Services
             return result;
         }
 
-        public async Task<UserProfile?> GetInformationsAsync(User user)
+        public async Task<UserProfile?> GetProfileAsync(User user)
         {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
-            return await Repository.GetInformationsAsync(user, CancellationToken);
+            return await Repository.GetProfileAsync(user, CancellationToken);
         }
 
-        public async Task<IdentityResult> CreateInformationsAsync(
+        public async Task<IDomainValidationResult> CreateProfileAsync(
             User user,
             string firstName,
             string lastName,
             Gender gender,
-            UserDob dob
+            int dobYear,
+            int dobMonth,
+            int dobDay
         )
         {
-            this.ThrowIfDisposed();
+            var result = new DomainValidationResult();
 
-            if (user == null)
+            if (user.Profile != null)
             {
-                throw new ArgumentNullException(nameof(user));
+                result.AddDomainValidationError("The user's profile has already been created.");
             }
 
-            await Repository.SetInformationsAsync(
-                user,
-                new UserProfile(
-                    firstName,
-                    lastName,
-                    gender,
-                    dob),
-                CancellationToken);
-
-            await this.UpdateSecurityStampAsync(user);
-
-            var result = await this.UpdateUserAsync(user);
-
-            if (result.Succeeded)
+            if (result.IsValid)
             {
-                await _publisher.PublishUserInformationChangedIntegrationEventAsync(
-                    UserId.FromGuid(user.Id),
+                var profile = new UserProfile(
                     firstName,
                     lastName,
                     gender,
-                    dob);
+                    new UserDob(dobYear, dobMonth, dobDay));
+
+                user.Create(profile);
+
+                //await this.UpdateSecurityStampAsync(user);
+
+                await this.UpdateUserAsync(user);
+
+                await _publisher.PublishUserInformationChangedIntegrationEventAsync(UserId.FromGuid(user.Id), profile);
+
+                result.AddEntityToMetadata(profile);
             }
 
             return result;
         }
 
-        public async Task<IdentityResult> UpdateInformationsAsync(User user, string firstName)
+        public async Task<IDomainValidationResult> UpdateProfileAsync(User user, string firstName)
         {
-            this.ThrowIfDisposed();
+            var result = new DomainValidationResult();
 
-            if (user == null)
+            if (user.Profile == null)
             {
-                throw new ArgumentNullException(nameof(user));
+                result.AddDomainValidationError("The user's personal informations does not exist.");
             }
 
-            var lastName = user.Profile!.LastName!;
-            var gender = user.Profile!.Gender!;
-            var dob = user.Profile!.Dob!;
-
-            await Repository.SetInformationsAsync(
-                user,
-                new UserProfile(
-                    firstName,
-                    lastName,
-                    gender,
-                    dob),
-                CancellationToken);
-
-            await this.UpdateSecurityStampAsync(user);
-
-            var result = await this.UpdateUserAsync(user);
-
-            if (result.Succeeded)
+            if (result.IsValid)
             {
-                await _publisher.PublishUserInformationChangedIntegrationEventAsync(
-                    UserId.FromGuid(user.Id),
-                    firstName,
-                    lastName,
-                    gender,
-                    dob);
+                user.Update(firstName);
+
+                //await this.UpdateSecurityStampAsync(user);
+
+                await this.UpdateUserAsync(user);
+
+                await _publisher.PublishUserInformationChangedIntegrationEventAsync(UserId.FromGuid(user.Id), user.Profile!);
+
+                result.AddEntityToMetadata(user.Profile!);
             }
 
             return result;
@@ -170,61 +149,26 @@ namespace eDoxa.Identity.Api.Application.Services
 
         public async Task<UserDob?> GetDobAsync(User user)
         {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             return await Repository.GetDobAsync(user, CancellationToken);
         }
 
         public async Task<string?> GetFirstNameAsync(User user)
         {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             return await Repository.GetFirstNameAsync(user, CancellationToken);
         }
 
         public async Task<string?> GetLastNameAsync(User user)
         {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             return await Repository.GetLastNameAsync(user, CancellationToken);
         }
 
         public async Task<Gender?> GetGenderAsync(User user)
         {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             return await Repository.GetGenderAsync(user, CancellationToken);
         }
 
         public async Task<Country> GetCountryAsync(User user)
         {
-            this.ThrowIfDisposed();
-
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
-
             return await Repository.GetCountryAsync(user, CancellationToken);
         }
     }

@@ -12,7 +12,7 @@ using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Domain.Services
 {
     public interface IRoleService
     {

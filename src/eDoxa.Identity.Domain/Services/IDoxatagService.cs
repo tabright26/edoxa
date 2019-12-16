@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain;
 
-using Microsoft.AspNetCore.Identity;
-
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Domain.Services
 {
     public interface IDoxatagService
     {
@@ -22,6 +21,6 @@ namespace eDoxa.Identity.Api.Application.Services
 
         Task<Doxatag?> FindDoxatagAsync(User user);
 
-        Task<IdentityResult> ChangeDoxatagAsync(User user, string doxatagName);
+        Task<IDomainValidationResult> ChangeDoxatagAsync(User user, string doxatagName);
     }
 }

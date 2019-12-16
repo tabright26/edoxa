@@ -11,8 +11,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -88,7 +88,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
             if (Input.Email != email)
             {
-                var setEmailResult = await _userService.SetEmailAsync(user, Input.Email);
+                var setEmailResult = await _userService.UpdateEmailAsync(user, Input.Email);
 
                 if (!setEmailResult.Succeeded)
                 {
@@ -102,7 +102,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
             if (Input.PhoneNumber != phoneNumber)
             {
-                var result = await _userService.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                var result = await _userService.UpdatePhoneNumberAsync(user, Input.PhoneNumber);
 
                 if (!result.Succeeded)
                 {

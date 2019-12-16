@@ -12,7 +12,7 @@ namespace eDoxa.Seedwork.Domain
     public sealed class DomainValidationMetadata : Dictionary<string, object>
     {
         public void AddEntity<TEntity>(TEntity entity)
-        where TEntity : IEntity
+        where TEntity : class
         {
             this.Add(nameof(Entity), entity);
         }

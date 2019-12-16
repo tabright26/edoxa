@@ -12,8 +12,9 @@ using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
+using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Application.Extensions;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -63,7 +64,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpPost]
         [SwaggerOperation("Create new user's Doxatag.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status200OK, "The user's Doxatag has been created.", Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] ChangeDoxatagRequest request)
         {
@@ -71,12 +72,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
             var result = await _doxatagService.ChangeDoxatagAsync(user, request.Name);
 
-            if (result.Succeeded)
+            if (result.IsValid)
             {
-                return this.Ok("The user's Doxatag has been created.");
+                return this.Ok(_mapper.Map<DoxatagDto>(result.GetEntityFromMetadata<Doxatag>()));
             }
 
-            ModelState.Bind(result);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

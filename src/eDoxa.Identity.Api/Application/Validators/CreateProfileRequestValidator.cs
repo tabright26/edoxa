@@ -20,33 +20,33 @@ namespace eDoxa.Identity.Api.Application.Validators
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()
-                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
+                .WithMessage(ProfileErrorDescriber.FirstNameRequired())
                 .NotEmpty()
-                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
+                .WithMessage(ProfileErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
-                .WithMessage(InformationsErrorDescriber.FirstNameLength())
+                .WithMessage(ProfileErrorDescriber.FirstNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(InformationsErrorDescriber.FirstNameInvalid())
+                .WithMessage(ProfileErrorDescriber.FirstNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(InformationsErrorDescriber.FirstNameUppercase());
+                .WithMessage(ProfileErrorDescriber.FirstNameUppercase());
 
             this.RuleFor(request => request.LastName)
                 .NotNull()
-                .WithMessage(InformationsErrorDescriber.LastNameRequired())
+                .WithMessage(ProfileErrorDescriber.LastNameRequired())
                 .NotEmpty()
-                .WithMessage(InformationsErrorDescriber.LastNameRequired())
+                .WithMessage(ProfileErrorDescriber.LastNameRequired())
                 .Length(2, 16)
-                .WithMessage(InformationsErrorDescriber.LastNameLength())
+                .WithMessage(ProfileErrorDescriber.LastNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(InformationsErrorDescriber.LastNameInvalid())
+                .WithMessage(ProfileErrorDescriber.LastNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(InformationsErrorDescriber.LastNameUppercase());
+                .WithMessage(ProfileErrorDescriber.LastNameUppercase());
 
             this.RuleFor(request => request.Gender)
                 .NotNull()
-                .WithMessage(InformationsErrorDescriber.GenderRequired())
+                .WithMessage(ProfileErrorDescriber.GenderRequired())
                 .NotEmpty()
-                .WithMessage(InformationsErrorDescriber.GenderRequired());
+                .WithMessage(ProfileErrorDescriber.GenderRequired());
 
             ////https://stackoverflow.com/questions/7777985/validate-datetime-with-fluentvalidator
             //this.RuleFor(request => request.Dob)

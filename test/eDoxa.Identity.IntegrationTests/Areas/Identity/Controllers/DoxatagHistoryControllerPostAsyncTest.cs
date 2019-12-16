@@ -1,5 +1,5 @@
 ﻿// Filename: DoxatagHistoryControllerPostAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -59,20 +59,21 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var userManager = scope.GetRequiredService<IUserService>();
 
-                    var result = await userManager.CreateAsync(user);
-
-                    result.Succeeded.Should().BeTrue();
+                    await userManager.CreateAsync(user);
 
                     var doxatagService = scope.GetRequiredService<IDoxatagService>();
 
-                    result = await doxatagService.ChangeDoxatagAsync(user, doxatagName);
+                    var result = await doxatagService.ChangeDoxatagAsync(user, doxatagName);
 
-                    result.Succeeded.Should().BeTrue();
+                    result.IsValid.Should().BeTrue();
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new ChangeDoxatagRequest{
-                Name = "New"});
+            using var response = await this.ExecuteAsync(
+                new ChangeDoxatagRequest
+                {
+                    Name = "New"
+                });
 
             // Assert
             response.EnsureSuccessStatusCode();

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Domain.Services
 {
     public interface ISignInService
     {

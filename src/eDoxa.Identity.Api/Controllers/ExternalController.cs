@@ -11,9 +11,9 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.ViewModels;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.Services;
 
 using IdentityModel;
 

@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

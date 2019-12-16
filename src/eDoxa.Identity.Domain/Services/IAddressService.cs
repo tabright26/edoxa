@@ -9,11 +9,10 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
-using Microsoft.AspNetCore.Identity;
-
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Domain.Services
 {
     public interface IAddressService
     {
@@ -21,10 +20,8 @@ namespace eDoxa.Identity.Api.Application.Services
 
         Task<IReadOnlyCollection<Address>> GetAddressBookAsync(User user);
 
-        Task<IdentityResult> RemoveAddressAsync(User user, AddressId addressId);
-
-        Task<IdentityResult> AddAddressAsync(
-            User user,
+        Task<IDomainValidationResult> AddAddressAsync(
+            UserId userId,
             Country country,
             string line1,
             string? line2,
@@ -33,14 +30,15 @@ namespace eDoxa.Identity.Api.Application.Services
             string? postalCode
         );
 
-        Task<IdentityResult> UpdateAddressAsync(
-            User user,
-            AddressId addressId,
+        Task<IDomainValidationResult> UpdateAddressAsync(
+            Address address,
             string line1,
             string? line2,
             string city,
             string? state,
             string? postalCode
         );
+
+        Task<IDomainValidationResult> RemoveAddressAsync(Address address);
     }
 }

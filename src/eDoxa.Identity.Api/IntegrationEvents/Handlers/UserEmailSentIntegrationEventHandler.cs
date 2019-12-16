@@ -7,8 +7,8 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 

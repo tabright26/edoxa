@@ -5,7 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Identity.Api.Infrastructure;
-
+using eDoxa.Identity.Domain.Services;
 using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.Services

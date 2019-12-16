@@ -20,7 +20,7 @@ namespace eDoxa.Seedwork.Domain
         public IReadOnlyCollection<DomainValidationError> Errors => _errors;
 
         public TEntity GetEntityFromMetadata<TEntity>()
-        where TEntity : IEntity
+        where TEntity : class
         {
             if (IsValid)
             {
@@ -31,13 +31,13 @@ namespace eDoxa.Seedwork.Domain
         }
 
         public void AddEntityToMetadata<TEntity>(TEntity entity)
-        where TEntity : IEntity
+        where TEntity : class
         {
             _metadata.AddEntity(entity);
         }
 
         public static IDomainValidationResult Succeded<TEntity>(TEntity entity)
-        where TEntity : IEntity
+        where TEntity : class
         {
             var result = new DomainValidationResult();
 

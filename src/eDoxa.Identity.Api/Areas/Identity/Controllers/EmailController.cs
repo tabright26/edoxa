@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 
 using IdentityServer4.AccessTokenValidation;
 

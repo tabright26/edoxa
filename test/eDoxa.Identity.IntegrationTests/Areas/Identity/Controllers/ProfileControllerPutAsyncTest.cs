@@ -1,5 +1,5 @@
-﻿// Filename: InformationsControllerPostAsyncTest.cs
-// Date Created: 2019-10-06
+﻿// Filename: InformationsControllerPutAsyncTest.cs
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -7,12 +7,11 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Identity.Dtos;
-using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -24,22 +23,20 @@ using IdentityModel;
 
 using Xunit;
 
-using Claim = System.Security.Claims.Claim;
-
 namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
 {
-    public sealed class InformationsControllerPostAsyncTest : IntegrationTest
+    public sealed class ProfileControllerPutAsyncTest : IntegrationTest
     {
-        public InformationsControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        public ProfileControllerPutAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
             testHost,
             testData,
             testMapper)
         {
         }
 
-        private async Task<HttpResponseMessage> ExecuteAsync(CreateProfileRequest request)
+        private async Task<HttpResponseMessage> ExecuteAsync(UpdateProfileRequest request)
         {
-            return await _httpClient.PostAsJsonAsync("api/informations", request);
+            return await _httpClient.PutAsJsonAsync("api/informations", request);
         }
 
         private HttpClient _httpClient;
@@ -49,7 +46,6 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            user.Profile = null;
             var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -66,27 +62,15 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(
-                new CreateProfileRequest
-                {
-                    FirstName = "Bod",
-                    LastName = "Bod",
-                    Gender = GenderDto.Male,
-                    Dob = new DobDto
-                    {
-                        Day = 1,
-                        Month = 1,
-                        Year = 2000
-                    }
-                });
+            using var response = await this.ExecuteAsync(new UpdateProfileRequest
+            {
+                FirstName = "Bob"
+            });
 
             // Assert
             response.EnsureSuccessStatusCode();
-
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
             var message = await response.Content.ReadAsStringAsync();
-
             message.Should().NotBeNullOrWhiteSpace();
         }
     }

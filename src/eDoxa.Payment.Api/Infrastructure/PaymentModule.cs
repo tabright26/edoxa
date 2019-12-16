@@ -6,7 +6,7 @@
 
 using Autofac;
 
-using eDoxa.Payment.Api.Areas.Stripe.Services;
+using eDoxa.Payment.Api.Application.Stripe.Services;
 using eDoxa.Payment.Domain.Stripe.Repositories;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.Infrastructure.Repositories;

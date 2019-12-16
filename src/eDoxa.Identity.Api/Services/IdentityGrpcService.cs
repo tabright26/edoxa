@@ -14,10 +14,10 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Responses;
 using eDoxa.Grpc.Protos.Identity.Services;
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Domain.Services;
 
 using Grpc.Core;
 

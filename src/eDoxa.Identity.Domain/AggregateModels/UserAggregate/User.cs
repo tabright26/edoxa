@@ -23,5 +23,15 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         public Country Country { get; set; }
 
         public UserProfile? Profile { get; set; }
+
+        public void Create(UserProfile profile)
+        {
+            Profile = profile;
+        }
+
+        public void Update(string firstName)
+        {
+            Profile?.Update(firstName);
+        }
     }
 }

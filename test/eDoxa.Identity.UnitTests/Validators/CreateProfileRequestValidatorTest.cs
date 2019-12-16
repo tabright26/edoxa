@@ -38,25 +38,25 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<string, string> InvalidFirstNames =>
             new TheoryData<string, string>
             {
-                {"", InformationsErrorDescriber.FirstNameRequired()},
-                {"G", InformationsErrorDescriber.FirstNameLength()},
-                {"Gabriel-Roy-Gab-R", InformationsErrorDescriber.FirstNameLength()},
-                {"Gab123", InformationsErrorDescriber.FirstNameInvalid()},
-                {"Gabriel-Ro_Roy", InformationsErrorDescriber.FirstNameInvalid()},
-                {"gabriel-Roy", InformationsErrorDescriber.FirstNameUppercase()},
-                {"Gabriel-roy", InformationsErrorDescriber.FirstNameUppercase()}
+                {"", ProfileErrorDescriber.FirstNameRequired()},
+                {"G", ProfileErrorDescriber.FirstNameLength()},
+                {"Gabriel-Roy-Gab-R", ProfileErrorDescriber.FirstNameLength()},
+                {"Gab123", ProfileErrorDescriber.FirstNameInvalid()},
+                {"Gabriel-Ro_Roy", ProfileErrorDescriber.FirstNameInvalid()},
+                {"gabriel-Roy", ProfileErrorDescriber.FirstNameUppercase()},
+                {"Gabriel-roy", ProfileErrorDescriber.FirstNameUppercase()}
             };
 
         public static TheoryData<string, string> InvalidLastNames =>
             new TheoryData<string, string>
             {
-                {"", InformationsErrorDescriber.LastNameRequired()},
-                {"G", InformationsErrorDescriber.LastNameLength()},
-                {"Gabriel-Roy-Gab-R", InformationsErrorDescriber.LastNameLength()},
-                {"Gab123", InformationsErrorDescriber.LastNameInvalid()},
-                {"Gabriel-Ro_Roy", InformationsErrorDescriber.LastNameInvalid()},
-                {"gabriel-Roy", InformationsErrorDescriber.LastNameUppercase()},
-                {"Gabriel-roy", InformationsErrorDescriber.LastNameUppercase()}
+                {"", ProfileErrorDescriber.LastNameRequired()},
+                {"G", ProfileErrorDescriber.LastNameLength()},
+                {"Gabriel-Roy-Gab-R", ProfileErrorDescriber.LastNameLength()},
+                {"Gab123", ProfileErrorDescriber.LastNameInvalid()},
+                {"Gabriel-Ro_Roy", ProfileErrorDescriber.LastNameInvalid()},
+                {"gabriel-Roy", ProfileErrorDescriber.LastNameUppercase()},
+                {"Gabriel-roy", ProfileErrorDescriber.LastNameUppercase()}
             };
 
         public static TheoryData<GenderDto> ValidGenders =>
@@ -70,7 +70,7 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<GenderDto, string> InvalidGenders =>
             new TheoryData<GenderDto, string>
             {
-                {GenderDto.None, InformationsErrorDescriber.GenderRequired()}
+                {GenderDto.None, ProfileErrorDescriber.GenderRequired()}
             };
 
         public static TheoryData<DobDto> ValidDob =>

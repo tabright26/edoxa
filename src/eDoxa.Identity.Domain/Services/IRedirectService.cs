@@ -3,7 +3,7 @@
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Domain.Services
 {
     public interface IRedirectService
     {

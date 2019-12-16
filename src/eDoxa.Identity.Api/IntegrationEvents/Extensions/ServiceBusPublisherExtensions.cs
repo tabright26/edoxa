@@ -78,27 +78,20 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                 });
         }
 
-        public static async Task PublishUserInformationChangedIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string firstName,
-            string lastName,
-            Gender gender,
-            UserDob dob
-        )
+        public static async Task PublishUserInformationChangedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, UserProfile profile)
         {
             await publisher.PublishAsync(
                 new UserInformationChangedIntegrationEvent
                 {
                     UserId = userId,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Gender = gender.ToEnum<GenderDto>(),
+                    FirstName = profile.FirstName,
+                    LastName = profile.LastName,
+                    Gender = profile.Gender.ToEnum<GenderDto>(),
                     Dob = new DobDto
                     {
-                        Day = dob.Day,
-                        Month = dob.Month,
-                        Year = dob.Year
+                        Day = profile.Dob.Day,
+                        Month = profile.Dob.Month,
+                        Year = profile.Dob.Year
                     }
                 });
         }

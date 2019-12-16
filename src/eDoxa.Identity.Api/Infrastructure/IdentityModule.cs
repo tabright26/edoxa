@@ -8,6 +8,7 @@ using Autofac;
 
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Repositories;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.Infrastructure.Repositories;
 
 namespace eDoxa.Identity.Api.Infrastructure

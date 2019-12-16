@@ -9,7 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
@@ -57,14 +57,12 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                 {
                     var userManager = scope.GetRequiredService<IUserService>();
 
-                    var result = await userManager.CreateAsync(user);
-
-                    result.Succeeded.Should().BeTrue();
+                    await userManager.CreateAsync(user);
 
                     var addressService = scope.GetRequiredService<IAddressService>();
 
-                    result = await addressService.AddAddressAsync(
-                        user,
+                    var result = await addressService.AddAddressAsync(
+                        UserId.FromGuid(user.Id),
                         Country.Canada,
                         "1234 Test Street",
                         null,
@@ -72,7 +70,7 @@ namespace eDoxa.Identity.IntegrationTests.Areas.Identity.Controllers
                         "Ontario",
                         "A1A1A1");
 
-                    result.Succeeded.Should().BeTrue();
+                    result.IsValid.Should().BeTrue();
 
                     var addressBook = await addressService.GetAddressBookAsync(user);
 

@@ -10,8 +10,8 @@ using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Domain.Services;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -65,7 +65,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var user = await _userService.GetUserAsync(User);
 
-            var result = await _userService.SetPhoneNumberAsync(user, request.Number);
+            var result = await _userService.UpdatePhoneNumberAsync(user, request.Number);
 
             if (result.Succeeded)
             {

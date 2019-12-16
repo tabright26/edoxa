@@ -53,5 +53,10 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         {
             return $"{FirstName} {LastName}";
         }
+
+        public void Update(string firstName)
+        {
+            FirstName = firstName;
+        }
     }
 }

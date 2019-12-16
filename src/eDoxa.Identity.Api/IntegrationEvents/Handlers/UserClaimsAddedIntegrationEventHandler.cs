@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
@@ -25,7 +25,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserClaimsAddedIntegrationEvent integrationEvent)
         {
-            var user = await _userService.FindByIdAsync(integrationEvent.UserId.ToString());
+            var user = await _userService.FindByIdAsync(integrationEvent.UserId);
             
             var claims = await _userService.GetClaimsAsync(user);
 

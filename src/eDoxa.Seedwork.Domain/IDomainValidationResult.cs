@@ -15,9 +15,9 @@ namespace eDoxa.Seedwork.Domain
         IReadOnlyCollection<DomainValidationError> Errors { get; }
 
         TEntity GetEntityFromMetadata<TEntity>()
-        where TEntity : IEntity;
+        where TEntity : class;
 
         void AddEntityToMetadata<TEntity>(TEntity entity)
-        where TEntity : IEntity;
+        where TEntity : class;
     }
 }

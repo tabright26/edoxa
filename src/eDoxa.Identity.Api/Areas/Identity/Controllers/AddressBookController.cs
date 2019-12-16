@@ -12,8 +12,9 @@ using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
+using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -65,14 +66,14 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpPost]
         [SwaggerOperation("Add user's address.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status200OK, "The user's address has been added.", typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] CreateAddressRequest request)
         {
             var user = await _userService.GetUserAsync(User);
-
+            
             var result = await _addressService.AddAddressAsync(
-                user,
+                UserId.FromGuid(user.Id),
                 request.Country.ToEnumeration<Country>(),
                 request.Line1,
                 request.Line2,
@@ -80,59 +81,74 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 request.State,
                 request.PostalCode);
 
-            if (result.Succeeded)
+            if (result.IsValid)
             {
-                return this.Ok("The user's address has been added.");
+                return this.Ok(_mapper.Map<AddressDto>(result.GetEntityFromMetadata<Address>()));
             }
 
-            ModelState.Bind(result);
-
+            result.AddToModelState(ModelState);
+            
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         [HttpPut("{addressId}")]
         [SwaggerOperation("Update user's address by id.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status200OK, "The user's address has been updated.", typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> PutAsync(AddressId addressId, [FromBody] UpdateAddressRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 
+            var address = await _addressService.FindUserAddressAsync(user, addressId);
+
+            if (address == null)
+            {
+                return this.NotFound("Address not found.");
+            }
+
             var result = await _addressService.UpdateAddressAsync(
-                user,
-                addressId,
+                address,
                 request.Line1,
                 request.Line2,
                 request.City,
                 request.State,
                 request.PostalCode);
 
-            if (result.Succeeded)
+            if (result.IsValid)
             {
-                return this.Ok("The user's address has been updated.");
+                return this.Ok(_mapper.Map<AddressDto>(result.GetEntityFromMetadata<Address>()));
             }
 
-            ModelState.Bind(result);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         [HttpDelete("{addressId}")]
         [SwaggerOperation("Remove user's address by id.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressId))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteAsync(AddressId addressId)
         {
             var user = await _userService.GetUserAsync(User);
 
-            var result = await _addressService.RemoveAddressAsync(user, addressId);
+            var address = await _addressService.FindUserAddressAsync(user, addressId);
 
-            if (result.Succeeded)
+            if (address == null)
             {
-                return this.Ok(addressId);
+                return this.NotFound("Address not found.");
             }
 
-            ModelState.Bind(result);
+            var result = await _addressService.RemoveAddressAsync(address);
+
+            if (result.IsValid)
+            {
+                return this.Ok(_mapper.Map<AddressDto>(result.GetEntityFromMetadata<Address>()));
+            }
+
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

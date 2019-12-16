@@ -10,7 +10,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Domain.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

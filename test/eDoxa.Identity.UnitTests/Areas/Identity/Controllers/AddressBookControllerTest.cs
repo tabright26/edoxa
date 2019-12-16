@@ -7,24 +7,23 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using Moq;
@@ -105,8 +104,12 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var mockAddressService = new Mock<IAddressService>();
 
-            mockAddressService.Setup(addressService => addressService.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()))
-                .ReturnsAsync(IdentityResult.Success)
+            mockAddressService.Setup(addressService => addressService.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()))
+                .ReturnsAsync(address)
+                .Verifiable();
+
+            mockAddressService.Setup(addressService => addressService.RemoveAddressAsync(It.IsAny<Address>()))
+                .ReturnsAsync(DomainValidationResult.Succeded(address))
                 .Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
@@ -116,12 +119,12 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-
-            result.As<OkObjectResult>().Value.Should().Be(address.Id);
-
+            
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
-            mockAddressService.Verify(addressService => addressService.RemoveAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()), Times.Once);
+            mockAddressService.Verify(addressService => addressService.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()), Times.Once);
+
+            mockAddressService.Verify(addressService => addressService.RemoveAddressAsync(It.IsAny<Address>()), Times.Once);
         }
 
         [Fact]
@@ -217,11 +220,6 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 "State",
                 "PostalCode");
 
-            var addressBook = new List<Address>
-            {
-                address
-            };
-
             var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
@@ -230,14 +228,14 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             mockAddressService.Setup(
                     addressService => addressService.AddAddressAsync(
-                        It.IsAny<User>(),
+                        It.IsAny<UserId>(),
                         It.IsAny<Country>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Success)
+                .ReturnsAsync(DomainValidationResult.Succeded(address))
                 .Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
@@ -258,13 +256,11 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
-
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockAddressService.Verify(
                 addressService => addressService.AddAddressAsync(
-                    It.IsAny<User>(),
+                    It.IsAny<UserId>(),
                     It.IsAny<Country>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
@@ -345,27 +341,25 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                 "State",
                 "PostalCode");
 
-            var addressBook = new List<Address>
-            {
-                address
-            };
-
             var mockUserManager = new Mock<IUserService>();
 
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             var mockAddressService = new Mock<IAddressService>();
 
+            mockAddressService.Setup(addressService => addressService.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()))
+                .ReturnsAsync(address)
+                .Verifiable();
+
             mockAddressService.Setup(
                     addressService => addressService.UpdateAddressAsync(
-                        It.IsAny<User>(),
-                        It.IsAny<AddressId>(),
+                        It.IsAny<Address>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Success)
+                .ReturnsAsync(DomainValidationResult.Succeded(address))
                 .Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
@@ -380,19 +374,18 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
             };
 
             // Act
-            var result = await controller.PutAsync(addressBook.First().Id, request);
+            var result = await controller.PutAsync(address.Id, request);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeOfType<string>();
-
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+
+            mockAddressService.Verify(addressService => addressService.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()), Times.Once);
 
             mockAddressService.Verify(
                 addressService => addressService.UpdateAddressAsync(
-                    It.IsAny<User>(),
-                    It.IsAny<AddressId>(),
+                    It.IsAny<Address>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>(),

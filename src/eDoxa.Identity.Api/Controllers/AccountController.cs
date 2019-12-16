@@ -8,10 +8,10 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.ViewModels;
+using eDoxa.Identity.Domain.Services;
 
 using IdentityModel;
 

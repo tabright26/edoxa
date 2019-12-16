@@ -11,10 +11,10 @@ using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Repositories;
+using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
-
-using Microsoft.AspNetCore.Identity;
 
 namespace eDoxa.Identity.Api.Application.Services
 {
@@ -39,32 +39,28 @@ namespace eDoxa.Identity.Api.Application.Services
             return await _addressRepository.FetchAddressBookAsync(UserId.FromGuid(user.Id));
         }
 
-        public async Task<IdentityResult> RemoveAddressAsync(User user, AddressId addressId)
+        public async Task<IDomainValidationResult> RemoveAddressAsync(Address address)
         {
-            var address = await this.FindUserAddressAsync(user, addressId);
+            var result = new DomainValidationResult();
 
-            if (address == null)
+            if (result.IsValid)
             {
-                return IdentityResult.Failed(
-                    new IdentityError
-                    {
-                        Description = "Address not found."
-                    });
+                _addressRepository.Delete(address);
+
+                await _addressRepository.UnitOfWork.CommitAsync();
+
+                //await this.UpdateSecurityStampAsync(user);
+
+                //await this.UpdateUserAsync(user);
+
+                result.AddEntityToMetadata(address);
             }
 
-            _addressRepository.Delete(address);
-
-            await _addressRepository.UnitOfWork.CommitAsync();
-
-            //await this.UpdateSecurityStampAsync(user);
-
-            //return await this.UpdateUserAsync(user);
-
-            return IdentityResult.Success;
+            return result;
         }
 
-        public async Task<IdentityResult> AddAddressAsync(
-            User user,
+        public async Task<IDomainValidationResult> AddAddressAsync(
+            UserId userId,
             Country country,
             string line1,
             string? line2,
@@ -73,38 +69,37 @@ namespace eDoxa.Identity.Api.Application.Services
             string? postalCode
         )
         {
-            var address = new Address(
-                UserId.FromGuid(user.Id),
-                country,
-                line1,
-                line2,
-                city,
-                state,
-                postalCode);
+            var result = new DomainValidationResult();
 
-            _addressRepository.Create(address);
+            if (result.IsValid)
+            {
+                var address = new Address(
+                    userId,
+                    country,
+                    line1,
+                    line2,
+                    city,
+                    state,
+                    postalCode);
 
-            await _addressRepository.UnitOfWork.CommitAsync();
+                _addressRepository.Create(address);
 
-            //await this.UpdateSecurityStampAsync(user);
+                await _addressRepository.UnitOfWork.CommitAsync();
 
-            //var result = await this.UpdateUserAsync(user);
+                //await this.UpdateSecurityStampAsync(user);
 
-            //if (result.Succeeded)
-            //{
-            //    await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(user.Id), address);
-            //}
+                //await this.UpdateUserAsync(user);
 
-            //return result;
+                await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(userId, address);
 
-            await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(user.Id), address);
+                result.AddEntityToMetadata(address);
+            }
 
-            return IdentityResult.Success;
+            return result;
         }
 
-        public async Task<IdentityResult> UpdateAddressAsync(
-            User user,
-            AddressId addressId,
+        public async Task<IDomainValidationResult> UpdateAddressAsync(
+            Address address,
             string line1,
             string? line2,
             string city,
@@ -112,41 +107,29 @@ namespace eDoxa.Identity.Api.Application.Services
             string? postalCode
         )
         {
-            var address = await _addressRepository.FindAddressAsync(UserId.FromGuid(user.Id), addressId);
+            var result = new DomainValidationResult();
 
-            if (address == null)
+            if (result.IsValid)
             {
-                return IdentityResult.Failed(
-                    new IdentityError
-                    {
-                        Code = "UserAddressNotFound",
-                        Description = "User's address not found."
-                    });
+                address.Update(
+                    line1,
+                    line2,
+                    city,
+                    state,
+                    postalCode);
+
+                await _addressRepository.UnitOfWork.CommitAsync();
+
+                //await this.UpdateSecurityStampAsync(user);
+
+                //await this.UpdateUserAsync(user);
+
+                await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(address.UserId), address);
+
+                result.AddEntityToMetadata(address);
             }
 
-            address.Update(
-                line1,
-                line2,
-                city,
-                state,
-                postalCode);
-
-            await _addressRepository.UnitOfWork.CommitAsync();
-
-            //await this.UpdateSecurityStampAsync(user);
-
-            //var result = await this.UpdateUserAsync(user);
-
-            //if (result.Succeeded)
-            //{
-            //    await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(user.Id), address);
-            //}
-
-            //return result;
-
-            await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(user.Id), address);
-
-            return IdentityResult.Success;
+            return result;
         }
     }
 }

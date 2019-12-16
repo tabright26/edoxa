@@ -24,7 +24,7 @@ namespace eDoxa.Identity.Api.Application.Services
         {
         }
 
-        public Task<UserProfile?> GetInformationsAsync(User user, CancellationToken cancellationToken = default)
+        public Task<UserProfile?> GetProfileAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -94,7 +94,7 @@ namespace eDoxa.Identity.Api.Application.Services
             return Task.FromResult(user.Profile?.Dob);
         }
 
-        public Task SetInformationsAsync(User user, UserProfile userProfile, CancellationToken cancellationToken)
+        public Task UpdateProfileAsync(User user, UserProfile userProfile, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

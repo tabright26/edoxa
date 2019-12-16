@@ -19,15 +19,15 @@ namespace eDoxa.Identity.Api.Application.Validators
         {
             this.RuleFor(request => request.FirstName)
                 .NotNull()
-                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
+                .WithMessage(ProfileErrorDescriber.FirstNameRequired())
                 .NotEmpty()
-                .WithMessage(InformationsErrorDescriber.FirstNameRequired())
+                .WithMessage(ProfileErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
-                .WithMessage(InformationsErrorDescriber.FirstNameLength())
+                .WithMessage(ProfileErrorDescriber.FirstNameLength())
                 .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(InformationsErrorDescriber.FirstNameInvalid())
+                .WithMessage(ProfileErrorDescriber.FirstNameInvalid())
                 .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(InformationsErrorDescriber.FirstNameUppercase());
+                .WithMessage(ProfileErrorDescriber.FirstNameUppercase());
         }
     }
 }

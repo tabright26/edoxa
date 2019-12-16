@@ -11,29 +11,15 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Domain.Services
 {
     public interface IUserService
     {
-        UserRepository Repository { get; }
-
-        ILogger Logger { get; set; }
-
-        IPasswordHasher<User> PasswordHasher { get; set; }
-
-        IList<IUserValidator<User>> UserValidators { get; }
-
-        IList<IPasswordValidator<User>> PasswordValidators { get; }
-
-        ILookupNormalizer KeyNormalizer { get; set; }
-
-        IdentityErrorDescriber ErrorDescriber { get; set; }
-
         IdentityOptions Options { get; set; }
 
         bool SupportsUserAuthenticationTokens { get; }
@@ -66,7 +52,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
         Task<Country> GetCountryAsync(User user);
 
-        Task<UserProfile?> GetInformationsAsync(User user);
+        Task<UserProfile?> GetProfileAsync(User user);
 
         Task<UserDob?> GetDobAsync(User user);
 
@@ -158,7 +144,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
         Task<string> GetEmailAsync(User user);
 
-        Task<IdentityResult> SetEmailAsync(User user, string email);
+        Task<IdentityResult> UpdateEmailAsync(User user, string email);
 
         Task<User> FindByEmailAsync(string email);
 
@@ -176,7 +162,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
         Task<string> GetPhoneNumberAsync(User user);
 
-        Task<IdentityResult> SetPhoneNumberAsync(User user, string phoneNumber);
+        Task<IdentityResult> UpdatePhoneNumberAsync(User user, string phoneNumber);
 
         Task<IdentityResult> ChangePhoneNumberAsync(User user, string phoneNumber, string token);
 
@@ -252,14 +238,16 @@ namespace eDoxa.Identity.Api.Application.Services
 
         Task<byte[]> CreateSecurityTokenAsync(User user);
 
-        Task<IdentityResult> CreateInformationsAsync(
+        Task<IDomainValidationResult> CreateProfileAsync(
             User user,
             string firstName,
             string lastName,
             Gender gender,
-            UserDob dob
+            int dobYear,
+            int dobMonth,
+            int dobDay
         );
 
-        Task<IdentityResult> UpdateInformationsAsync(User user, string firstName);
+        Task<IDomainValidationResult> UpdateProfileAsync(User user, string firstName);
     }
 }

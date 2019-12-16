@@ -1,5 +1,5 @@
 ﻿// Filename: StripeReferenceService.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-12-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,7 +11,7 @@ using eDoxa.Payment.Domain.Stripe.Repositories;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Domain.Misc;
 
-namespace eDoxa.Payment.Api.Areas.Stripe.Services
+namespace eDoxa.Payment.Api.Application.Stripe.Services
 {
     public sealed class StripeReferenceService : IStripeReferenceService
     {
