@@ -1,9 +1,20 @@
-import { loadChallenges, loadChallenge } from "./actions";
-import { LOAD_CHALLENGES, LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL, LOAD_CHALLENGE, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL } from "./types";
+import { loadChallenges, loadChallenge } from "./index";
+import {
+  LOAD_CHALLENGES,
+  LOAD_CHALLENGES_SUCCESS,
+  LOAD_CHALLENGES_FAIL,
+  LOAD_CHALLENGE,
+  LOAD_CHALLENGE_SUCCESS,
+  LOAD_CHALLENGE_FAIL
+} from "./types";
 
 describe("challenge actions", () => {
   it("should create an action to get all challenges", () => {
-    const expectedType = [LOAD_CHALLENGES, LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL];
+    const expectedType = [
+      LOAD_CHALLENGES,
+      LOAD_CHALLENGES_SUCCESS,
+      LOAD_CHALLENGES_FAIL
+    ];
     const expectedMethod = "GET";
     const expectedUrl = "/challenge/api/challenges";
 
@@ -17,7 +28,11 @@ describe("challenge actions", () => {
   it("should create an action to get a challenge", () => {
     const challengeId = "1";
 
-    const expectedType = [LOAD_CHALLENGE, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL];
+    const expectedType = [
+      LOAD_CHALLENGE,
+      LOAD_CHALLENGE_SUCCESS,
+      LOAD_CHALLENGE_FAIL
+    ];
     const expectedMethod = "GET";
     const expectedUrl = `/challenge/api/challenges/${challengeId}`;
 

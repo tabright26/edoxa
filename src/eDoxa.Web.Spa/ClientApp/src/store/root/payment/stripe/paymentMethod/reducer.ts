@@ -11,11 +11,11 @@ import {
   UPDATE_STRIPE_PAYMENTMETHOD,
   UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS,
   UPDATE_STRIPE_PAYMENTMETHOD_FAIL,
-  StripePaymentMethodsActions,
-  StripePaymentMethodsState
+  StripePaymentMethodsActions
 } from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { StripePaymentMethodsState } from "./types";
 
 export const initialState: StripePaymentMethodsState = {
   data: [],

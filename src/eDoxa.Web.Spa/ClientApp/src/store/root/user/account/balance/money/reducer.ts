@@ -3,7 +3,7 @@ import {
   LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS,
   LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL,
   UserMoneyAccountBalanceActions
-} from "store/actions/account/types";
+} from "store/actions/cashier/types";
 import { UserAccountBalanceState } from "../types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";

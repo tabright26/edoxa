@@ -17,7 +17,7 @@ import {
   declineClanInvitation,
   downloadClanLogo,
   uploadClanLogo
-} from "./actions";
+} from "./index";
 
 import {
   LOAD_CLAN_CANDIDATURES,

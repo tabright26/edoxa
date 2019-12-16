@@ -5,11 +5,11 @@ import {
   UPDATE_USER_DOXATAG,
   UPDATE_USER_DOXATAG_SUCCESS,
   UPDATE_USER_DOXATAG_FAIL,
-  UserDoxatagHistoryActions,
-  UserDoxatagHistoryState
+  UserDoxatagHistoryActions
 } from "store/actions/identity/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { UserDoxatagHistoryState } from "./types";
 
 export const initialState: UserDoxatagHistoryState = {
   data: [],

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { detachStripePaymentMethod } from "store/actions/payment/actions";
+import { detachStripePaymentMethod } from "store/actions/payment";
 import {
   DETACH_STRIPE_PAYMENTMETHOD_FAIL,
   StripePaymentMethodsActions

@@ -7,7 +7,7 @@ import FormField from "components/Shared/Form/Field";
 import { CREATE_USER_ADDRESS_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { createUserAddress } from "store/actions/identity/actions";
+import { createUserAddress } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
   countryRegex,

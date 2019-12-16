@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { injectStripe } from "react-stripe-elements";
-import { attachStripePaymentMethod } from "store/actions/payment/actions";
+import { attachStripePaymentMethod } from "store/actions/payment";
 import {
   ATTACH_STRIPE_PAYMENTMETHOD_FAIL,
   StripePaymentMethodsActions

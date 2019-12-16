@@ -10,6 +10,7 @@ import {
   REGISTER_CHALLENGE_PARTICIPANT_FAIL,
   ChallengesActionCreators
 } from "./types";
+
 import { ChallengeId } from "types";
 
 export function loadChallenges(): ChallengesActionCreators {

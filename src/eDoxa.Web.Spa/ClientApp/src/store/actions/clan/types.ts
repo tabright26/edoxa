@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 import { Candidature, Invitation, Member, Clan } from "types";
 
 //------------------------------------------------------------------------------------------------------------
@@ -272,7 +272,6 @@ export type ClansActions =
   | LoadClanAction
   | CreateClanAction
   | LeaveClanAction;
-export type ClansState = AxiosState<Clan[]>;
 
 //------------------------------------------------------------------------------------------------------------
 

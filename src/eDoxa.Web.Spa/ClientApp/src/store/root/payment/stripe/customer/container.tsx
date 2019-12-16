@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadStripeCustomer } from "store/actions/payment/actions";
+import { loadStripeCustomer } from "store/actions/payment";
 
 export const withStripeCustomer = (
   HighOrderComponent: FunctionComponent<any>

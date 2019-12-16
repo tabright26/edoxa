@@ -8,9 +8,13 @@ import {
 } from "react-stripe-elements";
 import Button from "components/Shared/Button";
 import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
-import { validate } from "./validate";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
+
+const validate = (values: any) => {
+  const errors: any = {};
+  return errors;
+};
 
 const CreateStripePaymentMethodForm: FunctionComponent<any> = ({
   handleSubmit,

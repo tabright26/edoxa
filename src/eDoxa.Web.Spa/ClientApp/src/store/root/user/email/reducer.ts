@@ -3,10 +3,10 @@ import {
   LOAD_USER_EMAIL,
   LOAD_USER_EMAIL_SUCCESS,
   LOAD_USER_EMAIL_FAIL,
-  UserEmailActions,
-  UserEmailState
+  UserEmailActions
 } from "store/actions/identity/types";
 import produce, { Draft } from "immer";
+import { UserEmailState } from "./types";
 
 export const initialState: UserEmailState = {
   data: {

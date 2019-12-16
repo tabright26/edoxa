@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { loadStripePaymentMethods } from "store/actions/payment/actions";
+import { loadStripePaymentMethods } from "store/actions/payment";
 import { RootState } from "store/types";
 import { StripePaymentMethodType } from "types";
 import { StripePaymentMethodsState } from "./types";

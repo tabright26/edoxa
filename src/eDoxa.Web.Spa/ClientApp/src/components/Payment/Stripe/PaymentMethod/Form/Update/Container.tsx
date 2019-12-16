@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { updateStripePaymentMethod } from "store/actions/payment/actions";
+import { updateStripePaymentMethod } from "store/actions/payment";
 import {
   UPDATE_STRIPE_PAYMENTMETHOD_FAIL,
   StripePaymentMethodsActions

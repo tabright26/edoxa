@@ -8,11 +8,11 @@ import {
   UPDATE_USER_INFORMATIONS,
   UPDATE_USER_INFORMATIONS_SUCCESS,
   UPDATE_USER_INFORMATIONS_FAIL,
-  UserInformationsActions,
-  UserInformationsState
+  UserInformationsActions
 } from "store/actions/identity/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { UserInformationsState } from "./types";
 
 export const initialState: UserInformationsState = {
   data: null,

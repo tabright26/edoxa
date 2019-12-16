@@ -1,4 +1,4 @@
-import { loadUserAccountBalance } from "./actions";
+import { loadUserAccountTransactions, loadUserAccountBalance } from "./index";
 
 import {
   LOAD_USER_MONEY_ACCOUNT_BALANCE,
@@ -6,7 +6,10 @@ import {
   LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL,
   LOAD_USER_TOKEN_ACCOUNT_BALANCE,
   LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS,
-  LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL
+  LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL,
+  LOAD_USER_ACCOUNT_TRANSACTIONS,
+  LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
+  LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
 } from "./types";
 
 import { MONEY, TOKEN } from "types";
@@ -46,13 +49,6 @@ describe("cashier actions", () => {
     expect(actionCreator.payload.request.url).toEqual(expectedUrl);
   });
 });
-
-import { loadUserAccountTransactions } from "./actions";
-import {
-  LOAD_USER_ACCOUNT_TRANSACTIONS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
-} from "./types";
 
 describe("cashier actions", () => {
   it("should create an action to get user transactions", () => {

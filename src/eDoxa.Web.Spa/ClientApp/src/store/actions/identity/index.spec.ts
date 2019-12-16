@@ -11,7 +11,7 @@ import {
   loadUserInformations,
   createUserInformations,
   updateUserInformations
-} from "./actions";
+} from "./index";
 
 import {
   LOAD_USER_ADDRESSBOOK,

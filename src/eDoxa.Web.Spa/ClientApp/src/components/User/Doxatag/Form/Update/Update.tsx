@@ -6,7 +6,7 @@ import Input from "components/Shared/Input";
 import { UPDATE_USER_DOXATAG_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { updateUserDoxatag } from "store/actions/identity/actions";
+import { updateUserDoxatag } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
   doxatagSpecialRegex,

@@ -1,11 +1,10 @@
 import { connect } from "react-redux";
-import { validateGameAuthentication } from "store/actions/identity/actions";
-import { loadGames } from "store/actions/game/actions";
+import { validateGameAuthentication, loadGames } from "store/actions/game";
 import {
   VALIDATE_GAME_AUTHENTICATION_SUCCESS,
   VALIDATE_GAME_AUTHENTICATION_FAIL,
   GameAuthenticationActions
-} from "store/actions/identity/types";
+} from "store/actions/game/types";
 import Link from "./Validate";
 import { Game } from "types";
 import { toastr } from "react-redux-toastr";

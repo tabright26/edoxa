@@ -26,15 +26,6 @@ import {
   UPDATE_USER_INFORMATIONS,
   UPDATE_USER_INFORMATIONS_SUCCESS,
   UPDATE_USER_INFORMATIONS_FAIL,
-  GENERATE_GAME_AUTHENTICATION,
-  GENERATE_GAME_AUTHENTICATION_SUCCESS,
-  GENERATE_GAME_AUTHENTICATION_FAIL,
-  VALIDATE_GAME_AUTHENTICATION,
-  VALIDATE_GAME_AUTHENTICATION_SUCCESS,
-  VALIDATE_GAME_AUTHENTICATION_FAIL,
-  UNLINK_GAME_CREDENTIAL,
-  UNLINK_GAME_CREDENTIAL_SUCCESS,
-  UNLINK_GAME_CREDENTIAL_FAIL,
   FORGOT_USER_PASSWORD,
   FORGOT_USER_PASSWORD_SUCCESS,
   FORGOT_USER_PASSWORD_FAIL,
@@ -58,12 +49,10 @@ import {
   UserAddressBookActionCreators,
   UserPhoneActionCreators,
   UserEmailActionCreators,
-  UserPasswordActionCreators,
-  GameAuthenticationActionCreators,
-  GameCredentialActionCreators
+  UserPasswordActionCreators
 } from "./types";
 
-import { Game, AddressId } from "types";
+import { AddressId } from "types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 export function loadUserAddressBook(): UserAddressBookActionCreators {
@@ -208,60 +197,6 @@ export function confirmUserEmail(
       request: {
         method: "GET",
         url: `/identity/api/email/confirm?userId=${userId}&code=${code}`
-      }
-    }
-  };
-}
-
-export function generateGameAuthentication(
-  game: Game,
-  data: any
-): GameAuthenticationActionCreators {
-  return {
-    types: [
-      GENERATE_GAME_AUTHENTICATION,
-      GENERATE_GAME_AUTHENTICATION_SUCCESS,
-      GENERATE_GAME_AUTHENTICATION_FAIL
-    ],
-    payload: {
-      request: {
-        method: "POST",
-        url: `games/api/games/${game}/authentications`,
-        data
-      }
-    }
-  };
-}
-
-export function validateGameAuthentication(
-  game: Game
-): GameAuthenticationActionCreators {
-  return {
-    types: [
-      VALIDATE_GAME_AUTHENTICATION,
-      VALIDATE_GAME_AUTHENTICATION_SUCCESS,
-      VALIDATE_GAME_AUTHENTICATION_FAIL
-    ],
-    payload: {
-      request: {
-        method: "PUT",
-        url: `games/api/games/${game}/authentications`
-      }
-    }
-  };
-}
-
-export function unlinkGameCredential(game: Game): GameCredentialActionCreators {
-  return {
-    types: [
-      UNLINK_GAME_CREDENTIAL,
-      UNLINK_GAME_CREDENTIAL_SUCCESS,
-      UNLINK_GAME_CREDENTIAL_FAIL
-    ],
-    payload: {
-      request: {
-        method: "DELETE",
-        url: `games/api/games/${game}/credentials`
       }
     }
   };

@@ -5,11 +5,11 @@ import {
   UPDATE_STRIPE_BANKACCOUNT,
   UPDATE_STRIPE_BANKACCOUNT_SUCCESS,
   UPDATE_STRIPE_BANKACCOUNT_FAIL,
-  StripeBankAccountActions,
-  StripeBankAccountState
+  StripeBankAccountActions
 } from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { StripeBankAccountState } from "./types";
 
 export const initialState: StripeBankAccountState = {
   data: null,

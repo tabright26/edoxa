@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { loadUserAccountTransactions } from "store/actions/account/actions";
+import { loadUserAccountTransactions } from "store/actions/cashier";
 import { RootState } from "store/types";
 import { UserAccountTransactionsState } from "./types";
 import { Currency, TransactionType, TransactionStatus } from "types";

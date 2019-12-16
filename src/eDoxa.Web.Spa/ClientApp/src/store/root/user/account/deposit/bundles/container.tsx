@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadUserAccountDepositBundlesFor } from "store/actions/account/actions";
+import { loadUserAccountDepositBundlesFor } from "store/actions/cashier";
 
 export const withUserAccountDepositBundles = (
   HighOrderComponent: FunctionComponent<any>

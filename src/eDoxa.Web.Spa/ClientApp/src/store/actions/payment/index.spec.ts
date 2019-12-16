@@ -5,11 +5,11 @@ import {
   LOAD_STRIPE_PAYMENTMETHODS,
   LOAD_STRIPE_PAYMENTMETHODS_SUCCESS,
   LOAD_STRIPE_PAYMENTMETHODS_FAIL
-} from "./types";
+} from "./index";
 
 import { STRIPE_CARD_TYPE } from "types";
 
-import { loadStripeBankAccount, loadStripePaymentMethods } from "./actions";
+import { loadStripeBankAccount, loadStripePaymentMethods } from ".";
 
 describe("stripe actions", () => {
   it("should create an action to get user stripe banks", () => {

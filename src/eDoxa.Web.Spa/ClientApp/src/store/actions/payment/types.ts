@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 import {
   StripeAccount,
   StripeCustomer,
@@ -27,8 +27,6 @@ export type LoadStripeAccountAction = AxiosAction<
 export type StripeAccountActionCreators = LoadStripeAccountActionCreator;
 
 export type StripeAccountActions = LoadStripeAccountAction;
-
-export type StripeAccountState = AxiosState<StripeAccount>;
 
 export const LOAD_STRIPE_BANKACCOUNT = "LOAD_STRIPE_BANKACCOUNT";
 export const LOAD_STRIPE_BANKACCOUNT_SUCCESS =
@@ -74,9 +72,7 @@ export type StripeBankAccountActionCreators =
 
 export type StripeBankAccountActions =
   | LoadStripeBankAccountAction
-  | UpdateStripeBankAccountAction;
-
-export type StripeBankAccountState = AxiosState<StripeBankAccount>;
+  | UpdateStripeBankAccountAction;;
 
 export const LOAD_STRIPE_CUSTOMER = "LOAD_STRIPE_CUSTOMER";
 export const LOAD_STRIPE_CUSTOMER_SUCCESS = "LOAD_STRIPE_CUSTOMER_SUCCESS";
@@ -124,8 +120,6 @@ export type StripeCustomerActionCreators =
 export type StripeCustomerActions =
   | LoadStripeCustomerAction
   | UpdateStripeCustomerDefaultPaymentMethodAction;
-
-export type StripeCustomerState = AxiosState<StripeCustomer>;
 
 export const LOAD_STRIPE_PAYMENTMETHODS = "LOAD_STRIPE_PAYMENTMETHODS";
 export const LOAD_STRIPE_PAYMENTMETHODS_SUCCESS =
@@ -218,5 +212,3 @@ export type StripePaymentMethodsActions =
   | AttachStripePaymentMethodAction
   | DetachStripePaymentMethodAction
   | UpdateStripePaymentMethodAction;
-
-export type StripePaymentMethodsState = AxiosState<StripePaymentMethod[]>;

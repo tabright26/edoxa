@@ -1,5 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
-import { Address, Email, Doxatag, Informations, Phone } from "types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
 export const LOAD_USER_ADDRESSBOOK_SUCCESS = "LOAD_USER_ADDRESSBOOK_SUCCESS";
@@ -63,7 +62,6 @@ export type UserAddressBookActions =
   | CreateUserAddressAction
   | UpdateUserAddressAction
   | DeleteUserAddressAction;
-export type UserAddressBookState = AxiosState<Address[]>;
 
 export const LOAD_USER_DOXATAGHISTORY = "LOAD_USER_DOXATAGHISTORY";
 export const LOAD_USER_DOXATAGHISTORY_SUCCESS =
@@ -100,7 +98,6 @@ export type UserDoxatagHistoryActionCreators =
 export type UserDoxatagHistoryActions =
   | LoadUserDoxatagHistoryAction
   | UpdateUserDoxatagAction;
-export type UserDoxatagHistoryState = AxiosState<Doxatag[]>;
 
 export const LOAD_USER_EMAIL = "LOAD_USER_EMAIL";
 export const LOAD_USER_EMAIL_SUCCESS = "LOAD_USER_EMAIL_SUCCESS";
@@ -130,64 +127,6 @@ export type UserEmailActionCreators =
   | LoadUserEmailActionCreator
   | ConfirmUserEmailActionCreator;
 export type UserEmailActions = LoadUserEmailAction | ConfirmUserEmailAction;
-export type UserEmailState = AxiosState<Email>;
-
-export const GENERATE_GAME_AUTHENTICATION = "GENERATE_GAME_AUTHENTICATION";
-export const GENERATE_GAME_AUTHENTICATION_SUCCESS =
-  "GENERATE_GAME_AUTHENTICATION_SUCCESS";
-export const GENERATE_GAME_AUTHENTICATION_FAIL =
-  "GENERATE_GAME_AUTHENTICATION_FAIL";
-
-export const VALIDATE_GAME_AUTHENTICATION = "VALIDATE_GAME_AUTHENTICATION";
-export const VALIDATE_GAME_AUTHENTICATION_SUCCESS =
-  "VALIDATE_GAME_AUTHENTICATION_SUCCESS";
-export const VALIDATE_GAME_AUTHENTICATION_FAIL =
-  "VALIDATE_GAME_AUTHENTICATION_FAIL";
-
-export type GenerateGameAuthenticationType =
-  | typeof GENERATE_GAME_AUTHENTICATION
-  | typeof GENERATE_GAME_AUTHENTICATION_SUCCESS
-  | typeof GENERATE_GAME_AUTHENTICATION_FAIL;
-export type GenerateGameAuthenticationActionCreator = AxiosActionCreator<
-  GenerateGameAuthenticationType
->;
-export type GenerateGameAuthenticationAction = AxiosAction<
-  GenerateGameAuthenticationType
->;
-
-export type ValidateGameAuthenticationType =
-  | typeof VALIDATE_GAME_AUTHENTICATION
-  | typeof VALIDATE_GAME_AUTHENTICATION_SUCCESS
-  | typeof VALIDATE_GAME_AUTHENTICATION_FAIL;
-export type ValidateGameAuthenticationActionCreator = AxiosActionCreator<
-  ValidateGameAuthenticationType
->;
-export type ValidateGameAuthenticationAction = AxiosAction<
-  ValidateGameAuthenticationType
->;
-
-export type GameAuthenticationActionCreators =
-  | ValidateGameAuthenticationActionCreator
-  | GenerateGameAuthenticationActionCreator;
-export type GameAuthenticationActions =
-  | ValidateGameAuthenticationAction
-  | GenerateGameAuthenticationAction;
-
-export const UNLINK_GAME_CREDENTIAL = "UNLINK_GAME_CREDENTIAL";
-export const UNLINK_GAME_CREDENTIAL_SUCCESS = "UNLINK_GAME_CREDENTIAL_SUCCESS";
-export const UNLINK_GAME_CREDENTIAL_FAIL = "UNLINK_GAME_CREDENTIAL_FAIL";
-
-export type UnlinkGameCredentialType =
-  | typeof UNLINK_GAME_CREDENTIAL
-  | typeof UNLINK_GAME_CREDENTIAL_SUCCESS
-  | typeof UNLINK_GAME_CREDENTIAL_FAIL;
-export type UnlinkGameCredentialActionCreator = AxiosActionCreator<
-  UnlinkGameCredentialType
->;
-export type UnlinkGameCredentialAction = AxiosAction<UnlinkGameCredentialType>;
-
-export type GameCredentialActionCreators = UnlinkGameCredentialActionCreator;
-export type GameCredentialActions = UnlinkGameCredentialAction;
 
 export const LOAD_USER_INFORMATIONS = "LOAD_USER_INFORMATIONS";
 export const LOAD_USER_INFORMATIONS_SUCCESS = "LOAD_USER_INFORMATIONS_SUCCESS";
@@ -242,7 +181,6 @@ export type UserInformationsActions =
   | LoadUserInformationsAction
   | CreateUserInformationsAction
   | UpdateUserInformationsAction;
-export type UserInformationsState = AxiosState<Informations>;
 
 export const FORGOT_USER_PASSWORD = "FORGOT_USER_PASSWORD";
 export const FORGOT_USER_PASSWORD_SUCCESS = "FORGOT_USER_PASSWORD_SUCCESS";
@@ -305,4 +243,3 @@ export type UserPhoneActionCreators =
   | LoadUserPhoneActionCreator
   | UpdateUserPhoneActionCreator;
 export type UserPhoneActions = LoadUserPhoneAction | UpdateUserPhoneAction;
-export type UserPhoneState = AxiosState<Phone>;

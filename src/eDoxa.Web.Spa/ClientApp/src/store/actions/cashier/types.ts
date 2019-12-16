@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
+import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 import { Balance, Bundle, Transaction } from "types";
 
 export type UserAccountBalanceActionCreators =
@@ -134,7 +134,6 @@ export type UserAccountDepositBundlesActionCreators =
 export type UserAccountDepositBundlesActions =
   | LoadUserAccountDepositMoneyBundlesAction
   | LoadUserAccountDepositTokenBundlesAction;
-export type UserAccountDepositBundlesState = AxiosState<Bundle[]>;
 
 export const LOAD_USER_ACCOUNT_TRANSACTIONS = "LOAD_USER_ACCOUNT_TRANSACTIONS";
 export const LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS =
@@ -156,7 +155,6 @@ export type LoadUserAccountTransactionsAction = AxiosAction<
 
 export type UserAccountTransactionsActionCreators = LoadUserAccountTransactionsActionCreator;
 export type UserAccountTransactionsActions = LoadUserAccountTransactionsAction;
-export type UserAccountTransactionsState = AxiosState<Transaction[]>;
 
 export const USER_ACCOUNT_WITHDRAWAL_MONEY = "USER_ACCOUNT_WITHDRAWAL_MONEY";
 export const USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS =
@@ -200,4 +198,3 @@ export type LoadUserAccountWithdrawalMoneyBundlesAction = AxiosAction<
 
 export type UserAccountWithdrawalBundlesActionCreators = LoadUserAccountWithdrawalMoneyBundlesActionCreator;
 export type UserAccountWithdrawalBundlesActions = LoadUserAccountWithdrawalMoneyBundlesAction;
-export type UserAccountWithdrawalBundlesState = AxiosState<Bundle[]>;

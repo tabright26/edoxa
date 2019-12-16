@@ -7,9 +7,10 @@ import { FORGOT_USER_PASSWORD_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
-import { forgotUserPassword } from "store/actions/identity/actions";
+import { forgotUserPassword } from "store/actions/identity";
 import { EMAIL_REQUIRED, EMAIL_INVALID, emailRegex } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { push } from "connected-react-router";
 
 interface Props {}
 
@@ -43,7 +44,7 @@ const ForgotUserPasswordForm: FunctionComponent<InjectedFormProps<FormData> &
   any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
-      submit(data, dispatch).then(() => handleCancel())
+      submit(data, dispatch).then(() => push("/"))
     )}
   >
     {error && <FormValidation error={error} />}

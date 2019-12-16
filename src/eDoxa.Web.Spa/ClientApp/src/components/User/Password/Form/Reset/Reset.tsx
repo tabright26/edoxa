@@ -13,7 +13,7 @@ import { RESET_USER_PASSWORD_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
-import { resetUserPassword } from "store/actions/identity/actions";
+import { resetUserPassword } from "store/actions/identity";
 import {
   emailRegex,
   passwordRegex,
@@ -23,6 +23,7 @@ import {
   PASSWORD_INVALID
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { REACT_APP_AUTHORITY } from "keys";
 
 interface Props {}
 
@@ -59,7 +60,9 @@ const ResetUserPasswordForm: FunctionComponent<InjectedFormProps<FormData> &
   any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
   <Form
     onSubmit={handleSubmit(data =>
-      submit(data, dispatch).then(() => handleCancel())
+      submit(data, dispatch).then(
+        () => (window.location.href = `${REACT_APP_AUTHORITY}/account/login`)
+      )
     )}
   >
     {error && <FormValidation error={error} />}

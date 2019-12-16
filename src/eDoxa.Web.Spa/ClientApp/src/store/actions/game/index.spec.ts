@@ -1,4 +1,4 @@
-import { loadGames } from "./actions";
+import { loadGames } from "./index";
 import {
   LOAD_GAMES,
   LOAD_GAMES_SUCCESS,
@@ -7,7 +7,7 @@ import {
   GamesActionCreators
 } from "./types";
 
-describe("identity actions", () => {
+describe("game actions", () => {
   it("should create an action to get user games id", () => {
     const expectedType: LoadGamesType[] = [
       LOAD_GAMES,

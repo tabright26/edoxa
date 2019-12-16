@@ -1,13 +1,21 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
-import { LOAD_USER_ADDRESSBOOK_SUCCESS, LOAD_USER_ADDRESSBOOK_FAIL, CREATE_USER_ADDRESS_SUCCESS, DELETE_USER_ADDRESS_SUCCESS, UPDATE_USER_ADDRESS_SUCCESS } from "./types";
+import {
+  LOAD_USER_ADDRESSBOOK_SUCCESS,
+  DELETE_USER_ADDRESS_SUCCESS,
+  CREATE_USER_ADDRESS_SUCCESS,
+  UPDATE_USER_ADDRESS_SUCCESS,
+  LOAD_USER_ADDRESSBOOK_FAIL
+} from "store/actions/identity/types";
 
 const addressId = "test_id";
 const addressBook204Data = [];
 const addressBook200Data = [{ id: "1" }, { id: "2" }, { id: "1" }];
 
 const removeSuccessData = { addressId: "1" };
-const removeExpectedState = initialState.data.filter(address => address.id !== addressId);
+const removeExpectedState = initialState.data.filter(
+  address => address.id !== addressId
+);
 
 describe("user address book reducer", () => {
   it("should return the initial state", () => {

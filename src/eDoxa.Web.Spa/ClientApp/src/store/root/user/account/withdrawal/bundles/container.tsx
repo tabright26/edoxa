@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserAccountWithdrawalBundlesFor } from "store/actions/account/actions";
+import { loadUserAccountWithdrawalBundlesFor } from "store/actions/cashier";
 import { RootState } from "store/types";
 
 export const withUserAccountWithdrawalBundles = (

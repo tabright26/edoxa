@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Alert } from "reactstrap";
 import queryString from "query-string";
 import { compose } from "recompose";
-import { confirmUserEmail } from "store/actions/identity/actions";
+import { confirmUserEmail } from "store/actions/identity";
 
 const EmailConfirm: FunctionComponent<any> = ({
   location,

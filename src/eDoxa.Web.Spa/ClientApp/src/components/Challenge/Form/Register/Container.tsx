@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import {
   loadChallenge,
   registerChallengeParticipant
-} from "store/actions/challenge/actions";
+} from "store/actions/challenge";
 import {
   ChallengesActions,
   REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,

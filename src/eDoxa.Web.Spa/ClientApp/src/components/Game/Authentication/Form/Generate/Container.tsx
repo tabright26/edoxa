@@ -2,8 +2,8 @@ import { connect } from "react-redux";
 import {
   GENERATE_GAME_AUTHENTICATION_FAIL,
   GameAuthenticationActions
-} from "store/actions/identity/types";
-import { generateGameAuthentication } from "store/actions/identity/actions";
+} from "store/actions/game/types";
+import { generateGameAuthentication } from "store/actions/game";
 import Generate from "./Generate";
 import { throwSubmissionError } from "utils/form/types";
 import { Game } from "types";

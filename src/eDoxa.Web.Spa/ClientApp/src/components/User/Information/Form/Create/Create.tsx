@@ -7,7 +7,7 @@ import { CREATE_USER_INFORMATIONS_FORM } from "forms";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
-import { createUserInformations } from "store/actions/identity/actions";
+import { createUserInformations } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
   personalInfoNameRegex,

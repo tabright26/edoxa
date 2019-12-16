@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadStripeBankAccount } from "store/actions/payment/actions";
+import { loadStripeBankAccount } from "store/actions/payment";
 import { RootState } from "store/types";
 
 export const withStripeBankAccount = (

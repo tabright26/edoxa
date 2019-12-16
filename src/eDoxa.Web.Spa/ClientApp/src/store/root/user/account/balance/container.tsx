@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { loadUserAccountBalance } from "store/actions/account/actions";
+import { loadUserAccountBalance } from "store/actions/cashier";
 import { RootState } from "store/types";
 import { Currency } from "types";
 import { UserAccountBalanceState } from "./types";

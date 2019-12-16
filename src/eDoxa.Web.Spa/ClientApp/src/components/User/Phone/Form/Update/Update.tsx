@@ -6,11 +6,12 @@ import Button from "components/Shared/Button";
 import { UPDATE_USER_PHONE_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { updateUserPhone } from "store/actions/identity/actions";
+import { updateUserPhone } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { PHONE_REQUIRED, PHONE_INVALID, phoneRegex } from "validation";
 
 interface Props {}
 
@@ -19,6 +20,16 @@ interface FormData {
 }
 
 interface StateProps {}
+
+const validate = values => {
+  const errors: any = {};
+  if (!values.number) {
+    errors.number = PHONE_REQUIRED;
+  } else if (!phoneRegex.test(values.number)) {
+    errors.number = PHONE_INVALID;
+  }
+  return errors;
+};
 
 async function submit(values, dispatch) {
   try {
@@ -65,7 +76,8 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
 
 const enhance = compose<any, any>(
   reduxForm<FormData, Props>({
-    form: UPDATE_USER_PHONE_FORM
+    form: UPDATE_USER_PHONE_FORM,
+    validate
   }),
   connect(mapStateToProps)
 );

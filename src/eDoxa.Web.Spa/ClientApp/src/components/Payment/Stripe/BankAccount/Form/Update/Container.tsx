@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { updateStripeBankAccount } from "store/actions/payment/actions";
+import { updateStripeBankAccount } from "store/actions/payment";
 import {
   UPDATE_STRIPE_BANKACCOUNT_FAIL,
   StripeBankAccountActions

@@ -4,7 +4,7 @@ import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/config";
 import UserAccountModal from "components/User/Account/Modal";
-import MatchScoreModal from "components/Challenge/Participant/Match/Score/Modal";
+import MatchScoreModal from "components/Challenge/Participant/Match/Modal/Score";
 import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";

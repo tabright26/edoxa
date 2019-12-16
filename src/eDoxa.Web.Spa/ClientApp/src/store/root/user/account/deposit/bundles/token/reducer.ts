@@ -2,11 +2,11 @@ import {
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES,
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS,
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL,
-  UserAccountDepositBundlesState,
   UserAccountDepositBundlesActions
-} from "store/actions/account/types";
+} from "store/actions/cashier/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { UserAccountDepositBundlesState } from "../types";
 
 export const initialState: UserAccountDepositBundlesState = {
   data: [],

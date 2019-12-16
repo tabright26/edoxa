@@ -2,11 +2,11 @@ import {
   LOAD_STRIPE_ACCOUNT,
   LOAD_STRIPE_ACCOUNT_SUCCESS,
   LOAD_STRIPE_ACCOUNT_FAIL,
-  StripeAccountActions,
-  StripeAccountState
+  StripeAccountActions
 } from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { StripeAccountState } from "./types";
 
 export const initialState: StripeAccountState = {
   data: null,

@@ -46,6 +46,14 @@ export const PERSONALINFO_GENDER_INVALID = "Invalid day";
 
 //-------------------------------------------------------------------------------
 
+const PHONE_REGEX = "^[0-9]{11}$";
+export const phoneRegex = new RegExp(PHONE_REGEX);
+
+export const PHONE_REQUIRED = "Phone is required";
+export const PHONE_INVALID = "Phone is invalid";
+
+//-------------------------------------------------------------------------------
+
 const EMAIL_REGEX =
   "^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$";
 export const emailRegex = new RegExp(EMAIL_REGEX);
@@ -95,3 +103,15 @@ export const STATE_INVALID = "Invalid state";
 export const POSTAL_INVALID = "Invalid postal code";
 
 //-------------------------------------------------------------------------------
+
+const CC_MONTH_REGEX = new RegExp("^(01|02|03|04|05|06|07|08|09|10|11|12)$");
+export const ccMonthRegex = new RegExp(CC_MONTH_REGEX);
+
+const CC_YEAR_REGEX = new RegExp("^[2][0][1-9][0-9]$");
+export const ccYearRegex = new RegExp(CC_YEAR_REGEX);
+
+export const CC_MONTH_REQUIRED = "Credit card expiration month is required";
+export const CC_MONTH_INVALID = "Invalid credit card expiration month";
+
+export const CC_YEAR_REQUIRED = "Credit card expiration year is required";
+export const CC_YEAR_INVALID = "Invalid credit card expiration year";

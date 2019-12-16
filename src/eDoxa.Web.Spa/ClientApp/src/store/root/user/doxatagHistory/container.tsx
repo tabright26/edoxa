@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserDoxatagHistory } from "store/actions/identity/actions";
+import { loadUserDoxatagHistory } from "store/actions/identity";
 import { RootState } from "store/types";
 
 export const withUserDoxatagHistory = (

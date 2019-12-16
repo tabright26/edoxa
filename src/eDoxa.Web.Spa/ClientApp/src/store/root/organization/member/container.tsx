@@ -4,7 +4,7 @@ import {
   leaveClan,
   loadClanMembers,
   kickClanMember
-} from "store/actions/clan/actions";
+} from "store/actions/clan";
 import { ClanMembersState } from "store/root/organization/member/types";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";

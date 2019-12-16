@@ -1,6 +1,6 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
-import { LOAD_USER_INFORMATIONS_SUCCESS, LOAD_USER_INFORMATIONS_FAIL } from "./types";
+import { LOAD_USER_INFORMATIONS_SUCCESS, LOAD_USER_INFORMATIONS_FAIL } from "store/actions/identity/types";
 
 const informations200Data = { name: "Gabriel", gender: "Male" };
 

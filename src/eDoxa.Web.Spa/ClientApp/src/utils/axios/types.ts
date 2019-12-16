@@ -1,6 +1,4 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
-import { Promise } from "q";
-import { Interface } from "readline";
 
 export interface AxiosPayload {
   request: AxiosRequestConfig;

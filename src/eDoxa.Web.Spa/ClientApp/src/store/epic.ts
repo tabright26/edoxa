@@ -8,12 +8,12 @@ import {
   USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS,
   USER_ACCOUNT_DEPOSIT_MONEY_FAIL,
   USER_ACCOUNT_DEPOSIT_TOKEN_FAIL
-} from "store/actions/account/types";
+} from "store/actions/cashier/types";
 
 import {
   USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL,
   USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS
-} from "store/actions/account/types";
+} from "store/actions/cashier/types";
 
 import {
   CREATE_USER_ADDRESS_SUCCESS,
@@ -42,9 +42,6 @@ import {
   FORGOT_USER_PASSWORD_FAIL,
   RESET_USER_PASSWORD_FAIL
 } from "store/actions/identity/types";
-
-//import { push } from "connected-react-router";
-//import { REACT_APP_AUTHORITY } from "keys";
 
 import {
   UPDATE_USER_PHONE_SUCCESS,
@@ -102,11 +99,4 @@ const formFailEpic = (action$: any) =>
 
 //-------------------------------------------------------------------------------------------------
 
-//const passwordForgotAction = push("/");
-//const passwordResetAction = (window.location.href = `${REACT_APP_AUTHORITY}/account/login`);
-
-//-------------------------------------------------------------------------------------------------
-
-const epic = combineEpics(formSuccessEpic, formFailEpic);
-
-export const epics = epic;
+export const epics = combineEpics(formSuccessEpic, formFailEpic);

@@ -2,11 +2,11 @@ import {
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES,
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS,
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL,
-  UserAccountWithdrawalBundlesState,
   UserAccountWithdrawalBundlesActions
-} from "store/actions/account/types";
+} from "store/actions/cashier/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { UserAccountWithdrawalBundlesState } from "../types";
 
 export const initialState: UserAccountWithdrawalBundlesState = {
   data: [],

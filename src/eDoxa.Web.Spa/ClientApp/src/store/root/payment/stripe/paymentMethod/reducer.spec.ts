@@ -1,6 +1,9 @@
 import { reducer, initialState } from "./reducer";
-import { LOAD_STRIPE_PAYMENTMETHODS_SUCCESS, LOAD_STRIPE_PAYMENTMETHODS_FAIL } from "./types";
 import { AxiosError } from "axios";
+import {
+  LOAD_STRIPE_PAYMENTMETHODS_SUCCESS,
+  LOAD_STRIPE_PAYMENTMETHODS_FAIL
+} from "store/actions/payment/types";
 
 const stripeCard204Data = [];
 const stripeCard200Data = { data: [{ id: "1" }] };

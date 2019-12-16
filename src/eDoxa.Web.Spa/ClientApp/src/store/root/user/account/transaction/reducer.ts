@@ -2,11 +2,11 @@ import {
   LOAD_USER_ACCOUNT_TRANSACTIONS,
   LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
   LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL,
-  UserAccountTransactionsActions,
-  UserAccountTransactionsState
-} from "store/actions/account/types";
+  UserAccountTransactionsActions
+} from "store/actions/cashier/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { UserAccountTransactionsState } from "./types";
 
 export const initialState: UserAccountTransactionsState = {
   data: [],

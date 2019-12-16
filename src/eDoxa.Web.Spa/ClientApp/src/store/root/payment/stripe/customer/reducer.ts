@@ -5,11 +5,11 @@ import {
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD,
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS,
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL,
-  StripeCustomerState,
   StripeCustomerActions
 } from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { StripeCustomerState } from "./types";
 
 export const initialState: StripeCustomerState = {
   data: null,

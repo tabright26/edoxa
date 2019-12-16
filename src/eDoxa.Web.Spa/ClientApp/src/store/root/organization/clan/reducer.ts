@@ -12,10 +12,10 @@ import {
   LEAVE_CLAN,
   LEAVE_CLAN_SUCCESS,
   LEAVE_CLAN_FAIL,
-  ClansState,
   ClansActions
 } from "store/actions/clan/types";
 import produce, { Draft } from "immer";
+import { ClansState } from "./types";
 
 export const initialState: ClansState = {
   data: [],
