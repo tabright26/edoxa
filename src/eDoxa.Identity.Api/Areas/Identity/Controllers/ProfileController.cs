@@ -12,6 +12,7 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -80,7 +81,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 request.FirstName,
                 request.LastName,
                 request.Gender.ToEnumeration<Gender>(),
-                new Dob(request.Dob.Year, request.Dob.Month, request.Dob.Day));
+                new UserDob(request.Dob.Year, request.Dob.Month, request.Dob.Day));
 
             if (result.Succeeded)
             {

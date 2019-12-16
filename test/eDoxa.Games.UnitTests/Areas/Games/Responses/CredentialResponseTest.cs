@@ -4,9 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Games.Api.Areas.Games.Responses;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Games.Dtos;
+using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -27,12 +28,15 @@ namespace eDoxa.Games.UnitTests.Areas.Games.Responses
         public void DeserializeObject_WhenDeserializeWithJsonConstructor_ShouldBeEquivalentToIntegrationEvent()
         {
             //Arrange
-            var response = new CredentialResponse() { Game = Game.LeagueOfLegends, PlayerId = new PlayerId(), UserId = new UserId()};
+            var response = new CredentialDto
+            {
+                Game = GameDto.LeagueOfLegends, GamePlayerId = new PlayerId(), UserId = new UserId()
+            };
 
             var serializedReponse = JsonConvert.SerializeObject(response);
 
             //Act
-            var responseDeserialized = JsonConvert.DeserializeObject<CredentialResponse>(serializedReponse);
+            var responseDeserialized = JsonConvert.DeserializeObject<CredentialDto>(serializedReponse);
 
             //Assert
             responseDeserialized.Should().BeEquivalentTo(response);

@@ -11,7 +11,7 @@ using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
-using eDoxa.Payment.Api.Areas.Stripe.Extensions;
+using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;

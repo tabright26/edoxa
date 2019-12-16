@@ -15,7 +15,6 @@ using eDoxa.Cashier.Web.Aggregator.Infrastructure;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Grpc.Protos.Payment.Services;
-using eDoxa.Seedwork.Application;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
@@ -81,9 +80,9 @@ namespace eDoxa.Cashier.Web.Aggregator
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppNames.PaymentApi);
+                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
+                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
+                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppServices.PaymentApi);
 
             services.AddCustomCors();
 
@@ -121,20 +120,20 @@ namespace eDoxa.Cashier.Web.Aggregator
             services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(PolicyHandlers.GetRetryPolicy())
-                .AddPolicyHandler(PolicyHandlers.GetCircuitBreakerPolicy());
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
 
             services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(PolicyHandlers.GetRetryPolicy())
-                .AddPolicyHandler(PolicyHandlers.GetCircuitBreakerPolicy());
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
 
             services.AddGrpcClient<PaymentService.PaymentServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.PaymentUrl}:81"))
                 .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(PolicyHandlers.GetRetryPolicy())
-                .AddPolicyHandler(PolicyHandlers.GetCircuitBreakerPolicy());
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)

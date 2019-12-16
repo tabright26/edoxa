@@ -7,8 +7,6 @@
 using System;
 using System.Linq;
 
-using eDoxa.Seedwork.Domain.Misc;
-
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class MoneyAccountDecorator : AccountDecorator, IMoneyAccount

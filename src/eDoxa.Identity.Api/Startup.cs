@@ -116,7 +116,7 @@ namespace eDoxa.Identity.Api
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
 
-            services.AddCustomDataProtection(Configuration, AppNames.IdentityApi);
+            services.AddCustomDataProtection(Configuration, AppServices.IdentityApi);
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
@@ -262,7 +262,7 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.IdentityApi);
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.IdentityApi);
 
             builder.RegisterModule<IdentityModule>();
         }

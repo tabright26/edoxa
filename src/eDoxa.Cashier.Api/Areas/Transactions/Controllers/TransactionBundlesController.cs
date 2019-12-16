@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
-using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

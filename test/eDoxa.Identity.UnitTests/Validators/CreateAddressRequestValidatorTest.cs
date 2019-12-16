@@ -7,8 +7,6 @@
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Identity.Api.Application.ErrorDescribers;
 using eDoxa.Identity.Api.Application.Validators;
-using eDoxa.Seedwork.Application.FluentValidation.ErrorDescribers;
-using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -30,8 +28,8 @@ namespace eDoxa.Identity.UnitTests.Validators
         public static TheoryData<CountryDto, string> InvalidCountries =>
             new TheoryData<CountryDto, string>
             {
-                {CountryDto.None, EnumerationErrorDescribers.NotNull<Country>()},
-                {CountryDto.All, EnumerationErrorDescribers.NotAll<Country>()}
+                {CountryDto.None, ""},  // TODO: Add error message.
+                {CountryDto.All, ""}    // TODO: Add error message.
             };
 
         public static TheoryData<string> ValidLine1Address =>

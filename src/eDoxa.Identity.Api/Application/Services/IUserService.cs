@@ -68,7 +68,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
         Task<UserProfile?> GetInformationsAsync(User user);
 
-        Task<Dob?> GetDobAsync(User user);
+        Task<UserDob?> GetDobAsync(User user);
 
         Task<string?> GetFirstNameAsync(User user);
 
@@ -257,7 +257,7 @@ namespace eDoxa.Identity.Api.Application.Services
             string firstName,
             string lastName,
             Gender gender,
-            Dob dob
+            UserDob dob
         );
 
         Task<IdentityResult> UpdateInformationsAsync(User user, string firstName);

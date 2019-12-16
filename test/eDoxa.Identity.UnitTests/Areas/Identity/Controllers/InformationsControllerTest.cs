@@ -66,7 +66,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var user = new User
             {
-                Profile = new UserProfile("Test", "Test", Gender.Male, new Dob(dob))
+                Profile = new UserProfile("Test", "Test", Gender.Male, new UserDob(dob))
             };
 
             var mockUserManager = new Mock<IUserService>();
@@ -159,7 +159,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<Gender>(),
-                        It.IsAny<Dob>()))
+                        It.IsAny<UserDob>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
@@ -195,7 +195,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<Gender>(),
-                    It.IsAny<Dob>()),
+                    It.IsAny<UserDob>()),
                 Times.Once);
         }
 
@@ -249,7 +249,7 @@ namespace eDoxa.Identity.UnitTests.Areas.Identity.Controllers
 
             var user = new User
             {
-                Profile = new UserProfile("FirstName", "LastName", Gender.Male, new Dob(dob))
+                Profile = new UserProfile("FirstName", "LastName", Gender.Male, new UserDob(dob))
             };
 
             var mockUserManager = new Mock<IUserService>();

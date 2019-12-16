@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {

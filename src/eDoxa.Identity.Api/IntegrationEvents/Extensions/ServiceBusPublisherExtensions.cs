@@ -11,6 +11,7 @@ using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
@@ -83,7 +84,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
             string firstName,
             string lastName,
             Gender gender,
-            Dob dob
+            UserDob dob
         )
         {
             await publisher.PublishAsync(

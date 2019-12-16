@@ -126,7 +126,7 @@ namespace eDoxa.Notifications.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.NotificationsApi);
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.NotificationsApi);
 
             builder.RegisterModule<NotificationsModule>();
         }

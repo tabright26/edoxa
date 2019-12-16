@@ -11,7 +11,7 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Payment.Api.Areas.Stripe.Extensions;
+using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
@@ -126,7 +126,7 @@ namespace eDoxa.Payment.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.PaymentApi);
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.PaymentApi);
 
             builder.RegisterModule<PaymentModule>();
         }

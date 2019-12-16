@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Api.Areas.Games.Controllers;
+using eDoxa.Games.Api.Controllers;
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;

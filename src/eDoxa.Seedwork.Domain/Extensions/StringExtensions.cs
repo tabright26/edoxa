@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Globalization;
+
 namespace eDoxa.Seedwork.Domain.Extensions
 {
     public static class StringExtensions
@@ -18,6 +20,35 @@ namespace eDoxa.Seedwork.Domain.Extensions
         where TStringId : StringId<TStringId>, new()
         {
             return StringId<TStringId>.Parse(stringId);
+        }
+
+        public static string? ToCamelCase(this string? value)
+        {
+            if (string.IsNullOrEmpty(value) || !char.IsUpper(value![0]))
+            {
+                return value;
+            }
+
+            var chars = value.ToCharArray();
+
+            for (var index = 0; index < chars.Length; index++)
+            {
+                if (index == 1 && !char.IsUpper(chars[index]))
+                {
+                    break;
+                }
+
+                var hasNext = index + 1 < chars.Length;
+
+                if (index > 0 && hasNext && !char.IsUpper(chars[index + 1]))
+                {
+                    break;
+                }
+
+                chars[index] = char.ToLower(chars[index], CultureInfo.InvariantCulture);
+            }
+
+            return new string(chars);
         }
     }
 }

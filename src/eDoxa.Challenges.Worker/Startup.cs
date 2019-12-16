@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.Worker
                     Configuration.GetSqlServerConnectionString()!,
                     options => options.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null)));
 
-            services.AddCustomDataProtection(Configuration, AppNames.ChallengesWorker);
+            services.AddCustomDataProtection(Configuration, AppServices.ChallengesWorker);
 
             services.AddHangfire(
                 configuration => configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)

@@ -129,7 +129,7 @@ namespace eDoxa.Challenges.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ChallengesApi);
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.ChallengesApi);
 
             builder.RegisterModule<ChallengesModule>();
         }

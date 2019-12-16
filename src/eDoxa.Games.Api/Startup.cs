@@ -132,7 +132,7 @@ namespace eDoxa.Games.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.GamesApi);
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.GamesApi);
 
             builder.RegisterModule<GamesModule>();
         }

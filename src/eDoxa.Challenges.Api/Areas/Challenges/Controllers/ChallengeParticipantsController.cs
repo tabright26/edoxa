@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
 using eDoxa.Challenges.Domain.Queries;
-using eDoxa.Challenges.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -28,12 +27,10 @@ namespace eDoxa.Challenges.Api.Areas.Challenges.Controllers
     public class ChallengeParticipantsController : ControllerBase
     {
         private readonly IParticipantQuery _participantQuery;
-        private readonly IChallengeService _challengeService;
 
-        public ChallengeParticipantsController(IParticipantQuery participantQuery, IChallengeService challengeService)
+        public ChallengeParticipantsController(IParticipantQuery participantQuery)
         {
             _participantQuery = participantQuery;
-            _challengeService = challengeService;
         }
 
         [HttpGet]

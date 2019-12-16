@@ -7,7 +7,6 @@
 using System;
 
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {

@@ -126,7 +126,7 @@ namespace eDoxa.Clans.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.ClansApi);
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.ClansApi);
 
             builder.RegisterModule<ClansModule>();
         }

@@ -80,7 +80,7 @@ namespace eDoxa.Identity.Api.Application.Services
             return Task.FromResult(user.Profile?.Gender);
         }
 
-        public Task<Dob?> GetDobAsync(User user, CancellationToken cancellationToken = default)
+        public Task<UserDob?> GetDobAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

@@ -132,7 +132,7 @@ namespace eDoxa.Cashier.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterAzureServiceBusModule<Startup>(AppNames.CashierApi);
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.CashierApi);
 
             builder.RegisterModule<CashierModule>();
         }

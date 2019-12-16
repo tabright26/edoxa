@@ -93,7 +93,7 @@ namespace eDoxa.Identity.Api.Application.Services
             string firstName,
             string lastName,
             Gender gender,
-            Dob dob
+            UserDob dob
         )
         {
             this.ThrowIfDisposed();
@@ -168,7 +168,7 @@ namespace eDoxa.Identity.Api.Application.Services
             return result;
         }
 
-        public async Task<Dob?> GetDobAsync(User user)
+        public async Task<UserDob?> GetDobAsync(User user)
         {
             this.ThrowIfDisposed();
 

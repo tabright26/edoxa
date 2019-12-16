@@ -1,18 +1,32 @@
-﻿// Filename: ClaimTypes.cs
-// Date Created: 2019-09-02
+﻿// Filename: CustomClaimTypes.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
+
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Seedwork.Security
 {
     public static class CustomClaimTypes
     {
-        public const string Doxatag = "doxatag";
-        public const string SecurityStamp = "security_stamp";
-        public const string Permission = "permission";
-        public const string Games = "games";
-        public const string Country = "country";
-        public const string Clan = "clanId";
+        // Identity
+        public static readonly string SecurityStamp = "security_stamp";
+        public static readonly string Permission = "permission";
+        public static readonly string Country = "country";
+        public static readonly string Doxatag = "doxatag";
+
+        // Clans
+        public static readonly string Clan = "clan";
+
+        // Payment
+        public static readonly string StripeAccount = "stripe:account";
+        public static readonly string StripeCustomer = "stripe:customer";
+
+        // Games
+        public static string GetGamePlayerFor(Game game)
+        {
+            return $"games:{game.CamelCaseName}";
+        }
     }
 }

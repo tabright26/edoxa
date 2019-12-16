@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Games.Api.Areas.Games.Controllers;
+using eDoxa.Games.Api.Controllers;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;

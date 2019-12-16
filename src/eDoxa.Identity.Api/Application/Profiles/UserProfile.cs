@@ -10,7 +10,6 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Identity.Api.Application.Profiles
 {
@@ -25,7 +24,7 @@ namespace eDoxa.Identity.Api.Application.Profiles
                 .ForMember(profile => profile.Gender, config => config.MapFrom(profile => profile.Gender.ToEnum<GenderDto>()))
                 .ForMember(profile => profile.Dob, config => config.MapFrom(profile => profile.Dob));
 
-            this.CreateMap<Dob, DobDto>()
+            this.CreateMap<UserDob, DobDto>()
                 .ForMember(dob => dob.Year, config => config.MapFrom(dob => dob.Year))
                 .ForMember(dob => dob.Month, config => config.MapFrom(dob => dob.Month))
                 .ForMember(dob => dob.Day, config => config.MapFrom(dob => dob.Day));

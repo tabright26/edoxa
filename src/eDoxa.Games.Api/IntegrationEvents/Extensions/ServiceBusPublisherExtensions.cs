@@ -6,10 +6,10 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Api.Application.Extensions;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Seedwork.Security;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Games.Api.IntegrationEvents.Extensions
@@ -18,8 +18,6 @@ namespace eDoxa.Games.Api.IntegrationEvents.Extensions
     {
         public static async Task PublishUserGamePlayerIdClaimAddedIntegrationEvent(this IServiceBusPublisher publisher, Credential credential)
         {
-            var claim = credential.ToClaim();
-
             await publisher.PublishAsync(
                 new UserClaimsAddedIntegrationEvent
                 {
@@ -28,8 +26,8 @@ namespace eDoxa.Games.Api.IntegrationEvents.Extensions
                     {
                         new UserClaimDto
                         {
-                            Type = claim.Type,
-                            Value = claim.Value
+                            Type = CustomClaimTypes.GetGamePlayerFor(credential.Game),
+                            Value = credential.PlayerId
                         }
                     }
                 });
@@ -37,8 +35,6 @@ namespace eDoxa.Games.Api.IntegrationEvents.Extensions
 
         public static async Task PublishUserGamePlayerIdClaimRemovedIntegrationEvent(this IServiceBusPublisher publisher, Credential credential)
         {
-            var claim = credential.ToClaim();
-
             await publisher.PublishAsync(
                 new UserClaimsRemovedIntegrationEvent
                 {
@@ -47,8 +43,8 @@ namespace eDoxa.Games.Api.IntegrationEvents.Extensions
                     {
                         new UserClaimDto
                         {
-                            Type = claim.Type,
-                            Value = claim.Value
+                            Type = CustomClaimTypes.GetGamePlayerFor(credential.Game),
+                            Value = credential.PlayerId
                         }
                     }
                 });

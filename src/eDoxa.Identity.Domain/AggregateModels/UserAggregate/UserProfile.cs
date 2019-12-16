@@ -19,7 +19,7 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
             string firstName,
             string lastName,
             Gender gender,
-            Dob dob
+            UserDob dob
         ) : this()
         {
             FirstName = firstName;
@@ -39,7 +39,7 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 
         public Gender Gender { get; private set; }
 
-        public Dob Dob { get; private set; }
+        public UserDob Dob { get; private set; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {

@@ -11,6 +11,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace eDoxa.Seedwork.Application.Extensions
@@ -24,7 +25,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     options.SerializerSettings.Converters.Add(new DecimalValueConverter());
                 });
         }

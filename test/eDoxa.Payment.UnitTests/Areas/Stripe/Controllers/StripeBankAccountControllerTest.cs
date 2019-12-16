@@ -7,7 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Payment.Requests;
-using eDoxa.Payment.Api.Areas.Stripe.Controllers;
+using eDoxa.Payment.Api.Controllers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
