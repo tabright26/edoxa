@@ -1,8 +1,5 @@
-import React, { Component } from "react";
-import { Provider } from "react-redux";
-import { mount, ReactWrapper, render, shallow } from "enzyme";
-import { configureStore } from "store";
-import { boolean } from "yup";
+import { Component } from "react";
+import { ReactWrapper } from "enzyme";
 
 Object.defineProperty(ReactWrapper.prototype, "findFieldByName", {
   value: function findFieldByName(fieldName: string): Component {

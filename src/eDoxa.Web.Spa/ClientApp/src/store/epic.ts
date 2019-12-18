@@ -68,6 +68,7 @@ const formSuccessEpic = (action$: any): any =>
       if (resolve) {
         resolve(action.payload);
       }
+      return NEVER;
     })
   );
 

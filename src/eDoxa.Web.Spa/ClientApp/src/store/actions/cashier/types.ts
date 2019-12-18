@@ -128,12 +128,33 @@ export type LoadUserAccountDepositTokenBundlesAction = AxiosAction<
   Bundle[]
 >;
 
+export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES =
+  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES";
+export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS =
+  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS";
+export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL =
+  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL";
+
+export type LoadUserAccountWithdrawalMoneyBundlesType =
+  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES
+  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS
+  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL;
+export type LoadUserAccountWithdrawalMoneyBundlesActionCreator = AxiosActionCreator<
+  LoadUserAccountWithdrawalMoneyBundlesType
+>;
+export type LoadUserAccountWithdrawalMoneyBundlesAction = AxiosAction<
+  LoadUserAccountWithdrawalMoneyBundlesType,
+  Bundle[]
+>;
+
 export type UserAccountDepositBundlesActionCreators =
   | LoadUserAccountDepositMoneyBundlesActionCreator
-  | LoadUserAccountDepositTokenBundlesActionCreator;
+  | LoadUserAccountDepositTokenBundlesActionCreator
+  | LoadUserAccountWithdrawalMoneyBundlesActionCreator;
 export type UserAccountDepositBundlesActions =
   | LoadUserAccountDepositMoneyBundlesAction
-  | LoadUserAccountDepositTokenBundlesAction;
+  | LoadUserAccountDepositTokenBundlesAction
+  | LoadUserAccountWithdrawalMoneyBundlesAction;
 
 export const LOAD_USER_ACCOUNT_TRANSACTIONS = "LOAD_USER_ACCOUNT_TRANSACTIONS";
 export const LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS =
@@ -176,25 +197,3 @@ export type UserAccountWithdrawalMoneyAction = AxiosAction<
 
 export type UserAccountWithdrawalActionCreators = UserAccountWithdrawalMoneyActionCreator;
 export type UserAccountWithdrawalActions = UserAccountWithdrawalMoneyAction;
-
-export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES =
-  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES";
-export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS =
-  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS";
-export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL =
-  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL";
-
-export type LoadUserAccountWithdrawalMoneyBundlesType =
-  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES
-  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS
-  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL;
-export type LoadUserAccountWithdrawalMoneyBundlesActionCreator = AxiosActionCreator<
-  LoadUserAccountWithdrawalMoneyBundlesType
->;
-export type LoadUserAccountWithdrawalMoneyBundlesAction = AxiosAction<
-  LoadUserAccountWithdrawalMoneyBundlesType,
-  Bundle[]
->;
-
-export type UserAccountWithdrawalBundlesActionCreators = LoadUserAccountWithdrawalMoneyBundlesActionCreator;
-export type UserAccountWithdrawalBundlesActions = LoadUserAccountWithdrawalMoneyBundlesAction;

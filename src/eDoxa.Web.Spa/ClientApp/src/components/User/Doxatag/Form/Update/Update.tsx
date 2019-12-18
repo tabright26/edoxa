@@ -45,9 +45,9 @@ const validate = values => {
 
 async function submit(values, dispatch) {
   try {
-    return await new Promise((resolve, reject) => {
+    return await new Promise(async (resolve, reject) => {
       const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(updateUserDoxatag(values, meta));
+      await dispatch(updateUserDoxatag(values, meta));
     });
   } catch (error) {
     throwSubmissionError(error);
