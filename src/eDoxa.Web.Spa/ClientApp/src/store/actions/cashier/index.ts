@@ -27,7 +27,6 @@ import {
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS,
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL,
   UserAccountDepositBundlesActionCreators,
-  UserAccountWithdrawalBundlesActionCreators,
   UserAccountDepositActionCreators,
   UserAccountWithdrawalActionCreators,
   UserAccountTransactionsActionCreators,
@@ -39,7 +38,9 @@ import {
   MONEY,
   TOKEN,
   TransactionType,
-  TransactionStatus
+  TransactionStatus,
+  TRANSACTION_TYPE_DEPOSIT,
+  TRANSACTION_TYPE_WITHDRAWAL
 } from "types";
 import { AxiosPayload, AxiosActionCreatorMeta } from "utils/axios/types";
 
@@ -49,7 +50,7 @@ export function loadUserAccountBalance(
   const payload: AxiosPayload = {
     request: {
       method: "GET",
-      url: `/cashier/api/account/balance/${currency}`
+      url: `/cashier/api/balance/${currency}`
     }
   };
   switch (currency) {
@@ -115,34 +116,59 @@ export function accountDeposit(
   }
 }
 
-export function loadUserAccountDepositBundlesFor(
+export function loadTransactionBundles(
+  transactionType: TransactionType,
   currency: Currency
 ): UserAccountDepositBundlesActionCreators {
   const payload: AxiosPayload = {
     request: {
       method: "GET",
-      url: `/cashier/api/account/deposit/${currency}/bundles`
+      url: `/cashier/api/transactions/${transactionType}/bundles`,
+      params: {
+        currency
+      }
     }
   };
   switch (currency) {
-    case MONEY:
-      return {
-        types: [
-          LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES,
-          LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_SUCCESS,
-          LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_FAIL
-        ],
-        payload
-      };
-    case TOKEN:
-      return {
-        types: [
-          LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES,
-          LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS,
-          LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL
-        ],
-        payload
-      };
+    case MONEY: {
+      switch (transactionType) {
+        case TRANSACTION_TYPE_DEPOSIT: {
+          return {
+            types: [
+              LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES,
+              LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_SUCCESS,
+              LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_FAIL
+            ],
+            payload
+          };
+        }
+        case TRANSACTION_TYPE_WITHDRAWAL: {
+          return {
+            types: [
+              LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES,
+              LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS,
+              LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL
+            ],
+            payload
+          };
+        }
+      }
+      break;
+    }
+    case TOKEN: {
+      switch (transactionType) {
+        case TRANSACTION_TYPE_DEPOSIT: {
+          return {
+            types: [
+              LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES,
+              LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS,
+              LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL
+            ],
+            payload
+          };
+        }
+      }
+    }
   }
 }
 
@@ -199,30 +225,5 @@ export function accountWithdrawal(
       };
     case TOKEN:
       throw new Error("Token is not supported for withdrawal.");
-  }
-}
-
-export function loadUserAccountWithdrawalBundlesFor(
-  currency: Currency
-): UserAccountWithdrawalBundlesActionCreators {
-  const payload: AxiosPayload = {
-    request: {
-      method: "GET",
-      url: `/cashier/api/account/withdrawal/${currency}/bundles`
-    }
-  };
-  switch (currency) {
-    case "money":
-      return {
-        types: [
-          LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES,
-          LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS,
-          LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL
-        ],
-        payload
-      };
-    case "token": {
-      throw new Error("Token is not supported for withdrawal.");
-    }
   }
 }

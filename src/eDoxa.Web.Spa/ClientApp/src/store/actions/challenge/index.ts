@@ -19,7 +19,7 @@ export function loadChallenges(): ChallengesActionCreators {
     payload: {
       request: {
         method: "GET",
-        url: "/challenge/api/challenges"
+        url: "/api/challenges"
       }
     }
   };
@@ -33,7 +33,7 @@ export function loadChallenge(
     payload: {
       request: {
         method: "GET",
-        url: `/challenge/api/challenges/${challengeId}`
+        url: `/api/challenges/${challengeId}`
       }
     }
   };
@@ -51,7 +51,7 @@ export function registerChallengeParticipant(
     payload: {
       request: {
         method: "POST",
-        url: `/challenge/api/challenges/${challengeId}/participants`
+        url: `/api/challenges/${challengeId}/participants`
       }
     }
   };

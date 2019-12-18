@@ -1,5 +1,9 @@
 import { reducer, initialState } from "./reducer";
-import { DOWNLOAD_CLAN_LOGO_SUCCESS, DOWNLOAD_CLAN_LOGO_FAIL, UPLOAD_CLAN_LOGO_SUCCESS } from "./types";
+import {
+  DOWNLOAD_CLAN_LOGO_SUCCESS,
+  DOWNLOAD_CLAN_LOGO_FAIL,
+  UPLOAD_CLAN_LOGO_SUCCESS
+} from "store/actions/clan/types";
 import { AxiosError } from "axios";
 
 //TODO

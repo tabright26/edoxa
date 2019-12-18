@@ -1,13 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Update from "./Update";
 import { configureStore } from "store";
-import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";
 import {
-  DOXATAG_REQUIRED,
-  DOXATAG_INVALID,
   CC_MONTH_REQUIRED,
   CC_MONTH_INVALID,
   CC_YEAR_REQUIRED,
@@ -21,9 +18,16 @@ const initialState: any = {};
 const store = configureStore(initialState);
 
 const createWrapper = (): ReactWrapper | any => {
+  const initialValues = {
+    card: {
+      brand: "visa",
+      last4: "1234",
+      expYear: "2030"
+    }
+  };
   return mount(
     <Provider store={store}>
-      <Update />
+      <Update intialValues={initialValues} />
     </Provider>
   );
 };

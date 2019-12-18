@@ -16,7 +16,7 @@ describe("challenge actions", () => {
       LOAD_CHALLENGES_FAIL
     ];
     const expectedMethod = "GET";
-    const expectedUrl = "/challenge/api/challenges";
+    const expectedUrl = "/api/challenges";
 
     const actionCreator = loadChallenges();
 
@@ -34,7 +34,7 @@ describe("challenge actions", () => {
       LOAD_CHALLENGE_FAIL
     ];
     const expectedMethod = "GET";
-    const expectedUrl = `/challenge/api/challenges/${challengeId}`;
+    const expectedUrl = `/api/challenges/${challengeId}`;
 
     const actionCreator = loadChallenge(challengeId);
 

@@ -34,7 +34,7 @@ describe("<UserInformationUpdateForm />", () => {
       const wrapper = createWrapper();
       const field = wrapper.findFieldByName("firstName");
 
-      expect(field.prop("label")).toBe("Enter your first name");
+      expect(field.prop("label")).toBe("First name");
       expect(field.prop("component")).toBe(Input.Text);
     });
 
