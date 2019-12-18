@@ -6,10 +6,10 @@ import {
   UPDATE_USER_PHONE,
   UPDATE_USER_PHONE_SUCCESS,
   UPDATE_USER_PHONE_FAIL,
-  UserPhoneActions,
-  UserPhoneState
-} from "./types";
+  UserPhoneActions
+} from "store/actions/identity/types";
 import produce, { Draft } from "immer";
+import { UserPhoneState } from "./types";
 
 export const initialState: UserPhoneState = {
   data: {

@@ -6,7 +6,7 @@ import {
   sendClanInvitation,
   acceptClanInvitation,
   declineClanInvitation
-} from "store/root/organization/invitation/actions";
+} from "store/actions/clan";
 import { ClanInvitationsState } from "store/root/organization/invitation/types";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";

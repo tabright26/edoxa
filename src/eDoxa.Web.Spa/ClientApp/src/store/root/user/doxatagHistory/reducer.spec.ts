@@ -1,17 +1,16 @@
 import { reducer, initialState } from "./reducer";
-import {
-  LOAD_USER_DOXATAGHISTORY,
-  LOAD_USER_DOXATAGHISTORY_SUCCESS,
-  LOAD_USER_DOXATAGHISTORY_FAIL,
-  UPDATE_USER_DOXATAG,
-  UPDATE_USER_DOXATAG_SUCCESS,
-  UPDATE_USER_DOXATAG_FAIL,
-  UserDoxatagHistoryActionCreators
-} from "./types";
 import { AxiosError } from "axios";
+import {
+  LOAD_USER_DOXATAGHISTORY_SUCCESS,
+  LOAD_USER_DOXATAGHISTORY_FAIL
+} from "store/actions/identity/types";
 
 const doxatagHistory204Data = [];
-const doxatagHistory200Data = [{ doxatag: "Doxatag1" }, { doxatag: "Doxatag2" }, { doxatag: "Doxatag3" }];
+const doxatagHistory200Data = [
+  { doxatag: "Doxatag1" },
+  { doxatag: "Doxatag2" },
+  { doxatag: "Doxatag3" }
+];
 
 describe("user doxatag history reducer", () => {
   it("should return the initial state", () => {

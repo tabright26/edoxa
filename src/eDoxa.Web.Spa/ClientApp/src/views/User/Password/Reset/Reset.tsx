@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
 import { Card, CardBody } from "reactstrap";
 import queryString from "query-string";
-import PasswordForm from "forms/User/Password";
+import PasswordForm from "components/User/Password/Form";
 
 const ResetPassword: FunctionComponent<any> = ({ location }) => {
   const code = queryString.parse(location.search).code;

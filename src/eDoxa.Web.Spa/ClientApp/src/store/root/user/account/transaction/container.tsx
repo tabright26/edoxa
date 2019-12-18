@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { loadUserAccountTransactions } from "store/root/user/account/transaction/actions";
+import { loadUserAccountTransactions } from "store/actions/cashier";
 import { RootState } from "store/types";
 import { UserAccountTransactionsState } from "./types";
 import { Currency, TransactionType, TransactionStatus } from "types";
@@ -15,7 +15,9 @@ interface UserAccountTransactionsOwnProps {
   status?: TransactionStatus | null;
 }
 
-export const withUserAccountTransactions = (HighOrderComponent: FunctionComponent<any>) => {
+export const withUserAccountTransactions = (
+  HighOrderComponent: FunctionComponent<any>
+) => {
   const Container: FunctionComponent<any> = props => {
     useEffect((): void => {
       props.loadUserAccountTransactions();
@@ -24,20 +26,31 @@ export const withUserAccountTransactions = (HighOrderComponent: FunctionComponen
     return <HighOrderComponent {...props} />;
   };
 
-  const mapStateToProps: MapStateToProps<UserAccountTransactionsStateProps, UserAccountTransactionsOwnProps, RootState> = state => {
+  const mapStateToProps: MapStateToProps<
+    UserAccountTransactionsStateProps,
+    UserAccountTransactionsOwnProps,
+    RootState
+  > = state => {
     return {
       transactions: state.root.user.account.transaction
     };
   };
 
-  const mapDispatchToProps = (dispatch: any, ownProps: UserAccountTransactionsOwnProps) => {
+  const mapDispatchToProps = (
+    dispatch: any,
+    ownProps: UserAccountTransactionsOwnProps
+  ) => {
     return {
-      loadUserAccountTransactions: () => dispatch(loadUserAccountTransactions(ownProps.currency, ownProps.type, ownProps.status))
+      loadUserAccountTransactions: () =>
+        dispatch(
+          loadUserAccountTransactions(
+            ownProps.currency,
+            ownProps.type,
+            ownProps.status
+          )
+        )
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserAddressBook } from "store/root/user/addressBook/actions";
+import { loadUserAddressBook } from "store/actions/identity";
 import { RootState } from "store/types";
 
 export const withUserAddressBook = (HighOrderComponent: FunctionComponent<any>) => {

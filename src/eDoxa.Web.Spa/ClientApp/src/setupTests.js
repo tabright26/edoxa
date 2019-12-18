@@ -1,5 +1,10 @@
-import { configure } from "enzyme";
+import { configure, mount, shallow, render } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import "utils/test/helper";
+
+global.mount = mount;
+global.shallow = shallow;
+global.render = render;
 
 configure({ adapter: new Adapter() });
 

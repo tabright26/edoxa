@@ -17,33 +17,37 @@ const composeEnhancers =
   (window["__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] as typeof compose) || compose;
 
 const configure = (initialState: RootState) => {
-  if (process.env.NODE_ENV === "production") {
-    return createStore(
-      rootReducer,
-      initialState,
-      applyMiddleware(
-        thunkMiddleware,
-        axiosMiddleware,
-        signalrMiddleware,
-        routerMiddleware,
-        epicMiddleware
-      )
-    );
-  } else {
-    return createStore(
-      rootReducer,
-      initialState,
-      composeEnhancers(
+  switch (process.env.NODE_ENV) {
+    case "production":
+    case "test": {
+      return createStore(
+        rootReducer,
+        initialState,
         applyMiddleware(
           thunkMiddleware,
           axiosMiddleware,
           signalrMiddleware,
           routerMiddleware,
-          loggerMiddleware,
           epicMiddleware
         )
-      )
-    );
+      );
+    }
+    default: {
+      return createStore(
+        rootReducer,
+        initialState,
+        composeEnhancers(
+          applyMiddleware(
+            thunkMiddleware,
+            axiosMiddleware,
+            signalrMiddleware,
+            routerMiddleware,
+            loggerMiddleware,
+            epicMiddleware
+          )
+        )
+      );
+    }
   }
 };
 

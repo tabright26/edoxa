@@ -11,11 +11,11 @@ import {
   UPDATE_STRIPE_PAYMENTMETHOD,
   UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS,
   UPDATE_STRIPE_PAYMENTMETHOD_FAIL,
-  StripePaymentMethodsActions,
-  StripePaymentMethodsState
-} from "./types";
+  StripePaymentMethodsActions
+} from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { StripePaymentMethodsState } from "./types";
 
 export const initialState: StripePaymentMethodsState = {
   data: [],
@@ -23,74 +23,87 @@ export const initialState: StripePaymentMethodsState = {
   loading: false
 };
 
-export const reducer: Reducer<StripePaymentMethodsState, StripePaymentMethodsActions> = produce((draft: Draft<StripePaymentMethodsState>, action: StripePaymentMethodsActions) => {
-  switch (action.type) {
-    case LOAD_STRIPE_PAYMENTMETHODS:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case LOAD_STRIPE_PAYMENTMETHODS_SUCCESS:
-      const { status, data } = action.payload;
-      switch (status) {
-        case 204:
-          draft.error = null;
-          draft.loading = false;
-          break;
-        default:
-          draft.data = data;
-          draft.error = null;
-          draft.loading = false;
-          break;
+export const reducer: Reducer<
+  StripePaymentMethodsState,
+  StripePaymentMethodsActions
+> = produce(
+  (
+    draft: Draft<StripePaymentMethodsState>,
+    action: StripePaymentMethodsActions
+  ) => {
+    switch (action.type) {
+      case LOAD_STRIPE_PAYMENTMETHODS:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case LOAD_STRIPE_PAYMENTMETHODS_SUCCESS:
+        const { status, data } = action.payload;
+        switch (status) {
+          case 204:
+            draft.error = null;
+            draft.loading = false;
+            break;
+          default:
+            draft.data = data;
+            draft.error = null;
+            draft.loading = false;
+            break;
+        }
+        break;
+      case LOAD_STRIPE_PAYMENTMETHODS_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+      case ATTACH_STRIPE_PAYMENTMETHOD:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
+        const { data } = action.payload;
+        draft.data.push(data);
+        draft.error = null;
+        draft.loading = false;
+        break;
       }
-      break;
-    case LOAD_STRIPE_PAYMENTMETHODS_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-    case ATTACH_STRIPE_PAYMENTMETHOD:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case ATTACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
-      const { data } = action.payload;
-      draft.data.push(data);
-      draft.error = null;
-      draft.loading = false;
-      break;
+      case ATTACH_STRIPE_PAYMENTMETHOD_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+      case UPDATE_STRIPE_PAYMENTMETHOD:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS: {
+        const { data } = action.payload;
+        draft.data[
+          draft.data.findIndex(paymentMethod => paymentMethod.id === data.id)
+        ] = data;
+        draft.error = null;
+        draft.loading = false;
+        break;
+      }
+      case UPDATE_STRIPE_PAYMENTMETHOD_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+      case DETACH_STRIPE_PAYMENTMETHOD:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case DETACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
+        const { data } = action.payload;
+        draft.data = draft.data.filter(
+          paymentMethod => paymentMethod.id !== data.id
+        );
+        draft.error = null;
+        draft.loading = false;
+        break;
+      }
+      case DETACH_STRIPE_PAYMENTMETHOD_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
     }
-    case ATTACH_STRIPE_PAYMENTMETHOD_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-    case UPDATE_STRIPE_PAYMENTMETHOD:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS: {
-      const { data } = action.payload;
-      draft.data[draft.data.findIndex(paymentMethod => paymentMethod.id === data.id)] = data;
-      draft.error = null;
-      draft.loading = false;
-      break;
-    }
-    case UPDATE_STRIPE_PAYMENTMETHOD_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-    case DETACH_STRIPE_PAYMENTMETHOD:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case DETACH_STRIPE_PAYMENTMETHOD_SUCCESS: {
-      const { data } = action.payload;
-      draft.data = draft.data.filter(paymentMethod => paymentMethod.id !== data.id);
-      draft.error = null;
-      draft.loading = false;
-      break;
-    }
-    case DETACH_STRIPE_PAYMENTMETHOD_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-  }
-}, initialState);
+  },
+  initialState
+);
