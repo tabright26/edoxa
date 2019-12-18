@@ -6,9 +6,11 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain.Extensions;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
@@ -28,13 +30,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     {
         private readonly IUserService _userService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IRedirectService _redirectService;
 
-        public PasswordForgotController(IUserService userService, IServiceBusPublisher serviceBusPublisher, IRedirectService redirectService)
+        public PasswordForgotController(IUserService userService, IServiceBusPublisher serviceBusPublisher)
         {
             _userService = userService;
             _serviceBusPublisher = serviceBusPublisher;
-            _redirectService = redirectService;
         }
 
         [HttpPost]
@@ -54,20 +54,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     // visit https://go.microsoft.com/fwlink/?LinkID=532713
                     var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                    await _serviceBusPublisher.PublishAsync(
-                        new UserPasswordResetTokenGeneratedIntegrationEvent
-                        {
-                            UserId = user.Id.ToString(),
-                            Code = code
-                        });
-
-                    //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
-
-                    //await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                    //    UserId.FromGuid(user.Id),
-                    //    request.Email,
-                    //    "Reset Password",
-                    //    $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+                    await _serviceBusPublisher.PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(user.Id.From<UserId>(), code);
                 }
 
                 return this.Ok();

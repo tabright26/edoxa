@@ -1,5 +1,5 @@
-﻿// Filename: ChallengeClosedDomainEventHandler.cs
-// Date Created: 2019-11-05
+﻿// Filename: ChallengeSynchronizedDomainEventHandler.cs
+// Date Created: 2019-12-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,18 +14,18 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.Application.DomainEvents.Handlers
 {
-    public sealed class ChallengeClosedDomainEventHandler : IDomainEventHandler<ChallengeClosedDomainEvent>
+    public sealed class ChallengeSynchronizedDomainEventHandler : IDomainEventHandler<ChallengeSynchronizedDomainEvent>
     {
         private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public ChallengeClosedDomainEventHandler(IServiceBusPublisher serviceBusPublisher)
+        public ChallengeSynchronizedDomainEventHandler(IServiceBusPublisher serviceBusPublisher)
         {
             _serviceBusPublisher = serviceBusPublisher;
         }
 
-        public async Task Handle(ChallengeClosedDomainEvent domainEvent, CancellationToken cancellationToken)
+        public async Task Handle(ChallengeSynchronizedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            await _serviceBusPublisher.PublishChallengeSynchronizedIntegrationEventAsync(domainEvent.Challenge.Id, domainEvent.Challenge.Scoreboard);
+            await _serviceBusPublisher.PublishChallengeSynchronizedIntegrationEventAsync(domainEvent.Challenge);
         }
     }
 }

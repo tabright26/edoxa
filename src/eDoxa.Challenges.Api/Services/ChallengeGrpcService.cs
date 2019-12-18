@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Application.Profiles;
+using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
@@ -22,6 +23,7 @@ using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.ServiceBus.Abstractions;
 
 using Grpc.Core;
 
@@ -31,11 +33,13 @@ namespace eDoxa.Challenges.Api.Services
     {
         private readonly IChallengeService _challengeService;
         private readonly IChallengeQuery _challengeQuery;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
 
-        public ChallengeGrpcService(IChallengeService challengeService, IChallengeQuery challengeQuery)
+        public ChallengeGrpcService(IChallengeService challengeService, IChallengeQuery challengeQuery, IServiceBusPublisher serviceBusPublisher)
         {
             _challengeService = challengeService;
             _challengeQuery = challengeQuery;
+            _serviceBusPublisher = serviceBusPublisher;
         }
 
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
@@ -48,7 +52,7 @@ namespace eDoxa.Challenges.Api.Services
             {
                 Challenges =
                 {
-                    (challenges.Select(ChallengeProfile.Map))
+                    challenges.Select(ChallengeProfile.Map)
                 }
             };
 
@@ -74,35 +78,26 @@ namespace eDoxa.Challenges.Api.Services
 
         public override async Task<CreateChallengeResponse> CreateChallenge(CreateChallengeRequest request, ServerCallContext context)
         {
-            try
-            {
-                var result = await _challengeService.CreateChallengeAsync(
-                    new ChallengeName(request.Name),
-                    request.Game.ToEnumeration<Game>(),
-                    new BestOf(request.BestOf),
-                    new Entries(request.Entries),
-                    new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
-                    new UtcNowDateTimeProvider(),
-                    new Scoring(request.Scoring));
+            var result = await _challengeService.CreateChallengeAsync(
+                new ChallengeName(request.Name),
+                request.Game.ToEnumeration<Game>(),
+                new BestOf(request.BestOf),
+                new Entries(request.Entries),
+                new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
+                new UtcNowDateTimeProvider(),
+                new Scoring(request.Scoring));
 
-                if (result.IsValid)
+            if (result.IsValid)
+            {
+                var response = new CreateChallengeResponse
                 {
-                    var response = new CreateChallengeResponse
-                    {
-                        Challenge = ChallengeProfile.Map(result.GetEntityFromMetadata<IChallenge>())
-                    };
+                    Challenge = ChallengeProfile.Map(result.GetEntityFromMetadata<IChallenge>())
+                };
 
-                    return context.Ok(response);
-                }
-
-                throw context.FailedPreconditionRpcException(result, string.Empty);
+                return context.Ok(response);
             }
-            catch (Exception exception)
-            {
-                // TODO: Integration required. SAGA PATTERN.
 
-                throw exception.Capture();
-            }
+            throw context.FailedPreconditionRpcException(result, string.Empty);
         }
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
@@ -119,44 +114,43 @@ namespace eDoxa.Challenges.Api.Services
             ServerCallContext context
         )
         {
-            try
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
+
+            var participantId = request.ParticipantId.ParseEntityId<ParticipantId>();
+
+            var gamePlayerId = request.GamePlayerId.ParseStringId<PlayerId>();
+
+            var challenge = await _challengeService.FindChallengeOrNullAsync(challengeId);
+
+            if (challenge == null)
             {
-                var httpContext = context.GetHttpContext();
-
-                var userId = httpContext.GetUserId();
-
-                var challenge = await _challengeService.FindChallengeOrNullAsync(request.ChallengeId.ParseEntityId<ChallengeId>());
-
-                if (challenge == null)
-                {
-                    throw context.NotFoundRpcException("Challenge not found.");
-                }
-
-                var result = await _challengeService.RegisterChallengeParticipantAsync(
-                    challenge,
-                    userId,
-                    request.ParticipantId.ParseEntityId<ParticipantId>(),
-                    request.GamePlayerId.ParseStringId<PlayerId>(),
-                    new UtcNowDateTimeProvider());
-
-                if (result.IsValid)
-                {
-                    var response = new RegisterChallengeParticipantResponse
-                    {
-                        Participant = ChallengeProfile.Map(challenge, result.GetEntityFromMetadata<Participant>())
-                    };
-
-                    return context.Ok(response);
-                }
-
-                throw context.FailedPreconditionRpcException(result, string.Empty);
+                throw context.NotFoundRpcException("Challenge not found.");
             }
-            catch (Exception exception)
+
+            var result = await _challengeService.RegisterChallengeParticipantAsync(
+                challenge,
+                userId,
+                participantId,
+                gamePlayerId,
+                new UtcNowDateTimeProvider());
+
+            if (result.IsValid)
             {
-                // TODO: Integration required. SAGA PATTERN.
+                var response = new RegisterChallengeParticipantResponse
+                {
+                    Participant = ChallengeProfile.Map(challenge, result.GetEntityFromMetadata<Participant>())
+                };
 
-                throw exception.Capture();
+                return context.Ok(response);
             }
+
+            await _serviceBusPublisher.PublishRegisterChallengeParticipantFailedIntegrationEventAsync(challengeId, userId, participantId);
+
+            throw context.FailedPreconditionRpcException(result, string.Empty);
         }
     }
 }

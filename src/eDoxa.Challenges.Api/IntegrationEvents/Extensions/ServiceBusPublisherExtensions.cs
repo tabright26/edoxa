@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Seedwork.Domain.Misc;
@@ -17,28 +18,56 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishCreateChallengeFailedIntegrationEventAsync(this IServiceBusPublisher publisher, ChallengeId challengeId)
+        public static async Task PublishChallengeSynchronizedIntegrationEventAsync(this IServiceBusPublisher publisher, IChallenge challenge)
         {
-            var integrationEvent = new CreateChallengeFailedIntegrationEvent
+            var integrationEvent = new ChallengeSynchronizedIntegrationEvent
             {
-                ChallengeId = challengeId
+                ChallengeId = challenge.Id,
+                Scoreboard =
+                {
+                    challenge.Scoreboard.ToDictionary(
+                        item => item.Key.ToString(),
+                        item => item.Value == null ? null : DecimalValue.FromDecimal(item.Value.ToDecimal()))
+                }
             };
 
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishChallengeSynchronizedIntegrationEventAsync(
+        public static async Task PublishChallengeParticipantRegisteredIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             ChallengeId challengeId,
-            IScoreboard scoreboard
+            UserId userId,
+            ParticipantId participantId
         )
         {
-            var integrationEvent = new ChallengeSynchronizedIntegrationEvent
+            var integrationEvent = new ChallengeParticipantRegisteredIntegrationEvent
             {
-                ChallengeId = challengeId,
-                Scoreboard =
+                Participant = new ParticipantDto
                 {
-                    scoreboard.ToDictionary(item => item.Key.ToString(), item => DecimalValue.FromDecimal(item.Value?.ToDecimal() ?? 0M)) // TODO
+                    Id = participantId,
+                    ChallengeId = challengeId,
+                    UserId = userId
+                }
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishRegisterChallengeParticipantFailedIntegrationEventAsync(
+            this IServiceBusPublisher publisher,
+            ChallengeId challengeId,
+            UserId userId,
+            ParticipantId participantId
+        )
+        {
+            var integrationEvent = new RegisterChallengeParticipantFailedIntegrationEvent
+            {
+                Participant = new ParticipantDto
+                {
+                    Id = participantId,
+                    ChallengeId = challengeId,
+                    UserId = userId
                 }
             };
 

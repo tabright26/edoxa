@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
@@ -18,26 +19,24 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
         UserEmailConfirmationTokenGeneratedIntegrationEventHandler : IIntegrationEventHandler<UserEmailConfirmationTokenGeneratedIntegrationEvent>
     {
         private readonly IUserService _userService;
+        private readonly IRedirectService _redirectService;
 
-        public UserEmailConfirmationTokenGeneratedIntegrationEventHandler(IUserService userService)
+        public UserEmailConfirmationTokenGeneratedIntegrationEventHandler(IUserService userService, IRedirectService redirectService)
         {
             _userService = userService;
+            _redirectService = redirectService;
         }
 
         public async Task HandleAsync(UserEmailConfirmationTokenGeneratedIntegrationEvent integrationEvent)
         {
-            //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
+            var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={integrationEvent.UserId}&code={integrationEvent.Code}";
 
-            //await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-            //    UserId.FromGuid(user.Id),
-            //    Input.Email,
-            //    "Confirm your email",
-            //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+            var href = WebUtility.UrlEncode(callbackUrl);
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
-                nameof(UserCreatedIntegrationEvent),
-                nameof(UserCreatedIntegrationEvent));
+                "Confirm your email",
+                $"Please confirm your account by <a href=\"{href}\">clicking here</a>.");
         }
     }
 }

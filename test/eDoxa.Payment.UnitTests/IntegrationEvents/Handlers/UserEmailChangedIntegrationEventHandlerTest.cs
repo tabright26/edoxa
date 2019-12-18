@@ -35,9 +35,11 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserEmailChangedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockService = new Mock<IStripeService>();
+            var mockStripeService = new Mock<IStripeService>();
             var mockAccountService = new Mock<IStripeAccountService>();
             var mockLogger = new MockLogger<UserEmailChangedIntegrationEventHandler>();
+
+            mockStripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
@@ -45,7 +47,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
-            var handler = new UserEmailChangedIntegrationEventHandler(mockService.Object, mockAccountService.Object, mockLogger.Object);
+            var handler = new UserEmailChangedIntegrationEventHandler(mockStripeService.Object, mockAccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserEmailChangedIntegrationEvent
             {

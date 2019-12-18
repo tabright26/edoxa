@@ -11,8 +11,10 @@ using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
 
@@ -36,14 +38,19 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var mockLogger = new MockLogger<UserCreatedIntegrationEventHandler>();
 
-            mockAccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>())).Verifiable();
+            mockAccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()))
+                .ReturnsAsync(new DomainValidationResult())
+                .Verifiable();
 
             var handler = new UserCreatedIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
                 UserId = Guid.NewGuid().ToString(),
-                Email = "noreply@edoxa.gg",
+                Email = new EmailDto
+                {
+                    Address = "noreply@edoxa.gg"
+                },
                 Country = CountryDto.Canada
             };
 

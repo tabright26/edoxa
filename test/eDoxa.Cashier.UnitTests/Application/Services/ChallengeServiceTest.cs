@@ -109,29 +109,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task DeleteChallengeAsync_ShouldBeOfTypeChallenge()
-        {
-            // Arrange
-            var challenge = TestData.FakerFactory.CreateChallengeFaker(1000).FakeChallenge();
-
-            var mockChallengePayoutFactory = new Mock<IChallengePayoutFactory>();
-            var mockChallengeRepository = new Mock<IChallengeRepository>();
-
-            mockChallengeRepository.Setup(repository => repository.Delete(It.IsAny<Challenge>())).Verifiable();
-
-            mockChallengeRepository.Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
-
-            var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
-
-            // Act
-            await service.DeleteChallengeAsync(challenge);
-
-            // Assert
-            mockChallengeRepository.Verify(repository => repository.Delete(It.IsAny<Challenge>()), Times.Once);
-            mockChallengeRepository.Verify(repository => repository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
         public async Task FindChallengeAsync_ShouldBeOfTypeChallenge()
         {
             // Arrange

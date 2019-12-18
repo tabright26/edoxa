@@ -23,6 +23,7 @@ namespace eDoxa.Notifications.Api.Infrastructure
             // Services
             builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<EmailService>().As<IEmailService>().SingleInstance();
+            builder.RegisterType<RedirectService>().As<IRedirectService>().SingleInstance();
         }
     }
 }

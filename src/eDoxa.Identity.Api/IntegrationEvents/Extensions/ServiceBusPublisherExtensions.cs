@@ -19,18 +19,43 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishUserCreatedIntegrationEventAsync(
+        public static async Task PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, string code)
+        {
+            var integrationEvent = new UserPasswordResetTokenGeneratedIntegrationEvent
+            {
+                UserId = userId.ToString(),
+                Code = code
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,
-            string email,
-            Country country
+            string code
         )
+        {
+            var integrationEvent = new UserEmailConfirmationTokenGeneratedIntegrationEvent
+            {
+                UserId = userId.ToString(),
+                Code = code
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishUserCreatedIntegrationEventAsync(this IServiceBusPublisher publisher, User user)
         {
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                UserId = userId,
-                Email = email,
-                Country = country.ToEnum<CountryDto>()
+                UserId = user.Id.ToString(),
+                Email = new EmailDto
+                {
+                    Address = user.Email,
+                    Verified = user.EmailConfirmed
+                },
+                Country = user.Country.ToEnum<CountryDto>()
             };
 
             await publisher.PublishAsync(integrationEvent);
@@ -104,32 +129,6 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     Number = user.PhoneNumber,
                     Verified = user.PhoneNumberConfirmed
                 }
-            };
-
-            await publisher.PublishAsync(integrationEvent);
-        }
-
-        public static async Task PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, string code)
-        {
-            var integrationEvent = new UserPasswordResetTokenGeneratedIntegrationEvent
-            {
-                UserId = userId,
-                Code = code
-            };
-
-            await publisher.PublishAsync(integrationEvent);
-        }
-
-        public static async Task PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string code
-        )
-        {
-            var integrationEvent = new UserEmailConfirmationTokenGeneratedIntegrationEvent
-            {
-                UserId = userId,
-                Code = code
             };
 
             await publisher.PublishAsync(integrationEvent);

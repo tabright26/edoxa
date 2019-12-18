@@ -22,6 +22,9 @@ namespace eDoxa.Notifications.Api.Infrastructure
 
         [Required]
         public string Authority { get; set; }
+        
+        [Required]
+        public string WebSpaUrl { get; set; }
 
         [Required]
         public AuthorityEndpointsOptions Endpoints { get; set; }

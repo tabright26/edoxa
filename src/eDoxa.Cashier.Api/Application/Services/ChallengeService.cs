@@ -32,22 +32,6 @@ namespace eDoxa.Cashier.Api.Application.Services
             return await _challengeRepository.FindChallengeOrNullAsync(challengeId);
         }
 
-        public async Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
-        {
-            var result = new DomainValidationResult();
-
-            if (result.IsValid)
-            {
-                _challengeRepository.Delete(challenge);
-
-                await _challengeRepository.CommitAsync(cancellationToken);
-
-                result.AddEntityToMetadata(challenge);
-            }
-
-            return result;
-        }
-
         public async Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId challengeId,
             PayoutEntries payoutEntries,

@@ -22,7 +22,10 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
         private readonly IAccountService _accountService;
         private readonly ILogger _logger;
 
-        public ChallengeParticipantRegisteredIntegrationEventHandler(IAccountService accountService, ILogger<ChallengeParticipantRegisteredIntegrationEventHandler> logger)
+        public ChallengeParticipantRegisteredIntegrationEventHandler(
+            IAccountService accountService,
+            ILogger<ChallengeParticipantRegisteredIntegrationEventHandler> logger
+        )
         {
             _accountService = accountService;
             _logger = logger;

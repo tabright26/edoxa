@@ -7,6 +7,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
@@ -22,16 +23,19 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
     {
         private readonly IChallengeService _challengeService;
         private readonly IAccountService _accountService;
+        private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly ILogger _logger;
 
         public ChallengeSynchronizedIntegrationEventHandler(
             IChallengeService challengeService,
             IAccountService accountService,
+            IServiceBusPublisher serviceBusPublisher,
             ILogger<ChallengeSynchronizedIntegrationEventHandler> logger
         )
         {
             _challengeService = challengeService;
             _accountService = accountService;
+            _serviceBusPublisher = serviceBusPublisher;
             _logger = logger;
         }
 
@@ -51,6 +55,8 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
                 if (result.IsValid)
                 {
+                    await _serviceBusPublisher.PublishChallengeClosedIntegrationEventAsync(challengeId, result.GetEntityFromMetadata<PayoutPrizes>());
+
                     _logger.LogInformation(""); // FRANCIS: TODO.
                 }
                 else

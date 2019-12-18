@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
@@ -64,7 +65,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             var integrationEvent = new UserCreatedIntegrationEvent
             {
                 UserId = Guid.NewGuid().ToString(),
-                Email = "gabriel@edoxa.gg",
+                Email = new EmailDto
+                {
+                    Address = "gabriel@edoxa.gg"
+                },
                 Country = CountryDto.Canada
             };
 

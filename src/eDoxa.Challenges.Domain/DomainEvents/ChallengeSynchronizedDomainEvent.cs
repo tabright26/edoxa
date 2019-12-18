@@ -9,9 +9,9 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Challenges.Domain.DomainEvents
 {
-    public sealed class ChallengeClosedDomainEvent : IDomainEvent
+    public sealed class ChallengeSynchronizedDomainEvent : IDomainEvent
     {
-        public ChallengeClosedDomainEvent(IChallenge challenge)
+        public ChallengeSynchronizedDomainEvent(IChallenge challenge)
         {
             Challenge = challenge;
         }

@@ -22,10 +22,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
         private readonly IChallengeService _challengeService;
         private readonly ILogger _logger;
 
-        public ChallengeClosedIntegrationEventHandler(
-            IChallengeService challengeService,
-            ILogger<ChallengeClosedIntegrationEventHandler> logger
-        )
+        public ChallengeClosedIntegrationEventHandler(IChallengeService challengeService, ILogger<ChallengeClosedIntegrationEventHandler> logger)
         {
             _challengeService = challengeService;
             _logger = logger;
@@ -38,7 +35,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Handlers
             if (await _challengeService.ChallengeExistsAsync(challengeId))
             {
                 var challenge = await _challengeService.FindChallengeAsync(challengeId);
-                    
+
                 var result = await _challengeService.CloseChallengeAsync(challenge, new UtcNowDateTimeProvider());
 
                 if (result.IsValid)

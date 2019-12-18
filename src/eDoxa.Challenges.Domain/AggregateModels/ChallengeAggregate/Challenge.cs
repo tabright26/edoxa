@@ -89,7 +89,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             Timeline = Timeline.Close(closedAt);
 
-            this.AddDomainEvent(new ChallengeClosedDomainEvent(this));
+            this.AddDomainEvent(new ChallengeSynchronizedDomainEvent(this));
         }
 
         public void Synchronize(IDateTimeProvider synchronizedAt)

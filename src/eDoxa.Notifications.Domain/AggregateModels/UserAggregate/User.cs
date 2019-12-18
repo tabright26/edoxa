@@ -17,9 +17,13 @@ namespace eDoxa.Notifications.Domain.AggregateModels.UserAggregate
             Email = email;
         }
 
+        #nullable disable
+
         private User()
         {
         }
+
+        #nullable restore
 
         public string Email { get; private set; }
 

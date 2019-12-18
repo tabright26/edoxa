@@ -33,7 +33,7 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
             if (!await _userService.UserExistsAsync(userId))
             {
-                var result = await _userService.CreateUserAsync(userId, integrationEvent.Email);
+                var result = await _userService.CreateUserAsync(userId, integrationEvent.Email.Address);
 
                 if (result.IsValid)
                 {

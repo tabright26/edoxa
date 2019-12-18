@@ -49,6 +49,8 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
+            var payoutPrizes = new PayoutPrizes();
+
             if (result.IsValid)
             {
                 foreach (var ladderGroup in scoreboard.Ladders)
@@ -63,11 +65,15 @@ namespace eDoxa.Cashier.Api.Application.Services
                         {
                             // TODO: Need to be refactored.
                             await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, 0);
+
+                            payoutPrizes.Add(user, new Prize(0, scoreboard.PayoutCurrency));
                         }
                         else
                         {
                             // TODO: Need to be refactored.
                             await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, ladderGroup.Prize);
+
+                            payoutPrizes.Add(user, new Prize(ladderGroup.Prize.Amount, scoreboard.PayoutCurrency));
                         }
                     }
                 }
@@ -80,15 +86,21 @@ namespace eDoxa.Cashier.Api.Application.Services
                     {
                         // TODO: Need to be refactored.
                         await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, 0);
+
+                        payoutPrizes.Add(user, new Prize(0, scoreboard.PayoutCurrency));
                     }
                     else
                     {
                         // TODO: Need to be refactored.
-                        await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, Token.MinValue);
+                        await this.PayoutChallengeAsync(user, Currency.Token, Token.MinValue);
+
+                        payoutPrizes.Add(user, new Prize(Token.MinValue.Amount, Currency.Token));
                     }
                 }
 
                 await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(payoutPrizes);
             }
 
             return result;

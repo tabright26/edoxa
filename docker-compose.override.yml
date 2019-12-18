@@ -101,7 +101,8 @@ services:
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000  
+      - Authority=http://${HOST:-localhost}:5000
+      - WebSpaUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity.api    
     ports:
       - "5011:80"

@@ -16,10 +16,6 @@ message ChallengeSynchronizedIntegrationEvent {
   map<string, customTypes.DecimalValue> scoreboard = 2;
 }
 
-message CreateChallengeFailedIntegrationEvent {
-  string challengeId = 1;
-}
-
 message RegisterChallengeParticipantFailedIntegrationEvent {
   ParticipantDto participant = 1;
 }

@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
@@ -17,26 +18,24 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
     public sealed class UserPasswordResetTokenGeneratedIntegrationEventHandler : IIntegrationEventHandler<UserPasswordResetTokenGeneratedIntegrationEvent>
     {
         private readonly IUserService _userService;
+        private readonly IRedirectService _redirectService;
 
-        public UserPasswordResetTokenGeneratedIntegrationEventHandler(IUserService userService)
+        public UserPasswordResetTokenGeneratedIntegrationEventHandler(IUserService userService, IRedirectService redirectService)
         {
             _userService = userService;
+            _redirectService = redirectService;
         }
 
         public async Task HandleAsync(UserPasswordResetTokenGeneratedIntegrationEvent integrationEvent)
         {
-            //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
+            var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={integrationEvent.Code}";
 
-            //await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-            //    UserId.FromGuid(user.Id),
-            //    request.Email,
-            //    "Reset Password",
-            //    $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+            var href = WebUtility.UrlEncode(callbackUrl);
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
-                nameof(UserPasswordResetTokenGeneratedIntegrationEvent),
-                nameof(UserPasswordResetTokenGeneratedIntegrationEvent));
+                "Reset Password",
+                $"Please reset your password by <a href=\"{href}\"'>clicking here</a>.");
         }
     }
 }

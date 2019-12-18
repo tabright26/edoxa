@@ -42,11 +42,11 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
             if (!await _stripeService.UserExistsAsync(userId))
             {
-                var customerId = await _stripeCustomerService.CreateCustomerAsync(userId, integrationEvent.Email);
+                var customerId = await _stripeCustomerService.CreateCustomerAsync(userId, integrationEvent.Email.Address);
 
                 var accountId = await _stripeAccountService.CreateAccountAsync(
                     userId,
-                    integrationEvent.Email,
+                    integrationEvent.Email.Address,
                     integrationEvent.Country.ToEnumeration<Country>(),
                     customerId);
 
