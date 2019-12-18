@@ -36,6 +36,11 @@ namespace eDoxa.Seedwork.Domain
             return entityId.Value;
         }
 
+        public static implicit operator string(EntityId<TEntityId> entityId)
+        {
+            return entityId.ToString();
+        }
+
         public static TEntityId FromGuid(Guid value)
         {
             return new TEntityId

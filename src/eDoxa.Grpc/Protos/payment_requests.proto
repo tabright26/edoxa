@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Requests";
+
+import "cashier_dtos.proto";
+
+package edoxa.services.payment;
+
+message DepositRequest {
+  cashier.TransactionDto transaction = 2;
+}
+
+message WithdrawalRequest {
+  cashier.TransactionDto transaction = 2;
+}
+
+message CreateStripeBankAccountRequest {
+  string token = 1;
+}
+
+message AttachStripePaymentMethodRequest {
+  bool defaultPaymentMethod = 1;
+}
+
+message UpdateStripePaymentMethodRequest {
+  int64 expMonth = 1;
+  int64 expYear = 2;
+}

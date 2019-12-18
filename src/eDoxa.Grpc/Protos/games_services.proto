@@ -1,0 +1,13 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Services";
+
+import "games_requests.proto";
+import "games_responses.proto";
+
+package edoxa.services.games;
+
+service GameService {
+  rpc FetchChallengeScoring(FetchChallengeScoringRequest) returns (FetchChallengeScoringResponse);
+  rpc FetchChallengeMatches(FetchChallengeMatchesRequest) returns (FetchChallengeMatchesResponse);
+}

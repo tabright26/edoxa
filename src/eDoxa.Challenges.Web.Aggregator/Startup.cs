@@ -7,31 +7,32 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Web.Aggregator.Infrastructure;
-using eDoxa.Challenges.Web.Aggregator.Services;
+using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Challenges.Services;
+using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Grpc.Protos.Identity.Services;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
+using eDoxa.Seedwork.Application.DelegatingHandlers;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
-using eDoxa.Seedwork.Application.Refit.DelegatingHandlers;
 using eDoxa.Seedwork.Application.Swagger;
-using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
-using eDoxa.ServiceBus.Azure.Modules;
 
 using FluentValidation;
+
+using Grpc.Core;
 
 using Hellang.Middleware.ProblemDetails;
 
@@ -44,14 +45,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-
-using Polly;
-using Polly.Extensions.Http;
-
-using Refit;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -68,6 +61,7 @@ namespace eDoxa.Challenges.Web.Aggregator
             TelemetryDebugWriter.IsTracingDisabled = true;
             ValidatorOptions.PropertyNameResolver = CamelCasePropertyNameResolver.ResolvePropertyName;
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true); // TODO: Check for security is required.
         }
 
         public Startup(IConfiguration configuration)
@@ -76,21 +70,9 @@ namespace eDoxa.Challenges.Web.Aggregator
             AppSettings = configuration.GetAppSettings<ChallengesWebAggregatorAppSettings>(ChallengesWebAggregator);
         }
 
-        private ChallengesWebAggregatorAppSettings AppSettings { get; }
-
         public IConfiguration Configuration { get; }
 
-        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            return HttpPolicyExtensions.HandleTransientHttpError()
-                .OrResult(message => message.StatusCode == HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(6, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
-        }
-
-        private static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
-        {
-            return HttpPolicyExtensions.HandleTransientHttpError().CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
-        }
+        private ChallengesWebAggregatorAppSettings AppSettings { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -99,24 +81,20 @@ namespace eDoxa.Challenges.Web.Aggregator
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddAzureKeyVault(Configuration)
-                .AddAzureServiceBusTopic(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppNames.IdentityApi)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppNames.PaymentApi)
-                .AddUrlGroup(AppSettings.Endpoints.NotificationsUrl, AppNames.NotificationsApi)
-                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppNames.ChallengesApi)
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi)
-                .AddUrlGroup(AppSettings.Endpoints.ClansUrl, AppNames.ClansApi);
+                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
+                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
+                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
+                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
 
             services.AddCustomCors();
 
-            services.AddCustomProblemDetails();
+            services.AddCustomProblemDetails(options => options.MapRpcException());
 
             services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -142,61 +120,33 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddTransient<AccessTokenDelegatingHandler>();
 
-            var refitSettings = new RefitSettings
-            {
-                ContentSerializer = new JsonContentSerializer(
-                    new JsonSerializerSettings
-                    {
-                        ContractResolver = new CamelCasePropertyNamesContractResolver()
-                    })
-            };
-
-            services.AddRefitClient<ICashierService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.CashierUrl))
+            services.AddGrpcClient<CashierService.CashierServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.CashierUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
 
-            services.AddRefitClient<IChallengesService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.ChallengesUrl))
+            services.AddGrpcClient<IdentityService.IdentityServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.IdentityUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
 
-            services.AddRefitClient<IClansService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.ClansUrl))
+            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
 
-            services.AddRefitClient<IGamesService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.GamesUrl))
+            services.AddGrpcClient<GameService.GameServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.GamesUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
                 .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            services.AddRefitClient<IIdentityService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.IdentityUrl))
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            services.AddRefitClient<INotificationsService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.NotificationsUrl))
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            services.AddRefitClient<IPaymentService>(refitSettings)
-                .ConfigureHttpClient(httpClient => httpClient.BaseAddress = new Uri(AppSettings.Endpoints.PaymentUrl))
-                .AddHttpMessageHandler<AccessTokenDelegatingHandler>()
-                .AddPolicyHandler(GetRetryPolicy())
-                .AddPolicyHandler(GetCircuitBreakerPolicy());
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.ChallengesWebAggregator));
         }
 
         public void Configure(IApplicationBuilder application)

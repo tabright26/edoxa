@@ -1,0 +1,68 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Dtos";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+import "identity_enums.proto";
+
+package edoxa.services.identity;
+
+message UserClaimDto {
+  string type = 1;
+  string value = 2;
+}
+
+message RoleDto {
+  string id = 1;
+  string name = 2;
+  repeated RoleClaimDto claims = 3;
+}
+
+message RoleClaimDto {
+  string type = 1;
+  string value = 2;
+}
+
+message DoxatagDto {
+  string userId = 1;
+  string name = 2;
+  int32 code = 3;
+  google.protobuf.Timestamp timestamp = 4;
+}
+
+message DobDto {
+  int32 year = 1;
+  int32 month = 2;
+  int32 day = 3;
+}
+
+message AddressDto {
+  string id = 1;
+  AddressTypeDto type = 2;
+  CountryDto country = 3;
+  string line1 = 4;
+  google.protobuf.StringValue line2 = 5;
+  string city = 6;
+  google.protobuf.StringValue state = 7;
+  google.protobuf.StringValue postalCode = 8;
+}
+
+message EmailDto {
+  string address = 1;
+  bool verified = 2;
+}
+
+message PhoneDto {
+  string number = 1;
+  bool verified = 2;
+}
+
+message ProfileDto {
+  string name = 1;
+  string firstName = 2;
+  string lastName = 3;
+  GenderDto gender = 4;
+  DobDto dob = 5;
+}

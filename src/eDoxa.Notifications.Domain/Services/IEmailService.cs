@@ -1,5 +1,5 @@
 ﻿// Filename: IEmailService.cs
-// Date Created: 2019-10-03
+// Date Created: 2019-12-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,6 @@ namespace eDoxa.Notifications.Domain.Services
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(string email, string subject, string htmlMessage);
+        Task SendEmailAsync(string email, string subject, string htmlContent);
     }
 }

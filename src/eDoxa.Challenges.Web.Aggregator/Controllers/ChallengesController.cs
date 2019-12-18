@@ -1,130 +1,140 @@
 ﻿// Filename: ChallengesController.cs
-// Date Created: 2019-11-07
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions;
-using eDoxa.Challenges.Web.Aggregator.Models;
-using eDoxa.Challenges.Web.Aggregator.Services;
-using eDoxa.Challenges.Web.Aggregator.Transformers;
-using eDoxa.Identity.Responses;
-using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Challenges.Web.Aggregator.Mappers;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Requests;
+using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Challenges.Aggregates;
+using eDoxa.Grpc.Protos.Challenges.Requests;
+using eDoxa.Grpc.Protos.Challenges.Services;
+using eDoxa.Grpc.Protos.Games.Requests;
+using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Security;
-using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using Newtonsoft.Json;
-
-using Refit;
-
 using Swashbuckle.AspNetCore.Annotations;
-
-using CashierRequests = eDoxa.Cashier.Requests;
-using ChallengeRequests = eDoxa.Challenges.Requests;
-using CreateChallengeRequest = eDoxa.Challenges.Web.Aggregator.Requests.CreateChallengeRequest;
 
 namespace eDoxa.Challenges.Web.Aggregator.Controllers
 {
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Authorize]
     [ApiVersion("1.0")]
     [Route("api/challenges")]
-    [ApiExplorerSettings(GroupName = "Challenge")]
+    [ApiExplorerSettings(GroupName = "Challenges")]
     public sealed class ChallengesController : ControllerBase
     {
-        private readonly IIdentityService _identityService;
-        private readonly IChallengesService _challengesService;
-        private readonly ICashierService _cashierService;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
+        private readonly IdentityService.IdentityServiceClient _identityServiceClient;
+        private readonly ChallengeService.ChallengeServiceClient _challengesServiceClient;
+        private readonly CashierService.CashierServiceClient _cashierServiceClient;
+        private readonly GameService.GameServiceClient _gameServiceClient;
 
         public ChallengesController(
-            IIdentityService identityService,
-            IChallengesService challengesService,
-            ICashierService cashierService,
-            IServiceBusPublisher serviceBusPublisher
+            IdentityService.IdentityServiceClient identityServiceClient,
+            ChallengeService.ChallengeServiceClient challengesServiceClient,
+            CashierService.CashierServiceClient cashierServiceClient,
+            GameService.GameServiceClient gameServiceClient
         )
         {
-            _identityService = identityService;
-            _challengesService = challengesService;
-            _cashierService = cashierService;
-            _serviceBusPublisher = serviceBusPublisher;
+            _identityServiceClient = identityServiceClient;
+            _challengesServiceClient = challengesServiceClient;
+            _cashierServiceClient = cashierServiceClient;
+            _gameServiceClient = gameServiceClient;
         }
 
         [AllowAnonymous]
         [HttpGet]
         [SwaggerOperation("Fetch challenges.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel[]))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate[]))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> FetchChallengesAsync()
         {
-            var doxatagsFromIdentityService = await _identityService.FetchDoxatagsAsync();
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
 
-            var challengesFromCashierService = await _cashierService.FetchChallengesAsync();
+            var fetchChallengePayoutsResponse = await _cashierServiceClient.FetchChallengePayoutsAsync(new FetchChallengePayoutsRequest());
 
-            var challengesFromChallengesService = await _challengesService.FetchChallengesAsync();
+            var fetchChallengesResponse = await _challengesServiceClient.FetchChallengesAsync(new FetchChallengesRequest());
 
-            return this.Ok(ChallengeTransformer.Transform(challengesFromChallengesService, challengesFromCashierService, doxatagsFromIdentityService));
+            return this.Ok(ChallengeMapper.Map(fetchChallengesResponse.Challenges, fetchChallengePayoutsResponse.Payouts, fetchDoxatagsResponse.Doxatags));
         }
 
-        [Microsoft.AspNetCore.Authorization.Authorize(Roles = AppRoles.Admin)]
+        [Authorize(Roles = AppRoles.Admin)]
         [HttpPost]
         [SwaggerOperation("Create challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallengeRequest request)
+        public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallangeAggregateRequest request)
         {
-            var challengeId = new ChallengeId();
-            
-            try
-            {
-                var challengeFromChallengesService = await _challengesService.CreateChallengeAsync(
-                    new ChallengeRequests.CreateChallengeRequest(
-                        challengeId,
-                        request.Name,
-                        request.Game,
-                        request.BestOf,
-                        request.Entries,
-                        request.Duration));
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
 
-                var challengeFromCashierService = await _cashierService.CreateChallengeAsync(
-                    new CashierRequests.CreateChallengeRequest(
-                        challengeId,
-                        challengeFromChallengesService.Entries / 2,
-                        request.EntryFeeAmount,
-                        request.EntryFeeCurrency));
+            var fetchChallengeScoringResponse = await _gameServiceClient.FetchChallengeScoringAsync(
+                new FetchChallengeScoringRequest
+                {
+                    Game = request.Game
+                });
 
-                return this.Ok(
-                    ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, new Collection<DoxatagResponse>()));
-            }
-            catch (ApiException exception)
-            {
-                await _serviceBusPublisher.PublishChallengeDeletedIntegrationEventAsync(challengeId);
+            var createChallengeResponse = await _challengesServiceClient.CreateChallengeAsync(
+                new CreateChallengeRequest
+                {
+                    Name = request.Name,
+                    Game = request.Game,
+                    BestOf = request.BestOf,
+                    Entries = request.Entries,
+                    Duration = request.Duration,
+                    Scoring =
+                    {
+                        fetchChallengeScoringResponse.Scoring
+                    }
+                });
 
-                return this.BadRequest(JsonConvert.DeserializeObject<ValidationProblemDetails>(exception.Content));
-            }
+            var challenge = createChallengeResponse.Challenge;
+
+            var createChallengePayoutResponse = await _cashierServiceClient.CreateChallengePayoutAsync(
+                new CreateChallengePayoutRequest
+                {
+                    ChallengeId = challenge.Id,
+                    PayoutEntries = challenge.Entries / 2, // TODO
+                    EntryFee = new EntryFeeDto
+                    {
+                        Amount = request.EntryFee.Amount,
+                        Currency = request.EntryFee.Currency
+                    }
+                });
+
+            return this.Ok(ChallengeMapper.Map(challenge, createChallengePayoutResponse.Payout, fetchDoxatagsResponse.Doxatags));
         }
 
         [AllowAnonymous]
         [HttpGet("{challengeId}")]
         [SwaggerOperation("Find a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> FindChallengeAsync(Guid challengeId)
+        public async Task<IActionResult> FindChallengeAsync(string challengeId)
         {
-            var doxatagsFromIdentityService = await _identityService.FetchDoxatagsAsync();
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
 
-            var challengeFromCashierService = await _cashierService.FindChallengeAsync(challengeId);
+            var findChallengePayoutResponse = await _cashierServiceClient.FindChallengePayoutAsync(
+                new FindChallengePayoutRequest
+                {
+                    ChallengeId = challengeId
+                });
 
-            var challengeFromChallengesService = await _challengesService.FindChallengeAsync(challengeId);
+            var findChallengeResponse = await _challengesServiceClient.FindChallengeAsync(
+                new FindChallengeRequest
+                {
+                    ChallengeId = challengeId
+                });
 
-            return this.Ok(ChallengeTransformer.Transform(challengeFromChallengesService, challengeFromCashierService, doxatagsFromIdentityService));
+            return this.Ok(ChallengeMapper.Map(findChallengeResponse.Challenge, findChallengePayoutResponse.Payout, fetchDoxatagsResponse.Doxatags));
         }
 
         //[Microsoft.AspNetCore.Authorization.Authorize(Roles = AppRoles.Admin)]

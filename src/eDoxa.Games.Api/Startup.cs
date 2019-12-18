@@ -11,15 +11,16 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.Api.Infrastructure.Data;
+using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
 using eDoxa.Games.LeagueOfLegends;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -28,7 +29,7 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
-using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
@@ -104,13 +105,15 @@ namespace eDoxa.Games.Api
 
             services.AddCustomCors();
 
+            services.AddCustomGrpc();
+
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>().AddDevTools<GamesDbContextSeeder, GamesDbContextCleaner>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(GamesDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(GamesDbContext));
 
             services.AddMediatR(typeof(Startup));
 
@@ -129,7 +132,7 @@ namespace eDoxa.Games.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.GamesApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.GamesApi);
 
             builder.RegisterModule<GamesModule>();
         }
@@ -149,6 +152,8 @@ namespace eDoxa.Games.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<GameGrpcService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<GamesAppSettings>(AppSettings.ApiResource);

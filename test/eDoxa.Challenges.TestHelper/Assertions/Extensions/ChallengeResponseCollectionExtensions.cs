@@ -6,13 +6,13 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Responses;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 
 namespace eDoxa.Challenges.TestHelper.Assertions.Extensions
 {
     public static class ChallengeResponseCollectionExtensions
     {
-        public static ChallengeResponseCollectionAssertions Should(this IEnumerable<ChallengeResponse> responses)
+        public static ChallengeResponseCollectionAssertions Should(this IEnumerable<ChallengeDto> responses)
         {
             return new ChallengeResponseCollectionAssertions(responses);
         }

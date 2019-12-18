@@ -1,5 +1,5 @@
-﻿// Filename: InformationsController.cs
-// Date Created: 2019-10-18
+﻿// Filename: ProfileController.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
-using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Api.Services;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using IdentityServer4.AccessTokenValidation;
@@ -28,7 +30,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [ApiController]
     [ApiVersion("1.0")]
     [Route("api/informations")]
-    [ApiExplorerSettings(GroupName = "Informations")]
+    [ApiExplorerSettings(GroupName = "Profile")]
     public sealed class ProfileController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -41,80 +43,68 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         }
 
         [HttpGet]
-        [SwaggerOperation("Find user's profile informations.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(UserProfileResponse))]
+        [SwaggerOperation("Find user's profile.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProfileDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
             var user = await _userService.GetUserAsync(User);
 
-            var profile = await _userService.GetInformationsAsync(user);
+            var profile = await _userService.GetProfileAsync(user);
 
             if (profile == null)
             {
                 return this.NotFound("User profile not found.");
             }
 
-            return this.Ok(_mapper.Map<UserProfileResponse>(profile));
+            return this.Ok(_mapper.Map<ProfileDto>(profile));
         }
 
         [HttpPost]
-        [SwaggerOperation("Create user's profile informations.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerOperation("Create user's profile.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "The user's profile has been created.", Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] CreateProfileRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 
-            var informations = await _userService.GetInformationsAsync(user);
-
-            if (informations != null)
-            {
-                return this.BadRequest("The user's personal information has already been created.");
-            }
-
-            var result = await _userService.CreateInformationsAsync(
+            var result = await _userService.CreateProfileAsync(
                 user,
                 request.FirstName,
                 request.LastName,
-               Gender.FromName(request.Gender),
-                new Dob(request.Dob.Year, request.Dob.Month, request.Dob.Day));
+                request.Gender.ToEnumeration<Gender>(),
+                request.Dob.Year,
+                request.Dob.Month,
+                request.Dob.Day);
 
-            if (result.Succeeded)
+            if (result.IsValid)
             {
-                return this.Ok("The user's personal info has been created.");
+                return this.Ok(_mapper.Map<ProfileDto>(result.GetEntityFromMetadata<UserProfile>()));
             }
 
-            ModelState.Bind(result);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
 
         [HttpPut]
-        [SwaggerOperation("Update user's profile informations.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerOperation("Update user's profile.")]
+        [SwaggerResponse(StatusCodes.Status200OK, "The user's profile has been updated.", Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync([FromBody] UpdateProfileRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 
-            var informations = await _userService.GetInformationsAsync(user);
+            var result = await _userService.UpdateProfileAsync(user, request.FirstName);
 
-            if (informations == null)
+            if (result.IsValid)
             {
-                return this.BadRequest("The user's personal informations does not exist.");
+                return this.Ok(_mapper.Map<ProfileDto>(result.GetEntityFromMetadata<UserProfile>()));
             }
 
-            var result = await _userService.UpdateInformationsAsync(user, request.FirstName);
-
-            if (result.Succeeded)
-            {
-                return this.Ok("The user's personal info has been updated.");
-            }
-
-            ModelState.Bind(result);
+            result.AddToModelState(ModelState);
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

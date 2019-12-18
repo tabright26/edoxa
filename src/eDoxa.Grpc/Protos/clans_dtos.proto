@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Clans.Dtos";
+
+import "google/protobuf/wrappers.proto";
+
+package edoxa.services.clans;
+
+message CandidatureDto {
+  string id = 1;
+  string userId = 2;
+  string clanId = 3;
+}
+
+message ClanDto {
+  string id = 1;
+  string name = 2;
+  string ownerId = 3;
+  google.protobuf.StringValue summary = 4;
+  repeated MemberDto members = 5;
+  repeated DivisionDto divisions = 6;
+}
+
+message MemberDto {
+  string id = 1;
+  string userId = 2;
+  string clanId = 3;
+}
+
+message DivisionDto {
+  string id = 1;
+  string clanId = 2;
+  string name = 3;
+  string description = 4;
+  repeated MemberDto members = 5;
+}
+
+message InvitationDto {
+  string id = 1;
+  string userId = 2;
+  string clanId = 3;
+}

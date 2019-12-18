@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>eDoxa.Identity.Api</AssemblyName>
     <RootNamespace>eDoxa.Identity.Api</RootNamespace>
     <Nullable>Enable</Nullable>
@@ -17,14 +17,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.0.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Identity.Infrastructure\eDoxa.Identity.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Identity.Requests\eDoxa.Identity.Requests.csproj" />
-    <ProjectReference Include="..\eDoxa.Identity.Responses\eDoxa.Identity.Responses.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>
@@ -35,6 +40,36 @@
     <None Include="..\..\data\users.roles.csv" Link="Setup/users.roles.csv" CopyToOutputDirectory="Always" />
     <None Include="..\..\data\users.claims.csv" Link="Setup/users.claims.csv" CopyToOutputDirectory="Always" />
     <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_dtos.proto" GrpcServices="None">
+      <Link>Protos\clans_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_integration_events.proto" GrpcServices="None">
+      <Link>Protos\clans_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None">
+      <Link>Protos\games_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_integration_events.proto" GrpcServices="None">
+      <Link>Protos\games_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
+      <Link>Protos\identity_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
+      <Link>Protos\identity_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_requests.proto" GrpcServices="None">
+      <Link>Protos\identity_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_responses.proto" GrpcServices="None">
+      <Link>Protos\identity_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_services.proto" GrpcServices="Server">
+      <Link>Protos\identity_services.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

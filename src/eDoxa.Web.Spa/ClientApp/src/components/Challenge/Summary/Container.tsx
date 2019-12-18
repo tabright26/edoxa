@@ -42,7 +42,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     state: challenge.state,
     bestOf: challenge.bestOf,
     entries: challenge.entries,
-    entryFee: challenge.entryFee,
+    entryFee: challenge.payout.entryFee,
     payoutEntries: challenge.payoutEntries,
     participantCount: challenge.participants.length
   };

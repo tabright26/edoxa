@@ -19,6 +19,8 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable("Transaction");
 
+            builder.Ignore(challenge => challenge.DomainEvents);
+
             builder.Property(transaction => transaction.Id).IsRequired().ValueGeneratedNever();;
 
             builder.Property(transaction => transaction.Timestamp).IsRequired();

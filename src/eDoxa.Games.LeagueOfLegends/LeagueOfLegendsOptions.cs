@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Games.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.LeagueOfLegends

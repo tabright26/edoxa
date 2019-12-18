@@ -6,18 +6,18 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Challenges.Responses;
-using eDoxa.Challenges.TestHelper.Assertions.Extensions;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 
 using FluentAssertions;
 using FluentAssertions.Collections;
 using FluentAssertions.Execution;
+using eDoxa.Challenges.TestHelper.Assertions.Extensions;
 
 namespace eDoxa.Challenges.TestHelper.Assertions
 {
-    public class ChallengeResponseCollectionAssertions : GenericCollectionAssertions<ChallengeResponse>
+    public class ChallengeResponseCollectionAssertions : GenericCollectionAssertions<ChallengeDto>
     {
-        public ChallengeResponseCollectionAssertions(IEnumerable<ChallengeResponse> challengeResponses) : base(challengeResponses)
+        public ChallengeResponseCollectionAssertions(IEnumerable<ChallengeDto> challengeResponses) : base(challengeResponses)
         {
         }
 
@@ -27,7 +27,7 @@ namespace eDoxa.Challenges.TestHelper.Assertions
         {
             foreach (var challengeResponse in Subject)
             {
-                using (new AssertionScope(challengeResponse.Id.ToString()))
+                using (new AssertionScope(challengeResponse.Id))
                 {
                     challengeResponse.Should().BeValid(because, becauseArgs);
                 }

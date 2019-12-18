@@ -13,7 +13,7 @@ using eDoxa.Payment.Api;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.ServiceBus.Moq;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -39,7 +39,7 @@ namespace eDoxa.Payment.TestHelper.Fixtures
 
         protected override void ContainerTestBuilder(ContainerBuilder builder)
         {
-            builder.RegisterModule<MockServiceBusModule>();
+            builder.RegisterMockServiceBusModule();
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

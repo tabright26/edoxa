@@ -46,7 +46,9 @@ namespace eDoxa.Seedwork.Application.Swagger
                             Scopes.NotificationsApi,
                             Scopes.ChallengesApi,
                             Scopes.GamesApi,
-                            Scopes.ClansApi));
+                            Scopes.ClansApi,
+                            Scopes.ChallengesWebAggregator,
+                            Scopes.CashierWebAggregator));
 
                     //options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                     //{

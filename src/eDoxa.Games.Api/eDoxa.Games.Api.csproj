@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>eDoxa.Games.Api</AssemblyName>
     <RootNamespace>eDoxa.Games.Api</RootNamespace>
     <Nullable>Enable</Nullable>
@@ -17,14 +17,43 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.25.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Games.LeagueOfLegends\eDoxa.Games.LeagueOfLegends.csproj" />
     <ProjectReference Include="..\eDoxa.Games.Infrastructure\eDoxa.Games.Infrastructure.csproj" />
-    <ProjectReference Include="..\eDoxa.Games\eDoxa.Games.csproj" />
-    <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None">
+      <Link>Protos\games_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_integration_events.proto" GrpcServices="None">
+      <Link>Protos\games_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_requests.proto" GrpcServices="None">
+      <Link>Protos\games_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_responses.proto" GrpcServices="None">
+      <Link>Protos\games_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_services.proto" GrpcServices="Server">
+      <Link>Protos\games_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
+      <Link>Protos\identity_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
+      <Link>Protos\identity_integration_events.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

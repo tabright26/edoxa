@@ -8,7 +8,7 @@ import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserAccountWithdrawalBundlesState } from "../types";
 
-export const initialState: UserAccountWithdrawalBundlesState = {
+export const initialState: UserAccountDepositBundlesState = {
   data: [],
   error: null,
   loading: false

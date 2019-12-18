@@ -12,7 +12,7 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class DomainValidationResultExtensions
     {
-        public static void AddToModelState(this DomainValidationResult result, ModelStateDictionary modelState)
+        public static void AddToModelState(this IDomainValidationResult result, ModelStateDictionary modelState)
         {
             foreach (var error in result.Errors)
             {

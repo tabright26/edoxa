@@ -1,208 +1,209 @@
-﻿// Filename: WithdrawalProcessedIntegrationEventHandlerTest.cs
-// Date Created: 2019-11-02
-// 
-// ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+﻿//// Filename: WithdrawalProcessedIntegrationEventHandlerTest.cs
+//// Date Created: 2019-11-25
+//// 
+//// ================================================
+//// Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 
-using Autofac;
+//using Autofac;
 
-using eDoxa.Cashier.Api.IntegrationEvents;
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.FunctionalTests.Cashier;
-using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.ServiceBus.Abstractions;
+//using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
+//using eDoxa.Cashier.Domain.AggregateModels;
+//using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+//using eDoxa.Cashier.Domain.Repositories;
+//using eDoxa.Cashier.Domain.Services;
+//using eDoxa.FunctionalTests.Cashier;
+//using eDoxa.Payment.Domain.Stripe.Services;
+//using eDoxa.Seedwork.Application.Extensions;
+//using eDoxa.Seedwork.Domain.Misc;
+//using eDoxa.Seedwork.TestHelper.Extensions;
+//using eDoxa.ServiceBus.Abstractions;
 
-using FluentAssertions;
+//using FluentAssertions;
 
-using Microsoft.AspNetCore.TestHost;
+//using Microsoft.AspNetCore.TestHost;
 
-using Moq;
+//using Moq;
 
-using Stripe;
+//using Stripe;
 
-using Xunit;
+//using Xunit;
 
-using Account = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account;
+//using Account = eDoxa.Cashier.Domain.AggregateModels.AccountAggregate.Account;
 
-namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
-{
-    public sealed class WithdrawalProcessedIntegrationEventHandlerTest : IClassFixture<CashierHostFactory>
-    {
-        public WithdrawalProcessedIntegrationEventHandlerTest(CashierHostFactory cashierHostFactory)
-        {
-            cashierHostFactory.CreateClient();
-            _testServer = cashierHostFactory.Server;
-            _testServer.CleanupDbContext();
-        }
+//namespace eDoxa.FunctionalTests.Payment.IntegrationEvents
+//{
+//    public sealed class WithdrawalProcessedIntegrationEventHandlerTest : IClassFixture<CashierHostFactory>
+//    {
+//        public WithdrawalProcessedIntegrationEventHandlerTest(CashierHostFactory cashierHostFactory)
+//        {
+//            cashierHostFactory.CreateClient();
+//            _testServer = cashierHostFactory.Server;
+//            _testServer.CleanupDbContext();
+//        }
 
-        private readonly TestServer _testServer;
+//        private readonly TestServer _testServer;
 
-        // TODO: Create an helper method for functional assertions with a retry policy. (Maybe with Polly)
-        private async Task<ITransaction> TryGetPublishedTransaction(TransactionId transactionId)
-        {
-            var counter = 0;
+//        // TODO: Create an helper method for functional assertions with a retry policy. (Maybe with Polly)
+//        private async Task<ITransaction> TryGetPublishedTransaction(UserId userId, TransactionId transactionId)
+//        {
+//            var counter = 0;
 
-            while (counter < 20)
-            {
-                var transaction = await _testServer.UsingScopeAsync(
-                    async scope =>
-                    {
-                        var transactionRepository = scope.GetRequiredService<ITransactionRepository>();
+//            while (counter < 20)
+//            {
+//                var transaction = await _testServer.UsingScopeAsync(
+//                    async scope =>
+//                    {
+//                        var transactionRepository = scope.GetRequiredService<IAccountService>();
 
-                        return await transactionRepository.FindTransactionAsync(transactionId);
-                    });
+//                        var account = await transactionRepository.FindAccountAsync(userId);
 
-                if (transaction == null || transaction.Status == TransactionStatus.Pending)
-                {
-                    counter++;
+//                        return account.FindTransaction(transactionId);
+//                    });
 
-                    await Task.Delay(2500);
+//                if (transaction == null || transaction.Status == TransactionStatus.Pending)
+//                {
+//                    counter++;
 
-                    continue;
-                }
+//                    await Task.Delay(2500);
 
-                return transaction;
-            }
+//                    continue;
+//                }
 
-            return null;
-        }
+//                return transaction;
+//            }
 
-        // TODO: The method name must be written as a test scenario.
-        [Fact]
-        public async Task TransactionStatus_ShouldBeFailed()
-        {
-            using var paymentWebApplicationFactory = new PaymentHostFactory().WithWebHostBuilder(
-                builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                    container =>
-                    {
-                        var mockStripeCustomerSerivce = new Mock<IStripeAccountService>();
+//            return null;
+//        }
 
-                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<UserId>()))
-                            .ReturnsAsync("ConnectAccountId");
+//        // TODO: The method name must be written as a test scenario.
+//        [Fact]
+//        public async Task TransactionStatus_ShouldBeFailed()
+//        {
+//            using var paymentWebApplicationFactory = new PaymentHostFactory().WithWebHostBuilder(
+//                builder => builder.ConfigureTestContainer<ContainerBuilder>(
+//                    container =>
+//                    {
+//                        var mockStripeCustomerSerivce = new Mock<IStripeAccountService>();
 
-                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeAccountService>();
+//                        mockStripeCustomerSerivce.Setup(stripeCustomerService => stripeCustomerService.GetAccountIdAsync(It.IsAny<UserId>()))
+//                            .ReturnsAsync("ConnectAccountId");
 
-                        var mockStripeService = new Mock<IStripeTransferService>();
+//                        container.RegisterInstance(mockStripeCustomerSerivce.Object).As<IStripeAccountService>();
 
-                        mockStripeService.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
-                                    It.IsAny<string>(),
-                                    It.IsAny<TransactionId>(),
-                                    It.IsAny<long>(),
-                                    It.IsAny<string>()))
-                            .Throws<StripeException>();
+//                        var mockStripeService = new Mock<IStripeTransferService>();
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
-                    }));
+//                        mockStripeService.Setup(
+//                                stripeService => stripeService.CreateTransferAsync(
+//                                    It.IsAny<string>(),
+//                                    It.IsAny<TransactionId>(),
+//                                    It.IsAny<long>(),
+//                                    It.IsAny<string>()))
+//                            .Throws<StripeException>();
 
-            using (paymentWebApplicationFactory.CreateClient())
-            {
-                var account = new Account(new UserId());
-                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                account.CreateTransaction(moneyDepositTransaction);
+//                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
+//                    }));
 
-                await _testServer.UsingScopeAsync(
-                    async scope =>
-                    {
-                        var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                        accountRepository.Create(account);
-                        await accountRepository.CommitAsync();
-                    });
+//            using (paymentWebApplicationFactory.CreateClient())
+//            {
+//                var account = new Account(new UserId());
+//                var moneyAccount = new MoneyAccountDecorator(account);
+//                var depositTransaction = moneyAccount.Deposit(Money.Fifty);
 
-                await _testServer.UsingScopeAsync(
-                    async scope =>
-                    {
-                        var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
+//                await _testServer.UsingScopeAsync(
+//                    async scope =>
+//                    {
+//                        var accountRepository = scope.GetRequiredService<IAccountRepository>();
+//                        accountRepository.Create(account);
+//                        await accountRepository.CommitAsync();
+//                    });
 
-                        await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(
-                                account.UserId,
-                                "noreply@edoxa.gg",
-                                moneyDepositTransaction.Id,
-                                moneyDepositTransaction.Description.Text,
-                                5000));
-                    });
+//                await _testServer.UsingScopeAsync(
+//                    async scope =>
+//                    {
+//                        var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
+//                        await integrationEventService.PublishUserAccountWithdrawalIntegrationEventAsync(
+//                            account.Id,
+//                            "noreply@edoxa.gg",
+//                            depositTransaction.Id,
+//                            depositTransaction.Description.Text,
+//                            5000);
+//                    });
 
-                transaction.Should().NotBeNull();
+//                var transaction = await this.TryGetPublishedTransaction(account.Id, depositTransaction.Id);
 
-                transaction?.Status.Should().Be(TransactionStatus.Failed);
-            }
-        }
+//                transaction.Should().NotBeNull();
 
-        // TODO: The method name must be written as a test scenario.
-        [Fact]
-        public async Task TransactionStatus_ShouldBeSucceded()
-        {
-            using var paymentWebApplicationFactory = new PaymentHostFactory().WithWebHostBuilder(
-                builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                    container =>
-                    {
-                        var mockStripeAccountSerivce = new Mock<IStripeAccountService>();
+//                transaction?.Status.Should().Be(TransactionStatus.Failed);
+//            }
+//        }
 
-                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.HasAccountVerifiedAsync(It.IsAny<string>()))
-                            .ReturnsAsync(true);
+//        // TODO: The method name must be written as a test scenario.
+//        [Fact]
+//        public async Task TransactionStatus_ShouldBeSucceded()
+//        {
+//            using var paymentWebApplicationFactory = new PaymentHostFactory().WithWebHostBuilder(
+//                builder => builder.ConfigureTestContainer<ContainerBuilder>(
+//                    container =>
+//                    {
+//                        var mockStripeAccountSerivce = new Mock<IStripeAccountService>();
 
-                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.GetAccountIdAsync(It.IsAny<UserId>()))
-                            .ReturnsAsync("AccountId");
+//                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.HasAccountVerifiedAsync(It.IsAny<string>()))
+//                            .ReturnsAsync(true);
 
-                        container.RegisterInstance(mockStripeAccountSerivce.Object).As<IStripeAccountService>();
+//                        mockStripeAccountSerivce.Setup(stripeAccountService => stripeAccountService.GetAccountIdAsync(It.IsAny<UserId>()))
+//                            .ReturnsAsync("AccountId");
 
-                        var mockStripeService = new Mock<IStripeTransferService>();
+//                        container.RegisterInstance(mockStripeAccountSerivce.Object).As<IStripeAccountService>();
 
-                        mockStripeService.Setup(
-                                stripeService => stripeService.CreateTransferAsync(
-                                    It.IsAny<string>(),
-                                    It.IsAny<TransactionId>(),
-                                    It.IsAny<long>(),
-                                    It.IsAny<string>()))
-                            .Returns(Task.CompletedTask);
+//                        var mockStripeService = new Mock<IStripeTransferService>();
 
-                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
-                    }));
+//                        mockStripeService.Setup(
+//                                stripeService => stripeService.CreateTransferAsync(
+//                                    It.IsAny<string>(),
+//                                    It.IsAny<TransactionId>(),
+//                                    It.IsAny<long>(),
+//                                    It.IsAny<string>()))
+//                            .ReturnsAsync(new Transfer());
 
-            using (paymentWebApplicationFactory.CreateClient())
-            {
-                var account = new Account(new UserId());
-                var moneyDepositTransaction = new MoneyDepositTransaction(Money.Fifty);
-                account.CreateTransaction(moneyDepositTransaction);
+//                        container.RegisterInstance(mockStripeService.Object).As<IStripeTransferService>();
+//                    }));
 
-                await _testServer.UsingScopeAsync(
-                    async scope =>
-                    {
-                        var accountRepository = scope.GetRequiredService<IAccountRepository>();
-                        accountRepository.Create(account);
-                        await accountRepository.CommitAsync();
-                    });
+//            using (paymentWebApplicationFactory.CreateClient())
+//            {
+//                var account = new Account(new UserId());
+//                var moneyAccount = new MoneyAccountDecorator(account);
+//                var depositTransaction = moneyAccount.Deposit(Money.Fifty);
 
-                await _testServer.UsingScopeAsync(
-                    async scope =>
-                    {
-                        var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
+//                await _testServer.UsingScopeAsync(
+//                    async scope =>
+//                    {
+//                        var accountRepository = scope.GetRequiredService<IAccountRepository>();
+//                        accountRepository.Create(account);
+//                        await accountRepository.CommitAsync();
+//                    });
 
-                        await integrationEventService.PublishAsync(
-                            new UserAccountWithdrawalIntegrationEvent(
-                                account.UserId,
-                                "noreply@edoxa.gg",
-                                moneyDepositTransaction.Id,
-                                moneyDepositTransaction.Description.Text,
-                                5000));
-                    });
+//                await _testServer.UsingScopeAsync(
+//                    async scope =>
+//                    {
+//                        var integrationEventService = scope.GetRequiredService<IServiceBusPublisher>();
 
-                var transaction = await this.TryGetPublishedTransaction(moneyDepositTransaction.Id);
+//                        await integrationEventService.PublishUserAccountWithdrawalIntegrationEventAsync(
+//                            account.Id,
+//                            "noreply@edoxa.gg",
+//                            depositTransaction.Id,
+//                            depositTransaction.Description.Text,
+//                            5000);
+//                    });
 
-                transaction.Should().NotBeNull();
+//                var transaction = await this.TryGetPublishedTransaction(account.Id, depositTransaction.Id);
 
-                transaction?.Status.Should().Be(TransactionStatus.Succeded);
-            }
-        }
-    }
-}
+//                transaction.Should().NotBeNull();
+
+//                transaction?.Status.Should().Be(TransactionStatus.Succeded);
+//            }
+//        }
+//    }
+//}

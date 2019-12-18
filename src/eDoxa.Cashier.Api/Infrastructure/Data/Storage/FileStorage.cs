@@ -10,10 +10,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-using eDoxa.Cashier.Api.Areas.Challenges.Factories;
+using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
@@ -80,8 +79,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                             record => new PayoutLevel(new BucketSize(record.BucketSize), record.PrizeFactor));
                 });
 
-        private static Lazy<IImmutableSet<User>> LazyUsers =>
-            new Lazy<IImmutableSet<User>>(
+        private static Lazy<IImmutableSet<UserId>> LazyUsers =>
+            new Lazy<IImmutableSet<UserId>>(
                 () =>
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
@@ -95,17 +94,17 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                             {
                                 Id = default(Guid)
                             })
-                        .Select(record => new User(UserId.FromGuid(record.Id)))
+                        .Select(record => UserId.FromGuid(record.Id))
                         .ToImmutableHashSet();
                 });
 
-        public static IImmutableSet<User> Users => LazyUsers.Value;
+        public static IImmutableSet<UserId> Users => LazyUsers.Value;
 
         public static ILookup<PayoutEntries, PayoutLevel> ChallengePayouts => LazyChallengePayouts.Value;
 
         public static IImmutableSet<IChallenge> Challenges => LazyChallenges.Value;
 
-        public IImmutableSet<User> GetUsers()
+        public IImmutableSet<UserId> GetUsers()
         {
             return LazyUsers.Value;
         }

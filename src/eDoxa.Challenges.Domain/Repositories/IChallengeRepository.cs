@@ -28,10 +28,12 @@ namespace eDoxa.Challenges.Domain.Repositories
 
         Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null);
 
-        Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
-
-        Task<bool> AnyChallengeAsync(ChallengeId challengeId);
+        Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId);
 
         Task CommitAsync(bool dispatchDomainEvents, CancellationToken cancellationToken = default);
+
+        Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
+
+        Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
     }
 }

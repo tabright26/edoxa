@@ -1,0 +1,120 @@
+static_resources:
+  listeners:
+  - name: listener_0
+    address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 10000
+
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: local_service
+              domains: ["*"]
+              routes:
+              - match:
+                  prefix: "/payment/api/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/api/"
+                  cluster: payment-api              
+              - match:
+                  prefix: "/identity/api/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/api/"
+                  cluster: identity-api              
+              - match:
+                  prefix: "/cashier/api/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/api/"
+                  cluster: cashier-api              
+              - match:
+                  prefix: "/games/api/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/api/"
+                  cluster: games-api              
+              - match:
+                  prefix: "/clans/api/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/api/"
+                  cluster: clans-api
+              - match:
+                  prefix: "/api/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/api/"
+                  cluster: challenges-web-aggregator                  
+          http_filters:
+          - name: envoy.router
+
+  clusters:
+  - name: payment-api
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: payment.api
+        port_value: 80
+  - name: identity-api
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: identity.api
+        port_value: 80
+  - name: cashier-api
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: cashier.api
+        port_value: 80
+  - name: games-api
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: games.api
+        port_value: 80
+  - name: clans-api
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: clans.api
+        port_value: 80
+  - name: challenges-web-aggregator
+    connect_timeout: 60s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: challenges.web.aggregator
+        port_value: 80
+
+admin:
+  access_log_path: /tmp/admin_access.log
+  address:
+    socket_address: 
+      address: 0.0.0.0
+      port_value: 9901

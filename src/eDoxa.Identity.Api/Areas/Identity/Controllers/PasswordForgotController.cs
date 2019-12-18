@@ -1,15 +1,15 @@
 ﻿// Filename: PasswordForgotController.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
-using System.Web;
 
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
-using eDoxa.Identity.Api.Services;
-using eDoxa.Identity.Requests;
+using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -30,13 +30,11 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     {
         private readonly IUserService _userService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IRedirectService _redirectService;
 
-        public PasswordForgotController(IUserService userService, IServiceBusPublisher serviceBusPublisher, IRedirectService redirectService)
+        public PasswordForgotController(IUserService userService, IServiceBusPublisher serviceBusPublisher)
         {
             _userService = userService;
             _serviceBusPublisher = serviceBusPublisher;
-            _redirectService = redirectService;
         }
 
         [HttpPost]
@@ -56,13 +54,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     // visit https://go.microsoft.com/fwlink/?LinkID=532713
                     var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
-
-                    await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                        UserId.FromGuid(user.Id),
-                        request.Email,
-                        "Reset Password",
-                        $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+                    await _serviceBusPublisher.PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(user.Id.From<UserId>(), code);
                 }
 
                 return this.Ok();

@@ -1,5 +1,5 @@
 @using System.Security.Claims
-@using eDoxa.Identity.Api.Services
+@using eDoxa.Identity.Domain.Services
 @inject ISignInService SignInService
 @if (SignInService.IsSignedIn(User) && !(ViewData["signed-out"] is bool))
 {

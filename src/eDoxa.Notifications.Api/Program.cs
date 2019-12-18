@@ -11,6 +11,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
+using eDoxa.Seedwork.Security.Kestrel.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -57,6 +58,12 @@ namespace eDoxa.Notifications.Api
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
+                .ConfigureKestrel(
+                    options =>
+                    {
+                        options.ListenRest();
+                        options.ListenGrpc();
+                    })
                 .UseCustomAutofac()
                 .UseCustomAzureKeyVault()
                 .UseCustomApplicationInsights()

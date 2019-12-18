@@ -1,0 +1,27 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Payment.IntegrationEvents";
+
+import "cashier_dtos.proto";
+
+package edoxa.services.payment;
+
+message UserDepositSucceededIntegrationEvent {
+  string userId = 1;
+  cashier.TransactionDto transaction = 2;
+}
+
+message UserDepositFailedIntegrationEvent {
+  string userId = 1;
+  cashier.TransactionDto transaction = 2;
+}
+
+message UserWithdrawalSucceededIntegrationEvent {
+  string userId = 1;
+  cashier.TransactionDto transaction = 2;
+}
+
+message UserWithdrawalFailedIntegrationEvent {
+  string userId = 1;
+  cashier.TransactionDto transaction = 2;
+}

@@ -79,7 +79,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Repositories
                 var repository = new ChallengeRepository(context, TestMapper);
 
                 //Act
-                var challenge = await repository.FindChallengeAsync(fakeChallenge.Id);
+                var challenge = await repository.FindChallengeOrNullAsync(fakeChallenge.Id);
 
                 //Assert
                 challenge.Should().NotBeNull();

@@ -65,7 +65,7 @@ namespace eDoxa.Seedwork.Security
                 "Your permission(s)",
                 new HashSet<string>
                 {
-                    ClaimTypes.Permission
+                    CustomClaimTypes.Permission
                 })
             {
             }

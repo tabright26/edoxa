@@ -2,14 +2,18 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Buy from "./Buy";
-import { UserAccountDepositBundlesState } from "store/root/user/account/deposit/bundles/types";
+import { UserAccountDepositBundlesState } from "store/actions/cashier";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
 import { TOKEN } from "types";
 
 it("renders without crashing", () => {
   //Arrange
   const tokenBundles: UserAccountDepositBundlesState = {
-    data: [{ amount: 10, price: 10 }, { amount: 30, price: 30 }, { amount: 50, price: 50 }],
+    data: [
+      { amount: 10, price: 10 },
+      { amount: 30, price: 30 },
+      { amount: 50, price: 50 }
+    ],
     loading: false,
     error: null
   };

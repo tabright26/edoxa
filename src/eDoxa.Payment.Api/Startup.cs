@@ -11,16 +11,17 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
-using eDoxa.Payment.Api.Areas.Stripe.Extensions;
+using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
+using eDoxa.Payment.Api.Services;
 using eDoxa.Payment.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -30,7 +31,7 @@ using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Azure.Extensions;
 
 using FluentValidation;
 
@@ -98,13 +99,15 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomCors();
 
+            services.AddCustomGrpc();
+
             services.AddCustomProblemDetails(options => options.MapStripeException());
 
             services.AddCustomControllers<Startup>().AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(PaymentDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(PaymentDbContext));
 
             services.AddMediatR(typeof(Startup));
 
@@ -123,7 +126,7 @@ namespace eDoxa.Payment.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.PaymentApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.PaymentApi);
 
             builder.RegisterModule<PaymentModule>();
         }
@@ -143,6 +146,8 @@ namespace eDoxa.Payment.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<PaymentGrpcService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<PaymentAppSettings>(AppSettings.ApiResource);

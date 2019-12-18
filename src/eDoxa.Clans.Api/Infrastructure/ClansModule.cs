@@ -6,9 +6,9 @@
 
 using Autofac;
 
-using eDoxa.Clans.Api.Areas.Clans.Services;
-using eDoxa.Clans.Api.Areas.Clans.Services.Abstractions;
+using eDoxa.Clans.Api.Application.Services;
 using eDoxa.Clans.Domain.Repositories;
+using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.Infrastructure.Repositories;
 
 namespace eDoxa.Clans.Api.Infrastructure

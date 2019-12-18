@@ -81,11 +81,11 @@ services:
       - mssql
       - redis
 
-  challenges.web.jobs:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.jobs:${ACR_TAG:-latest}
+  challenges.worker:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.worker:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.Web.Jobs/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Worker/Dockerfile
     depends_on:
       - seq
 

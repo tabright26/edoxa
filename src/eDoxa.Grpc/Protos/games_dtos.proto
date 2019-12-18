@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Dtos";
+
+import "google/protobuf/timestamp.proto";
+
+import "games_enums.proto";
+
+package edoxa.services.games;
+
+message MatchDto {
+  string gameUuid = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  map<string, double> stats = 3;
+  map<string, string> metadata = 4;
+}
+
+message GameCredentialDto {
+  string userId = 1;
+  string playerId = 2;
+  GameDto game = 3;
+}

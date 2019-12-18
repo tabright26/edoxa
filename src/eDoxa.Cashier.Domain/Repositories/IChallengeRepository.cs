@@ -19,10 +19,12 @@ namespace eDoxa.Cashier.Domain.Repositories
 
         void Create(IChallenge challenge);
 
-        void Delete(IChallenge challenge);
-
-        Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
+        Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId);
 
         Task CommitAsync(CancellationToken cancellationToken = default);
+
+        Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
+
+        Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
     }
 }

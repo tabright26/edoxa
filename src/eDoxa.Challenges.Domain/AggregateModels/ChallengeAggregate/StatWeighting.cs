@@ -35,6 +35,11 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return _weighting.ToString("R");
         }
 
+        public float ToSingle()
+        {
+            return _weighting;
+        }
+
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return _weighting;

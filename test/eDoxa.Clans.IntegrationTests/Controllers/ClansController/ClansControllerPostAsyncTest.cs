@@ -1,18 +1,19 @@
 ﻿// Filename: ClansControllerPostAsyncTest.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
-using eDoxa.Clans.Requests;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -22,8 +23,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
 {
@@ -35,7 +34,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(ClanPostRequest clanPostRequest)
+        private async Task<HttpResponseMessage> ExecuteAsync(CreateClanRequest clanPostRequest)
         {
             return await _httpClient.PostAsJsonAsync("api/clans", clanPostRequest);
         }
@@ -61,7 +60,12 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new ClanPostRequest(clan.Name, "This is a summary"));
+            using var response = await this.ExecuteAsync(
+                new CreateClanRequest
+                {
+                    Name = clan.Name,
+                    Summary = "This is a summary"
+                });
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -79,7 +83,12 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             testServer.CleanupDbContext();
 
             // Act
-            using var response = await this.ExecuteAsync(new ClanPostRequest("TestClan", "This is a summary"));
+            using var response = await this.ExecuteAsync(
+                new CreateClanRequest
+                {
+                    Name = "TestClan",
+                    Summary = "This is a summary"
+                });
 
             // Assert
             response.EnsureSuccessStatusCode();

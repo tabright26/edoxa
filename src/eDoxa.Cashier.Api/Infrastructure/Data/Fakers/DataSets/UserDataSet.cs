@@ -10,14 +10,13 @@ using System.Linq;
 using Bogus;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
-using eDoxa.Cashier.Domain.AggregateModels.UserAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
 {
     public class UserDataSet
     {
-        private static ICollection<User> _testUsers = new HashSet<User>(FileStorage.Users);
+        private static ICollection<UserId> _testUsers = new HashSet<UserId>(FileStorage.Users);
 
         public UserDataSet(Faker faker)
         {
@@ -37,12 +36,12 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
 
             _testUsers.Remove(testUser);
 
-            return testUser.Id;
+            return testUser;
         }
 
         public void Reset()
         {
-            _testUsers = new HashSet<User>(FileStorage.Users);
+            _testUsers = new HashSet<UserId>(FileStorage.Users);
         }
     }
 }

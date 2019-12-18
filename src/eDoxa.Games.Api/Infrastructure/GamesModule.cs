@@ -6,13 +6,13 @@
 
 using Autofac;
 
-using eDoxa.Games.Abstractions.Factories;
-using eDoxa.Games.Abstractions.Services;
+using eDoxa.Games.Api.Application.Factories;
+using eDoxa.Games.Api.Application.Services;
+using eDoxa.Games.Domain.Factories;
 using eDoxa.Games.Domain.Repositories;
-using eDoxa.Games.Factories;
+using eDoxa.Games.Domain.Services;
 using eDoxa.Games.Infrastructure.Repositories;
 using eDoxa.Games.LeagueOfLegends;
-using eDoxa.Games.Services;
 
 namespace eDoxa.Games.Api.Infrastructure
 {

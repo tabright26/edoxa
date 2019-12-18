@@ -67,7 +67,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             _participants.Add(participant);
 
-            this.AddDomainEvent(new ChallengeParticipantRegisteredDomainEvent(Id, participant.Id));
+            this.AddDomainEvent(new ChallengeParticipantRegisteredDomainEvent(Id, participant.Id, participant.UserId));
         }
 
         public void Start(IDateTimeProvider startedAt)
@@ -89,7 +89,7 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
             Timeline = Timeline.Close(closedAt);
 
-            this.AddDomainEvent(new ChallengeClosedDomainEvent(this));
+            this.AddDomainEvent(new ChallengeSynchronizedDomainEvent(this));
         }
 
         public void Synchronize(IDateTimeProvider synchronizedAt)

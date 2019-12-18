@@ -33,10 +33,14 @@ namespace eDoxa.Identity.Domain.AggregateModels.AddressAggregate
             UserId = userId;
         }
 
+        #nullable disable
+
         private Address()
         {
             // Required by EF Core.
         }
+
+        #nullable restore
 
         public AddressType? Type { get; private set; }
 

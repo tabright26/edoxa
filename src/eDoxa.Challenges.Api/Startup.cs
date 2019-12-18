@@ -11,27 +11,26 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
-using eDoxa.Challenges.Api.Areas.Challenges;
-using eDoxa.Challenges.Api.HttpClients.Extensions;
+using eDoxa.Challenges.Api.Application;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
+using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Azure.Extensions;
 
 using FluentValidation;
 
@@ -87,9 +86,7 @@ namespace eDoxa.Challenges.Api
                 .AddAzureKeyVault(Configuration)
                 .AddSqlServer(Configuration)
                 .AddRedis(Configuration)
-                .AddAzureServiceBusTopic(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppNames.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppNames.GamesApi);
+                .AddAzureServiceBusTopic(Configuration);
 
             services.AddDbContext<ChallengesDbContext>(
                 options => options.UseSqlServer(
@@ -102,13 +99,15 @@ namespace eDoxa.Challenges.Api
 
             services.AddCustomCors();
 
+            services.AddCustomGrpc();
+
             services.AddCustomProblemDetails();
 
             services.AddCustomControllers<Startup>().AddDevTools<ChallengesDbContextSeeder, ChallengesDbContextCleaner>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(ChallengesDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(ChallengesDbContext));
 
             services.AddMediatR(typeof(Startup));
 
@@ -125,16 +124,12 @@ namespace eDoxa.Challenges.Api
             services.AddSwagger(
                 XmlCommentsFilePath,
                 AppSettings,
-                AppSettings,
-                Scopes.CashierApi,
-                Scopes.GamesApi);
-
-            services.AddHttpClients(AppSettings);
+                AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.ChallengesApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.ChallengesApi);
 
             builder.RegisterModule<ChallengesModule>();
         }
@@ -154,6 +149,8 @@ namespace eDoxa.Challenges.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<ChallengeGrpcService>();
+
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<ChallengesAppSettings>(AppSettings.ApiResource);

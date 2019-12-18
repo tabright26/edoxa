@@ -9,6 +9,8 @@
 using System;
 using System.Collections.Generic;
 
+using eDoxa.Seedwork.Domain;
+
 namespace eDoxa.Cashier.Infrastructure.Models
 {
     /// <remarks>
@@ -33,5 +35,7 @@ namespace eDoxa.Cashier.Infrastructure.Models
         public AccountModel Account { get; set; }
 
         public ICollection<TransactionMetadataModel> Metadata { get; set; }
+
+        public ICollection<IDomainEvent> DomainEvents { get; set; }
     }
 }

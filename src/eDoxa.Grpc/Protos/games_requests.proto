@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Requests";
+
+import "google/protobuf/timestamp.proto";
+
+import "games_enums.proto";
+import "challenges_enums.proto";
+
+package edoxa.services.games;
+
+message FetchChallengeScoringRequest {
+  GameDto game = 1;
+  services.challenges.ChallengeTypeDto challengeType = 2;
+}
+
+message FetchChallengeMatchesRequest {
+  GameDto game = 1;
+  string gamePlayerId = 2;
+  google.protobuf.Timestamp startedAt = 3;
+  google.protobuf.Timestamp endedAt = 4;
+}

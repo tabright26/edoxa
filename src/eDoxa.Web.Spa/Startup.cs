@@ -50,9 +50,9 @@ namespace eDoxa.Web.Spa
                 .AddCustomSelfCheck()
                 .AddIdentityServer(AppSettings)
                 .AddAzureKeyVault(Configuration)
-                .AddUrlGroup(AppSettings.ChallengesWebGatewayUrl, AppNames.ChallengesWebGateway);
+                .AddUrlGroup(AppSettings.ChallengesWebGatewayUrl, AppServices.ChallengesWebGateway);
 
-            services.AddCustomDataProtection(Configuration, AppNames.WebSpa);
+            services.AddCustomDataProtection(Configuration, AppServices.WebSpa);
 
             services.AddAntiforgery(options => options.HeaderName = "X-XSRF-TOKEN");
 

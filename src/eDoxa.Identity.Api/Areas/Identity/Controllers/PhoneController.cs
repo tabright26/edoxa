@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Extensions;
-using eDoxa.Identity.Api.Services;
-using eDoxa.Identity.Requests;
-using eDoxa.Identity.Responses;
+using eDoxa.Identity.Domain.Services;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -41,7 +41,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
         [HttpGet]
         [SwaggerOperation("Find user's phone.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetAsync()
         {
@@ -54,22 +54,22 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 return this.NotFound("Phone number not found.");
             }
 
-            return this.Ok(_mapper.Map<PhoneResponse>(user));
+            return this.Ok(_mapper.Map<PhoneDto>(user));
         }
 
         [HttpPost]
         [SwaggerOperation("Udpate user's phone.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneResponse))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PostAsync([FromBody] ChangePhoneRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 
-            var result = await _userService.SetPhoneNumberAsync(user, request.Number);
+            var result = await _userService.UpdatePhoneNumberAsync(user, request.Number);
 
             if (result.Succeeded)
             {
-                return this.Ok(_mapper.Map<PhoneResponse>(user));
+                return this.Ok(_mapper.Map<PhoneDto>(user));
             }
 
             ModelState.Bind(result);

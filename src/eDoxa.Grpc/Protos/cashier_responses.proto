@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Responses";
+
+import "cashier_dtos.proto";
+
+package edoxa.services.cashier;
+
+message FetchChallengePayoutsResponse {
+  repeated ChallengePayoutDto payouts = 1;
+}
+
+message FindChallengePayoutResponse {
+  ChallengePayoutDto payout = 1;
+}
+
+message CreateChallengePayoutResponse {
+  ChallengePayoutDto payout = 1;
+}
+
+message CreateTransactionResponse {
+  TransactionDto Transaction = 1;
+}

@@ -4,29 +4,18 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Reflection;
-
 using AutoMapper;
 
 using eDoxa.Games.Api;
 using eDoxa.Games.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper;
 
 namespace eDoxa.Games.TestHelper.Fixtures
 {
     public sealed class TestMapperFixture
     {
-        private static Lazy<IMapper> Lazy = new Lazy<IMapper>(
-            () =>
-            {
-                var configuration = new MapperConfiguration(
-                    config => config.AddMaps(Assembly.GetAssembly(typeof(GamesDbContext)), Assembly.GetAssembly(typeof(Startup))));
+        private static LazyMapper LazyMapper = new LazyMapper(typeof(GamesDbContext), typeof(Startup));
 
-                configuration.AssertConfigurationIsValid();
-
-                return new Mapper(configuration);
-            });
-
-        public IMapper Instance => Lazy.Value;
+        public IMapper Instance => LazyMapper.Value;
     }
 }

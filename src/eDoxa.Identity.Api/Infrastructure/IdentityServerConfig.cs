@@ -56,6 +56,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return ApiResources.ClansApi;
 
             yield return ApiResources.ChallengesWebAggregator;
+
+            yield return ApiResources.CashierWebAggregator;
         }
 
         public static IEnumerable<Client> GetClients(IdentityAppSettings appSettings)
@@ -66,17 +68,19 @@ namespace eDoxa.Identity.Api.Infrastructure
 
                 yield return ApiResources.PaymentApi.GetSwaggerClient(appSettings.Swagger.Endpoints.PaymentUrl);
 
-                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl, Scopes.PaymentApi);
+                yield return ApiResources.CashierApi.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierUrl);
 
                 yield return ApiResources.NotificationsApi.GetSwaggerClient(appSettings.Swagger.Endpoints.NotificationsUrl);
 
-                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl, Scopes.CashierApi, Scopes.GamesApi);
+                yield return ApiResources.ChallengesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesUrl);
 
                 yield return ApiResources.GamesApi.GetSwaggerClient(appSettings.Swagger.Endpoints.GamesUrl);
 
                 yield return ApiResources.ClansApi.GetSwaggerClient(appSettings.Swagger.Endpoints.ClansUrl);
 
                 yield return ApiResources.ChallengesWebAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.ChallengesWebAggregatorUrl, Scopes.CashierApi, Scopes.GamesApi, Scopes.ChallengesApi);
+                
+                yield return ApiResources.CashierWebAggregator.GetSwaggerClient(appSettings.Swagger.Endpoints.CashierWebAggregatorUrl, Scopes.CashierApi, Scopes.PaymentApi);
             }
 
             yield return new Client
@@ -121,7 +125,8 @@ namespace eDoxa.Identity.Api.Infrastructure
                     Scopes.ChallengesApi.Name,
                     Scopes.GamesApi.Name,
                     Scopes.ClansApi.Name,
-                    Scopes.ChallengesWebAggregator.Name
+                    Scopes.ChallengesWebAggregator.Name,
+                    Scopes.CashierWebAggregator.Name
                 }
             };
         }

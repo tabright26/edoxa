@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain.Misc;
 
+using Stripe;
+
 namespace eDoxa.Payment.Domain.Stripe.Services
 {
     public interface IStripeTransferService
     {
-        Task CreateTransferAsync(
+        Task<Transfer> CreateTransferAsync(
             string accountId,
             TransactionId transactionId,
             long amount,

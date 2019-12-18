@@ -29,10 +29,5 @@ namespace eDoxa.Challenges.Api.Infrastructure
 
     public class EndpointsOptions : AuthorityEndpointsOptions
     {
-        [Required]
-        public string CashierUrl { get; set; }
-
-        [Required]
-        public string GamesUrl { get; set; }
     }
 }

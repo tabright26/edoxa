@@ -4,30 +4,20 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using Autofac;
-
-using eDoxa.Challenges.Api.HttpClients;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
-using eDoxa.Challenges.Responses;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
-using eDoxa.Seedwork.Application.Dtos;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
-
-using Microsoft.AspNetCore.TestHost;
-
-using Moq;
 
 using Xunit;
 
@@ -57,19 +47,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
-            var factory = TestHost.WithClaims().WithWebHostBuilder(
-                x =>
-                {
-                    x.ConfigureTestContainer<ContainerBuilder>(
-                        y =>
-                        {
-                            var mock = new Mock<IGamesHttpClient>();
-
-                            mock.Setup(t => t.GetChallengeMatchesAsync(It.IsAny<Game>(), It.IsAny<string>(), It.IsAny<DateTime?>(), It.IsAny<DateTime?>())).ReturnsAsync(new List<MatchDto>());
-
-                            y.RegisterInstance(mock.Object).As<IGamesHttpClient>().SingleInstance();
-                        });
-                });
+            var factory = TestHost.WithClaims();
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -88,7 +66,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var participantResponses = await response.Content.ReadAsAsync<ParticipantResponse[]>();
+            var participantResponses = await response.Content.ReadAsJsonAsync<ParticipantDto[]>();
             participantResponses.Should().HaveCount(challenge.Participants.Count);
         }
     }

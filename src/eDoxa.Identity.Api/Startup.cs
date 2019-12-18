@@ -12,28 +12,31 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
+using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security;
+using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Azure.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -51,6 +54,7 @@ using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -59,9 +63,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -116,7 +117,7 @@ namespace eDoxa.Identity.Api
                 .AddRedis(Configuration)
                 .AddAzureServiceBusTopic(Configuration);
 
-            services.AddCustomDataProtection(Configuration, AppNames.IdentityApi);
+            services.AddCustomDataProtection(Configuration, AppServices.IdentityApi);
 
             services.AddDbContext<IdentityDbContext>(
                 options => options.UseSqlServer(
@@ -126,6 +127,13 @@ namespace eDoxa.Identity.Api
                         sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
+
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                    options.Secure = CookieSecurePolicy.SameAsRequest;
+                });
 
             services.AddIdentity<User, Role>(
                     options =>
@@ -141,9 +149,9 @@ namespace eDoxa.Identity.Api
                         options.Lockout.MaxFailedAccessAttempts = 5;
                         options.User.RequireUniqueEmail = true;
                         options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = ClaimTypes.Doxatag;
+                        options.ClaimsIdentity.UserNameClaimType = CustomClaimTypes.Doxatag;
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = ClaimTypes.SecurityStamp;
+                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
                         options.SignIn.RequireConfirmedPhoneNumber = false;
                         options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
                     })
@@ -171,15 +179,14 @@ namespace eDoxa.Identity.Api
                     option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
                 });
 
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
             services.AddProblemDetails();
 
             services.AddMvc()
-                .AddNewtonsoftJson(
-                    options =>
-                    {
-                        options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                        options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    })
+                .AddCustomNewtonsoftJson()
                 .AddDevTools<IdentityDbContextSeeder, IdentityDbContextCleaner>()
                 .AddRazorPagesOptions(
                     options =>
@@ -205,7 +212,7 @@ namespace eDoxa.Identity.Api
 
             services.AddVersionedApiExplorer();
 
-            services.AddAutoMapper(Assembly.GetAssembly(typeof(Startup)), Assembly.GetAssembly(typeof(IdentityDbContext)));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(IdentityDbContext));
 
             services.AddIdentityServer(
                     options =>
@@ -256,7 +263,7 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.IdentityApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.IdentityApi);
 
             builder.RegisterModule<IdentityModule>();
         }
@@ -273,8 +280,10 @@ namespace eDoxa.Identity.Api
 
             application.UseHttpsRedirection();
             application.UseStaticFiles();
+            application.UseCookiePolicy();
 
             application.UseRouting();
+            application.UseCustomCors();
 
             application.UseAuthentication();
             application.UseIdentityServer();
@@ -283,6 +292,8 @@ namespace eDoxa.Identity.Api
             application.UseEndpoints(
                 endpoints =>
                 {
+                    endpoints.MapGrpcService<IdentityGrpcService>();
+
                     endpoints.MapRazorPages();
 
                     endpoints.MapDefaultControllerRoute();
