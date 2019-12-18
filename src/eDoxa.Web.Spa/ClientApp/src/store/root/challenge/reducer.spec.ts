@@ -1,6 +1,6 @@
 import { reducer, initialState } from "./reducer";
-import { LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL } from "./types";
 import { AxiosError } from "axios";
+import { LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL } from "store/actions/challenge/types";
 
 const challenges204Data = { data: [], error: null, loading: false };
 const challenges200Data = { data: [{ id: "1" }, { id: "2" }, { id: "1" }], error: null, loading: false };

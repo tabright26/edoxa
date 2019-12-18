@@ -6,14 +6,13 @@ import {
   sendClanCandidature,
   acceptClanCandidature,
   declineClanCandidature
-} from "store/root/organization/candidature/actions";
+} from "store/actions/clan";
 import { ClanCandidaturesState } from "store/root/organization/candidature/types";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";
 
 interface StateProps {
   candidatures: ClanCandidaturesState;
-  ownProps: OwnProps;
 }
 
 interface OwnProps {

@@ -1,18 +1,20 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { connect } from "react-redux";
-import {
-  loadClans,
-  loadClan,
-  createClan
-} from "store/root/organization/clan/actions";
+import { connect, MapStateToProps } from "react-redux";
 import { ClansState } from "store/root/organization/clan/types";
 import {
+  loadClans,
   downloadClanLogo,
-  uploadClanLogo
-} from "store/root/organization/logo/actions";
+  uploadClanLogo,
+  loadClan,
+  createClan
+} from "store/actions/clan";
 import { RootState } from "store/types";
 import produce, { Draft } from "immer";
 import { UserId, ClanId } from "types";
+
+interface StateProps {
+  clans: ClansState;
+}
 
 interface OwnProps {
   userId: UserId;
@@ -28,8 +30,11 @@ export const withClans = (HighOrderComponent: FunctionComponent<any>) => {
     return <HighOrderComponent {...props} />;
   };
 
-  const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
-    const clans: ClansState = produce(
+  const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+    state,
+    ownProps
+  ) => {
+    const clans = produce(
       state.root.organization.clan,
       (draft: Draft<ClansState>) => {
         draft.data.forEach(clan => {

@@ -7,10 +7,14 @@ import {
   LOAD_CLAN_INVITATION_FAIL,
   SEND_CLAN_INVITATION_SUCCESS,
   DECLINE_CLAN_INVITATION_SUCCESS
-} from "./types";
+} from "store/actions/clan/types";
 
 const invitations204Data = [];
-const invitations200Data = [{ clanId: "0", userId: "1" }, { clanId: "10", userId: "11" }, { clanId: "100", userId: "111" }];
+const invitations200Data = [
+  { clanId: "0", userId: "1" },
+  { clanId: "10", userId: "11" },
+  { clanId: "100", userId: "111" }
+];
 
 const invitation200Data = { clanId: "0", userId: "1" };
 

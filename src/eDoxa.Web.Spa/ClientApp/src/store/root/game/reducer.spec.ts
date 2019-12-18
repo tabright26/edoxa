@@ -1,8 +1,12 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
-import { LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL } from "./types";
+import { LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL } from "store/actions/game/types";
 
-const games200Data = [{ gameId: "League" }, { gameId: "Overwatch" }, { gameId: "CSGO" }];
+const games200Data = [
+  { gameId: "League" },
+  { gameId: "Overwatch" },
+  { gameId: "CSGO" }
+];
 
 describe("user games reducer", () => {
   it("should return the initial state", () => {

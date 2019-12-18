@@ -5,11 +5,11 @@ import {
   UPDATE_STRIPE_BANKACCOUNT,
   UPDATE_STRIPE_BANKACCOUNT_SUCCESS,
   UPDATE_STRIPE_BANKACCOUNT_FAIL,
-  StripeBankAccountActions,
-  StripeBankAccountState
-} from "./types";
+  StripeBankAccountActions
+} from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { StripeBankAccountState } from "./types";
 
 export const initialState: StripeBankAccountState = {
   data: null,
@@ -17,33 +17,39 @@ export const initialState: StripeBankAccountState = {
   loading: false
 };
 
-export const reducer: Reducer<StripeBankAccountState, StripeBankAccountActions> = produce((draft: Draft<StripeBankAccountState>, action: StripeBankAccountActions) => {
-  switch (action.type) {
-    case LOAD_STRIPE_BANKACCOUNT:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case LOAD_STRIPE_BANKACCOUNT_SUCCESS:
-      draft.data = action.payload.data;
-      draft.error = null;
-      draft.loading = false;
-      break;
-    case LOAD_STRIPE_BANKACCOUNT_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-    case UPDATE_STRIPE_BANKACCOUNT:
-      draft.error = null;
-      draft.loading = true;
-      break;
-    case UPDATE_STRIPE_BANKACCOUNT_SUCCESS:
-      draft.data = action.payload.data;
-      draft.error = null;
-      draft.loading = false;
-      break;
-    case UPDATE_STRIPE_BANKACCOUNT_FAIL:
-      draft.error = action.error;
-      draft.loading = false;
-      break;
-  }
-}, initialState);
+export const reducer: Reducer<
+  StripeBankAccountState,
+  StripeBankAccountActions
+> = produce(
+  (draft: Draft<StripeBankAccountState>, action: StripeBankAccountActions) => {
+    switch (action.type) {
+      case LOAD_STRIPE_BANKACCOUNT:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case LOAD_STRIPE_BANKACCOUNT_SUCCESS:
+        draft.data = action.payload.data;
+        draft.error = null;
+        draft.loading = false;
+        break;
+      case LOAD_STRIPE_BANKACCOUNT_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+      case UPDATE_STRIPE_BANKACCOUNT:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case UPDATE_STRIPE_BANKACCOUNT_SUCCESS:
+        draft.data = action.payload.data;
+        draft.error = null;
+        draft.loading = false;
+        break;
+      case UPDATE_STRIPE_BANKACCOUNT_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+    }
+  },
+  initialState
+);
