@@ -25,7 +25,7 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserAddressChangedIntegrationEventHandlerTest : UnitTest
+    public sealed class UserAddressChangedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
     {
         public UserAddressChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {

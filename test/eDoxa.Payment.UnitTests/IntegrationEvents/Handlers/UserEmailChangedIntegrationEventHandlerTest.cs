@@ -1,6 +1,6 @@
 ﻿// Filename: UserEmailChangedIntegrationEventHandlerTest.cs
-// Date Created: 2019-10-11
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -25,7 +25,7 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserEmailChangedIntegrationEventHandlerTest : UnitTest
+    public sealed class UserEmailChangedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
     {
         public UserEmailChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
@@ -41,12 +41,9 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
-            mockAccountService.Setup(
-                accountService => accountService.UpdateIndividualAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<PersonUpdateOptions>()))
+            mockAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
                 .ReturnsAsync(new DomainValidationResult())
-            .Verifiable();
+                .Verifiable();
 
             var handler = new UserEmailChangedIntegrationEventHandler(mockService.Object, mockAccountService.Object, mockLogger.Object);
 
@@ -56,7 +53,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 Email = new EmailDto
                 {
                     Address = "gabriel@edoxa.gg"
-                } 
+                }
             };
 
             // Act
@@ -64,9 +61,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             // Assert
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<PersonUpdateOptions>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
         }
     }
 }

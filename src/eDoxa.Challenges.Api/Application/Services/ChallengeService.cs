@@ -30,9 +30,19 @@ namespace eDoxa.Challenges.Api.Application.Services
             _logger = logger;
         }
 
-        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId)
+        {
+            return await _challengeRepository.FindChallengeOrNullAsync(challengeId);
+        }
+
+        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
         {
             return await _challengeRepository.FindChallengeAsync(challengeId);
+        }
+
+        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
+        {
+            return await _challengeRepository.ChallengeExistsAsync(challengeId);
         }
 
         public async Task<IDomainValidationResult> CreateChallengeAsync(
@@ -104,6 +114,27 @@ namespace eDoxa.Challenges.Api.Application.Services
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(participant);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> CloseChallengeAsync(IChallenge challenge, IDateTimeProvider provider, CancellationToken cancellationToken = default)
+        {
+            var result = new DomainValidationResult();
+
+            if (!challenge.CanClose())
+            {
+                result.AddDomainValidationError("Challenge can't be closed.");
+            }
+
+            if (result.IsValid)
+            {
+                challenge.Close(provider);
+
+                await _challengeRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(challenge);
             }
 
             return result;
@@ -183,11 +214,20 @@ namespace eDoxa.Challenges.Api.Application.Services
             return await Task.FromResult(new DomainValidationResult());
         }
 
-        public async Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
+        public async Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
         {
-            _challengeRepository.Delete(challenge);
+            var result = new DomainValidationResult();
 
-            await _challengeRepository.CommitAsync(true, cancellationToken);
+            if (result.IsValid)
+            {
+                _challengeRepository.Delete(challenge);
+
+                await _challengeRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(challenge);
+            }
+
+            return result;
         }
     }
 }

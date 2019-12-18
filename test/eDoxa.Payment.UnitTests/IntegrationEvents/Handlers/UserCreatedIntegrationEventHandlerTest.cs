@@ -23,7 +23,7 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest
+    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
     {
         public UserCreatedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {

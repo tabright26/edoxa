@@ -1,6 +1,6 @@
 ﻿// Filename: UserInformationChangedIntegrationEventHandlerTest.cs
-// Date Created: 2019-10-11
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -8,6 +8,7 @@ using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
+using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
@@ -25,7 +26,7 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserInformationChangedIntegrationEventHandlerTest : UnitTest
+    public sealed class UserInformationChangedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
     {
         public UserInformationChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
@@ -41,12 +42,9 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
-            mockAccountService.Setup(
-                accountService => accountService.UpdateIndividualAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<PersonUpdateOptions>()))
+            mockAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
                 .ReturnsAsync(new DomainValidationResult())
-            .Verifiable();
+                .Verifiable();
 
             var handler = new UserProfileChangedIntegrationEventHandler(mockService.Object, mockAccountService.Object, mockLogger.Object);
 
@@ -57,7 +55,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 {
                     FirstName = "Gabriel",
                     LastName = "Roy",
-                    Gender = Grpc.Protos.Identity.Enums.GenderDto.Male,
+                    Gender = GenderDto.Male,
                     Dob = new DobDto
                     {
                         Day = 1,
@@ -72,9 +70,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             // Assert
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(
-                    It.IsAny<string>(),
-                    It.IsAny<PersonUpdateOptions>()), Times.Once);
+            mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
         }
     }
 }

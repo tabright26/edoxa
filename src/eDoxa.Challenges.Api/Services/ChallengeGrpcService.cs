@@ -125,7 +125,7 @@ namespace eDoxa.Challenges.Api.Services
 
                 var userId = httpContext.GetUserId();
 
-                var challenge = await _challengeService.FindChallengeAsync(request.ChallengeId.ParseEntityId<ChallengeId>());
+                var challenge = await _challengeService.FindChallengeOrNullAsync(request.ChallengeId.ParseEntityId<ChallengeId>());
 
                 if (challenge == null)
                 {
