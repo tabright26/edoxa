@@ -27,16 +27,25 @@ namespace eDoxa.Cashier.Api.Application.Services
             _challengeRepository = challengeRepository;
         }
 
-        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId)
         {
-            return await _challengeRepository.FindChallengeAsync(challengeId);
+            return await _challengeRepository.FindChallengeOrNullAsync(challengeId);
         }
 
-        public async Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
+        public async Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
         {
-            _challengeRepository.Delete(challenge);
+            var result = new DomainValidationResult();
 
-            await _challengeRepository.CommitAsync(cancellationToken);
+            if (result.IsValid)
+            {
+                _challengeRepository.Delete(challenge);
+
+                await _challengeRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(challenge);
+            }
+
+            return result;
         }
 
         public async Task<IDomainValidationResult> CreateChallengeAsync(
@@ -69,6 +78,16 @@ namespace eDoxa.Cashier.Api.Application.Services
             }
 
             return result;
+        }
+
+        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        {
+            return await _challengeRepository.FindChallengeAsync(challengeId);
+        }
+
+        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
+        {
+            return await _challengeRepository.ChallengeExistsAsync(challengeId);
         }
     }
 }

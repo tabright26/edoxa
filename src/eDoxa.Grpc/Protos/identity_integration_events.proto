@@ -2,56 +2,10 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Identity.IntegrationEvents";
 
-import "google/protobuf/wrappers.proto";
-
 import "identity_dtos.proto";
 import "identity_enums.proto";
 
 package edoxa.services.identity;
-
-message RoleClaimsAddedIntegrationEvent {
-  string roleName = 1;
-  repeated RoleClaimDto claims = 2;
-}
-
-message RoleClaimsRemovedIntegrationEvent {
-  string roleName = 1;
-  repeated RoleClaimDto claims = 2;
-}
-
-message RoleCreatedIntegrationEvent {
-  string roleName = 1;
-}
-
-message RoleDeletedIntegrationEvent {
-  string roleName = 1;
-}
-
-message UserAddressChangedIntegrationEvent {
-  string userId = 1;
-  string line1 = 2;
-  google.protobuf.StringValue line2 = 3;
-  google.protobuf.StringValue state = 4;
-  string city = 5;
-  google.protobuf.StringValue postalCode = 6;
-}
-
-message UserClaimsAddedIntegrationEvent {
-  string userId = 1;
-  repeated UserClaimDto claims = 2;
-}
-
-message UserClaimsRemovedIntegrationEvent {
-  string userId = 1;
-  repeated UserClaimDto claims = 2;
-}
-
-message UserClaimsReplacedIntegrationEvent {
-  string userId = 1;
-  int32 claimCount = 2;
-  repeated UserClaimDto claims = 3;
-  repeated UserClaimDto newClaims = 4;
-}
 
 message UserCreatedIntegrationEvent {
   string userId = 1;
@@ -59,36 +13,32 @@ message UserCreatedIntegrationEvent {
   CountryDto country = 3;
 }
 
+message UserProfileChangedIntegrationEvent {
+  string userId = 1;
+  ProfileDto profile = 2;
+}
+
 message UserEmailChangedIntegrationEvent {
   string userId = 1;
-  string email = 2;
-}
-
-message UserEmailSentIntegrationEvent {
-  string userId = 1;
-  string subject = 2;
-  string htmlMessage = 3;
-}
-
-message UserInformationChangedIntegrationEvent {
-  string userId = 1;
-  string firstName = 2;
-  string lastName = 3;
-  GenderDto gender = 4;
-  DobDto dob = 5;
+  EmailDto email = 2;
 }
 
 message UserPhoneChangedIntegrationEvent {
   string userId = 1;
-  string phoneNumber = 2;
+  PhoneDto phone = 2;
 }
 
-message UserRoleAddedIntegrationEvent {
+message UserAddressChangedIntegrationEvent {
   string userId = 1;
-  string roleName = 2;
+  AddressDto address = 2;
 }
 
-message UserRoleRemovedIntegrationEvent {
+message UserPasswordResetTokenGeneratedIntegrationEvent {
   string userId = 1;
-  string roleName = 2;
+  string code = 2;
+}
+
+message UserEmailConfirmationTokenGeneratedIntegrationEvent {
+  string userId = 1;
+  string code = 2;
 }

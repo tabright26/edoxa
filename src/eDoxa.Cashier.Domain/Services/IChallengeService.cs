@@ -15,9 +15,9 @@ namespace eDoxa.Cashier.Domain.Services
 {
     public interface IChallengeService
     {
-        Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
+        Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId);
 
-        Task DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
+        Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
 
         Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId challengeId,
@@ -25,5 +25,9 @@ namespace eDoxa.Cashier.Domain.Services
             EntryFee entryFee,
             CancellationToken cancellationToken = default
         );
+
+        Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
+
+        Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
     }
 }

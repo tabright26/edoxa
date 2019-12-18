@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Clans.Api.IntegrationEvents.Extensions;
 using eDoxa.Clans.Domain.DomainEvents;
-using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.ServiceBus.Abstractions;
@@ -31,16 +30,7 @@ namespace eDoxa.Clans.Api.Application.DomainEvents
         {
             var clan = await _clanService.FindClanAsync(domainEvent.Candidature.ClanId);
 
-            await this.PublishCandidatureEmailSentIntegrationEventAsync(clan!, domainEvent.Candidature);
-        }
-
-        private async Task PublishCandidatureEmailSentIntegrationEventAsync(Clan clan, Candidature candidature)
-        {
-            const string subject = "eDoxa - Clan candidature";
-
-            var htmlMessage = $@"The user '{candidature.UserId}' sent a member candidature to your clan '{clan.Name}'.";
-
-            await _serviceBusPublisher.PublishUserEmailSentIntegrationEventAsync(clan.OwnerId, subject, htmlMessage);
+            await _serviceBusPublisher.PublishClanCandidatureSentIntegrationEventAsync(domainEvent.Candidature.UserId, clan!);
         }
     }
 }

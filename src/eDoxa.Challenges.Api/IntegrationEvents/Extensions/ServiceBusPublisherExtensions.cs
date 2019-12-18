@@ -4,15 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels;
-using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Grpc.Protos.CustomTypes;
-using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -20,54 +17,32 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishChallengeClosedIntegrationEventAsync(
+        public static async Task PublishCreateChallengeFailedIntegrationEventAsync(this IServiceBusPublisher publisher, ChallengeId challengeId)
+        {
+            var integrationEvent = new CreateChallengeFailedIntegrationEvent
+            {
+                ChallengeId = challengeId
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
+        public static async Task PublishChallengeSynchronizedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             ChallengeId challengeId,
             IScoreboard scoreboard
         )
         {
-            await publisher.PublishAsync(
-                new ChallengeClosedIntegrationEvent
+            var integrationEvent = new ChallengeSynchronizedIntegrationEvent
+            {
+                ChallengeId = challengeId,
+                Scoreboard =
                 {
-                    ChallengeId = challengeId,
-                    Scoreboard =
-                    {
-                        scoreboard.ToDictionary(item => item.Key.ToString(), item => DecimalValue.FromDecimal(item.Value?.ToDecimal() ?? 0M)) // TODO
-                    }
-                });
-        }
+                    scoreboard.ToDictionary(item => item.Key.ToString(), item => DecimalValue.FromDecimal(item.Value?.ToDecimal() ?? 0M)) // TODO
+                }
+            };
 
-        public static async Task PublishTransactionSuccededIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            IDictionary<string, string> metadata
-        )
-        {
-            await publisher.PublishAsync(
-                new TransactionSuccededIntegrationEvent
-                {
-                    UserId = userId,
-                    Metadata =
-                    {
-                        metadata
-                    }
-                });
-        }
-
-        public static async Task PublishUserEmailSentIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string subject,
-            string htmlMessage
-        )
-        {
-            await publisher.PublishAsync(
-                new UserEmailSentIntegrationEvent
-                {
-                    UserId = userId,
-                    Subject = subject,
-                    HtmlMessage = htmlMessage
-                });
+            await publisher.PublishAsync(integrationEvent);
         }
     }
 }

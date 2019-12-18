@@ -31,6 +31,11 @@ message EntryFeeDto {
   CurrencyDto currency = 2;
 }
 
+message PrizeDto {
+  customTypes.DecimalValue amount = 1;
+  CurrencyDto currency = 2;
+}
+
 message TransactionDto {
   string id = 1;
   google.protobuf.Timestamp timestamp = 2;

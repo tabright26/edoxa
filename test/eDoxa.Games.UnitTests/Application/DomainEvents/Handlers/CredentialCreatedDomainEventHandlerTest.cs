@@ -12,7 +12,7 @@ using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.DomainEvents;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Grpc.Protos.Games.IntegrationEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
@@ -40,7 +40,7 @@ namespace eDoxa.Games.UnitTests.Application.DomainEvents.Handlers
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
             mockServiceBusPublisher
-                .Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserClaimsAddedIntegrationEvent>()))
+                .Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialAddedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -50,7 +50,7 @@ namespace eDoxa.Games.UnitTests.Application.DomainEvents.Handlers
             await credentialCreatedDomainEventHandler.Handle(domainEvent, CancellationToken.None);
 
             // Assert
-            mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserClaimsAddedIntegrationEvent>()),
+            mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialAddedIntegrationEvent>()),
                 Times.Once);
         }
     }

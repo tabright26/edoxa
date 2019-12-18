@@ -1,11 +1,10 @@
 ﻿// Filename: ServiceBusSubscriberExtensions.cs
-// Date Created: 2019-10-04
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -16,12 +15,10 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
         public static void UseIntegrationEventSubscriptions(this IServiceBusSubscriber subscriber)
         {
             subscriber.Subscribe<UserCreatedIntegrationEvent, UserCreatedIntegrationEventHandler>();
-            subscriber.Subscribe<UserAccountDepositIntegrationEvent, UserAccountDepositIntegrationEventHandler>();
-            subscriber.Subscribe<UserAccountWithdrawalIntegrationEvent, UserAccountWithdrawalIntegrationEventHandler>();
             subscriber.Subscribe<UserEmailChangedIntegrationEvent, UserEmailChangedIntegrationEventHandler>();
             subscriber.Subscribe<UserPhoneChangedIntegrationEvent, UserPhoneChangedIntegrationEventHandler>();
             subscriber.Subscribe<UserAddressChangedIntegrationEvent, UserAddressChangedIntegrationEventHandler>();
-            subscriber.Subscribe<UserInformationChangedIntegrationEvent, UserInformationChangedIntegrationEventHandler>();
+            subscriber.Subscribe<UserProfileChangedIntegrationEvent, UserProfileChangedIntegrationEventHandler>();
         }
     }
 }

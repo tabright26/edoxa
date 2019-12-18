@@ -13,7 +13,7 @@ using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -40,7 +40,7 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
                 .ReturnsAsync(new Clan("test", new UserId()))
                 .Verifiable();
 
-            mockServiceBus.Setup(bus => bus.PublishAsync(It.IsAny<UserEmailSentIntegrationEvent>()))
+            mockServiceBus.Setup(bus => bus.PublishAsync(It.IsAny<ClanCandidatureSentIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -53,7 +53,7 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
 
             // Assert
             mockClanService.Verify(service => service.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-            mockServiceBus.Verify(bus => bus.PublishAsync(It.IsAny<UserEmailSentIntegrationEvent>()), Times.Once);
+            mockServiceBus.Verify(bus => bus.PublishAsync(It.IsAny<ClanCandidatureSentIntegrationEvent>()), Times.Once);
 
         }
     }

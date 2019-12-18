@@ -13,7 +13,6 @@ using Autofac;
 
 using eDoxa.Clans.Api.Infrastructure;
 using eDoxa.Clans.Api.Infrastructure.Data;
-using eDoxa.Clans.Api.IntegrationEvents.Extensions;
 using eDoxa.Clans.Api.Services;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
@@ -28,7 +27,6 @@ using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
-using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.Storage.Azure.Extensions;
 
@@ -131,7 +129,7 @@ namespace eDoxa.Clans.Api
             builder.RegisterModule<ClansModule>();
         }
 
-        public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        public void Configure(IApplicationBuilder application)
         {
             application.UseProblemDetails();
 
@@ -156,8 +154,6 @@ namespace eDoxa.Clans.Api
                 });
 
             application.UseSwagger(AppSettings);
-
-            subscriber.UseIntegrationEventSubscriptions();
         }
     }
 }

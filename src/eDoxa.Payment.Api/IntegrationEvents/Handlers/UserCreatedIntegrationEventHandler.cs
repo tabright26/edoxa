@@ -1,5 +1,5 @@
 ﻿// Filename: UserCreatedIntegrationEventHandler.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
+
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
@@ -17,33 +20,51 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
     {
         private readonly IStripeCustomerService _stripeCustomerService;
         private readonly IStripeAccountService _stripeAccountService;
-        private readonly IStripeReferenceService _stripeReferenceService;
+        private readonly IStripeService _stripeService;
+        private readonly ILogger _logger;
 
         public UserCreatedIntegrationEventHandler(
             IStripeCustomerService stripeCustomerService,
             IStripeAccountService stripeAccountService,
-            IStripeReferenceService stripeReferenceService
+            IStripeService stripeService,
+            ILogger<UserCreatedIntegrationEventHandler> logger
         )
         {
             _stripeCustomerService = stripeCustomerService;
             _stripeAccountService = stripeAccountService;
-            _stripeReferenceService = stripeReferenceService;
+            _stripeService = stripeService;
+            _logger = logger;
         }
 
-        // TODO: Logger is missing.
         public async Task HandleAsync(UserCreatedIntegrationEvent integrationEvent)
         {
-            var userId = UserId.Parse(integrationEvent.UserId);
+            var userId = integrationEvent.UserId.ParseEntityId<UserId>();
 
-            var customerId = await _stripeCustomerService.CreateCustomerAsync(userId, integrationEvent.Email);
+            if (!await _stripeService.UserExistsAsync(userId))
+            {
+                var customerId = await _stripeCustomerService.CreateCustomerAsync(userId, integrationEvent.Email);
 
-            var accountId = await _stripeAccountService.CreateAccountAsync(
-                userId,
-                integrationEvent.Email,
-                Country.FromValue((int) integrationEvent.Country),
-                customerId);
+                var accountId = await _stripeAccountService.CreateAccountAsync(
+                    userId,
+                    integrationEvent.Email,
+                    integrationEvent.Country.ToEnumeration<Country>(),
+                    customerId);
 
-            await _stripeReferenceService.CreateReferenceAsync(userId, customerId, accountId);
+                var result = await _stripeService.CreateAsync(userId, customerId, accountId);
+
+                if (result.IsValid)
+                {
+                    _logger.LogError(""); // FRANCIS: TODO.
+                }
+                else
+                {
+                    _logger.LogCritical(""); // FRANCIS: TODO.
+                }
+            }
+            else
+            {
+                _logger.LogWarning(""); // FRANCIS: TODO.
+            }
         }
     }
 }

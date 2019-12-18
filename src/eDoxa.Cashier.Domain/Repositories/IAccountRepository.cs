@@ -20,7 +20,11 @@ namespace eDoxa.Cashier.Domain.Repositories
     {
         void Create(IAccount account);
 
-        Task<IAccount?> FindAccountAsync(UserId userId);
+        Task<IAccount?> FindAccountOrNullAsync(UserId userId);
+
+        Task<IAccount> FindAccountAsync(UserId userId);
+
+        Task<bool> AccountExistsAsync(UserId userId);
 
         Task CommitAsync(CancellationToken cancellationToken = default);
     }

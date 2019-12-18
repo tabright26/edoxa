@@ -38,9 +38,9 @@ namespace eDoxa.Payment.UnitTests.Controllers
             // Arrange
             var mockExternalService = new Mock<IStripeExternalAccountService>();
             var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
+            var mockReferenceService = new Mock<IStripeService>();
 
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
             var bankAccountController = new StripeBankAccountController(
                 mockExternalService.Object,
@@ -56,7 +56,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
@@ -65,9 +65,9 @@ namespace eDoxa.Payment.UnitTests.Controllers
             // Arrange
             var mockExternalService = new Mock<IStripeExternalAccountService>();
             var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
+            var mockReferenceService = new Mock<IStripeService>();
 
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
 
@@ -98,7 +98,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
             mockExternalService.Verify(externalService => externalService.FindBankAccountAsync(It.IsAny<string>()), Times.Once);
         }
@@ -109,9 +109,9 @@ namespace eDoxa.Payment.UnitTests.Controllers
             // Arrange
             var mockExternalService = new Mock<IStripeExternalAccountService>();
             var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
+            var mockReferenceService = new Mock<IStripeService>();
 
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
 
@@ -131,7 +131,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
             mockExternalService.Verify(externalService => externalService.FindBankAccountAsync(It.IsAny<string>()), Times.Once);
         }
@@ -142,9 +142,9 @@ namespace eDoxa.Payment.UnitTests.Controllers
             // Arrange
             var mockExternalService = new Mock<IStripeExternalAccountService>();
             var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
+            var mockReferenceService = new Mock<IStripeService>();
 
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
             var bankAccountController = new StripeBankAccountController(
                 mockExternalService.Object,
@@ -164,7 +164,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
@@ -173,9 +173,9 @@ namespace eDoxa.Payment.UnitTests.Controllers
             // Arrange
             var mockExternalService = new Mock<IStripeExternalAccountService>();
             var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
+            var mockReferenceService = new Mock<IStripeService>();
 
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
 
@@ -210,7 +210,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
             mockExternalService.Verify(externalService => externalService.UpdateBankAccountAsync(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }

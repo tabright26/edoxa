@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Stripe;
@@ -25,7 +26,7 @@ namespace eDoxa.Payment.Domain.Stripe.Services
             string customerId
         );
 
-        Task UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
+        Task<IDomainValidationResult> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
 
         Task<bool> HasAccountVerifiedAsync(string accountId);
     }

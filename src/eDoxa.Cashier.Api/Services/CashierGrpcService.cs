@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Api.Services
 
             var userId = httpContext.GetUserId();
 
-            var account = await _accountService.FindAccountAsync(userId);
+            var account = await _accountService.FindAccountOrNullAsync(userId);
 
             if (account == null)
             {

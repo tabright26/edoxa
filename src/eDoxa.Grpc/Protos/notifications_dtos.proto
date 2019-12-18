@@ -1,5 +1,0 @@
-﻿syntax = "proto3";
-
-option csharp_namespace = "eDoxa.Grpc.Protos.Notifications.Dtos";
-
-package edoxa.services.notifications;

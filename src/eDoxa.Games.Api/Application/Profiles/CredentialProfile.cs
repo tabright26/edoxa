@@ -1,5 +1,5 @@
 ﻿// Filename: CredentialProfile.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-15
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -17,9 +17,9 @@ namespace eDoxa.Games.Api.Application.Profiles
     {
         public CredentialProfile()
         {
-            this.CreateMap<Credential, CredentialDto>()
+            this.CreateMap<Credential, GameCredentialDto>()
                 .ForMember(credential => credential.UserId, config => config.MapFrom(credential => credential.UserId.ToString()))
-                .ForMember(credential => credential.GamePlayerId, config => config.MapFrom(credential => credential.PlayerId.ToString()))
+                .ForMember(credential => credential.PlayerId, config => config.MapFrom(credential => credential.PlayerId.ToString()))
                 .ForMember(credential => credential.Game, config => config.MapFrom(credential => credential.Game.ToEnum<GameDto>()));
         }
     }

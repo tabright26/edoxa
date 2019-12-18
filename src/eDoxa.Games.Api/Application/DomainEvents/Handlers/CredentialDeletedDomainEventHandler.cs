@@ -25,7 +25,7 @@ namespace eDoxa.Games.Api.Application.DomainEvents.Handlers
 
         public async Task Handle(CredentialDeletedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            await _serviceBusPublisher.PublishUserGamePlayerIdClaimRemovedIntegrationEvent(domainEvent.Credential);
+            await _serviceBusPublisher.PublishUserGameCredentialRemovedIntegrationEventAsync(domainEvent.Credential);
         }
     }
 }

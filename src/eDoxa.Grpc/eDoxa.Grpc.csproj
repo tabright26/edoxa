@@ -40,11 +40,6 @@
     <None Include="Protos\identity_requests.proto" />
     <None Include="Protos\identity_responses.proto" />
     <None Include="Protos\identity_services.proto" />
-    <None Include="Protos\notifications_dtos.proto" />
-    <None Include="Protos\notifications_integration_events.proto" />
-    <None Include="Protos\notifications_requests.proto" />
-    <None Include="Protos\notifications_responses.proto" />
-    <None Include="Protos\notifications_services.proto" />
     <None Include="Protos\payment_integration_events.proto" />
     <None Include="Protos\payment_requests.proto" />
     <None Include="Protos\payment_responses.proto" />
@@ -58,7 +53,6 @@
     <Protobuf Include="Protos\challenges_enums.proto" GrpcServices="None" />
     <Protobuf Include="Protos\cashier_enums.proto" GrpcServices="None" />
     <Protobuf Include="Protos\games_enums.proto" GrpcServices="None" />
-    <Protobuf Include="Protos\notifications_enums.proto" GrpcServices="None" />
   </ItemGroup>
 
 </Project>

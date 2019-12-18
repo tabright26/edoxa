@@ -12,6 +12,7 @@ using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using Moq;
 
@@ -27,9 +28,11 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var mockAccountService = new Mock<IAccountService>();
 
+            var mockLogger = new MockLogger<UserCreatedIntegrationEventHandler>();
+
             mockAccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>())).Verifiable();
 
-            var handler = new UserCreatedIntegrationEventHandler(mockAccountService.Object);
+            var handler = new UserCreatedIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {

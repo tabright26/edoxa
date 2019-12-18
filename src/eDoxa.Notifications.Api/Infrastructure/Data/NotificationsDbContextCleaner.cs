@@ -1,5 +1,5 @@
 ﻿// Filename: NotificationsDbContextCleaner.cs
-// Date Created: 2019-10-03
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -10,6 +10,7 @@ using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Notifications.Api.Infrastructure.Data
 {
@@ -24,9 +25,14 @@ namespace eDoxa.Notifications.Api.Infrastructure.Data
             _context = context;
         }
 
-        public Task CleanupAsync()
+        public async Task CleanupAsync()
         {
-            return Task.CompletedTask;
+            if (!_environment.IsProduction())
+            {
+                _context.Users.RemoveRange(_context.Users);
+
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

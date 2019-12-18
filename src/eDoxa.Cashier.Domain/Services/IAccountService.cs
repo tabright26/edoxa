@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,9 +17,13 @@ namespace eDoxa.Cashier.Domain.Services
 {
     public interface IAccountService
     {
-        Task CreateAccountAsync(UserId userId);
+        Task<IDomainValidationResult> CreateAccountAsync(UserId userId);
 
-        Task<IAccount?> FindAccountAsync(UserId userId);
+        Task<IAccount> FindAccountAsync(UserId userId);
+
+        Task<IAccount?> FindAccountOrNullAsync(UserId userId);
+
+        Task<bool> AccountExistsAsync(UserId userId);
 
         Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
@@ -31,7 +34,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task PayoutChallengeAsync(IChallenge challenge, IDictionary<UserId, decimal?> scoreboard, CancellationToken cancellationToken = default);
+        Task<IDomainValidationResult> PayoutChallengeAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default);
 
         Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId);
 
@@ -50,6 +53,24 @@ namespace eDoxa.Cashier.Domain.Services
         Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(
             IAccount account,
             TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        );
+
+        Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+            IAccount account,
+            TransactionMetadata metadata,
+            CancellationToken cancellationToken = default
+        );
+
+        Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(
+            IAccount account,
+            TransactionMetadata metadata,
+            CancellationToken cancellationToken = default
+        );
+
+        Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(
+            IAccount account,
+            TransactionMetadata metadata,
             CancellationToken cancellationToken = default
         );
     }

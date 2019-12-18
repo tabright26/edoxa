@@ -36,9 +36,9 @@ namespace eDoxa.Payment.UnitTests.Controllers
         {
             // Arrange
             var mockPaymentMethodService = new Mock<IStripePaymentMethodService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
+            var mockReferenceService = new Mock<IStripeService>();
 
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
             var paymentMethodDetachController = new StripePaymentMethodDetachController(
                 mockPaymentMethodService.Object,
@@ -53,7 +53,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
@@ -61,9 +61,9 @@ namespace eDoxa.Payment.UnitTests.Controllers
         {
             // Arrange
             var mockPaymentMethodService = new Mock<IStripePaymentMethodService>();
-            var mockReferenceService = new Mock<IStripeReferenceService>();
+            var mockReferenceService = new Mock<IStripeService>();
 
-            mockReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
             mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.DetachPaymentMethodAsync(It.IsAny<string>()))
                 .ReturnsAsync(new PaymentMethod
@@ -94,7 +94,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockPaymentMethodService.Verify(paymentMethodService => paymentMethodService.DetachPaymentMethodAsync(It.IsAny<string>()), Times.Once);
         }
     }

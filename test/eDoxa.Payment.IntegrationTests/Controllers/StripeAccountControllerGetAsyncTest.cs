@@ -53,16 +53,16 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                    var mockStripeReferenceService = new Mock<IStripeService>();
                     var mockStripeAccountService = new Mock<IStripeAccountService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+                    mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
                     mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("acct_123eqwqw12");
 
                     mockStripeAccountService.Setup(accountService => accountService.GetAccountAsync(It.IsAny<string>())).ReturnsAsync(new Account());
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                     container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
                 }));
             _httpClient = factory.CreateClient();
@@ -84,12 +84,12 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                    var mockStripeReferenceService = new Mock<IStripeService>();
                     var mockStripeAccountService = new Mock<IStripeAccountService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
+                    mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                     container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
                 }));
             _httpClient = factory.CreateClient();
@@ -110,14 +110,14 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                 .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
                 container =>
                 {
-                    var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                    var mockStripeReferenceService = new Mock<IStripeService>();
                     var mockStripeAccountService = new Mock<IStripeAccountService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+                    mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
                     mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException(HttpStatusCode.BadRequest, new StripeError(), string.Empty));
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                     container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
                 }));
             _httpClient = factory.CreateClient();

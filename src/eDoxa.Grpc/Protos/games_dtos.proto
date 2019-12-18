@@ -15,8 +15,8 @@ message MatchDto {
   map<string, string> metadata = 4;
 }
 
-message CredentialDto {
+message GameCredentialDto {
   string userId = 1;
-  string gamePlayerId = 2;
+  string playerId = 2;
   GameDto game = 3;
 }

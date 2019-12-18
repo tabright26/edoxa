@@ -4,14 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Challenges.Api.Application.DomainEvents.Handlers
@@ -27,13 +24,15 @@ namespace eDoxa.Challenges.Api.Application.DomainEvents.Handlers
 
         public async Task Handle(ChallengeParticipantRegisteredDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            var metadata = new Dictionary<string, string>
-            {
-                [nameof(ChallengeId)] = domainEvent.ChallengeId.ToString(),
-                [nameof(ParticipantId)] = domainEvent.ParticipantId.ToString()
-            };
+            //var metadata = new Dictionary<string, string>
+            //{
+            //    [nameof(ChallengeId)] = domainEvent.ChallengeId.ToString(),
+            //    [nameof(ParticipantId)] = domainEvent.ParticipantId.ToString()
+            //};
 
-            await _serviceBusPublisher.PublishTransactionSuccededIntegrationEventAsync(domainEvent.UserId, metadata);
+            //await _serviceBusPublisher.PublishTransactionSuccededIntegrationEventAsync(domainEvent.UserId, metadata);
+
+            await Task.CompletedTask;
         }
     }
 }

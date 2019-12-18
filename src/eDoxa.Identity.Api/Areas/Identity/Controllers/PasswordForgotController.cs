@@ -1,16 +1,14 @@
 ﻿// Filename: PasswordForgotController.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
-using System.Web;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.Services;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
@@ -56,13 +54,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     // visit https://go.microsoft.com/fwlink/?LinkID=532713
                     var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
+                    await _serviceBusPublisher.PublishAsync(
+                        new UserPasswordResetTokenGeneratedIntegrationEvent
+                        {
+                            UserId = user.Id.ToString(),
+                            Code = code
+                        });
 
-                    await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                        UserId.FromGuid(user.Id),
-                        request.Email,
-                        "Reset Password",
-                        $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
+                    //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={HttpUtility.UrlEncode(code)}";
+
+                    //await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                    //    UserId.FromGuid(user.Id),
+                    //    request.Email,
+                    //    "Reset Password",
+                    //    $"Please reset your password by <a href='{callbackUrl}'>clicking here</a>.");
                 }
 
                 return this.Ok();

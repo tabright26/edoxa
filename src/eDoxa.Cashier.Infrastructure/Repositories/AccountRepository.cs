@@ -36,6 +36,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _mapper = mapper;
         }
 
+        private async Task<bool> AccountModelExistsAsync(Guid userId)
+        {
+            return await _context.Accounts.AsExpandable().AnyAsync(account => account.Id == userId);
+        }
+
         private async Task<AccountModel?> FindUserAccountModelAsync(Guid userId)
         {
             var accountModels = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
@@ -57,7 +62,17 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _materializedObjects[account] = accountModel;
         }
 
-        public async Task<IAccount?> FindAccountAsync(UserId userId)
+        public async Task<IAccount> FindAccountAsync(UserId userId)
+        {
+            return await this.FindAccountOrNullAsync(userId) ?? throw new InvalidOperationException("Account does not exists.");
+        }
+
+        public async Task<bool> AccountExistsAsync(UserId userId)
+        {
+            return await this.AccountModelExistsAsync(userId);
+        }
+
+        public async Task<IAccount?> FindAccountOrNullAsync(UserId userId)
         {
             if (_materializedIds.TryGetValue(userId, out var account))
             {
@@ -106,7 +121,8 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
                 this.CopyChanges(account.Transactions.Single(transaction => transaction.Id == transactionModel.Id), transactionModel);
             }
 
-            var transactions = account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
+            var transactions =
+                account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
 
             foreach (var transaction in _mapper.Map<ICollection<TransactionModel>>(transactions))
             {

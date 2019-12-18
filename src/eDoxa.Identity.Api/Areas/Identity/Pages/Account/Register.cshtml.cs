@@ -8,9 +8,9 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -84,13 +84,20 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
-                    var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
+                    //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={user.Id}&code={code}";
 
-                    await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                        UserId.FromGuid(user.Id),
-                        Input.Email,
-                        "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    //await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                    //    UserId.FromGuid(user.Id),
+                    //    Input.Email,
+                    //    "Confirm your email",
+                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    await _serviceBusPublisher.PublishAsync(
+                        new UserEmailConfirmationTokenGeneratedIntegrationEvent
+                        {
+                            UserId = user.Id.ToString(),
+                            Code = code
+                        });
 
                     await _signInService.SignInAsync(user, false);
 

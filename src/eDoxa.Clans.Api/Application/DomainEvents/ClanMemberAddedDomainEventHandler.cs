@@ -21,18 +21,21 @@ namespace eDoxa.Clans.Api.Application.DomainEvents
 {
     public sealed class ClanMemberAddedDomainEventHandler : IDomainEventHandler<ClanMemberAddedDomainEvent>
     {
+        private readonly IClanService _clanService;
         private readonly IInvitationService _invitationService;
         private readonly ICandidatureService _candidatureService;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly ILogger _logger;
 
         public ClanMemberAddedDomainEventHandler(
+            IClanService clanService,
             IInvitationService invitationService,
             ICandidatureService candidatureService,
             IServiceBusPublisher serviceBusPublisher,
             ILogger<ClanMemberAddedDomainEventHandler> logger
         )
         {
+            _clanService = clanService;
             _invitationService = invitationService;
             _candidatureService = candidatureService;
             _serviceBusPublisher = serviceBusPublisher;
@@ -41,7 +44,9 @@ namespace eDoxa.Clans.Api.Application.DomainEvents
 
         public async Task Handle(ClanMemberAddedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            await _serviceBusPublisher.PublishUserClaimClanIdAddedIntegrationEventAsync(domainEvent.UserId, domainEvent.ClanId);
+            var clan = await _clanService.FindClanAsync(domainEvent.ClanId);
+
+            await _serviceBusPublisher.PublishClanMemberAddedIntegrationEventAsync(domainEvent.UserId, clan!);
 
             await this.DeleteInvitationsAsync(domainEvent.UserId);
 

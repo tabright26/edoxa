@@ -7,7 +7,9 @@
 using Autofac;
 
 using eDoxa.Notifications.Api.Application.Services;
+using eDoxa.Notifications.Domain.Repositories;
 using eDoxa.Notifications.Domain.Services;
+using eDoxa.Notifications.Infrastructure.Repositories;
 
 namespace eDoxa.Notifications.Api.Infrastructure
 {
@@ -15,7 +17,11 @@ namespace eDoxa.Notifications.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Repositories
+            builder.RegisterType<UserRepository>().As<IUserRepository>().InstancePerLifetimeScope();
+
             // Services
+            builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
             builder.RegisterType<EmailService>().As<IEmailService>().SingleInstance();
         }
     }

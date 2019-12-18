@@ -60,7 +60,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
             if (result.Succeeded)
             {
-                await _publisher.PublishUserEmailChangedIntegrationEventAsync(UserId.FromGuid(user.Id), email);
+                await _publisher.PublishUserEmailChangedIntegrationEventAsync(user);
             }
 
             return result;
@@ -72,7 +72,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
             if (result.Succeeded)
             {
-                await _publisher.PublishUserPhoneChangedIntegrationEventAsync(UserId.FromGuid(user.Id), phoneNumber);
+                await _publisher.PublishUserPhoneChangedIntegrationEventAsync(user);
             }
 
             return result;
@@ -114,7 +114,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await this.UpdateUserAsync(user);
 
-                await _publisher.PublishUserInformationChangedIntegrationEventAsync(UserId.FromGuid(user.Id), profile);
+                await _publisher.PublishUserProfileChangedIntegrationEventAsync(UserId.FromGuid(user.Id), profile);
 
                 result.AddEntityToMetadata(profile);
             }
@@ -139,7 +139,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await this.UpdateUserAsync(user);
 
-                await _publisher.PublishUserInformationChangedIntegrationEventAsync(UserId.FromGuid(user.Id), user.Profile!);
+                await _publisher.PublishUserProfileChangedIntegrationEventAsync(UserId.FromGuid(user.Id), user.Profile!);
 
                 result.AddEntityToMetadata(user.Profile!);
             }

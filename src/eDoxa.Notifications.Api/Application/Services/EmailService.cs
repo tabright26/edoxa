@@ -1,5 +1,5 @@
 ﻿// Filename: EmailService.cs
-// Date Created: 2019-10-03
+// Date Created: 2019-12-17
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -28,13 +28,13 @@ namespace eDoxa.Notifications.Api.Application.Services
             _logger = logger;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string htmlContent)
         {
             var message = new SendGridMessage
             {
                 From = new EmailAddress("noreply@edoxa.gg", "eDoxa Support"),
                 Subject = subject,
-                HtmlContent = htmlMessage
+                HtmlContent = htmlContent
             };
 
             message.AddTo(new EmailAddress(email));

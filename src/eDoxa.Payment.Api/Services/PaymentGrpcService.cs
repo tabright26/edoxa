@@ -13,7 +13,6 @@ using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
-using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -32,7 +31,7 @@ namespace eDoxa.Payment.Api.Services
     [Authorize]
     public sealed class PaymentGrpcService : PaymentService.PaymentServiceBase
     {
-        private readonly ILogger<UserAccountWithdrawalIntegrationEventHandler> _logger;
+        private readonly ILogger<PaymentGrpcService> _logger;
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IStripeTransferService _stripeTransferService;
         private readonly IStripeAccountService _stripeAccountService;
@@ -40,7 +39,7 @@ namespace eDoxa.Payment.Api.Services
         private readonly IStripeCustomerService _stripeCustomerService;
 
         public PaymentGrpcService(
-            ILogger<UserAccountWithdrawalIntegrationEventHandler> logger,
+            ILogger<PaymentGrpcService> logger,
             IServiceBusPublisher serviceBusPublisher,
             IStripeTransferService stripeTransferService,
             IStripeAccountService stripeAccountService,
@@ -77,11 +76,11 @@ namespace eDoxa.Payment.Api.Services
 
                 var invoice = await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
-                    request.TransactionId.ParseEntityId<TransactionId>(),
-                    request.Amount,
-                    request.Description);
+                    request.Transaction.Id.ParseEntityId<TransactionId>(),
+                    Convert.ToInt64(request.Transaction.Amount.ToDecimal()),
+                    request.Transaction.Description);
 
-                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+                await _serviceBusPublisher.PublishUserDepositSucceededIntegrationEventAsync(userId, request.Transaction);
 
                 var response = new DepositResponse();
 
@@ -91,7 +90,7 @@ namespace eDoxa.Payment.Api.Services
             }
             catch (Exception exception)
             {
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+                await _serviceBusPublisher.PublishUserDepositFailedIntegrationEventAsync(userId, request.Transaction);
 
                 var message = $"Failed to process deposit for the user '{email}'. (userId=\"{userId}\")";
 
@@ -120,11 +119,11 @@ namespace eDoxa.Payment.Api.Services
 
                 var transfer = await _stripeTransferService.CreateTransferAsync(
                     accountId,
-                    request.TransactionId.ParseEntityId<TransactionId>(),
-                    request.Amount,
-                    request.Description);
+                    request.Transaction.Id.ParseEntityId<TransactionId>(),
+                    Convert.ToInt64(request.Transaction.Amount.ToDecimal()),
+                    request.Transaction.Description);
 
-                await _serviceBusPublisher.PublishUserTransactionSuccededIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+                await _serviceBusPublisher.PublishUserWithdrawalSucceededIntegrationEventAsync(userId, request.Transaction);
 
                 var response = new WithdrawalResponse();
 
@@ -134,7 +133,7 @@ namespace eDoxa.Payment.Api.Services
             }
             catch (Exception exception)
             {
-                await _serviceBusPublisher.PublishUserTransactionFailedIntegrationEventAsync(userId, TransactionId.Parse(request.TransactionId));
+                await _serviceBusPublisher.PublishUserWithdrawalFailedIntegrationEventAsync(userId, request.Transaction);
 
                 var message = $"Failed to process withdrawal for the user '{email}'. (userId=\"{userId}\")";
 

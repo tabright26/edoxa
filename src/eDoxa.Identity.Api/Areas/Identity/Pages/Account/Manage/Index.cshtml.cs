@@ -8,12 +8,10 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Domain.Services;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Mvc;
@@ -132,27 +130,34 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
                 return this.NotFound($"Unable to load user with ID '{_userService.GetUserId(User)}'.");
             }
 
-            var userId = await _userService.GetUserIdAsync(user);
-            var email = await _userService.GetEmailAsync(user);
+            //var userId = await _userService.GetUserIdAsync(user);
+            //var email = await _userService.GetEmailAsync(user);
             var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                null,
-                new
+            await _serviceBusPublisher.PublishAsync(
+                new UserEmailConfirmationTokenGeneratedIntegrationEvent
                 {
-                    userId,
-                    code
-                },
-                Request.Scheme
-            );
+                    UserId = user.Id.ToString(),
+                    Code = code
+                });
 
-            await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                UserId.FromGuid(user.Id),
-                email,
-                "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
-            );
+            //var callbackUrl = Url.Page(
+            //    "/Account/ConfirmEmail",
+            //    null,
+            //    new
+            //    {
+            //        userId,
+            //        code
+            //    },
+            //    Request.Scheme
+            //);
+
+            //await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+            //    UserId.FromGuid(user.Id),
+            //    email,
+            //    "Confirm your email",
+            //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+            //);
 
             StatusMessage = "Verification email sent. Please check your email.";
 

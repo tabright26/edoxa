@@ -498,17 +498,17 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var userId = new UserId();
             var account = new Account(userId);
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+            mockAccountRepository.Setup(accountRepository => accountRepository.FindAccountOrNullAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
             var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
 
             // Act
-            var result = await service.FindAccountAsync(userId);
+            var result = await service.FindAccountOrNullAsync(userId);
 
             // Assert
             result.Should().BeOfType<Account>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountRepository.Verify(accountRepository => accountRepository.FindAccountOrNullAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]

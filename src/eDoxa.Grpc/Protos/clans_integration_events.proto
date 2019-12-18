@@ -2,4 +2,26 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Clans.IntegrationEvents";
 
+import "clans_dtos.proto";
+
 package edoxa.services.clans;
+
+message ClanMemberAddedIntegrationEvent {
+  string userId = 1;
+  ClanDto clan = 2;
+}
+
+message ClanMemberRemovedIntegrationEvent {
+  string userId = 1;
+  ClanDto clan = 2;
+}
+
+message ClanCandidatureSentIntegrationEvent {
+  string userId = 1;
+  ClanDto clan = 2;
+}
+
+message ClanInvitationSentIntegrationEvent {
+  string userId = 1;
+  ClanDto clan = 2;
+}

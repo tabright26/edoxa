@@ -38,7 +38,7 @@ namespace eDoxa.Games.Api.Controllers
 
         [HttpDelete]
         [SwaggerOperation("Unlink game credential.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CredentialDto))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(GameCredentialDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> DeleteAsync(Game game)
@@ -54,7 +54,7 @@ namespace eDoxa.Games.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<CredentialDto>(credential));
+                return this.Ok(_mapper.Map<GameCredentialDto>(credential));
             }
 
             result.AddToModelState(ModelState);

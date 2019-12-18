@@ -55,16 +55,16 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
                         {
-                            var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                            var mockStripeReferenceService = new Mock<IStripeService>();
                             var mockStripeAccountService = new Mock<IStripeAccountService>();
                             var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
 
-                            mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
                             mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()))
                                 .ThrowsAsync(new StripeException(HttpStatusCode.BadRequest, new StripeError(), string.Empty));
 
-                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                             container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
                             container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
                         }));
@@ -93,13 +93,13 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
                         {
-                            var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                            var mockStripeReferenceService = new Mock<IStripeService>();
                             var mockStripeAccountService = new Mock<IStripeAccountService>();
                             var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
 
-                            mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
 
-                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                             container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
                             container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
                         }));
@@ -128,11 +128,11 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
                         {
-                            var mockStripeReferenceService = new Mock<IStripeReferenceService>();
+                            var mockStripeReferenceService = new Mock<IStripeService>();
                             var mockStripeAccountService = new Mock<IStripeAccountService>();
                             var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
 
-                            mockStripeReferenceService.Setup(referenceService => referenceService.ReferenceExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
                             mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()))
                                 .ReturnsAsync("acct_123eqwqw12");
@@ -149,7 +149,7 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                                     DefaultForCurrency = true
                                 });
 
-                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeReferenceService>().SingleInstance();
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                             container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
                             container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
                         }));

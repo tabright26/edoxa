@@ -14,7 +14,6 @@ using Autofac;
 using eDoxa.Notifications.Api.Infrastructure;
 using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
-using eDoxa.Notifications.Api.Services;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
@@ -146,8 +145,6 @@ namespace eDoxa.Notifications.Api
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapGrpcService<NotificationGrpcService>();
-
                     endpoints.MapControllers();
 
                     endpoints.MapConfigurationRoute<NotificationsAppSettings>(AppSettings.ApiResource);

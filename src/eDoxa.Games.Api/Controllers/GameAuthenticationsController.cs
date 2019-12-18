@@ -62,7 +62,7 @@ namespace eDoxa.Games.Api.Controllers
 
         [HttpPut]
         [SwaggerOperation("Validate game authentication.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CredentialDto))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(GameCredentialDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> PutAsync(Game game)
         {
@@ -74,7 +74,7 @@ namespace eDoxa.Games.Api.Controllers
             {
                 var credential = await _gameCredentialService.FindCredentialAsync(userId, game);
 
-                return this.Ok(_mapper.Map<CredentialDto>(credential));
+                return this.Ok(_mapper.Map<GameCredentialDto>(credential));
             }
 
             result.AddToModelState(ModelState);

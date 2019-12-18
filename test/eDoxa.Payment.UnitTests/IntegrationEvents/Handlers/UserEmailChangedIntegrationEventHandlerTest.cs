@@ -7,12 +7,15 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using Moq;
 
@@ -32,7 +35,9 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserEmailChangedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
+            var mockService = new Mock<IStripeService>();
             var mockAccountService = new Mock<IStripeAccountService>();
+            var mockLogger = new MockLogger<UserEmailChangedIntegrationEventHandler>();
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
@@ -40,15 +45,18 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 accountService => accountService.UpdateIndividualAsync(
                     It.IsAny<string>(),
                     It.IsAny<PersonUpdateOptions>()))
-            .Returns(Task.CompletedTask)
+                .ReturnsAsync(new DomainValidationResult())
             .Verifiable();
 
-            var handler = new UserEmailChangedIntegrationEventHandler(mockAccountService.Object);
+            var handler = new UserEmailChangedIntegrationEventHandler(mockService.Object, mockAccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserEmailChangedIntegrationEvent
             {
                 UserId = Guid.NewGuid().ToString(),
-                Email = "gabriel@edoxa.gg"
+                Email = new EmailDto
+                {
+                    Address = "gabriel@edoxa.gg"
+                } 
             };
 
             // Act

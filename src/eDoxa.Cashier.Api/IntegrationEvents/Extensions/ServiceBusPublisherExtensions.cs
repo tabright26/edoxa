@@ -6,9 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -16,59 +14,24 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishUserTransactionEmailSentIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            ITransaction transaction
-        )
+        public static async Task PublishChallengeClosedIntegrationEventAsync(this IServiceBusPublisher serviceBusPublisher, ChallengeId challengeId)
         {
-            await publisher.PublishAsync(
-                new UserEmailSentIntegrationEvent
-                {
-                    UserId = userId,
-                    Subject = $"{transaction.GetType().Name} - {transaction.Currency.Type} - {transaction.Status.Name}",
-                    HtmlMessage = transaction.Description.Text
-                });
+            var integrationEvent = new ChallengeClosedIntegrationEvent
+            {
+                ChallengeId = challengeId
+            };
+
+            await serviceBusPublisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserAccountDepositIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string email,
-            TransactionId transactionId,
-            string description,
-            long amount
-        )
+        public static async Task PublishCreateChallengePayoutFailedIntegrationEventAsync(this IServiceBusPublisher serviceBusPublisher, ChallengeId challengeId)
         {
-            await publisher.PublishAsync(
-                new UserAccountDepositIntegrationEvent
-                {
-                    UserId = userId,
-                    Email = email,
-                    TransactionId = transactionId,
-                    Description = description,
-                    Amount = amount
-                });
-        }
+            var integrationEvent = new CreateChallengePayoutFailedIntegrationEvent
+            {
+                ChallengeId = challengeId
+            };
 
-        public static async Task PublishUserAccountWithdrawalIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string email,
-            TransactionId transactionId,
-            string description,
-            long amount
-        )
-        {
-            await publisher.PublishAsync(
-                new UserAccountWithdrawalIntegrationEvent
-                {
-                    UserId = userId,
-                    Email = email,
-                    TransactionId = transactionId,
-                    Description = description,
-                    Amount = amount
-                });
+            await serviceBusPublisher.PublishAsync(integrationEvent);
         }
     }
 }

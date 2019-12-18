@@ -1,10 +1,9 @@
 ﻿// Filename: AccountService.cs
-// Date Created: 2019-12-03
+// Date Created: 2019-12-08
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,90 +29,87 @@ namespace eDoxa.Cashier.Api.Application.Services
             _bundleService = bundleService;
         }
 
-        public async Task<IAccount?> FindAccountAsync(UserId userId)
+        public async Task<IAccount> FindAccountAsync(UserId userId)
         {
             return await _accountRepository.FindAccountAsync(userId);
         }
 
-        // TODO: Need to be refactored.
-        public async Task PayoutChallengeAsync(
-            IChallenge challenge, /*TODO: Create object Scoreboard*/
-            IDictionary<UserId, decimal?> scoreboard,
-            CancellationToken cancellationToken = default
-        )
+        public async Task<IAccount?> FindAccountOrNullAsync(UserId userId)
         {
-            var payout = challenge.Payout;
+            return await _accountRepository.FindAccountOrNullAsync(userId);
+        }
 
-            var winners = new Queue<UserId>(scoreboard.OrderByDescending(item => item.Value).Select(item => item.Key).Take(payout.Entries));
+        public async Task<bool> AccountExistsAsync(UserId userId)
+        {
+            return await _accountRepository.AccountExistsAsync(userId);
+        }
 
-            var losers = new List<UserId>(scoreboard.OrderByDescending(item => item.Value).Select(item => item.Key).Skip(payout.Entries));
+        // TODO: Need to be refactored.
+        public async Task<IDomainValidationResult> PayoutChallengeAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default)
+        {
+            var result = new DomainValidationResult();
 
-            foreach (var bucket in payout.Buckets)
+            if (result.IsValid)
             {
-                for (var index = 0; index < bucket.Size; index++)
+                foreach (var ladderGroup in scoreboard.Ladders)
                 {
-                    var user = winners.Dequeue();
+                    for (var index = 0; index < ladderGroup.Size; index++)
+                    {
+                        var user = scoreboard.Winners.Dequeue();
 
+                        var score = scoreboard[user];
+
+                        if (score == null)
+                        {
+                            // TODO: Need to be refactored.
+                            await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, 0);
+                        }
+                        else
+                        {
+                            // TODO: Need to be refactored.
+                            await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, ladderGroup.Prize);
+                        }
+                    }
+                }
+
+                foreach (var user in scoreboard.Losers)
+                {
                     var score = scoreboard[user];
 
                     if (score == null)
                     {
                         // TODO: Need to be refactored.
-                        await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, 0);
+                        await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, 0);
                     }
                     else
                     {
                         // TODO: Need to be refactored.
-                        await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, bucket.Prize);
+                        await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, Token.MinValue);
                     }
                 }
+
+                await _accountRepository.CommitAsync(cancellationToken);
             }
 
-            foreach (var user in losers)
-            {
-                var score = scoreboard[user];
-
-                if (score == null)
-                {
-                    // TODO: Need to be refactored.
-                    await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, 0);
-                }
-                else
-                {
-                    // TODO: Need to be refactored.
-                    await this.PayoutChallengeAsync(user, payout.PrizePool.Currency, Token.MinValue);
-                }
-            }
-
-            await _accountRepository.CommitAsync(cancellationToken);
+            return result;
         }
 
-        public async Task CreateAccountAsync(UserId userId)
+        public async Task<IDomainValidationResult> CreateAccountAsync(UserId userId)
         {
-            var account = new Account(userId);
+            var result = new DomainValidationResult();
 
-            _accountRepository.Create(account);
-
-            await _accountRepository.CommitAsync();
-        }
-
-        private async Task PayoutChallengeAsync(UserId userId, Currency currency, decimal amount)
-        {
-            var account = await _accountRepository.FindAccountAsync(userId);
-
-            if (currency == Currency.Money)
+            if (result.IsValid)
             {
-                var moneyAccount = new MoneyAccountDecorator(account!);
+                var account = new Account(userId);
 
-                moneyAccount.Payout(new Money(amount));
+                _accountRepository.Create(account);
+
+                await _accountRepository.CommitAsync();
+
+                result.AddEntityToMetadata(account);
             }
 
-            if (currency == Currency.Token)
-            {
-                var tokenAccount = new TokenAccountDecorator(account!);
-
-                tokenAccount.Payout(new Token(amount));
-            }
+            return result;
         }
 
         public async Task<IDomainValidationResult> CreateTransactionAsync(
@@ -151,6 +147,192 @@ namespace eDoxa.Cashier.Api.Application.Services
             }
 
             return DomainValidationResult.Failure("Invalid currency.");
+        }
+
+        public async Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId)
+        {
+            return await Task.FromResult(account.TransactionExists(transactionId) ? account.FindTransaction(transactionId) : null);
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+            IAccount account,
+            TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(transactionId))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(transactionId);
+
+                transaction.MarkAsSucceded();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(
+            IAccount account,
+            TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(transactionId))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(transactionId);
+
+                transaction.MarkAsFailed();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(
+            IAccount account,
+            TransactionId transactionId,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(transactionId))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(transactionId);
+
+                transaction.MarkAsCanceled();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+            IAccount account,
+            TransactionMetadata metadata,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(metadata))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(metadata);
+
+                transaction.MarkAsSucceded();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(
+            IAccount account,
+            TransactionMetadata metadata,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(metadata))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(metadata);
+
+                transaction.MarkAsFailed();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(
+            IAccount account,
+            TransactionMetadata metadata,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!account.TransactionExists(metadata))
+            {
+                result.AddDomainValidationError("Transaction does not exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var transaction = account.FindTransaction(metadata);
+
+                transaction.MarkAsCanceled();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        private async Task PayoutChallengeAsync(UserId userId, Currency currency, decimal amount)
+        {
+            var account = await _accountRepository.FindAccountOrNullAsync(userId);
+
+            if (currency == Currency.Money)
+            {
+                var moneyAccount = new MoneyAccountDecorator(account!);
+
+                moneyAccount.Payout(new Money(amount));
+            }
+
+            if (currency == Currency.Token)
+            {
+                var tokenAccount = new TokenAccountDecorator(account!);
+
+                tokenAccount.Payout(new Token(amount));
+            }
         }
 
         private async Task<IDomainValidationResult> CreateTransactionAsync(
@@ -394,80 +576,6 @@ namespace eDoxa.Cashier.Api.Application.Services
             }
 
             return new DomainValidationResult();
-        }
-
-        public async Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId)
-        {
-            return await Task.FromResult(account.TransactionExists(transactionId) ? account.FindTransaction(transactionId) : null);
-        }
-
-        public async Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(IAccount account, TransactionId transactionId, CancellationToken cancellationToken = default)
-        {
-            var result = new DomainValidationResult();
-
-            if (!account.TransactionExists(transactionId))
-            {
-                result.AddDomainValidationError("Transaction does not exists.");
-            }
-
-            if (result.IsValid)
-            {
-                var transaction = account.FindTransaction(transactionId);
-
-                transaction.MarkAsSucceded();
-
-                await _accountRepository.CommitAsync(cancellationToken);
-
-                result.AddEntityToMetadata(transaction);
-            }
-
-            return result;
-        }
-
-        public async Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(IAccount account, TransactionId transactionId, CancellationToken cancellationToken = default)
-        {
-            var result = new DomainValidationResult();
-
-            if (!account.TransactionExists(transactionId))
-            {
-                result.AddDomainValidationError("Transaction does not exists.");
-            }
-
-            if (result.IsValid)
-            {
-                var transaction = account.FindTransaction(transactionId);
-
-                transaction.MarkAsFailed();
-
-                await _accountRepository.CommitAsync(cancellationToken);
-
-                result.AddEntityToMetadata(transaction);
-            }
-
-            return result;
-        }
-
-        public async Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(IAccount account, TransactionId transactionId, CancellationToken cancellationToken = default)
-        {
-            var result = new DomainValidationResult();
-
-            if (!account.TransactionExists(transactionId))
-            {
-                result.AddDomainValidationError("Transaction does not exists.");
-            }
-
-            if (result.IsValid)
-            {
-                var transaction = account.FindTransaction(transactionId);
-
-                transaction.MarkAsCanceled();
-
-                await _accountRepository.CommitAsync(cancellationToken);
-
-                result.AddEntityToMetadata(transaction);
-            }
-
-            return result;
         }
     }
 }

@@ -13,7 +13,9 @@ using eDoxa.Payment.Api.IntegrationEvents.Handlers;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using Moq;
 
@@ -33,7 +35,9 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserInformationChangedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
+            var mockService = new Mock<IStripeService>();
             var mockAccountService = new Mock<IStripeAccountService>();
+            var mockLogger = new MockLogger<UserProfileChangedIntegrationEventHandler>();
 
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
@@ -41,22 +45,25 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 accountService => accountService.UpdateIndividualAsync(
                     It.IsAny<string>(),
                     It.IsAny<PersonUpdateOptions>()))
-            .Returns(Task.CompletedTask)
+                .ReturnsAsync(new DomainValidationResult())
             .Verifiable();
 
-            var handler = new UserInformationChangedIntegrationEventHandler(mockAccountService.Object);
+            var handler = new UserProfileChangedIntegrationEventHandler(mockService.Object, mockAccountService.Object, mockLogger.Object);
 
-            var integrationEvent = new UserInformationChangedIntegrationEvent
+            var integrationEvent = new UserProfileChangedIntegrationEvent
             {
                 UserId = Guid.NewGuid().ToString(),
-                FirstName = "Gabriel",
-                LastName = "Roy",
-                Gender = Grpc.Protos.Identity.Enums.GenderDto.Male,
-                Dob = new DobDto
+                Profile = new ProfileDto
                 {
-                    Day = 1,
-                    Month = 2,
-                    Year = 2000
+                    FirstName = "Gabriel",
+                    LastName = "Roy",
+                    Gender = Grpc.Protos.Identity.Enums.GenderDto.Male,
+                    Dob = new DobDto
+                    {
+                        Day = 1,
+                        Month = 2,
+                        Year = 2000
+                    }
                 }
             };
 

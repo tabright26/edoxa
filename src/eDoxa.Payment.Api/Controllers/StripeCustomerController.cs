@@ -27,13 +27,13 @@ namespace eDoxa.Payment.Api.Controllers
     public sealed class StripeCustomerController : ControllerBase
     {
         private readonly IStripeCustomerService _stripeCustomerService;
-        private readonly IStripeReferenceService _stripeReferenceService;
+        private readonly IStripeService _stripeService;
         private readonly IMapper _mapper;
 
-        public StripeCustomerController(IStripeCustomerService stripeCustomerService, IStripeReferenceService stripeReferenceService, IMapper mapper)
+        public StripeCustomerController(IStripeCustomerService stripeCustomerService, IStripeService stripeService, IMapper mapper)
         {
             _stripeCustomerService = stripeCustomerService;
-            _stripeReferenceService = stripeReferenceService;
+            _stripeService = stripeService;
             _mapper = mapper;
         }
 
@@ -46,7 +46,7 @@ namespace eDoxa.Payment.Api.Controllers
         {
             var userId = HttpContext.GetUserId();
 
-            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
+            if (!await _stripeService.UserExistsAsync(userId))
             {
                 return this.NotFound("Stripe reference not found.");
             }

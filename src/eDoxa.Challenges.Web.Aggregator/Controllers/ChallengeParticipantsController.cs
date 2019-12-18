@@ -88,7 +88,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                 new ChallengeRequests.RegisterChallengeParticipantRequest
                 {
                     ChallengeId = challengeId,
-                    GamePlayerId = Guid.NewGuid().ToString(),
+                    GamePlayerId = Guid.NewGuid().ToString(), // TODO: Important.
                     ParticipantId = participantId
                 });
 

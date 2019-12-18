@@ -141,16 +141,16 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
-            mockChallengeRepository.Setup(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
+            mockChallengeRepository.Setup(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
 
             // Act
-            var result = await service.FindChallengeAsync(new ChallengeId());
+            var result = await service.FindChallengeOrNullAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<Challenge>();
-            mockChallengeRepository.Verify(repository => repository.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+            mockChallengeRepository.Verify(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>()), Times.Once);
         }
     }
 }

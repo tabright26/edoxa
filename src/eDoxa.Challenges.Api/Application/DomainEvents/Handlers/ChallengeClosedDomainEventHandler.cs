@@ -25,7 +25,7 @@ namespace eDoxa.Challenges.Api.Application.DomainEvents.Handlers
 
         public async Task Handle(ChallengeClosedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            await _serviceBusPublisher.PublishChallengeClosedIntegrationEventAsync(domainEvent.Challenge.Id, domainEvent.Challenge.Scoreboard);
+            await _serviceBusPublisher.PublishChallengeSynchronizedIntegrationEventAsync(domainEvent.Challenge.Id, domainEvent.Challenge.Scoreboard);
         }
     }
 }

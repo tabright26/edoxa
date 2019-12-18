@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
@@ -43,6 +43,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_dtos.proto" GrpcServices="None">
+      <Link>Protos\clans_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_integration_events.proto" GrpcServices="None">
+      <Link>Protos\clans_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None">
+      <Link>Protos\games_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\games_integration_events.proto" GrpcServices="None">
+      <Link>Protos\games_integration_events.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
       <Link>Protos\identity_dtos.proto</Link>
     </Protobuf>
@@ -57,9 +69,6 @@
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_services.proto" GrpcServices="Server">
       <Link>Protos\identity_services.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\notifications_integration_events.proto" GrpcServices="None">
-      <Link>Protos\notifications_integration_events.proto</Link>
     </Protobuf>
   </ItemGroup>
 

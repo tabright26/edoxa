@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.11.1" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
     <PackageReference Include="Grpc.Tools" Version="2.25.0">
@@ -39,6 +39,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None">
+      <Link>Protos\cashier_dtos.proto</Link>
+    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None">
       <Link>Protos\cashier_integration_events.proto</Link>
     </Protobuf>

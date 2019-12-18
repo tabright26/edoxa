@@ -7,8 +7,8 @@
 using System;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Grpc.Protos.Notifications.IntegrationEvents;
 using eDoxa.Identity.Api.Areas.Identity.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;
@@ -46,7 +46,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()))
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -74,7 +74,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
 
-            mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()), Times.Never);
+            mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()), Times.Never);
 
             mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>()), Times.Never);
         }
@@ -98,7 +98,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()))
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -124,7 +124,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Once);
 
-            mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<EmailSentIntegrationEvent>()), Times.Once);
+            mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()), Times.Once);
 
             mockRedirectService.Verify(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>()), Times.Once);
         }

@@ -7,47 +7,44 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Grpc.Protos.Identity.Dtos;
-using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Seedwork.Security;
+using eDoxa.Grpc.Protos.Games.Dtos;
+using eDoxa.Grpc.Protos.Games.Enums;
+using eDoxa.Grpc.Protos.Games.IntegrationEvents;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Games.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishUserGamePlayerIdClaimAddedIntegrationEvent(this IServiceBusPublisher publisher, Credential credential)
+        public static async Task PublishUserGameCredentialAddedIntegrationEventAsync(this IServiceBusPublisher publisher, Credential credential)
         {
-            await publisher.PublishAsync(
-                new UserClaimsAddedIntegrationEvent
+            var integrationEvent = new UserGameCredentialAddedIntegrationEvent
+            {
+                Credential = new GameCredentialDto
                 {
                     UserId = credential.UserId,
-                    Claims =
-                    {
-                        new UserClaimDto
-                        {
-                            Type = CustomClaimTypes.GetGamePlayerFor(credential.Game),
-                            Value = credential.PlayerId
-                        }
-                    }
-                });
+                    PlayerId = credential.PlayerId,
+                    Game = credential.Game.ToEnum<GameDto>()
+                }
+            };
+
+            await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserGamePlayerIdClaimRemovedIntegrationEvent(this IServiceBusPublisher publisher, Credential credential)
+        public static async Task PublishUserGameCredentialRemovedIntegrationEventAsync(this IServiceBusPublisher publisher, Credential credential)
         {
-            await publisher.PublishAsync(
-                new UserClaimsRemovedIntegrationEvent
+            var integrationEvent = new UserGameCredentialRemovedIntegrationEvent
+            {
+                Credential = new GameCredentialDto
                 {
                     UserId = credential.UserId,
-                    Claims =
-                    {
-                        new UserClaimDto
-                        {
-                            Type = CustomClaimTypes.GetGamePlayerFor(credential.Game),
-                            Value = credential.PlayerId
-                        }
-                    }
-                });
+                    PlayerId = credential.PlayerId,
+                    Game = credential.Game.ToEnum<GameDto>()
+                }
+            };
+
+            await publisher.PublishAsync(integrationEvent);
         }
     }
 }

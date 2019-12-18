@@ -7,12 +7,10 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.IntegrationEvents.Extensions;
+using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Identity.Domain.Services;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.Authorization;
@@ -52,22 +50,28 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    null,
-                    new
-                    {
-                        code
-                    },
-                    Request.Scheme
-                );
+                await _serviceBusPublisher.PublishAsync(new UserPasswordResetTokenGeneratedIntegrationEvent
+                {
+                    UserId = user.Id.ToString(),
+                    Code = code
+                });
 
-                await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                    UserId.FromGuid(user.Id),
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
-                );
+                //var callbackUrl = Url.Page(
+                //    "/Account/ResetPassword",
+                //    null,
+                //    new
+                //    {
+                //        code
+                //    },
+                //    Request.Scheme
+                //);
+
+                //await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
+                //    UserId.FromGuid(user.Id),
+                //    Input.Email,
+                //    "Reset Password",
+                //    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+                //);
 
                 return this.RedirectToPage("./ForgotPasswordConfirmation");
             }

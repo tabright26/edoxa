@@ -2,20 +2,24 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.IntegrationEvents";
 
-import "games_enums.proto";
+import "challenges_dtos.proto";
 import "custom_types.proto";
 
 package edoxa.services.challenges;
 
-message ChallengeClosedIntegrationEvent {
+message ChallengeParticipantRegisteredIntegrationEvent {
+  ParticipantDto participant = 1;
+}
+
+message ChallengeSynchronizedIntegrationEvent {
   string challengeId = 1;
   map<string, customTypes.DecimalValue> scoreboard = 2;
 }
 
-message ChallengeDeletedIntegrationEvent {
+message CreateChallengeFailedIntegrationEvent {
   string challengeId = 1;
 }
 
-message ChallengesSynchronizedIntegrationEvent {
-  games.GameDto game = 1;
+message RegisterChallengeParticipantFailedIntegrationEvent {
+  ParticipantDto participant = 1;
 }

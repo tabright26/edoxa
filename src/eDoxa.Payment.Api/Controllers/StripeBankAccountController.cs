@@ -29,19 +29,19 @@ namespace eDoxa.Payment.Api.Controllers
     {
         private readonly IStripeExternalAccountService _externalAccountService;
         private readonly IStripeAccountService _stripeAccountService;
-        private readonly IStripeReferenceService _stripeReferenceService;
+        private readonly IStripeService _stripeService;
         private readonly IMapper _mapper;
 
         public StripeBankAccountController(
             IStripeExternalAccountService externalAccountService,
             IStripeAccountService stripeAccountService,
-            IStripeReferenceService stripeReferenceService,
+            IStripeService stripeService,
             IMapper mapper
         )
         {
             _externalAccountService = externalAccountService;
             _stripeAccountService = stripeAccountService;
-            _stripeReferenceService = stripeReferenceService;
+            _stripeService = stripeService;
             _mapper = mapper;
         }
 
@@ -54,7 +54,7 @@ namespace eDoxa.Payment.Api.Controllers
         {
             var userId = HttpContext.GetUserId();
 
-            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
+            if (!await _stripeService.UserExistsAsync(userId))
             {
                 return this.NotFound("Stripe reference not found.");
             }
@@ -80,7 +80,7 @@ namespace eDoxa.Payment.Api.Controllers
         {
             var userId = HttpContext.GetUserId();
 
-            if (!await _stripeReferenceService.ReferenceExistsAsync(userId))
+            if (!await _stripeService.UserExistsAsync(userId))
             {
                 return this.NotFound("Stripe reference not found.");
             }

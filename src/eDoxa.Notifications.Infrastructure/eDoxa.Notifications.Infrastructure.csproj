@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Moq" Version="4.13.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\eDoxa.Notifications.Domain\eDoxa.Notifications.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
   </ItemGroup>

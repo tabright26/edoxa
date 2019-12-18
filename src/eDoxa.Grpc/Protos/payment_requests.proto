@@ -2,18 +2,16 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Requests";
 
+import "cashier_dtos.proto";
+
 package edoxa.services.payment;
 
 message DepositRequest {
-  string transactionId = 1;
-  string description = 2;
-  int64 amount = 3;
+  cashier.TransactionDto transaction = 2;
 }
 
 message WithdrawalRequest {
-  string transactionId = 1;
-  string description = 2;
-  int64 amount = 3;
+  cashier.TransactionDto transaction = 2;
 }
 
 message CreateStripeBankAccountRequest {

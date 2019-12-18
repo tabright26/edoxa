@@ -2,28 +2,15 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.IntegrationEvents";
 
+import "cashier_dtos.proto";
+
 package edoxa.services.cashier;
 
-message UserTransactionCanceledIntegrationEvent {
-  string userId = 1;
-  string transactionId = 2;
+message CreateChallengePayoutFailedIntegrationEvent {
+  string challengeId = 1;
 }
 
-message UserTransactionFailedIntegrationEvent {
-  string userId = 1;
-  string transactionId = 2;
-}
-
-message UserTransactionSuccededIntegrationEvent {
-  string userId = 1;
-  string transactionId = 2;
-}
-
-message TransactionSuccededIntegrationEvent {
-  string userId = 1;
-  map<string, string> metadata = 2;
-}
-
-message TransactionCanceledIntegrationEvent {
-  string transactionId = 1;
+message ChallengeClosedIntegrationEvent {
+  string challengeId = 1;
+  map<string, PrizeDto> payoutPrizes = 2;
 }

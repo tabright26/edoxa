@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Payment.Domain.Stripe.Repositories;
 using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Stripe;
@@ -38,14 +39,30 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
             return await this.GetAsync(accountId);
         }
 
-        public async Task UpdateIndividualAsync(string accountId, PersonUpdateOptions individual)
+        public async Task<IDomainValidationResult> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual)
         {
-            await this.UpdateAsync(
-                accountId,
-                new AccountUpdateOptions
+            var result = new DomainValidationResult();
+
+            if (result.IsValid)
+            {
+                try
                 {
-                    Individual = individual
-                });
+                    var account = await this.UpdateAsync(
+                        accountId,
+                        new AccountUpdateOptions
+                        {
+                            Individual = individual
+                        });
+
+                    result.AddEntityToMetadata(account);
+                }
+                catch (StripeException exception)
+                {
+                    result.AddDomainValidationError(exception.Message);
+                }
+            }
+
+            return result;
         }
 
         public async Task<bool> HasAccountVerifiedAsync(string accountId)
