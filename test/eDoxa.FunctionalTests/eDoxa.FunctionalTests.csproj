@@ -7,8 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.0" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.25.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.26.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Worker\eDoxa.Challenges.Worker.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Clans.Api\eDoxa.Clans.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Games.Api\eDoxa.Games.Api.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Games.Infrastructure\eDoxa.Games.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Notifications.Api\eDoxa.Notifications.Api.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.TestHelper\eDoxa.Seedwork.TestHelper.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
@@ -31,8 +43,37 @@
   <ItemGroup>
     <Content Include="Challenges\appsettings.json" CopyToOutputDirectory="Always" />
     <Content Include="Cashier\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Games\appsettings.json" CopyToOutputDirectory="Always" />
     <Content Include="Identity\appsettings.json" CopyToOutputDirectory="Always" />
     <Content Include="Payment\appsettings.json" CopyToOutputDirectory="Always" />
+    <Content Include="Workers\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None">
+      <Link>Protos\challenges_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_requests.proto" GrpcServices="None">
+      <Link>Protos\challenges_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_responses.proto" GrpcServices="None">
+      <Link>Protos\challenges_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_services.proto" GrpcServices="Client">
+      <Link>Protos\challenges_services.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None">
+      <Link>Protos\games_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_requests.proto" GrpcServices="None">
+      <Link>Protos\games_requests.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_responses.proto" GrpcServices="None">
+      <Link>Protos\games_responses.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_services.proto" GrpcServices="Client">
+      <Link>Protos\games_services.proto</Link>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

@@ -162,6 +162,8 @@ services:
       - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - Endpoints__ChallengesUrl=http://challenges.api
+      - Endpoints__GamesUrl=http://games.api
     ports:
       - "5403:80"
 

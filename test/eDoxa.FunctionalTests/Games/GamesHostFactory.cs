@@ -1,35 +1,31 @@
-﻿// Filename: ChallengesHostFactory.cs
-// Date Created: 2019-11-25
+﻿// Filename: GamesHostFactory.cs
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.IO;
 using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Challenges.Api;
-using eDoxa.Challenges.Infrastructure;
-using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Security.Kestrel.Extensions;
+using eDoxa.Games.Api;
+using eDoxa.Games.Infrastructure;
 using eDoxa.Seedwork.TestHelper;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.FunctionalTests.Challenges
+namespace eDoxa.FunctionalTests.Games
 {
-    public sealed class ChallengesHostFactory : WebHostFactory<Startup>
+    public sealed class GamesHostFactory : WebHostFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(ChallengesHostFactory)).Location), "Challenges"));
+            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(GamesHostFactory)).Location), "Games"));
 
             builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
 
@@ -48,7 +44,7 @@ namespace eDoxa.FunctionalTests.Challenges
         {
             var server = base.CreateServer(builder);
 
-            server.EnsureCreatedDbContext<ChallengesDbContext>();
+            server.EnsureCreatedDbContext<GamesDbContext>();
 
             return server;
         }
