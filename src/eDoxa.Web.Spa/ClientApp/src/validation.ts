@@ -1,7 +1,7 @@
 export const DOXATAG_MINIMUM_LENGTH = 2;
 export const DOXATAG_MAXIMUM_LENGTH = 16;
 
-const DOXATAG_SPECIAL_REGEX = "^[a-zA-Z0-9_ -]{2,16}$";
+const DOXATAG_SPECIAL_REGEX = "^[a-zA-Z0-9][a-zA-Z0-9_ -]{0,14}[a-zA-Z0-9_-]$";
 export const doxatagSpecialRegex = new RegExp(DOXATAG_SPECIAL_REGEX);
 
 export const DOXATAG_REQUIRED = "Doxatag is required";

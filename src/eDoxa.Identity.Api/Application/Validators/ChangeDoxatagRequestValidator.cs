@@ -20,9 +20,9 @@ namespace eDoxa.Identity.Api.Application.Validators
             this.RuleFor(request => request.Name).NotNull().WithMessage(DoxatagErrorDescriber.Required()).
                 NotEmpty().WithMessage(DoxatagErrorDescriber.Required()).
                 Length(2, 16).WithMessage(DoxatagErrorDescriber.Length()).
-                Matches(new Regex("^[a-zA-Z_]{2,16}$")).
+                Matches(new Regex("^[a-zA-Z0-9_ -]{2,16}$")).
                 WithMessage(DoxatagErrorDescriber.Invalid()).
-                Matches(new Regex("^[a-zA-Z][a-zA-Z_]{0,14}[a-zA-Z]$")).
+                Matches(new Regex("^[a-zA-Z0-9][a-zA-Z0-9_ -]{0,14}[a-zA-Z0-9_-]$")).
                 WithMessage(DoxatagErrorDescriber.InvalidUnderscore()); ;
 
         }
