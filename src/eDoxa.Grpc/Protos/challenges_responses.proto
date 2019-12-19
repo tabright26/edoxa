@@ -25,3 +25,7 @@ message SynchronizeChallengeResponse {
 message RegisterChallengeParticipantResponse {
   ParticipantDto participant = 1;
 }
+
+message SnapshotChallengeParticipantResponse {
+  ParticipantDto participant = 1;
+}

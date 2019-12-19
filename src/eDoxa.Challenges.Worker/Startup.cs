@@ -11,8 +11,8 @@ using Autofac;
 using eDoxa.Challenges.Worker.Application.Extensions;
 using eDoxa.Challenges.Worker.Application.RecurringJobs;
 using eDoxa.Challenges.Worker.Infrastructure;
+using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
@@ -94,8 +94,8 @@ namespace eDoxa.Challenges.Worker
                 manager =>
                 {
                     manager.AddOrUpdate<ChallengeRecurringJob>(
-                        Game.LeagueOfLegends.ToString(),
-                        service => service.SynchronizeChallengeAsync(Game.LeagueOfLegends),
+                        GameDto.LeagueOfLegends.ToString(),
+                        service => service.SynchronizeChallengeAsync(GameDto.LeagueOfLegends),
                         Cron.Hourly);
                 });
         }

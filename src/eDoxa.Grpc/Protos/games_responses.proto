@@ -11,5 +11,6 @@ message FetchChallengeScoringResponse {
 }
 
 message FetchChallengeMatchesResponse {
-  repeated MatchDto matches = 1;
+  string gamePlayerId = 1;
+  repeated GameMatchDto matches = 2;
 }

@@ -1,10 +1,11 @@
 ﻿// Filename: ChallengeGrpcService.cs
-// Date Created: 2019-12-08
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -102,11 +103,28 @@ namespace eDoxa.Challenges.Api.Services
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
         {
-            await _challengeService.SynchronizeChallengesAsync(request.Game.ToEnumeration<Game>(), new UtcNowDateTimeProvider());
+            var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
 
-            var response = new SynchronizeChallengeResponse();
+            if (!await _challengeService.ChallengeExistsAsync(challengeId))
+            {
+                throw context.NotFoundRpcException("Challenge not found.");
+            }
 
-            return context.Ok(response);
+            var challenge = await _challengeService.FindChallengeAsync(challengeId);
+
+            var result = await _challengeService.SynchronizeChallengeAsync(challenge, new UtcNowDateTimeProvider());
+
+            if (result.IsValid)
+            {
+                var response = new SynchronizeChallengeResponse
+                {
+                    Challenge = ChallengeProfile.Map(result.GetEntityFromMetadata<IChallenge>())
+                };
+
+                return context.Ok(response);
+            }
+
+            throw context.FailedPreconditionRpcException(result, string.Empty);
         }
 
         public override async Task<RegisterChallengeParticipantResponse> RegisterChallengeParticipant(
@@ -120,22 +138,18 @@ namespace eDoxa.Challenges.Api.Services
 
             var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
 
-            var participantId = request.ParticipantId.ParseEntityId<ParticipantId>();
-
-            var gamePlayerId = request.GamePlayerId.ParseStringId<PlayerId>();
-
-            var challenge = await _challengeService.FindChallengeOrNullAsync(challengeId);
-
-            if (challenge == null)
+            if (!await _challengeService.ChallengeExistsAsync(challengeId))
             {
                 throw context.NotFoundRpcException("Challenge not found.");
             }
 
+            var challenge = await _challengeService.FindChallengeAsync(challengeId);
+
             var result = await _challengeService.RegisterChallengeParticipantAsync(
                 challenge,
                 userId,
-                participantId,
-                gamePlayerId,
+                request.ParticipantId.ParseEntityId<ParticipantId>(),
+                request.GamePlayerId.ParseStringId<PlayerId>(),
                 new UtcNowDateTimeProvider());
 
             if (result.IsValid)
@@ -148,7 +162,43 @@ namespace eDoxa.Challenges.Api.Services
                 return context.Ok(response);
             }
 
-            await _serviceBusPublisher.PublishRegisterChallengeParticipantFailedIntegrationEventAsync(challengeId, userId, participantId);
+            await _serviceBusPublisher.PublishRegisterChallengeParticipantFailedIntegrationEventAsync(
+                challengeId,
+                userId,
+                request.ParticipantId.ParseEntityId<ParticipantId>());
+
+            throw context.FailedPreconditionRpcException(result, string.Empty);
+        }
+
+        public override async Task<SnapshotChallengeParticipantResponse> SnapshotChallengeParticipant(
+            SnapshotChallengeParticipantRequest request,
+            ServerCallContext context
+        )
+        {
+            var challengeId = request.ChallengeId.ParseEntityId<ChallengeId>();
+
+            if (!await _challengeService.ChallengeExistsAsync(challengeId))
+            {
+                throw context.NotFoundRpcException("Challenge not found.");
+            }
+
+            var challenge = await _challengeService.FindChallengeAsync(challengeId);
+
+            var result = await _challengeService.SnapshotChallengeParticipantAsync(
+                challenge,
+                request.GamePlayerId.ParseStringId<PlayerId>(),
+                new UtcNowDateTimeProvider(),
+                scoring => request.Matches.Select(match => new Match(scoring.Map(match.Stats), new GameUuid(match.GameUuid))).ToImmutableHashSet());
+
+            if (result.IsValid)
+            {
+                var response = new SnapshotChallengeParticipantResponse
+                {
+                    Participant = ChallengeProfile.Map(challenge, result.GetEntityFromMetadata<Participant>())
+                };
+
+                return context.Ok(response);
+            }
 
             throw context.FailedPreconditionRpcException(result, string.Empty);
         }

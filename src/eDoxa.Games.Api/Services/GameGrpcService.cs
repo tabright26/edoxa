@@ -1,20 +1,20 @@
-﻿// Filename: ChallengeGrpcService.cs
-// Date Created: 2019-12-08
+﻿// Filename: GameGrpcService.cs
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.Services;
+using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Responses;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-
-using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
 
@@ -31,45 +31,51 @@ namespace eDoxa.Games.Api.Services
 
         public override async Task<FetchChallengeScoringResponse> FetchChallengeScoring(FetchChallengeScoringRequest request, ServerCallContext context)
         {
-            var scoring = await _challengeService.GetScoringAsync(request.Game.ToEnumeration<Game>());
-
-            var response = new FetchChallengeScoringResponse();
-
-            foreach (var (key, value) in scoring)
+            return new FetchChallengeScoringResponse
             {
-                response.Scoring.Add(key, value);
-            }
-
-            return response;
+                Scoring =
+                {
+                    await _challengeService.GetScoringAsync(request.Game.ToEnumeration<Game>())
+                }
+            };
         }
 
-        public override async Task<FetchChallengeMatchesResponse> FetchChallengeMatches(FetchChallengeMatchesRequest request, ServerCallContext context)
+        public override async Task FetchChallengeMatches(
+            FetchChallengeMatchesRequest request,
+            IServerStreamWriter<FetchChallengeMatchesResponse> responseStream,
+            ServerCallContext context
+        )
         {
-            var matches = await _challengeService.GetMatchesAsync(
-                request.Game.ToEnumeration<Game>(),
-                request.GamePlayerId.ParseStringId<PlayerId>(),
-                request.StartedAt.ToDateTime(),
-                request.EndedAt.ToDateTime());
-
-            var response = new FetchChallengeMatchesResponse();
-
-            foreach (var match in matches)
+            foreach (var participant in request.Participants)
             {
-                var matchDto = new MatchDto
+                var gamePlayerId = participant.PlayerId.ParseStringId<PlayerId>();
+
+                var matches = await _challengeService.GetMatchesAsync(
+                    request.Game.ToEnumeration<Game>(),
+                    gamePlayerId,
+                    participant.StartedAt.ToDateTime(),
+                    participant.EndedAt.ToDateTime());
+
+                var response = new FetchChallengeMatchesResponse
                 {
-                    GameUuid = match.GameUuid,
-                    Timestamp = match.Timestamp.ToTimestamp()
+                    GamePlayerId = gamePlayerId,
+                    Matches =
+                    {
+                        matches.Select(
+                            match => new GameMatchDto
+                            {
+                                GameUuid = match.GameUuid,
+                                Timestamp = match.Timestamp.ToTimestampUtc(),
+                                Stats =
+                                {
+                                    match.Stats
+                                }
+                            })
+                    }
                 };
 
-                foreach (var (key, value) in match.Stats)
-                {
-                    matchDto.Stats.Add(key, value);
-                }
-
-                response.Matches.Add(matchDto);
+                await responseStream.WriteAsync(response);
             }
-
-            return response;
         }
     }
 }
