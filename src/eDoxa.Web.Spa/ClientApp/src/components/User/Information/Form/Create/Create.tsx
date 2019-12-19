@@ -99,18 +99,10 @@ const CreateUserInformationsForm: FunctionComponent<InjectedFormProps<
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dt className="col-sm-4 mb-0">
-            <Field
-              name="firstName"
-              label="Enter your first name"
-              component={Input.Text}
-            />
+            <Field name="firstName" label="First Name" component={Input.Text} />
           </dt>
           <dd className="col-sm-4 mb-0">
-            <Field
-              name="lastName"
-              label="Enter your last name"
-              component={Input.Text}
-            />
+            <Field name="lastName" label="Last Name" component={Input.Text} />
           </dd>
         </dl>
       </dd>
@@ -130,7 +122,7 @@ const CreateUserInformationsForm: FunctionComponent<InjectedFormProps<
       <dd className="col-sm-3 mb-0">
         <FormGroup>
           <Field name="gender" type="select" component={Input.Select}>
-            <option value="">Select your gender...</option>
+            <option value="">Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
