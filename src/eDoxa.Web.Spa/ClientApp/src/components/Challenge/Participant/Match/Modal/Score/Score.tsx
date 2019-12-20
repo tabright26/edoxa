@@ -57,7 +57,7 @@ const MatchScoreModal: FunctionComponent<any> = ({
 );
 
 const enhance = compose<any, any>(
-  connectModal({ name: CHALLENGE_MATCH_SCORE_MODAL })
+  connectModal({ name: CHALLENGE_MATCH_SCORE_MODAL, destroyOnHide: false })
 );
 
 export default enhance(MatchScoreModal);

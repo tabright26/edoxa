@@ -6,7 +6,12 @@ import AddressForm from "components/User/Address/Form";
 import { compose } from "recompose";
 
 const CreateAddressModal = ({ show, handleHide, className }) => (
-  <Modal size="lg" isOpen={show} toggle={handleHide} className={"modal-primary " + className}>
+  <Modal
+    size="lg"
+    isOpen={show}
+    toggle={handleHide}
+    className={"modal-primary " + className}
+  >
     <ModalHeader toggle={handleHide}>Add new address</ModalHeader>
     <ModalBody>
       <dl className="row mb-0">
@@ -19,6 +24,8 @@ const CreateAddressModal = ({ show, handleHide, className }) => (
   </Modal>
 );
 
-const enhance = compose<any, any>(connectModal({ name: CREATE_USER_ADDRESS_MODAL }));
+const enhance = compose<any, any>(
+  connectModal({ name: CREATE_USER_ADDRESS_MODAL, destroyOnHide: false })
+);
 
 export default enhance(CreateAddressModal);
