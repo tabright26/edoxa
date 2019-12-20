@@ -14,12 +14,12 @@
 
         public static string Invalid()
         {
-            return "Doxatag invalid. May only contains (a-z,A-Z,_)";
+            return "Doxatag invalid. May only contains (a-z,A-Z,_ -)";
         }
 
         public static string InvalidUnderscore()
         {
-            return "Doxatag invalid. Cannot start or end with _";
+            return "Doxatag invalid. Cannot start with special characters";
         }
     }
 }

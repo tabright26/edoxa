@@ -5,7 +5,12 @@ import Update from "./Update";
 import { configureStore } from "store";
 import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";
-import { DOXATAG_REQUIRED, DOXATAG_INVALID } from "validation";
+import {
+  DOXATAG_REQUIRED,
+  DOXATAG_INVALID,
+  DOXATAG_LENGTH_UNDER_INVALID,
+  DOXATAG_LENGTH_OVER_INVALID
+} from "validation";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -65,6 +70,28 @@ describe("<UserDoxatagUpdateForm />", () => {
         input.simulate("blur");
 
         const errorPresent = wrapper.findFormFeedback(DOXATAG_REQUIRED);
+        expect(errorPresent).toBeTruthy();
+      });
+
+      it("shows error when name is not long enough", () => {
+        const wrapper = createWrapper();
+        const input = wrapper.findInputByName("name");
+        input.simulate("change", { target: { value: "_" } });
+
+        const errorPresent = wrapper.findFormFeedback(
+          DOXATAG_LENGTH_UNDER_INVALID
+        );
+        expect(errorPresent).toBeTruthy();
+      });
+
+      it("shows error when name is too long", () => {
+        const wrapper = createWrapper();
+        const input = wrapper.findInputByName("name");
+        input.simulate("change", { target: { value: "_Doxatag_Test_1234" } });
+
+        const errorPresent = wrapper.findFormFeedback(
+          DOXATAG_LENGTH_OVER_INVALID
+        );
         expect(errorPresent).toBeTruthy();
       });
 

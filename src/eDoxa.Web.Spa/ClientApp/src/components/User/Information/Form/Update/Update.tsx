@@ -61,7 +61,7 @@ const UpdateUserInformationsForm: FunctionComponent<InjectedFormProps<
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dt className="col-sm-4 mb-0">
-            <Field name="firstName" label="First name" component={Input.Text} />
+            <Field name="firstName" label="First Name" component={Input.Text} />
           </dt>
           <dd className="col-sm-4 mb-0">
             <Field
