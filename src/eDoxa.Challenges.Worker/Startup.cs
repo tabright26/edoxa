@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -11,12 +11,17 @@ using Autofac;
 using eDoxa.Challenges.Worker.Application.Extensions;
 using eDoxa.Challenges.Worker.Application.RecurringJobs;
 using eDoxa.Challenges.Worker.Infrastructure;
+using eDoxa.Grpc.Protos.Challenges.Services;
+using eDoxa.Grpc.Protos.Games.Enums;
+using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
+using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
+
+using Grpc.Core;
 
 using Hangfire;
 using Hangfire.SqlServer;
@@ -40,9 +45,12 @@ namespace eDoxa.Challenges.Worker
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AppSettings = configuration.GetAppSettings<ChallengesWorkerAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
+
+        private ChallengesWorkerAppSettings AppSettings { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -74,6 +82,16 @@ namespace eDoxa.Challenges.Worker
             services.AddHangfireServer(options => options.WorkerCount = 1);
 
             services.AddMvc();
+
+            services.AddGrpcClient<GameService.GameServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.GamesUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
+
+            services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
+                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                .AddRetryPolicyHandler()
+                .AddCircuitBreakerPolicyHandler();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -94,8 +112,8 @@ namespace eDoxa.Challenges.Worker
                 manager =>
                 {
                     manager.AddOrUpdate<ChallengeRecurringJob>(
-                        Game.LeagueOfLegends.ToString(),
-                        service => service.SynchronizeChallengeAsync(Game.LeagueOfLegends),
+                        GameDto.LeagueOfLegends.ToString(),
+                        service => service.SynchronizeChallengeAsync(GameDto.LeagueOfLegends),
                         Cron.Hourly);
                 });
         }

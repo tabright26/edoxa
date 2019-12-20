@@ -12,14 +12,14 @@ namespace eDoxa.Seedwork.Security.Kestrel.Extensions
 {
     public static class KestrelServerOptionsExtensions
     {
-        public static void ListenRest(this KestrelServerOptions options)
+        public static void ListenRest(this KestrelServerOptions options, int port = 80)
         {
-            options.Listen(IPAddress.Any, 80, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2);
+            options.Listen(IPAddress.Any, port, listenOptions => listenOptions.Protocols = HttpProtocols.Http1AndHttp2);
         }
 
-        public static void ListenGrpc(this KestrelServerOptions options)
+        public static void ListenGrpc(this KestrelServerOptions options, int port = 81)
         {
-            options.Listen(IPAddress.Any, 81, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
+            options.Listen(IPAddress.Any, port, listenOptions => listenOptions.Protocols = HttpProtocols.Http2);
         }
     }
 }

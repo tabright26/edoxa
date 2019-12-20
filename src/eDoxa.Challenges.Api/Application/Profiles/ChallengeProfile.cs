@@ -1,5 +1,5 @@
 // Filename: ChallengeProfile.cs
-// Date Created: 2019-12-08
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -44,6 +44,8 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 .ForMember(participant => participant.UserId, config => config.MapFrom(participant => participant.UserId.ToString()))
                 .ForMember(participant => participant.Score, config => config.Ignore())
                 .ForMember(participant => participant.ChallengeId, config => config.Ignore())
+                .ForMember(participant => participant.GamePlayerId, config => config.MapFrom(participant => participant.PlayerId.ToString()))
+                .ForMember(participant => participant.SynchronizedAt, config => config.MapFrom(participant => participant.SynchronizedAt.ToTimestampUtcOrDefault()))
                 .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches));
 
             this.CreateMap<ChallengeTimeline, TimelineDto>()
@@ -70,7 +72,7 @@ namespace eDoxa.Challenges.Api.Application.Profiles
         {
             return new ChallengeDto
             {
-                Id = challenge.Id.ToString(),
+                Id = challenge.Id,
                 Name = challenge.Name,
                 Game = challenge.Game.ToEnum<GameDto>(),
                 State = challenge.Timeline.State.ToEnum<ChallengeStateDto>(),
@@ -99,10 +101,12 @@ namespace eDoxa.Challenges.Api.Application.Profiles
         {
             return new ParticipantDto
             {
-                Id = participant.Id.ToString(),
-                ChallengeId = challenge.Id.ToString(),
-                UserId = participant.UserId.ToString(),
+                Id = participant.Id,
+                UserId = participant.UserId,
+                GamePlayerId = participant.PlayerId,
+                ChallengeId = challenge.Id,
                 Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal(),
+                SynchronizedAt = participant.SynchronizedAt.ToTimestampUtcOrDefault(),
                 Matches =
                 {
                     participant.Matches.Select(match => Map(participant, match))
@@ -114,8 +118,8 @@ namespace eDoxa.Challenges.Api.Application.Profiles
         {
             return new MatchDto
             {
-                Id = match.Id.ToString(),
-                ParticipantId = participant.Id.ToString(),
+                Id = match.Id,
+                ParticipantId = participant.Id,
                 Score = match.Score.ToDecimal(),
                 Stats =
                 {

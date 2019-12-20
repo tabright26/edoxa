@@ -1,13 +1,8 @@
-﻿// Filename: IdentityApiFactory.cs
-// Date Created: 2019-11-02
+﻿// Filename: IdentityHostFactory.cs
+// Date Created: 2019-12-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
-
-using System.IO;
-using System.Reflection;
-
-using Autofac;
 
 using eDoxa.Identity.Api;
 using eDoxa.Identity.Infrastructure;
@@ -16,28 +11,16 @@ using eDoxa.Seedwork.TestHelper.Extensions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.FunctionalTests.Identity
+namespace eDoxa.FunctionalTests.TestHelper.Services.Identity
 {
     public sealed class IdentityHostFactory : WebHostFactory<Startup>
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.UseContentRoot(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(IdentityHostFactory)).Location), "Identity"));
-
-            builder.ConfigureAppConfiguration(configure => configure.AddJsonFile("appsettings.json", false).AddEnvironmentVariables());
-
             base.ConfigureWebHost(builder);
-        }
 
-        protected override void ConfigureTestServices(IServiceCollection services)
-        {
-        }
-
-        protected override void ContainerTestBuilder(ContainerBuilder builder)
-        {
+            builder.UseCustomContentRoot("TestHelper/Services/Identity");
         }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)

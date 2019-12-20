@@ -1,10 +1,11 @@
 ﻿// Filename: ChallengeService.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
+using System;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,24 +16,15 @@ using eDoxa.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
-using Microsoft.Extensions.Logging;
-
 namespace eDoxa.Challenges.Api.Application.Services
 {
     public sealed class ChallengeService : IChallengeService
     {
         private readonly IChallengeRepository _challengeRepository;
-        private readonly ILogger _logger;
 
-        public ChallengeService(IChallengeRepository challengeRepository, ILogger<ChallengeService> logger)
+        public ChallengeService(IChallengeRepository challengeRepository)
         {
             _challengeRepository = challengeRepository;
-            _logger = logger;
-        }
-
-        public async Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId)
-        {
-            return await _challengeRepository.FindChallengeOrNullAsync(challengeId);
         }
 
         public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
@@ -92,17 +84,21 @@ namespace eDoxa.Challenges.Api.Application.Services
 
             if (challenge.SoldOut)
             {
-                result.AddDomainValidationError("_error", "The challenge was sold out.");
+                result.AddDomainValidationError("The challenge was sold out.");
             }
 
             if (challenge.ParticipantExists(userId))
             {
-                result.AddDomainValidationError("_error", "The user already is registered.");
+                result.AddDomainValidationError("The user already is registered.");
             }
 
             if (result.IsValid)
             {
-                var participant = new Participant(participantId, userId, playerId, registeredAt);
+                var participant = new Participant(
+                    participantId,
+                    userId,
+                    playerId,
+                    registeredAt);
 
                 challenge.Register(participant);
 
@@ -119,7 +115,36 @@ namespace eDoxa.Challenges.Api.Application.Services
             return result;
         }
 
-        public async Task<IDomainValidationResult> CloseChallengeAsync(IChallenge challenge, IDateTimeProvider provider, CancellationToken cancellationToken = default)
+        public async Task<IDomainValidationResult> SynchronizeChallengeAsync(
+            IChallenge challenge,
+            IDateTimeProvider synchronizedAt,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!challenge.CanSynchronize())
+            {
+                result.AddDomainValidationError("Challenge wasn't synchronized due to is current state.");
+            }
+
+            if (result.IsValid)
+            {
+                challenge.Synchronize(synchronizedAt);
+
+                await _challengeRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(challenge);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> CloseChallengeAsync(
+            IChallenge challenge,
+            IDateTimeProvider provider,
+            CancellationToken cancellationToken = default
+        )
         {
             var result = new DomainValidationResult();
 
@@ -140,83 +165,14 @@ namespace eDoxa.Challenges.Api.Application.Services
             return result;
         }
 
-        public async Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default)
-        {
-            var challengeInProgress = await _challengeRepository.FetchChallengesAsync(game, ChallengeState.InProgress);
-
-            var challengeEnded = await _challengeRepository.FetchChallengesAsync(game, ChallengeState.Ended);
-
-            foreach (var challenge in challengeInProgress.Union(challengeEnded))
-            {
-                var result = await this.SynchronizeChallengeAsync(challenge, synchronizedAt, cancellationToken);
-
-                if (!result.IsValid)
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        _logger.LogError(error.ErrorMessage);
-                    }
-                }
-            }
-        }
-
-        public async Task<IDomainValidationResult> SynchronizeChallengeAsync(
-            IChallenge challenge,
-            IDateTimeProvider synchronizedAt,
-            CancellationToken cancellationToken = default
-        )
-        {
-            //if (!challenge.CanSynchronize())
-            //{
-            //    return DomainValidationResult.Failure("_error", "Challenge wasn't synchronized due to is current state.");
-            //}
-
-            //challenge.Synchronize(synchronizedAt);
-
-            //foreach (var participant in challenge.Participants)
-            //{
-            //    if (challenge.CanSynchronize(participant))
-            //    {
-            //        try
-            //        {
-            //            var matches = await _gamesHttpClient.GetChallengeMatchesAsync(
-            //                challenge.Game,
-            //                participant.PlayerId,
-            //                participant.SynchronizedAt ?? challenge.Timeline.StartedAt,
-            //                challenge.Timeline.EndedAt);
-
-            //            participant.Snapshot(
-            //                matches.Select(match => new Match(challenge.Scoring.Map(match.Stats), new GameUuid(match.GameUuid))).ToList(),
-            //                synchronizedAt);
-
-            //            await _challengeRepository.CommitAsync(true, cancellationToken);
-            //        }
-            //        catch (RpcException exception)
-            //        {
-            //            _logger.LogError(
-            //                exception,
-            //                $"Synchronize challenge ({challenge}) thrown an exception when fetching participant ({participant}) matches.");
-            //        }
-            //    }
-            //}
-
-            //await _challengeRepository.CommitAsync(true, cancellationToken);
-
-            //if (challenge.CanClose())
-            //{
-            //    challenge.Close(synchronizedAt);
-
-            //    await _challengeRepository.CommitAsync(true, cancellationToken);
-            //}
-
-            //return new DomainValidationResult();
-
-            return await Task.FromResult(new DomainValidationResult());
-        }
-
         public async Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
         {
             var result = new DomainValidationResult();
+
+            if (!challenge.CanDelete())
+            {
+                result.AddDomainValidationError("Challenge can't be deleted.");
+            }
 
             if (result.IsValid)
             {
@@ -225,6 +181,37 @@ namespace eDoxa.Challenges.Api.Application.Services
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(challenge);
+            }
+
+            return result;
+        }
+
+        public async Task<IDomainValidationResult> SnapshotChallengeParticipantAsync(
+            IChallenge challenge,
+            PlayerId gamePlayerId,
+            IDateTimeProvider synchronizedAt,
+            Func<IScoring, IImmutableSet<Match>> snapshotMatches,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!challenge.ParticipantExists(gamePlayerId))
+            {
+                result.AddDomainValidationError("Participant doesn't exists.");
+            }
+
+            if (result.IsValid)
+            {
+                var participant = challenge.FindParticipant(gamePlayerId);
+
+                var matches = snapshotMatches(challenge.Scoring);
+
+                participant.Snapshot(matches, synchronizedAt);
+
+                await _challengeRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(participant);
             }
 
             return result;

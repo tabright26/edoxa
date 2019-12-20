@@ -3,6 +3,7 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Requests";
 
 import "challenges_enums.proto";
+import "games_dtos.proto";
 import "games_enums.proto";
 
 package edoxa.services.challenges;
@@ -27,11 +28,17 @@ message CreateChallengeRequest {
 }
 
 message SynchronizeChallengeRequest {
-  services.games.GameDto game = 1;
+  string challengeId = 1;
 }
 
 message RegisterChallengeParticipantRequest {
   string challengeId = 1;
   string participantId = 2;
   string gamePlayerId = 3;
+}
+
+message SnapshotChallengeParticipantRequest {
+  string challengeId = 1;
+  string gamePlayerId = 2;
+  repeated games.GameMatchDto matches = 3;
 }

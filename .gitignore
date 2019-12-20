@@ -203,14 +203,14 @@ ClientBin/
 orleans.codegen.cs
 
 # dependencies
-/node_modules
+**/node_modules
 
 # testing
-/coverage
+**/ClientApp/coverage/
 
 # production
-/build
-/src/eDoxa.Web.Spa/ClientApp/build
+**/ClientApp/build/
+**/ClientApp/*/env-config.js
 
 # misc
 .DS_Store
@@ -321,5 +321,3 @@ healthchecksdb
 
 # Solution Items
 /NuGet.config
-
-**/env-config.js

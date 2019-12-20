@@ -35,8 +35,10 @@ message ParticipantDto {
   string id = 1;
   string userId = 2;
   string challengeId = 3;
-  customTypes.DecimalValue score = 4;
-  repeated MatchDto matches = 5;
+  string gamePlayerId = 4;
+  customTypes.DecimalValue score = 5;
+  google.protobuf.Timestamp synchronizedAt = 6;
+  repeated MatchDto matches = 7;
 }
 
 message MatchDto {

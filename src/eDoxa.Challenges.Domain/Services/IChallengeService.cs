@@ -1,9 +1,11 @@
 ﻿// Filename: IChallengeService.cs
-// Date Created: 2019-10-31
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,8 +18,6 @@ namespace eDoxa.Challenges.Domain.Services
 {
     public interface IChallengeService
     {
-        Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId);
-
         Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
 
         Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
@@ -44,10 +44,20 @@ namespace eDoxa.Challenges.Domain.Services
 
         Task<IDomainValidationResult> CloseChallengeAsync(IChallenge challenge, IDateTimeProvider provider, CancellationToken cancellationToken = default);
 
-        Task SynchronizeChallengesAsync(Game game, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
-
-        Task<IDomainValidationResult> SynchronizeChallengeAsync(IChallenge challenge, IDateTimeProvider synchronizedAt, CancellationToken cancellationToken = default);
+        Task<IDomainValidationResult> SynchronizeChallengeAsync(
+            IChallenge challenge,
+            IDateTimeProvider synchronizedAt,
+            CancellationToken cancellationToken = default
+        );
 
         Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
+
+        Task<IDomainValidationResult> SnapshotChallengeParticipantAsync(
+            IChallenge challenge,
+            PlayerId gamePlayerId,
+            IDateTimeProvider synchronizedAt,
+            Func<IScoring, IImmutableSet<Match>> snapshotMatches,
+            CancellationToken cancellationToken = default
+        );
     }
 }

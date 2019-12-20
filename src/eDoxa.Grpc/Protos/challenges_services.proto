@@ -13,4 +13,5 @@ service ChallengeService {
   rpc CreateChallenge(CreateChallengeRequest) returns (CreateChallengeResponse);
   rpc SynchronizeChallenge(SynchronizeChallengeRequest) returns (SynchronizeChallengeResponse);
   rpc RegisterChallengeParticipant(RegisterChallengeParticipantRequest) returns (RegisterChallengeParticipantResponse);
+  rpc SnapshotChallengeParticipant(SnapshotChallengeParticipantRequest) returns (SnapshotChallengeParticipantResponse);
 }
