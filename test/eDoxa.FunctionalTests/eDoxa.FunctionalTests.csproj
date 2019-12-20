@@ -2,18 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Nullable>Disable</Nullable>
+    <Nullable>Enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
-    <PackageReference Include="Grpc.AspNetCore" Version="2.25.0" />
-    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.25.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.26.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -41,39 +34,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Challenges\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Cashier\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Games\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Identity\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Payment\appsettings.json" CopyToOutputDirectory="Always" />
-    <Content Include="Workers\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None">
-      <Link>Protos\challenges_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_requests.proto" GrpcServices="None">
-      <Link>Protos\challenges_requests.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_responses.proto" GrpcServices="None">
-      <Link>Protos\challenges_responses.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\challenges_services.proto" GrpcServices="Client">
-      <Link>Protos\challenges_services.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None">
-      <Link>Protos\games_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_requests.proto" GrpcServices="None">
-      <Link>Protos\games_requests.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_responses.proto" GrpcServices="None">
-      <Link>Protos\games_responses.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\..\src\eDoxa.Grpc\Protos\games_services.proto" GrpcServices="Client">
-      <Link>Protos\games_services.proto</Link>
-    </Protobuf>
+    <None Include="..\..\src\eDoxa.Cashier.Api\appsettings.json" Link="TestHelper\Services\Cashier\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Cashier.Api\appsettings.Test.json" Link="TestHelper\Services\Cashier\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Challenges.Api\appsettings.json" Link="TestHelper\Services\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Challenges.Api\appsettings.Test.json" Link="TestHelper\Services\Challenges\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Clans.Api\appsettings.json" Link="TestHelper\Services\Clans\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Clans.Api\appsettings.Test.json" Link="TestHelper\Services\Clans\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Games.Api\appsettings.json" Link="TestHelper\Services\Games\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Games.Api\appsettings.Test.json" Link="TestHelper\Services\Games\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Identity.Api\appsettings.json" Link="TestHelper\Services\Identity\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Identity.Api\appsettings.Test.json" Link="TestHelper\Services\Identity\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Notifications.Api\appsettings.json" Link="TestHelper\Services\Notifications\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Notifications.Api\appsettings.Test.json" Link="TestHelper\Services\Notifications\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Payment.Api\appsettings.json" Link="TestHelper\Services\Payment\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Payment.Api\appsettings.Test.json" Link="TestHelper\Services\Payment\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Challenges.Worker\appsettings.json" Link="TestHelper\Workers\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Challenges.Worker\appsettings.Test.json" Link="TestHelper\Workers\Challenges\appsettings.Test.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

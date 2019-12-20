@@ -1,5 +1,5 @@
-﻿// Filename: TestApiFixture.cs
-// Date Created: 2019-10-02
+﻿// Filename: ChallengesHostFactory.cs
+// Date Created: 2019-12-19
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -12,10 +12,17 @@ using eDoxa.Seedwork.TestHelper.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 
-namespace eDoxa.Challenges.TestHelper.Fixtures
+namespace eDoxa.FunctionalTests.TestHelper.Services.Challenges
 {
-    public sealed class TestHostFixture : WebHostFactory<Startup>
+    public sealed class ChallengesHostFactory : WebHostFactory<Startup>
     {
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+        {
+            base.ConfigureWebHost(builder);
+
+            builder.UseCustomContentRoot("TestHelper/Services/Challenges");
+        }
+
         protected override TestServer CreateServer(IWebHostBuilder builder)
         {
             var server = base.CreateServer(builder);

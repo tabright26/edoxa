@@ -44,6 +44,8 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 .ForMember(participant => participant.UserId, config => config.MapFrom(participant => participant.UserId.ToString()))
                 .ForMember(participant => participant.Score, config => config.Ignore())
                 .ForMember(participant => participant.ChallengeId, config => config.Ignore())
+                .ForMember(participant => participant.GamePlayerId, config => config.MapFrom(participant => participant.PlayerId.ToString()))
+                .ForMember(participant => participant.SynchronizedAt, config => config.MapFrom(participant => participant.SynchronizedAt.ToTimestampUtcOrDefault()))
                 .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches));
 
             this.CreateMap<ChallengeTimeline, TimelineDto>()
