@@ -22,15 +22,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Worker\eDoxa.Challenges.Worker.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Clans.Api\eDoxa.Clans.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Games.Api\eDoxa.Games.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Games.Infrastructure\eDoxa.Games.Infrastructure.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Notifications.Api\eDoxa.Notifications.Api.csproj" />
+    <ProjectReference Include="..\eDoxa.Cashier.TestHelper\eDoxa.Cashier.TestHelper.csproj" />
+    <ProjectReference Include="..\eDoxa.Challenges.TestHelper\eDoxa.Challenges.TestHelper.csproj" />
+    <ProjectReference Include="..\eDoxa.Clans.TestHelper\eDoxa.Clans.TestHelper.csproj" />
+    <ProjectReference Include="..\eDoxa.Games.TestHelper\eDoxa.Games.TestHelper.csproj" />
+    <ProjectReference Include="..\eDoxa.Identity.TestHelper\eDoxa.Identity.TestHelper.csproj" />
+    <ProjectReference Include="..\eDoxa.Notifications.TestHelper\eDoxa.Notifications.TestHelper.csproj" />
+    <ProjectReference Include="..\eDoxa.Payment.TestHelper\eDoxa.Payment.TestHelper.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.TestHelper\eDoxa.Seedwork.TestHelper.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Cashier.Api\eDoxa.Cashier.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Payment.Api\eDoxa.Payment.Api.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Challenges.Api\eDoxa.Challenges.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
