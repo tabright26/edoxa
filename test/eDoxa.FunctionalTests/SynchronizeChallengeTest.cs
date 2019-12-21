@@ -18,13 +18,17 @@ using eDoxa.Challenges.Worker.Application.RecurringJobs;
 using eDoxa.Challenges.Worker.Extensions;
 using eDoxa.FunctionalTests.TestHelper.Services.Challenges;
 using eDoxa.FunctionalTests.TestHelper.Services.Games;
+using eDoxa.Games.Api.Services;
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Games.Domain.Services;
+using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Mocks;
+using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.AspNetCore.TestHost;
 
@@ -50,7 +54,9 @@ namespace eDoxa.FunctionalTests
 
         public static IEnumerable<IChallenge> CreateChallenges()
         {
-            var dateTimeProvider = new UtcNowDateTimeProvider();
+            var dateTime = DateTime.UtcNow - ChallengeDuration.OneDay;
+
+            var dateTimeProvider = new DateTimeProvider(dateTime);
 
             var challenge1 = new Challenge(
                 new ChallengeId(),
@@ -58,7 +64,7 @@ namespace eDoxa.FunctionalTests
                 Game.LeagueOfLegends,
                 BestOf.One,
                 Entries.Two,
-                new ChallengeTimeline(new UtcNowDateTimeProvider(), ChallengeDuration.OneDay),
+                new ChallengeTimeline(dateTimeProvider, ChallengeDuration.OneDay),
                 Scoring);
 
             challenge1.Register(
@@ -85,7 +91,7 @@ namespace eDoxa.FunctionalTests
                 Game.LeagueOfLegends,
                 BestOf.One,
                 Entries.Two,
-                new ChallengeTimeline(new UtcNowDateTimeProvider(), ChallengeDuration.OneDay),
+                new ChallengeTimeline(dateTimeProvider, ChallengeDuration.OneDay),
                 Scoring);
 
             challenge2.Register(
@@ -93,14 +99,14 @@ namespace eDoxa.FunctionalTests
                     new ParticipantId(),
                     new UserId(),
                     new PlayerId(),
-                    new UtcNowDateTimeProvider()));
+                    dateTimeProvider));
 
             challenge2.Register(
                 new Participant(
                     new ParticipantId(),
                     new UserId(),
                     new PlayerId(),
-                    new UtcNowDateTimeProvider()));
+                    dateTimeProvider));
 
             challenge2.Start(dateTimeProvider);
 
@@ -135,9 +141,93 @@ namespace eDoxa.FunctionalTests
         }
 
         [Fact]
-        public async Task Test1()
+        public async Task Fail()
         {
             // Arrange
+            var challenges = CreateChallenges().ToList();
+
+            var mockLogger = new MockLogger<GameGrpcService>();
+
+            var mockChallengeService = new Mock<IChallengeService>();
+
+            mockChallengeService.Setup(
+                    challengeService => challengeService.GetMatchesAsync(
+                        Game.LeagueOfLegends,
+                        It.IsAny<PlayerId>(),
+                        It.IsAny<DateTime?>(),
+                        It.IsAny<DateTime?>()))
+                .Throws<Exception>()
+                .Verifiable();
+
+            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<ChallengeSynchronizedIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            using var challengesHost = new ChallengesHostFactory().WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            container.RegisterInstance(mockServiceBusPublisher.Object).As<IServiceBusPublisher>().SingleInstance();
+                        });
+                });
+
+            challengesHost.Server.CleanupDbContext();
+
+            await challengesHost.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var repository = scope.GetRequiredService<IChallengeRepository>();
+
+                    repository.Create(challenges);
+
+                    await repository.CommitAsync(false);
+                });
+
+            using var gamesHost = new GamesHostFactory().WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            container.RegisterInstance(mockLogger.Object).SingleInstance();
+
+                            container.RegisterInstance(mockChallengeService.Object).As<IChallengeService>().SingleInstance();
+                        });
+                });
+
+            var recurringJob = new ChallengeRecurringJob(
+                challengesHost.CreateChannel().CreateChallengeServiceClient(),
+                gamesHost.CreateChannel().CreateGameServiceClient());
+
+            // Act
+            await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);
+
+            // Assert
+            mockServiceBusPublisher.Verify(
+                serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<ChallengeSynchronizedIntegrationEvent>()),
+                Times.Exactly(2));
+
+            mockChallengeService.Verify(
+                challengeService => challengeService.GetMatchesAsync(
+                    Game.LeagueOfLegends,
+                    It.IsAny<PlayerId>(),
+                    It.IsAny<DateTime?>(),
+                    It.IsAny<DateTime?>()),
+                Times.Exactly(4));
+
+            mockLogger.Verify(Times.Exactly(4));
+        }
+
+        [Fact]
+        public async Task Success()
+        {
+            // Arrange
+            var challenges = CreateChallenges().ToList();
+
             var mockChallengeService = new Mock<IChallengeService>();
 
             mockChallengeService.Setup(
@@ -149,11 +239,21 @@ namespace eDoxa.FunctionalTests
                 .ReturnsAsync(CreateChallengeMatches().ToList())
                 .Verifiable();
 
-            //var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            //mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<ChallengeSynchronizedIntegrationEvent>()));
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<ChallengeSynchronizedIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
-            using var challengesHost = new ChallengesHostFactory();
+            using var challengesHost = new ChallengesHostFactory().WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            container.RegisterInstance(mockServiceBusPublisher.Object).As<IServiceBusPublisher>().SingleInstance();
+                        });
+                });
 
             challengesHost.Server.CleanupDbContext();
 
@@ -162,7 +262,7 @@ namespace eDoxa.FunctionalTests
                 {
                     var repository = scope.GetRequiredService<IChallengeRepository>();
 
-                    repository.Create(CreateChallenges().ToList());
+                    repository.Create(challenges);
 
                     await repository.CommitAsync(false);
                 });
@@ -173,8 +273,6 @@ namespace eDoxa.FunctionalTests
                     builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
                         {
-                            //container.RegisterInstance(mockServiceBusPublisher.Object).As<IServiceBusPublisher>().SingleInstance();
-
                             container.RegisterInstance(mockChallengeService.Object).As<IChallengeService>().SingleInstance();
                         });
                 });
@@ -184,16 +282,20 @@ namespace eDoxa.FunctionalTests
                 gamesHost.CreateChannel().CreateGameServiceClient());
 
             // Act
-            await recurringJob.SynchronizeChallengeAsync(GameDto.LeagueOfLegends);
+            await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);
 
             // Assert
+            mockServiceBusPublisher.Verify(
+                serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<ChallengeSynchronizedIntegrationEvent>()),
+                Times.Exactly(2));
+
             mockChallengeService.Verify(
                 challengeService => challengeService.GetMatchesAsync(
                     Game.LeagueOfLegends,
                     It.IsAny<PlayerId>(),
                     It.IsAny<DateTime?>(),
                     It.IsAny<DateTime?>()),
-                Times.AtLeastOnce);
+                Times.Exactly(4));
         }
     }
 }

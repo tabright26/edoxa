@@ -37,22 +37,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\cashier_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\cashier_integration_events.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\identity_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\identity_integration_events.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\payment_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\payment_integration_events.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\payment_requests.proto" GrpcServices="None">

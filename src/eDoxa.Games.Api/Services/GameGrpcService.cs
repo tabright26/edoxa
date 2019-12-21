@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,15 +19,19 @@ using eDoxa.Seedwork.Domain.Misc;
 
 using Grpc.Core;
 
+using Microsoft.Extensions.Logging;
+
 namespace eDoxa.Games.Api.Services
 {
     public sealed class GameGrpcService : GameService.GameServiceBase
     {
         private readonly IChallengeService _challengeService;
+        private readonly ILogger _logger;
 
-        public GameGrpcService(IChallengeService challengeService)
+        public GameGrpcService(IChallengeService challengeService, ILogger<GameGrpcService> logger)
         {
             _challengeService = challengeService;
+            _logger = logger;
         }
 
         public override async Task<FetchChallengeScoringResponse> FetchChallengeScoring(FetchChallengeScoringRequest request, ServerCallContext context)
@@ -50,31 +55,49 @@ namespace eDoxa.Games.Api.Services
             {
                 var gamePlayerId = participant.PlayerId.ParseStringId<PlayerId>();
 
-                var matches = await _challengeService.GetMatchesAsync(
-                    request.Game.ToEnumeration<Game>(),
-                    gamePlayerId,
-                    participant.StartedAt.ToDateTime(),
-                    participant.EndedAt.ToDateTime());
+                var participantId = participant.Id.ParseEntityId<ParticipantId>();
 
-                var response = new FetchChallengeMatchesResponse
+                var game = request.Game.ToEnumeration<Game>();
+
+                try
                 {
-                    GamePlayerId = gamePlayerId,
-                    Matches =
-                    {
-                        matches.Select(
-                            match => new GameMatchDto
-                            {
-                                GameUuid = match.GameUuid,
-                                Timestamp = match.Timestamp.ToTimestampUtc(),
-                                Stats =
-                                {
-                                    match.Stats
-                                }
-                            })
-                    }
-                };
+                    var matches = await _challengeService.GetMatchesAsync(
+                        game,
+                        gamePlayerId,
+                        participant.StartedAt.ToDateTime(),
+                        participant.EndedAt.ToDateTime());
 
-                await responseStream.WriteAsync(response);
+                    var response = new FetchChallengeMatchesResponse
+                    {
+                        GamePlayerId = gamePlayerId,
+                        Matches =
+                        {
+                            matches.Select(
+                                match => new GameMatchDto
+                                {
+                                    GameUuid = match.GameUuid,
+                                    Timestamp = match.Timestamp.ToTimestampUtc(),
+                                    Stats =
+                                    {
+                                        match.Stats
+                                    }
+                                })
+                        }
+                    };
+
+                    await responseStream.WriteAsync(response);
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogCritical(exception, $"Failed to fetch {game} matches for the participant '{participantId}'. (gamePlayerId=\"{gamePlayerId}\")");
+
+                    var response = new FetchChallengeMatchesResponse
+                    {
+                        GamePlayerId = gamePlayerId
+                    };
+
+                    await responseStream.WriteAsync(response);
+                }
             }
         }
     }

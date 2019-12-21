@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\cashier_dtos.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_requests.proto" GrpcServices="None">
@@ -42,7 +42,7 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_services.proto" GrpcServices="Client">
       <Link>Protos\cashier_services.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\identity_dtos.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\identity_requests.proto" GrpcServices="None">

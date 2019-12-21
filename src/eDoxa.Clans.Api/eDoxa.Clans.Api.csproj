@@ -37,10 +37,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\clans_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\clans_integration_events.proto</Link>
     </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\clans_requests.proto" GrpcServices="None">
@@ -52,10 +52,10 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\clans_services.proto" GrpcServices="Server">
       <Link>Protos\clans_services.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\identity_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\identity_integration_events.proto</Link>
     </Protobuf>
   </ItemGroup>

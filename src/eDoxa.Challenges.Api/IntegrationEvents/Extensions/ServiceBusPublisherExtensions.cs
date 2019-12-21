@@ -7,10 +7,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Challenges.Api.Application.Profiles;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
-using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -25,9 +25,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
                 ChallengeId = challenge.Id,
                 Scoreboard =
                 {
-                    challenge.Scoreboard.ToDictionary(
-                        item => item.Key.ToString(),
-                        item => item.Value == null ? null : DecimalValue.FromDecimal(item.Value.ToDecimal()))
+                    challenge.Participants.Select(participant => ChallengeProfile.Map(challenge, participant))
                 }
             };
 

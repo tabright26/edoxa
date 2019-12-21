@@ -37,6 +37,7 @@ using eDoxa.Seedwork.Security.DataProtection.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -264,6 +265,13 @@ namespace eDoxa.Identity.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.IdentityApi);
+
+            builder.RegisterModule<IdentityModule>();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<IdentityModule>();
         }

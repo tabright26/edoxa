@@ -32,6 +32,7 @@ using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using FluentValidation;
 
@@ -127,6 +128,13 @@ namespace eDoxa.Payment.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.PaymentApi);
+
+            builder.RegisterModule<PaymentModule>();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<PaymentModule>();
         }

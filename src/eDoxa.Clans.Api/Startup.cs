@@ -28,6 +28,7 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
@@ -125,6 +126,13 @@ namespace eDoxa.Clans.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.ClansApi);
+
+            builder.RegisterModule<ClansModule>();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<ClansModule>();
         }

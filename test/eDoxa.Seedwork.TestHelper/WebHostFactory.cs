@@ -31,10 +31,6 @@ namespace eDoxa.Seedwork.TestHelper
             builder.UseEnvironment("Test");
 
             builder.UseContentRoot(Directory.GetCurrentDirectory());
-
-            builder.ConfigureTestServices(this.ConfigureTestServices);
-
-            builder.ConfigureTestContainer<ContainerBuilder>(this.ContainerTestBuilder);
         }
 
         public WebApplicationFactory<TStartup> WithDefaultClaims()
@@ -51,15 +47,6 @@ namespace eDoxa.Seedwork.TestHelper
 
                     builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
                 });
-        }
-
-        protected virtual void ConfigureTestServices(IServiceCollection services)
-        {
-        }
-
-        protected virtual void ContainerTestBuilder(ContainerBuilder builder)
-        {
-            builder.RegisterMockServiceBusModule();
         }
     }
 }

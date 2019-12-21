@@ -31,6 +31,7 @@ using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using FluentValidation;
 
@@ -133,6 +134,13 @@ namespace eDoxa.Cashier.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.CashierApi);
+
+            builder.RegisterModule<CashierModule>();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<CashierModule>();
         }

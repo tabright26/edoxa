@@ -40,12 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None">
-      <Link>Protos\cashier_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None">
-      <Link>Protos\cashier_integration_events.proto</Link>
-    </Protobuf>
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_requests.proto" GrpcServices="None">
       <Link>Protos\cashier_requests.proto</Link>
     </Protobuf>
@@ -55,20 +49,26 @@
     <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_services.proto" GrpcServices="Server">
       <Link>Protos\cashier_services.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\challenges_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\challenges_integration_events.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\identity_dtos.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\identity_integration_events.proto</Link>
     </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_integration_events.proto" GrpcServices="None">
+    <Protobuf Include="..\eDoxa.Grpc\Protos\payment_integration_events.proto" GrpcServices="None" ProtoCompile="false">
       <Link>Protos\payment_integration_events.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None" ProtoCompile="false">
+      <Link>Protos\cashier_dtos.proto</Link>
+    </Protobuf>
+    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None" ProtoCompile="false">
+      <Link>Protos\cashier_integration_events.proto</Link>
     </Protobuf>
   </ItemGroup>
 
