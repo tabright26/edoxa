@@ -9,7 +9,6 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
@@ -37,11 +36,6 @@ namespace eDoxa.Seedwork.Application.Extensions
         public static string GetEmail(this HttpContext httpContext)
         {
             return httpContext.GetClaim(JwtClaimTypes.Email);
-        }
-
-        public static PlayerId? GetGamePlayerIdOrNull(this HttpContext httpContext, Game game)
-        {
-            return httpContext.GetClaimOrNull(CustomClaimTypes.GetGamePlayerFor(game))?.ParseStringId<PlayerId>();
         }
     }
 }

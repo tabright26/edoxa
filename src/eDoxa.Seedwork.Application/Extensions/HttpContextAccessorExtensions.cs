@@ -31,10 +31,5 @@ namespace eDoxa.Seedwork.Application.Extensions
         {
             return accessor.HttpContext.GetEmail();
         }
-
-        public static PlayerId? GetGamePlayerIdOrNull(this IHttpContextAccessor accessor, Game game)
-        {
-            return accessor.HttpContext.GetGamePlayerIdOrNull(game);
-        }
     }
 }

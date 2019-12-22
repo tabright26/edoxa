@@ -145,6 +145,33 @@ namespace eDoxa.Challenges.Web.Aggregator
                 .AddCircuitBreakerPolicyHandler();
         }
 
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddHealthChecks()
+                .AddCustomSelfCheck()
+                .AddAzureKeyVault(Configuration)
+                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
+                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
+                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
+                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
+
+            services.AddAppSettings<ChallengesWebAggregatorAppSettings>(Configuration);
+
+            services.AddCustomCors();
+
+            services.AddCustomProblemDetails(options => options.MapRpcException());
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme);
+        }
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
         }

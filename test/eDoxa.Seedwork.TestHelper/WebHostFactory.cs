@@ -12,14 +12,12 @@ using Autofac;
 
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.Seedwork.TestHelper.Modules;
-using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using IdentityModel;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.TestHelper
 {

@@ -10,8 +10,12 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Web.Aggregator.Mappers;
 using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.Cashier.Requests;
 using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Challenges.Requests;
 using eDoxa.Grpc.Protos.Challenges.Services;
+using eDoxa.Grpc.Protos.Games.Requests;
+using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Domain.Misc;
@@ -24,9 +28,6 @@ using Swashbuckle.AspNetCore.Annotations;
 
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
 
-using CashierRequests = eDoxa.Grpc.Protos.Cashier.Requests;
-using ChallengeRequests = eDoxa.Grpc.Protos.Challenges.Requests;
-
 namespace eDoxa.Challenges.Web.Aggregator.Controllers
 {
     [Authorize]
@@ -38,16 +39,19 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         private readonly ChallengeService.ChallengeServiceClient _challengesServiceClient;
         private readonly CashierService.CashierServiceClient _cashierServiceClient;
         private readonly IdentityService.IdentityServiceClient _identityServiceClient;
+        private readonly GameService.GameServiceClient _gameServiceClient;
 
         public ChallengeParticipantsController(
             ChallengeService.ChallengeServiceClient challengesServiceClient,
             CashierService.CashierServiceClient cashierServiceClient,
-            IdentityService.IdentityServiceClient identityServiceClient
+            IdentityService.IdentityServiceClient identityServiceClient,
+            GameService.GameServiceClient gameServiceClient
         )
         {
             _challengesServiceClient = challengesServiceClient;
             _cashierServiceClient = cashierServiceClient;
             _identityServiceClient = identityServiceClient;
+            _gameServiceClient = gameServiceClient;
         }
 
         [HttpPost]
@@ -56,43 +60,60 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> RegisterChallengeParticipantAsync(string challengeId)
         {
-            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
-
-            var findChallengeResponse = await _cashierServiceClient.FindChallengePayoutAsync(
-                new CashierRequests.FindChallengePayoutRequest
-                {
-                    ChallengeId = challengeId
-                });
-
             var participantId = Guid.NewGuid().ToString();
 
-            var metadata = new Dictionary<string, string>
+            var findChallengeRequest = new FindChallengeRequest
             {
-                [nameof(ChallengeId)] = challengeId,
-                [nameof(ParticipantId)] = participantId
+                ChallengeId = challengeId
             };
 
-            await _cashierServiceClient.CreateTransactionAsync(
-                new CashierRequests.CreateTransactionRequest
+            var findChallengeResponse = await _challengesServiceClient.FindChallengeAsync(findChallengeRequest);
+
+            var findPlayerGameCredentialRequest = new FindPlayerGameCredentialRequest
+            {
+                Game = findChallengeResponse.Challenge.Game
+            };
+
+            var findPlayerGameCredentialResponse = await _gameServiceClient.FindPlayerGameCredentialAsync(findPlayerGameCredentialRequest);
+
+            var fetchDoxatagsRequest = new FetchDoxatagsRequest();
+
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(fetchDoxatagsRequest);
+
+            var findChallengePayoutRequest = new FindChallengePayoutRequest
+            {
+                ChallengeId = challengeId
+            };
+
+            var challengePayoutResponse = await _cashierServiceClient.FindChallengePayoutAsync(findChallengePayoutRequest);
+
+            var createTransactionRequest = new CreateTransactionRequest
+            {
+                Type = TransactionTypeDto.Charge,
+                Amount = challengePayoutResponse.Payout.EntryFee.Amount,
+                Currency = challengePayoutResponse.Payout.EntryFee.Currency,
+                Metadata =
                 {
-                    Type = TransactionTypeDto.Charge,
-                    Amount = findChallengeResponse.Payout.EntryFee.Amount,
-                    Currency = findChallengeResponse.Payout.EntryFee.Currency,
-                    Metadata =
+                    new Dictionary<string, string>
                     {
-                        metadata
+                        [nameof(ChallengeId)] = challengeId,
+                        [nameof(ParticipantId)] = participantId
                     }
-                });
+                }
+            };
 
-            var participant = await _challengesServiceClient.RegisterChallengeParticipantAsync(
-                new ChallengeRequests.RegisterChallengeParticipantRequest
-                {
-                    ChallengeId = challengeId,
-                    GamePlayerId = Guid.NewGuid().ToString(), // TODO: Important.
-                    ParticipantId = participantId
-                });
+            await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
 
-            return this.Ok(ChallengeMapper.Map(findChallengeResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
+            var registerChallengeParticipantRequest = new RegisterChallengeParticipantRequest
+            {
+                ChallengeId = challengeId,
+                GamePlayerId = findPlayerGameCredentialResponse.Credential.PlayerId,
+                ParticipantId = participantId
+            };
+
+            var participant = await _challengesServiceClient.RegisterChallengeParticipantAsync(registerChallengeParticipantRequest);
+
+            return this.Ok(ChallengeMapper.Map(challengePayoutResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
         }
     }
 }

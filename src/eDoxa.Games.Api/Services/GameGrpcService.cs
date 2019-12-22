@@ -8,12 +8,15 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
 using eDoxa.Games.Domain.Services;
 using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Responses;
 using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -26,12 +29,37 @@ namespace eDoxa.Games.Api.Services
     public sealed class GameGrpcService : GameService.GameServiceBase
     {
         private readonly IChallengeService _challengeService;
+        private readonly IGameCredentialService _gameCredentialService;
+        private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public GameGrpcService(IChallengeService challengeService, ILogger<GameGrpcService> logger)
+        public GameGrpcService(IChallengeService challengeService, IGameCredentialService gameCredentialService, IMapper mapper, ILogger<GameGrpcService> logger)
         {
             _challengeService = challengeService;
+            _gameCredentialService = gameCredentialService;
+            _mapper = mapper;
             _logger = logger;
+        }
+
+        public override async Task<FindPlayerGameCredentialResponse> FindPlayerGameCredential(FindPlayerGameCredentialRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var credential = await _gameCredentialService.FindCredentialAsync(userId, request.Game.ToEnumeration<Game>());
+
+            if (credential == null)
+            {
+                throw context.NotFoundRpcException("Game credential not found.");
+            }
+
+            var response = new FindPlayerGameCredentialResponse
+            {
+                Credential = _mapper.Map<GameCredentialDto>(credential)
+            };
+
+            return context.Ok(response);
         }
 
         public override async Task<FetchChallengeScoringResponse> FetchChallengeScoring(FetchChallengeScoringRequest request, ServerCallContext context)

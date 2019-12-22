@@ -69,8 +69,12 @@
           Link="TestHelper\Workers\Challenges\appsettings.Test.json" CopyToOutputDirectory="Always" />
     <None Include="..\..\src\eDoxa.Cashier.Web.Aggregator\appsettings.json"
           Link="TestHelper\Aggregators\Web\Cashier\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Cashier.Web.Aggregator\appsettings.Test.json"
+          Link="TestHelper\Aggregators\Web\Cashier\appsettings.Test.json" CopyToOutputDirectory="Always" />
     <None Include="..\..\src\eDoxa.Challenges.Web.Aggregator\appsettings.json"
           Link="TestHelper\Aggregators\Web\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Challenges.Web.Aggregator\appsettings.Test.json"
+          Link="TestHelper\Aggregators\Web\Challenges\appsettings.Test.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

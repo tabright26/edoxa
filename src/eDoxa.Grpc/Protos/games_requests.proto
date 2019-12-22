@@ -17,3 +17,7 @@ message FetchChallengeMatchesRequest {
   GameDto game = 1;
   repeated GameParticipantDto participants = 2;
 }
+
+message FindPlayerGameCredentialRequest {
+  GameDto game = 1;
+}
