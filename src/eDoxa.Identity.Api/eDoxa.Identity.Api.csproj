@@ -42,34 +42,4 @@
     <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_dtos.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\clans_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\clans_integration_events.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\clans_integration_events.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\games_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\games_integration_events.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\games_integration_events.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\identity_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\identity_integration_events.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_requests.proto" GrpcServices="None">
-      <Link>Protos\identity_requests.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_responses.proto" GrpcServices="None">
-      <Link>Protos\identity_responses.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_services.proto" GrpcServices="Server">
-      <Link>Protos\identity_services.proto</Link>
-    </Protobuf>
-  </ItemGroup>
-
 </Project>

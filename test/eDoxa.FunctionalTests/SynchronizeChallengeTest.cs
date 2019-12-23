@@ -15,14 +15,15 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Worker.Application.RecurringJobs;
-using eDoxa.Challenges.Worker.Extensions;
 using eDoxa.FunctionalTests.TestHelper.Services.Challenges;
 using eDoxa.FunctionalTests.TestHelper.Services.Games;
 using eDoxa.Games.Api.Services;
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Games.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Enums;
+using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
@@ -200,8 +201,8 @@ namespace eDoxa.FunctionalTests
                 });
 
             var recurringJob = new ChallengeRecurringJob(
-                challengesHost.CreateChannel().CreateChallengeServiceClient(),
-                gamesHost.CreateChannel().CreateGameServiceClient());
+                new ChallengeService.ChallengeServiceClient(challengesHost.CreateChannel()),
+                new GameService.GameServiceClient(gamesHost.CreateChannel()));
 
             // Act
             await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);
@@ -278,8 +279,8 @@ namespace eDoxa.FunctionalTests
                 });
 
             var recurringJob = new ChallengeRecurringJob(
-                challengesHost.CreateChannel().CreateChallengeServiceClient(),
-                gamesHost.CreateChannel().CreateGameServiceClient());
+                new ChallengeService.ChallengeServiceClient(challengesHost.CreateChannel()),
+                new GameService.GameServiceClient(gamesHost.CreateChannel()));
 
             // Act
             await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);

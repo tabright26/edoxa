@@ -37,8 +37,6 @@ using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
 
-using MediatR;
-
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -94,8 +92,6 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddCustomAutoMapper(typeof(Startup));
 
-            services.AddMediatR(typeof(Startup));
-
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
                     options =>
@@ -136,6 +132,23 @@ namespace eDoxa.Cashier.Web.Aggregator
                 .AddCircuitBreakerPolicyHandler();
         }
 
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<CashierWebAggregatorAppSettings>(Configuration);
+
+            services.AddCustomCors();
+
+            services.AddCustomProblemDetails(options => options.MapRpcException());
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup));
+
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme);
+        }
+
         public void ConfigureContainer(ContainerBuilder builder)
         {
         }
@@ -163,6 +176,21 @@ namespace eDoxa.Cashier.Web.Aggregator
                 });
 
             application.UseSwagger(AppSettings);
+        }
+
+        public void ConfigureTest(IApplicationBuilder application)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

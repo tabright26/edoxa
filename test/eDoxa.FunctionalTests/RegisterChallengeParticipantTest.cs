@@ -19,7 +19,6 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Web.Aggregator.Extensions;
 using eDoxa.FunctionalTests.TestHelper.Aggregators.Web.Challenges;
 using eDoxa.FunctionalTests.TestHelper.Services.Cashier;
 using eDoxa.FunctionalTests.TestHelper.Services.Challenges;
@@ -27,7 +26,11 @@ using eDoxa.FunctionalTests.TestHelper.Services.Games;
 using eDoxa.FunctionalTests.TestHelper.Services.Identity;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
+using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
+using eDoxa.Grpc.Protos.Challenges.Services;
+using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Repositories;
@@ -143,7 +146,7 @@ namespace eDoxa.FunctionalTests
                     await gameCredentialRepository.UnitOfWork.CommitAsync(false);
                 });
 
-            var gameServiceClient = gamesHost.CreateChannel().CreateGameServiceClient();
+            var gameServiceClient = new GameService.GameServiceClient(gamesHost.CreateChannel());
 
             using var challengesHost = new ChallengesHostFactory().WithClaims(new Claim(JwtClaimTypes.Subject, account.Id)).WithWebHostBuilder(
                 builder =>
@@ -167,7 +170,7 @@ namespace eDoxa.FunctionalTests
                     await challengeRepository.CommitAsync(false);
                 });
 
-            var challengeServiceClient = challengesHost.CreateChannel().CreateChallengeServiceClient();
+            var challengeServiceClient = new ChallengeService.ChallengeServiceClient(challengesHost.CreateChannel());
 
             using var cashierHost = new CashierHostFactory().WithClaims(new Claim(JwtClaimTypes.Subject, account.Id));
 
@@ -193,7 +196,7 @@ namespace eDoxa.FunctionalTests
                     await challengeRepository.CommitAsync();
                 });
 
-            var cashierServiceClient = cashierHost.CreateChannel().CreateCashierServiceClient();
+            var cashierServiceClient = new CashierService.CashierServiceClient(cashierHost.CreateChannel());
 
             using var identityHost = new IdentityHostFactory();
 
@@ -217,7 +220,7 @@ namespace eDoxa.FunctionalTests
                     await doxatagRepository.UnitOfWork.CommitAsync(false);
                 });
 
-            var identityServiceClient = identityHost.CreateChannel().CreateIdentityServiceClient();
+            var identityServiceClient = new IdentityService.IdentityServiceClient(identityHost.CreateChannel());
 
             using var challengesAggregatorHost = new ChallengesWebAggregatorHostFactory().WithClaims(new Claim(JwtClaimTypes.Subject, account.Id))
                 .WithWebHostBuilder(

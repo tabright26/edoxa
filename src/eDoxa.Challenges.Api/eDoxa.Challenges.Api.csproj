@@ -38,37 +38,4 @@
     <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_dtos.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\cashier_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\cashier_integration_events.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\cashier_integration_events.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_dtos.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\challenges_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_integration_events.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\challenges_integration_events.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_requests.proto" GrpcServices="None">
-      <Link>Protos\challenges_requests.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_responses.proto" GrpcServices="None">
-      <Link>Protos\challenges_responses.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\challenges_services.proto" GrpcServices="Server">
-      <Link>Protos\challenges_services.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\games_dtos.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\games_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_dtos.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\identity_dtos.proto</Link>
-    </Protobuf>
-    <Protobuf Include="..\eDoxa.Grpc\Protos\identity_integration_events.proto" GrpcServices="None" ProtoCompile="false">
-      <Link>Protos\identity_integration_events.proto</Link>
-    </Protobuf>
-  </ItemGroup>
-
 </Project>

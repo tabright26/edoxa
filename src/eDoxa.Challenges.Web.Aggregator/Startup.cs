@@ -38,8 +38,6 @@ using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
 
-using MediatR;
-
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -96,8 +94,6 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddCustomAutoMapper(typeof(Startup));
 
-            services.AddMediatR(typeof(Startup));
-
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
                     options =>
@@ -147,14 +143,6 @@ namespace eDoxa.Challenges.Web.Aggregator
 
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddHealthChecks()
-                .AddCustomSelfCheck()
-                .AddAzureKeyVault(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
-
             services.AddAppSettings<ChallengesWebAggregatorAppSettings>(Configuration);
 
             services.AddCustomCors();
@@ -166,8 +154,6 @@ namespace eDoxa.Challenges.Web.Aggregator
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
             services.AddCustomAutoMapper(typeof(Startup));
-
-            services.AddMediatR(typeof(Startup));
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme);
         }
@@ -199,6 +185,21 @@ namespace eDoxa.Challenges.Web.Aggregator
                 });
 
             application.UseSwagger(AppSettings);
+        }
+
+        public void ConfigureTest(IApplicationBuilder application)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
