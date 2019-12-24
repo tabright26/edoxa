@@ -11,9 +11,12 @@ using System.Security.Claims;
 using Autofac;
 
 using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Fakes;
 using eDoxa.Seedwork.TestHelper.Modules;
 
 using IdentityModel;
+
+using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -33,15 +36,38 @@ namespace eDoxa.Seedwork.TestHelper
 
         public WebApplicationFactory<TStartup> WithDefaultClaims()
         {
-            return this.WithClaims(new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()));
+            return this.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()));
         }
 
-        public virtual WebApplicationFactory<TStartup> WithClaims(params Claim[] claims)
+        public WebApplicationFactory<TStartup> WithClaimsFromDefaultAuthentication(params Claim[] claims)
         {
             return this.WithWebHostBuilder(
                 builder =>
                 {
-                    builder.ConfigureTestServices(services => services.AddFakeAuthentication(options => options.Claims = claims));
+                    builder.ConfigureTestServices(
+                        services => services.AddFakeAuthentication(
+                            options =>
+                            {
+                                options.Claims = claims;
+                                options.AuthenticationScheme = nameof(TestAuthenticationHandler);
+                            }));
+
+                    builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
+                });
+        }
+
+        public WebApplicationFactory<TStartup> WithClaimsFromBearerAuthentication(params Claim[] claims)
+        {
+            return this.WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestServices(
+                        services => services.AddFakeAuthentication(
+                            options =>
+                            {
+                                options.Claims = claims;
+                                options.AuthenticationScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                            }));
 
                     builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
                 });

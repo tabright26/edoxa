@@ -13,7 +13,6 @@ using Autofac;
 
 using eDoxa.Cashier.Api.Application;
 using eDoxa.Cashier.Api.Infrastructure;
-using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Infrastructure;
@@ -37,8 +36,6 @@ using FluentValidation;
 
 using Hellang.Middleware.ProblemDetails;
 
-using IdentityServer4.AccessTokenValidation;
-
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -52,7 +49,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Cashier.Api
 {
-    public sealed class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -74,13 +71,12 @@ namespace eDoxa.Cashier.Api
         public IConfiguration Configuration { get; }
 
         private CashierAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApplicationInsightsTelemetry();
-
-            services.AddApplicationInsightsKubernetesEnricher();
-
             services.AddAppSettings<CashierAppSettings>(Configuration);
 
             services.Configure<TransactionBundlesOptions>(Configuration.GetSection("Bundles"));
@@ -107,7 +103,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools<CashierDbContextSeeder, CashierDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -115,7 +111,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                 .AddIdentityServerAuthentication(
                     options =>
                     {
@@ -125,22 +121,12 @@ namespace eDoxa.Cashier.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.CashierApi);
-
-            builder.RegisterModule<CashierModule>();
-        }
-
-        public void ConfigureTestContainer(ContainerBuilder builder)
-        {
-            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<CashierModule>();
         }
@@ -170,6 +156,70 @@ namespace eDoxa.Cashier.Api
                 });
 
             application.UseSwagger(AppSettings);
+
+            subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<CashierAppSettings>(Configuration);
+
+            services.Configure<TransactionBundlesOptions>(Configuration.GetSection("Bundles"));
+
+            services.AddDbContext<CashierDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString(),
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails();
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(CashierDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<CashierModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<CashierGrpcService>();
+
+                endpoints.MapControllers();
+            });
 
             subscriber.UseIntegrationEventSubscriptions();
         }

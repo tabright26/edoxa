@@ -36,8 +36,6 @@ using Grpc.Core;
 
 using Hellang.Middleware.ProblemDetails;
 
-using IdentityServer4.AccessTokenValidation;
-
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +46,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Challenges.Web.Aggregator
 {
-    public sealed class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -71,7 +69,10 @@ namespace eDoxa.Challenges.Web.Aggregator
         public IConfiguration Configuration { get; }
 
         private ChallengesWebAggregatorAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<ChallengesWebAggregatorAppSettings>(Configuration);
@@ -94,7 +95,7 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddCustomAutoMapper(typeof(Startup));
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                 .AddIdentityServerAuthentication(
                     options =>
                     {
@@ -141,23 +142,6 @@ namespace eDoxa.Challenges.Web.Aggregator
                 .AddCircuitBreakerPolicyHandler();
         }
 
-        public void ConfigureTestServices(IServiceCollection services)
-        {
-            services.AddAppSettings<ChallengesWebAggregatorAppSettings>(Configuration);
-
-            services.AddCustomCors();
-
-            services.AddCustomProblemDetails(options => options.MapRpcException());
-
-            services.AddCustomControllers<Startup>();
-
-            services.AddCustomApiVersioning(new ApiVersion(1, 0));
-
-            services.AddCustomAutoMapper(typeof(Startup));
-
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme);
-        }
-
         public void ConfigureContainer(ContainerBuilder builder)
         {
         }
@@ -185,6 +169,26 @@ namespace eDoxa.Challenges.Web.Aggregator
                 });
 
             application.UseSwagger(AppSettings);
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<ChallengesWebAggregatorAppSettings>(Configuration);
+
+            services.AddCustomCors();
+
+            services.AddCustomProblemDetails(options => options.MapRpcException());
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup));
+
+            services.AddAuthentication();
         }
 
         public void ConfigureTest(IApplicationBuilder application)

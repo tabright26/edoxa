@@ -34,7 +34,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Challenges.Worker
 {
-    public sealed class Startup
+    public partial class Startup
     {
         static Startup()
         {
@@ -51,7 +51,10 @@ namespace eDoxa.Challenges.Worker
         public IConfiguration Configuration { get; }
 
         private ChallengesWorkerAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHealthChecks().AddCustomSelfCheck().AddAzureKeyVault(Configuration);

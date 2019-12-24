@@ -13,7 +13,6 @@ using Autofac;
 
 using eDoxa.Challenges.Api.Application;
 using eDoxa.Challenges.Api.Infrastructure;
-using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
@@ -37,8 +36,6 @@ using FluentValidation;
 
 using Hellang.Middleware.ProblemDetails;
 
-using IdentityServer4.AccessTokenValidation;
-
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -52,7 +49,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Challenges.Api
 {
-    public sealed class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -74,7 +71,10 @@ namespace eDoxa.Challenges.Api
         private ChallengesAppSettings AppSettings { get; }
 
         public IConfiguration Configuration { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<ChallengesAppSettings>(Configuration);
@@ -104,7 +104,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools<ChallengesDbContextSeeder, ChallengesDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -112,7 +112,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                 .AddIdentityServerAuthentication(
                     options =>
                     {
@@ -122,22 +122,12 @@ namespace eDoxa.Challenges.Api
                         options.ApiSecret = "secret";
                     });
 
-            services.AddSwagger(
-                XmlCommentsFilePath,
-                AppSettings,
-                AppSettings);
+            services.AddSwagger(XmlCommentsFilePath, AppSettings, AppSettings);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.ChallengesApi);
-
-            builder.RegisterModule<ChallengesModule>();
-        }
-
-        public void ConfigureTestContainer(ContainerBuilder builder)
-        {
-            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<ChallengesModule>();
         }
@@ -167,6 +157,70 @@ namespace eDoxa.Challenges.Api
                 });
 
             application.UseSwagger(AppSettings);
+
+            subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<ChallengesAppSettings>(Configuration);
+
+            services.Configure<ChallengeOptions>(Configuration.GetSection("Challenge"));
+
+            services.AddDbContext<ChallengesDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString(),
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails();
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(ChallengesDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<ChallengesModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<ChallengeGrpcService>();
+
+                endpoints.MapControllers();
+            });
 
             subscriber.UseIntegrationEventSubscriptions();
         }

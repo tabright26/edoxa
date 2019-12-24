@@ -30,9 +30,9 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Controllers
 {
-    public sealed class InformationsControllerTest : UnitTest
+    public sealed class ProfileControllerTest : UnitTest
     {
-        public InformationsControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public ProfileControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 

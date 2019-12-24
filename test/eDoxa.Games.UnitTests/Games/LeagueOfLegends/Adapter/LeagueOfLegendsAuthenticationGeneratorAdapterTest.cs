@@ -28,13 +28,13 @@ using Xunit;
 
 namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
 {
-    public sealed class LeagueOfLegendsAuthenticationGeneratorAdapterTest : UnitTest // Francis: How to test the private static method ?
+    public sealed class LeagueOfLegendsAuthenticationGeneratorAdapterTest : UnitTest
     {
         public LeagueOfLegendsAuthenticationGeneratorAdapterTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
-        [Fact(Skip = "CloudStorageAccount must implement an interface to mock and test.")]
+        [Fact]
         public async Task GenerateAuthFactorAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
@@ -96,7 +96,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
                 Times.Once);
         }
 
-        [Fact(Skip = "CloudStorageAccount must implement an interface to mock and test.")]
+        [Fact]
         public async Task GenerateAuthFactorAsync_ShouldBeOfTypeValidationFailureResult()
         {
             // Arrange

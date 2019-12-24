@@ -12,7 +12,6 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Clans.Api.Infrastructure;
-using eDoxa.Clans.Api.Infrastructure.Data;
 using eDoxa.Clans.Api.Services;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
@@ -35,8 +34,6 @@ using FluentValidation;
 
 using Hellang.Middleware.ProblemDetails;
 
-using IdentityServer4.AccessTokenValidation;
-
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -50,7 +47,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Clans.Api
 {
-    public sealed class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -72,7 +69,10 @@ namespace eDoxa.Clans.Api
         public IConfiguration Configuration { get; }
 
         private ClansAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<ClansAppSettings>(Configuration);
@@ -102,7 +102,7 @@ namespace eDoxa.Clans.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools<ClansDbContextSeeder, ClansDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -110,7 +110,7 @@ namespace eDoxa.Clans.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                 .AddIdentityServerAuthentication(
                     options =>
                     {
@@ -126,13 +126,6 @@ namespace eDoxa.Clans.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.ClansApi);
-
-            builder.RegisterModule<ClansModule>();
-        }
-
-        public void ConfigureTestContainer(ContainerBuilder builder)
-        {
-            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<ClansModule>();
         }
@@ -162,6 +155,68 @@ namespace eDoxa.Clans.Api
                 });
 
             application.UseSwagger(AppSettings);
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<ClansAppSettings>(Configuration);
+
+            services.AddDbContext<ClansDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString(),
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails();
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(ClansDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<ClansModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<ClanGrpcService>();
+
+                endpoints.MapControllers();
+            });
         }
     }
 }

@@ -46,7 +46,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -77,7 +77,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClansController
             // Arrange
             var userId = new UserId();
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

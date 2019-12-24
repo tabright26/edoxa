@@ -154,7 +154,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Gender, gender);
         }
 
-        [Theory(Skip = "TODO")]
+        [Theory]
         [MemberData(nameof(InvalidGenders))]
         public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(GenderDto gender, string errorMessage)
         {

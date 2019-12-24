@@ -7,11 +7,13 @@
 using Autofac;
 
 using eDoxa.Challenges.Api.Application.Services;
+using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.Infrastructure.Repositories;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 namespace eDoxa.Challenges.Api.Infrastructure
 {
@@ -19,6 +21,12 @@ namespace eDoxa.Challenges.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Cleaner
+            builder.RegisterType<ChallengesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            // Seeder
+            builder.RegisterType<ChallengesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
+
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
 

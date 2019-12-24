@@ -7,9 +7,11 @@
 using Autofac;
 
 using eDoxa.Payment.Api.Application.Stripe.Services;
+using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Domain.Stripe.Repositories;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.Infrastructure.Repositories;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 namespace eDoxa.Payment.Api.Infrastructure
 {
@@ -17,6 +19,12 @@ namespace eDoxa.Payment.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Cleaner
+            builder.RegisterType<PaymentDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            // Seeder
+            builder.RegisterType<PaymentDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
+
             // Repositories
             builder.RegisterType<StripeRepository>().As<IStripeRepository>().InstancePerLifetimeScope();
 

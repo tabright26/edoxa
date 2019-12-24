@@ -7,9 +7,11 @@
 using Autofac;
 
 using eDoxa.Clans.Api.Application.Services;
+using eDoxa.Clans.Api.Infrastructure.Data;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.Infrastructure.Repositories;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 namespace eDoxa.Clans.Api.Infrastructure
 {
@@ -17,6 +19,12 @@ namespace eDoxa.Clans.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Cleaner
+            builder.RegisterType<ClansDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            // Seeder
+            builder.RegisterType<ClansDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
+
             // Repositories
             builder.RegisterType<ClanRepository>().As<IClanRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CandidatureRepository>().As<ICandidatureRepository>().InstancePerLifetimeScope();

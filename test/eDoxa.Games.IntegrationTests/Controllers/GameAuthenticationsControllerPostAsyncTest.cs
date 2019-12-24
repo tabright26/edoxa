@@ -53,7 +53,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
             // Arrange
             var userId = new UserId();
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
@@ -96,7 +96,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
                     2,
                     string.Empty));
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>

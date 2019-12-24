@@ -10,9 +10,6 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
-using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
@@ -43,13 +40,13 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             return await _httpClient.GetAsync("api/informations");
         }
 
-        [Fact(Skip = "Bearer authentication mock bug since .NET Core 3.0")]
-        public async Task ShouldBeHttpStatusCodeNoContent()
+        [Fact]
+        public async Task ShouldBeHttpStatusCodeNotFound()
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
             user.Profile = null;
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -68,17 +65,15 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             using var response = await this.ExecuteAsync();
 
             // Assert
-            response.EnsureSuccessStatusCode();
-
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        [Fact(Skip = "Bearer authentication mock bug since .NET Core 3.0")]
+        [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -100,16 +95,6 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             response.EnsureSuccessStatusCode();
 
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            await testServer.UsingScopeAsync(
-                async scope =>
-                {
-                    var mapper = scope.GetRequiredService<IMapper>();
-
-                    var profileResponse = await response.Content.ReadAsJsonAsync<ProfileDto>();
-
-                    //profileResponse.Should().BeEquivalentTo(mapper.Map<UserInformationsResponse>(profile));
-                });
         }
     }
 }

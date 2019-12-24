@@ -44,7 +44,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             // Arrange
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
 
             _httpClient = factory.CreateClient();
 
@@ -69,7 +69,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 
             clan.CreateDivision("test", "description");
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

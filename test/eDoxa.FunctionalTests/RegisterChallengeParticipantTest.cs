@@ -69,16 +69,6 @@ namespace eDoxa.FunctionalTests
                 ["StatName5"] = 25
             });
 
-        //[Fact]
-        //public async Task Fail()
-        //{
-        //    // Arrange
-
-        //    // Act
-
-        //    // Assert
-        //}
-
         [Fact]
         public async Task Success()
         {
@@ -127,7 +117,7 @@ namespace eDoxa.FunctionalTests
                 MoneyEntryFee.OneHundred,
                 payout.CreateInstance().GetPayout(PayoutEntries.One, MoneyEntryFee.OneHundred));
 
-            using var gamesHost = new GamesHostFactory().WithClaims(new Claim(JwtClaimTypes.Subject, account.Id));
+            using var gamesHost = new GamesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id));
 
             gamesHost.Server.CleanupDbContext();
 
@@ -148,7 +138,7 @@ namespace eDoxa.FunctionalTests
 
             var gameServiceClient = new GameService.GameServiceClient(gamesHost.CreateChannel());
 
-            using var challengesHost = new ChallengesHostFactory().WithClaims(new Claim(JwtClaimTypes.Subject, account.Id)).WithWebHostBuilder(
+            using var challengesHost = new ChallengesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id)).WithWebHostBuilder(
                 builder =>
                 {
                     builder.ConfigureTestContainer<ContainerBuilder>(
@@ -172,7 +162,7 @@ namespace eDoxa.FunctionalTests
 
             var challengeServiceClient = new ChallengeService.ChallengeServiceClient(challengesHost.CreateChannel());
 
-            using var cashierHost = new CashierHostFactory().WithClaims(new Claim(JwtClaimTypes.Subject, account.Id));
+            using var cashierHost = new CashierHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id));
 
             cashierHost.Server.CleanupDbContext();
 
@@ -222,7 +212,7 @@ namespace eDoxa.FunctionalTests
 
             var identityServiceClient = new IdentityService.IdentityServiceClient(identityHost.CreateChannel());
 
-            using var challengesAggregatorHost = new ChallengesWebAggregatorHostFactory().WithClaims(new Claim(JwtClaimTypes.Subject, account.Id))
+            using var challengesAggregatorHost = new ChallengesWebAggregatorHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id))
                 .WithWebHostBuilder(
                     builder =>
                     {

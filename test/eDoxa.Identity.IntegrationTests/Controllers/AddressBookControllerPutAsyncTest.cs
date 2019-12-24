@@ -44,12 +44,12 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        [Fact(Skip = "Bearer authentication mock bug since .NET Core 3.0")]
+        [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

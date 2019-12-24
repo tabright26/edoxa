@@ -13,7 +13,6 @@ using Autofac;
 
 using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
-using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.Services;
 using eDoxa.Payment.Infrastructure;
@@ -38,8 +37,6 @@ using FluentValidation;
 
 using Hellang.Middleware.ProblemDetails;
 
-using IdentityServer4.AccessTokenValidation;
-
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -51,7 +48,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Payment.Api
 {
-    public class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -73,7 +70,10 @@ namespace eDoxa.Payment.Api
         public IConfiguration Configuration { get; }
 
         public PaymentAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
@@ -104,7 +104,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomProblemDetails(options => options.MapStripeException());
 
-            services.AddCustomControllers<Startup>().AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -112,7 +112,7 @@ namespace eDoxa.Payment.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                 .AddIdentityServerAuthentication(
                     options =>
                     {
@@ -128,13 +128,6 @@ namespace eDoxa.Payment.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.PaymentApi);
-
-            builder.RegisterModule<PaymentModule>();
-        }
-
-        public void ConfigureTestContainer(ContainerBuilder builder)
-        {
-            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<PaymentModule>();
         }
@@ -166,6 +159,72 @@ namespace eDoxa.Payment.Api
             application.UseSwagger(AppSettings);
 
             application.UseStripe(Configuration);
+
+            subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddOptions();
+
+            services.AddStripe(Configuration);
+
+            services.AddAppSettings<PaymentAppSettings>(Configuration);
+
+            services.AddDbContext<PaymentDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString()!,
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails(options => options.MapStripeException());
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(PaymentDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<PaymentModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<PaymentGrpcService>();
+
+                endpoints.MapControllers();
+            });
 
             subscriber.UseIntegrationEventSubscriptions();
         }

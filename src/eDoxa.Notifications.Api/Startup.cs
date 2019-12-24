@@ -12,7 +12,6 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Notifications.Api.Infrastructure;
-using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
@@ -36,8 +35,6 @@ using FluentValidation;
 
 using Hellang.Middleware.ProblemDetails;
 
-using IdentityServer4.AccessTokenValidation;
-
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -51,7 +48,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Notifications.Api
 {
-    public class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -73,7 +70,10 @@ namespace eDoxa.Notifications.Api
         public IConfiguration Configuration { get; }
 
         private NotificationsAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<NotificationsAppSettings>(Configuration);
@@ -103,7 +103,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools<NotificationsDbContextSeeder, NotificationsDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -111,7 +111,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            services.AddAuthentication()
                 .AddIdentityServerAuthentication(
                     options =>
                     {
@@ -127,13 +127,6 @@ namespace eDoxa.Notifications.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.NotificationsApi);
-
-            builder.RegisterModule<NotificationsModule>();
-        }
-
-        public void ConfigureTestContainer(ContainerBuilder builder)
-        {
-            builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<NotificationsModule>();
         }
@@ -161,6 +154,65 @@ namespace eDoxa.Notifications.Api
                 });
 
             application.UseSwagger(AppSettings);
+
+            subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<NotificationsAppSettings>(Configuration);
+
+            services.AddDbContext<NotificationsDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString()!,
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails();
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<NotificationsModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints => endpoints.MapControllers());
 
             subscriber.UseIntegrationEventSubscriptions();
         }

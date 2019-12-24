@@ -59,7 +59,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
         {
             var account = new Account(new UserId());
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
             var server = factory.Server;
             server.CleanupDbContext();
 
@@ -91,7 +91,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var currency = Currency.Money;
             var account = new Account(new UserId());
             var balance = account.GetBalanceFor(currency);
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
             var server = factory.Server;
             server.CleanupDbContext();
 
