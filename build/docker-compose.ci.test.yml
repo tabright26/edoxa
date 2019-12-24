@@ -27,8 +27,8 @@ services:
       context: ../
       dockerfile: test/eDoxa.Seedwork.UnitTests/Dockerfile
 
-  identity.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/identity.unit-tests:${ACR_TAG:-latest}
+  identity-api.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity-api.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Identity.Api/Dockerfile
@@ -37,8 +37,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
       
-  identity.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/identity.integration-tests:${ACR_TAG:-latest}
+  identity-api.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/identity-api.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Identity.Api/Dockerfile
@@ -57,13 +57,13 @@ services:
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaUrl=http://${HOST:-localhost}:5300
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
       - Swagger__Enabled=false
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  payment.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/payment.unit-tests:${ACR_TAG:-latest}
+  payment-api.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/payment-api.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Payment.Api/Dockerfile
@@ -72,8 +72,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  payment.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/payment.integration-tests:${ACR_TAG:-latest}
+  payment-api.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/payment-api.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Payment.Api/Dockerfile
@@ -90,12 +90,12 @@ services:
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  cashier.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/cashier.unit-tests:${ACR_TAG:-latest}
+  cashier-api.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier-api.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
@@ -104,8 +104,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  cashier.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/cashier.integration-tests:${ACR_TAG:-latest}
+  cashier-api.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/cashier-api.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
@@ -122,13 +122,13 @@ services:
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__PaymentUrl=http://payment.api
+      - Endpoints__IdentityUrl=http://identity-api
+      - Endpoints__PaymentUrl=http://payment-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  notifications.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/notifications.unit-tests:${ACR_TAG:-latest}
+  notifications-api.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications-api.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Notifications.Api/Dockerfile
@@ -137,8 +137,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  notifications.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/notifications.integration-tests:${ACR_TAG:-latest}
+  notifications-api.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/notifications-api.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Notifications.Api/Dockerfile
@@ -156,12 +156,12 @@ services:
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000  
-      - Endpoints__IdentityUrl=http://identity.api   
+      - Endpoints__IdentityUrl=http://identity-api   
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
       
-  challenges.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.unit-tests:${ACR_TAG:-latest}
+  challenges-api.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/challenges-api.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
@@ -170,8 +170,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  challenges.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/challenges.integration-tests:${ACR_TAG:-latest}
+  challenges-api.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/challenges-api.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
@@ -189,14 +189,14 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__GamesUrl=http://games.api
+      - Endpoints__IdentityUrl=http://identity-api
+      - Endpoints__CashierUrl=http://cashier-api
+      - Endpoints__GamesUrl=http://games-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  games.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/games.unit-tests:${ACR_TAG:-latest}
+  games-api.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/games-api.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Games.Api/Dockerfile
@@ -205,8 +205,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  games.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/arena.games.integration-tests:${ACR_TAG:-latest}
+  games-api.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/games-api.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Games.Api/Dockerfile
@@ -224,12 +224,12 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  clans.unit-tests:
-    image: ${ACR_REGISTRY:-edoxa}/clans.unit-tests:${ACR_TAG:-latest}
+  clans-api.unit-tests:
+    image: ${ACR_REGISTRY:-edoxa}/clans-api.unit-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Clans.Api/Dockerfile
@@ -238,8 +238,8 @@ services:
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
-  clans.integration-tests:
-    image: ${ACR_REGISTRY:-edoxa}/clans.integration-tests:${ACR_TAG:-latest}
+  clans-api.integration-tests:
+    image: ${ACR_REGISTRY:-edoxa}/clans-api.integration-tests:${ACR_TAG:-latest}
     build:
       context: ../
       dockerfile: src/eDoxa.Clans.Api/Dockerfile
@@ -257,6 +257,6 @@ services:
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
