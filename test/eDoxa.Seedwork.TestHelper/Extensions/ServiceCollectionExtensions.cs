@@ -14,7 +14,7 @@ namespace eDoxa.Seedwork.TestHelper.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        internal static void AddFakeAuthentication(this IServiceCollection services, Action<TestAuthenticationOptions> configureOptions)
+        internal static void AddTestAuthentication(this IServiceCollection services, Action<TestAuthenticationOptions> configureOptions)
         {
             var authenticationOptions = new TestAuthenticationOptions();
 

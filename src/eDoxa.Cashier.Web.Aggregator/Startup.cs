@@ -167,8 +167,6 @@ namespace eDoxa.Cashier.Web.Aggregator
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<CashierWebAggregatorAppSettings>(Configuration);
-
             services.AddCustomCors();
 
             services.AddCustomProblemDetails(options => options.MapRpcException());

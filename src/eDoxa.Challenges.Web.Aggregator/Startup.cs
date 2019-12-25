@@ -176,8 +176,6 @@ namespace eDoxa.Challenges.Web.Aggregator
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddAppSettings<ChallengesWebAggregatorAppSettings>(Configuration);
-
             services.AddCustomCors();
 
             services.AddCustomProblemDetails(options => options.MapRpcException());

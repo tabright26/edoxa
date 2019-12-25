@@ -10,7 +10,7 @@ using FluentAssertions;
 
 using Xunit;
 
-namespace eDoxa.Seedwork.UnitTests.Aggregate
+namespace eDoxa.Seedwork.UnitTests.Domain
 {
     public sealed class EntityTest
     {

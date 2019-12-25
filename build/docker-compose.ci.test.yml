@@ -48,17 +48,12 @@ services:
       - redis.test
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Identity.IntegrationTests.trx"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Test
       - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - WebSpaUrl=http://${HOST:-localhost}:5300
-      - Endpoints__IdentityUrl=http://identity-api
-      - Swagger__Enabled=false
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
@@ -83,14 +78,11 @@ services:
       - redis.test
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Payment.IntegrationTests.trx"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Test
       - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
@@ -115,15 +107,11 @@ services:
       - redis.test
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Cashier.IntegrationTests.trx"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Test
       - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
-      - Endpoints__PaymentUrl=http://payment-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
@@ -148,15 +136,12 @@ services:
       - redis.test
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Notifications.IntegrationTests.trx"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Test
       - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000  
-      - Endpoints__IdentityUrl=http://identity-api   
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
       
@@ -181,17 +166,12 @@ services:
       - redis.test
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Challenges.IntegrationTests.trx"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Test
       - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
-      - Endpoints__CashierUrl=http://cashier-api
-      - Endpoints__GamesUrl=http://games-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
@@ -216,15 +196,12 @@ services:
       - redis.test 
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Games.IntegrationTests.trx"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Test
       - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp
 
@@ -249,14 +226,11 @@ services:
       - redis.test
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Clans.IntegrationTests.trx"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Test
       - ASPNETCORE_URLS=http://+:80
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity-api
     volumes:
       - ${BUILD_ARTIFACTDIRECTORY:-.}/vsts/test/results:/var/tmp

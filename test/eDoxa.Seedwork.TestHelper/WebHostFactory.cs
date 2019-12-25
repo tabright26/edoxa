@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.IO;
 using System.Security.Claims;
 
@@ -13,8 +12,6 @@ using Autofac;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.Seedwork.TestHelper.Fakes;
 using eDoxa.Seedwork.TestHelper.Modules;
-
-using IdentityModel;
 
 using IdentityServer4.AccessTokenValidation;
 
@@ -34,23 +31,21 @@ namespace eDoxa.Seedwork.TestHelper
             builder.UseContentRoot(Directory.GetCurrentDirectory());
         }
 
-        public WebApplicationFactory<TStartup> WithDefaultClaims()
-        {
-            return this.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()));
-        }
-
         public WebApplicationFactory<TStartup> WithClaimsFromDefaultAuthentication(params Claim[] claims)
         {
             return this.WithWebHostBuilder(
                 builder =>
                 {
                     builder.ConfigureTestServices(
-                        services => services.AddFakeAuthentication(
-                            options =>
-                            {
-                                options.Claims = claims;
-                                options.AuthenticationScheme = nameof(TestAuthenticationHandler);
-                            }));
+                        services =>
+                        {
+                            services.AddTestAuthentication(
+                                options =>
+                                {
+                                    options.Claims = claims;
+                                    options.AuthenticationScheme = nameof(TestAuthenticationHandler);
+                                });
+                        });
 
                     builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
                 });
@@ -62,12 +57,15 @@ namespace eDoxa.Seedwork.TestHelper
                 builder =>
                 {
                     builder.ConfigureTestServices(
-                        services => services.AddFakeAuthentication(
-                            options =>
-                            {
-                                options.Claims = claims;
-                                options.AuthenticationScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
-                            }));
+                        services =>
+                        {
+                            services.AddTestAuthentication(
+                                options =>
+                                {
+                                    options.Claims = claims;
+                                    options.AuthenticationScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                                });
+                        });
 
                     builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
                 });
