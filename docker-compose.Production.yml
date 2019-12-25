@@ -49,7 +49,6 @@ services:
     depends_on:
       - seq      
       - mssql
-      - redis
 
   games-api:
     image: ${ACR_REGISTRY:-edoxa}/prod/games-api:${ACR_TAG:-latest}
@@ -69,7 +68,6 @@ services:
     depends_on:
       - seq
       - mssql
-      - redis
 
   challenges-api:
     image: ${ACR_REGISTRY:-edoxa}/prod/challenges-api:${ACR_TAG:-latest}
@@ -79,7 +77,6 @@ services:
     depends_on:
       - seq   
       - mssql
-      - redis
 
   challenges-worker:
     image: ${ACR_REGISTRY:-edoxa}/prod/challenges-worker:${ACR_TAG:-latest}
