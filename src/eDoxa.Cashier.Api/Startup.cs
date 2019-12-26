@@ -36,6 +36,8 @@ using FluentValidation;
 
 using Hellang.Middleware.ProblemDetails;
 
+using IdentityServer4.AccessTokenValidation;
+
 using MediatR;
 
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
@@ -111,7 +113,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddAuthentication()
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
                     options =>
                     {

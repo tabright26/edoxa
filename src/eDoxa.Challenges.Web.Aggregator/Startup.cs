@@ -36,6 +36,8 @@ using Grpc.Core;
 
 using Hellang.Middleware.ProblemDetails;
 
+using IdentityServer4.AccessTokenValidation;
+
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -95,7 +97,7 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddCustomAutoMapper(typeof(Startup));
 
-            services.AddAuthentication()
+            services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
                     options =>
                     {
