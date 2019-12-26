@@ -94,13 +94,11 @@ services:
     depends_on:
       - seq
 
+  cashier-web-gateway:
+    image: envoyproxy/envoy:v1.11.1
+
   challenges-web-gateway:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-web-gateway:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Gateway/Dockerfile
-    depends_on:
-      - seq
+    image: envoyproxy/envoy:v1.11.1
 
   web-spa:
     image: ${ACR_REGISTRY:-edoxa}/prod/web-spa:${ACR_TAG:-latest}
