@@ -7,11 +7,11 @@
 #nullable disable
 
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
-using eDoxa.Identity.Api.Services;
+using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -52,22 +52,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                var callbackUrl = Url.Page(
-                    "/Account/ResetPassword",
-                    null,
-                    new
-                    {
-                        code
-                    },
-                    Request.Scheme
-                );
-
-                await _serviceBusPublisher.PublishEmailSentIntegrationEventAsync(
-                    UserId.FromGuid(user.Id),
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
-                );
+                await _serviceBusPublisher.PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(user.Id.From<UserId>(), code);
 
                 return this.RedirectToPage("./ForgotPasswordConfirmation");
             }

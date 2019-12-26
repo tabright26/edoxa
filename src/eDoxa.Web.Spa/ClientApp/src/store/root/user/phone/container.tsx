@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
-import { loadUserPhone } from "./actions";
+import { loadUserPhone } from "store/actions/identity";
 
 export const withUserPhone = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => {
@@ -24,8 +24,5 @@ export const withUserPhone = (HighOrderComponent: FunctionComponent<any>) => {
     };
   };
 
-  return connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Container);
+  return connect(mapStateToProps, mapDispatchToProps)(Container);
 };

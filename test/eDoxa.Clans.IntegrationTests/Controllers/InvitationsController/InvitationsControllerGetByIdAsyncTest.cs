@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
-using eDoxa.Clans.Responses;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Clans.Dtos;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
@@ -44,7 +44,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -64,7 +64,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             var clan = new Clan("ClanName", new UserId());
             var invitation = new Invitation(userId, clan.Id);
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -87,8 +87,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.InvitationsController
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            var invitationResponse = await response.Content.ReadAsAsync<InvitationResponse>();
-            invitationResponse!.Id.Should().Be(invitation.Id);
+            var invitationResponse = await response.Content.ReadAsJsonAsync<InvitationDto>();
+            invitationResponse!.Id.Should().Be(invitation.Id.ToString());
         }
     }
 }

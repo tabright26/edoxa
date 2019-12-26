@@ -35,6 +35,8 @@ namespace eDoxa.Identity.Infrastructure
         public IdentityDbContext(DbContextOptions<IdentityDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options)
         {
             _operationalStoreOptions = operationalStoreOptions;
+            PersistedGrants = this.Set<PersistedGrant>();
+            DeviceFlowCodes = this.Set<DeviceFlowCodes>();
         }
 
         public DbSet<PersistedGrant> PersistedGrants { get; set; }

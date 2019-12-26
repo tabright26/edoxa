@@ -12,6 +12,16 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class HttpContextAccessorExtensions
     {
+        public static string? GetClaimOrNull(this IHttpContextAccessor accessor, string claimType)
+        {
+            return accessor.HttpContext.GetClaimOrNull(claimType);
+        }
+
+        public static string GetClaim(this IHttpContextAccessor accessor, string claimType)
+        {
+            return accessor.HttpContext.GetClaim(claimType);
+        }
+
         public static UserId GetUserId(this IHttpContextAccessor accessor)
         {
             return accessor.HttpContext.GetUserId();
@@ -20,11 +30,6 @@ namespace eDoxa.Seedwork.Application.Extensions
         public static string GetEmail(this IHttpContextAccessor accessor)
         {
             return accessor.HttpContext.GetEmail();
-        }
-
-        public static PlayerId GetPlayerId(this IHttpContextAccessor accessor, Game game)
-        {
-            return accessor.HttpContext.GetPlayerId(game);
         }
     }
 }

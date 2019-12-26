@@ -1,12 +1,17 @@
 ﻿// Filename: ServiceBusPublisherExtensions.cs
-// Date Created: 2019-10-10
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -14,53 +19,38 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
-        public static async Task PublishUserTransactionEmailSentIntegrationEventAsync(
+        public static async Task PublishChallengeClosedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
-            UserId userId,
-            ITransaction transaction
+            ChallengeId challengeId,
+            PayoutPrizes payoutPrizes
         )
         {
-            await publisher.PublishAsync(
-                new UserEmailSentIntegrationEvent(
-                    userId,
-                    $"{transaction.GetType().Name} - {transaction.Currency.Type} - {transaction.Status.Name}",
-                    transaction.Description.Text));
+            var integrationEvent = new ChallengeClosedIntegrationEvent
+            {
+                ChallengeId = challengeId,
+                PayoutPrizes =
+                {
+                    payoutPrizes.ToDictionary(
+                        payoutPrize => payoutPrize.Key.ToString(),
+                        payoutPrize => new PrizeDto
+                        {
+                            Amount = payoutPrize.Value.Amount,
+                            Currency = payoutPrize.Value.Currency.ToEnum<CurrencyDto>()
+                        })
+                }
+            };
+
+            await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserAccountDepositIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string email,
-            TransactionId transactionId,
-            string description,
-            long amount
-        )
+        public static async Task PublishCreateChallengePayoutFailedIntegrationEventAsync(this IServiceBusPublisher publisher, ChallengeId challengeId)
         {
-            await publisher.PublishAsync(
-                new UserAccountDepositIntegrationEvent(
-                    userId,
-                    email,
-                    transactionId,
-                    description,
-                    amount));
-        }
+            var integrationEvent = new CreateChallengePayoutFailedIntegrationEvent
+            {
+                ChallengeId = challengeId
+            };
 
-        public static async Task PublishUserAccountWithdrawalIntegrationEventAsync(
-            this IServiceBusPublisher publisher,
-            UserId userId,
-            string email,
-            TransactionId transactionId,
-            string description,
-            long amount
-        )
-        {
-            await publisher.PublishAsync(
-                new UserAccountWithdrawalIntegrationEvent(
-                    userId,
-                    email,
-                    transactionId,
-                    description,
-                    amount));
+            await publisher.PublishAsync(integrationEvent);
         }
     }
 }

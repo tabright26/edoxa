@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -44,6 +44,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
             return await challenges.SingleOrDefaultAsync();
         }
+
+        private async Task<bool> ChallengeModelExistsAsync(Guid challengeId)
+        {
+            return await _context.Challenges.AsExpandable().AnyAsync(challenge => challenge.Id == challengeId);
+        }
     }
 
     public sealed partial class ChallengeRepository : IChallengeRepository
@@ -76,7 +81,17 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             _context.Challenges.Remove(challengeModel);
         }
 
-        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        {
+            return await this.FindChallengeOrNullAsync(challengeId) ?? throw new InvalidOperationException("Challenge payout does not exists.");
+        }
+
+        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
+        {
+            return await this.ChallengeModelExistsAsync(challengeId);
+        }
+
+        public async Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId)
         {
             if (_materializedIds.TryGetValue(challengeId, out var challenge))
             {

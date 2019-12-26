@@ -1,0 +1,15 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.IntegrationEvents";
+
+import "games_dtos.proto";
+
+package edoxa.services.games;
+
+message UserGameCredentialAddedIntegrationEvent {
+  GameCredentialDto credential = 1;
+}
+
+message UserGameCredentialRemovedIntegrationEvent {
+  GameCredentialDto credential = 1;
+}

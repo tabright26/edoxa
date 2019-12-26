@@ -1,22 +1,20 @@
-﻿// Filename: LeagueOfLegendsAuthFactorGeneratorAdapter.cs
-// Date Created: 2019-11-11
+﻿// Filename: LeagueOfLegendsAuthenticationGeneratorAdapter.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapter;
+using eDoxa.Games.Domain.Adapters;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Storage.Azure.Extensions;
-
-using Microsoft.Azure.Storage;
 
 using RiotSharp.Endpoints.SummonerEndpoint;
 using RiotSharp.Misc;
@@ -27,22 +25,19 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
     {
         private readonly ILeagueOfLegendsService _leagueOfLegendsService;
         private readonly IGameAuthenticationRepository _gameAuthenticationRepository;
-        private readonly CloudStorageAccount _storageAccount;
 
         public LeagueOfLegendsAuthenticationGeneratorAdapter(
             ILeagueOfLegendsService leagueOfLegendsService,
-            IGameAuthenticationRepository gameAuthenticationRepository,
-            CloudStorageAccount storageAccount
+            IGameAuthenticationRepository gameAuthenticationRepository
         )
         {
             _leagueOfLegendsService = leagueOfLegendsService;
             _gameAuthenticationRepository = gameAuthenticationRepository;
-            _storageAccount = storageAccount;
         }
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<DomainValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
+        public override async Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
         {
             var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
 
@@ -91,17 +86,25 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public async Task<string> DownloadSummonerProfileIconIdAsync(int summonerProfileIconId)
         {
-            var container = _storageAccount.GetBlobContainer();
+            //var container = _storageAccount.GetBlobContainer();
 
-            var blobReference = container.GetBlockBlobReference($"games/leagueoflegends/summonerProfileIconIds/{summonerProfileIconId}.png");
+            //var blobReference = container.GetBlockBlobReference($"games/leagueoflegends/summonerProfileIconIds/{summonerProfileIconId}.png");
 
-            using var memoryStream = new MemoryStream();
+            //await blobReference.DownloadToStreamAsync(memoryStream);
 
-            await blobReference.DownloadToStreamAsync(memoryStream);
-            var bytes = memoryStream.ToArray();
-            var b64String = Convert.ToBase64String(bytes);
+            var httpClient = new HttpClient
+            {
+                BaseAddress = new Uri("http://raw.communitydragon.org/")
+            };
 
-            return "data:image/png;base64," + b64String;
+            await using var stream =
+                await httpClient.GetStreamAsync($"latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/{summonerProfileIconId}.jpg");
+
+            await using var memoryStream = new MemoryStream();
+
+            await stream.CopyToAsync(memoryStream);
+
+            return $"data:image/png;base64,{Convert.ToBase64String(memoryStream.ToArray())}";
         }
     }
 }

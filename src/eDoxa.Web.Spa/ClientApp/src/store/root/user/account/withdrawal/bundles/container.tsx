@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserAccountWithdrawalBundlesFor } from "./actions";
+import { loadTransactionBundles } from "store/actions/cashier";
 import { RootState } from "store/types";
+import { TRANSACTION_TYPE_WITHDRAWAL } from "types";
 
 export const withUserAccountWithdrawalBundles = (
   HighOrderComponent: FunctionComponent<any>
@@ -25,7 +26,9 @@ export const withUserAccountWithdrawalBundles = (
   const mapDispatchToProps = (dispatch: any, ownProps: any) => {
     return {
       loadUserAccountWithdrawalBundles: () =>
-        dispatch(loadUserAccountWithdrawalBundlesFor(ownProps.currency))
+        dispatch(
+          loadTransactionBundles(TRANSACTION_TYPE_WITHDRAWAL, ownProps.currency)
+        )
     };
   };
 

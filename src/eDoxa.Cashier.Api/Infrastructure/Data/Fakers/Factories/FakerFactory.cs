@@ -10,18 +10,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Factories
 {
     public sealed class FakerFactory
     {
-        public IAccountFaker CreateAccountFaker(int? seed)
-        {
-            var faker = new AccountFaker();
-
-            if (seed.HasValue)
-            {
-                faker.UseSeed(seed.Value);
-            }
-
-            return faker;
-        }
-
         public IChallengeFaker CreateChallengeFaker(int? seed)
         {
             var faker = new ChallengeFaker();

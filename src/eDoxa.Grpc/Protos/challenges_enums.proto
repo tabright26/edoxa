@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Enums";
+
+package edoxa.services.challenges;
+
+enum ChallengeStateDto {
+  CHALLENGE_STATE_DTO_NONE = 0;
+  CHALLENGE_STATE_DTO_INSCRIPTION = 1;
+  CHALLENGE_STATE_DTO_IN_PROGRESS = 2;
+  CHALLENGE_STATE_DTO_ENDED = 4;
+  CHALLENGE_STATE_DTO_CLOSED = 8;
+  CHALLENGE_STATE_DTO_ALL = -1;
+}
+
+enum ChallengeTypeDto {
+  CHALLENGE_TYPE_DTO_NONE = 0;
+  CHALLENGE_TYPE_DTO_ALL = -1;
+}

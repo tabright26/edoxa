@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadChallenges, loadChallenge } from "store/root/challenge/actions";
+import { loadChallenges, loadChallenge } from "store/actions/challenge";
 import { RootState } from "store/types";
 
 export const withChallenges = (HighOrderComponent: FunctionComponent<any>) => {

@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Services";
+
+import "challenges_requests.proto";
+import "challenges_responses.proto";
+
+package edoxa.services.challenges;
+
+service ChallengeService {
+  rpc FetchChallenges(FetchChallengesRequest) returns (FetchChallengesResponse);
+  rpc FindChallenge(FindChallengeRequest) returns (FindChallengeResponse);
+  rpc CreateChallenge(CreateChallengeRequest) returns (CreateChallengeResponse);
+  rpc SynchronizeChallenge(SynchronizeChallengeRequest) returns (SynchronizeChallengeResponse);
+  rpc RegisterChallengeParticipant(RegisterChallengeParticipantRequest) returns (RegisterChallengeParticipantResponse);
+  rpc SnapshotChallengeParticipant(SnapshotChallengeParticipantRequest) returns (SnapshotChallengeParticipantResponse);
+}

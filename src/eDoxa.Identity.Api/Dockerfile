@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.0 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /tmp
 COPY . .
 WORKDIR /tmp/src/eDoxa.Identity.Api
@@ -20,4 +20,5 @@ WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "eDoxa.Identity.Api.dll"]
 
-EXPOSE 80
+EXPOSE 80	# HTTP
+EXPOSE 81	# gRPC

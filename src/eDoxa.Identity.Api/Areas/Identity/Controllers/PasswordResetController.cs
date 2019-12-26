@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Identity.Api.Services;
-using eDoxa.Identity.Requests;
+using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Identity.Domain.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

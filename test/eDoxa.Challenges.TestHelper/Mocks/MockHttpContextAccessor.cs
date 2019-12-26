@@ -25,7 +25,7 @@ namespace eDoxa.Challenges.TestHelper.Mocks
                     new[]
                     {
                         new Claim(JwtClaimTypes.Subject, "5C43502B-FCE8-4235-8557-C22D2A638AD7"),
-                        new Claim($"games/{Game.LeagueOfLegends.NormalizedName}", PlayerId.Parse("qwe213rq2131eqw"))
+                        new Claim($"games/{Game.LeagueOfLegends.CamelCaseName}", PlayerId.Parse("qwe213rq2131eqw"))
                     });
         }
     }

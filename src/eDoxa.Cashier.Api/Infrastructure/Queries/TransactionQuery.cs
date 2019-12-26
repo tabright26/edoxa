@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Models;
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
         )
         {
             var transactions = from transaction in Transactions.Include(account => account.Account).AsExpandable()
-                               where transaction.Account.UserId == userId &&
+                               where transaction.Account.Id == userId &&
                                      (currency == null || transaction.Currency == currency) &&
                                      (type == null || transaction.Type == type) &&
                                      (status == null || transaction.Status == status)

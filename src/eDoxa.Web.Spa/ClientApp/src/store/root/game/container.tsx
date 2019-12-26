@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadGames } from "store/root/game/actions";
+import { loadGames } from "store/actions/game";
 import { RootState } from "store/types";
 
 export const withGames = (HighOrderComponent: FunctionComponent<any>) => {

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeRepository.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -59,7 +59,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             return await challenges.SingleOrDefaultAsync();
         }
 
-        private async Task<bool> AnyChallengeModelAsync(Guid challengeId)
+        private async Task<bool> ChallengeModelExistsAsync(Guid challengeId)
         {
             var challenges = from challenge in _context.Challenges.AsExpandable()
                              where challenge.Id == challengeId
@@ -117,7 +117,17 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
                 .ToList();
         }
 
-        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        {
+            return await this.FindChallengeOrNullAsync(challengeId) ?? throw new InvalidOperationException("Challenge doesn't exists.");
+        }
+
+        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
+        {
+            return await this.ChallengeModelExistsAsync(challengeId);
+        }
+
+        public async Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId)
         {
             if (_materializedIds.TryGetValue(challengeId, out var challenge))
             {
@@ -138,11 +148,6 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             _materializedIds[challengeId] = challenge;
 
             return challenge;
-        }
-
-        public async Task<bool> AnyChallengeAsync(ChallengeId challengeId)
-        {
-            return await this.AnyChallengeModelAsync(challengeId);
         }
 
         public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)

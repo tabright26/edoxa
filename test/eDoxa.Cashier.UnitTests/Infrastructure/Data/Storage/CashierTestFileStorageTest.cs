@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
             var users = storage.GetUsers();
 
             // Assert
-            users.Should().Contain(user => user.Id == UserId.FromGuid(Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
+            users.Should().Contain(userId => userId == UserId.FromGuid(Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091")));
         }
 
         [Fact]

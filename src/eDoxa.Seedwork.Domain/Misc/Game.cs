@@ -6,6 +6,8 @@
 
 using System.ComponentModel;
 
+using eDoxa.Seedwork.Domain.Extensions;
+
 namespace eDoxa.Seedwork.Domain.Misc
 {
     [TypeConverter(typeof(EnumerationTypeConverter))]
@@ -33,6 +35,6 @@ namespace eDoxa.Seedwork.Domain.Misc
 
         public string DisplayName { get; }
 
-        public string NormalizedName => Name.ToLowerInvariant();
+        public string CamelCaseName => Name.ToCamelCase()!;
     }
 }

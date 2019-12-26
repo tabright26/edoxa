@@ -182,7 +182,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                         record.FirstName,
                                         record.LastName,
                                         Gender.FromValue(record.Gender),
-                                        new Dob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
+                                        new UserDob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
                                 };
 
                                 //user.DoxatagHistory.Add(doxatag);

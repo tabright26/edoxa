@@ -1,0 +1,16 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.IntegrationEvents";
+
+import "cashier_dtos.proto";
+
+package edoxa.services.cashier;
+
+message CreateChallengePayoutFailedIntegrationEvent {
+  string challengeId = 1;
+}
+
+message ChallengeClosedIntegrationEvent {
+  string challengeId = 1;
+  map<string, PrizeDto> payoutPrizes = 2;
+}

@@ -4,15 +4,14 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace eDoxa.Seedwork.Domain
 {
-    public sealed class DomainValidationResult
+    public sealed class DomainValidationResult : IDomainValidationResult
     {
-        public static readonly DomainValidationResult Succeded = new DomainValidationResult();
-
         private readonly HashSet<DomainValidationError> _errors = new HashSet<DomainValidationError>();
         private readonly DomainValidationMetadata _metadata = new DomainValidationMetadata();
 
@@ -20,9 +19,34 @@ namespace eDoxa.Seedwork.Domain
 
         public IReadOnlyCollection<DomainValidationError> Errors => _errors;
 
-        public IReadOnlyDictionary<string, object> Metadata => _metadata;
+        public TEntity GetEntityFromMetadata<TEntity>()
+        where TEntity : class
+        {
+            if (IsValid)
+            {
+                return _metadata.GetEntity<TEntity>();
+            }
 
-        public static DomainValidationResult Failure(string propertyName, string errorMessage)
+            throw new InvalidOperationException("The validation result must be valid to return the response from the metadata.");
+        }
+
+        public void AddEntityToMetadata<TEntity>(TEntity entity)
+        where TEntity : class
+        {
+            _metadata.AddEntity(entity);
+        }
+
+        public static IDomainValidationResult Succeded<TEntity>(TEntity entity)
+        where TEntity : class
+        {
+            var result = new DomainValidationResult();
+
+            result.AddEntityToMetadata(entity);
+
+            return result;
+        }
+
+        public static IDomainValidationResult Failure(string propertyName, string errorMessage)
         {
             var result = new DomainValidationResult();
 
@@ -31,7 +55,7 @@ namespace eDoxa.Seedwork.Domain
             return result;
         }
 
-        public static DomainValidationResult Failure(string errorMessage)
+        public static IDomainValidationResult Failure(string errorMessage)
         {
             var result = new DomainValidationResult();
 

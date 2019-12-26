@@ -26,11 +26,11 @@
 | Service       | Host       | Port |
 | :------------ | ---------- | ---: |
 | idsrv         | {localurl} | 5000 |
-| identity.api  | {localurl} | 5001 |
-| cashier.api   | {localurl} | 5002 |
+| identity-api  | {localurl} | 5001 |
+| cashier-api   | {localurl} | 5002 |
 | challenge.api | {localurl} | 5003 |
-| web.spa       | localhost  | 5300 |
-| web.status    | {localurl} | 5500 |
+| web-spa       | localhost  | 5300 |
+| web-status    | {localurl} | 5500 |
 
 ## Identity Server
 

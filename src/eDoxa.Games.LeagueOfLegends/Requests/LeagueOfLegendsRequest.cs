@@ -17,10 +17,14 @@ namespace eDoxa.Games.LeagueOfLegends.Requests
             SummonerName = summonerName;
         }
 
+        #nullable disable
+
         public LeagueOfLegendsRequest()
         {
             // Required by Fluent Validation.
         }
+
+        #nullable restore
 
         [JsonProperty("summonerName")]
         public string SummonerName { get; }

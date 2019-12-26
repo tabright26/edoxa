@@ -11,15 +11,14 @@ using System.Reflection;
 
 using Autofac;
 
-using AutoMapper;
-
 using eDoxa.Notifications.Api.Infrastructure;
-using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
+using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
@@ -28,7 +27,8 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
-using eDoxa.ServiceBus.Azure.Modules;
+using eDoxa.ServiceBus.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
@@ -50,7 +50,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Notifications.Api
 {
-    public class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -72,7 +72,10 @@ namespace eDoxa.Notifications.Api
         public IConfiguration Configuration { get; }
 
         private NotificationsAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<NotificationsAppSettings>(Configuration);
@@ -98,13 +101,15 @@ namespace eDoxa.Notifications.Api
 
             services.AddCustomCors();
 
+            services.AddCustomGrpc();
+
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools<NotificationsDbContextSeeder, NotificationsDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
+            services.AddCustomAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
 
             services.AddMediatR(typeof(Startup));
 
@@ -123,7 +128,7 @@ namespace eDoxa.Notifications.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new AzureServiceBusModule<Startup>(Configuration.GetAzureServiceBusConnectionString()!, AppNames.NotificationsApi));
+            builder.RegisterAzureServiceBusModule<Startup>(AppServices.NotificationsApi);
 
             builder.RegisterModule<NotificationsModule>();
         }
@@ -151,6 +156,65 @@ namespace eDoxa.Notifications.Api
                 });
 
             application.UseSwagger(AppSettings);
+
+            subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<NotificationsAppSettings>(Configuration);
+
+            services.AddDbContext<NotificationsDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString()!,
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails();
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<NotificationsModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints => endpoints.MapControllers());
 
             subscriber.UseIntegrationEventSubscriptions();
         }

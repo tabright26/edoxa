@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Enums";
+
+package edoxa.services.games;
+
+enum GameDto {
+  GAME_DTO_NONE = 0;
+  GAME_DTO_LEAGUE_OF_LEGENDS = 1;
+  GAME_DTO_SMITE = 2;
+  GAME_DTO_STAR_CRAFT_2 = 4;
+  GAME_DTO_DOTA_2 = 8;
+  GAME_DTO_CSGO = 16;
+  GAME_DTO_ROCKET_LEAGUE = 32;
+  GAME_DTO_OVERWATCH = 64;
+  GAME_DTO_FORTNITE = 128;
+  GAME_DTO_PUBG = 256;
+  GAME_DTO_ALL = -1;
+}

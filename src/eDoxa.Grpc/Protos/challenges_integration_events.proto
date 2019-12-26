@@ -1,0 +1,20 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.IntegrationEvents";
+
+import "challenges_dtos.proto";
+
+package edoxa.services.challenges;
+
+message ChallengeParticipantRegisteredIntegrationEvent {
+  ParticipantDto participant = 1;
+}
+
+message ChallengeSynchronizedIntegrationEvent {
+  string challengeId = 1;
+  repeated ParticipantDto scoreboard = 2;
+}
+
+message RegisterChallengeParticipantFailedIntegrationEvent {
+  ParticipantDto participant = 1;
+}

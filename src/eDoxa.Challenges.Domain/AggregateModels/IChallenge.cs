@@ -43,12 +43,16 @@ namespace eDoxa.Challenges.Domain.AggregateModels
 
         void Synchronize(IDateTimeProvider synchronizedAt);
 
+        Participant FindParticipant(PlayerId gamePlayerId);
+
+        bool ParticipantExists(PlayerId gamePlayerId);
+
         bool ParticipantExists(UserId userId);
-
-        bool CanSynchronize(Participant participant);
-
+        
         bool CanSynchronize();
 
         bool CanClose();
+
+        bool CanDelete();
     }
 }

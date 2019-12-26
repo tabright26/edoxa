@@ -2,12 +2,12 @@ import { connect } from "react-redux";
 import {
   loadChallenge,
   registerChallengeParticipant
-} from "store/root/challenge/actions";
+} from "store/actions/challenge";
 import {
   ChallengesActions,
   REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
   REGISTER_CHALLENGE_PARTICIPANT_FAIL
-} from "store/root/challenge/types";
+} from "store/actions/challenge/types";
 import Register from "./Register";
 import { ChallengeId } from "types";
 import { RouteComponentProps, withRouter } from "react-router-dom";

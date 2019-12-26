@@ -2,11 +2,11 @@ import {
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES,
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS,
   LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL,
-  UserAccountWithdrawalBundlesState,
-  UserAccountWithdrawalBundlesActions
-} from "../types";
+  UserAccountDepositBundlesActions
+} from "store/actions/cashier/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { UserAccountWithdrawalBundlesState } from "../types";
 
 export const initialState: UserAccountWithdrawalBundlesState = {
   data: [],
@@ -14,8 +14,14 @@ export const initialState: UserAccountWithdrawalBundlesState = {
   loading: false
 };
 
-export const reducer: Reducer<UserAccountWithdrawalBundlesState, UserAccountWithdrawalBundlesActions> = produce(
-  (draft: Draft<UserAccountWithdrawalBundlesState>, action: UserAccountWithdrawalBundlesActions) => {
+export const reducer: Reducer<
+  UserAccountWithdrawalBundlesState,
+  UserAccountDepositBundlesActions
+> = produce(
+  (
+    draft: Draft<UserAccountWithdrawalBundlesState>,
+    action: UserAccountDepositBundlesActions
+  ) => {
     switch (action.type) {
       case LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES:
         draft.error = null;

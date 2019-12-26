@@ -2,9 +2,6 @@ import { UserManager, WebStorageStateStore } from "oidc-client";
 import { ApplicationPaths, ApplicationName } from "./ApiAuthorizationConstants";
 import {
   REACT_APP_WEB_SPA,
-  REACT_APP_CLIENT_ID,
-  REACT_APP_RESPONSE_TYPE,
-  REACT_APP_SCOPE,
   REACT_APP_AUTHORITY
 } from "keys";
 
@@ -252,13 +249,11 @@ export class AuthorizeService {
       return;
     }
 
-    // https://github.com/maxmantz/redux-oidc/issues/35
-
     const settings = {
-      client_id: REACT_APP_CLIENT_ID,
+      client_id: "web-spa",
       redirect_uri: REACT_APP_WEB_SPA + ApplicationPaths.LoginCallback,
-      response_type: REACT_APP_RESPONSE_TYPE,
-      scope: REACT_APP_SCOPE,
+      response_type: "token id_token",
+      scope: "openid profile country roles permissions games identity.api payment.api cashier.api challenges.api games.api clans.api challenges.web.aggregator cashier.web.aggregator",
       authority: REACT_APP_AUTHORITY,
       post_logout_redirect_uri:
         REACT_APP_WEB_SPA + ApplicationPaths.LogOutCallback,
@@ -270,6 +265,7 @@ export class AuthorizeService {
         prefix: ApplicationName
       }),
       loadUserInfo: true
+      // https://github.com/maxmantz/redux-oidc/issues/35
       // metadata: {
       //   issuer: REACT_APP_AUTHORITY,
       //   jwks_uri: `${REACT_APP_AUTHORITY}/.well-known/openid-configuration/jwks`,

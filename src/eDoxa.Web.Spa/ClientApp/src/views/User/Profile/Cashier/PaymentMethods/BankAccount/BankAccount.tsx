@@ -2,7 +2,7 @@ import React, { useState, FunctionComponent, useEffect } from "react";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
-import BankAccountForm from "forms/Payment/Stripe/BankAccount";
+import BankAccountForm from "components/Payment/Stripe/BankAccount/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";

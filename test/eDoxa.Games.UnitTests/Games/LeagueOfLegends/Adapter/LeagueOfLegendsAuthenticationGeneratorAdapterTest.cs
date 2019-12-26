@@ -19,8 +19,6 @@ using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
-using Microsoft.Azure.Storage;
-
 using Moq;
 
 using RiotSharp.Endpoints.SummonerEndpoint;
@@ -30,13 +28,13 @@ using Xunit;
 
 namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
 {
-    public sealed class LeagueOfLegendsAuthenticationGeneratorAdapterTest : UnitTest // Francis: How to test the private static method ?
+    public sealed class LeagueOfLegendsAuthenticationGeneratorAdapterTest : UnitTest
     {
         public LeagueOfLegendsAuthenticationGeneratorAdapterTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
-        [Fact(Skip = "CloudStorageAccount must implement an interface to mock and test.")]
+        [Fact]
         public async Task GenerateAuthFactorAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
@@ -44,7 +42,6 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
 
             var mockAuthFactorRepository = new Mock<IGameAuthenticationRepository>();
             var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
-            var mockCloudStorageAccount = new Mock<CloudStorageAccount>();
 
             var summoner = new Summoner()
             {
@@ -74,7 +71,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object, mockCloudStorageAccount.Object);
+            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
 
             // Act
             var result = await authFactorService.GenerateAuthenticationAsync(userId, new LeagueOfLegendsRequest("testSummoner"));
@@ -99,7 +96,7 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
                 Times.Once);
         }
 
-        [Fact(Skip = "CloudStorageAccount must implement an interface to mock and test.")]
+        [Fact]
         public async Task GenerateAuthFactorAsync_ShouldBeOfTypeValidationFailureResult()
         {
             // Arrange
@@ -107,13 +104,12 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Adapter
 
             var mockAuthFactorRepository = new Mock<IGameAuthenticationRepository>();
             var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
-            var mockCloudStorageAccount = new Mock<CloudStorageAccount>();
 
             mockLeagueOfLegendsService
                 .Setup(leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()))
                 .Verifiable();
 
-            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object, mockCloudStorageAccount.Object);
+            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object);
 
             // Act
             var result = await authFactorService.GenerateAuthenticationAsync(userId, new LeagueOfLegendsRequest("testSummoner"));

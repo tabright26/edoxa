@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace eDoxa.Seedwork.Domain
 {
-    public abstract class Entity<TEntityId> : Entity
+    public abstract class Entity<TEntityId> : Entity, IEntity<TEntityId>
     where TEntityId : EntityId<TEntityId>, new()
     {
         private int? _requestedHashCode;

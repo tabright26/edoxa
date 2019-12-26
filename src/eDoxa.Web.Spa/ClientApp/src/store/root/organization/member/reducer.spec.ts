@@ -1,9 +1,17 @@
 import { reducer, initialState } from "./reducer";
-import { LOAD_CLAN_MEMBERS_SUCCESS, LOAD_CLAN_MEMBERS_FAIL, KICK_CLAN_MEMBER_SUCCESS } from "./types";
+import {
+  LOAD_CLAN_MEMBERS_SUCCESS,
+  LOAD_CLAN_MEMBERS_FAIL,
+  KICK_CLAN_MEMBER_SUCCESS
+} from "store/actions/clan/types";
 import { AxiosError } from "axios";
 
 const members204Data = [];
-const members200Data = [{ userId: "0", clanId: "10" }, { clanId: "1", userId: "10" }, { clanId: "3", userId: "10" }];
+const members200Data = [
+  { userId: "0", clanId: "10" },
+  { clanId: "1", userId: "10" },
+  { clanId: "3", userId: "10" }
+];
 
 describe("invitations reducer", () => {
   it("should return the initial state", () => {

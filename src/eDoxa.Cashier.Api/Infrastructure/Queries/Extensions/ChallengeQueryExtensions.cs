@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Infrastructure.Models;
-using eDoxa.Cashier.Responses;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
@@ -23,11 +23,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeModel>>(challenges);
         }
 
-        public static async Task<IReadOnlyCollection<ChallengeResponse>> FetchChallengeResponsesAsync(this IChallengeQuery challengeQuery)
+        public static async Task<IReadOnlyCollection<ChallengePayoutDto>> FetchChallengeResponsesAsync(this IChallengeQuery challengeQuery)
         {
             var challenges = await challengeQuery.FetchChallengesAsync();
 
-            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengeResponse>>(challenges);
+            return challengeQuery.Mapper.Map<IReadOnlyCollection<ChallengePayoutDto>>(challenges);
         }
 
         public static async Task<ChallengeModel?> FindChallengeModelAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
@@ -37,11 +37,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries.Extensions
             return challengeQuery.Mapper.Map<ChallengeModel>(challenge);
         }
 
-        public static async Task<ChallengeResponse?> FindChallengeResponseAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
+        public static async Task<ChallengePayoutDto?> FindChallengeResponseAsync(this IChallengeQuery challengeQuery, ChallengeId challengeId)
         {
             var challenge = await challengeQuery.FindChallengeAsync(challengeId);
 
-            return challengeQuery.Mapper.Map<ChallengeResponse>(challenge);
+            return challengeQuery.Mapper.Map<ChallengePayoutDto>(challenge);
         }
     }
 }

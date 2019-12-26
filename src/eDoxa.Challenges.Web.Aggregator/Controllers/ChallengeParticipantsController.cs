@@ -1,99 +1,119 @@
 ﻿// Filename: ChallengeParticipantsController.cs
-// Date Created: 2019-11-08
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Web.Aggregator.IntegrationEvents.Extensions;
-using eDoxa.Challenges.Web.Aggregator.Models;
-using eDoxa.Challenges.Web.Aggregator.Services;
-using eDoxa.Challenges.Web.Aggregator.Transformers;
+using eDoxa.Challenges.Web.Aggregator.Mappers;
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.Cashier.Requests;
+using eDoxa.Grpc.Protos.Cashier.Services;
+using eDoxa.Grpc.Protos.Challenges.Requests;
+using eDoxa.Grpc.Protos.Challenges.Services;
+using eDoxa.Grpc.Protos.Games.Requests;
+using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Grpc.Protos.Identity.Requests;
+using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using Newtonsoft.Json;
-
-using Refit;
-
 using Swashbuckle.AspNetCore.Annotations;
 
-using CashierRequests = eDoxa.Cashier.Requests;
-using ChallengeRequests = eDoxa.Challenges.Requests;
+using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
 
 namespace eDoxa.Challenges.Web.Aggregator.Controllers
 {
-    [Microsoft.AspNetCore.Authorization.Authorize]
+    [Authorize]
     [ApiVersion("1.0")]
     [Route("api/challenges/{challengeId}/participants")]
-    [ApiExplorerSettings(GroupName = "Challenge")]
+    [ApiExplorerSettings(GroupName = "Challenges")]
     public sealed class ChallengeParticipantsController : ControllerBase
     {
-        private readonly IChallengesService _challengesService;
-        private readonly ICashierService _cashierService;
-        private readonly IIdentityService _identityService;
-        private readonly IServiceBusPublisher _serviceBusPublisher;
+        private readonly ChallengeService.ChallengeServiceClient _challengesServiceClient;
+        private readonly CashierService.CashierServiceClient _cashierServiceClient;
+        private readonly IdentityService.IdentityServiceClient _identityServiceClient;
+        private readonly GameService.GameServiceClient _gameServiceClient;
 
         public ChallengeParticipantsController(
-            IChallengesService challengesService,
-            ICashierService cashierService,
-            IIdentityService identityService,
-            IServiceBusPublisher serviceBusPublisher
+            ChallengeService.ChallengeServiceClient challengesServiceClient,
+            CashierService.CashierServiceClient cashierServiceClient,
+            IdentityService.IdentityServiceClient identityServiceClient,
+            GameService.GameServiceClient gameServiceClient
         )
         {
-            _challengesService = challengesService;
-            _cashierService = cashierService;
-            _identityService = identityService;
-            _serviceBusPublisher = serviceBusPublisher;
+            _challengesServiceClient = challengesServiceClient;
+            _cashierServiceClient = cashierServiceClient;
+            _identityServiceClient = identityServiceClient;
+            _gameServiceClient = gameServiceClient;
         }
 
         [HttpPost]
         [SwaggerOperation("Register a participant to a challenge.")]
-        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantModel))]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantAggregate))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> RegisterChallengeParticipantAsync(ChallengeId challengeId)
+        public async Task<IActionResult> RegisterChallengeParticipantAsync(string challengeId)
         {
-            var doxatags = await _identityService.FetchDoxatagsAsync();
+            var participantId = Guid.NewGuid().ToString();
 
-            var challenge = await _cashierService.FindChallengeAsync(challengeId);
-
-            var participantId = new ParticipantId();
-
-            var metadata = new Dictionary<string, string>
+            var findChallengeRequest = new FindChallengeRequest
             {
-                [nameof(ChallengeId)] = challengeId.ToString(),
-                [nameof(ParticipantId)] = participantId.ToString()
+                ChallengeId = challengeId
             };
 
-            var transactionId = new TransactionId();
+            var findChallengeResponse = await _challengesServiceClient.FindChallengeAsync(findChallengeRequest);
 
-            await _cashierService.CreateTransactionAsync(
-                new CashierRequests.CreateTransactionRequest(
-                    transactionId,
-                    TransactionType.Charge.Name,
-                    challenge.EntryFee.Currency,
-                    challenge.EntryFee.Amount,
-                    metadata));
-
-            try
+            var findPlayerGameCredentialRequest = new FindPlayerGameCredentialRequest
             {
-                var participant = await _challengesService.RegisterChallengeParticipantAsync(
-                    challengeId,
-                    new ChallengeRequests.RegisterChallengeParticipantRequest(participantId));
+                Game = findChallengeResponse.Challenge.Game
+            };
 
-                return this.Ok(ChallengeTransformer.Transform(challenge.Id, participant, doxatags));
-            }
-            catch (ApiException exception)
+            var findPlayerGameCredentialResponse = await _gameServiceClient.FindPlayerGameCredentialAsync(findPlayerGameCredentialRequest);
+
+            var fetchDoxatagsRequest = new FetchDoxatagsRequest();
+
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(fetchDoxatagsRequest);
+
+            var findChallengePayoutRequest = new FindChallengePayoutRequest
             {
-                await _serviceBusPublisher.PublishTransactionCanceledIntegrationEventAsync(transactionId);
+                ChallengeId = challengeId
+            };
 
-                return this.BadRequest(JsonConvert.DeserializeObject<ValidationProblemDetails>(exception.Content));
-            }
+            var challengePayoutResponse = await _cashierServiceClient.FindChallengePayoutAsync(findChallengePayoutRequest);
+
+            var createTransactionRequest = new CreateTransactionRequest
+            {
+                Type = TransactionTypeDto.Charge,
+                Amount = challengePayoutResponse.Payout.EntryFee.Amount,
+                Currency = challengePayoutResponse.Payout.EntryFee.Currency,
+                Metadata =
+                {
+                    new Dictionary<string, string>
+                    {
+                        [nameof(ChallengeId)] = challengeId,
+                        [nameof(ParticipantId)] = participantId
+                    }
+                }
+            };
+
+            await _cashierServiceClient.CreateTransactionAsync(createTransactionRequest);
+
+            var registerChallengeParticipantRequest = new RegisterChallengeParticipantRequest
+            {
+                ChallengeId = challengeId,
+                GamePlayerId = findPlayerGameCredentialResponse.Credential.PlayerId,
+                ParticipantId = participantId
+            };
+
+            var participant = await _challengesServiceClient.RegisterChallengeParticipantAsync(registerChallengeParticipantRequest);
+
+            return this.Ok(ChallengeMapper.Map(challengePayoutResponse.Payout.ChallengeId, participant.Participant, fetchDoxatagsResponse.Doxatags));
         }
     }
 }

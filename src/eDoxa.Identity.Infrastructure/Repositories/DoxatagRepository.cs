@@ -38,11 +38,6 @@ namespace eDoxa.Identity.Infrastructure.Repositories
         {
             return DoxatagHistory.AsExpandable().Where(doxatag => doxatag.UserId == userId).OrderBy(doxatag => doxatag.Timestamp);
         }
-
-        private IQueryable<Doxatag> FetchDoxatagsByName(string name)
-        {
-            return DoxatagHistory.AsExpandable().Where(doxatag => doxatag.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
-        }
     }
 
     public sealed partial class DoxatagRepository : IDoxatagRepository
@@ -64,14 +59,14 @@ namespace eDoxa.Identity.Infrastructure.Repositories
 
         public async Task<IImmutableSet<int>> FetchDoxatagCodesByNameAsync(string name)
         {
-            var codes = await this.FetchDoxatagsByName(name).AsNoTracking().Select(doxatag => doxatag.Code).Distinct().ToListAsync();
+            var doxatags = await DoxatagHistory.AsNoTracking().AsExpandable().ToListAsync();
 
-            return codes.ToImmutableSortedSet();
+            return doxatags.Where(doxatag => doxatag.Name.Equals(name, StringComparison.OrdinalIgnoreCase)).Select(doxatag => doxatag.Code).Distinct().ToImmutableSortedSet();
         }
 
         public async Task<IImmutableSet<Doxatag>> FetchDoxatagsAsync()
         {
-            var doxatags = await DoxatagHistory.AsExpandable().ToListAsync();
+            var doxatags = await DoxatagHistory.AsNoTracking().AsExpandable().ToListAsync();
 
             return doxatags
                 .GroupBy(doxatag => doxatag.UserId)

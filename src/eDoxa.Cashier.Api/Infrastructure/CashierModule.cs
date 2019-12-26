@@ -6,20 +6,18 @@
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Areas.Accounts.Services;
-using eDoxa.Cashier.Api.Areas.Accounts.Services.Abstractions;
-using eDoxa.Cashier.Api.Areas.Challenges.Factories;
-using eDoxa.Cashier.Api.Areas.Challenges.Services;
-using eDoxa.Cashier.Api.Areas.Challenges.Services.Abstractions;
-using eDoxa.Cashier.Api.Areas.Challenges.Strategies;
-using eDoxa.Cashier.Api.Areas.Transactions.Services;
-using eDoxa.Cashier.Api.Areas.Transactions.Services.Abstractions;
+using eDoxa.Cashier.Api.Application.Factories;
+using eDoxa.Cashier.Api.Application.Services;
+using eDoxa.Cashier.Api.Application.Strategies;
+using eDoxa.Cashier.Api.Infrastructure.Data;
 using eDoxa.Cashier.Api.Infrastructure.Queries;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.Infrastructure.Repositories;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 namespace eDoxa.Cashier.Api.Infrastructure
 {
@@ -27,10 +25,15 @@ namespace eDoxa.Cashier.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Cleaner
+            builder.RegisterType<CashierDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            // Seeder
+            builder.RegisterType<CashierDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
+
             // Repositories
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
-            builder.RegisterType<TransactionRepository>().As<ITransactionRepository>().InstancePerLifetimeScope();
 
             // Queries
             builder.RegisterType<ChallengeQuery>().As<IChallengeQuery>().InstancePerLifetimeScope();
@@ -40,8 +43,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
             // Services
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
-            builder.RegisterType<BundlesService>().As<IBundlesService>().InstancePerLifetimeScope();
-            builder.RegisterType<TransactionService>().As<ITransactionService>().InstancePerLifetimeScope();
+            builder.RegisterType<BundleService>().As<IBundleService>().InstancePerLifetimeScope();
 
             // Strategies
             builder.RegisterType<ChallengePayoutStrategy>().As<IChallengePayoutStrategy>().SingleInstance();

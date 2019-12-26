@@ -7,6 +7,7 @@
 using System;
 using System.Linq;
 
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using IdentityModel;
@@ -17,24 +18,24 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class HttpContextExtensions
     {
-        private static string? GetClaimOrDefault(this HttpContext httpContext, string claimType)
+        public static string? GetClaimOrNull(this HttpContext httpContext, string claimType)
         {
             return httpContext.User?.Claims?.SingleOrDefault(claim => claim.Type == claimType)?.Value;
         }
 
+        public static string GetClaim(this HttpContext httpContext, string claimType)
+        {
+            return httpContext.GetClaimOrNull(claimType) ?? throw new InvalidOperationException(claimType);
+        }
+
         public static UserId GetUserId(this HttpContext httpContext)
         {
-            return UserId.Parse(httpContext.GetClaimOrDefault(JwtClaimTypes.Subject) ?? throw new ArgumentNullException(JwtClaimTypes.Subject));
+            return httpContext.GetClaim(JwtClaimTypes.Subject).ParseEntityId<UserId>();
         }
 
         public static string GetEmail(this HttpContext httpContext)
         {
-            return httpContext.GetClaimOrDefault(JwtClaimTypes.Email) ?? throw new ArgumentNullException(JwtClaimTypes.Email);
-        }
-
-        public static PlayerId GetPlayerId(this HttpContext httpContext, Game game)
-        {
-            return PlayerId.Parse(httpContext.GetClaimOrDefault($"games/{game.NormalizedName}") ?? throw new ArgumentNullException(nameof(Game)));
+            return httpContext.GetClaim(JwtClaimTypes.Email);
         }
     }
 }

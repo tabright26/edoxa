@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Requests";
+
+import "challenges_enums.proto";
+import "games_dtos.proto";
+import "games_enums.proto";
+
+package edoxa.services.challenges;
+
+message FetchChallengesRequest {
+  games.GameDto game = 1;
+  ChallengeStateDto state = 2;
+}
+
+message FindChallengeRequest {
+  string challengeId = 1;
+}
+
+message CreateChallengeRequest {
+  string name = 1;
+  games.GameDto game = 2;
+  ChallengeTypeDto type = 3;
+  int32 bestOf = 4;
+  int32 entries = 5;
+  int32 duration = 6;
+  map<string, float> scoring = 7;
+}
+
+message SynchronizeChallengeRequest {
+  string challengeId = 1;
+}
+
+message RegisterChallengeParticipantRequest {
+  string challengeId = 1;
+  string participantId = 2;
+  string gamePlayerId = 3;
+}
+
+message SnapshotChallengeParticipantRequest {
+  string challengeId = 1;
+  string gamePlayerId = 2;
+  repeated games.GameMatchDto matches = 3;
+}

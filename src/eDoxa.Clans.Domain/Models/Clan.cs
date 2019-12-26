@@ -26,10 +26,13 @@ namespace eDoxa.Clans.Domain.Models
             this.AddMember(new Member(Id, ownerId));
         }
 
+        #nullable disable
         private Clan()
         {
             //Requied by EF Core
         }
+
+        #nullable restore
 
         public string Name { get; private set; }
 

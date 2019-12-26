@@ -6,12 +6,16 @@ import {
   LOAD_CLAN_CANDIDATURE_FAIL,
   SEND_CLAN_CANDIDATURE_SUCCESS,
   ACCEPT_CLAN_CANDIDATURE_SUCCESS,
-  REFUSE_CLAN_CANDIDATURE_SUCCESS
-} from "./types";
+  DECLINE_CLAN_CANDIDATURE_SUCCESS
+} from "store/actions/clan/types";
 import { AxiosError } from "axios";
 
 const candidatures204Data = [];
-const candidatures200Data = [{ clanId: "0", userId: "1" }, { clanId: "10", userId: "11" }, { clanId: "100", userId: "111" }];
+const candidatures200Data = [
+  { clanId: "0", userId: "1" },
+  { clanId: "10", userId: "11" },
+  { clanId: "100", userId: "111" }
+];
 
 const candidature200Data = { clanId: "0", userId: "1" };
 
@@ -101,7 +105,7 @@ describe("candidatures reducer", () => {
   });
   it("should handle DECLINE_CANDIDATURE_SUCCESS", () => {
     const action: any = {
-      type: REFUSE_CLAN_CANDIDATURE_SUCCESS
+      type: DECLINE_CLAN_CANDIDATURE_SUCCESS
     };
     expect(reducer(initialState, action)).toEqual(initialState);
   });

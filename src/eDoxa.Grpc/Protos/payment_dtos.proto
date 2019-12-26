@@ -1,0 +1,36 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Dtos";
+
+package edoxa.services.payment;
+
+message StripeAccountDto {
+  bool enabled = 1;
+}
+
+message StripeBankAccountDto {
+  string bankName = 1;
+  string country = 2;
+  string currency = 3;
+  string last4 = 4;
+  string status = 5;
+  bool defaultForCurrency = 6;
+}
+
+message StripeCustomerDto {
+  string defaultPaymentMethodId = 1;
+}
+
+message StripePaymentMethodCardDto {
+  string brand = 1;
+  string country = 2;
+  int64 expMonth = 3;
+  int64 expYear = 4;
+  string last4 = 5;
+}
+
+message StripePaymentMethodDto {
+  string id = 1;
+  string type = 2;
+  StripePaymentMethodCardDto card = 3;
+}

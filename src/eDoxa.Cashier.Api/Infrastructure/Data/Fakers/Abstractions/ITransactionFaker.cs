@@ -6,7 +6,7 @@
 
 using System.Collections.Generic;
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions
 {

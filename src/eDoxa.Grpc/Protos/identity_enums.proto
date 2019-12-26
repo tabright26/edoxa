@@ -1,0 +1,28 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Enums";
+
+package edoxa.services.identity;
+
+enum CountryDto {
+  COUNTRY_DTO_NONE = 0;
+  COUNTRY_DTO_CANADA = 1;
+  COUNTRY_DTO_UNITED_STATES = 2;
+  COUNTRY_DTO_ALL = -1;
+}
+
+enum GenderDto {
+  GENDER_DTO_NONE = 0;
+  GENDER_DTO_MALE = 1;
+  GENDER_DTO_FEMALE = 2;
+  GENDER_DTO_OTHER = 4;
+  GENDER_DTO_ALL = -1;
+}
+
+enum AddressTypeDto {
+  ADDRESS_TYPE_DTO_NONE = 0;
+  ADDRESS_TYPE_DTO_PRINCIPAL = 1;
+  ADDRESS_TYPE_DTO_BILLING = 2;
+  ADDRESS_TYPE_DTO_DELIVERY = 4;
+  ADDRESS_TYPE_DTO_ALL = -1;
+}

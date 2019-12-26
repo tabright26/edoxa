@@ -28,10 +28,14 @@ namespace eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate
             Timestamp = provider.DateTime;
         }
 
+        #nullable disable
+
         private Doxatag()
         {
             // Required by EF Core.
         }
+
+        #nullable restore
 
         public Guid UserId { get; private set; }
 

@@ -6,8 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Abstractions.Adapter;
-using eDoxa.Seedwork.Application.Dtos;
+using eDoxa.Games.Domain.Adapters;
+using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.Extensions.Options;
@@ -25,9 +25,9 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public Game Game => Game.LeagueOfLegends;
 
-        public async Task<ScoringDto> GetScoringAsync()
+        public async Task<Scoring> GetScoringAsync()
         {
-            return await Task.FromResult(new ScoringDto(Options.Scoring));
+            return await Task.FromResult(new Scoring(Options.Scoring));
         }
     }
 }

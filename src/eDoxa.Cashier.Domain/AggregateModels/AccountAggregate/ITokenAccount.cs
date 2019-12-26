@@ -1,16 +1,24 @@
 ﻿// Filename: ITokenAccount.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Cashier.Domain.AggregateModels.TransactionAggregate;
+using System;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
-    public interface ITokenAccount : IAccount<Token>
+    public interface ITokenAccount : IAccount
     {
-        ITransaction Reward(Token amount);
+        DateTime? LastDeposit { get; }
+
+        ITransaction Deposit(Token amount);
+
+        ITransaction Charge(Token amount, TransactionMetadata? metadata = null);
+
+        ITransaction Payout(Token amount, TransactionMetadata? metadata = null);
+
+        ITransaction Reward(Token amount, TransactionMetadata? metadata = null);
 
         bool IsDepositAvailable();
 

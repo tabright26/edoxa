@@ -1,5 +1,5 @@
 ﻿// Filename: Challenge.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -58,18 +58,6 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
 
         public IReadOnlyCollection<Participant> Participants => _participants;
 
-        public void Register(Participant participant)
-        {
-            if (!this.CanRegister(participant))
-            {
-                throw new InvalidOperationException();
-            }
-
-            _participants.Add(participant);
-
-            this.AddDomainEvent(new ChallengeParticipantRegisteredDomainEvent(Id, participant.Id));
-        }
-
         public void Start(IDateTimeProvider startedAt)
         {
             if (!this.CanStart())
@@ -80,16 +68,16 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             Timeline = Timeline.Start(startedAt);
         }
 
-        public void Close(IDateTimeProvider closedAt)
+        public void Register(Participant participant)
         {
-            if (!this.CanClose())
+            if (!this.CanRegister(participant))
             {
                 throw new InvalidOperationException();
             }
 
-            Timeline = Timeline.Close(closedAt);
+            _participants.Add(participant);
 
-            this.AddDomainEvent(new ChallengeClosedDomainEvent(this));
+            this.AddDomainEvent(new ChallengeParticipantRegisteredDomainEvent(Id, participant.Id, participant.UserId));
         }
 
         public void Synchronize(IDateTimeProvider synchronizedAt)
@@ -100,6 +88,36 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             SynchronizedAt = synchronizedAt.DateTime;
+
+            if (this.CanClose())
+            {
+                this.AddDomainEvent(new ChallengeSynchronizedDomainEvent(this));
+            }
+        }
+
+        public void Close(IDateTimeProvider closedAt)
+        {
+            if (!this.CanClose())
+            {
+                throw new InvalidOperationException();
+            }
+
+            Timeline = Timeline.Close(closedAt);
+        }
+
+        public bool ParticipantExists(PlayerId gamePlayerId)
+        {
+            return Participants.Any(participant => participant.PlayerId == gamePlayerId);
+        }
+
+        public Participant FindParticipant(PlayerId gamePlayerId)
+        {
+            if (!this.ParticipantExists(gamePlayerId))
+            {
+                throw new InvalidOperationException();
+            }
+
+            return Participants.Single(participant => participant.PlayerId == gamePlayerId);
         }
 
         public bool ParticipantExists(UserId userId)
@@ -107,19 +125,9 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return Participants.Any(participant => participant.UserId == userId);
         }
 
-        public bool CanSynchronize(Participant participant)
+        public bool CanSynchronize()
         {
-            return participant.SynchronizedAt < Timeline.EndedAt;
-        }
-
-        private bool CanRegister(Participant participant)
-        {
-            return !SoldOut && !this.ParticipantExists(participant.UserId);
-        }
-
-        private bool CanStart()
-        {
-            return Participants.Count == Entries;
+            return Timeline != ChallengeState.Inscription && Timeline != ChallengeState.Closed && Timeline.StartedAt.HasValue && Timeline.EndedAt.HasValue;
         }
 
         public bool CanClose()
@@ -127,9 +135,24 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return Timeline == ChallengeState.Ended && Participants.All(participant => !this.CanSynchronize(participant));
         }
 
-        public bool CanSynchronize()
+        public bool CanDelete()
         {
-            return Timeline != ChallengeState.Inscription && Timeline != ChallengeState.Closed && Timeline.StartedAt.HasValue && Timeline.EndedAt.HasValue;
+            return Timeline == ChallengeState.Inscription;
+        }
+
+        private bool CanStart()
+        {
+            return Participants.Count == Entries;
+        }
+
+        private bool CanRegister(Participant participant)
+        {
+            return !SoldOut && !this.ParticipantExists(participant.UserId);
+        }
+
+        private bool CanSynchronize(Participant participant)
+        {
+            return participant.SynchronizedAt < Timeline.EndedAt;
         }
     }
 

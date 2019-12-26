@@ -1,23 +1,23 @@
-﻿// Filename: WebApiFactory.cs
-// Date Created: 2019-08-11
+﻿// Filename: WebHostFactory.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
+using System.IO;
 using System.Security.Claims;
 
 using Autofac;
 
 using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Seedwork.TestHelper.Fakes;
 using eDoxa.Seedwork.TestHelper.Modules;
 
-using IdentityModel;
+using IdentityServer4.AccessTokenValidation;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.TestHelper
 {
@@ -26,30 +26,49 @@ namespace eDoxa.Seedwork.TestHelper
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.ConfigureTestServices(this.ConfigureTestServices);
-            
-            builder.ConfigureTestContainer<ContainerBuilder>(this.ContainerTestBuilder);
+            builder.UseEnvironment("Test");
+
+            builder.UseContentRoot(Directory.GetCurrentDirectory());
         }
 
-        public WebApplicationFactory<TStartup> WithDefaultClaims()
-        {
-            return this.WithClaims(new Claim(JwtClaimTypes.Subject, Guid.NewGuid().ToString()));
-        }
-
-        public virtual WebApplicationFactory<TStartup> WithClaims(params Claim[] claims)
+        public WebApplicationFactory<TStartup> WithClaimsFromDefaultAuthentication(params Claim[] claims)
         {
             return this.WithWebHostBuilder(
                 builder =>
                 {
-                    builder.ConfigureTestServices(services => services.AddFakeAuthentication(options => options.Claims = claims));
+                    builder.ConfigureTestServices(
+                        services =>
+                        {
+                            services.AddTestAuthentication(
+                                options =>
+                                {
+                                    options.Claims = claims;
+                                    options.AuthenticationScheme = nameof(TestAuthenticationHandler);
+                                });
+                        });
 
                     builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
-                }
-            );
+                });
         }
 
-        protected abstract void ConfigureTestServices(IServiceCollection services);
+        public WebApplicationFactory<TStartup> WithClaimsFromBearerAuthentication(params Claim[] claims)
+        {
+            return this.WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestServices(
+                        services =>
+                        {
+                            services.AddTestAuthentication(
+                                options =>
+                                {
+                                    options.Claims = claims;
+                                    options.AuthenticationScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                                });
+                        });
 
-        protected abstract void ContainerTestBuilder(ContainerBuilder builder);
+                    builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
+                });
+        }
     }
 }

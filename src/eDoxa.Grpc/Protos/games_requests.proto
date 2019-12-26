@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Requests";
+
+import "games_dtos.proto";
+import "games_enums.proto";
+import "challenges_enums.proto";
+
+package edoxa.services.games;
+
+message FetchChallengeScoringRequest {
+  GameDto game = 1;
+  services.challenges.ChallengeTypeDto challengeType = 2;
+}
+
+message FetchChallengeMatchesRequest {
+  GameDto game = 1;
+  repeated GameParticipantDto participants = 2;
+}
+
+message FindPlayerGameCredentialRequest {
+  GameDto game = 1;
+}
