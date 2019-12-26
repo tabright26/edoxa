@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -25,8 +26,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
