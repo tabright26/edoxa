@@ -14,3 +14,7 @@ message FetchChallengeMatchesResponse {
   string gamePlayerId = 1;
   repeated GameMatchDto matches = 2;
 }
+
+message FindPlayerGameCredentialResponse {
+  GameCredentialDto credential = 1;
+}

@@ -64,7 +64,7 @@ static_resources:
     lb_policy: ROUND_ROBIN
     hosts:
     - socket_address:
-        address: payment.api
+        address: payment-api
         port_value: 80
   - name: identity-api
     connect_timeout: 0.25s
@@ -73,7 +73,7 @@ static_resources:
     lb_policy: ROUND_ROBIN
     hosts:
     - socket_address:
-        address: identity.api
+        address: identity-api
         port_value: 80
   - name: cashier-api
     connect_timeout: 0.25s
@@ -82,7 +82,7 @@ static_resources:
     lb_policy: ROUND_ROBIN
     hosts:
     - socket_address:
-        address: cashier.api
+        address: cashier-api
         port_value: 80
   - name: games-api
     connect_timeout: 0.25s
@@ -91,7 +91,7 @@ static_resources:
     lb_policy: ROUND_ROBIN
     hosts:
     - socket_address:
-        address: games.api
+        address: games-api
         port_value: 80
   - name: clans-api
     connect_timeout: 0.25s
@@ -100,7 +100,7 @@ static_resources:
     lb_policy: ROUND_ROBIN
     hosts:
     - socket_address:
-        address: clans.api
+        address: clans-api
         port_value: 80
   - name: challenges-web-aggregator
     connect_timeout: 30s
@@ -109,7 +109,7 @@ static_resources:
     lb_policy: ROUND_ROBIN
     hosts:
     - socket_address:
-        address: challenges.web.aggregator
+        address: challenges-web-aggregator
         port_value: 80
 
 admin:

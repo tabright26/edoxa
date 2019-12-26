@@ -15,38 +15,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Protos\clans_dtos.proto" />
-    <None Include="Protos\clans_integration_events.proto" />
-    <None Include="Protos\clans_requests.proto" />
-    <None Include="Protos\clans_responses.proto" />
-    <None Include="Protos\clans_services.proto" />
-    <None Include="Protos\challenges_aggregates.proto" />
-    <None Include="Protos\challenges_dtos.proto" />
-    <None Include="Protos\challenges_integration_events.proto" />
-    <None Include="Protos\challenges_requests.proto" />
-    <None Include="Protos\challenges_responses.proto" />
-    <None Include="Protos\challenges_services.proto" />
-    <None Include="Protos\cashier_integration_events.proto" />
-    <None Include="Protos\cashier_requests.proto" />
-    <None Include="Protos\cashier_responses.proto" />
-    <None Include="Protos\cashier_services.proto" />
-    <None Include="Protos\games_dtos.proto" />
-    <None Include="Protos\games_integration_events.proto" />
-    <None Include="Protos\games_requests.proto" />
-    <None Include="Protos\games_responses.proto" />
-    <None Include="Protos\games_services.proto" />
-    <None Include="Protos\identity_dtos.proto" />
-    <None Include="Protos\identity_integration_events.proto" />
-    <None Include="Protos\identity_requests.proto" />
-    <None Include="Protos\identity_responses.proto" />
-    <None Include="Protos\identity_services.proto" />
-    <None Include="Protos\payment_integration_events.proto" />
-    <None Include="Protos\payment_requests.proto" />
-    <None Include="Protos\payment_responses.proto" />
-    <None Include="Protos\payment_services.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Protobuf Include="Protos\clans_services.proto" GrpcServices="Both" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\challenges_services.proto" GrpcServices="Both" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\cashier_services.proto" GrpcServices="Both" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\games_services.proto" GrpcServices="Both" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\identity_services.proto" GrpcServices="Both" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\payment_services.proto" GrpcServices="Both" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\challenges_aggregates.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\clans_requests.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\challenges_requests.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\cashier_requests.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\games_requests.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\identity_requests.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\payment_requests.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\clans_responses.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\challenges_responses.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\games_responses.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\identity_responses.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\payment_responses.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\cashier_responses.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\cashier_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\challenges_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\clans_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\games_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\identity_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\payment_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\cashier_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\challenges_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\clans_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\games_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\identity_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\payment_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\custom_types.proto" GrpcServices="None" />
     <Protobuf Include="Protos\identity_enums.proto" GrpcServices="None" />
     <Protobuf Include="Protos\clans_enums.proto" GrpcServices="None" />

@@ -8,9 +8,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace eDoxa.Seedwork.TestHelper.DelegatingHandlers
+namespace eDoxa.Seedwork.Application.DelegatingHandlers
 {
-    internal sealed class VersionDelegatingHandler : DelegatingHandler
+    public sealed class VersionDelegatingHandler : DelegatingHandler
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

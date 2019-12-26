@@ -1,6 +1,6 @@
-﻿// Filename: InformationsPutRequestValidator.cs
-// Date Created: 2019-08-22
-//
+﻿// Filename: UpdateProfileRequestValidator.cs
+// Date Created: 2019-12-18
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 

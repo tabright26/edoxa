@@ -8,11 +8,13 @@ using Autofac;
 
 using eDoxa.Games.Api.Application.Factories;
 using eDoxa.Games.Api.Application.Services;
+using eDoxa.Games.Api.Infrastructure.Data;
 using eDoxa.Games.Domain.Factories;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.Domain.Services;
 using eDoxa.Games.Infrastructure.Repositories;
 using eDoxa.Games.LeagueOfLegends;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 namespace eDoxa.Games.Api.Infrastructure
 {
@@ -20,6 +22,12 @@ namespace eDoxa.Games.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // Cleaner
+            builder.RegisterType<GamesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            // Seeder
+            builder.RegisterType<GamesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
+
             // Repositories
             builder.RegisterType<GameCredentialRepository>().As<IGameCredentialRepository>().InstancePerLifetimeScope();
             builder.RegisterType<GameAuthenticationRepository>().As<IGameAuthenticationRepository>().SingleInstance();

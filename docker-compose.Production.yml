@@ -13,8 +13,8 @@ services:
   seq:
     image: datalust/seq:latest
 
-  identity.api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/identity.api:${ACR_TAG:-latest}
+  identity-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/identity-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Identity.Api/Dockerfile
@@ -23,8 +23,8 @@ services:
       - mssql
       - redis
 
-  cashier.api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/cashier.api:${ACR_TAG:-latest}
+  cashier-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/cashier-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
@@ -32,8 +32,8 @@ services:
       - seq
       - mssql
 
-  payment.api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/payment.api:${ACR_TAG:-latest}
+  payment-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/payment-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Payment.Api/Dockerfile
@@ -41,18 +41,17 @@ services:
       - seq
       - mssql
 
-  notifications.api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/notifications.api:${ACR_TAG:-latest}
+  notifications-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/notifications-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Notifications.Api/Dockerfile
     depends_on:
       - seq      
       - mssql
-      - redis
 
-  games.api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/games.api:${ACR_TAG:-latest}
+  games-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/games-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Games.Api/Dockerfile
@@ -61,52 +60,50 @@ services:
       - mssql
       - redis
 
-  clans.api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/clans.api:${ACR_TAG:-latest}
+  clans-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/clans-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Clans.Api/Dockerfile
     depends_on:
       - seq
       - mssql
-      - redis
 
-  challenges.api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.api:${ACR_TAG:-latest}
+  challenges-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
     depends_on:
       - seq   
       - mssql
-      - redis
 
-  challenges.worker:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.worker:${ACR_TAG:-latest}
+  challenges-worker:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-worker:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Worker/Dockerfile
     depends_on:
       - seq
 
-  challenges.web.aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.aggregator:${ACR_TAG:-latest}
+  challenges-web-aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-web-aggregator:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
     depends_on:
       - seq
 
-  challenges.web.gateway:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges.web.gateway:${ACR_TAG:-latest}
+  challenges-web-gateway:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-web-gateway:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Gateway/Dockerfile
     depends_on:
       - seq
 
-  web.spa:
-    image: ${ACR_REGISTRY:-edoxa}/prod/web.spa:${ACR_TAG:-latest}
+  web-spa:
+    image: ${ACR_REGISTRY:-edoxa}/prod/web-spa:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Spa/Dockerfile-prod
@@ -114,8 +111,8 @@ services:
       - seq
       - redis
 
-  web.status:
-    image: ${ACR_REGISTRY:-edoxa}/prod/web.status:${ACR_TAG:-latest}
+  web-status:
+    image: ${ACR_REGISTRY:-edoxa}/prod/web-status:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Status/Dockerfile

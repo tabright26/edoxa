@@ -53,7 +53,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
 
             var participant = challenge.Participants.First();
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, participant.UserId.ToString()));
 
             _httpClient = factory.CreateClient();
             var server = factory.Server;

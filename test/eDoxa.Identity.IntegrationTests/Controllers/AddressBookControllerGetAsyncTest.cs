@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -25,8 +26,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
@@ -46,12 +45,12 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             return await _httpClient.GetAsync("api/address-book");
         }
 
-        [Fact(Skip = "Bearer authentication mock bug since .NET Core 3.0")]
+        [Fact]
         public async Task ShouldBeHttpStatusCodeNoContent()
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -75,12 +74,12 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
-        [Fact(Skip = "Bearer authentication mock bug since .NET Core 3.0")]
+        [Fact]
         public async Task ShouldBeHttpStatusCodeOK()
         {
             var users = TestData.FileStorage.GetUsers();
             var user = users.First();
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+            var factory = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

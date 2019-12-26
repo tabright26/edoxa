@@ -17,7 +17,9 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             {
                 "DoxatagName",
                 "Doxa_Tag_Name",
-                "aaaaaaaaaaaaaaaa"
+                "aaaaaaaaaaaaaaaa",
+                "DoxatagName1",
+                "DoxatagName_"
             };
 
         public static TheoryData<string, string> InvalidNameData =>
@@ -27,9 +29,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
                 {"D", DoxatagErrorDescriber.Length()},
                 {"aaaaaaaaaaaaaaaaa", DoxatagErrorDescriber.Length()},
                 {"@DoxatagName", DoxatagErrorDescriber.Invalid()},
-                {"DoxatagName1", DoxatagErrorDescriber.Invalid()},
-                {"_DoxatagName", DoxatagErrorDescriber.InvalidUnderscore()},
-                {"DoxatagName_", DoxatagErrorDescriber.InvalidUnderscore()}
+                {"_DoxatagName", DoxatagErrorDescriber.InvalidUnderscore()}
             };
     }
 }

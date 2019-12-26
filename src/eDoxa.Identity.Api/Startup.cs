@@ -14,7 +14,6 @@ using Autofac;
 
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Infrastructure;
-using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
@@ -26,6 +25,7 @@ using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
+using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -37,6 +37,7 @@ using eDoxa.Seedwork.Security.DataProtection.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -58,7 +59,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,7 +68,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Identity.Api
 {
-    public sealed class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -93,7 +93,10 @@ namespace eDoxa.Identity.Api
         public IWebHostEnvironment HostingEnvironment { get; }
 
         private IdentityAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
@@ -187,7 +190,7 @@ namespace eDoxa.Identity.Api
 
             services.AddMvc()
                 .AddCustomNewtonsoftJson()
-                .AddDevTools<IdentityDbContextSeeder, IdentityDbContextCleaner>()
+                .AddDevTools()
                 .AddRazorPagesOptions(
                     options =>
                     {
@@ -201,18 +204,11 @@ namespace eDoxa.Identity.Api
                         config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                     });
 
-            services.AddApiVersioning(
-                options =>
-                {
-                    options.ReportApiVersions = true;
-                    options.AssumeDefaultVersionWhenUnspecified = true;
-                    options.DefaultApiVersion = new ApiVersion(1, 0);
-                    options.ApiVersionReader = new HeaderApiVersionReader();
-                });
-
-            services.AddVersionedApiExplorer();
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
             services.AddCustomAutoMapper(typeof(Startup), typeof(IdentityDbContext));
+
+            services.AddMediatR(typeof(Startup));
 
             services.AddIdentityServer(
                     options =>
@@ -242,8 +238,6 @@ namespace eDoxa.Identity.Api
                 .AddProfileService<CustomProfileService>();
 
             services.AddTransient<IProfileService, CustomProfileService>();
-
-            services.AddMediatR(Assembly.GetAssembly(typeof(Startup)));
 
             //services.AddAuthentication().AddIdentityServerJwt();
 
@@ -304,6 +298,105 @@ namespace eDoxa.Identity.Api
                 });
 
             application.UseSwagger(AppSettings);
+
+            subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<IdentityAppSettings>(Configuration);
+
+            services.AddDbContext<IdentityDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString(),
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddIdentity<User, Role>(
+                    options =>
+                    {
+                        options.Password.RequireDigit = true;
+                        options.Password.RequiredLength = 8;
+                        options.Password.RequiredUniqueChars = 1;
+                        options.Password.RequireLowercase = true;
+                        options.Password.RequireNonAlphanumeric = true;
+                        options.Password.RequireUppercase = true;
+                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                        options.Lockout.MaxFailedAccessAttempts = 5;
+                        options.User.RequireUniqueEmail = true;
+                        options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
+                        options.ClaimsIdentity.UserNameClaimType = CustomClaimTypes.Doxatag;
+                        options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
+                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
+                        options.SignIn.RequireConfirmedPhoneNumber = false;
+                        options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
+                    })
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddDefaultTokenProviders()
+                .AddUserStore<UserRepository>()
+                .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
+                .AddUserManager<UserService>()
+                .AddSignInManager<SignInService>()
+                .AddRoleManager<RoleService>();
+
+            services.AddScoped<UserRepository>();
+            services.AddScoped<CustomUserClaimsPrincipalFactory>();
+            services.AddScoped<UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<SignInService>();
+            services.AddScoped<ISignInService, SignInService>();
+            services.AddScoped<RoleService>();
+            services.AddScoped<IRoleService, RoleService>();
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails();
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(IdentityDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<IdentityModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<IdentityGrpcService>();
+
+                endpoints.MapControllers();
+            });
 
             subscriber.UseIntegrationEventSubscriptions();
         }

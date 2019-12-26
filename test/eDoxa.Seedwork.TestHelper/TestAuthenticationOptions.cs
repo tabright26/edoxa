@@ -13,8 +13,10 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace eDoxa.Seedwork.TestHelper.Fakes
 {
-    public class FakeAuthenticationOptions : AuthenticationSchemeOptions
+    public sealed class TestAuthenticationOptions : AuthenticationSchemeOptions
     {
+        public string AuthenticationScheme { get; set; }
+
         public IEnumerable<Claim> Claims { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// Filename: CreateAddressRequestValidatorTest.cs
-// Date Created: 2019-11-28
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -28,8 +28,8 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public static TheoryData<CountryDto, string> InvalidCountries =>
             new TheoryData<CountryDto, string>
             {
-                {CountryDto.None, ""},  // TODO: Add error message.
-                {CountryDto.All, ""}    // TODO: Add error message.
+                {CountryDto.None, AddressBookErrorDescriber.CountryInvalid()},
+                {CountryDto.All, AddressBookErrorDescriber.CountryInvalid()}
             };
 
         public static TheoryData<string> ValidLine1Address =>
@@ -104,7 +104,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
                 {"1234.5", AddressBookErrorDescriber.PostalCodeInvalidError()}
             };
 
-        [Theory(Skip = "TODO")]
+        [Theory]
         [MemberData(nameof(ValidCountries))]
         public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(CountryDto country)
         {
@@ -115,7 +115,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.Country, country);
         }
 
-        [Theory(Skip = "TODO")]
+        [Theory]
         [MemberData(nameof(InvalidCountries))]
         public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(CountryDto country, string errorMessage)
         {

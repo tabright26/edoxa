@@ -1,5 +1,5 @@
 // Filename: Startup.cs
-// Date Created: 2019-12-04
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -37,8 +37,6 @@ using Hellang.Middleware.ProblemDetails;
 
 using IdentityServer4.AccessTokenValidation;
 
-using MediatR;
-
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +47,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Cashier.Web.Aggregator
 {
-    public sealed class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -72,7 +70,10 @@ namespace eDoxa.Cashier.Web.Aggregator
         public IConfiguration Configuration { get; }
 
         private CashierWebAggregatorAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<CashierWebAggregatorAppSettings>(Configuration);
@@ -93,8 +94,6 @@ namespace eDoxa.Cashier.Web.Aggregator
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
             services.AddCustomAutoMapper(typeof(Startup));
-
-            services.AddMediatR(typeof(Startup));
 
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(
@@ -163,6 +162,39 @@ namespace eDoxa.Cashier.Web.Aggregator
                 });
 
             application.UseSwagger(AppSettings);
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddCustomCors();
+
+            services.AddCustomProblemDetails(options => options.MapRpcException());
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }

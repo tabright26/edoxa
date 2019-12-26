@@ -33,18 +33,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Infrastructure
         public string CashierUrl { get; set; }
 
         [Required]
-        public string PaymentUrl { get; set; }
-
-        [Required]
         public string ChallengesUrl { get; set; }
 
         [Required]
         public string GamesUrl { get; set; }
-
-        [Required]
-        public string ClansUrl { get; set; }
-
-        [Required]
-        public string NotificationsUrl { get; set; }
     }
 }

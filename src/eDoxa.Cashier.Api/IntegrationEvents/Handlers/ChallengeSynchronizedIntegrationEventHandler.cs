@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
 
                 var scoreboard = new Scoreboard(
                     challenge.Payout,
-                    integrationEvent.Scoreboard.ToDictionary(position => position.Key.ParseEntityId<UserId>(), position => position.Value?.ToDecimal()));
+                    integrationEvent.Scoreboard.ToDictionary(participant => participant.UserId.ParseEntityId<UserId>(), participant => participant.Score?.ToDecimal()));
 
                 var result = await _accountService.PayoutChallengeAsync(scoreboard);
 

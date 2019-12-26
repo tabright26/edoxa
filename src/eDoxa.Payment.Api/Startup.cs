@@ -13,7 +13,6 @@ using Autofac;
 
 using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
-using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Api.Services;
 using eDoxa.Payment.Infrastructure;
@@ -32,6 +31,7 @@ using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using FluentValidation;
 
@@ -50,7 +50,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Payment.Api
 {
-    public class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -72,7 +72,10 @@ namespace eDoxa.Payment.Api
         public IConfiguration Configuration { get; }
 
         public PaymentAppSettings AppSettings { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
@@ -103,7 +106,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomProblemDetails(options => options.MapStripeException());
 
-            services.AddCustomControllers<Startup>().AddDevTools<PaymentDbContextSeeder, PaymentDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -158,6 +161,72 @@ namespace eDoxa.Payment.Api
             application.UseSwagger(AppSettings);
 
             application.UseStripe(Configuration);
+
+            subscriber.UseIntegrationEventSubscriptions();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddOptions();
+
+            services.AddStripe(Configuration);
+
+            services.AddAppSettings<PaymentAppSettings>(Configuration);
+
+            services.AddDbContext<PaymentDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString()!,
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails(options => options.MapStripeException());
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(PaymentDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<PaymentModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<PaymentGrpcService>();
+
+                endpoints.MapControllers();
+            });
 
             subscriber.UseIntegrationEventSubscriptions();
         }

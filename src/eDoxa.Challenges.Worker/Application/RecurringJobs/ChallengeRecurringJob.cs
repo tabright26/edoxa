@@ -4,9 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Challenges.Enums;
 using eDoxa.Grpc.Protos.Challenges.Requests;
 using eDoxa.Grpc.Protos.Challenges.Services;
@@ -30,17 +32,36 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
             _gameServiceClient = gameServiceClient;
         }
 
-        public async Task SynchronizeChallengeAsync(GameDto game)
+        private async Task<IEnumerable<ChallengeDto>> FetchChallengesAsync(GameDto game)
         {
-            var fetchChallengesRequest = new FetchChallengesRequest
+            var challenges = new List<ChallengeDto>();
+
+            var fetchInProgressChallengesRequest = new FetchChallengesRequest
             {
                 Game = game,
                 State = ChallengeStateDto.InProgress
             };
 
-            var fetchChallengesResponse = await _challengeServiceClient.FetchChallengesAsync(fetchChallengesRequest);
+            var fetchInProgressChallengesResponse = await _challengeServiceClient.FetchChallengesAsync(fetchInProgressChallengesRequest);
 
-            foreach (var challenge in fetchChallengesResponse.Challenges)
+            challenges.AddRange(fetchInProgressChallengesResponse.Challenges);
+
+            var fetchEndedChallengesRequest = new FetchChallengesRequest
+            {
+                Game = game,
+                State = ChallengeStateDto.Ended
+            };
+
+            var fetchEndedChallengesResponse = await _challengeServiceClient.FetchChallengesAsync(fetchEndedChallengesRequest);
+
+            challenges.AddRange(fetchEndedChallengesResponse.Challenges);
+
+            return challenges;
+        }
+
+        public async Task SynchronizeChallengesAsync(GameDto game)
+        {
+            foreach (var challenge in await this.FetchChallengesAsync(game))
             {
                 var fetchChallengeMatchesRequest = new FetchChallengeMatchesRequest
                 {
@@ -74,12 +95,15 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
                     await _challengeServiceClient.SnapshotChallengeParticipantAsync(snapshotChallengeParticipantRequest);
                 }
 
-                var synchronizeChallengeRequest = new SynchronizeChallengeRequest
+                if (challenge.State == ChallengeStateDto.Ended)
                 {
-                    ChallengeId = challenge.Id
-                };
+                    var synchronizeChallengeRequest = new SynchronizeChallengeRequest
+                    {
+                        ChallengeId = challenge.Id
+                    };
 
-                await _challengeServiceClient.SynchronizeChallengeAsync(synchronizeChallengeRequest);
+                    await _challengeServiceClient.SynchronizeChallengeAsync(synchronizeChallengeRequest);
+                }
             }
         }
     }

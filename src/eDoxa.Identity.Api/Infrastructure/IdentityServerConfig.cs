@@ -85,7 +85,7 @@ namespace eDoxa.Identity.Api.Infrastructure
 
             yield return new Client
             {
-                ClientId = "web.spa",
+                ClientId = "web-spa",
                 ClientName = "Web Spa",
                 AllowedCorsOrigins = new HashSet<string>
                 {

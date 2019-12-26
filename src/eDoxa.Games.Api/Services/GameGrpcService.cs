@@ -4,8 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+
+using AutoMapper;
 
 using eDoxa.Games.Domain.Services;
 using eDoxa.Grpc.Extensions;
@@ -13,20 +16,50 @@ using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Responses;
 using eDoxa.Grpc.Protos.Games.Services;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Grpc.Core;
+
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Games.Api.Services
 {
     public sealed class GameGrpcService : GameService.GameServiceBase
     {
         private readonly IChallengeService _challengeService;
+        private readonly IGameCredentialService _gameCredentialService;
+        private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public GameGrpcService(IChallengeService challengeService)
+        public GameGrpcService(IChallengeService challengeService, IGameCredentialService gameCredentialService, IMapper mapper, ILogger<GameGrpcService> logger)
         {
             _challengeService = challengeService;
+            _gameCredentialService = gameCredentialService;
+            _mapper = mapper;
+            _logger = logger;
+        }
+
+        public override async Task<FindPlayerGameCredentialResponse> FindPlayerGameCredential(FindPlayerGameCredentialRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var credential = await _gameCredentialService.FindCredentialAsync(userId, request.Game.ToEnumeration<Game>());
+
+            if (credential == null)
+            {
+                throw context.NotFoundRpcException("Game credential not found.");
+            }
+
+            var response = new FindPlayerGameCredentialResponse
+            {
+                Credential = _mapper.Map<GameCredentialDto>(credential)
+            };
+
+            return context.Ok(response);
         }
 
         public override async Task<FetchChallengeScoringResponse> FetchChallengeScoring(FetchChallengeScoringRequest request, ServerCallContext context)
@@ -50,31 +83,49 @@ namespace eDoxa.Games.Api.Services
             {
                 var gamePlayerId = participant.PlayerId.ParseStringId<PlayerId>();
 
-                var matches = await _challengeService.GetMatchesAsync(
-                    request.Game.ToEnumeration<Game>(),
-                    gamePlayerId,
-                    participant.StartedAt.ToDateTime(),
-                    participant.EndedAt.ToDateTime());
+                var participantId = participant.Id.ParseEntityId<ParticipantId>();
 
-                var response = new FetchChallengeMatchesResponse
+                var game = request.Game.ToEnumeration<Game>();
+
+                try
                 {
-                    GamePlayerId = gamePlayerId,
-                    Matches =
-                    {
-                        matches.Select(
-                            match => new GameMatchDto
-                            {
-                                GameUuid = match.GameUuid,
-                                Timestamp = match.Timestamp.ToTimestampUtc(),
-                                Stats =
-                                {
-                                    match.Stats
-                                }
-                            })
-                    }
-                };
+                    var matches = await _challengeService.GetMatchesAsync(
+                        game,
+                        gamePlayerId,
+                        participant.StartedAt.ToDateTime(),
+                        participant.EndedAt.ToDateTime());
 
-                await responseStream.WriteAsync(response);
+                    var response = new FetchChallengeMatchesResponse
+                    {
+                        GamePlayerId = gamePlayerId,
+                        Matches =
+                        {
+                            matches.Select(
+                                match => new GameMatchDto
+                                {
+                                    GameUuid = match.GameUuid,
+                                    Timestamp = match.Timestamp.ToTimestampUtc(),
+                                    Stats =
+                                    {
+                                        match.Stats
+                                    }
+                                })
+                        }
+                    };
+
+                    await responseStream.WriteAsync(response);
+                }
+                catch (Exception exception)
+                {
+                    _logger.LogCritical(exception, $"Failed to fetch {game} matches for the participant '{participantId}'. (gamePlayerId=\"{gamePlayerId}\")");
+
+                    var response = new FetchChallengeMatchesResponse
+                    {
+                        GamePlayerId = gamePlayerId
+                    };
+
+                    await responseStream.WriteAsync(response);
+                }
             }
         }
     }

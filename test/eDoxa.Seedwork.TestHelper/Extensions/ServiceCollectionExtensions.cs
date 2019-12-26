@@ -1,5 +1,5 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-08-11
+// Date Created: 2019-11-25
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -14,16 +14,19 @@ namespace eDoxa.Seedwork.TestHelper.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        internal static void AddFakeAuthentication(this IServiceCollection services, Action<FakeAuthenticationOptions> configureOptions)
+        internal static void AddTestAuthentication(this IServiceCollection services, Action<TestAuthenticationOptions> configureOptions)
         {
+            var authenticationOptions = new TestAuthenticationOptions();
+
+            configureOptions(authenticationOptions);
+
             services.AddAuthentication(
                     options =>
                     {
-                        options.DefaultAuthenticateScheme = nameof(FakeAuthenticationHandler);
-                        options.DefaultChallengeScheme = nameof(FakeAuthenticationHandler);
-                    }
-                )
-                .AddScheme<FakeAuthenticationOptions, FakeAuthenticationHandler>(nameof(FakeAuthenticationHandler), configureOptions);
+                        options.DefaultAuthenticateScheme = authenticationOptions.AuthenticationScheme;
+                        options.DefaultChallengeScheme = authenticationOptions.AuthenticationScheme;
+                    })
+                .AddScheme<TestAuthenticationOptions, TestAuthenticationHandler>(authenticationOptions.AuthenticationScheme, configureOptions);
         }
     }
 }

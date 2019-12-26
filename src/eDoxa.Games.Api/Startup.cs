@@ -12,7 +12,6 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Games.Api.Infrastructure;
-using eDoxa.Games.Api.Infrastructure.Data;
 using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
 using eDoxa.Games.LeagueOfLegends;
@@ -30,7 +29,7 @@ using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Azure.Extensions;
-using eDoxa.Storage.Azure.Extensions;
+using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using FluentValidation;
 
@@ -51,7 +50,7 @@ using static eDoxa.Seedwork.Security.ApiResources;
 
 namespace eDoxa.Games.Api
 {
-    public sealed class Startup
+    public partial class Startup
     {
         private static readonly string XmlCommentsFilePath = Path.Combine(
             AppContext.BaseDirectory,
@@ -73,7 +72,10 @@ namespace eDoxa.Games.Api
         private GamesAppSettings AppSettings { get; }
 
         public IConfiguration Configuration { get; }
+    }
 
+    public partial class Startup
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
@@ -99,8 +101,6 @@ namespace eDoxa.Games.Api
                         sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
                     }));
 
-            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
-
             services.AddCustomRedis(Configuration);
 
             services.AddCustomCors();
@@ -109,7 +109,7 @@ namespace eDoxa.Games.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools<GamesDbContextSeeder, GamesDbContextCleaner>();
+            services.AddCustomControllers<Startup>().AddDevTools();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -162,6 +162,72 @@ namespace eDoxa.Games.Api
                 });
 
             application.UseSwagger(AppSettings);
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureTestServices(IServiceCollection services)
+        {
+            services.AddAppSettings<GamesAppSettings>(Configuration);
+
+            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
+
+            services.Configure<LeagueOfLegendsOptions>(Configuration.GetSection("Games:LeagueOfLegends"));
+
+            services.AddDbContext<GamesDbContext>(
+                options => options.UseSqlServer(
+                    Configuration.GetSqlServerConnectionString()!,
+                    sqlServerOptions =>
+                    {
+                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
+                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
+                    }));
+
+            services.AddCustomRedis(Configuration);
+
+            services.AddCustomCors();
+
+            services.AddCustomGrpc();
+
+            services.AddCustomProblemDetails();
+
+            services.AddCustomControllers<Startup>();
+
+            services.AddCustomApiVersioning(new ApiVersion(1, 0));
+
+            services.AddCustomAutoMapper(typeof(Startup), typeof(GamesDbContext));
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddAuthentication();
+        }
+
+        public void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            builder.RegisterMockServiceBusModule();
+
+            builder.RegisterModule<GamesModule>();
+        }
+
+        public void ConfigureTest(IApplicationBuilder application)
+        {
+            application.UseProblemDetails();
+
+            application.UseCustomPathBase();
+
+            application.UseRouting();
+            application.UseCustomCors();
+
+            application.UseAuthentication();
+            application.UseAuthorization();
+
+            application.UseEndpoints(endpoints =>
+            {
+                endpoints.MapGrpcService<GameGrpcService>();
+
+                endpoints.MapControllers();
+            });
         }
     }
 }

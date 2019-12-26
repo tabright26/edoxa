@@ -1,5 +1,5 @@
-﻿// Filename: StringIdTest.cs
-// Date Created: 2019-10-27
+﻿// Filename: EntityIdTest.cs
+// Date Created: 2019-09-16
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -13,9 +13,9 @@ using FluentAssertions;
 
 using Xunit;
 
-namespace eDoxa.Seedwork.UnitTests.Aggregate
+namespace eDoxa.Seedwork.UnitTests.Domain
 {
-    public sealed class StringIdTest
+    public sealed class EntityIdTest
     {
         [InlineData(typeof(int))]
         [InlineData(typeof(long))]
@@ -23,7 +23,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void ConvertFrom_InvalidType_ShouldThrowNotSupportedException(Type type)
         {
             // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockStringId));
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
 
             // Act
             var action = new Action(() => converter.ConvertFrom(type));
@@ -38,7 +38,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void CanConvertFrom_ValidType_ShouldBeFalse(Type type)
         {
             // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockStringId));
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
 
             // Act
             var isValid = converter.CanConvertFrom(type);
@@ -53,7 +53,7 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void CanConvertTo_ValidType_ShouldBeFalse(Type type)
         {
             // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockStringId));
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
 
             // Act
             var isValid = converter.CanConvertTo(type);
@@ -68,39 +68,53 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void ConvertTo_InvalidType_ShouldThrowNotSupportedException(Type type)
         {
             // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockStringId));
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
 
             // Act
-            var action = new Action(() => converter.ConvertTo(new MockStringId(), type));
+            var action = new Action(() => converter.ConvertTo(new MockEntityId(), type));
 
             // Assert
             action.Should().Throw<NotSupportedException>();
         }
 
-        [TypeConverter(typeof(StringIdTypeConverter))]
-        private sealed class MockStringId : StringId<MockStringId>
+        [TypeConverter(typeof(EntityIdTypeConverter))]
+        private sealed class MockEntityId : EntityId<MockEntityId>
         {
-            public MockStringId(string stringId) : this()
+            public MockEntityId(Guid entityId) : this()
             {
-                Value = stringId;
+                Value = entityId;
             }
 
-            public MockStringId()
+            public MockEntityId()
             {
             }
+        }
+
+        [Fact]
+        public void ConvertFrom_InvalidString_ShouldBeValue()
+        {
+            // Arrange
+            const string value = "qeqw12312";
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
+
+            // Act
+            var entityId = converter.ConvertFrom(value);
+
+            // Assert
+            entityId.As<MockEntityId>().IsTransient().Should().BeTrue();
         }
 
         [Fact]
         public void ConvertFrom_NullReference_ShouldBeValue()
         {
             // Arrange
-            var converter = TypeDescriptor.GetConverter(typeof(MockStringId));
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
 
             // Act
-            var stringId = converter.ConvertFrom(null);
+            var entityId = converter.ConvertFrom(null);
 
             // Assert
-            stringId.As<MockStringId>().IsTransient().Should().BeTrue();
+            entityId.As<MockEntityId>().IsTransient().Should().BeTrue();
         }
 
         [Fact]
@@ -108,13 +122,13 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var value = Guid.NewGuid().ToString();
-            var converter = TypeDescriptor.GetConverter(typeof(MockStringId));
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
 
             // Act
-            var stringId = converter.ConvertFrom(value);
+            var entityId = converter.ConvertFrom(value);
 
             // Assert
-            stringId.As<MockStringId>().ToString().Should().Be(value);
+            entityId.As<MockEntityId>().ToString().Should().Be(value);
         }
 
         [Fact]
@@ -122,24 +136,24 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         {
             // Arrange
             var value = Guid.NewGuid().ToString();
-            var converter = TypeDescriptor.GetConverter(typeof(MockStringId));
+            var converter = TypeDescriptor.GetConverter(typeof(MockEntityId));
 
             // Act
-            var stringId = converter.ConvertFrom(value);
+            var entityId = converter.ConvertFrom(value);
 
             // Assert
-            stringId.As<MockStringId>().ToString().Should().Be(value);
+            entityId.As<MockEntityId>().ToString().Should().Be(value);
         }
 
         [Fact]
         public void Equals_SameType_ShouldBeFalse()
         {
             // Arrange
-            var stringId1 = new MockStringId();
-            var stringId2 = new MockStringId();
+            var entityId1 = new MockEntityId();
+            var entityId2 = new MockEntityId();
 
             // Act
-            var condition = stringId1.Equals(stringId2);
+            var condition = entityId1.Equals(entityId2);
 
             // Assert
             condition.Should().BeFalse();
@@ -149,22 +163,22 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void IsTransient_NotEmptyGuid_ShouldBeFalse()
         {
             // Act
-            var stringId = new MockStringId();
+            var entityId = new MockEntityId();
 
             // Assert
-            stringId.IsTransient().Should().BeFalse();
+            entityId.IsTransient().Should().BeFalse();
         }
 
         [Fact]
         public void Value_InvalidGuid_ShouldBeValue()
         {
             // Arrange
-            var guid = Guid.NewGuid().ToString();
-            var stringId1 = new MockStringId(guid);
-            var stringId2 = new MockStringId(guid);
+            var guid = Guid.NewGuid();
+            var entityId1 = new MockEntityId(guid);
+            var entityId2 = new MockEntityId(guid);
 
             // Act
-            var condition = stringId1.Equals(stringId2);
+            var condition = entityId1.Equals(entityId2);
 
             // Assert
             condition.Should().BeTrue();
@@ -174,13 +188,13 @@ namespace eDoxa.Seedwork.UnitTests.Aggregate
         public void Value_NotEmptyGuid_ShouldBeValue()
         {
             // Arrange
-            var value = Guid.NewGuid().ToString();
+            var value = Guid.NewGuid();
 
             // Act
-            var stringId = MockStringId.Parse(value);
+            var entityId = MockEntityId.FromGuid(value);
 
             // Assert
-            stringId.ToString().Should().Be(value);
+            entityId.ToGuid().Should().Be(value);
         }
     }
 }

@@ -24,7 +24,7 @@ services:
     ports:
       - "5400:80"
 
-  identity.api:
+  identity-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -35,7 +35,7 @@ services:
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaUrl=http://${HOST:-localhost}:5300
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
       - Swagger__Enabled=true
       - Swagger__Endpoints__IdentityUrl=http://${HOST:-localhost}:5000
       - Swagger__Endpoints__PaymentUrl=http://${HOST:-localhost}:5001
@@ -50,7 +50,7 @@ services:
       - "5000:80"
       - "9000:81"
 
-  payment.api:
+  payment-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -59,12 +59,12 @@ services:
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     ports:
       - "5001:80"
       - "9001:81"
 
-  cashier.api:
+  cashier-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -73,26 +73,25 @@ services:
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     ports:
       - "5002:80"
       - "9002:81"
 
-  cashier.web.aggregator:
+  cashier-web-aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__PaymentUrl=http://payment.api
+      - Endpoints__IdentityUrl=http://identity-api
+      - Endpoints__CashierUrl=http://cashier-api
+      - Endpoints__PaymentUrl=http://payment-api
     ports:
       - "5302:80"
 
-  notifications.api:
+  notifications-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -103,12 +102,12 @@ services:
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaUrl=http://${HOST:-localhost}:5300
-      - Endpoints__IdentityUrl=http://identity.api    
+      - Endpoints__IdentityUrl=http://identity-api    
     ports:
       - "5011:80"
       - "9011:81"
 
-  challenges.api:
+  challenges-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -118,28 +117,27 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     ports:
       - "5003:80"
       - "9003:81"
 
-  games.api:
+  games-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
-      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     ports:
       - "5005:80"
       - "9005:81"
 
-  clans.api:
+  clans-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -149,12 +147,12 @@ services:
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
+      - Endpoints__IdentityUrl=http://identity-api
     ports:
       - "5010:80"
       - "9010:81"
 
-  challenges.worker:
+  challenges-worker:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -162,40 +160,40 @@ services:
       - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
-      - Endpoints__ChallengesUrl=http://challenges.api
-      - Endpoints__GamesUrl=http://games.api
+      - Endpoints__ChallengesUrl=http://challenges-api
+      - Endpoints__GamesUrl=http://games-api
     ports:
       - "5403:80"
 
-  challenges.web.aggregator:
+  challenges-web-aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - Endpoints__IdentityUrl=http://identity.api
-      - Endpoints__CashierUrl=http://cashier.api
-      - Endpoints__ChallengesUrl=http://challenges.api
-      - Endpoints__GamesUrl=http://games.api
+      - Endpoints__IdentityUrl=http://identity-api
+      - Endpoints__CashierUrl=http://cashier-api
+      - Endpoints__ChallengesUrl=http://challenges-api
+      - Endpoints__GamesUrl=http://games-api
     ports:
       - "5303:80"
 
-  cashier.web.gateway:
+  cashier-web-gateway:
     volumes:
       - ./src/eDoxa.Gateways/cashier.web.gateway.yaml:/etc/envoy/envoy.yaml
     ports:
       - "5202:10000"
       - "15202:9901"
 
-  challenges.web.gateway:
+  challenges-web-gateway:
     volumes:
       - ./src/eDoxa.Gateways/challenges.web.gateway.yaml:/etc/envoy/envoy.yaml
     ports:
       - "5203:10000"
       - "15203:9901"
 
-  web.spa:
+  web-spa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
@@ -204,19 +202,16 @@ services:
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaClientUrl=http://${HOST:-localhost}:3000
-      - ChallengesWebGatewayUrl=http://challenges.web.gateway
-      - Endpoints__IdentityUrl=http://identity.api
+      - ChallengesWebGatewayUrl=http://challenges-web-gateway
+      - Endpoints__IdentityUrl=http://identity-api
     ports:
       - "5300:80"
 
-  web.spa.client:
+  web-spa-client:
     environment:
-      - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
       - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
-      - REACT_APP_CLIENT_ID=web.spa
-      - REACT_APP_RESPONSE_TYPE=token id_token
-      - REACT_APP_SCOPE=openid profile country roles permissions games identity.api payment.api cashier.api challenges.api challenges.web.aggregator cashier.web.aggregator games.api clans.api
       - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
+      - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
       - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
     volumes:
       - './src/eDoxa.Web.Spa/ClientApp:/app'
@@ -224,33 +219,33 @@ services:
     ports:
       - '3000:3000'
 
-  web.status:
+  web-status:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - HealthChecks__Endpoints__0__Name=Identity API
-      - HealthChecks__Endpoints__0__Uri=http://identity.api/health
+      - HealthChecks__Endpoints__0__Uri=http://identity-api/health
       - HealthChecks__Endpoints__1__Name=Payment API
-      - HealthChecks__Endpoints__1__Uri=http://payment.api/health
+      - HealthChecks__Endpoints__1__Uri=http://payment-api/health
       - HealthChecks__Endpoints__2__Name=Cashier API
-      - HealthChecks__Endpoints__2__Uri=http://cashier.api/health
+      - HealthChecks__Endpoints__2__Uri=http://cashier-api/health
       - HealthChecks__Endpoints__3__Name=Cashier Web Aggregator
-      - HealthChecks__Endpoints__3__Uri=http://cashier.web.aggregator/health
+      - HealthChecks__Endpoints__3__Uri=http://cashier-web-aggregator/health
       - HealthChecks__Endpoints__4__Name=Notifications API
-      - HealthChecks__Endpoints__4__Uri=http://notifications.api/health
+      - HealthChecks__Endpoints__4__Uri=http://notifications-api/health
       - HealthChecks__Endpoints__5__Name=Games API
-      - HealthChecks__Endpoints__5__Uri=http://games.api/health
+      - HealthChecks__Endpoints__5__Uri=http://games-api/health
       - HealthChecks__Endpoints__6__Name=Clans API
-      - HealthChecks__Endpoints__6__Uri=http://clans.api/health
+      - HealthChecks__Endpoints__6__Uri=http://clans-api/health
       - HealthChecks__Endpoints__7__Name=Challenges API
-      - HealthChecks__Endpoints__7__Uri=http://challenges.api/health
+      - HealthChecks__Endpoints__7__Uri=http://challenges-api/health
       - HealthChecks__Endpoints__8__Name=Challenges Web Aggregator
-      - HealthChecks__Endpoints__8__Uri=http://challenges.web.aggregator/health
+      - HealthChecks__Endpoints__8__Uri=http://challenges-web-aggregator/health
       - HealthChecks__Endpoints__9__Name=Challenges Web Jobs
-      - HealthChecks__Endpoints__9__Uri=http://challenges.worker/health
+      - HealthChecks__Endpoints__9__Uri=http://challenges-worker/health
       - HealthChecks__Endpoints__10__Name=Web Spa
-      - HealthChecks__Endpoints__10__Uri=http://web.spa/health
+      - HealthChecks__Endpoints__10__Uri=http://web-spa/health
       - HealthChecks__EvaluationTimeInSeconds=60
       - HealthChecks__MinimumSecondsBetweenFailureNotifications=300
     ports:

@@ -54,42 +54,5 @@ namespace eDoxa.Challenges.Api.Controllers
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
-
-        //[HttpPost]
-        //[SwaggerOperation("Register a participant to a challenge.")]
-        //[SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantDto))]
-        //[SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        //[SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        //public async Task<IActionResult> PostAsync(ChallengeId challengeId, [FromBody] RegisterChallengeParticipantRequest request)
-        //{
-        //    var participantId = ParticipantId.FromGuid(request.ParticipantId);
-
-        //    var challenge = await _challengeService.FindChallengeAsync(challengeId);
-
-        //    if (challenge == null)
-        //    {
-        //        return this.NotFound("Challenge not found.");
-        //    }
-
-        //    var playerId = HttpContext.GetPlayerId(challenge.Game);
-
-        //    var result = await _challengeService.RegisterChallengeParticipantAsync(
-        //        challenge,
-        //        HttpContext.GetUserId(),
-        //        participantId,
-        //        playerId,
-        //        new UtcNowDateTimeProvider());
-
-        //    if (result.IsValid)
-        //    {
-        //        var response = await _participantQuery.FindParticipantResponseAsync(participantId);
-
-        //        return this.Ok(response);
-        //    }
-
-        //    result.AddToModelState(ModelState);
-
-        //    return this.BadRequest(new ValidationProblemDetails(ModelState));
-        //}
     }
 }

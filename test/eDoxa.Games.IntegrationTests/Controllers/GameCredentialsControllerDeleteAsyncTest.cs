@@ -62,7 +62,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
                 new PlayerId(),
                 new DateTimeProvider(DateTime.Now));
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
@@ -100,7 +100,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
             // Arrange
             var userId = new UserId();
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
@@ -125,7 +125,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
                 new PlayerId(),
                 new DateTimeProvider(DateTime.Now));
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
 
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;

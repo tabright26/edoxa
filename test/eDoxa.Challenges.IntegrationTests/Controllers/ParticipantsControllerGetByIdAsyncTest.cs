@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, Game.LeagueOfLegends, ChallengeState.Ended);
             var challenge = challengeFaker.FakeChallenge();
 
-            var factory = TestHost.WithClaims();
+            var factory = TestHost.WithClaimsFromDefaultAuthentication();
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

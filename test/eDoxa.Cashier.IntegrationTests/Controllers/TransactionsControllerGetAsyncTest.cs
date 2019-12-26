@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Arrange
             var account = new Account(new UserId());
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();
@@ -78,7 +78,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             var moneyAccount = new MoneyAccountDecorator(account);
             moneyAccount.Deposit(Money.Fifty);
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
             _httpClient = factory.CreateClient();
             var server = factory.Server;
             server.CleanupDbContext();

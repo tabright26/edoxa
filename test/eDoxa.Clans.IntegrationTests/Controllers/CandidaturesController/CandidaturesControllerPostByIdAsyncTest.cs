@@ -50,7 +50,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             var clan = new Clan("ClanName", ownerId);
             var candidature = new Candidature(new UserId(), clan.Id);
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -77,7 +77,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
         public async Task ShouldBeHttpStatusCodeNotFound()
         {
             // Arrange
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();
@@ -97,7 +97,7 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.CandidaturesController
             var clan = new Clan("ClanName", ownerId);
             var candidature = new Candidature(new UserId(), clan.Id);
 
-            var factory = TestHost.WithClaims(new Claim(JwtClaimTypes.Subject, ownerId.ToString()));
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, ownerId.ToString()));
             _httpClient = factory.CreateClient();
             var testServer = factory.Server;
             testServer.CleanupDbContext();

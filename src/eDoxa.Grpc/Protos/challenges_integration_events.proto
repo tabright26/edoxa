@@ -3,7 +3,6 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.IntegrationEvents";
 
 import "challenges_dtos.proto";
-import "custom_types.proto";
 
 package edoxa.services.challenges;
 
@@ -13,7 +12,7 @@ message ChallengeParticipantRegisteredIntegrationEvent {
 
 message ChallengeSynchronizedIntegrationEvent {
   string challengeId = 1;
-  map<string, customTypes.DecimalValue> scoreboard = 2;
+  repeated ParticipantDto scoreboard = 2;
 }
 
 message RegisterChallengeParticipantFailedIntegrationEvent {

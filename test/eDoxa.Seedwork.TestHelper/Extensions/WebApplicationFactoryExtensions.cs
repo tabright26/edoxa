@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.TestHelper.DelegatingHandlers;
+using eDoxa.Seedwork.Application.DelegatingHandlers;
 
 using Grpc.Net.Client;
 

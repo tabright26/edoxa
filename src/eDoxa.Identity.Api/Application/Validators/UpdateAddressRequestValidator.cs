@@ -1,6 +1,6 @@
-﻿// Filename: AddressPutRequestValidator.cs
-// Date Created: 2019-08-23
-//
+﻿// Filename: UpdateAddressRequestValidator.cs
+// Date Created: 2019-12-18
+// 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -25,9 +25,7 @@ namespace eDoxa.Identity.Api.Application.Validators
                 .Matches(new Regex("^[a-zA-Z0-9- .,]{1,}$"))
                 .WithMessage(AddressBookErrorDescriber.Line1Invalid());
 
-            this.RuleFor(request => request.Line2)
-                .Matches(new Regex("^[a-zA-Z0-9- .,]{1,}$"))
-                .WithMessage(AddressBookErrorDescriber.Line2Invalid());
+            this.RuleFor(request => request.Line2).Matches(new Regex("^[a-zA-Z0-9- .,]{1,}$")).WithMessage(AddressBookErrorDescriber.Line2Invalid());
 
             this.RuleFor(request => request.City)
                 .NotNull()
@@ -50,7 +48,8 @@ namespace eDoxa.Identity.Api.Application.Validators
                 .WithMessage(AddressBookErrorDescriber.PostalCodeRequired())
                 .NotEmpty()
                 .WithMessage(AddressBookErrorDescriber.PostalCodeRequired())
-                .Length(5, 6).WithMessage(AddressBookErrorDescriber.PostalCodeLength())
+                .Length(5, 6)
+                .WithMessage(AddressBookErrorDescriber.PostalCodeLength())
                 .Matches(new Regex("^[0-9A-Z]{5,6}$"))
                 .WithMessage(AddressBookErrorDescriber.PostalCodeInvalidError());
         }

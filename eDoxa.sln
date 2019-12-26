@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EEA9BD6B-DDFF-4580-99D3-0FBBC644FC4D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{41C25D4F-945B-4C32-99B7-E8F8F92CF28F}"
-	ProjectSection(SolutionItems) = preProject
-		test\docker-compose.test.yml = test\docker-compose.test.yml
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Seedworks", "Seedworks", "{1307B4CE-04FF-4315-BC01-0371760D5C26}"
 EndProject
