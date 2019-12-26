@@ -20,5 +20,5 @@ WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "eDoxa.Cashier.Api.dll"]
 
-EXPOSE 80	# HTTP
-EXPOSE 81	# gRPC
+EXPOSE 80
+EXPOSE 81
