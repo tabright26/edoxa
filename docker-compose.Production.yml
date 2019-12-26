@@ -94,6 +94,14 @@ services:
     depends_on:
       - seq
 
+  cashier-web-aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/prod/cashier-web-aggregator:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Cashier.Web.Aggregator/Dockerfile
+    depends_on:
+      - seq
+
   cashier-web-gateway:
     image: envoyproxy/envoy:v1.11.1
 
