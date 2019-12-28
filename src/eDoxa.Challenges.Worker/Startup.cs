@@ -1,5 +1,5 @@
 ﻿// Filename: Startup.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.Worker
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks().AddCustomSelfCheck().AddAzureKeyVault(Configuration);
+            services.AddHealthChecks().AddCustomSelfCheck().AddAzureKeyVault(Configuration).AddRedis(Configuration).AddSqlServer(Configuration);
 
             services.AddDbContext<HangfireDbContext>(
                 builder => builder.UseSqlServer(

@@ -9,6 +9,7 @@
     <DockerServiceName>web-spa</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="docker-compose.nobuild.yml" />
     <None Include="docker-compose.Production.override.yml">
       <DependentUpon>docker-compose.Production.yml</DependentUpon>
     </None>
