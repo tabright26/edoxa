@@ -18,15 +18,11 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
         {!authenticationFactor ? (
           <GameAuthenticationFrom.Generate
             game={gameOption.name}
+            handleCancel={handleHide}
             setAuthenticationFactor={setAuthenticationFactor}
           />
         ) : (
           <>
-            {/* <p className="text-justify">
-              weqw ewqe qwe qwen iqwneinwq ienijwq nenwq einw ijneiqjw neijwqn
-              ienqwi jeqwje niqjw neiwqjne iqjwneinqwie jnqwiej
-              nqijwenqijwneijqwn eijqnweij nqijwne
-            </p> */}
             <div className="d-flex justify-content-around">
               <div className="text-center">
                 <h5>Current</h5>
@@ -47,11 +43,6 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
                 />
               </div>
             </div>
-            {/* <p className="text-justify mt-3">
-              weqw ewqe qwe qwen iqwneinwq ienijwq nenwq einw ijneiqjw neijwqn
-              ienqwi jeqwje niqjw neiwqjne iqjwneinqwie jnqwiej nqijwe nqijwn
-              eijqwn eijqnweij nqijwne
-            </p> */}
             <div className="d-flex justify-content-center mt-3">
               <GameAuthenticationFrom.Validate
                 game={gameOption.name}
@@ -66,8 +57,10 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
   );
 };
 
+//Todo: This is an hard fixed modal. For some reason, when we use modal with the destroy on hide, the page crash when we cancel or hide the modal. Due
+// to not having the props anymore or because the props have been destroyed ????
 const enhance = compose<any, any>(
-  connectModal({ name: LINK_GAME_CREDENTIAL_MODAL })
+  connectModal({ name: LINK_GAME_CREDENTIAL_MODAL, destroyOnHide: false })
 );
 
 export default enhance(LinkGameAuthenticationModal);

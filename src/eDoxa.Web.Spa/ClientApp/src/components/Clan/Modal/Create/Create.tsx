@@ -34,6 +34,8 @@ const CreateClanModal: FunctionComponent<any> = ({
   </Modal>
 );
 
-const enhance = compose<any, any>(connectModal({ name: CREATE_CLAN_MODAL }));
+const enhance = compose<any, any>(
+  connectModal({ name: CREATE_CLAN_MODAL, destroyOnHide: false })
+);
 
 export default enhance(CreateClanModal);

@@ -22,7 +22,10 @@ const UpdateStripePaymentMethodModal: FunctionComponent<any> = ({
 );
 
 const enhance = compose<any, any>(
-  connectModal({ name: UPDATE_STRIPE_PAYMENTMETHOD_MODAL })
+  connectModal({
+    name: UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
+    destroyOnHide: false
+  })
 );
 
 export default enhance(UpdateStripePaymentMethodModal);
