@@ -202,7 +202,6 @@ services:
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaClientUrl=http://${HOST:-localhost}:3000
-      - ChallengesWebGatewayUrl=http://challenges-web-gateway
       - Endpoints__IdentityUrl=http://identity-api
     ports:
       - "5300:80"
@@ -242,7 +241,7 @@ services:
       - HealthChecks__Endpoints__7__Uri=http://challenges-api/health
       - HealthChecks__Endpoints__8__Name=Challenges Web Aggregator
       - HealthChecks__Endpoints__8__Uri=http://challenges-web-aggregator/health
-      - HealthChecks__Endpoints__9__Name=Challenges Web Jobs
+      - HealthChecks__Endpoints__9__Name=Challenges Worker
       - HealthChecks__Endpoints__9__Uri=http://challenges-worker/health
       - HealthChecks__Endpoints__10__Name=Web Spa
       - HealthChecks__Endpoints__10__Uri=http://web-spa/health

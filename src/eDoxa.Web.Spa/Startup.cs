@@ -46,11 +46,7 @@ namespace eDoxa.Web.Spa
         {
             services.Configure<WebSpaAppSettings>(Configuration);
 
-            services.AddHealthChecks()
-                .AddCustomSelfCheck()
-                .AddIdentityServer(AppSettings)
-                .AddAzureKeyVault(Configuration)
-                .AddUrlGroup(AppSettings.ChallengesWebGatewayUrl, AppServices.ChallengesWebGateway);
+            services.AddHealthChecks().AddCustomSelfCheck().AddIdentityServer(AppSettings).AddAzureKeyVault(Configuration);
 
             services.AddCustomDataProtection(Configuration, AppServices.WebSpa);
 

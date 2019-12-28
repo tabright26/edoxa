@@ -159,7 +159,6 @@ services:
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - Endpoints__ChallengesUrl=http://challenges-api
       - Endpoints__GamesUrl=http://games-api
@@ -206,7 +205,6 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
-      - WebSpaClientUrl=http://${HOST:-localhost}:3000
       - ChallengesWebGatewayUrl=http://challenges-web-gateway
       - Endpoints__IdentityUrl=http://identity-api
     ports:
@@ -235,7 +233,7 @@ services:
       - HealthChecks__Endpoints__7__Uri=http://challenges-api/health
       - HealthChecks__Endpoints__8__Name=Challenges Web Aggregator
       - HealthChecks__Endpoints__8__Uri=http://challenges-web-aggregator/health
-      - HealthChecks__Endpoints__9__Name=Challenges Web Jobs
+      - HealthChecks__Endpoints__9__Name=Challenges Worker
       - HealthChecks__Endpoints__9__Uri=http://challenges-worker/health
       - HealthChecks__Endpoints__10__Name=Web Spa
       - HealthChecks__Endpoints__10__Uri=http://web-spa/health
