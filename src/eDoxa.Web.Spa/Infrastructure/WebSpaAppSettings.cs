@@ -18,9 +18,6 @@ namespace eDoxa.Web.Spa.Infrastructure
         [Required]
         public string Authority { get; set; }
 
-        [Required]
-        public string ChallengesWebGatewayUrl { get; set; }
-
         public string WebSpaClientUrl { get; set; }
 
         [Required]

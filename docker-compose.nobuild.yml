@@ -1,0 +1,90 @@
+version: '3.7'
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
+
+  redis:
+    image: redis:5.0.5
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+
+  seq:
+    image: datalust/seq:latest
+
+  identity-api:
+    image: edoxa.azurecr.io/edoxa/prod/identity-api:0.3.3-beta
+    depends_on:
+      - seq
+      - mssql
+      - redis
+
+  cashier-api:
+    image: edoxa.azurecr.io/edoxa/prod/cashier-api:0.3.3-beta
+    depends_on:
+      - seq
+      - mssql
+
+  payment-api:
+    image: edoxa.azurecr.io/edoxa/prod/payment-api:0.3.3-beta
+    depends_on:
+      - seq
+      - mssql
+
+  notifications-api:
+    image: edoxa.azurecr.io/edoxa/prod/notifications-api:0.3.3-beta
+    depends_on:
+      - seq      
+      - mssql
+
+  games-api:
+    image: edoxa.azurecr.io/edoxa/prod/games-api:0.3.3-beta
+    depends_on:
+      - seq
+      - mssql
+      - redis
+
+  clans-api:
+    image: edoxa.azurecr.io/edoxa/prod/clans-api:0.3.3-beta
+    depends_on:
+      - seq
+      - mssql
+
+  challenges-api:
+    image: edoxa.azurecr.io/edoxa/prod/challenges-api:0.3.3-beta
+    depends_on:
+      - seq   
+      - mssql
+
+  challenges-worker:
+    image: edoxa.azurecr.io/edoxa/prod/challenges-worker:0.3.3-beta
+    depends_on:
+      - seq
+
+  challenges-web-aggregator:
+    image: edoxa.azurecr.io/edoxa/prod/challenges-web-aggregator:0.3.3-beta
+    depends_on:
+      - seq
+
+  cashier-web-aggregator:
+    image: edoxa.azurecr.io/edoxa/prod/cashier-web-aggregator:0.3.3-beta
+    depends_on:
+      - seq
+
+  cashier-web-gateway:
+    image: envoyproxy/envoy:v1.11.1
+
+  challenges-web-gateway:
+    image: envoyproxy/envoy:v1.11.1
+
+  web-spa:
+    image: edoxa.azurecr.io/edoxa/prod/web-spa:0.3.3-beta
+    depends_on:
+      - seq
+      - redis
+
+  web-status:
+    image: edoxa.azurecr.io/edoxa/prod/web-status:0.3.3-beta
+    depends_on:
+      - seq
