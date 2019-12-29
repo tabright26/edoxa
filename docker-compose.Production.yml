@@ -112,7 +112,7 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/prod/web-spa:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Web.Spa/Dockerfile-prod
+      dockerfile: src/eDoxa.Web.Spa/Dockerfile.Production
     depends_on:
       - seq
       - redis

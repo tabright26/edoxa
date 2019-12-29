@@ -1,17 +1,26 @@
-import React, { useState, FunctionComponent } from "react";
+import React, { useState, FunctionComponent, useEffect } from "react";
 import Moment from "react-moment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { withtUserInformations } from "store/root/user/information/container";
-import UserInformationForm from "components/User/Information/Form";
+import UserProfileForm from "components/User/Profile/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";
+import { connect } from "react-redux";
+import { RootState } from "store/types";
+import { loadUserProfile } from "store/actions/identity";
 
-const Informations: FunctionComponent<any> = ({
+const Profile: FunctionComponent<any> = ({
   className,
-  informations: { data, loading, error }
+  profile: { data, loading, error },
+  loadUserProfile
 }) => {
+  useEffect((): void => {
+    if (data === null) {
+      loadUserProfile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [buttonDisabled, setbuttonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
@@ -30,7 +39,7 @@ const Informations: FunctionComponent<any> = ({
         {loading ? (
           <Loading />
         ) : !data ? (
-          <UserInformationForm.Create
+          <UserProfileForm.Create
             handleCancel={() => setbuttonDisabled(false)}
           />
         ) : !buttonDisabled ? (
@@ -41,20 +50,18 @@ const Informations: FunctionComponent<any> = ({
             </dd>
             <dd className="col-sm-3 text-muted">Date of birth</dd>
             <dd className="col-sm-9">
-              {data.dob ? (
+              {data.dob && (
                 <Moment
                   date={[data.dob.year, data.dob.month - 1, data.dob.day]}
                   format="ll"
                 />
-              ) : (
-                ""
               )}
             </dd>
             <dd className="col-sm-3 text-muted mb-0">Gender</dd>
             <dd className="col-sm-9 mb-0">{data.gender}</dd>
           </dl>
         ) : (
-          <UserInformationForm.Update
+          <UserProfileForm.Update
             handleCancel={() => setbuttonDisabled(false)}
           />
         )}
@@ -63,6 +70,18 @@ const Informations: FunctionComponent<any> = ({
   );
 };
 
-const enhance = compose<any, any>(withtUserInformations);
+const mapStateToProps = (state: RootState) => {
+  return {
+    profile: state.root.user.profile
+  };
+};
 
-export default enhance(Informations);
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    loadUserProfile: () => dispatch(loadUserProfile())
+  };
+};
+
+const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
+
+export default enhance(Profile);

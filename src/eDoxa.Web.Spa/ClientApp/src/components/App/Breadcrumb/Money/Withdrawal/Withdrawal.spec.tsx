@@ -2,13 +2,13 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Withdrawal from "./Withdrawal";
-import { UserAccountDepositBundlesState } from "store/actions/cashier";
+import { UserAccountWithdrawalBundlesState } from "store/root/user/account/withdrawal/bundles/types";
 import { StripeAccountState } from "store/root/payment/stripe/account/types";
-import { MONEY } from "types";
+import { CURRENCY_MONEY } from "types";
 
 it("renders without crashing", () => {
   //Arrange
-  const moneyBundles: UserAccountDepositBundlesState = {
+  const moneyBundles: UserAccountWithdrawalBundlesState = {
     data: [
       { amount: 20, price: 20 },
       { amount: 50, price: 50 },
@@ -49,7 +49,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Withdrawal currency={MONEY} />
+        <Withdrawal currency={CURRENCY_MONEY} />
       </Provider>
     )
     .toJSON();

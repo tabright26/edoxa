@@ -3,18 +3,17 @@ import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Withdrawal from "./Withdrawal";
 import { configureStore } from "store";
-import { MONEY } from "types";
+import { CURRENCY_MONEY } from "types";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
 
-const initialState: any = {};
-const store = configureStore(initialState);
+const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(
     <Provider store={store}>
-      <Withdrawal currency={MONEY} bundles={[{}, {}, {}]} />
+      <Withdrawal currency={CURRENCY_MONEY} bundles={[{}, {}, {}]} />
     </Provider>
   );
 };

@@ -3,7 +3,6 @@ import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Create from "./Create";
 import { configureStore } from "store";
-import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";
 import {
   PERSONALINFO_FIRSTNAME_REQUIRED,
@@ -11,13 +10,11 @@ import {
   PERSONALINFO_LASTNAME_REQUIRED,
   PERSONALINFO_LASTNAME_INVALID
 } from "validation";
-import { create } from "istanbul-reports";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
 
-const initialState: any = {};
-const store = configureStore(initialState);
+const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(
@@ -35,8 +32,8 @@ describe("<UserInformationCreateForm />", () => {
 
   describe("defines information create form fields", () => {
     test.each([
-      ["firstName", "Enter your first name"],
-      ["lastName", "Enter your last name"]
+      ["firstName", "First Name"],
+      ["lastName", "Last Name"]
     ])("renders name fields", (name: string, label: string) => {
       const wrapper = createWrapper();
       const field = wrapper.findFieldByName(name);

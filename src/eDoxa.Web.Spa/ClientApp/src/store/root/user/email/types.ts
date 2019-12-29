@@ -1,4 +1,4 @@
 import { AxiosState } from "utils/axios/types";
-import { Email } from "types";
+import { UserEmail } from "types";
 
-export type UserEmailState = AxiosState<Email>;
+export type UserEmailState = AxiosState<UserEmail>;

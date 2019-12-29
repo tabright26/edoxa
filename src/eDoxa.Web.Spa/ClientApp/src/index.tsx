@@ -15,9 +15,7 @@ import { StripeProvider } from "react-stripe-elements";
 import { LocalizeProvider } from "react-localize-redux";
 import { config } from "utils/localize/config";
 
-const initialState: any = {};
-
-const store = configureStore(initialState);
+const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>

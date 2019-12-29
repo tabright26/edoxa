@@ -29,7 +29,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     [Authorize(AuthenticationSchemes = IdentityServerAuthenticationDefaults.AuthenticationScheme)]
     [ApiController]
     [ApiVersion("1.0")]
-    [Route("api/informations")]
+    [Route("api/profile")]
     [ApiExplorerSettings(GroupName = "Profile")]
     public sealed class ProfileController : ControllerBase
     {

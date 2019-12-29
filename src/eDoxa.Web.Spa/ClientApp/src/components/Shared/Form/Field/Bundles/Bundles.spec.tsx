@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import { Form, reduxForm } from "redux-form";
 import { Provider } from "react-redux";
 import Bundles from "./Bundles";
-import { TOKEN, MONEY } from "types";
+import { CURRENCY_TOKEN, CURRENCY_MONEY } from "types";
 import { UserAccountDepositBundlesState } from "store/root/user/account/deposit/bundles/types";
 
 it("renders without crashing", () => {
@@ -36,7 +36,7 @@ it("renders without crashing", () => {
 
   const FormWrapper = () => (
     <Form>
-      <Bundles currency={MONEY} bundles={bundles.data} />
+      <Bundles currency={CURRENCY_MONEY} bundles={bundles.data} />
     </Form>
   );
 
@@ -85,7 +85,7 @@ it("renders without crashing", () => {
 
   const FormWrapper = () => (
     <Form>
-      <Bundles currency={TOKEN} bundles={bundles.data} />
+      <Bundles currency={CURRENCY_TOKEN} bundles={bundles.data} />
     </Form>
   );
 

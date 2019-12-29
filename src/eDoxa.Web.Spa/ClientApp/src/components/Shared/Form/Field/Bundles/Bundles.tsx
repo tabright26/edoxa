@@ -2,11 +2,11 @@ import React, { FunctionComponent, useState, useEffect } from "react";
 import { Col, Row, Input } from "reactstrap";
 import { Field } from "redux-form";
 import Format from "components/Shared/Format";
-import { Bundle, Currency } from "types";
+import { TransactionBundle, Currency } from "types";
 
 interface Props {
   currency: Currency;
-  bundles: Bundle[];
+  bundles: TransactionBundle[];
 }
 
 const FormFieldBundles: FunctionComponent<Props> = ({ currency, bundles }) => {

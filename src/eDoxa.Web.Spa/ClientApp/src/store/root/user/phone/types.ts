@@ -1,4 +1,4 @@
 import { AxiosState } from "utils/axios/types";
-import { Phone } from "types";
+import { UserPhone } from "types";
 
-export type UserPhoneState = AxiosState<Phone>;
+export type UserPhoneState = AxiosState<UserPhone>;

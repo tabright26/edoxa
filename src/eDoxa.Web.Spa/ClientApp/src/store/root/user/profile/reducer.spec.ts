@@ -1,6 +1,6 @@
 import { reducer, initialState } from "./reducer";
 import { AxiosError } from "axios";
-import { LOAD_USER_INFORMATIONS_SUCCESS, LOAD_USER_INFORMATIONS_FAIL } from "store/actions/identity/types";
+import { LOAD_USER_PROFILE_SUCCESS, LOAD_USER_PROFILE_FAIL } from "store/actions/identity/types";
 
 const informations200Data = { name: "Gabriel", gender: "Male" };
 
@@ -12,7 +12,7 @@ describe("user personal info reducer", () => {
 
   it("should handle LOAD_PERSONAL_INFO_SUCCESS 200", () => {
     const action: any = {
-      type: LOAD_USER_INFORMATIONS_SUCCESS,
+      type: LOAD_USER_PROFILE_SUCCESS,
       payload: { status: 200, data: informations200Data }
     };
     const state = {
@@ -31,7 +31,7 @@ describe("user personal info reducer", () => {
       message: ""
     };
     const action: any = {
-      type: LOAD_USER_INFORMATIONS_FAIL,
+      type: LOAD_USER_PROFILE_FAIL,
       error: error
     };
     const state = {

@@ -1,5 +1,5 @@
 import { AxiosState } from "utils/axios/types";
 
-import { Bundle } from "types";
+import { TransactionBundle } from "types";
 
-export type UserAccountWithdrawalBundlesState = AxiosState<Bundle[]>;
+export type UserAccountWithdrawalBundlesState = AxiosState<TransactionBundle[]>;

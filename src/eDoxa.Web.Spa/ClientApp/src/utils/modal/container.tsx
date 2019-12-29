@@ -13,7 +13,7 @@ import {
 } from "modals";
 import {
   Currency,
-  Bundle,
+  TransactionBundle,
   ChallengeParticipantMatchStat
 } from "types";
 
@@ -32,9 +32,9 @@ export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
         ) => dispatch(show(CHALLENGE_MATCH_SCORE_MODAL, { stats })),
         showCreateClanModal: actions =>
           dispatch(show(CREATE_CLAN_MODAL, { actions })),
-        showDepositModal: (currency: Currency, bundles: Bundle[]) =>
+        showDepositModal: (currency: Currency, bundles: TransactionBundle[]) =>
           dispatch(show(DEPOSIT_MODAL, { currency, bundles })),
-        showWithdrawalModal: (currency: Currency, bundles: Bundle[]) =>
+        showWithdrawalModal: (currency: Currency, bundles: TransactionBundle[]) =>
           dispatch(show(WITHDRAWAL_MODAL, { currency, bundles })),
         showCreateStripePaymentMethodModal: type =>
           dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL, { type })),

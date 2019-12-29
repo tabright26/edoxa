@@ -17,9 +17,9 @@ import {
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES,
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS,
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL,
-  LOAD_USER_ACCOUNT_TRANSACTIONS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL,
+  LOAD_USER_TRANSACTION_HISTORY,
+  LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
+  LOAD_USER_TRANSACTION_HISTORY_FAIL,
   USER_ACCOUNT_WITHDRAWAL_MONEY,
   USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS,
   USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL,
@@ -29,14 +29,14 @@ import {
   UserAccountDepositBundlesActionCreators,
   UserAccountDepositActionCreators,
   UserAccountWithdrawalActionCreators,
-  UserAccountTransactionsActionCreators,
+  UserTransactionHistoryActionCreators,
   UserAccountBalanceActionCreators
 } from "./types";
 
 import {
   Currency,
-  MONEY,
-  TOKEN,
+  CURRENCY_MONEY,
+  CURRENCY_TOKEN,
   TransactionType,
   TransactionStatus,
   TRANSACTION_TYPE_DEPOSIT,
@@ -54,7 +54,7 @@ export function loadUserAccountBalance(
     }
   };
   switch (currency) {
-    case MONEY: {
+    case CURRENCY_MONEY: {
       return {
         types: [
           LOAD_USER_MONEY_ACCOUNT_BALANCE,
@@ -64,7 +64,7 @@ export function loadUserAccountBalance(
         payload
       };
     }
-    case TOKEN: {
+    case CURRENCY_TOKEN: {
       return {
         types: [
           LOAD_USER_TOKEN_ACCOUNT_BALANCE,
@@ -93,7 +93,7 @@ export function accountDeposit(
     }
   };
   switch (currency) {
-    case MONEY:
+    case CURRENCY_MONEY:
       return {
         types: [
           USER_ACCOUNT_DEPOSIT_MONEY,
@@ -103,7 +103,7 @@ export function accountDeposit(
         payload,
         meta
       };
-    case TOKEN:
+    case CURRENCY_TOKEN:
       return {
         types: [
           USER_ACCOUNT_DEPOSIT_TOKEN,
@@ -130,7 +130,7 @@ export function loadTransactionBundles(
     }
   };
   switch (currency) {
-    case MONEY: {
+    case CURRENCY_MONEY: {
       switch (transactionType) {
         case TRANSACTION_TYPE_DEPOSIT: {
           return {
@@ -155,7 +155,7 @@ export function loadTransactionBundles(
       }
       break;
     }
-    case TOKEN: {
+    case CURRENCY_TOKEN: {
       switch (transactionType) {
         case TRANSACTION_TYPE_DEPOSIT: {
           return {
@@ -172,16 +172,16 @@ export function loadTransactionBundles(
   }
 }
 
-export function loadUserAccountTransactions(
+export function loadUserTransactionHistory(
   currency: Currency | null = null,
   type: TransactionType | null = null,
   status: TransactionStatus | null = null
-): UserAccountTransactionsActionCreators {
+): UserTransactionHistoryActionCreators {
   return {
     types: [
-      LOAD_USER_ACCOUNT_TRANSACTIONS,
-      LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-      LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
+      LOAD_USER_TRANSACTION_HISTORY,
+      LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
+      LOAD_USER_TRANSACTION_HISTORY_FAIL
     ],
     payload: {
       request: {
@@ -213,7 +213,7 @@ export function accountWithdrawal(
     }
   };
   switch (currency) {
-    case MONEY:
+    case CURRENCY_MONEY:
       return {
         types: [
           USER_ACCOUNT_WITHDRAWAL_MONEY,
@@ -223,7 +223,7 @@ export function accountWithdrawal(
         payload,
         meta
       };
-    case TOKEN:
+    case CURRENCY_TOKEN:
       throw new Error("Token is not supported for withdrawal.");
   }
 }

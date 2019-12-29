@@ -14,18 +14,18 @@ import {
   LOAD_USER_DOXATAGHISTORY,
   LOAD_USER_DOXATAGHISTORY_SUCCESS,
   LOAD_USER_DOXATAGHISTORY_FAIL,
-  UPDATE_USER_DOXATAG,
-  UPDATE_USER_DOXATAG_SUCCESS,
-  UPDATE_USER_DOXATAG_FAIL,
-  LOAD_USER_INFORMATIONS,
-  LOAD_USER_INFORMATIONS_SUCCESS,
-  LOAD_USER_INFORMATIONS_FAIL,
-  CREATE_USER_INFORMATIONS,
-  CREATE_USER_INFORMATIONS_SUCCESS,
-  CREATE_USER_INFORMATIONS_FAIL,
-  UPDATE_USER_INFORMATIONS,
-  UPDATE_USER_INFORMATIONS_SUCCESS,
-  UPDATE_USER_INFORMATIONS_FAIL,
+  CHANGE_USER_DOXATAG,
+  CHANGE_USER_DOXATAG_SUCCESS,
+  CHANGE_USER_DOXATAG_FAIL,
+  LOAD_USER_PROFILE,
+  LOAD_USER_PROFILE_SUCCESS,
+  LOAD_USER_PROFILE_FAIL,
+  CREATE_USER_PROFILE,
+  CREATE_USER_PROFILE_SUCCESS,
+  CREATE_USER_PROFILE_FAIL,
+  UPDATE_USER_PROFILE,
+  UPDATE_USER_PROFILE_SUCCESS,
+  UPDATE_USER_PROFILE_FAIL,
   FORGOT_USER_PASSWORD,
   FORGOT_USER_PASSWORD_SUCCESS,
   FORGOT_USER_PASSWORD_FAIL,
@@ -44,7 +44,7 @@ import {
   CONFIRM_USER_EMAIL,
   CONFIRM_USER_EMAIL_SUCCESS,
   CONFIRM_USER_EMAIL_FAIL,
-  UserInformationsActionCreators,
+  UserProfileActionCreators,
   UserDoxatagHistoryActionCreators,
   UserAddressBookActionCreators,
   UserPhoneActionCreators,
@@ -150,15 +150,15 @@ export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
   };
 }
 
-export function updateUserDoxatag(
+export function changeUserDoxatag(
   data: any,
   meta: AxiosActionCreatorMeta
 ): UserDoxatagHistoryActionCreators {
   return {
     types: [
-      UPDATE_USER_DOXATAG,
-      UPDATE_USER_DOXATAG_SUCCESS,
-      UPDATE_USER_DOXATAG_FAIL
+      CHANGE_USER_DOXATAG,
+      CHANGE_USER_DOXATAG_SUCCESS,
+      CHANGE_USER_DOXATAG_FAIL
     ],
     payload: {
       request: {
@@ -202,36 +202,36 @@ export function confirmUserEmail(
   };
 }
 
-export function loadUserInformations(): UserInformationsActionCreators {
+export function loadUserProfile(): UserProfileActionCreators {
   return {
     types: [
-      LOAD_USER_INFORMATIONS,
-      LOAD_USER_INFORMATIONS_SUCCESS,
-      LOAD_USER_INFORMATIONS_FAIL
+      LOAD_USER_PROFILE,
+      LOAD_USER_PROFILE_SUCCESS,
+      LOAD_USER_PROFILE_FAIL
     ],
     payload: {
       request: {
         method: "GET",
-        url: "/identity/api/informations"
+        url: "/identity/api/profile"
       }
     }
   };
 }
 
-export function createUserInformations(
+export function createUserProfile(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserInformationsActionCreators | any {
+): UserProfileActionCreators | any {
   return {
     types: [
-      CREATE_USER_INFORMATIONS,
-      CREATE_USER_INFORMATIONS_SUCCESS,
-      CREATE_USER_INFORMATIONS_FAIL
+      CREATE_USER_PROFILE,
+      CREATE_USER_PROFILE_SUCCESS,
+      CREATE_USER_PROFILE_FAIL
     ],
     payload: {
       request: {
         method: "POST",
-        url: "/identity/api/informations",
+        url: "/identity/api/profile",
         data
       }
     },
@@ -239,20 +239,20 @@ export function createUserInformations(
   };
 }
 
-export function updateUserInformations(
+export function updateUserProfile(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserInformationsActionCreators {
+): UserProfileActionCreators {
   return {
     types: [
-      UPDATE_USER_INFORMATIONS,
-      UPDATE_USER_INFORMATIONS_SUCCESS,
-      UPDATE_USER_INFORMATIONS_FAIL
+      UPDATE_USER_PROFILE,
+      UPDATE_USER_PROFILE_SUCCESS,
+      UPDATE_USER_PROFILE_FAIL
     ],
     payload: {
       request: {
         method: "PUT",
-        url: "/identity/api/informations",
+        url: "/identity/api/profile",
         data: {
           firstName: data.firstName
         }
