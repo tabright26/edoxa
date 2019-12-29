@@ -1,4 +1,4 @@
-import { AxiosActionCreator, AxiosAction, AxiosState } from "utils/axios/types";
-import { Address } from "types";
+import { AxiosState } from "utils/axios/types";
+import { UserAddress } from "types";
 
-export type UserAddressBookState = AxiosState<Address[]>;
+export type UserAddressBookState = AxiosState<UserAddress[]>;

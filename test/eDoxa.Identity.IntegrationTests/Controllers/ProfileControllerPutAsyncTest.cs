@@ -36,7 +36,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(UpdateProfileRequest request)
         {
-            return await _httpClient.PutAsJsonAsync("api/informations", request);
+            return await _httpClient.PutAsJsonAsync("api/profile", request);
         }
 
         private HttpClient _httpClient;

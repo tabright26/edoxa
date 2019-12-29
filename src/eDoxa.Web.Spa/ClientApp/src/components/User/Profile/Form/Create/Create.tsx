@@ -3,11 +3,11 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, FormSection, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { CREATE_USER_INFORMATIONS_FORM } from "forms";
+import { CREATE_USER_PROFILE_FORM } from "forms";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
-import { createUserInformations } from "store/actions/identity";
+import { createUserProfile } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
   personalInfoNameRegex,
@@ -76,7 +76,7 @@ async function submit(values, dispatch) {
   try {
     return await new Promise((resolve, reject) => {
       const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(createUserInformations(values, meta));
+      dispatch(createUserProfile(values, meta));
     });
   } catch (error) {
     throwSubmissionError(error);
@@ -138,7 +138,7 @@ const CreateUserInformationsForm: FunctionComponent<InjectedFormProps<
 
 const enhance = compose<any, any>(
   reduxForm<FormData, Props>({
-    form: CREATE_USER_INFORMATIONS_FORM,
+    form: CREATE_USER_PROFILE_FORM,
     validate
   })
 );

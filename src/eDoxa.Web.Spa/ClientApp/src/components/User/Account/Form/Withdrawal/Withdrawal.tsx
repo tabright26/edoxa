@@ -9,13 +9,13 @@ import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
 import { accountWithdrawal } from "store/actions/cashier";
 import { connect, MapStateToProps } from "react-redux";
-import { Currency, Bundle } from "types";
+import { Currency, TransactionBundle } from "types";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface Props {
   currency: Currency;
-  bundles: Bundle[];
+  bundles: TransactionBundle[];
 }
 
 interface FormData {
@@ -78,10 +78,10 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
 };
 
 const enhance = compose<any, any>(
+  connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: USER_ACCOUNT_WITHDRAWAL_FORM
-  }),
-  connect(mapStateToProps)
+  })
 );
 
 export default enhance(WithdrawalForm);

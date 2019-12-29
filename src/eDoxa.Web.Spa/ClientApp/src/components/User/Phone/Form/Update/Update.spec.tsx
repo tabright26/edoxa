@@ -9,8 +9,7 @@ import Input from "components/Shared/Input";
 const shallow = global["shallow"];
 const mount = global["mount"];
 
-const initialState: any = {};
-const store = configureStore(initialState);
+const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(

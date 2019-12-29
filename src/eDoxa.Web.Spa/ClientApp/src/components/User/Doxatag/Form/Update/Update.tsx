@@ -6,7 +6,7 @@ import Input from "components/Shared/Input";
 import { UPDATE_USER_DOXATAG_FORM } from "forms";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
-import { updateUserDoxatag } from "store/actions/identity";
+import { changeUserDoxatag } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
   doxatagSpecialRegex,
@@ -47,7 +47,7 @@ async function submit(values, dispatch) {
   try {
     return await new Promise(async (resolve, reject) => {
       const meta: AxiosActionCreatorMeta = { resolve, reject };
-      await dispatch(updateUserDoxatag(values, meta));
+      await dispatch(changeUserDoxatag(values, meta));
     });
   } catch (error) {
     throwSubmissionError(error);
@@ -93,11 +93,11 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
 };
 
 const enhance = compose<any, any>(
+  connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: UPDATE_USER_DOXATAG_FORM,
     validate
-  }),
-  connect(mapStateToProps)
+  })
 );
 
 export default enhance(UpdateUserDoxatagForm);

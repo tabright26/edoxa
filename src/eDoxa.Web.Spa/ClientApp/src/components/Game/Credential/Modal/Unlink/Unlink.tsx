@@ -22,7 +22,7 @@ const UnlinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => (
 );
 
 const enhance = compose<any, any>(
-  connectModal({ name: UNLINK_GAME_CREDENTIAL_MODAL })
+  connectModal({ name: UNLINK_GAME_CREDENTIAL_MODAL, destroyOnHide: false })
 );
 
 export default enhance(UnlinkGameAuthenticationModal);

@@ -12,8 +12,7 @@ import {
 const shallow = global["shallow"];
 const mount = global["mount"];
 
-const initialState: any = {};
-const store = configureStore(initialState);
+const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(
@@ -34,7 +33,7 @@ describe("<UserInformationUpdateForm />", () => {
       const wrapper = createWrapper();
       const field = wrapper.findFieldByName("firstName");
 
-      expect(field.prop("label")).toBe("First name");
+      expect(field.prop("label")).toBe("First Name");
       expect(field.prop("component")).toBe(Input.Text);
     });
 

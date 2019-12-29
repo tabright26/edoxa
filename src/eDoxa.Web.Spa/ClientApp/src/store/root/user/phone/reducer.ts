@@ -12,10 +12,7 @@ import produce, { Draft } from "immer";
 import { UserPhoneState } from "./types";
 
 export const initialState: UserPhoneState = {
-  data: {
-    number: null,
-    verified: false
-  },
+  data: null,
   error: null,
   loading: true
 };
@@ -23,31 +20,38 @@ export const initialState: UserPhoneState = {
 export const reducer: Reducer<UserPhoneState, UserPhoneActions> = produce(
   (draft: Draft<UserPhoneState>, action: UserPhoneActions) => {
     switch (action.type) {
-      case LOAD_USER_PHONE:
+      case LOAD_USER_PHONE: {
         draft.error = null;
-        draft.loading = false;
+        draft.loading = true;
         break;
-      case LOAD_USER_PHONE_SUCCESS:
+      }
+      case LOAD_USER_PHONE_SUCCESS: {
         draft.data = action.payload.data;
         draft.error = null;
         draft.loading = false;
         break;
-      case LOAD_USER_PHONE_FAIL:
+      }
+      case LOAD_USER_PHONE_FAIL: {
         draft.error = action.error;
         draft.loading = false;
         break;
-      case UPDATE_USER_PHONE:
+      }
+      case UPDATE_USER_PHONE: {
         draft.error = null;
         draft.loading = false;
         break;
-      case UPDATE_USER_PHONE_SUCCESS:
+      }
+      case UPDATE_USER_PHONE_SUCCESS: {
+        draft.data = action.payload.data;
         draft.error = null;
         draft.loading = false;
         break;
-      case UPDATE_USER_PHONE_FAIL:
+      }
+      case UPDATE_USER_PHONE_FAIL: {
         draft.error = action.error;
         draft.loading = false;
         break;
+      }
     }
   },
   initialState

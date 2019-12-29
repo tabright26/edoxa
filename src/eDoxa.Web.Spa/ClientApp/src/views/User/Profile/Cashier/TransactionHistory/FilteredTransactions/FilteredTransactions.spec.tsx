@@ -2,11 +2,11 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import FilteredTransactions from "./FilteredTransactions";
-import { UserAccountTransactionsState } from "store/root/user/account/transaction/types";
+import { UserTransactionHistoryState } from "store/root/user/transactionHistory/types";
 
 it("renders without crashing", () => {
   //Arrange
-  const transactions: UserAccountTransactionsState = {
+  const transactions: UserTransactionHistoryState = {
     data: [
       {
         timestamp: 111111,

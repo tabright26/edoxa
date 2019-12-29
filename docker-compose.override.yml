@@ -206,17 +206,17 @@ services:
     ports:
       - "5300:80"
 
-  web-spa-client:
-    environment:
-      - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
-      - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
-      - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
-      - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
-    volumes:
-      - './src/eDoxa.Web.Spa/ClientApp:/app'
-      - '/app/node_modules'
-    ports:
-      - '3000:3000'
+#  web-spa-client:
+#    environment:
+#      - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
+#      - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
+#      - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
+#      - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
+#    volumes:
+#      - './src/eDoxa.Web.Spa/ClientApp:/app'
+#      - '/app/node_modules'
+#    ports:
+#      - '3000:3000'
 
   web-status:
     environment:
