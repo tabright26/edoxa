@@ -3,18 +3,17 @@ import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Deposit from "./Deposit";
 import { configureStore } from "store";
-import { MONEY } from "types";
+import { CURRENCY_MONEY } from "types";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
 
-const initialState: any = {};
-const store = configureStore(initialState);
+const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(
     <Provider store={store}>
-      <Deposit currency={MONEY} bundles={[{}, {}, {}]} />
+      <Deposit currency={CURRENCY_MONEY} bundles={[{}, {}, {}]} />
     </Provider>
   );
 };

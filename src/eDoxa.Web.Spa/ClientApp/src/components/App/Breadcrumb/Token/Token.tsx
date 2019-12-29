@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import Balance from "components/User/Account/Balance";
 import BuyToken from "./Buy";
-import { TOKEN } from "types";
+import { CURRENCY_TOKEN } from "types";
 
 const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
@@ -13,7 +13,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
         className="bg-gray-900"
         style={{ width: "100px" }}
       >
-        <Balance currency={TOKEN} attribute="available" />
+        <Balance currency={CURRENCY_TOKEN} attribute="available" />
       </Badge>
       <Popover
         style={{
@@ -32,18 +32,18 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
             <dt className="col-6">Available</dt>
             <dd className="col-6">
               <Balance
-                currency={TOKEN}
+                currency={CURRENCY_TOKEN}
                 attribute="available"
                 alignment="right"
               />
             </dd>
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
-              <Balance currency={TOKEN} attribute="pending" alignment="right" />
+              <Balance currency={CURRENCY_TOKEN} attribute="pending" alignment="right" />
             </dd>
           </dl>
           {process.env.NODE_ENV !== "production" && (
-            <BuyToken currency={TOKEN} />
+            <BuyToken currency={CURRENCY_TOKEN} />
           )}
         </PopoverBody>
       </Popover>

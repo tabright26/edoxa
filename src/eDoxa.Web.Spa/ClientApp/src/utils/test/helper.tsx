@@ -49,8 +49,8 @@ Object.defineProperty(ReactWrapper.prototype, "findSubmitButton", {
 
 Object.defineProperty(ReactWrapper.prototype, "findFormFeedback", {
   value: function findFormFeedback(message: string): boolean {
-    console.log(this.find("FormFeedback").debug());
-    return this.find(`FormFeedback`).someWhere(node => node.text() == message);
+    //console.log(this.find("FormFeedback").debug());
+    return this.find(`FormFeedback`).someWhere(node => node.text() === message);
   },
   writable: true,
   configurable: true

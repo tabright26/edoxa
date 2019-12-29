@@ -9,7 +9,7 @@ import { UserAccountTransactionsState } from "store/root/user/account/transactio
 import { GameAccountCredentialState } from "store/root/user/game/credential/types";
 import { UserAddressBookState } from "store/root/user/addressBook/types";
 import { UserEmailState } from "store/root/user/email/types";
-import { UserInformationsState } from "store/root/user/information/types";
+import { UserProfileState } from "store/root/user/profile/types";
 import { UserPhoneState } from "store/root/user/phone/types";
 
 it("renders without crashing", () => {
@@ -144,7 +144,7 @@ it("renders without crashing", () => {
     error: null
   };
 
-  const informations: UserInformationsState = {
+  const informations: UserProfileState = {
     data: {
       firstName: "Gabriel",
       lastName: "Roy",

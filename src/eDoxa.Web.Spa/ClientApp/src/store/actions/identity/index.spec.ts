@@ -6,11 +6,11 @@ import {
   forgotUserPassword,
   resetUserPassword,
   loadUserDoxatagHistory,
-  updateUserDoxatag,
+  changeUserDoxatag,
   confirmUserEmail,
-  loadUserInformations,
-  createUserInformations,
-  updateUserInformations
+  loadUserProfile,
+  createUserProfile,
+  updateUserProfile
 } from "./index";
 
 import {
@@ -35,21 +35,21 @@ import {
   LOAD_USER_DOXATAGHISTORY,
   LOAD_USER_DOXATAGHISTORY_SUCCESS,
   LOAD_USER_DOXATAGHISTORY_FAIL,
-  UPDATE_USER_DOXATAG,
-  UPDATE_USER_DOXATAG_SUCCESS,
-  UPDATE_USER_DOXATAG_FAIL,
+  CHANGE_USER_DOXATAG,
+  CHANGE_USER_DOXATAG_SUCCESS,
+  CHANGE_USER_DOXATAG_FAIL,
   CONFIRM_USER_EMAIL,
   CONFIRM_USER_EMAIL_SUCCESS,
   CONFIRM_USER_EMAIL_FAIL,
-  LOAD_USER_INFORMATIONS,
-  LOAD_USER_INFORMATIONS_SUCCESS,
-  LOAD_USER_INFORMATIONS_FAIL,
-  CREATE_USER_INFORMATIONS,
-  CREATE_USER_INFORMATIONS_SUCCESS,
-  CREATE_USER_INFORMATIONS_FAIL,
-  UPDATE_USER_INFORMATIONS,
-  UPDATE_USER_INFORMATIONS_SUCCESS,
-  UPDATE_USER_INFORMATIONS_FAIL
+  LOAD_USER_PROFILE,
+  LOAD_USER_PROFILE_SUCCESS,
+  LOAD_USER_PROFILE_FAIL,
+  CREATE_USER_PROFILE,
+  CREATE_USER_PROFILE_SUCCESS,
+  CREATE_USER_PROFILE_FAIL,
+  UPDATE_USER_PROFILE,
+  UPDATE_USER_PROFILE_SUCCESS,
+  UPDATE_USER_PROFILE_FAIL
 } from "./types";
 
 describe("identity actions", () => {
@@ -162,15 +162,15 @@ describe("identity actions", () => {
 
   it("should create an action to post user doxatag", () => {
     const expectedType = [
-      UPDATE_USER_DOXATAG,
-      UPDATE_USER_DOXATAG_SUCCESS,
-      UPDATE_USER_DOXATAG_FAIL
+      CHANGE_USER_DOXATAG,
+      CHANGE_USER_DOXATAG_SUCCESS,
+      CHANGE_USER_DOXATAG_FAIL
     ];
     const expectedMethod = "POST";
     const expectedUrl = "/identity/api/doxatag-history";
     const expectedDoxatag = "Doxatag";
 
-    const actionCreator = updateUserDoxatag(expectedDoxatag, null);
+    const actionCreator = changeUserDoxatag(expectedDoxatag, null);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -202,14 +202,14 @@ describe("identity actions", () => {
 describe("identity actions", () => {
   it("should create an action to get user personal info", () => {
     const expectedType = [
-      LOAD_USER_INFORMATIONS,
-      LOAD_USER_INFORMATIONS_SUCCESS,
-      LOAD_USER_INFORMATIONS_FAIL
+      LOAD_USER_PROFILE,
+      LOAD_USER_PROFILE_SUCCESS,
+      LOAD_USER_PROFILE_FAIL
     ];
     const expectedMethod = "GET";
-    const expectedUrl = "/identity/api/informations";
+    const expectedUrl = "/identity/api/profile";
 
-    const actionCreator = loadUserInformations();
+    const actionCreator = loadUserProfile();
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -218,12 +218,12 @@ describe("identity actions", () => {
 
   it("should create an action to post user personal info", () => {
     const expectedType = [
-      CREATE_USER_INFORMATIONS,
-      CREATE_USER_INFORMATIONS_SUCCESS,
-      CREATE_USER_INFORMATIONS_FAIL
+      CREATE_USER_PROFILE,
+      CREATE_USER_PROFILE_SUCCESS,
+      CREATE_USER_PROFILE_FAIL
     ];
     const expectedMethod = "POST";
-    const expectedUrl = "/identity/api/informations";
+    const expectedUrl = "/identity/api/profile";
     const expectedInformations = {
       firstName: "Bob",
       lastName: "Afrete",
@@ -231,7 +231,7 @@ describe("identity actions", () => {
       dob: { year: 1990, month: 5, day: 10 }
     };
 
-    const object = createUserInformations(expectedInformations, null);
+    const object = createUserProfile(expectedInformations, null);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);
@@ -241,15 +241,15 @@ describe("identity actions", () => {
 
   it("should create an action to put user personal info", () => {
     const expectedType = [
-      UPDATE_USER_INFORMATIONS,
-      UPDATE_USER_INFORMATIONS_SUCCESS,
-      UPDATE_USER_INFORMATIONS_FAIL
+      UPDATE_USER_PROFILE,
+      UPDATE_USER_PROFILE_SUCCESS,
+      UPDATE_USER_PROFILE_FAIL
     ];
     const expectedMethod = "PUT";
-    const expectedUrl = "/identity/api/informations";
+    const expectedUrl = "/identity/api/profile";
     const expectedInformations = { firstName: "Bob" };
 
-    const object = updateUserInformations(expectedInformations, null);
+    const object = updateUserProfile(expectedInformations, null);
 
     expect(object.types).toEqual(expectedType);
     expect(object.payload.request.method).toEqual(expectedMethod);

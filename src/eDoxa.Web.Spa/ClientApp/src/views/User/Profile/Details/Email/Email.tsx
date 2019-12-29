@@ -7,25 +7,25 @@ import Loading from "components/Shared/Loading";
 
 const Email: FunctionComponent<any> = ({
   className,
-  email: {
-    data: { address, verified },
-    error,
-    loading
-  }
+  email: { data, error, loading }
 }) => (
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">EMAIL</strong>
-      <Badge.Verification className="ml-3 my-auto" verified={verified} />
+      {data && (
+        <Badge.Verification className="ml-3 my-auto" verified={data.verified} />
+      )}
     </CardHeader>
     <CardBody>
       {loading ? (
         <Loading />
-      ) : (
+      ) : data ? (
         <dl className="row mb-0">
           <dd className="col-sm-3 mb-0 text-muted">Email</dd>
-          <dd className="col-sm-9 mb-0">{address}</dd>
+          <dd className="col-sm-9 mb-0">{data.address}</dd>
         </dl>
+      ) : (
+        <span>Not found</span>
       )}
     </CardBody>
   </Card>

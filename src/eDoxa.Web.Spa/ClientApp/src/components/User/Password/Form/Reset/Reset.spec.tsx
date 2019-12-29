@@ -4,18 +4,12 @@ import { ReactWrapper } from "enzyme";
 import Reset from "./Reset";
 import { configureStore } from "store";
 import Input from "components/Shared/Input";
-import {
-  EMAIL_REQUIRED,
-  EMAIL_INVALID,
-  PASSWORD_REQUIRED,
-  PASSWORD_INVALID
-} from "validation";
+import { EMAIL_REQUIRED, EMAIL_INVALID } from "validation";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
 
-const initialState: any = {};
-const store = configureStore(initialState);
+const store = configureStore();
 
 const createWrapper = (): ReactWrapper | any => {
   return mount(

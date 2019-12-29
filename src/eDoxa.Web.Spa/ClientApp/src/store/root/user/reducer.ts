@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { reducer as informationReducer } from "./information/reducer";
+import { reducer as informationReducer } from "./profile/reducer";
 import { reducer as doxatagHistoryReducer } from "./doxatagHistory/reducer";
 import { reducer as addressBookReducer } from "./addressBook/reducer";
 import { reducer as accountReducer } from "./account/reducer";

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect } from "react-redux";
-import { loadUserInformations } from "store/actions/identity";
+import { loadUserProfile } from "store/actions/identity";
 import { RootState } from "store/types";
 
 export const withtUserInformations = (
@@ -22,7 +22,7 @@ export const withtUserInformations = (
 
   const mapDispatchToProps = (dispatch: any) => {
     return {
-      loadUserInformations: () => dispatch(loadUserInformations())
+      loadUserInformations: () => dispatch(loadUserProfile())
     };
   };
 

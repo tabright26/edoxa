@@ -1,5 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { Balance, Bundle, Transaction } from "types";
+import { Balance, TransactionBundle, Transaction } from "types";
 
 export type UserAccountBalanceActionCreators =
   | LoadUserMoneyAccountBalanceActionCreator
@@ -113,7 +113,7 @@ export type LoadUserAccountDepositMoneyBundlesActionCreator = AxiosActionCreator
 >;
 export type LoadUserAccountDepositMoneyBundlesAction = AxiosAction<
   LoadUserAccountDepositMoneyBundlesType,
-  Bundle[]
+  TransactionBundle[]
 >;
 
 export type LoadUserAccountDepositTokenBundlesType =
@@ -125,7 +125,7 @@ export type LoadUserAccountDepositTokenBundlesActionCreator = AxiosActionCreator
 >;
 export type LoadUserAccountDepositTokenBundlesAction = AxiosAction<
   LoadUserAccountDepositTokenBundlesType,
-  Bundle[]
+  TransactionBundle[]
 >;
 
 export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES =
@@ -144,7 +144,7 @@ export type LoadUserAccountWithdrawalMoneyBundlesActionCreator = AxiosActionCrea
 >;
 export type LoadUserAccountWithdrawalMoneyBundlesAction = AxiosAction<
   LoadUserAccountWithdrawalMoneyBundlesType,
-  Bundle[]
+  TransactionBundle[]
 >;
 
 export type UserAccountDepositBundlesActionCreators =

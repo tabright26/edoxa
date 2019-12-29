@@ -10,19 +10,25 @@ import Loading from "components/Shared/Loading";
 
 const Phone: FunctionComponent<any> = ({
   className,
-  phone: {
-    data: { number, verified },
-    error,
-    loading
-  }
+  phone: { data, error, loading }
 }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">PHONE</strong>
-        <Badge.Verification className="ml-3 my-auto" verified={verified} />
-        <Button.Link className="p-0 ml-auto my-auto" icon={faEdit} disabled={buttonDisabled} onClick={() => setButtonDisabled(true)}>
+        {data && (
+          <Badge.Verification
+            className="ml-3 my-auto"
+            verified={data.verified}
+          />
+        )}
+        <Button.Link
+          className="p-0 ml-auto my-auto"
+          icon={faEdit}
+          disabled={buttonDisabled}
+          onClick={() => setButtonDisabled(true)}
+        >
           UPDATE
         </Button.Link>
       </CardHeader>
@@ -32,7 +38,15 @@ const Phone: FunctionComponent<any> = ({
         ) : (
           <dl className="row mb-0">
             <dd className="col-sm-3 text-muted mb-0">Number</dd>
-            <dd className="col-sm-5 mb-0">{buttonDisabled || !number ? <UserPhoneForm.Update handleCancel={() => setButtonDisabled(false)} /> : <span>{number}</span>}</dd>
+            <dd className="col-sm-5 mb-0">
+              {buttonDisabled || !data ? (
+                <UserPhoneForm.Update
+                  handleCancel={() => setButtonDisabled(false)}
+                />
+              ) : (
+                <span>{data.number}</span>
+              )}
+            </dd>
           </dl>
         )}
       </CardBody>

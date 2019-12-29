@@ -7,6 +7,9 @@
 using System;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Domain.Services;
 
 using Microsoft.AspNetCore.Authorization;
@@ -25,10 +28,12 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     public sealed class EmailConfirmController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public EmailConfirmController(IUserService userService)
+        public EmailConfirmController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -55,6 +60,8 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                 {
                     throw new InvalidOperationException($"Error confirming email for user with ID '{userId}':");
                 }
+
+                return this.Ok(_mapper.Map<EmailDto>(user));
             }
 
             return this.Ok();

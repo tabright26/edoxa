@@ -12,11 +12,11 @@ import {
   LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
 } from "./types";
 
-import { MONEY, TOKEN } from "types";
+import { CURRENCY_MONEY, CURRENCY_TOKEN } from "types";
 
 describe("cashier actions", () => {
   it("should create an action to get user balance money", () => {
-    const expectedCurrency = MONEY;
+    const expectedCurrency = CURRENCY_MONEY;
     const expectedType = [
       LOAD_USER_MONEY_ACCOUNT_BALANCE,
       LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS,
@@ -33,7 +33,7 @@ describe("cashier actions", () => {
   });
 
   it("should create an action to get user balance money", () => {
-    const expectedCurrency = TOKEN;
+    const expectedCurrency = CURRENCY_TOKEN;
     const expectedType = [
       LOAD_USER_TOKEN_ACCOUNT_BALANCE,
       LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS,

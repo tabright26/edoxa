@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import Informations from "./Informations";
+import Informations from "./Profile";
 import Email from "./Email";
 import AddressBook from "./AddressBook";
 

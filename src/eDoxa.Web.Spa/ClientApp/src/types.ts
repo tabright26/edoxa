@@ -1,10 +1,22 @@
-import { Stream } from "stream";
 import { Country } from "utils/localize/types";
 
-export const MONEY = "money";
-export const TOKEN = "token";
+export const GAME_LEAGUE_OF_LEGENDS = "LeagueOfLegends";
 
-export type Currency = typeof MONEY | typeof TOKEN;
+export type Game = typeof GAME_LEAGUE_OF_LEGENDS;
+
+export const GENDER_MALE = "Male";
+export const GENDER_FEMALE = "Female";
+export const GENDER_OTHER = "Other";
+
+export type Gender =
+  | typeof GENDER_MALE
+  | typeof GENDER_FEMALE
+  | typeof GENDER_OTHER;
+
+export const CURRENCY_MONEY = "money";
+export const CURRENCY_TOKEN = "token";
+
+export type Currency = typeof CURRENCY_MONEY | typeof CURRENCY_TOKEN;
 
 export const TRANSACTION_TYPE_DEPOSIT = "deposit";
 export const TRANSACTION_TYPE_REWARD = "reward";
@@ -28,7 +40,6 @@ export type TransactionStatus =
   | typeof TRANSACTION_STATUS_SUCCEDED
   | typeof TRANSACTION_STATUS_FAILED;
 
-export type AccountId = string;
 export type AddressId = string;
 export type CandidatureId = string;
 export type ChallengeId = string;
@@ -53,7 +64,7 @@ export interface Transaction extends Entity<TransactionId> {
   readonly status: TransactionStatus;
 }
 
-export interface Bundle {
+export interface TransactionBundle {
   readonly amount: number;
   readonly price: number;
 }
@@ -63,7 +74,12 @@ export interface Balance {
   readonly pending: number;
 }
 
-export type Gender = "Male" | "Female" | "Other";
+export interface UserProfile {
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly gender: Gender;
+  readonly dob: Dob;
+}
 
 export interface Dob {
   readonly year: number;
@@ -71,24 +87,17 @@ export interface Dob {
   readonly day: number;
 }
 
-export interface Informations {
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly gender: Gender;
-  readonly dob: Dob;
-}
-
-export interface Email {
+export interface UserEmail {
   readonly address: string;
   readonly verified: boolean;
 }
 
-export interface Phone {
+export interface UserPhone {
   readonly number: string;
   readonly verified: boolean;
 }
 
-export interface Address extends Entity<AddressId> {
+export interface UserAddress extends Entity<AddressId> {
   readonly country: Country | string;
   readonly line1: string;
   readonly line2?: string;
@@ -97,20 +106,11 @@ export interface Address extends Entity<AddressId> {
   readonly postalCode?: string;
 }
 
-export interface Doxatag {
+export interface UserDoxatag {
   readonly userId: UserId;
   readonly name: string;
   readonly code: number;
   readonly timestamp: number;
-}
-
-export type Game = "LeagueOfLegends";
-
-export type Logo = Stream | string | null;
-
-export interface ClanOwner {
-  readonly userId: UserId;
-  readonly doxatag?: Doxatag;
 }
 
 export interface Clan extends Entity<ClanId> {
@@ -118,26 +118,33 @@ export interface Clan extends Entity<ClanId> {
   readonly ownerId: UserId;
   readonly owner?: ClanOwner;
   readonly members: Member[];
-  readonly logo: Logo;
+  readonly logo: ClanLogo;
+}
+
+export type ClanLogo = string;
+
+export interface ClanOwner {
+  readonly userId: UserId;
+  readonly doxatag?: UserDoxatag;
 }
 
 export interface Member extends Entity<MemberId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
-  readonly doxatag?: Doxatag;
+  readonly doxatag?: UserDoxatag;
 }
 
 export interface Candidature extends Entity<CandidatureId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
-  readonly doxatag?: Doxatag;
+  readonly doxatag?: UserDoxatag;
   readonly clan?: Clan;
 }
 
 export interface Invitation extends Entity<InvitationId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
-  readonly doxatag?: Doxatag;
+  readonly doxatag?: UserDoxatag;
   readonly clan?: Clan;
 }
 

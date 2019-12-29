@@ -1,19 +1,16 @@
 import { combineEpics, ofType } from "redux-observable";
 import { NEVER } from "rxjs";
 import { switchMap } from "rxjs/operators";
-
 import {
   USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS,
   USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS,
   USER_ACCOUNT_DEPOSIT_MONEY_FAIL,
   USER_ACCOUNT_DEPOSIT_TOKEN_FAIL
 } from "store/actions/cashier/types";
-
 import {
   USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL,
   USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS
 } from "store/actions/cashier/types";
-
 import {
   CREATE_USER_ADDRESS_SUCCESS,
   DELETE_USER_ADDRESS_SUCCESS,
@@ -22,26 +19,22 @@ import {
   DELETE_USER_ADDRESS_FAIL,
   UPDATE_USER_ADDRESS_FAIL
 } from "store/actions/identity/types";
-
 import {
-  UPDATE_USER_DOXATAG_SUCCESS,
-  UPDATE_USER_DOXATAG_FAIL
+  CHANGE_USER_DOXATAG_SUCCESS,
+  CHANGE_USER_DOXATAG_FAIL
 } from "store/actions/identity/types";
-
 import {
-  CREATE_USER_INFORMATIONS_SUCCESS,
-  UPDATE_USER_INFORMATIONS_SUCCESS,
-  CREATE_USER_INFORMATIONS_FAIL,
-  UPDATE_USER_INFORMATIONS_FAIL
+  CREATE_USER_PROFILE_SUCCESS,
+  UPDATE_USER_PROFILE_SUCCESS,
+  CREATE_USER_PROFILE_FAIL,
+  UPDATE_USER_PROFILE_FAIL
 } from "store/actions/identity/types";
-
 import {
   FORGOT_USER_PASSWORD_SUCCESS,
   RESET_USER_PASSWORD_SUCCESS,
   FORGOT_USER_PASSWORD_FAIL,
   RESET_USER_PASSWORD_FAIL
 } from "store/actions/identity/types";
-
 import {
   UPDATE_USER_PHONE_SUCCESS,
   UPDATE_USER_PHONE_FAIL
@@ -56,9 +49,9 @@ const formSuccessEpic = (action$: any): any =>
       CREATE_USER_ADDRESS_SUCCESS,
       DELETE_USER_ADDRESS_SUCCESS,
       UPDATE_USER_ADDRESS_SUCCESS,
-      UPDATE_USER_DOXATAG_SUCCESS,
-      CREATE_USER_INFORMATIONS_SUCCESS,
-      UPDATE_USER_INFORMATIONS_SUCCESS,
+      CHANGE_USER_DOXATAG_SUCCESS,
+      CREATE_USER_PROFILE_SUCCESS,
+      UPDATE_USER_PROFILE_SUCCESS,
       FORGOT_USER_PASSWORD_SUCCESS,
       RESET_USER_PASSWORD_SUCCESS,
       UPDATE_USER_PHONE_SUCCESS
@@ -81,9 +74,9 @@ const formFailEpic = (action$: any) =>
       CREATE_USER_ADDRESS_FAIL,
       DELETE_USER_ADDRESS_FAIL,
       UPDATE_USER_ADDRESS_FAIL,
-      UPDATE_USER_DOXATAG_FAIL,
-      CREATE_USER_INFORMATIONS_FAIL,
-      UPDATE_USER_INFORMATIONS_FAIL,
+      CHANGE_USER_DOXATAG_FAIL,
+      CREATE_USER_PROFILE_FAIL,
+      UPDATE_USER_PROFILE_FAIL,
       FORGOT_USER_PASSWORD_FAIL,
       RESET_USER_PASSWORD_FAIL,
       UPDATE_USER_PHONE_FAIL
@@ -97,6 +90,4 @@ const formFailEpic = (action$: any) =>
     })
   );
 
-//-------------------------------------------------------------------------------------------------
-
-export const epics = combineEpics(formSuccessEpic, formFailEpic);
+export const epic = combineEpics(formSuccessEpic, formFailEpic);

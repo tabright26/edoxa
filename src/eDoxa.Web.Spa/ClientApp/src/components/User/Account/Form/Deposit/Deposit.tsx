@@ -8,14 +8,14 @@ import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
 import { accountDeposit } from "store/actions/cashier";
-import { Currency, Bundle } from "types";
+import { Currency, TransactionBundle } from "types";
 import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface Props {
   currency: Currency;
-  bundles: Bundle[];
+  bundles: TransactionBundle[];
 }
 
 interface FormData {

@@ -2,9 +2,9 @@ import {
   LOAD_USER_DOXATAGHISTORY,
   LOAD_USER_DOXATAGHISTORY_SUCCESS,
   LOAD_USER_DOXATAGHISTORY_FAIL,
-  UPDATE_USER_DOXATAG,
-  UPDATE_USER_DOXATAG_SUCCESS,
-  UPDATE_USER_DOXATAG_FAIL,
+  CHANGE_USER_DOXATAG,
+  CHANGE_USER_DOXATAG_SUCCESS,
+  CHANGE_USER_DOXATAG_FAIL,
   UserDoxatagHistoryActions
 } from "store/actions/identity/types";
 import { Reducer } from "redux";
@@ -26,40 +26,49 @@ export const reducer: Reducer<
     action: UserDoxatagHistoryActions
   ) => {
     switch (action.type) {
-      case LOAD_USER_DOXATAGHISTORY:
+      case LOAD_USER_DOXATAGHISTORY: {
         draft.error = null;
         draft.loading = true;
         break;
-      case LOAD_USER_DOXATAGHISTORY_SUCCESS:
+      }
+      case LOAD_USER_DOXATAGHISTORY_SUCCESS: {
         const { status, data } = action.payload;
         switch (status) {
-          case 204:
+          case 204: {
             draft.error = null;
             draft.loading = false;
             break;
-          default:
+          }
+          default: {
             draft.data = data;
             draft.error = null;
             draft.loading = false;
             break;
+          }
         }
         break;
-      case LOAD_USER_DOXATAGHISTORY_FAIL:
+      }
+      case LOAD_USER_DOXATAGHISTORY_FAIL: {
         draft.error = action.error;
         draft.loading = false;
         break;
-      case UPDATE_USER_DOXATAG:
+      }
+      case CHANGE_USER_DOXATAG: {
         draft.error = null;
         draft.loading = true;
         break;
-      case UPDATE_USER_DOXATAG_SUCCESS:
+      }
+      case CHANGE_USER_DOXATAG_SUCCESS: {
+        draft.data.push(action.payload.data);
         draft.error = null;
         draft.loading = false;
         break;
-      case UPDATE_USER_DOXATAG_FAIL:
+      }
+      case CHANGE_USER_DOXATAG_FAIL: {
         draft.error = action.error;
         draft.loading = false;
         break;
+      }
     }
   },
   initialState

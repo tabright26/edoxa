@@ -94,6 +94,7 @@ services:
     depends_on:
       - seq
       - challenges-api
+      - games-api
 
   cashier-web-aggregator:
     image: ${ACR_REGISTRY:-edoxa}/dev/cashier-web-aggregator:${ACR_TAG:-latest}
@@ -115,11 +116,8 @@ services:
       - seq   
       - identity-api
       - cashier-api
-      - payment-api
-      - notifications-api
       - games-api
       - challenges-api
-      - clans-api
 
   cashier-web-gateway:
     image: envoyproxy/envoy:v1.11.1
@@ -138,13 +136,12 @@ services:
       - identity-api
       - cashier-web-gateway
       - challenges-web-gateway
-      - web-spa-client
 
-  web-spa-client:
-    image: ${ACR_REGISTRY:-edoxa}/dev/web-spa-client:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Web.Spa/ClientApp/Dockerfile
+#  web-spa-client:
+#    image: ${ACR_REGISTRY:-edoxa}/dev/web-spa-client:${ACR_TAG:-latest}
+#    build:
+#      context: .
+#      dockerfile: src/eDoxa.Web.Spa/ClientApp/Dockerfile
 
   web-status:
     image: ${ACR_REGISTRY:-edoxa}/dev/web-status:${ACR_TAG:-latest}

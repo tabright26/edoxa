@@ -2,9 +2,9 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Deposit from "./Deposit";
-import { UserAccountDepositBundlesState } from "store/actions/cashier";
+import { UserAccountDepositBundlesState } from "store/root/user/account/deposit/bundles/types";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
-import { MONEY } from "types";
+import { CURRENCY_MONEY } from "types";
 
 it("renders without crashing", () => {
   //Arrange
@@ -20,18 +20,7 @@ it("renders without crashing", () => {
 
   const customer: StripeCustomerState = {
     data: {
-      id: "testID",
-      object: "customer",
-      address: null,
-      created: 111111111,
-      currency: "CAD",
-      default_source: null,
-      delinquent: null,
-      livemode: false,
-      metadata: null,
-      shipping: null,
-      subscriptions: null,
-      invoice_settings: { default_payment_method: null }
+      defaultPaymentMethodId: "defaultPaymentMethodId"
     },
     loading: false,
     error: null
@@ -60,7 +49,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Deposit currency={MONEY} />
+        <Deposit currency={CURRENCY_MONEY} />
       </Provider>
     )
     .toJSON();
