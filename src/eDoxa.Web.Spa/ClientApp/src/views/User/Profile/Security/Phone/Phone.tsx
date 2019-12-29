@@ -1,17 +1,26 @@
-import React, { useState, FunctionComponent } from "react";
+import React, { useState, FunctionComponent, useEffect } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Badge";
-import { withUserPhone } from "store/root/user/phone/container";
+import { connect } from "react-redux";
 import UserPhoneForm from "components/User/Phone/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";
+import { RootState } from "store/types";
+import { loadUserPhone } from "store/actions/identity";
 
 const Phone: FunctionComponent<any> = ({
   className,
-  phone: { data, error, loading }
+  phone: { data, error, loading },
+  loadUserPhone
 }) => {
+  useEffect((): void => {
+    if (data === null) {
+      loadUserPhone();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   return (
     <Card className={`card-accent-primary ${className}`}>
@@ -54,6 +63,18 @@ const Phone: FunctionComponent<any> = ({
   );
 };
 
-const enhance = compose<any, any>(withUserPhone);
+const mapStateToProps = (state: RootState) => {
+  return {
+    phone: state.root.user.phone
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    loadUserPhone: () => dispatch(loadUserPhone())
+  };
+};
+
+const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
 
 export default enhance(Phone);

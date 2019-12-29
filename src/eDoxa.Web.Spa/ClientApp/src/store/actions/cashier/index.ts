@@ -17,9 +17,9 @@ import {
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES,
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS,
   LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL,
-  LOAD_USER_ACCOUNT_TRANSACTIONS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-  LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL,
+  LOAD_USER_TRANSACTION_HISTORY,
+  LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
+  LOAD_USER_TRANSACTION_HISTORY_FAIL,
   USER_ACCOUNT_WITHDRAWAL_MONEY,
   USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS,
   USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL,
@@ -29,7 +29,7 @@ import {
   UserAccountDepositBundlesActionCreators,
   UserAccountDepositActionCreators,
   UserAccountWithdrawalActionCreators,
-  UserAccountTransactionsActionCreators,
+  UserTransactionHistoryActionCreators,
   UserAccountBalanceActionCreators
 } from "./types";
 
@@ -172,16 +172,16 @@ export function loadTransactionBundles(
   }
 }
 
-export function loadUserAccountTransactions(
+export function loadUserTransactionHistory(
   currency: Currency | null = null,
   type: TransactionType | null = null,
   status: TransactionStatus | null = null
-): UserAccountTransactionsActionCreators {
+): UserTransactionHistoryActionCreators {
   return {
     types: [
-      LOAD_USER_ACCOUNT_TRANSACTIONS,
-      LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS,
-      LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL
+      LOAD_USER_TRANSACTION_HISTORY,
+      LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
+      LOAD_USER_TRANSACTION_HISTORY_FAIL
     ],
     payload: {
       request: {

@@ -78,10 +78,10 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
 };
 
 const enhance = compose<any, any>(
+  connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: USER_ACCOUNT_WITHDRAWAL_FORM
-  }),
-  connect(mapStateToProps)
+  })
 );
 
 export default enhance(WithdrawalForm);

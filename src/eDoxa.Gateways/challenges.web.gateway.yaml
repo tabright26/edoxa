@@ -103,7 +103,7 @@ static_resources:
         address: clans-api
         port_value: 80
   - name: challenges-web-aggregator
-    connect_timeout: 120s
+    connect_timeout: 120.0s
     type: LOGICAL_DNS
     dns_lookup_family: V4_ONLY
     lb_policy: ROUND_ROBIN

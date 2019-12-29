@@ -55,15 +55,6 @@ interface Entity<TEntityId> {
   readonly id: TEntityId;
 }
 
-export interface Transaction extends Entity<TransactionId> {
-  readonly timestamp: number;
-  readonly currency: Currency;
-  readonly amount: number;
-  readonly description: string;
-  readonly type: TransactionType;
-  readonly status: TransactionStatus;
-}
-
 export interface TransactionBundle {
   readonly amount: number;
   readonly price: number;
@@ -74,17 +65,13 @@ export interface Balance {
   readonly pending: number;
 }
 
-export interface UserProfile {
-  readonly firstName: string;
-  readonly lastName: string;
-  readonly gender: Gender;
-  readonly dob: Dob;
-}
-
-export interface Dob {
-  readonly year: number;
-  readonly month: number;
-  readonly day: number;
+export interface UserTransaction extends Entity<TransactionId> {
+  readonly timestamp: number;
+  readonly currency: Currency;
+  readonly amount: number;
+  readonly description: string;
+  readonly type: TransactionType;
+  readonly status: TransactionStatus;
 }
 
 export interface UserEmail {
@@ -97,6 +84,19 @@ export interface UserPhone {
   readonly verified: boolean;
 }
 
+export interface UserProfile {
+  readonly firstName: string;
+  readonly lastName: string;
+  readonly gender: Gender;
+  readonly dob: UserDob;
+}
+
+export interface UserDob {
+  readonly year: number;
+  readonly month: number;
+  readonly day: number;
+}
+
 export interface UserAddress extends Entity<AddressId> {
   readonly country: Country | string;
   readonly line1: string;
@@ -107,7 +107,7 @@ export interface UserAddress extends Entity<AddressId> {
 }
 
 export interface UserDoxatag {
-  readonly userId: UserId;
+  readonly userId: string;
   readonly name: string;
   readonly code: number;
   readonly timestamp: number;

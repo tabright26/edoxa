@@ -1,5 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { Balance, TransactionBundle, Transaction } from "types";
+import { Balance, TransactionBundle, UserTransaction } from "types";
 
 export type UserAccountBalanceActionCreators =
   | LoadUserMoneyAccountBalanceActionCreator
@@ -68,7 +68,7 @@ export type UserAccountDepositMoneyActionCreator = AxiosActionCreator<
 >;
 export type UserAccountDepositMoneyAction = AxiosAction<
   UserAccountDepositMoneyType,
-  Transaction
+  UserTransaction
 >;
 
 export type UserAccountDepositTokenType =
@@ -80,7 +80,7 @@ export type UserAccountDepositTokenActionCreator = AxiosActionCreator<
 >;
 export type UserAccountDepositTokenAction = AxiosAction<
   UserAccountDepositTokenType,
-  Transaction
+  UserTransaction
 >;
 
 export type UserAccountDepositActionCreators =
@@ -156,26 +156,26 @@ export type UserAccountDepositBundlesActions =
   | LoadUserAccountDepositTokenBundlesAction
   | LoadUserAccountWithdrawalMoneyBundlesAction;
 
-export const LOAD_USER_ACCOUNT_TRANSACTIONS = "LOAD_USER_ACCOUNT_TRANSACTIONS";
-export const LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS =
-  "LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS";
-export const LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL =
-  "LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL";
+export const LOAD_USER_TRANSACTION_HISTORY = "LOAD_USER_TRANSACTION_HISTORY";
+export const LOAD_USER_TRANSACTION_HISTORY_SUCCESS =
+  "LOAD_USER_TRANSACTION_HISTORY_SUCCESS";
+export const LOAD_USER_TRANSACTION_HISTORY_FAIL =
+  "LOAD_USER_TRANSACTION_HISTORY_FAIL";
 
-export type LoadUserAccountTransactionsType =
-  | typeof LOAD_USER_ACCOUNT_TRANSACTIONS
-  | typeof LOAD_USER_ACCOUNT_TRANSACTIONS_SUCCESS
-  | typeof LOAD_USER_ACCOUNT_TRANSACTIONS_FAIL;
-export type LoadUserAccountTransactionsActionCreator = AxiosActionCreator<
-  LoadUserAccountTransactionsType
+export type LoadUserTransactionHistoryType =
+  | typeof LOAD_USER_TRANSACTION_HISTORY
+  | typeof LOAD_USER_TRANSACTION_HISTORY_SUCCESS
+  | typeof LOAD_USER_TRANSACTION_HISTORY_FAIL;
+export type LoadUserTransactionHistoryActionCreator = AxiosActionCreator<
+  LoadUserTransactionHistoryType
 >;
-export type LoadUserAccountTransactionsAction = AxiosAction<
-  LoadUserAccountTransactionsType,
-  Transaction[]
+export type LoadUserTransactionHistoryAction = AxiosAction<
+  LoadUserTransactionHistoryType,
+  UserTransaction[]
 >;
 
-export type UserAccountTransactionsActionCreators = LoadUserAccountTransactionsActionCreator;
-export type UserAccountTransactionsActions = LoadUserAccountTransactionsAction;
+export type UserTransactionHistoryActionCreators = LoadUserTransactionHistoryActionCreator;
+export type UserTransactionHistoryActions = LoadUserTransactionHistoryAction;
 
 export const USER_ACCOUNT_WITHDRAWAL_MONEY = "USER_ACCOUNT_WITHDRAWAL_MONEY";
 export const USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS =
@@ -192,7 +192,7 @@ export type UserAccountWithdrawalMoneyActionCreator = AxiosActionCreator<
 >;
 export type UserAccountWithdrawalMoneyAction = AxiosAction<
   UserAccountWithdrawalMoneyType,
-  Transaction
+  UserTransaction
 >;
 
 export type UserAccountWithdrawalActionCreators = UserAccountWithdrawalMoneyActionCreator;

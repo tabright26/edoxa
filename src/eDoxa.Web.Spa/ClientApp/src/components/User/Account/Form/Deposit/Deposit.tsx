@@ -78,10 +78,10 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
 };
 
 const enhance = compose<any, any>(
+  connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: USER_ACCOUNT_DEPOSIT_FORM
-  }),
-  connect(mapStateToProps)
+  })
 );
 
 export default enhance(DepositForm);

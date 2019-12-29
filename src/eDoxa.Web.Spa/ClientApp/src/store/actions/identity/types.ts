@@ -138,7 +138,10 @@ export type ConfirmUserEmailType =
 export type ConfirmUserEmailActionCreator = AxiosActionCreator<
   ConfirmUserEmailType
 >;
-export type ConfirmUserEmailAction = AxiosAction<ConfirmUserEmailType, UserEmail>;
+export type ConfirmUserEmailAction = AxiosAction<
+  ConfirmUserEmailType,
+  UserEmail
+>;
 
 export type UserEmailActionCreators =
   | LoadUserEmailActionCreator
@@ -164,7 +167,10 @@ export type LoadUserProfileType =
 export type LoadUserProfileActionCreator = AxiosActionCreator<
   LoadUserProfileType
 >;
-export type LoadUserProfileAction = AxiosAction<LoadUserProfileType, UserProfile>;
+export type LoadUserProfileAction = AxiosAction<
+  LoadUserProfileType,
+  UserProfile
+>;
 
 export type CreateUserProfileType =
   | typeof CREATE_USER_PROFILE

@@ -93,11 +93,11 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
 };
 
 const enhance = compose<any, any>(
+  connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: UPDATE_USER_DOXATAG_FORM,
     validate
-  }),
-  connect(mapStateToProps)
+  })
 );
 
 export default enhance(UpdateUserDoxatagForm);
