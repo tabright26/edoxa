@@ -28,7 +28,6 @@ using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.TestHelper.Extensions;
-using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
 
@@ -41,7 +40,6 @@ using MediatR;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -81,22 +79,15 @@ namespace eDoxa.Clans.Api
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddAzureKeyVault(Configuration)
-                .AddIdentityServer(AppSettings)
-                .AddAzureBlobStorage(Configuration)
-                .AddAzureServiceBusTopic(Configuration)
-                .AddSqlServer(Configuration);
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomIdentityServer(AppSettings)
+                .AddCustomAzureBlobStorage(Configuration)
+                .AddCustomAzureServiceBusTopic(Configuration)
+                .AddCustomSqlServer(Configuration);
 
-            services.AddDbContext<ClansDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString(),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<ClansDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+            services.AddCustomAzureStorage(Configuration);
 
             services.AddCustomCors();
 
@@ -166,16 +157,9 @@ namespace eDoxa.Clans.Api
         {
             services.AddAppSettings<ClansAppSettings>(Configuration);
 
-            services.AddDbContext<ClansDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString(),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<ClansDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+            services.AddCustomAzureStorage(Configuration);
 
             services.AddCustomCors();
 

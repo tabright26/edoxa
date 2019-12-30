@@ -1,5 +1,5 @@
 ﻿// Filename: HealthChecksBuilderExtensions.cs
-// Date Created: 2019-11-29
+// Date Created: 2019-12-18
 // 
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
@@ -27,21 +27,21 @@ namespace eDoxa.Seedwork.Monitoring.HealthChecks.Extensions
             return builder.AddCheck(HealthCheckEndpoints.LivenessName, () => HealthCheckResult.Healthy());
         }
 
-        public static IHealthChecksBuilder AddAzureServiceBusTopic(this IHealthChecksBuilder builder, IConfiguration configuration)
+        public static IHealthChecksBuilder AddCustomAzureServiceBusTopic(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             var connectionString = new ServiceBusConnectionStringBuilder(configuration.GetAzureServiceBusConnectionString());
 
             return builder.AddAzureServiceBusTopic(connectionString.GetNamespaceConnectionString(), connectionString.EntityPath);
         }
 
-        public static IHealthChecksBuilder AddAzureBlobStorage(this IHealthChecksBuilder builder, IConfiguration configuration)
+        public static IHealthChecksBuilder AddCustomAzureBlobStorage(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
-            return builder.AddAzureBlobStorage(string.Join(';', configuration.GetAzureBlobStorageConnectionString()!.Split(';').Take(4)));
+            return builder.AddAzureBlobStorage(string.Join(';', configuration.GetAzureBlobStorageConnectionString().Split(';').Take(4)));
         }
 
-        public static IHealthChecksBuilder AddAzureKeyVault(this IHealthChecksBuilder builder, IConfiguration configuration)
+        public static IHealthChecksBuilder AddCustomAzureKeyVault(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
-            var connectionString = new AzureKeyVaultConnectionStringBuilder(configuration.GetAzureKeyVaultConnectionString()!);
+            var connectionString = new AzureKeyVaultConnectionStringBuilder(configuration.GetAzureKeyVaultConnectionString());
 
             return builder.AddAzureKeyVault(
                 options =>
@@ -51,12 +51,12 @@ namespace eDoxa.Seedwork.Monitoring.HealthChecks.Extensions
                 });
         }
 
-        public static IHealthChecksBuilder AddSqlServer(this IHealthChecksBuilder builder, IConfiguration configuration)
+        public static IHealthChecksBuilder AddCustomSqlServer(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             return builder.AddSqlServer(configuration.GetSqlServerConnectionString());
         }
 
-        public static IHealthChecksBuilder AddIdentityServer<TEndpointsOptions>(
+        public static IHealthChecksBuilder AddCustomIdentityServer<TEndpointsOptions>(
             this IHealthChecksBuilder builder,
             IHasEndpointsAppSettings<TEndpointsOptions> appSettings
         )
@@ -65,14 +65,14 @@ namespace eDoxa.Seedwork.Monitoring.HealthChecks.Extensions
             return builder.AddIdentityServer(new Uri(appSettings.Endpoints.IdentityUrl));
         }
 
-        public static IHealthChecksBuilder AddRedis(this IHealthChecksBuilder builder, IConfiguration configuration)
+        public static IHealthChecksBuilder AddCustomRedis(this IHealthChecksBuilder builder, IConfiguration configuration)
         {
             return builder.AddRedis(configuration.GetRedisConnectionString());
         }
 
-        public static IHealthChecksBuilder AddUrlGroup(this IHealthChecksBuilder builder, string? uriString, string name)
+        public static IHealthChecksBuilder AddCustomUrlGroup(this IHealthChecksBuilder builder, string uriString, string name)
         {
-            return uriString == null ? builder : builder.AddUrlGroup(new Uri(HealthCheckEndpointHelper.Parse(uriString)), name);
+            return builder.AddUrlGroup(new Uri(HealthCheckEndpointHelper.Parse(uriString)), name);
         }
     }
 }
