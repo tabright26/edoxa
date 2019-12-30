@@ -34,9 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\data\challenges.csv" Link="Setup/challenges.csv" CopyToOutputDirectory="Always" />
-    <None Include="..\..\data\challenges.payouts.csv" Link="Setup/challenges.payouts.csv" CopyToOutputDirectory="Always" />
-    <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\Challenges.csv" Link="Setup\Challenges.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\ChallengePayouts.csv" Link="Setup\ChallengePayouts.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\Users.csv" Link="Setup\Users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

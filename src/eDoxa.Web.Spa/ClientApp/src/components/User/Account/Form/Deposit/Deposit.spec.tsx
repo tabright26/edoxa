@@ -20,7 +20,11 @@ const createWrapper = (): ReactWrapper | any => {
 
 describe("<UserAccountDepositForm />", () => {
   it("should match the snapshot", () => {
-    const shallowWrapper = shallow(<Deposit />);
+    const shallowWrapper = shallow(
+      <Provider store={store}>
+        <Deposit />
+      </Provider>
+    );
     expect(shallowWrapper).toMatchSnapshot();
   });
 

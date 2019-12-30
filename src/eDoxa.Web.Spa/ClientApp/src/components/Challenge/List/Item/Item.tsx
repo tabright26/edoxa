@@ -3,12 +3,13 @@ import { Card, CardBody, Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import ChallengeLogo from "components/Challenge/Logo/Logo";
 import ChallengeSummary from "components/Challenge/Summary";
+import { getChallengeDetailsPath } from "utils/router/constants";
 
 const ChallengeParticipantItem = ({ challenge }) => {
   return (
     <Card>
       <LinkContainer
-        to={"/arena/challenges/" + challenge.id}
+        to={getChallengeDetailsPath(challenge.id)}
         style={{
           cursor: "pointer"
         }}

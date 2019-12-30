@@ -27,7 +27,11 @@ const createWrapper = (): ReactWrapper | any => {
 
 describe("<UserDoxatagUpdateForm />", () => {
   it("should match the snapshot", () => {
-    const shallowWrapper = shallow(<Update />);
+    const shallowWrapper = shallow(
+      <Provider store={store}>
+        <Update />
+      </Provider>
+    );
     expect(shallowWrapper).toMatchSnapshot();
   });
 

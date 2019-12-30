@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\Users.csv" Link="Setup\Users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

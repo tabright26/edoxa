@@ -31,7 +31,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Users.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/challenges.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Challenges.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
