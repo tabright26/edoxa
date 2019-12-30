@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { toastr } from "react-redux-toastr";
 import { LinkContainer } from "react-router-bootstrap";
 import { Button } from "reactstrap";
+import { getClanDetailsPath } from "utils/router/constants";
 
 const Item = ({ candidature, actions, type, isOwner }) => {
   return (
@@ -9,7 +10,7 @@ const Item = ({ candidature, actions, type, isOwner }) => {
       {type === "clan" ? (
         candidature.doxatag
       ) : (
-        <LinkContainer to={"/structures/clans/" + candidature.clanId}>
+        <LinkContainer to={getClanDetailsPath(candidature.clanId)}>
           <Button className="d-block" color="primary">
             {candidature.clan ? candidature.clan.name : "NOT LOADED"}
           </Button>
@@ -23,7 +24,12 @@ const Item = ({ candidature, actions, type, isOwner }) => {
               actions
                 .acceptCandidature(candidature.id)
                 .then(toastr.success("SUCCESS", "Candidature was accepted."))
-                .catch(toastr.error("WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM", "Candidature not was accepted."))
+                .catch(
+                  toastr.error(
+                    "WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM",
+                    "Candidature not was accepted."
+                  )
+                )
             }
           >
             Accept candidature
@@ -34,7 +40,12 @@ const Item = ({ candidature, actions, type, isOwner }) => {
               actions
                 .declineCandidature(candidature.id)
                 .then(toastr.success("SUCCESS", "Candidature was decline."))
-                .catch(toastr.error("WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM", "Candidature not was accepted."))
+                .catch(
+                  toastr.error(
+                    "WARNINGAVERTISSEMENTAVECLELOGODUFBIQUIDECOLEPUAVANTLEFILM",
+                    "Candidature not was accepted."
+                  )
+                )
             }
           >
             Decline candidature

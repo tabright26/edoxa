@@ -20,7 +20,11 @@ const createWrapper = (): ReactWrapper | any => {
 
 describe("<UserAccountWithdrawalForm />", () => {
   it("should match the snapshot", () => {
-    const shallowWrapper = shallow(<Withdrawal />);
+    const shallowWrapper = shallow(
+      <Provider store={store}>
+        <Withdrawal />
+      </Provider>
+    );
     expect(shallowWrapper).toMatchSnapshot();
   });
 

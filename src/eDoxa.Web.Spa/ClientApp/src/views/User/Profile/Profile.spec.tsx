@@ -5,81 +5,53 @@ import { MemoryRouter } from "react-router-dom";
 import Profile from "./Profile";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
 import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethod/types";
-import { UserAccountTransactionsState } from "store/root/user/account/transactions/types";
-import { GameAccountCredentialState } from "store/root/user/game/credential/types";
+import { UserTransactionHistoryState } from "store/root/user/transactionHistory/types";
+import { GamesState } from "store/root/game/types";
 import { UserAddressBookState } from "store/root/user/addressBook/types";
 import { UserEmailState } from "store/root/user/email/types";
 import { UserProfileState } from "store/root/user/profile/types";
 import { UserPhoneState } from "store/root/user/phone/types";
+import {
+  GAME_LEAGUE_OF_LEGENDS,
+  Game,
+  GameOption,
+  GameServiceName
+} from "types";
 
 it("renders without crashing", () => {
   //Arrange
   const paymentMethods: StripePaymentMethodsState = {
-    data: {
-      object: "list",
-      data: [
-        {
-          type: "card",
-          object: "payment_method",
-          metadata: {},
-          livemode: false,
-          id: "testID",
-          customer: "testCustomer",
-          card: {
-            brand: "visa",
-            checks: {
-              address_line1_check: "pass",
-              address_postal_code_check: "pass",
-              cvc_check: "pass"
-            },
-            country: "CA",
-            exp_month: 11,
-            exp_year: 22,
-            fingerprint: "test",
-            funding: "credit",
-            generated_from: null,
-            last4: "4242",
-            three_d_secure_usage: { supported: true },
-            wallet: null
-          },
-          billing_details: {
-            address: { line1: "test address" },
-            email: "gabriel@edoxa.gg",
-            name: "Gabriel Roy",
-            phone: "123456789"
-          },
-          created: 11111111
+    data: [
+      {
+        id: "0",
+        type: "card",
+        card: {
+          brand: "visa",
+          country: "CA",
+          expMonth: 6,
+          expYear: 2015,
+          last4: "4242"
         }
-      ],
-      has_more: false,
-      url: "testURL"
-    },
+      }
+    ],
     loading: false,
     error: null
   };
 
   const bankAccount: StripeBankAccountState = {
     data: {
-      account: null,
-      default_for_currency: true,
-      metadata: {},
-      object: "bank_account",
-      account_holder_name: "Test Name",
-      account_holder_type: "individual",
-      bank_name: "RBC",
+      bankName: "RBC",
       country: "Canada",
       currency: "CAD",
-      fingerprint: "Test",
       last4: "4242",
-      routing_number: "1234567890",
       status: "verified",
-      id: "accountID"
+      defaultForCurrency: true
     },
     loading: false,
     error: null
   };
 
-  const transactions: UserAccountTransactionsState = {
+  const transactions: UserTransactionHistoryState = {
     data: [
       {
         timestamp: 111111,
@@ -113,11 +85,19 @@ it("renders without crashing", () => {
     error: null
   };
 
-  const games: GameAccountCredentialState = {
-    data: [{ name: "League of legends", id: "accountID" }],
+  const games: GamesState = {
+    data: new Map<Game, GameOption>(),
     loading: false,
     error: null
   };
+
+  games.data.set(GAME_LEAGUE_OF_LEGENDS, {
+    name: "",
+    displayName: "",
+    displayed: true,
+    verified: true,
+    services: new Map<GameServiceName, boolean>()
+  });
 
   const addressBook: UserAddressBookState = {
     data: [

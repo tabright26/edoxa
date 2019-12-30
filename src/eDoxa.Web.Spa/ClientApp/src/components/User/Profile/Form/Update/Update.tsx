@@ -98,10 +98,8 @@ const UpdateUserProfileForm: FunctionComponent<InjectedFormProps<FormData> &
 const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
   state: RootState
 ) => {
-  const { data } = state.root.user.profile;
-  console.log(data);
   return {
-    initialValues: data
+    initialValues: state.root.user.profile.data
   };
 };
 

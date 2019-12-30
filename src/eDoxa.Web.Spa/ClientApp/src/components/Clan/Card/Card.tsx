@@ -1,10 +1,19 @@
 import React from "react";
-import { Card, CardTitle, CardBody, CardHeader, Col, Row, Button } from "reactstrap";
+import {
+  Card,
+  CardTitle,
+  CardBody,
+  CardHeader,
+  Col,
+  Row,
+  Button
+} from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import ClanInfo from "../Summary/Summary";
 import ClanLogo from "../Logo/Logo";
 
 import CandidatureWidget from "components/Clan/Candidature/Widget/Widget";
+import { getClanDetailsPath } from "utils/router/constants";
 
 const ClanCard = ({ clan, userId, userClan }) => {
   return (
@@ -18,11 +27,18 @@ const ClanCard = ({ clan, userId, userClan }) => {
         </CardTitle>
         <Row>
           <Col>
-            <LinkContainer to={"/structures/clans/" + clan.id}>
+            <LinkContainer to={getClanDetailsPath(clan.id)}>
               <Button color="primary">View Details</Button>
             </LinkContainer>
           </Col>
-          {!userClan ? <CandidatureWidget type="user" id={userId} clanId={clan.id} userId={userId} /> : null}
+          {!userClan ? (
+            <CandidatureWidget
+              type="user"
+              id={userId}
+              clanId={clan.id}
+              userId={userId}
+            />
+          ) : null}
         </Row>
       </CardBody>
     </Card>
