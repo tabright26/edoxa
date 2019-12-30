@@ -29,7 +29,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/roles.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Roles.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
@@ -56,7 +56,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/roles.claims.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/RoleClaims.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
@@ -85,7 +85,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.claims.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/UserClaims.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
@@ -114,7 +114,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Users.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
@@ -145,7 +145,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Users.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
@@ -162,32 +162,19 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                 Gender = default(int)
                             })
                         .Select(
-                            record =>
+                            record => new User
                             {
-                                //var doxatag = new Doxatag(
-                                //    UserId.FromGuid(record.Id),
-                                //    record.Doxatag,
-                                //    Random.Next(100, 10000),
-                                //    new UtcNowDateTimeProvider());
-
-                                var user = new User
-                                {
-                                    Id = record.Id,
-                                    UserName = record.Email,
-                                    Country = Country.Canada, // FRANCIS: Should be inside users.csv
-                                    Email = record.Email,
-                                    PhoneNumber = record.Phone,
-                                    SecurityStamp = Guid.NewGuid().ToString("N"),
-                                    Profile = new UserProfile(
-                                        record.FirstName,
-                                        record.LastName,
-                                        Gender.FromValue(record.Gender),
-                                        new UserDob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
-                                };
-
-                                //user.DoxatagHistory.Add(doxatag);
-
-                                return user;
+                                Id = record.Id,
+                                UserName = record.Email,
+                                Country = Country.Canada, // FRANCIS: Should be inside users.csv
+                                Email = record.Email,
+                                PhoneNumber = record.Phone,
+                                SecurityStamp = Guid.NewGuid().ToString("N"),
+                                Profile = new UserProfile(
+                                    record.FirstName,
+                                    record.LastName,
+                                    Gender.FromValue(record.Gender),
+                                    new UserDob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
                             })
                         .ToImmutableHashSet();
                 });
@@ -198,7 +185,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/users.roles.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/UserRoles.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 
