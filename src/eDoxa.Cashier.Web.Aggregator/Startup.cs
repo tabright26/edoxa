@@ -80,10 +80,10 @@ namespace eDoxa.Cashier.Web.Aggregator
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddAzureKeyVault(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.PaymentUrl, AppServices.PaymentApi);
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
+                .AddCustomUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
+                .AddCustomUrlGroup(AppSettings.Endpoints.PaymentUrl, AppServices.PaymentApi);
 
             services.AddCustomCors();
 

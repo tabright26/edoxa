@@ -44,7 +44,6 @@ using MediatR;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -86,19 +85,12 @@ namespace eDoxa.Payment.Api
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddIdentityServer(AppSettings)
-                .AddAzureKeyVault(Configuration)
-                .AddSqlServer(Configuration)
-                .AddAzureServiceBusTopic(Configuration);
+                .AddCustomIdentityServer(AppSettings)
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomSqlServer(Configuration)
+                .AddCustomAzureServiceBusTopic(Configuration);
 
-            services.AddDbContext<PaymentDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString()!,
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<PaymentDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddCustomCors();
 
@@ -176,14 +168,7 @@ namespace eDoxa.Payment.Api
 
             services.AddAppSettings<PaymentAppSettings>(Configuration);
 
-            services.AddDbContext<PaymentDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString()!,
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<PaymentDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddCustomCors();
 
