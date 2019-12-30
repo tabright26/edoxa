@@ -3,7 +3,7 @@
 // import { Provider } from "react-redux";
 // import { MemoryRouter } from "react-router-dom";
 // import Summary from "./Summary";
-// import { ChallengesState } from "store/root/arena/challenges/types";
+// import { ChallengesState } from "store/root/challenge/types";
 
 it("renders without crashing", () => {
   // //Arrange

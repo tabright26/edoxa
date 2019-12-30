@@ -35,11 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\data\roles.csv" Link="Setup/roles.csv" CopyToOutputDirectory="Always" />
-    <None Include="..\..\data\roles.claims.csv" Link="Setup/roles.claims.csv" CopyToOutputDirectory="Always" />
-    <None Include="..\..\data\users.roles.csv" Link="Setup/users.roles.csv" CopyToOutputDirectory="Always" />
-    <None Include="..\..\data\users.claims.csv" Link="Setup/users.claims.csv" CopyToOutputDirectory="Always" />
-    <None Include="..\..\data\users.csv" Link="Setup/users.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\Roles.csv" Link="Setup\Roles.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\RoleClaims.csv" Link="Setup\RoleClaims.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\UserRoles.csv" Link="Setup\UserRoles.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\UserClaims.csv" Link="Setup\UserClaims.csv" CopyToOutputDirectory="Always" />
+    <None Include="..\eDoxa.Storage\Files\Users.csv" Link="Setup\Users.csv" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

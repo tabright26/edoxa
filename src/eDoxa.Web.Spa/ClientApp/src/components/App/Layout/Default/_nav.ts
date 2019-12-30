@@ -1,3 +1,9 @@
+import {
+  getChallengesPath,
+  getClansPath,
+  getFaqPath
+} from "utils/router/constants";
+
 const items = [
   {
     title: true,
@@ -6,21 +12,9 @@ const items = [
   },
   {
     name: "Challenges",
-    url: "/arena/challenges",
+    url: getChallengesPath(),
     icon: "fa fa-trophy",
     show: true
-  },
-  {
-    name: "Tournaments",
-    url: "/arena/tournaments",
-    icon: "fa fa-sitemap",
-    show: false
-  },
-  {
-    name: "Games",
-    url: "/arena/games",
-    icon: "fa fa-gamepad",
-    show: false
   },
   {
     title: true,
@@ -29,20 +23,8 @@ const items = [
   },
   {
     name: "Clans",
-    url: "/structures/clans",
+    url: getClansPath(),
     icon: "fa fa-users",
-    show: false
-  },
-  {
-    name: "Teams",
-    url: "/structures/teams",
-    icon: "icon-cursor",
-    show: false
-  },
-  {
-    name: "Leagues",
-    url: "/structures/leagues",
-    icon: "icon-cursor",
     show: false
   },
   {
@@ -52,7 +34,7 @@ const items = [
   },
   {
     name: "F. A. Q.",
-    url: "/faq",
+    url: getFaqPath(),
     icon: "fa fa-question-circle",
     variant: "primary",
     show: false

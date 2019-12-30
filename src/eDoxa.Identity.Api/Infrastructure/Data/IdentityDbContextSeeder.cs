@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
+using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
@@ -22,10 +23,12 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
 {
     internal sealed class IdentityDbContextSeeder : DbContextSeeder
     {
+        private readonly IDoxatagService _doxatagService;
         private readonly IUserService _userService;
         private readonly RoleService _roleService;
 
         public IdentityDbContextSeeder(
+            IDoxatagService doxatagService,
             IUserService userService,
             RoleService roleService,
             IWebHostEnvironment environment,
@@ -34,6 +37,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         ) : base(environment, logger)
         {
             Options = options.Value;
+            _doxatagService = doxatagService;
             _userService = userService;
             _roleService = roleService;
         }
@@ -79,6 +83,10 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
                     {
                         await _userService.AddToRoleAsync(testUser, Roles.Single(roleModel => roleModel.Id == testUserRole.RoleId).Name);
                     }
+
+                    var user = await _userService.FindByIdAsync(testUser.Id.ToString());
+
+                    await _doxatagService.ChangeDoxatagAsync(user, Doxatags.Single(doxatag => doxatag.UserId == UserId.FromGuid(user.Id)).Name);
                 }
 
                 Logger.LogInformation("The users being populated...");

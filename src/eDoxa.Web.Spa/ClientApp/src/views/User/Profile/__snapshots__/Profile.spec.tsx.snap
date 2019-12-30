@@ -21,23 +21,22 @@ exports[`renders without crashing 1`] = `
         className="list-group list-group-flush"
       >
         <li
-          className="active list-group-item"
-          href="/overview"
+          className="list-group-item"
+          href="/user/profile/overview"
           onClick={[Function]}
-          style={Object {}}
         >
           Overview
         </li>
         <li
           className="list-group-item"
-          href="/details"
+          href="/user/profile/details"
           onClick={[Function]}
         >
           Details
         </li>
         <li
           className="list-group-item"
-          href="/security"
+          href="/user/profile/security"
           onClick={[Function]}
         >
           Security
@@ -59,14 +58,14 @@ exports[`renders without crashing 1`] = `
       >
         <li
           className="list-group-item"
-          href="/cashier/payment-methods"
+          href="/user/profile/payment-methods"
           onClick={[Function]}
         >
           Payment Methods
         </li>
         <li
           className="list-group-item"
-          href="/cashier/transaction-history"
+          href="/user/profile/transaction-history"
           onClick={[Function]}
         >
           Transaction History
@@ -88,7 +87,7 @@ exports[`renders without crashing 1`] = `
       >
         <li
           className="list-group-item"
-          href="/connections/games"
+          href="/user/profile/games"
           onClick={[Function]}
         >
           Games
@@ -98,14 +97,6 @@ exports[`renders without crashing 1`] = `
   </div>
   <div
     className="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-6"
-  >
-    <div
-      className="animated fadeIn pt-1 text-center"
-    >
-      <div
-        className="sk-spinner sk-spinner-pulse"
-      />
-    </div>
-  </div>
+  />
 </div>
 `;

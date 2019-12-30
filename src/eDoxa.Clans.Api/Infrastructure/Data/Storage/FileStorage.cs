@@ -24,7 +24,7 @@ namespace eDoxa.Clans.Api.Infrastructure.Data.Storage
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
-                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/clans.csv"));
+                    var file = File.OpenRead(Path.Combine(assemblyPath, "Setup/Clans.csv"));
 
                     using var csvReader = file.OpenCsvReader();
 

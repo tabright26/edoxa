@@ -11,6 +11,15 @@ import {
 import { RouteProps } from "utils/router/types";
 import { LinkContainer } from "react-router-bootstrap";
 import Loading from "components/Shared/Loading";
+import {
+  getUserProfilePath,
+  getUserProfileOverviewPath,
+  getUserProfileTransactionHistoryPath,
+  getUserProfilePaymentMethodsPath,
+  getUserProfileGamesPath,
+  getUserProfileSecurityPath,
+  getUserProfileDetailsPath
+} from "utils/router/constants";
 
 const ProfileOverview: FunctionComponent<RouteComponentProps> = React.lazy(() =>
   import("./Overview/Overview")
@@ -22,13 +31,13 @@ const ProfileSecurity: FunctionComponent<RouteComponentProps> = React.lazy(() =>
   import("./Security/Security")
 );
 const ProfileConnections: FunctionComponent<RouteComponentProps> = React.lazy(
-  () => import("./Connections/Connections")
+  () => import("./Games/Games")
 );
 const ProfilePaymentMethods: FunctionComponent<RouteComponentProps> = React.lazy(
-  () => import("./Cashier/PaymentMethods")
+  () => import("./PaymentMethods")
 );
 const ProfileTransactionHistory: FunctionComponent<RouteComponentProps> = React.lazy(
-  () => import("./Cashier/TransactionHistory")
+  () => import("./TransactionHistory")
 );
 
 const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
@@ -39,14 +48,14 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
           <strong>Profile</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={`${match.url}/overview`}>
+          <LinkContainer to={getUserProfileOverviewPath()}>
             <ListGroupItem>Overview</ListGroupItem>
           </LinkContainer>
-          <LinkContainer to={`${match.url}/details`}>
+          <LinkContainer to={getUserProfileDetailsPath()}>
             <ListGroupItem>Details</ListGroupItem>
           </LinkContainer>
           {process.env.NODE_ENV !== "production" && (
-            <LinkContainer to={`${match.url}/security`}>
+            <LinkContainer to={getUserProfileSecurityPath()}>
               <ListGroupItem>Security</ListGroupItem>
             </LinkContainer>
           )}
@@ -58,11 +67,11 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
         </CardHeader>
         <ListGroup flush>
           {process.env.NODE_ENV !== "production" && (
-            <LinkContainer to={`${match.url}/cashier/payment-methods`}>
+            <LinkContainer to={getUserProfilePaymentMethodsPath()}>
               <ListGroupItem>Payment Methods</ListGroupItem>
             </LinkContainer>
           )}
-          <LinkContainer to={`${match.url}/cashier/transaction-history`}>
+          <LinkContainer to={getUserProfileTransactionHistoryPath()}>
             <ListGroupItem>Transaction History</ListGroupItem>
           </LinkContainer>
         </ListGroup>
@@ -72,7 +81,7 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
           <strong>Connections</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={`${match.url}/connections/games`}>
+          <LinkContainer to={getUserProfileGamesPath()}>
             <ListGroupItem>Games</ListGroupItem>
           </LinkContainer>
         </ListGroup>
@@ -82,46 +91,49 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
       <Suspense fallback={<Loading />}>
         <Switch>
           <Route<RouteProps>
-            path={`${match.url}/overview`}
+            path={getUserProfileOverviewPath()}
             exact
             name="Profile Overview"
             render={props => <ProfileOverview {...props} />}
           />
           <Route<RouteProps>
-            path={`${match.url}/details`}
+            path={getUserProfileDetailsPath()}
             exact
             name="Profile Details"
             render={props => <ProfileDetails {...props} />}
           />
           {process.env.NODE_ENV !== "production" && (
             <Route<RouteProps>
-              path={`${match.url}/security`}
+              path={getUserProfileSecurityPath()}
               exact
               name="Security"
               render={props => <ProfileSecurity {...props} />}
             />
           )}
           <Route<RouteProps>
-            path={`${match.url}/connections/games`}
+            path={getUserProfileGamesPath()}
             exact
             name="Connections"
             render={props => <ProfileConnections {...props} />}
           />
           {process.env.NODE_ENV !== "production" && (
             <Route<RouteProps>
-              path={`${match.url}/cashier/payment-methods`}
+              path={getUserProfilePaymentMethodsPath()}
               exact
               name="Payment Methods"
               render={props => <ProfilePaymentMethods {...props} />}
             />
           )}
           <Route<RouteProps>
-            path={`${match.url}/cashier/transaction-history`}
+            path={getUserProfileTransactionHistoryPath()}
             exact
             name="Transaction History"
             render={props => <ProfileTransactionHistory {...props} />}
           />
-          <Redirect from={`${match.url}`} to={`${match.url}/overview`} />
+          <Redirect
+            from={getUserProfilePath()}
+            to={getUserProfileOverviewPath()}
+          />
         </Switch>
       </Suspense>
     </Col>

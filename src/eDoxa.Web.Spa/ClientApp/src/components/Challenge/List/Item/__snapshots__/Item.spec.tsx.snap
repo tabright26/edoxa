@@ -6,7 +6,7 @@ exports[`renders without crashing 1`] = `
 >
   <div
     className="card-body"
-    href="/arena/challenges/123"
+    href="/challenges/123"
     onClick={[Function]}
     style={
       Object {

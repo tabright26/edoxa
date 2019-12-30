@@ -116,6 +116,14 @@ namespace eDoxa.Challenges.Worker
             application.UseEndpoints(endpoints => endpoints.MapCustomHealthChecks());
 
             application.UseCustomHangfireDashboard();
+        }
+    }
+
+    public partial class Startup
+    {
+        public void ConfigureProduction(IApplicationBuilder application)
+        {
+            this.Configure(application);
 
             application.UseHangfireRecurringJobs(
                 manager =>
