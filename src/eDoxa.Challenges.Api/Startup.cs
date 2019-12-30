@@ -43,7 +43,6 @@ using MediatR;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -85,20 +84,12 @@ namespace eDoxa.Challenges.Api
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddIdentityServer(AppSettings)
-                .AddAzureKeyVault(Configuration)
-                .AddSqlServer(Configuration)
-                .AddRedis(Configuration)
-                .AddAzureServiceBusTopic(Configuration);
+                .AddCustomIdentityServer(AppSettings)
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomSqlServer(Configuration)
+                .AddCustomAzureServiceBusTopic(Configuration);
 
-            services.AddDbContext<ChallengesDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString(),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<ChallengesDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddCustomCors();
 
@@ -172,14 +163,7 @@ namespace eDoxa.Challenges.Api
 
             services.Configure<ChallengeOptions>(Configuration.GetSection("Challenge"));
 
-            services.AddDbContext<ChallengesDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString(),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<ChallengesDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddCustomCors();
 

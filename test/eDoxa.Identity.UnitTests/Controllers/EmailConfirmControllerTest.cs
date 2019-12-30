@@ -55,7 +55,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Arrange
             var user = new User
             {
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                Email = "test@edoxa.gg",
+                EmailConfirmed = true
             };
 
             var mockUserManager = new Mock<IUserService>();
@@ -69,10 +71,10 @@ namespace eDoxa.Identity.UnitTests.Controllers
             var controller = new EmailConfirmController(mockUserManager.Object, TestMapper);
 
             // Act
-            var result = await controller.GetAsync(Guid.NewGuid().ToString(), "code");
+            var result = await controller.GetAsync(user.Id.ToString(), "code");
 
             // Assert
-            result.Should().BeOfType<OkResult>();
+            result.Should().BeOfType<OkObjectResult>();
 
             mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 

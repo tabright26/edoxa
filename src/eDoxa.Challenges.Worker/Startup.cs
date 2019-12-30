@@ -57,11 +57,17 @@ namespace eDoxa.Challenges.Worker
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHealthChecks().AddCustomSelfCheck().AddAzureKeyVault(Configuration).AddRedis(Configuration).AddSqlServer(Configuration);
+            services.AddHealthChecks()
+                .AddCustomSelfCheck()
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomRedis(Configuration)
+                .AddCustomSqlServer(Configuration)
+                .AddCustomUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
+                .AddCustomUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
 
             services.AddDbContext<HangfireDbContext>(
                 builder => builder.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString()!,
+                    Configuration.GetSqlServerConnectionString(),
                     options => options.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null)));
 
             services.AddCustomDataProtection(Configuration, AppServices.ChallengesWorker);
@@ -71,7 +77,7 @@ namespace eDoxa.Challenges.Worker
                     .UseSimpleAssemblyNameTypeSerializer()
                     .UseRecommendedSerializerSettings()
                     .UseSqlServerStorage(
-                        Configuration.GetSqlServerConnectionString()!,
+                        Configuration.GetSqlServerConnectionString(),
                         new SqlServerStorageOptions
                         {
                             CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),

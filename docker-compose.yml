@@ -137,12 +137,6 @@ services:
       - cashier-web-gateway
       - challenges-web-gateway
 
-#  web-spa-client:
-#    image: ${ACR_REGISTRY:-edoxa}/dev/web-spa-client:${ACR_TAG:-latest}
-#    build:
-#      context: .
-#      dockerfile: src/eDoxa.Web.Spa/ClientApp/Dockerfile
-
   web-status:
     image: ${ACR_REGISTRY:-edoxa}/dev/web-status:${ACR_TAG:-latest}
     build:

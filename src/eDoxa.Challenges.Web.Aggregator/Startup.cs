@@ -81,11 +81,11 @@ namespace eDoxa.Challenges.Web.Aggregator
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddAzureKeyVault(Configuration)
-                .AddUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
-                .AddUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
-                .AddUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
-                .AddUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomUrlGroup(AppSettings.Endpoints.IdentityUrl, AppServices.IdentityApi)
+                .AddCustomUrlGroup(AppSettings.Endpoints.CashierUrl, AppServices.CashierApi)
+                .AddCustomUrlGroup(AppSettings.Endpoints.ChallengesUrl, AppServices.ChallengesApi)
+                .AddCustomUrlGroup(AppSettings.Endpoints.GamesUrl, AppServices.GamesApi);
 
             services.AddCustomCors();
 

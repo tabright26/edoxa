@@ -59,7 +59,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -113,30 +112,30 @@ namespace eDoxa.Identity.Api
                     options.KnownProxies.Clear();
                 });
 
-            services.AddHealthChecks()
-                .AddCustomSelfCheck()
-                .AddAzureKeyVault(Configuration)
-                .AddSqlServer(Configuration)
-                .AddRedis(Configuration)
-                .AddAzureServiceBusTopic(Configuration);
-
-            services.AddCustomDataProtection(Configuration, AppServices.IdentityApi);
-
-            services.AddDbContext<IdentityDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString()!,
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
-
             services.Configure<CookiePolicyOptions>(
                 options =>
                 {
                     options.MinimumSameSitePolicy = SameSiteMode.None;
                     options.Secure = CookieSecurePolicy.SameAsRequest;
                 });
+
+            services.Configure<PasswordHasherOptions>(
+                options =>
+                {
+                    options.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
+                    options.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
+                });
+
+            services.AddHealthChecks()
+                .AddCustomSelfCheck()
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomSqlServer(Configuration)
+                .AddCustomRedis(Configuration)
+                .AddCustomAzureServiceBusTopic(Configuration);
+
+            services.AddCustomDbContext<IdentityDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
+
+            services.AddCustomDataProtection(Configuration, AppServices.IdentityApi);
 
             services.AddIdentity<User, Role>(
                     options =>
@@ -156,7 +155,7 @@ namespace eDoxa.Identity.Api
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
                         options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
                         options.SignIn.RequireConfirmedPhoneNumber = false;
-                        options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
+                        options.SignIn.RequireConfirmedEmail = false;
                     })
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders()
@@ -174,13 +173,6 @@ namespace eDoxa.Identity.Api
             services.AddScoped<ISignInService, SignInService>();
             services.AddScoped<RoleService>();
             services.AddScoped<IRoleService, RoleService>();
-
-            services.Configure<PasswordHasherOptions>(
-                option =>
-                {
-                    option.CompatibilityMode = PasswordHasherCompatibilityMode.IdentityV3;
-                    option.IterationCount = HostingEnvironment.IsProduction() ? 100000 : 1;
-                });
 
             services.AddCustomCors();
 
@@ -309,14 +301,7 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
-            services.AddDbContext<IdentityDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString(),
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<IdentityDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddIdentity<User, Role>(
                     options =>
@@ -336,7 +321,7 @@ namespace eDoxa.Identity.Api
                         options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
                         options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
                         options.SignIn.RequireConfirmedPhoneNumber = false;
-                        options.SignIn.RequireConfirmedEmail = false; // TODO: Should be true in prod HostingEnvironment.IsProduction();
+                        options.SignIn.RequireConfirmedEmail = false;
                     })
                 .AddEntityFrameworkStores<IdentityDbContext>()
                 .AddDefaultTokenProviders()
@@ -391,12 +376,13 @@ namespace eDoxa.Identity.Api
             application.UseAuthentication();
             application.UseAuthorization();
 
-            application.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGrpcService<IdentityGrpcService>();
+            application.UseEndpoints(
+                endpoints =>
+                {
+                    endpoints.MapGrpcService<IdentityGrpcService>();
 
-                endpoints.MapControllers();
-            });
+                    endpoints.MapControllers();
+                });
 
             subscriber.UseIntegrationEventSubscriptions();
         }

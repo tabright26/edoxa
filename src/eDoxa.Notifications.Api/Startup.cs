@@ -29,7 +29,6 @@ using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.TestHelper.Extensions;
-using eDoxa.Storage.Azure.Extensions;
 
 using FluentValidation;
 
@@ -42,7 +41,6 @@ using MediatR;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -82,22 +80,15 @@ namespace eDoxa.Notifications.Api
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
-                .AddIdentityServer(AppSettings)
-                .AddAzureKeyVault(Configuration)
-                .AddSqlServer(Configuration)
-                .AddAzureBlobStorage(Configuration)
-                .AddAzureServiceBusTopic(Configuration);
+                .AddCustomIdentityServer(AppSettings)
+                .AddCustomAzureKeyVault(Configuration)
+                .AddCustomSqlServer(Configuration)
+                .AddCustomAzureBlobStorage(Configuration)
+                .AddCustomAzureServiceBusTopic(Configuration);
 
-            services.AddDbContext<NotificationsDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString()!,
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<NotificationsDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+            services.AddCustomAzureStorage(Configuration);
 
             services.AddCustomCors();
 
@@ -167,16 +158,9 @@ namespace eDoxa.Notifications.Api
         {
             services.AddAppSettings<NotificationsAppSettings>(Configuration);
 
-            services.AddDbContext<NotificationsDbContext>(
-                options => options.UseSqlServer(
-                    Configuration.GetSqlServerConnectionString()!,
-                    sqlServerOptions =>
-                    {
-                        sqlServerOptions.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name);
-                        sqlServerOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null);
-                    }));
+            services.AddCustomDbContext<NotificationsDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddAzureStorage(Configuration.GetAzureBlobStorageConnectionString()!);
+            services.AddCustomAzureStorage(Configuration);
 
             services.AddCustomCors();
 
