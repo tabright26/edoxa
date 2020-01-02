@@ -74,7 +74,7 @@ namespace eDoxa.Notifications.Api.Application.Services
             return result;
         }
 
-        public async Task SendEmailAsync(UserId userId, string subject, string htmlContent)
+        public async Task SendEmailAsync(UserId userId, string templateId, object templateData)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace eDoxa.Notifications.Api.Application.Services
                 {
                     var user = await _userRepository.FindUserAsync(userId);
 
-                    await _emailService.SendEmailAsync(user.Email, subject, htmlContent);
+                    await _emailService.SendEmailAsync(user.Email, templateId, templateData);
                 }
                 else
                 {

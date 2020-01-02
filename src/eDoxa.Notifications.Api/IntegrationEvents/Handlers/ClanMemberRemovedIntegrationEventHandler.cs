@@ -1,12 +1,13 @@
 ﻿// Filename: ClanMemberRemovedIntegrationEventHandler.cs
-// Date Created: 2019-12-16
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
+using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -27,8 +28,8 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
         {
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
-                nameof(ClanMemberRemovedIntegrationEvent),
-                nameof(ClanMemberRemovedIntegrationEvent));
+                SendGridTemplates.ClanMemberRemoved,
+                integrationEvent);
         }
     }
 }

@@ -1,13 +1,13 @@
 ﻿// Filename: UserPasswordResetTokenGeneratedIntegrationEventHandler.cs
-// Date Created: 2019-12-16
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Net;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -28,14 +28,16 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserPasswordResetTokenGeneratedIntegrationEvent integrationEvent)
         {
-            var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={integrationEvent.Code}";
+            //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={integrationEvent.Code}";
 
-            var href = WebUtility.UrlEncode(callbackUrl);
+            //var href = WebUtility.UrlEncode(callbackUrl);
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
-                "Reset Password",
-                $"Please reset your password by <a href=\"{href}\"'>clicking here</a>.");
+                SendGridTemplates.UserPasswordResetTokenGenerated,
+                integrationEvent);
+
+            // $"Please reset your password by <a href=\"{href}\"'>clicking here</a>."
         }
     }
 }

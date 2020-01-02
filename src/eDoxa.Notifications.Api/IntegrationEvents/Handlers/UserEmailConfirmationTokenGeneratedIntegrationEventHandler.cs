@@ -1,13 +1,13 @@
 ﻿// Filename: UserEmailConfirmationTokenGeneratedIntegrationEventHandler.cs
-// Date Created: 2019-12-16
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Net;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
+using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -29,14 +29,16 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserEmailConfirmationTokenGeneratedIntegrationEvent integrationEvent)
         {
-            var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={integrationEvent.UserId}&code={integrationEvent.Code}";
+            //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={integrationEvent.UserId}&code={integrationEvent.Code}";
 
-            var href = WebUtility.UrlEncode(callbackUrl);
+            //var href = WebUtility.UrlEncode(callbackUrl);
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
-                "Confirm your email",
-                $"Please confirm your account by <a href=\"{href}\">clicking here</a>.");
+                SendGridTemplates.UserEmailConfirmationTokenGenerated,
+                integrationEvent);
+            
+            //$"Please confirm your account by <a href=\"{href}\">clicking here</a>.");
         }
     }
 }
