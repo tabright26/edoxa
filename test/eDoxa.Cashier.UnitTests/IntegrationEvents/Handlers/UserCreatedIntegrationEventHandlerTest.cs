@@ -1,6 +1,6 @@
 ﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -24,19 +24,23 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
+    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest
     {
         public UserCreatedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
         }
 
         [Fact]
-        public async Task HandleAsync_WhenUserCreatedIntegrationEvent_ShouldBeCompletedTask()
+        public async Task HandleAsync_WhenUserCreatedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
             var mockAccountService = new Mock<IAccountService>();
 
             var mockLogger = new MockLogger<UserCreatedIntegrationEventHandler>();
+
+            mockAccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()))
+                .ReturnsAsync(false)
+                .Verifiable();
 
             mockAccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()))
                 .ReturnsAsync(new DomainValidationResult())
@@ -58,6 +62,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
+            mockAccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()), Times.Once);
         }
     }

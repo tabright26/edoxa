@@ -1,18 +1,95 @@
 ﻿// Filename: UserWithdrawalSucceededIntegrationEventHandlerTest.cs
 // Date Created: 2019-12-17
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+
+using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
+using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.CustomTypes;
+using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
+using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
+
+using Google.Protobuf.WellKnownTypes;
+
+using Moq;
+
+using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserWithdrawalSucceededIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
+    public sealed class UserWithdrawalSucceededIntegrationEventHandlerTest : UnitTest
     {
         public UserWithdrawalSucceededIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
+        }
+
+        [Fact]
+        public async Task HandleAsync_WhenUserWithdrawalSucceededIntegrationEventIsValid_ShouldBeCompletedTask()
+        {
+            // Arrange
+            var userId = new UserId();
+            var account = new Account(userId, new List<ITransaction>());
+
+            var mockAccountService = new Mock<IAccountService>();
+
+            var mockLogger = new MockLogger<UserWithdrawalSucceededIntegrationEventHandler>();
+
+            mockAccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+
+            mockAccountService.Setup(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()))
+                .ReturnsAsync(account)
+                .Verifiable();
+
+            mockAccountService
+                .Setup(
+                    accountService => accountService.MarkAccountTransactionAsSuccededAsync(
+                        It.IsAny<IAccount>(),
+                        It.IsAny<TransactionId>(),
+                        It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new DomainValidationResult())
+                .Verifiable();
+
+            var handler = new UserWithdrawalSucceededIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);
+
+            var integrationEvent = new UserWithdrawalSucceededIntegrationEvent()
+            {
+                UserId = userId,
+                Transaction = new TransactionDto
+                {
+                    Amount = new DecimalValue(50.0m),
+                    Id = new TransactionId(),
+                    Description = "test",
+                    Status = TransactionStatusDto.Succeded,
+                    Currency = CurrencyDto.Money,
+                    Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
+                    Type = TransactionTypeDto.Withdrawal
+                }
+            };
+
+            // Act
+            await handler.HandleAsync(integrationEvent);
+
+            // Assert
+            mockAccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountService.Verify(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
+            mockAccountService.Verify(
+                accountService =>
+                    accountService.MarkAccountTransactionAsSuccededAsync(It.IsAny<IAccount>(), It.IsAny<TransactionId>(), It.IsAny<CancellationToken>()),
+                Times.Once);
+            mockLogger.Verify(Times.Once());
         }
     }
 }
