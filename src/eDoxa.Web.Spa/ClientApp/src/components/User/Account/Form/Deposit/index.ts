@@ -1,3 +1,3 @@
-import DepositForm from "./Deposit";
+import ReduxForm from "./Deposit";
 
-export default DepositForm;
+export default ReduxForm;

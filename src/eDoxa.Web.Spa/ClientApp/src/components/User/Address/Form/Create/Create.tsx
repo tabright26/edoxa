@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Col, Form } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps } from "redux-form";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import FormField from "components/Shared/Form/Field";
@@ -28,8 +28,6 @@ import {
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-interface Props {}
-
 interface FormData {
   country: string;
   line1: string;
@@ -39,54 +37,20 @@ interface FormData {
   postalCode: string;
 }
 
-const validate = values => {
-  const errors: any = {};
-  if (!values.country) {
-    errors.country = COUNTRY_REQUIRED;
-  } else if (!countryRegex.test(values.country)) {
-    errors.country = COUNTRY_INVALID;
-  }
-  if (!values.line1) {
-    errors.line1 = LINE1_REQUIRED;
-  } else if (!line1Regex.test(values.line1)) {
-    errors.line1 = LINE1_INVALID;
-  }
-  if (values.line2 && !line2Regex.test(values.line2)) {
-    errors.line2 = LINE2_INVALID;
-  }
-  if (!values.city) {
-    errors.city = CITY_REQUIRED;
-  } else if (!cityRegex.test(values.city)) {
-    errors.city = CITY_INVALID;
-  }
-  if (values.state && !stateRegex.test(values.state)) {
-    errors.state = STATE_INVALID;
-  }
-  if (values.postalCode && !postalRegex.test(values.postalCode)) {
-    errors.postalCode = POSTAL_INVALID;
-  }
-  return errors;
-};
-
-async function submit(values, dispatch) {
-  try {
-    return await new Promise((resolve, reject) => {
-      const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(createUserAddress(values, meta));
-    });
-  } catch (error) {
-    throwSubmissionError(error);
-  }
+interface OutterProps {
+  handleCancel: () => void;
 }
 
-const CreateUserAddressForm: FunctionComponent<InjectedFormProps<FormData> &
-  Props &
-  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
-  <Form
-    onSubmit={handleSubmit(data =>
-      submit(data, dispatch).then(() => handleCancel())
-    )}
-  >
+type InnerProps = InjectedFormProps<FormData, Props>;
+
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  handleCancel
+}) => (
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <FormGroup>
       <FormField.Country />
@@ -134,16 +98,54 @@ const CreateUserAddressForm: FunctionComponent<InjectedFormProps<FormData> &
     </FormGroup>
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
-      <Button.Cancel onClick={handleCancel} />
+      <Button.Cancel onClick={() => handleCancel()} />
     </FormGroup>
   </Form>
 );
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
     form: CREATE_USER_ADDRESS_FORM,
-    validate
+    onSubmit: async (values, dispatch) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(createUserAddress(values, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    validate: values => {
+      const errors: FormErrors<FormData> = {};
+      if (!values.country) {
+        errors.country = COUNTRY_REQUIRED;
+      } else if (!countryRegex.test(values.country)) {
+        errors.country = COUNTRY_INVALID;
+      }
+      if (!values.line1) {
+        errors.line1 = LINE1_REQUIRED;
+      } else if (!line1Regex.test(values.line1)) {
+        errors.line1 = LINE1_INVALID;
+      }
+      if (values.line2 && !line2Regex.test(values.line2)) {
+        errors.line2 = LINE2_INVALID;
+      }
+      if (!values.city) {
+        errors.city = CITY_REQUIRED;
+      } else if (!cityRegex.test(values.city)) {
+        errors.city = CITY_INVALID;
+      }
+      if (values.state && !stateRegex.test(values.state)) {
+        errors.state = STATE_INVALID;
+      }
+      if (values.postalCode && !postalRegex.test(values.postalCode)) {
+        errors.postalCode = POSTAL_INVALID;
+      }
+      return errors;
+    }
   })
 );
 
-export default enhance(CreateUserAddressForm);
+export default enhance(ReduxForm);

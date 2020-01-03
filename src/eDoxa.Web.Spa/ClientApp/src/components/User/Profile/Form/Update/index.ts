@@ -1,3 +1,3 @@
-import UpdateUserProfileForm from "./Update";
+import ReduxForm from "./Update";
 
-export default UpdateUserProfileForm;
+export default ReduxForm;

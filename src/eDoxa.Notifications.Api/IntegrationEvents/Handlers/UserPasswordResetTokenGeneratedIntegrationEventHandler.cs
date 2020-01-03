@@ -28,16 +28,15 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserPasswordResetTokenGeneratedIntegrationEvent integrationEvent)
         {
-            //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={integrationEvent.Code}";
-
-            //var href = WebUtility.UrlEncode(callbackUrl);
+            var tokenUrl = $"{_redirectService.RedirectToWebSpa("/password/reset")}?code={integrationEvent.Code}";
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
                 SendGridTemplates.UserPasswordResetTokenGenerated,
-                integrationEvent);
-
-            // $"Please reset your password by <a href=\"{href}\"'>clicking here</a>."
+                new
+                {
+                    tokenUrl
+                });
         }
     }
 }

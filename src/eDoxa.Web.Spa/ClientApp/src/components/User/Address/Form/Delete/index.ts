@@ -1,3 +1,3 @@
-import DeleteUserAddressForm from "./Delete";
+import ReduxForm from "./Delete";
 
-export default DeleteUserAddressForm;
+export default ReduxForm;

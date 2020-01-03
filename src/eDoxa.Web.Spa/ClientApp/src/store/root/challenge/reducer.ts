@@ -69,10 +69,9 @@ export const reducer: Reducer<ChallengesState, ChallengesActions> = produce(
         break;
       case REGISTER_CHALLENGE_PARTICIPANT_SUCCESS: {
         const participant = action.payload.data;
-        const challenge = draft.data.find(
-          x => x.id === participant.challengeId
-        );
-        challenge.participants.push(participant);
+        draft.data
+          .find(challenge => challenge.id === participant.challengeId)
+          .participants.push(participant);
         draft.error = null;
         draft.loading = false;
         break;

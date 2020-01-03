@@ -1,6 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { Form, FormGroup } from "reactstrap";
-import { Field, reduxForm, FormSection, InjectedFormProps } from "redux-form";
+import {
+  Field,
+  reduxForm,
+  FormSection,
+  InjectedFormProps,
+  FormErrors
+} from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_PROFILE_FORM } from "forms";
@@ -18,41 +24,26 @@ import {
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-interface Props {}
-
-interface FormData {}
-
 interface StateProps {}
 
-const validate = values => {
-  const errors: any = {};
-  if (!values.firstName) {
-    errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
-  } else if (!personalInfoNameRegex.test(values.firstName)) {
-    errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
-  }
-  return errors;
-};
-
-async function submit(values, dispatch) {
-  try {
-    return await new Promise((resolve, reject) => {
-      const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(updateUserProfile(values, meta));
-    });
-  } catch (error) {
-    throwSubmissionError(error);
-  }
+interface FormData {
+  firstName: string;
 }
 
-const UpdateUserProfileForm: FunctionComponent<InjectedFormProps<FormData> &
-  Props &
-  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
-  <Form
-    onSubmit={handleSubmit(data =>
-      submit(data, dispatch).then(() => handleCancel())
-    )}
-  >
+interface OutterProps {
+  handleCancel: () => void;
+}
+
+type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
+
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({
+  handleSubmit,
+  handleCancel,
+  error
+}) => (
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
@@ -89,26 +80,48 @@ const UpdateUserProfileForm: FunctionComponent<InjectedFormProps<FormData> &
       </dd>
       <dd className="col-sm-9 mb-0">
         <Button.Save className="mt-3 mr-2" />
-        <Button.Cancel className="mt-3" onClick={handleCancel} />
+        <Button.Cancel className="mt-3" onClick={() => handleCancel()} />
       </dd>
     </dl>
   </Form>
 );
 
-const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
-  state: RootState
-) => {
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  Props,
+  RootState
+> = state => {
+  const { data } = state.root.user.profile;
   return {
-    initialValues: state.root.user.profile.data
+    initialValues: data
   };
 };
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: UPDATE_USER_PROFILE_FORM,
-    validate
+    onSubmit: async (values, dispatch) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(updateUserProfile(values, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    validate: values => {
+      const errors: FormErrors<FormData> = {};
+      if (!values.firstName) {
+        errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
+      } else if (!personalInfoNameRegex.test(values.firstName)) {
+        errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
+      }
+      return errors;
+    }
   })
 );
 
-export default enhance(UpdateUserProfileForm);
+export default enhance(ReduxForm);

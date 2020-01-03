@@ -16,6 +16,11 @@ exports[`renders without crashing 1`] = `
     value=""
   >
     <option
+      value={2020}
+    >
+      2020
+    </option>
+    <option
       value={2019}
     >
       2019
@@ -514,11 +519,6 @@ exports[`renders without crashing 1`] = `
       value={1920}
     >
       1920
-    </option>
-    <option
-      value={1919}
-    >
-      1919
     </option>
   </select>
 </form>

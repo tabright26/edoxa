@@ -21,10 +21,7 @@ const ChallengeRegister: FunctionComponent<Props> = ({
     <>
       {canRegister && user && (
         <Card className={className}>
-          <ChallengeForm.Register
-            userId={user["sub"]}
-            className="h-100 w-100"
-          />
+          <ChallengeForm.Register userId={user["sub"]} />
         </Card>
       )}
     </>

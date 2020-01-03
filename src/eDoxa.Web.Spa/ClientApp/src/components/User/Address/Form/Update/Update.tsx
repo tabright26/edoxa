@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Col, Form } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps } from "redux-form";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import FormField from "components/Shared/Form/Field";
@@ -10,9 +10,6 @@ import FormValidation from "components/Shared/Form/Validation";
 import { updateUserAddress } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
-  COUNTRY_REQUIRED,
-  countryRegex,
-  COUNTRY_INVALID,
   LINE1_REQUIRED,
   line1Regex,
   LINE1_INVALID,
@@ -31,9 +28,7 @@ import { AddressId } from "types";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-interface Props {
-  addressId: AddressId;
-}
+interface StateProps {}
 
 interface FormData {
   line1: string;
@@ -43,56 +38,21 @@ interface FormData {
   postalCode: string;
 }
 
-interface StateProps {}
-
-const validate = values => {
-  const errors: any = {};
-  if (!values.country) {
-    errors.country = COUNTRY_REQUIRED;
-  } else if (!countryRegex.test(values.country)) {
-    errors.country = COUNTRY_INVALID;
-  }
-  if (!values.line1) {
-    errors.line1 = LINE1_REQUIRED;
-  } else if (!line1Regex.test(values.line1)) {
-    errors.line1 = LINE1_INVALID;
-  }
-  if (values.line2 && !line2Regex.test(values.line2)) {
-    errors.line2 = LINE2_INVALID;
-  }
-  if (!values.city) {
-    errors.city = CITY_REQUIRED;
-  } else if (!cityRegex.test(values.city)) {
-    errors.city = CITY_INVALID;
-  }
-  if (values.state && !stateRegex.test(values.state)) {
-    errors.state = STATE_INVALID;
-  }
-  if (values.postalCode && !postalRegex.test(values.postalCode)) {
-    errors.postalCode = POSTAL_INVALID;
-  }
-  return errors;
-};
-
-async function submit(values, dispatch, addressId) {
-  try {
-    return await new Promise((resolve, reject) => {
-      const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(updateUserAddress(addressId, values, meta));
-    });
-  } catch (error) {
-    throwSubmissionError(error);
-  }
+interface OutterProps {
+  addressId: AddressId;
+  handleCancel: () => void;
 }
 
-const UpdateUserAddressForm: FunctionComponent<InjectedFormProps<FormData> &
-  Props &
-  any> = ({ dispatch, handleSubmit, handleCancel, addressId, error }) => (
-  <Form
-    onSubmit={handleSubmit(data =>
-      submit(data, dispatch, addressId).then(() => handleCancel())
-    )}
-  >
+type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
+
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  handleCancel
+}) => (
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <FormGroup>
       <FormField.Country disabled={true} />
@@ -140,27 +100,61 @@ const UpdateUserAddressForm: FunctionComponent<InjectedFormProps<FormData> &
     </FormGroup>
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
-      <Button.Cancel onClick={handleCancel} />
+      <Button.Cancel onClick={() => handleCancel()} />
     </FormGroup>
   </Form>
 );
 
 const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
-  state: RootState,
-  ownProps: Props
+  state,
+  ownProps
 ) => {
   const { data } = state.root.user.addressBook;
+  const address = data.find(address => address.id === ownProps.addressId);
   return {
-    initialValues: data.find(address => address.id === ownProps.addressId)
+    initialValues: address
   };
 };
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: UPDATE_USER_ADDRESS_FORM,
-    validate
+    onSubmit: async (values, dispatch, { addressId }) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(updateUserAddress(addressId, values, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    validate: values => {
+      const errors: FormErrors<FormData> = {};
+      if (!values.line1) {
+        errors.line1 = LINE1_REQUIRED;
+      } else if (!line1Regex.test(values.line1)) {
+        errors.line1 = LINE1_INVALID;
+      }
+      if (values.line2 && !line2Regex.test(values.line2)) {
+        errors.line2 = LINE2_INVALID;
+      }
+      if (!values.city) {
+        errors.city = CITY_REQUIRED;
+      } else if (!cityRegex.test(values.city)) {
+        errors.city = CITY_INVALID;
+      }
+      if (values.state && !stateRegex.test(values.state)) {
+        errors.state = STATE_INVALID;
+      }
+      if (values.postalCode && !postalRegex.test(values.postalCode)) {
+        errors.postalCode = POSTAL_INVALID;
+      }
+      return errors;
+    }
   })
 );
 
-export default enhance(UpdateUserAddressForm);
+export default enhance(ReduxForm);

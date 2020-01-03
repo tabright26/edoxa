@@ -1,3 +1,3 @@
-import UpdateUserDoxatagForm from "./Update";
+import ReduxForm from "./Update";
 
-export default UpdateUserDoxatagForm;
+export default ReduxForm;

@@ -5,6 +5,7 @@ import Reset from "./Reset";
 import { configureStore } from "store";
 import Input from "components/Shared/Input";
 import { EMAIL_REQUIRED, EMAIL_INVALID } from "validation";
+import { MemoryRouter } from "react-router-dom";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -14,7 +15,9 @@ const store = configureStore();
 const createWrapper = (): ReactWrapper | any => {
   return mount(
     <Provider store={store}>
-      <Reset />
+      <MemoryRouter>
+        <Reset />
+      </MemoryRouter>
     </Provider>
   );
 };

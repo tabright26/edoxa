@@ -3,7 +3,6 @@ import { FormGroup, Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import { USER_ACCOUNT_WITHDRAWAL_FORM } from "forms";
-import FormField from "components/Shared/Form/Field";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
@@ -12,11 +11,7 @@ import { connect, MapStateToProps } from "react-redux";
 import { Currency, TransactionBundle } from "types";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-
-interface Props {
-  currency: Currency;
-  bundles: TransactionBundle[];
-}
+import FormField from "components/Shared/Form/Field";
 
 interface FormData {
   bundle: number;
@@ -28,47 +23,37 @@ interface StateProps {
   };
 }
 
-async function submit(values, currency, dispatch) {
-  try {
-    return await new Promise((resolve, reject) => {
-      const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(accountWithdrawal(currency, values.amount, meta));
-    });
-  } catch (error) {
-    throwSubmissionError(error);
-  }
+interface OutterProps {
+  currency: Currency;
+  bundles: TransactionBundle[];
+  handleCancel: () => void;
 }
 
-const WithdrawalForm: FunctionComponent<InjectedFormProps<FormData> &
-  Props &
-  any> = ({
-  bundles,
-  dispatch,
-  currency,
+type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
+
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({
   handleSubmit,
+  error,
   handleCancel,
-  error
+  bundles,
+  currency
 }) => (
-  <Form
-    onSubmit={handleSubmit(data =>
-      submit(data, currency, dispatch).then(() => {
-        handleCancel();
-      })
-    )}
-  >
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <FormField.Bundles bundles={bundles} currency={currency} />
     <hr className="border-secondary" />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
-      <Button.Cancel onClick={handleCancel} />
+      <Button.Cancel onClick={() => handleCancel()} />
     </FormGroup>
   </Form>
 );
 
 const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
-  state: RootState,
-  ownProps: Props
+  _state,
+  ownProps
 ) => {
   return {
     initialValues: {
@@ -77,11 +62,22 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
   };
 };
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connect(mapStateToProps),
   reduxForm<FormData, Props>({
-    form: USER_ACCOUNT_WITHDRAWAL_FORM
+    form: USER_ACCOUNT_WITHDRAWAL_FORM,
+    onSubmit: async (values, dispatch, { currency }) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(accountWithdrawal(currency, values.bundle, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel()
   })
 );
 
-export default enhance(WithdrawalForm);
+export default enhance(ReduxForm);

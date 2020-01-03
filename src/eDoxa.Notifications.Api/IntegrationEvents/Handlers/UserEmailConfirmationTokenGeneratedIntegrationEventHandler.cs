@@ -29,16 +29,15 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserEmailConfirmationTokenGeneratedIntegrationEvent integrationEvent)
         {
-            //var callbackUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={integrationEvent.UserId}&code={integrationEvent.Code}";
-
-            //var href = WebUtility.UrlEncode(callbackUrl);
+            var tokenUrl = $"{_redirectService.RedirectToWebSpa("/email/confirm")}?userId={integrationEvent.UserId}&code={integrationEvent.Code}";
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
                 SendGridTemplates.UserEmailConfirmationTokenGenerated,
-                integrationEvent);
-            
-            //$"Please confirm your account by <a href=\"{href}\">clicking here</a>.");
+                new
+                {
+                    tokenUrl
+                });
         }
     }
 }

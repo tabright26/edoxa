@@ -1,3 +1,3 @@
-import RegisterChallengeParticipantForm from "./Container";
+import ReduxForm from "./Register";
 
-export default RegisterChallengeParticipantForm;
+export default ReduxForm;
