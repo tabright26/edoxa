@@ -18,7 +18,6 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
         {!authenticationFactor ? (
           <GameAuthenticationFrom.Generate
             game={gameOption.name}
-            handleCancel={handleHide}
             setAuthenticationFactor={setAuthenticationFactor}
           />
         ) : (

@@ -19,7 +19,6 @@ interface FormData {}
 
 interface OutterProps {
   game: Game;
-  handleCancel: () => void;
   setAuthenticationFactor: (data: any) => any;
 }
 
@@ -69,8 +68,7 @@ const enhance = compose<InnerProps, OutterProps>(
           return Promise.resolve(action);
         }
       );
-    },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel()
+    }
   })
 );
 
