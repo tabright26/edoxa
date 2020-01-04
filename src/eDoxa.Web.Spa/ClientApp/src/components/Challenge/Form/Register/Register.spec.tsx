@@ -2,6 +2,7 @@ import React from "react";
 import Register from "./Register";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 
 it("renders correctly", () => {
   const store: any = {
@@ -12,7 +13,9 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Register />
+        <MemoryRouter>
+          <Register userId="userId" />
+        </MemoryRouter>
       </Provider>
     )
     .toJSON();

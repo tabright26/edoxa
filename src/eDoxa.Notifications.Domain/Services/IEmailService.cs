@@ -10,6 +10,6 @@ namespace eDoxa.Notifications.Domain.Services
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(string email, string subject, string htmlContent);
+        Task SendEmailAsync(string email, string templateId, object templateData);
     }
 }

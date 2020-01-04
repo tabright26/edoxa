@@ -1,3 +1,3 @@
-import Validate from "./Container";
+import ReduxForm from "./Validate";
 
-export default Validate;
+export default ReduxForm;

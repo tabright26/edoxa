@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps } from "redux-form";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_PHONE_FORM } from "forms";
@@ -13,43 +13,25 @@ import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { PHONE_REQUIRED, PHONE_INVALID, phoneRegex } from "validation";
 
-interface Props {}
+interface StateProps {}
 
 interface FormData {
   number: number;
 }
-
-interface StateProps {}
-
-const validate = values => {
-  const errors: any = {};
-  if (!values.number) {
-    errors.number = PHONE_REQUIRED;
-  } else if (!phoneRegex.test(values.number)) {
-    errors.number = PHONE_INVALID;
-  }
-  return errors;
-};
-
-async function submit(values, dispatch) {
-  try {
-    return await new Promise((resolve, reject) => {
-      const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(updateUserPhone(values, meta));
-    });
-  } catch (error) {
-    throwSubmissionError(error);
-  }
+interface OutterProps {
+  handleCancel: () => void;
 }
 
-const UpdateUserPhoneForm: FunctionComponent<InjectedFormProps<FormData> &
-  Props &
-  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
-  <Form
-    onSubmit={handleSubmit(data =>
-      submit(data, dispatch).then(() => handleCancel())
-    )}
-  >
+type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
+
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  handleCancel
+}) => (
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <Field
       type="text"
@@ -60,26 +42,47 @@ const UpdateUserPhoneForm: FunctionComponent<InjectedFormProps<FormData> &
     />
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
-      <Button.Cancel onClick={handleCancel} />
+      <Button.Cancel onClick={() => handleCancel()} />
     </FormGroup>
   </Form>
 );
 
-const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
-  state: RootState
-) => {
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  Props,
+  RootState
+> = state => {
   const { data } = state.root.user.phone;
   return {
     initialValues: data
   };
 };
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: UPDATE_USER_PHONE_FORM,
-    validate
+    onSubmit: async (values, dispatch) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(updateUserPhone(values, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    validate: values => {
+      const errors: FormErrors<FormData> = {};
+      if (!values.number) {
+        errors.number = PHONE_REQUIRED;
+      } else if (!phoneRegex.test(values.number.toString())) {
+        errors.number = PHONE_INVALID;
+      }
+      return errors;
+    }
   })
 );
 
-export default enhance(UpdateUserPhoneForm);
+export default enhance(ReduxForm);

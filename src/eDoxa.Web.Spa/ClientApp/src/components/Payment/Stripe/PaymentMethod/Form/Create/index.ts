@@ -1,3 +1,3 @@
-import CreateStripePaymentMethodContainer from "./Container";
+import ReduxForm from "./Create";
 
-export default CreateStripePaymentMethodContainer;
+export default ReduxForm;

@@ -2,9 +2,13 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { Alert } from "reactstrap";
-import queryString from "query-string";
+import queryString, { ParseOptions } from "query-string";
 import { compose } from "recompose";
 import { confirmUserEmail } from "store/actions/identity";
+
+const options: ParseOptions = {
+  decode: false
+};
 
 const EmailConfirm: FunctionComponent<any> = ({
   location,
@@ -12,7 +16,7 @@ const EmailConfirm: FunctionComponent<any> = ({
 }) => {
   const [notFound, setNotFound] = useState(false);
   useEffect(() => {
-    const { userId, code } = queryString.parse(location.search);
+    const { userId, code } = queryString.parse(location.search, options);
     if (!userId || !code) {
       setNotFound(true);
     }

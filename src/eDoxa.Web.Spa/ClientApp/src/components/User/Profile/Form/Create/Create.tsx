@@ -1,6 +1,12 @@
 import React, { FunctionComponent } from "react";
 import { Form, FormGroup } from "reactstrap";
-import { Field, FormSection, reduxForm, InjectedFormProps } from "redux-form";
+import {
+  Field,
+  FormSection,
+  reduxForm,
+  InjectedFormProps,
+  FormErrors
+} from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { CREATE_USER_PROFILE_FORM } from "forms";
@@ -11,88 +17,35 @@ import { createUserProfile } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
   personalInfoNameRegex,
-  personalInfoYearRegex,
-  personalInfoMonthRegex,
-  personalInfoDayRegex,
   PERSONALINFO_FIRSTNAME_REQUIRED,
   PERSONALINFO_FIRSTNAME_INVALID,
   PERSONALINFO_LASTNAME_REQUIRED,
   PERSONALINFO_LASTNAME_INVALID,
-  PERSONALINFO_YEAR_REQUIRED,
-  PERSONALINFO_YEAR_INVALID,
-  PERSONALINFO_MONTH_REQUIRED,
-  PERSONALINFO_MONTH_INVALID,
-  PERSONALINFO_DAY_REQUIRED,
-  PERSONALINFO_DAY_INVALID,
   PERSONALINFO_GENDER_REQUIRED
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-interface Props {}
-
 interface FormData {
   firstName: string;
   lastName: string;
-  year: number;
-  month: number;
-  day: number;
   gender: string;
+  dob: {
+    month: string;
+    year: string;
+    day: string;
+  };
 }
 
-const validate = values => {
-  const errors: any = {};
-  if (!values.firstName) {
-    errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
-  } else if (!personalInfoNameRegex.test(values.firstName)) {
-    errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
-  }
-  if (!values.lastName) {
-    errors.lastName = PERSONALINFO_LASTNAME_REQUIRED;
-  } else if (!personalInfoNameRegex.test(values.lastName)) {
-    errors.lastName = PERSONALINFO_LASTNAME_INVALID;
-  }
-  if (!values.year) {
-    errors.year = PERSONALINFO_YEAR_REQUIRED;
-  } else if (!personalInfoYearRegex.test(values.year)) {
-    errors.year = PERSONALINFO_YEAR_INVALID;
-  }
-  if (!values.month) {
-    errors.month = PERSONALINFO_MONTH_REQUIRED;
-  } else if (!personalInfoMonthRegex.test(values.month)) {
-    errors.month = PERSONALINFO_MONTH_INVALID;
-  }
-  if (!values.day) {
-    errors.day = PERSONALINFO_DAY_REQUIRED;
-  } else if (!personalInfoDayRegex.test(values.day)) {
-    errors.day = PERSONALINFO_DAY_INVALID;
-  }
-  if (!values.gender) {
-    errors.gender = PERSONALINFO_GENDER_REQUIRED;
-  }
-  return errors;
-};
-
-async function submit(values, dispatch) {
-  try {
-    return await new Promise((resolve, reject) => {
-      const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(createUserProfile(values, meta));
-    });
-  } catch (error) {
-    throwSubmissionError(error);
-  }
+interface OutterProps {
+  handleCancel: () => void;
 }
 
-const CreateUserInformationsForm: FunctionComponent<InjectedFormProps<
-  FormData
-> &
-  Props &
-  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
-  <Form
-    onSubmit={handleSubmit(data =>
-      submit(data, dispatch).then(() => handleCancel())
-    )}
-  >
+type InnerProps = InjectedFormProps<FormData, Props>;
+
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
@@ -136,11 +89,53 @@ const CreateUserInformationsForm: FunctionComponent<InjectedFormProps<
   </Form>
 );
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
     form: CREATE_USER_PROFILE_FORM,
-    validate
+    onSubmit: async (values, dispatch) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(createUserProfile(values, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    validate: values => {
+      const errors: FormErrors<FormData> = {};
+      if (!values.firstName) {
+        errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
+      } else if (!personalInfoNameRegex.test(values.firstName)) {
+        errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
+      }
+      if (!values.lastName) {
+        errors.lastName = PERSONALINFO_LASTNAME_REQUIRED;
+      } else if (!personalInfoNameRegex.test(values.lastName)) {
+        errors.lastName = PERSONALINFO_LASTNAME_INVALID;
+      }
+      if (!values.gender) {
+        errors.gender = PERSONALINFO_GENDER_REQUIRED;
+      }
+      // if (!values.dob.year) {
+      //   errors.dob = PERSONALINFO_YEAR_REQUIRED;
+      // } else if (!personalInfoYearRegex.test(values.dob.year)) {
+      //   errors.dob = PERSONALINFO_YEAR_INVALID;
+      // }
+      // if (!values.dob.month) {
+      //   errors.dob = PERSONALINFO_MONTH_REQUIRED;
+      // } else if (!personalInfoMonthRegex.test(values.dob.month)) {
+      //   errors.dob = PERSONALINFO_MONTH_INVALID;
+      // }
+      // if (!values.dob.day) {
+      //   errors.dob = PERSONALINFO_DAY_REQUIRED;
+      // } else if (!personalInfoDayRegex.test(values.dob.day)) {
+      //   errors.dob = PERSONALINFO_DAY_INVALID;
+      // }
+      return errors;
+    }
   })
 );
 
-export default enhance(CreateUserInformationsForm);
+export default enhance(ReduxForm);

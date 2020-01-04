@@ -22,6 +22,6 @@ namespace eDoxa.Notifications.Domain.Services
 
         Task<IDomainValidationResult> UpdateUserAsync(User user, string email);
 
-        Task SendEmailAsync(UserId userId, string subject, string htmlContent);
+        Task SendEmailAsync(UserId userId, string templateId, object templateData);
     }
 }

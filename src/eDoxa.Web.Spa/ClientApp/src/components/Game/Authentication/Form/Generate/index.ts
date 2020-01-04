@@ -1,3 +1,3 @@
-import Generate from "./Container";
+import ReduxForm from "./Generate";
 
-export default Generate;
+export default ReduxForm;

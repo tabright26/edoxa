@@ -26,16 +26,16 @@ services:
       - seq
       - mssql
 
-  payment-api:
-    image: edoxa.azurecr.io/edoxa/prod/payment-api:0.3.3-beta
+  challenges-api:
+    image: edoxa.azurecr.io/edoxa/prod/challenges-api:0.3.3-beta
     depends_on:
-      - seq
+      - seq   
       - mssql
 
-  notifications-api:
-    image: edoxa.azurecr.io/edoxa/prod/notifications-api:0.3.3-beta
+  clans-api:
+    image: edoxa.azurecr.io/edoxa/prod/clans-api:0.3.3-beta
     depends_on:
-      - seq      
+      - seq
       - mssql
 
   games-api:
@@ -45,16 +45,16 @@ services:
       - mssql
       - redis
 
-  clans-api:
-    image: edoxa.azurecr.io/edoxa/prod/clans-api:0.3.3-beta
+  notifications-api:
+    image: edoxa.azurecr.io/edoxa/prod/notifications-api:0.3.3-beta
     depends_on:
-      - seq
+      - seq      
       - mssql
 
-  challenges-api:
-    image: edoxa.azurecr.io/edoxa/prod/challenges-api:0.3.3-beta
+  payment-api:
+    image: edoxa.azurecr.io/edoxa/prod/payment-api:0.3.3-beta
     depends_on:
-      - seq   
+      - seq
       - mssql
 
   challenges-worker:
@@ -62,13 +62,13 @@ services:
     depends_on:
       - seq
 
-  challenges-web-aggregator:
-    image: edoxa.azurecr.io/edoxa/prod/challenges-web-aggregator:0.3.3-beta
+  cashier-web-aggregator:
+    image: edoxa.azurecr.io/edoxa/prod/cashier-web-aggregator:0.3.3-beta
     depends_on:
       - seq
 
-  cashier-web-aggregator:
-    image: edoxa.azurecr.io/edoxa/prod/cashier-web-aggregator:0.3.3-beta
+  challenges-web-aggregator:
+    image: edoxa.azurecr.io/edoxa/prod/challenges-web-aggregator:0.3.3-beta
     depends_on:
       - seq
 

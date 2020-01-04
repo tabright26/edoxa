@@ -2,24 +2,30 @@ import React from "react";
 //import { Provider } from "react-redux";
 //import { ReactWrapper } from "enzyme";
 import Create from "./Create";
+import { configureStore } from "store";
+import { Provider } from "react-redux";
 //import { configureStore } from "store";
 
 const shallow = global["shallow"];
 // const mount = global["mount"];
 
-// const store = configureStore();
+const store = configureStore();
 
-// const createWrapper = (): ReactWrapper | any => {
-//   return mount(
+//  const createWrapper = (): ReactWrapper | any => {
+//    return mount(
 //     <Provider store={store}>
 //       <Create />
-//     </Provider>
-//   );
+//     </Provider>;
+//    );
 // };
 
 describe("<PaymentMethodCreateForm />", () => {
   it("should match the snapshot", () => {
-    const shallowWrapper = shallow(<Create />);
+    const shallowWrapper = shallow(
+      <Provider store={store}>
+        <Create />
+      </Provider>
+    );
     expect(shallowWrapper).toMatchSnapshot();
   });
 

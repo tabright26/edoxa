@@ -1,3 +1,3 @@
-import UpdateUserAddressForm from "./Update";
+import ReduxForm from "./Update";
 
-export default UpdateUserAddressForm;
+export default ReduxForm;

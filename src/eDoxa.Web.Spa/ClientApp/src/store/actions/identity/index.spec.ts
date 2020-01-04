@@ -189,7 +189,7 @@ describe("identity actions", () => {
       CONFIRM_USER_EMAIL_FAIL
     ];
     const expectedMethod = "GET";
-    const expectedUrl = `/identity/api/email/confirm?userId=${userId}&code=${code}`;
+    const expectedUrl = "/identity/api/email/confirm";
 
     const object = confirmUserEmail(userId, code);
 

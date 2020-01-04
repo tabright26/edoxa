@@ -2,4 +2,10 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Clans.Responses";
 
+import "clans_dtos.proto";
+
 package edoxa.services.clans;
+
+message FetchClansResponse {
+  repeated ClanDto clans = 1;
+}

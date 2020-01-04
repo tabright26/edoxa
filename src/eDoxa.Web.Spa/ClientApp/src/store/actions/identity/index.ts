@@ -187,6 +187,7 @@ export function confirmUserEmail(
   userId: string,
   code: string
 ): UserEmailActionCreators {
+  console.log(code);
   return {
     types: [
       CONFIRM_USER_EMAIL,
@@ -196,7 +197,11 @@ export function confirmUserEmail(
     payload: {
       request: {
         method: "GET",
-        url: `/identity/api/email/confirm?userId=${userId}&code=${code}`
+        url: "/identity/api/email/confirm",
+        params: {
+          userId,
+          code
+        }
       }
     }
   };

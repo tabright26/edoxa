@@ -7,16 +7,12 @@ import { compose } from "recompose";
 
 const CreateStripePaymentMethodModal: FunctionComponent<any> = ({
   show,
-  handleHide,
-  type
+  handleHide
 }) => (
   <Modal isOpen={show} toggle={handleHide}>
     <ModalHeader toggle={handleHide}>ADD NEW PAYMENT METHOD</ModalHeader>
     <ModalBody>
-      <StripePaymentMethodForm.Create
-        type={type}
-        handleCancel={() => handleHide()}
-      />
+      <StripePaymentMethodForm.Create handleCancel={() => handleHide()} />
     </ModalBody>
   </Modal>
 );

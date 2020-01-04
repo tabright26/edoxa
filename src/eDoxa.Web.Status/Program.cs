@@ -2,12 +2,13 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
+using eDoxa.Seedwork.Security.Kestrel.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -24,11 +25,11 @@ namespace eDoxa.Web.Status
             {
                 var builder = CreateWebHostBuilder(args);
 
-                Log.Information("Building {Application} host...");
+                Log.Information("Building {AssemblyName} host...");
 
                 var host = builder.Build();
 
-                Log.Information("Starting {Application} host...");
+                Log.Information("Starting {AssemblyName} host...");
 
                 host.Run();
 
@@ -36,7 +37,7 @@ namespace eDoxa.Web.Status
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, "Program '{Application}' exited with code 1.");
+                Log.Fatal(exception, "Program '{AssemblyName}' exited with code 1.");
 
                 return 1;
             }
@@ -48,7 +49,11 @@ namespace eDoxa.Web.Status
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder<Startup>(args).CaptureStartupErrors(false).UseCustomApplicationInsights().UseCustomSerilog<Program>();
+            return WebHost.CreateDefaultBuilder<Startup>(args)
+                .CaptureStartupErrors(false)
+                .ConfigureKestrel(options => options.ListenRest())
+                .UseCustomApplicationInsights()
+                .UseCustomSerilog();
         }
     }
 }

@@ -47,10 +47,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     return this.Ok();
                 }
 
-                // BUG: Quick fix. Must be refactored. Related to the encoding.
-                var code = request.Code.Replace(" ", "+");
-
-                var result = await _userService.ResetPasswordAsync(user, code, request.Password);
+                var result = await _userService.ResetPasswordAsync(user, request.Code, request.Password);
 
                 if (result.Succeeded)
                 {

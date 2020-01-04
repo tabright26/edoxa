@@ -1,12 +1,13 @@
 ﻿// Filename: ChallengeClosedIntegrationEventHandler.cs
-// Date Created: 2019-12-16
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
+using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -27,10 +28,7 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
         {
             foreach (var (userId, _) in integrationEvent.PayoutPrizes)
             {
-                await _userService.SendEmailAsync(
-                    userId.ParseEntityId<UserId>(),
-                    nameof(ChallengeClosedIntegrationEvent),
-                    nameof(ChallengeClosedIntegrationEvent));
+                await _userService.SendEmailAsync(userId.ParseEntityId<UserId>(), SendGridTemplates.ChallengeClosed, integrationEvent);
             }
         }
     }
