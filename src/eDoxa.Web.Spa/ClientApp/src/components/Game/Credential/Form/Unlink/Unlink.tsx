@@ -69,8 +69,7 @@ const enhance = compose<InnerProps, OutterProps>(
           return Promise.resolve(action);
         }
       );
-    },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel()
+    }
   })
 );
 
