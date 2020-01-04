@@ -6,6 +6,9 @@ import "google/protobuf/wrappers.proto";
 
 package edoxa.services.clans;
 
+message FetchClansRequest {
+}
+
 message CreateClanRequest {
   string name = 1;
   google.protobuf.StringValue summary = 2;

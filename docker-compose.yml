@@ -33,23 +33,25 @@ services:
       - mssql
       - identity-api
 
-  payment-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/payment-api:${ACR_TAG:-latest}
+  challenges-api:
+    image: ${ACR_REGISTRY:-edoxa}/dev/challenges-api:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
     depends_on:
-      - seq
+      - seq   
       - mssql
       - identity-api
+      - cashier-api
+      - games-api
 
-  notifications-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/notifications-api:${ACR_TAG:-latest}
+  clans-api:
+    image: ${ACR_REGISTRY:-edoxa}/dev/clans-api:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+      dockerfile: src/eDoxa.Clans.Api/Dockerfile
     depends_on:
-      - seq      
+      - seq
       - mssql
       - identity-api
 
@@ -64,27 +66,25 @@ services:
       - redis
       - identity-api
 
-  clans-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/clans-api:${ACR_TAG:-latest}
+  notifications-api:
+    image: ${ACR_REGISTRY:-edoxa}/dev/notifications-api:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Clans.Api/Dockerfile
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+    depends_on:
+      - seq      
+      - mssql
+      - identity-api
+
+  payment-api:
+    image: ${ACR_REGISTRY:-edoxa}/dev/payment-api:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
     depends_on:
       - seq
       - mssql
       - identity-api
-
-  challenges-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/challenges-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
-    depends_on:
-      - seq   
-      - mssql
-      - identity-api
-      - cashier-api
-      - games-api
 
   challenges-worker:
     image: ${ACR_REGISTRY:-edoxa}/dev/challenges-worker:${ACR_TAG:-latest}

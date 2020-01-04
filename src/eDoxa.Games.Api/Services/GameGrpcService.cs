@@ -6,6 +6,7 @@
 
 using System;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -23,6 +24,8 @@ using eDoxa.Seedwork.Domain.Misc;
 using Grpc.Core;
 
 using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Games.Api.Services
 {
@@ -118,6 +121,8 @@ namespace eDoxa.Games.Api.Services
                 catch (Exception exception)
                 {
                     _logger.LogCritical(exception, $"Failed to fetch {game} matches for the participant '{participantId}'. (gamePlayerId=\"{gamePlayerId}\")");
+
+                    _logger.LogCritical(JsonConvert.SerializeObject(request, Formatting.Indented));
 
                     var response = new FetchChallengeMatchesResponse
                     {

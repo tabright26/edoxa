@@ -11,6 +11,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
+using eDoxa.Seedwork.Security.Kestrel.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -28,17 +29,17 @@ namespace eDoxa.Challenges.Worker
             {
                 var builder = CreateWebHostBuilder(args);
 
-                Log.Information("Building {Application} host...");
+                Log.Information("Building {AssemblyName} host...");
 
                 var host = builder.Build();
 
-                Log.Information("Applying {Application} context migrations...");
+                Log.Information("Applying {AssemblyName} context migrations...");
 
                 var context = host.Services.GetRequiredService<HangfireDbContext>();
 
                 context.Database.EnsureCreated();
 
-                Log.Information("Starting {Application} host...");
+                Log.Information("Starting {AssemblyName} host...");
 
                 host.Run();
 
@@ -46,7 +47,7 @@ namespace eDoxa.Challenges.Worker
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, "Program '{Application}' exited with code 1.");
+                Log.Fatal(exception, "Program '{AssemblyName}' exited with code 1.");
 
                 return 1;
             }
@@ -60,10 +61,11 @@ namespace eDoxa.Challenges.Worker
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
+                .ConfigureKestrel(options => options.ListenRest())
                 .UseCustomAutofac()
                 .UseCustomAzureKeyVault()
                 .UseCustomApplicationInsights()
-                .UseCustomSerilog<Program>();
+                .UseCustomSerilog();
         }
     }
 }
