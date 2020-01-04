@@ -32,22 +32,22 @@ services:
       - seq
       - mssql
 
-  payment-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/payment-api:${ACR_TAG:-latest}
+  challenges-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-api:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Payment.Api/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
     depends_on:
-      - seq
+      - seq   
       - mssql
 
-  notifications-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/notifications-api:${ACR_TAG:-latest}
+  clans-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/clans-api:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
+      dockerfile: src/eDoxa.Clans.Api/Dockerfile
     depends_on:
-      - seq      
+      - seq
       - mssql
 
   games-api:
@@ -60,22 +60,22 @@ services:
       - mssql
       - redis
 
-  clans-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/clans-api:${ACR_TAG:-latest}
+  notifications-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/notifications-api:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Clans.Api/Dockerfile
+      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
     depends_on:
-      - seq
+      - seq      
       - mssql
 
-  challenges-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-api:${ACR_TAG:-latest}
+  payment-api:
+    image: ${ACR_REGISTRY:-edoxa}/prod/payment-api:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
+      dockerfile: src/eDoxa.Payment.Api/Dockerfile
     depends_on:
-      - seq   
+      - seq
       - mssql
 
   challenges-worker:
@@ -86,19 +86,19 @@ services:
     depends_on:
       - seq
 
-  challenges-web-aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-web-aggregator:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
-    depends_on:
-      - seq
-
   cashier-web-aggregator:
     image: ${ACR_REGISTRY:-edoxa}/prod/cashier-web-aggregator:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Web.Aggregator/Dockerfile
+    depends_on:
+      - seq
+
+  challenges-web-aggregator:
+    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-web-aggregator:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
     depends_on:
       - seq
 

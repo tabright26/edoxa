@@ -1,8 +1,8 @@
 ﻿// Filename: WebHostBuilderExtensions.cs
-// Date Created: 2019-11-29
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,7 +14,7 @@ namespace eDoxa.Seedwork.Security.AzureKeyVault.Extensions
         public static IWebHostBuilder UseCustomAzureKeyVault(this IWebHostBuilder hostBuilder)
         {
             return hostBuilder.ConfigureAppConfiguration(
-                configurationBuilder =>
+                (context, configurationBuilder) =>
                 {
                     var configurationRoot = configurationBuilder.Build();
 

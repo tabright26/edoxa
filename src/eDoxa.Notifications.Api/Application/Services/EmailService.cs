@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Notifications.Domain.Services;
@@ -28,16 +29,24 @@ namespace eDoxa.Notifications.Api.Application.Services
             _logger = logger;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string htmlContent)
+        public async Task SendEmailAsync(string email, string templateId, object templateData)
         {
             var message = new SendGridMessage
             {
-                From = new EmailAddress("noreply@edoxa.gg", "eDoxa Support"),
-                Subject = subject,
-                HtmlContent = htmlContent
+                From = new EmailAddress("noreply@edoxa.gg", "eDoxa"),
+                TemplateId = templateId,
+                Personalizations = new List<Personalization>
+                {
+                    new Personalization
+                    {
+                        Tos = new List<EmailAddress>
+                        {
+                            new EmailAddress(email)
+                        },
+                        TemplateData = templateData
+                    }
+                }
             };
-
-            message.AddTo(new EmailAddress(email));
 
             _logger.LogInformation($"{email} message sending...");
 

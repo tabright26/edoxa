@@ -51,9 +51,6 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
                     return this.NotFound($"Unable to load user with ID '{userId}'.");
                 }
 
-                // BUG: Quick fix. Must be refactored. Related to the encoding.
-                code = code.Replace(" ", "+");
-
                 var result = await _userService.ConfirmEmailAsync(user, code);
 
                 if (!result.Succeeded)

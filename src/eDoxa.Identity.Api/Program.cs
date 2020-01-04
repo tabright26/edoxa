@@ -28,15 +28,15 @@ namespace eDoxa.Identity.Api
             {
                 var builder = CreateWebHostBuilder(args);
 
-                Log.Information("Building {Application} host...");
+                Log.Information("Building {AssemblyName} host...");
 
                 var host = builder.Build();
 
-                Log.Information("Applying {Application} context migrations...");
+                Log.Information("Applying {AssemblyName} context migrations...");
 
                 host.MigrateDbContextWithRetryPolicy<IdentityDbContext>();
 
-                Log.Information("Starting {Application} host...");
+                Log.Information("Starting {AssemblyName} host...");
 
                 host.Run();
 
@@ -44,7 +44,7 @@ namespace eDoxa.Identity.Api
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, "Program '{Application}' exited with code 1.");
+                Log.Fatal(exception, "Program '{AssemblyName}' exited with code 1.");
 
                 return 1;
             }
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api
                 .UseCustomAutofac()
                 .UseCustomAzureKeyVault()
                 .UseCustomApplicationInsights()
-                .UseCustomSerilog<Program>();
+                .UseCustomSerilog();
         }
     }
 }

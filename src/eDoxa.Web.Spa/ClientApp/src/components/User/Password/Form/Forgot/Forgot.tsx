@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps } from "redux-form";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { FORGOT_USER_PASSWORD_FORM } from "forms";
@@ -12,41 +12,18 @@ import { EMAIL_REQUIRED, EMAIL_INVALID, emailRegex } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 
-interface Props {}
-
 interface FormData {
   email: string;
 }
 
-const validate = values => {
-  const errors: any = {};
-  if (!values.email) {
-    errors.email = EMAIL_REQUIRED;
-  } else if (!emailRegex.test(values.email)) {
-    errors.email = EMAIL_INVALID;
-  }
-  return errors;
-};
+interface OutterProps {}
 
-async function submit(values, dispatch) {
-  try {
-    return await new Promise((resolve, reject) => {
-      const meta: AxiosActionCreatorMeta = { resolve, reject };
-      dispatch(forgotUserPassword(values, meta));
-    });
-  } catch (error) {
-    throwSubmissionError(error);
-  }
-}
+type InnerProps = InjectedFormProps<FormData, Props>;
 
-const ForgotUserPasswordForm: FunctionComponent<InjectedFormProps<FormData> &
-  Props &
-  any> = ({ handleSubmit, handleCancel, dispatch, error }) => (
-  <Form
-    onSubmit={handleSubmit(data =>
-      submit(data, dispatch).then(() => push("/"))
-    )}
-  >
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <Field
       type="text"
@@ -61,11 +38,30 @@ const ForgotUserPasswordForm: FunctionComponent<InjectedFormProps<FormData> &
   </Form>
 );
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
     form: FORGOT_USER_PASSWORD_FORM,
-    validate
+    onSubmit: async (values, dispatch) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(forgotUserPassword(values, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (_result, dispatch) => dispatch(push("/")),
+    validate: values => {
+      const errors: FormErrors<FormData> = {};
+      if (!values.email) {
+        errors.email = EMAIL_REQUIRED;
+      } else if (!emailRegex.test(values.email)) {
+        errors.email = EMAIL_INVALID;
+      }
+      return errors;
+    }
   })
 );
 
-export default enhance(ForgotUserPasswordForm);
+export default enhance(ReduxForm);

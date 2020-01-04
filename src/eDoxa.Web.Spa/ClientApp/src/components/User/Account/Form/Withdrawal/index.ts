@@ -1,3 +1,3 @@
-import WithdrawalForm from "./Withdrawal";
+import ReduxForm from "./Withdrawal";
 
-export default WithdrawalForm;
+export default ReduxForm;

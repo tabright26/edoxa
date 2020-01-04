@@ -67,7 +67,7 @@ export function loadStripeBankAccount(): StripeBankAccountActionCreators {
 }
 
 export function updateStripeBankAccount(
-  token: string
+  token: stripe.Token
 ): StripeBankAccountActionCreators {
   return {
     types: [
@@ -80,7 +80,7 @@ export function updateStripeBankAccount(
         method: "POST",
         url: "/payment/api/stripe/bank-account",
         data: {
-          token
+          token: token.id
         }
       }
     }
@@ -141,8 +141,8 @@ export function loadStripePaymentMethods(
 
 export function updateStripePaymentMethod(
   paymentMethodId: string,
-  expMonth: string,
-  expYear: string
+  expMonth: number,
+  expYear: number
 ): StripePaymentMethodsActionCreators {
   return {
     types: [
@@ -164,7 +164,7 @@ export function updateStripePaymentMethod(
 }
 
 export function attachStripePaymentMethod(
-  paymentMethodId: string,
+  paymentMethod: stripe.paymentMethod.PaymentMethod,
   defaultPaymentMethod: boolean = false
 ): StripePaymentMethodsActionCreators {
   return {
@@ -176,7 +176,7 @@ export function attachStripePaymentMethod(
     payload: {
       request: {
         method: "POST",
-        url: `/payment/api/stripe/payment-methods/${paymentMethodId}/attach`,
+        url: `/payment/api/stripe/payment-methods/${paymentMethod.id}/attach`,
         data: {
           defaultPaymentMethod
         }

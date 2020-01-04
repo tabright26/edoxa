@@ -1,3 +1,3 @@
-import UpdateStripePaymentMethodContainer from "./Container";
+import ReduxForm from "./Update";
 
-export default UpdateStripePaymentMethodContainer;
+export default ReduxForm;

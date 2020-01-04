@@ -2,6 +2,11 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Clans.Services";
 
+import "clans_requests.proto";
+import "clans_responses.proto";
+
 package edoxa.services.clans;
 
-service ClanService {}
+service ClanService {
+  rpc FetchClans(FetchClansRequest) returns (FetchClansResponse);
+}

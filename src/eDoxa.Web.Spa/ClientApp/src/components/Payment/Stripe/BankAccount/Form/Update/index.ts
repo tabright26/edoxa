@@ -1,3 +1,3 @@
-import UpdateStripeBankAccountContainer from "./Container";
+import ReduxForm from "./Update";
 
-export default UpdateStripeBankAccountContainer;
+export default ReduxForm;

@@ -1,26 +1,36 @@
 import React, { FunctionComponent } from "react";
 import { Form, FormGroup } from "reactstrap";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { GENERATE_GAME_AUTHENTICATION_FORM } from "forms";
 import { compose } from "recompose";
-import { validate } from "./validate";
 import FormValidation from "components/Shared/Form/Validation";
+import { Game } from "types";
+import { generateGameAuthentication } from "store/actions/game";
+import {
+  GameAuthenticationActions,
+  GENERATE_GAME_AUTHENTICATION_FAIL,
+  GENERATE_GAME_AUTHENTICATION_SUCCESS
+} from "store/actions/game/types";
+import { throwSubmissionError } from "utils/form/types";
 
-const GenerateGameAuthenticationForm: FunctionComponent<any> = ({
-  handleSubmit,
-  generateGameAuthentication,
-  error,
-  setAuthenticationFactor
-}) => (
-  <Form
-    onSubmit={handleSubmit((data: any) =>
-      generateGameAuthentication(data).then(action =>
-        setAuthenticationFactor(action.payload.data)
-      )
-    )}
-  >
+interface FormData {}
+
+interface OutterProps {
+  game: Game;
+  handleCancel: () => void;
+  setAuthenticationFactor: (data: any) => any;
+}
+
+type InnerProps = InjectedFormProps<FormData, Props> & {
+  stripe: stripe.Stripe;
+};
+
+type Props = InnerProps & OutterProps;
+
+const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+  <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <FormGroup>
       <label>Summoner name</label>
@@ -36,8 +46,32 @@ const GenerateGameAuthenticationForm: FunctionComponent<any> = ({
   </Form>
 );
 
-const enhance = compose<any, any>(
-  reduxForm({ form: GENERATE_GAME_AUTHENTICATION_FORM, validate })
+const enhance = compose<InnerProps, OutterProps>(
+  reduxForm<FormData, Props>({
+    form: GENERATE_GAME_AUTHENTICATION_FORM,
+    onSubmit: async (
+      values,
+      dispatch: any,
+      { game, setAuthenticationFactor }
+    ) => {
+      return await dispatch(generateGameAuthentication(game, values)).then(
+        (action: GameAuthenticationActions) => {
+          switch (action.type) {
+            case GENERATE_GAME_AUTHENTICATION_SUCCESS: {
+              setAuthenticationFactor(action.payload.data);
+              break;
+            }
+            case GENERATE_GAME_AUTHENTICATION_FAIL: {
+              throwSubmissionError(action.error);
+              break;
+            }
+          }
+          return Promise.resolve(action);
+        }
+      );
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel()
+  })
 );
 
-export default enhance(GenerateGameAuthenticationForm);
+export default enhance(ReduxForm);

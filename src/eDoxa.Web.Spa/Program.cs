@@ -9,6 +9,7 @@ using System;
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
 using eDoxa.Seedwork.Security.AzureKeyVault.Extensions;
+using eDoxa.Seedwork.Security.Kestrel.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -25,11 +26,11 @@ namespace eDoxa.Web.Spa
             {
                 var builder = CreateWebHostBuilder(args);
 
-                Log.Information("Building {Application} host...");
+                Log.Information("Building {AssemblyName} host...");
 
                 var host = builder.Build();
 
-                Log.Information("Starting {Application} host...");
+                Log.Information("Starting {AssemblyName} host...");
 
                 host.Run();
 
@@ -37,7 +38,7 @@ namespace eDoxa.Web.Spa
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, "Program '{Application}' exited with code 1.");
+                Log.Fatal(exception, "Program '{AssemblyName}' exited with code 1.");
 
                 return 1;
             }
@@ -51,9 +52,10 @@ namespace eDoxa.Web.Spa
         {
             return WebHost.CreateDefaultBuilder<Startup>(args)
                 .CaptureStartupErrors(false)
+                .ConfigureKestrel(options => options.ListenRest())
                 .UseCustomAzureKeyVault()
                 .UseCustomApplicationInsights()
-                .UseCustomSerilog<Program>();
+                .UseCustomSerilog();
         }
     }
 }

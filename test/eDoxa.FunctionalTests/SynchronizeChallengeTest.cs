@@ -1,8 +1,8 @@
 ﻿// Filename: SynchronizeChallengeTest.cs
-// Date Created: 2019-12-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,7 @@ using eDoxa.Games.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Enums;
+using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain;
@@ -30,6 +31,8 @@ using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.Seedwork.TestHelper.Mocks;
 using eDoxa.ServiceBus.Abstractions;
+
+using FluentAssertions;
 
 using Microsoft.AspNetCore.TestHost;
 
@@ -297,6 +300,117 @@ namespace eDoxa.FunctionalTests
                     It.IsAny<DateTime?>(),
                     It.IsAny<DateTime?>()),
                 Times.Exactly(4));
+        }
+
+        [Fact]
+        public async Task Success2()
+        {
+            // Arrange
+            using var gamesHost = new GamesHostFactory();
+
+            var gamesServiceClient = new GameService.GameServiceClient(gamesHost.CreateChannel());
+
+            var retchChallengeScoringResponse = await gamesServiceClient.FetchChallengeScoringAsync(
+                new FetchChallengeScoringRequest
+                {
+                    Game = GameDto.LeagueOfLegends
+                });
+
+            var createdAt = new DateTimeProvider(
+                new DateTime(
+                    2019,
+                    12,
+                    30,
+                    21,
+                    9,
+                    22,
+                    DateTimeKind.Utc));
+
+            var startedAt = new DateTimeProvider(
+                new DateTime(
+                    2019,
+                    12,
+                    30,
+                    22,
+                    42,
+                    50,
+                    DateTimeKind.Utc));
+
+            var challenge = new Challenge(
+                new ChallengeId(),
+                new ChallengeName("TEST CHALLENGE"),
+                Game.LeagueOfLegends,
+                BestOf.One,
+                Entries.Two,
+                new ChallengeTimeline(createdAt, ChallengeDuration.OneDay),
+                new Scoring(retchChallengeScoringResponse.Scoring));
+
+            var participant = new Participant(
+                new ParticipantId(),
+                new UserId(),
+                PlayerId.Parse("V1R8S4W19KGdqSTn-rRO-pUGv6lfu2BkdVCaz_8wd-m6zw"),
+                new DateTimeProvider(createdAt.DateTime + TimeSpan.FromMinutes(5)));
+
+            challenge.Register(participant);
+
+            challenge.Register(
+                new Participant(
+                    new ParticipantId(),
+                    new UserId(),
+                    new PlayerId(),
+                    new DateTimeProvider(createdAt.DateTime + TimeSpan.FromMinutes(10))));
+
+            challenge.Start(startedAt);
+
+            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+
+            mockServiceBusPublisher.Setup(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<ChallengeSynchronizedIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            using var challengesHost = new ChallengesHostFactory().WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            container.RegisterInstance(mockServiceBusPublisher.Object).As<IServiceBusPublisher>().SingleInstance();
+                        });
+                });
+
+            challengesHost.Server.CleanupDbContext();
+
+            await challengesHost.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var repository = scope.GetRequiredService<IChallengeRepository>();
+
+                    repository.Create(challenge);
+
+                    await repository.CommitAsync(false);
+                });
+
+            var recurringJob = new ChallengeRecurringJob(
+                new ChallengeService.ChallengeServiceClient(challengesHost.CreateChannel()),
+                new GameService.GameServiceClient(gamesHost.CreateChannel()));
+
+            // Act
+            await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);
+
+            // Assert
+            await challengesHost.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var repository = scope.GetRequiredService<IChallengeRepository>();
+
+                    var persistentChallenge = await repository.FindChallengeAsync(challenge.Id);
+
+                    persistentChallenge.FindParticipant(participant.PlayerId).Matches.Should().HaveCount(2);
+                });
+
+            mockServiceBusPublisher.Verify(
+                serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<ChallengeSynchronizedIntegrationEvent>()),
+                Times.Exactly(1));
         }
     }
 }

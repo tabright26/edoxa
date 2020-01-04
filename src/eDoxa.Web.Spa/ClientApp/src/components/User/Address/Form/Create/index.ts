@@ -1,3 +1,3 @@
-import CreateUserAddressForm from "./Create";
+import ReduxForm from "./Create";
 
-export default CreateUserAddressForm;
+export default ReduxForm;

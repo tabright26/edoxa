@@ -1,3 +1,3 @@
-import DeleteStripePaymentMethodContainer from "./Container";
+import ReduxForm from "./Delete";
 
-export default DeleteStripePaymentMethodContainer;
+export default ReduxForm;
