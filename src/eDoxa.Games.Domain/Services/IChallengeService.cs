@@ -1,11 +1,12 @@
 ﻿// Filename: IChallengeService.cs
-// Date Created: 2019-11-03
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
@@ -21,7 +22,8 @@ namespace eDoxa.Games.Domain.Services
             Game game,
             PlayerId gamePlayerId,
             DateTime? startedAt,
-            DateTime? endedAt
+            DateTime? endedAt,
+            IImmutableSet<string> matchIds
         );
     }
 }

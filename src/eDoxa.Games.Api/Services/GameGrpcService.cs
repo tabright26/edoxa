@@ -1,12 +1,12 @@
 ﻿// Filename: GameGrpcService.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 using AutoMapper;
@@ -36,7 +36,12 @@ namespace eDoxa.Games.Api.Services
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public GameGrpcService(IChallengeService challengeService, IGameCredentialService gameCredentialService, IMapper mapper, ILogger<GameGrpcService> logger)
+        public GameGrpcService(
+            IChallengeService challengeService,
+            IGameCredentialService gameCredentialService,
+            IMapper mapper,
+            ILogger<GameGrpcService> logger
+        )
         {
             _challengeService = challengeService;
             _gameCredentialService = gameCredentialService;
@@ -44,7 +49,10 @@ namespace eDoxa.Games.Api.Services
             _logger = logger;
         }
 
-        public override async Task<FindPlayerGameCredentialResponse> FindPlayerGameCredential(FindPlayerGameCredentialRequest request, ServerCallContext context)
+        public override async Task<FindPlayerGameCredentialResponse> FindPlayerGameCredential(
+            FindPlayerGameCredentialRequest request,
+            ServerCallContext context
+        )
         {
             var httpContext = context.GetHttpContext();
 
@@ -82,21 +90,28 @@ namespace eDoxa.Games.Api.Services
             ServerCallContext context
         )
         {
+            var game = request.Game.ToEnumeration<Game>();
+
+            var startedAt = request.StartedAt.ToDateTime();
+
+            var endedAt = request.EndedAt.ToDateTime();
+
             foreach (var participant in request.Participants)
             {
-                var gamePlayerId = participant.PlayerId.ParseStringId<PlayerId>();
-
                 var participantId = participant.Id.ParseEntityId<ParticipantId>();
 
-                var game = request.Game.ToEnumeration<Game>();
+                var gamePlayerId = participant.GamePlayerId.ParseStringId<PlayerId>();
+
+                var matchIds = participant.Matches.Select(match => match.Id).ToImmutableHashSet();
 
                 try
                 {
                     var matches = await _challengeService.GetMatchesAsync(
                         game,
                         gamePlayerId,
-                        participant.StartedAt.ToDateTime(),
-                        participant.EndedAt.ToDateTime());
+                        startedAt,
+                        endedAt,
+                        matchIds);
 
                     var response = new FetchChallengeMatchesResponse
                     {
@@ -122,7 +137,18 @@ namespace eDoxa.Games.Api.Services
                 {
                     _logger.LogCritical(exception, $"Failed to fetch {game} matches for the participant '{participantId}'. (gamePlayerId=\"{gamePlayerId}\")");
 
-                    _logger.LogCritical(JsonConvert.SerializeObject(request, Formatting.Indented));
+                    _logger.LogCritical(
+                        JsonConvert.SerializeObject(
+                            new
+                            {
+                                ParticipantId = participantId,
+                                Game = game,
+                                GamePlayerId = gamePlayerId,
+                                StartedAt = startedAt,
+                                EndedAt = endedAt,
+                                MatchIds = matchIds.ToArray()
+                            },
+                            Formatting.Indented));
 
                     var response = new FetchChallengeMatchesResponse
                     {
