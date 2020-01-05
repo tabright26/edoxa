@@ -150,9 +150,10 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             return !SoldOut && !this.ParticipantExists(participant.UserId);
         }
 
+        // TODO: This should be refactored (security part).
         private bool CanSynchronize(Participant participant)
         {
-            return participant.SynchronizedAt < Timeline.EndedAt;
+            return Timeline.EndedAt.HasValue && participant.SynchronizedAt < Timeline.EndedAt.Value.AddHours(2); // Security for matches synchronization.
         }
     }
 

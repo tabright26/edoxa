@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -58,7 +59,7 @@ namespace eDoxa.FunctionalTests
 
         public static IEnumerable<IChallenge> CreateChallenges()
         {
-            var dateTime = DateTime.UtcNow - ChallengeDuration.OneDay;
+            var dateTime = DateTime.UtcNow - ChallengeDuration.OneDay - TimeSpan.FromHours(2); // TODO: Quick fix.
 
             var dateTimeProvider = new DateTimeProvider(dateTime);
 
@@ -159,7 +160,8 @@ namespace eDoxa.FunctionalTests
                         Game.LeagueOfLegends,
                         It.IsAny<PlayerId>(),
                         It.IsAny<DateTime?>(),
-                        It.IsAny<DateTime?>()))
+                        It.IsAny<DateTime?>(),
+                        It.IsAny<IImmutableSet<string>>()))
                 .Throws<Exception>()
                 .Verifiable();
 
@@ -220,10 +222,11 @@ namespace eDoxa.FunctionalTests
                     Game.LeagueOfLegends,
                     It.IsAny<PlayerId>(),
                     It.IsAny<DateTime?>(),
-                    It.IsAny<DateTime?>()),
+                    It.IsAny<DateTime?>(),
+                    It.IsAny<IImmutableSet<string>>()),
                 Times.Exactly(4));
 
-            mockLogger.Verify(Times.Exactly(4));
+            mockLogger.Verify(Times.Exactly(8));
         }
 
         [Fact]
@@ -239,7 +242,8 @@ namespace eDoxa.FunctionalTests
                         Game.LeagueOfLegends,
                         It.IsAny<PlayerId>(),
                         It.IsAny<DateTime?>(),
-                        It.IsAny<DateTime?>()))
+                        It.IsAny<DateTime?>(),
+                        It.IsAny<IImmutableSet<string>>()))
                 .ReturnsAsync(CreateChallengeMatches().ToList())
                 .Verifiable();
 
@@ -298,7 +302,8 @@ namespace eDoxa.FunctionalTests
                     Game.LeagueOfLegends,
                     It.IsAny<PlayerId>(),
                     It.IsAny<DateTime?>(),
-                    It.IsAny<DateTime?>()),
+                    It.IsAny<DateTime?>(),
+                    It.IsAny<IImmutableSet<string>>()),
                 Times.Exactly(4));
         }
 

@@ -1,11 +1,12 @@
 ﻿// Filename: LeagueOfLegendsChallengeMatchesAdapter.cs
-// Date Created: 2019-11-03
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,7 +31,12 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public Game Game => Game.LeagueOfLegends;
 
-        public async Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(PlayerId playerId, DateTime? startedAt, DateTime? endedAt)
+        public async Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(
+            PlayerId playerId,
+            DateTime? startedAt,
+            DateTime? endedAt,
+            IImmutableSet<string> matchIds
+        )
         {
             var matchList = await _leagueOfLegendsService.Match.GetMatchListAsync(
                 Region.Na,
@@ -40,7 +46,8 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
             var matches = new List<ChallengeMatch>();
 
-            foreach (var reference in matchList.Matches)
+            foreach (var reference in matchList.Matches.Where(
+                match => !matchIds.Contains(match.GameId.ToString()) && match.Queue == 420 /* 5v5 Ranked Solo games */))
             {
                 var match = await _leagueOfLegendsService.Match.GetMatchAsync(Region.Na, reference.GameId);
 
@@ -52,7 +59,7 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
                 matches.Add(
                     new ChallengeMatch(
                         match.GameId.ToString(),
-                        new DateTimeProvider(match.GameCreation.Add(match.GameDuration)), 
+                        new DateTimeProvider(match.GameCreation.Add(match.GameDuration)),
                         stats.GetType().GetProperties().ToDictionary(property => property.Name, property => Convert.ToDouble(property.GetValue(stats)))));
             }
 

@@ -1,18 +1,16 @@
 ﻿// Filename: ChallengeRecurringJob.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Challenges.Enums;
 using eDoxa.Grpc.Protos.Challenges.Requests;
 using eDoxa.Grpc.Protos.Challenges.Services;
-using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Grpc.Protos.Games.Requests;
 using eDoxa.Grpc.Protos.Games.Services;
@@ -66,16 +64,11 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
                 var fetchChallengeMatchesRequest = new FetchChallengeMatchesRequest
                 {
                     Game = game,
+                    StartedAt = challenge.Timeline.StartedAt,
+                    EndedAt = challenge.Timeline.EndedAt,
                     Participants =
                     {
-                        challenge.Participants.Select(
-                            participant => new GameParticipantDto
-                            {
-                                Id = participant.Id,
-                                PlayerId = participant.GamePlayerId,
-                                StartedAt = participant.SynchronizedAt ?? challenge.Timeline.StartedAt,
-                                EndedAt = challenge.Timeline.EndedAt
-                            })
+                        challenge.Participants
                     }
                 };
 
@@ -95,15 +88,12 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
                     await _challengeServiceClient.SnapshotChallengeParticipantAsync(snapshotChallengeParticipantRequest);
                 }
 
-                if (challenge.State == ChallengeStateDto.Ended)
+                var synchronizeChallengeRequest = new SynchronizeChallengeRequest
                 {
-                    var synchronizeChallengeRequest = new SynchronizeChallengeRequest
-                    {
-                        ChallengeId = challenge.Id
-                    };
+                    ChallengeId = challenge.Id
+                };
 
-                    await _challengeServiceClient.SynchronizeChallengeAsync(synchronizeChallengeRequest);
-                }
+                await _challengeServiceClient.SynchronizeChallengeAsync(synchronizeChallengeRequest);
             }
         }
     }

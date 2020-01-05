@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
@@ -17,6 +18,6 @@ namespace eDoxa.Games.Domain.Adapters
     {
         Game Game { get; }
 
-        Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(PlayerId playerId, DateTime? startedAt, DateTime? endedAt);
+        Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(PlayerId playerId, DateTime? startedAt, DateTime? endedAt, IImmutableSet<string> matchIds);
     }
 }
