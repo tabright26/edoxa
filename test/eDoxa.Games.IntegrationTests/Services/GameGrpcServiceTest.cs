@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Grpc.Protos.Games.Requests;
@@ -29,33 +30,64 @@ namespace eDoxa.Games.IntegrationTests.Services
 {
     public sealed class GameGrpcServiceTest : IntegrationTest
     {
+        public static TheoryData<string, DateTime, DateTime, int> Senarios = new TheoryData<string, DateTime, DateTime, int>
+        {
+            {
+                "V1R8S4W19KGdqSTn-rRO-pUGv6lfu2BkdVCaz_8wd-m6zw", new DateTime(
+                    2019,
+                    12,
+                    30,
+                    22,
+                    42,
+                    50,
+                    DateTimeKind.Utc),
+                new DateTime(
+                    2019,
+                    12,
+                    31,
+                    23,
+                    00,
+                    09,
+                    DateTimeKind.Utc),
+                2
+            },
+            {
+                "sHTdp0lgHGiLBLad-8Sua63TpYJid-xsALG1DaRbPwVr6Q", new DateTime(
+                    2020,
+                    1,
+                    4,
+                    22,
+                    50,
+                    5,
+                    DateTimeKind.Utc),
+                new DateTime(
+                    2020,
+                    1,
+                    5,
+                    22,
+                    50,
+                    5,
+                    DateTimeKind.Utc),
+                1
+            }
+        };
+
         public GameGrpcServiceTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
         {
         }
 
-        [Fact]
-        public async Task Test()
+        [Theory]
+        [MemberData(nameof(Senarios))]
+        public async Task Test(
+            string playerId,
+            DateTime startedAt,
+            DateTime endedAt,
+            int count
+        )
         {
-            using var gamesHost = TestHost;
+            TestHost.Server.CleanupDbContext();
 
-            //.WithWebHostBuilder(
-            //builder => builder.ConfigureTestContainer<ContainerBuilder>(
-            //    container =>
-            //    {
-            //        container.RegisterInstance(
-            //                new LeagueOfLegendsService(
-            //                    new OptionsWrapper<LeagueOfLegendsOptions>(
-            //                        new LeagueOfLegendsOptions
-            //                        {
-            //                            ApiKey = "RGAPI-fb709a2b-1ecb-4d20-95fa-a4c598ce29e3"// TODO: Security.
-            //                        })))
-            //            .As<ILeagueOfLegendsService>()
-            //            .SingleInstance();
-            //    }));
-
-            gamesHost.Server.CleanupDbContext();
-
-            var client = new GameService.GameServiceClient(gamesHost.CreateChannel());
+            var client = new GameService.GameServiceClient(TestHost.CreateChannel());
 
             var matches = new List<GameMatchDto>();
 
@@ -63,34 +95,14 @@ namespace eDoxa.Games.IntegrationTests.Services
                     new FetchChallengeMatchesRequest
                     {
                         Game = GameDto.LeagueOfLegends,
+                        StartedAt = startedAt.ToTimestamp(),
+                        EndedAt = endedAt.ToTimestamp(),
                         Participants =
                         {
-                            new GameParticipantDto
+                            new ParticipantDto
                             {
                                 Id = new ParticipantId(),
-                                PlayerId = "V1R8S4W19KGdqSTn-rRO-pUGv6lfu2BkdVCaz_8wd-m6zw",
-
-                                //12/30/2019 10:42:50 PM
-                                StartedAt = Timestamp.FromDateTime(
-                                    new DateTime(
-                                        2019,
-                                        12,
-                                        30,
-                                        22,
-                                        42,
-                                        50,
-                                        DateTimeKind.Utc)),
-
-                                //12/31/2019 11:00:09 PM
-                                EndedAt = Timestamp.FromDateTime(
-                                    new DateTime(
-                                        2019,
-                                        12,
-                                        31,
-                                        23,
-                                        00,
-                                        09,
-                                        DateTimeKind.Utc))
+                                GamePlayerId = playerId
                             }
                         }
                     })
@@ -99,7 +111,7 @@ namespace eDoxa.Games.IntegrationTests.Services
                 matches.AddRange(fetchChallengeMatchesResponse.Matches);
             }
 
-            matches.Count.Should().Be(2);
+            matches.Should().HaveCount(count);
         }
     }
 }

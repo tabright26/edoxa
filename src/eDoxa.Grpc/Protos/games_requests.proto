@@ -2,9 +2,12 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Games.Requests";
 
-import "games_dtos.proto";
-import "games_enums.proto";
+import "google/protobuf/timestamp.proto";
+
+import "challenges_dtos.proto";
 import "challenges_enums.proto";
+
+import "games_enums.proto";
 
 package edoxa.services.games;
 
@@ -15,7 +18,9 @@ message FetchChallengeScoringRequest {
 
 message FetchChallengeMatchesRequest {
   GameDto game = 1;
-  repeated GameParticipantDto participants = 2;
+  google.protobuf.Timestamp startedAt = 2;
+  google.protobuf.Timestamp endedAt = 3;
+  repeated challenges.ParticipantDto participants = 4;
 }
 
 message FindPlayerGameCredentialRequest {
