@@ -10,6 +10,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 
+using CsvHelper;
+
+using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -35,7 +38,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class ChallengeSynchronizedIntegrationEventHandlerTest : UnitTest // FRANCIS: COMMENT JE PEUX MOCK LE METADATA POUR LE SERVICE BUS PUBLISHER, CHECK LE ERROR  ????.
+    public sealed class ChallengeSynchronizedIntegrationEventHandlerTest : UnitTest
     {
         public ChallengeSynchronizedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
@@ -47,15 +50,11 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var challengeId = new ChallengeId();
 
-            var bucket = new Bucket(new Prize(50.0m, Currency.Money), new BucketSize(10));
+            var factory = new ChallengePayoutFactory();
+            var strategy = factory.CreateInstance();
+            var payout = strategy.GetPayout(PayoutEntries.Five, MoneyEntryFee.Fifty);
 
-            var buckets = new Buckets(
-                new List<Bucket>
-                {
-                    bucket
-                });
-
-            var challenge = new Challenge(challengeId, MoneyEntryFee.Fifty, new Payout(buckets));
+            var challenge = new Challenge(challengeId, MoneyEntryFee.Fifty, payout);
 
             var mockAccountService = new Mock<IAccountService>();
             var mockChallengeService = new Mock<IChallengeService>();
@@ -73,7 +72,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                     accountService => accountService.PayoutChallengeAsync(
                         It.IsAny<Scoreboard>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(DomainValidationResult.Succeded(new PayoutPrizes()))
                 .Verifiable();
 
             mockServiceBus.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<ChallengeClosedIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
