@@ -1,6 +1,6 @@
 ﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -24,7 +24,7 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
+    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest
     {
         public UserCreatedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
@@ -36,8 +36,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var mockCustomerService = new Mock<IStripeCustomerService>();
             var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeService>();
+            var mockStripeService = new Mock<IStripeService>();
             var mockLogger = new MockLogger<UserCreatedIntegrationEventHandler>();
+
+            mockStripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
 
             mockCustomerService.Setup(customerService => customerService.CreateCustomerAsync(It.IsAny<UserId>(), It.IsAny<string>()))
                 .ReturnsAsync("CustomerId")
@@ -52,14 +54,14 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync("AccountId")
                 .Verifiable();
 
-            mockReferenceService.Setup(referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockStripeService.Setup(referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var handler = new UserCreatedIntegrationEventHandler(
                 mockCustomerService.Object,
                 mockAccountService.Object,
-                mockReferenceService.Object,
+                mockStripeService.Object,
                 mockLogger.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent
@@ -76,8 +78,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
+            mockStripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.CreateCustomerAsync(It.IsAny<UserId>(), It.IsAny<string>()), Times.Once);
-
             mockAccountService.Verify(
                 accountService => accountService.CreateAccountAsync(
                     It.IsAny<UserId>(),
@@ -85,10 +87,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<Country>(),
                     It.IsAny<string>()),
                 Times.Once);
-
-            mockReferenceService.Verify(
+            mockStripeService.Verify(
                 referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()),
                 Times.Once);
+            mockLogger.Verify(Times.Once());
         }
     }
 }

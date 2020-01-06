@@ -1,6 +1,6 @@
 ﻿// Filename: UserAddressChangedIntegrationEventHandlerTEst.cs
 // Date Created: 2019-11-25
-// 
+//
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
@@ -25,7 +25,7 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserAddressChangedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
+    public sealed class UserAddressChangedIntegrationEventHandlerTest : UnitTest
     {
         public UserAddressChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
@@ -64,8 +64,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
+            mockStripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
+            mockLogger.Verify(Times.Once());
         }
     }
 }
