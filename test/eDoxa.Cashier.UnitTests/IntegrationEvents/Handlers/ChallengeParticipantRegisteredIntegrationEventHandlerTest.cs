@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var userId = new UserId();
             var account = new Account(userId);
-            var parcipipantId = new ParticipantId();
+            var participantId = new ParticipantId();
 
             var mockAccountService = new Mock<IAccountService>();
             var mockLogger = new MockLogger<ChallengeParticipantRegisteredIntegrationEventHandler>();
@@ -69,19 +69,19 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                     UserId = userId,
                     Score = DecimalValue.FromDecimal(20),
                     SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
-                    Id = parcipipantId,
+                    Id = participantId,
                     Matches =
                     {
                         new MatchDto
                         {
                             Id = new MatchId(),
-                            ParticipantId = parcipipantId,
+                            ParticipantId = participantId,
                             Score = DecimalValue.FromDecimal(10)
                         },
                         new MatchDto
                         {
                             Id = new MatchId(),
-                            ParticipantId = parcipipantId,
+                            ParticipantId = participantId,
                             Score = DecimalValue.FromDecimal(10)
                         }
                     }
