@@ -46,15 +46,6 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
                 {new StatName(Game.LeagueOfLegends), new StatWeighting(50.0f)}
             };
 
-            //FRANCIS: Pourquoi le scoring ne marche pas comme ca ?? C'est pas le scoring de chaque joueur un a la suite de l'autre (même chose pour les DTO plus bas) ???
-            //var scoring = new Scoring
-            //{
-            //    {new StatName(Game.LeagueOfLegends), new StatWeighting(50.0f)},
-            //    {new StatName(Game.LeagueOfLegends), new StatWeighting(40.0f)},
-            //    {new StatName(Game.LeagueOfLegends), new StatWeighting(30.0f)},
-            //    {new StatName(Game.LeagueOfLegends), new StatWeighting(20.0f)}
-            //};
-
             var challenge = new Challenge(
                 challengeId,
                 new ChallengeName("test"),
@@ -95,29 +86,6 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
                             Currency = CurrencyDto.Money
                         }
                     }
-
-                    //},
-                    //{
-                    //    "test2", new PrizeDto
-                    //    {
-                    //        Amount = 20.0m,
-                    //        Currency = CurrencyDto.Token
-                    //    }
-                    //},
-                    //{
-                    //    "test3", new PrizeDto
-                    //    {
-                    //        Amount = 20.0m,
-                    //        Currency = CurrencyDto.Token
-                    //    }
-                    //},
-                    //{
-                    //    "test4", new PrizeDto
-                    //    {
-                    //        Amount = 20.0m,
-                    //        Currency = CurrencyDto.Token
-                    //    }
-                    //}
                 }
             };
 
