@@ -94,7 +94,7 @@ namespace eDoxa.Games.IntegrationTests.Services
             await foreach (var fetchChallengeMatchesResponse in client.FetchChallengeMatches(
                     new FetchChallengeMatchesRequest
                     {
-                        Game = GameDto.LeagueOfLegends,
+                        Game = EnumGame.LeagueOfLegends,
                         StartedAt = startedAt.ToTimestamp(),
                         EndedAt = endedAt.ToTimestamp(),
                         Participants =

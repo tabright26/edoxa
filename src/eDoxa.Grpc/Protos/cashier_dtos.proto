@@ -3,6 +3,7 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Dtos";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 
 import "cashier_enums.proto";
 import "custom_types.proto";
@@ -16,7 +17,7 @@ message ChallengePayoutDto {
   repeated BucketDto buckets = 4;
   
   message PrizePoolDto {
-    CurrencyDto currency = 1;
+    EnumCurrency currency = 1;
     customTypes.DecimalValue amount = 2;
   }
 
@@ -28,31 +29,42 @@ message ChallengePayoutDto {
 
 message EntryFeeDto {
   customTypes.DecimalValue amount = 1;
-  CurrencyDto currency = 2;
+  EnumCurrency currency = 2;
 }
 
 message PrizeDto {
   customTypes.DecimalValue amount = 1;
-  CurrencyDto currency = 2;
+  EnumCurrency currency = 2;
+}
+
+message BalanceDto {
+  EnumCurrency currency = 1;
+  customTypes.DecimalValue available = 2;
+  customTypes.DecimalValue pending = 3;
+}
+
+message CurrencyDto {
+  EnumCurrency type = 1;
+  double amount = 2;
 }
 
 message TransactionDto {
   string id = 1;
   google.protobuf.Timestamp timestamp = 2;
-  CurrencyDto currency = 3;
+  EnumCurrency currency = 3;
   customTypes.DecimalValue amount = 4;
   string description = 5;
-  TransactionTypeDto type = 6;
-  TransactionStatusDto status = 7;
-}
-
-message BalanceDto {
-  CurrencyDto currency = 1;
-  customTypes.DecimalValue available = 2;
-  customTypes.DecimalValue pending = 3;
+  EnumTransactionType type = 6;
+  EnumTransactionStatus status = 7;
 }
 
 message TransactionBundleDto {
-  customTypes.DecimalValue amount = 1;
-  customTypes.DecimalValue price = 2;
+  int32 id = 1;
+  CurrencyDto currency = 2;
+  CurrencyDto price = 3;
+  EnumTransactionType type = 4;
+  google.protobuf.StringValue description = 5;
+  google.protobuf.StringValue notes = 6;
+  bool disabled = 7;
+  bool deprecated = 8;
 }

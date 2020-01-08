@@ -33,6 +33,7 @@ import {
 } from "./types";
 
 import { StripePaymentMethodType, STRIPE_CARD_TYPE } from "types";
+import { AXIOS_PAYLOAD_CLIENT_CASHIER } from "utils/axios/types";
 
 export function loadStripeAccount(): StripeAccountActionCreators {
   return {
@@ -42,6 +43,7 @@ export function loadStripeAccount(): StripeAccountActionCreators {
       LOAD_STRIPE_ACCOUNT_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "GET",
         url: "/payment/api/stripe/account"
@@ -58,6 +60,7 @@ export function loadStripeBankAccount(): StripeBankAccountActionCreators {
       LOAD_STRIPE_BANKACCOUNT_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "GET",
         url: "/payment/api/stripe/bank-account"
@@ -76,6 +79,7 @@ export function updateStripeBankAccount(
       UPDATE_STRIPE_BANKACCOUNT_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "POST",
         url: "/payment/api/stripe/bank-account",
@@ -95,6 +99,7 @@ export function loadStripeCustomer(): StripeCustomerActionCreators {
       LOAD_STRIPE_CUSTOMER_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "GET",
         url: "/payment/api/stripe/customer"
@@ -113,6 +118,7 @@ export function updateStripeCustomerDefaultPaymentMethod(
       UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "PUT",
         url: `/payment/api/stripe/customer/payment-methods/${paymentMethodId}/default`
@@ -131,6 +137,7 @@ export function loadStripePaymentMethods(
       LOAD_STRIPE_PAYMENTMETHODS_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "GET",
         url: `/payment/api/stripe/payment-methods?type=${type}`
@@ -151,6 +158,7 @@ export function updateStripePaymentMethod(
       UPDATE_STRIPE_PAYMENTMETHOD_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "PUT",
         url: `/payment/api/stripe/payment-methods/${paymentMethodId}`,
@@ -174,6 +182,7 @@ export function attachStripePaymentMethod(
       ATTACH_STRIPE_PAYMENTMETHOD_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "POST",
         url: `/payment/api/stripe/payment-methods/${paymentMethod.id}/attach`,
@@ -195,6 +204,7 @@ export function detachStripePaymentMethod(
       DETACH_STRIPE_PAYMENTMETHOD_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "POST",
         url: `/payment/api/stripe/payment-methods/${paymentMethodId}/detach`

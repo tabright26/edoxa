@@ -4,11 +4,11 @@ import {
   LOAD_USER_MONEY_ACCOUNT_BALANCE_FAIL,
   UserMoneyAccountBalanceActions
 } from "store/actions/cashier/types";
-import { UserAccountBalanceState } from "../types";
+import { UserBalanceState } from "../types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 
-export const initialState: UserAccountBalanceState = {
+export const initialState: UserBalanceState = {
   data: {
     available: 0,
     pending: 0
@@ -18,11 +18,11 @@ export const initialState: UserAccountBalanceState = {
 };
 
 export const reducer: Reducer<
-  UserAccountBalanceState,
+  UserBalanceState,
   UserMoneyAccountBalanceActions
 > = produce(
   (
-    draft: Draft<UserAccountBalanceState>,
+    draft: Draft<UserBalanceState>,
     action: UserMoneyAccountBalanceActions
   ) => {
     switch (action.type) {

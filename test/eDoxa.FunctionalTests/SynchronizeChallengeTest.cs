@@ -210,7 +210,7 @@ namespace eDoxa.FunctionalTests
                 new GameService.GameServiceClient(gamesHost.CreateChannel()));
 
             // Act
-            await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);
+            await recurringJob.SynchronizeChallengesAsync(EnumGame.LeagueOfLegends);
 
             // Assert
             mockServiceBusPublisher.Verify(
@@ -290,7 +290,7 @@ namespace eDoxa.FunctionalTests
                 new GameService.GameServiceClient(gamesHost.CreateChannel()));
 
             // Act
-            await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);
+            await recurringJob.SynchronizeChallengesAsync(EnumGame.LeagueOfLegends);
 
             // Assert
             mockServiceBusPublisher.Verify(
@@ -315,11 +315,12 @@ namespace eDoxa.FunctionalTests
 
             var gamesServiceClient = new GameService.GameServiceClient(gamesHost.CreateChannel());
 
-            var retchChallengeScoringResponse = await gamesServiceClient.FetchChallengeScoringAsync(
-                new FetchChallengeScoringRequest
-                {
-                    Game = GameDto.LeagueOfLegends
-                });
+            var fetchChallengeScoringRequest = new FetchChallengeScoringRequest
+            {
+                Game = EnumGame.LeagueOfLegends
+            };
+
+            var fetchChallengeScoringResponse = await gamesServiceClient.FetchChallengeScoringAsync(fetchChallengeScoringRequest);
 
             var createdAt = new DateTimeProvider(
                 new DateTime(
@@ -348,7 +349,7 @@ namespace eDoxa.FunctionalTests
                 BestOf.One,
                 Entries.Two,
                 new ChallengeTimeline(createdAt, ChallengeDuration.OneDay),
-                new Scoring(retchChallengeScoringResponse.Scoring));
+                new Scoring(fetchChallengeScoringResponse.Scoring));
 
             var participant = new Participant(
                 new ParticipantId(),
@@ -400,7 +401,7 @@ namespace eDoxa.FunctionalTests
                 new GameService.GameServiceClient(gamesHost.CreateChannel()));
 
             // Act
-            await recurringJob.SynchronizeChallengesAsync(GameDto.LeagueOfLegends);
+            await recurringJob.SynchronizeChallengesAsync(EnumGame.LeagueOfLegends);
 
             // Assert
             await challengesHost.Server.UsingScopeAsync(

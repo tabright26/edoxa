@@ -31,7 +31,7 @@ namespace eDoxa.Seedwork.Domain
                 .ToList();
         }
 
-        protected abstract IEnumerable<object> GetAtomicValues();
+        protected abstract IEnumerable<object?> GetAtomicValues();
 
         public sealed override bool Equals(object? obj)
         {

@@ -60,9 +60,11 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
 
                     var endedAt = startedAt + duration;
 
-                    var closedAt = faker.Date.Soon(1, endedAt);
+                    var synchronizationBuffer = endedAt + TimeSpan.FromHours(2);
 
-                    var synchronizedAt = faker.Date.Between(startedAt, closedAt);
+                    var closedAt = faker.Date.Soon(1, synchronizationBuffer);
+
+                    var synchronizedAt = faker.Date.Between(synchronizationBuffer, closedAt);
 
                     var timeline = new ChallengeTimeline(new DateTimeProvider(startedAt), duration);
 
@@ -158,9 +160,11 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
 
                     var endedAt = startedAt + duration;
 
-                    var closedAt = faker.Date.Soon(1, endedAt);
+                    var synchronizationBuffer = endedAt + TimeSpan.FromHours(2);
 
-                    var synchronizedAt = faker.Date.Between(startedAt, closedAt);
+                    var closedAt = faker.Date.Soon(1, synchronizationBuffer);
+
+                    var synchronizedAt = faker.Date.Between(synchronizationBuffer, closedAt);
 
                     var challenge = new Challenge(
                         faker.Challenge().Id(),

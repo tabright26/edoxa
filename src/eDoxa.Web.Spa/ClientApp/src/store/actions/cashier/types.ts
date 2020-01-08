@@ -47,114 +47,42 @@ export type LoadUserTokenAccountBalanceAction = AxiosAction<
 
 export type UserTokenAccountBalanceActions = LoadUserTokenAccountBalanceAction;
 
-export const USER_ACCOUNT_DEPOSIT_MONEY = "USER_ACCOUNT_DEPOSIT_MONEY";
-export const USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS =
-  "USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS";
-export const USER_ACCOUNT_DEPOSIT_MONEY_FAIL =
-  "USER_ACCOUNT_DEPOSIT_MONEY_FAIL";
+export const LOAD_TRANSACTION_BUNDLES = "LOAD_TRANSACTION_BUNDLES";
+export const LOAD_TRANSACTION_BUNDLES_SUCCESS =
+  "LOAD_TRANSACTION_BUNDLES_SUCCESS";
+export const LOAD_TRANSACTION_BUNDLES_FAIL = "LOAD_TRANSACTION_BUNDLES_FAIL";
 
-export const USER_ACCOUNT_DEPOSIT_TOKEN = "USER_ACCOUNT_DEPOSIT_TOKEN";
-export const USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS =
-  "USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS";
-export const USER_ACCOUNT_DEPOSIT_TOKEN_FAIL =
-  "USER_ACCOUNT_DEPOSIT_TOKEN_FAIL";
-
-export type UserAccountDepositMoneyType =
-  | typeof USER_ACCOUNT_DEPOSIT_MONEY
-  | typeof USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS
-  | typeof USER_ACCOUNT_DEPOSIT_MONEY_FAIL;
-export type UserAccountDepositMoneyActionCreator = AxiosActionCreator<
-  UserAccountDepositMoneyType
+export type LoadTransactionBundlesType =
+  | typeof LOAD_TRANSACTION_BUNDLES
+  | typeof LOAD_TRANSACTION_BUNDLES_SUCCESS
+  | typeof LOAD_TRANSACTION_BUNDLES_FAIL;
+export type LoadTransactionBundlesActionCreator = AxiosActionCreator<
+  LoadTransactionBundlesType
 >;
-export type UserAccountDepositMoneyAction = AxiosAction<
-  UserAccountDepositMoneyType,
-  UserTransaction
->;
-
-export type UserAccountDepositTokenType =
-  | typeof USER_ACCOUNT_DEPOSIT_TOKEN
-  | typeof USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS
-  | typeof USER_ACCOUNT_DEPOSIT_TOKEN_FAIL;
-export type UserAccountDepositTokenActionCreator = AxiosActionCreator<
-  UserAccountDepositTokenType
->;
-export type UserAccountDepositTokenAction = AxiosAction<
-  UserAccountDepositTokenType,
-  UserTransaction
->;
-
-export type UserAccountDepositActionCreators =
-  | UserAccountDepositMoneyActionCreator
-  | UserAccountDepositTokenActionCreator;
-export type UserAccountDepositActions =
-  | UserAccountDepositMoneyAction
-  | UserAccountDepositTokenAction;
-
-export const LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES =
-  "LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES";
-export const LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_SUCCESS =
-  "LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_SUCCESS";
-export const LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_FAIL =
-  "LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_FAIL";
-
-export const LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES =
-  "LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES";
-export const LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS =
-  "LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS";
-export const LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL =
-  "LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL";
-
-export type LoadUserAccountDepositMoneyBundlesType =
-  | typeof LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES
-  | typeof LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_SUCCESS
-  | typeof LOAD_USER_ACCOUNT_DEPOSIT_MONEY_BUNDLES_FAIL;
-export type LoadUserAccountDepositMoneyBundlesActionCreator = AxiosActionCreator<
-  LoadUserAccountDepositMoneyBundlesType
->;
-export type LoadUserAccountDepositMoneyBundlesAction = AxiosAction<
-  LoadUserAccountDepositMoneyBundlesType,
+export type LoadTransactionBundlesAction = AxiosAction<
+  LoadTransactionBundlesType,
   TransactionBundle[]
 >;
 
-export type LoadUserAccountDepositTokenBundlesType =
-  | typeof LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES
-  | typeof LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_SUCCESS
-  | typeof LOAD_USER_ACCOUNT_DEPOSIT_TOKEN_BUNDLES_FAIL;
-export type LoadUserAccountDepositTokenBundlesActionCreator = AxiosActionCreator<
-  LoadUserAccountDepositTokenBundlesType
->;
-export type LoadUserAccountDepositTokenBundlesAction = AxiosAction<
-  LoadUserAccountDepositTokenBundlesType,
-  TransactionBundle[]
->;
+export type TransactionBundlesActionCreators = LoadTransactionBundlesActionCreator;
+export type TransactionBundlesActions = LoadTransactionBundlesAction;
 
-export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES =
-  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES";
-export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS =
-  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS";
-export const LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL =
-  "LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL";
+export const CREATE_USER_TRANSACTION = "CREATE_USER_TRANSACTION";
+export const CREATE_USER_TRANSACTION_SUCCESS =
+  "CREATE_USER_TRANSACTION_SUCCESS";
+export const CREATE_USER_TRANSACTION_FAIL = "CREATE_USER_TRANSACTION_FAIL";
 
-export type LoadUserAccountWithdrawalMoneyBundlesType =
-  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES
-  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_SUCCESS
-  | typeof LOAD_USER_ACCOUNT_WITHDRAWAL_MONEY_BUNDLES_FAIL;
-export type LoadUserAccountWithdrawalMoneyBundlesActionCreator = AxiosActionCreator<
-  LoadUserAccountWithdrawalMoneyBundlesType
+export type CreateUserTransactionType =
+  | typeof CREATE_USER_TRANSACTION
+  | typeof CREATE_USER_TRANSACTION_SUCCESS
+  | typeof CREATE_USER_TRANSACTION_FAIL;
+export type CreateUserTransactionActionCreator = AxiosActionCreator<
+  CreateUserTransactionType
 >;
-export type LoadUserAccountWithdrawalMoneyBundlesAction = AxiosAction<
-  LoadUserAccountWithdrawalMoneyBundlesType,
-  TransactionBundle[]
+export type CreateUserTransactionAction = AxiosAction<
+  CreateUserTransactionType,
+  UserTransaction[]
 >;
-
-export type UserAccountDepositBundlesActionCreators =
-  | LoadUserAccountDepositMoneyBundlesActionCreator
-  | LoadUserAccountDepositTokenBundlesActionCreator
-  | LoadUserAccountWithdrawalMoneyBundlesActionCreator;
-export type UserAccountDepositBundlesActions =
-  | LoadUserAccountDepositMoneyBundlesAction
-  | LoadUserAccountDepositTokenBundlesAction
-  | LoadUserAccountWithdrawalMoneyBundlesAction;
 
 export const LOAD_USER_TRANSACTION_HISTORY = "LOAD_USER_TRANSACTION_HISTORY";
 export const LOAD_USER_TRANSACTION_HISTORY_SUCCESS =
@@ -174,26 +102,9 @@ export type LoadUserTransactionHistoryAction = AxiosAction<
   UserTransaction[]
 >;
 
-export type UserTransactionHistoryActionCreators = LoadUserTransactionHistoryActionCreator;
-export type UserTransactionHistoryActions = LoadUserTransactionHistoryAction;
-
-export const USER_ACCOUNT_WITHDRAWAL_MONEY = "USER_ACCOUNT_WITHDRAWAL_MONEY";
-export const USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS =
-  "USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS";
-export const USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL =
-  "USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL";
-
-export type UserAccountWithdrawalMoneyType =
-  | typeof USER_ACCOUNT_WITHDRAWAL_MONEY
-  | typeof USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS
-  | typeof USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL;
-export type UserAccountWithdrawalMoneyActionCreator = AxiosActionCreator<
-  UserAccountWithdrawalMoneyType
->;
-export type UserAccountWithdrawalMoneyAction = AxiosAction<
-  UserAccountWithdrawalMoneyType,
-  UserTransaction
->;
-
-export type UserAccountWithdrawalActionCreators = UserAccountWithdrawalMoneyActionCreator;
-export type UserAccountWithdrawalActions = UserAccountWithdrawalMoneyAction;
+export type UserTransactionHistoryActionCreators =
+  | LoadUserTransactionHistoryActionCreator
+  | CreateUserTransactionActionCreator;
+export type UserTransactionHistoryActions =
+  | LoadUserTransactionHistoryAction
+  | CreateUserTransactionAction;

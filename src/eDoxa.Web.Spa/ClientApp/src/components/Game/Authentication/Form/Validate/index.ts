@@ -1,3 +1,3 @@
-import ReduxForm from "./Validate";
+import Validate from "./Validate";
 
-export default ReduxForm;
+export default Validate;

@@ -17,11 +17,13 @@ import {
 } from "./types";
 
 import { Game } from "types";
+import { AXIOS_PAYLOAD_CLIENT_DEFAULT } from "utils/axios/types";
 
 export function loadGames(): GamesActionCreators {
   return {
     types: [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `games/api/games`
@@ -41,6 +43,7 @@ export function generateGameAuthentication(
       GENERATE_GAME_AUTHENTICATION_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: `games/api/games/${game}/authentications`,
@@ -60,6 +63,7 @@ export function validateGameAuthentication(
       VALIDATE_GAME_AUTHENTICATION_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "PUT",
         url: `games/api/games/${game}/authentications`
@@ -76,6 +80,7 @@ export function unlinkGameCredential(game: Game): GameCredentialActionCreators {
       UNLINK_GAME_CREDENTIAL_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "DELETE",
         url: `games/api/games/${game}/credentials`

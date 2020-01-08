@@ -57,7 +57,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 {
                     FirstName = "Gabriel",
                     LastName = "Roy",
-                    Gender = GenderDto.Male,
+                    Gender = EnumGender.Male,
                     Dob = new DobDto
                     {
                         Day = 1,

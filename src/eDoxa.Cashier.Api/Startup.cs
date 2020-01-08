@@ -11,11 +11,11 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Cashier.Api.Application;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
 using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -80,8 +80,12 @@ namespace eDoxa.Cashier.Api
         {
             services.AddAppSettings<CashierAppSettings>(Configuration);
 
-            services.Configure<TransactionBundlesOptions>(Configuration.GetSection("Bundles"));
-
+            services.Configure<TransactionBundleDto[]>(
+                x =>
+                {
+                     Configuration.GetSection("TransactionBundles").Bind(x);
+                });
+            
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddCustomIdentityServer(AppSettings)
@@ -160,9 +164,7 @@ namespace eDoxa.Cashier.Api
         public void ConfigureTestServices(IServiceCollection services)
         {
             services.AddAppSettings<CashierAppSettings>(Configuration);
-
-            services.Configure<TransactionBundlesOptions>(Configuration.GetSection("Bundles"));
-
+            
             services.AddCustomDbContext<CashierDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
             services.AddCustomCors();

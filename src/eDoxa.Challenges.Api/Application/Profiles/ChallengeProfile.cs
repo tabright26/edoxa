@@ -57,8 +57,8 @@ namespace eDoxa.Challenges.Api.Application.Profiles
             this.CreateMap<IChallenge, ChallengeDto>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id.ToString()))
                 .ForMember(challenge => challenge.Name, config => config.MapFrom(challenge => challenge.Name.ToString()))
-                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game.ToEnum<GameDto>()))
-                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.Timeline.State.ToEnum<ChallengeStateDto>()))
+                .ForMember(challenge => challenge.Game, config => config.MapFrom(challenge => challenge.Game.ToEnum<EnumGame>()))
+                .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.Timeline.State.ToEnum<EnumChallengeState>()))
                 .ForMember(challenge => challenge.BestOf, config => config.MapFrom<int>(challenge => challenge.BestOf))
                 .ForMember(challenge => challenge.Entries, config => config.MapFrom<int>(challenge => challenge.Entries))
                 .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt.ToTimestampUtcOrDefault()))
@@ -74,8 +74,8 @@ namespace eDoxa.Challenges.Api.Application.Profiles
             {
                 Id = challenge.Id,
                 Name = challenge.Name,
-                Game = challenge.Game.ToEnum<GameDto>(),
-                State = challenge.Timeline.State.ToEnum<ChallengeStateDto>(),
+                Game = challenge.Game.ToEnum<EnumGame>(),
+                State = challenge.Timeline.State.ToEnum<EnumChallengeState>(),
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
                 SynchronizedAt = challenge.SynchronizedAt.ToTimestampUtcOrDefault(),

@@ -21,8 +21,19 @@ message CreateChallengePayoutRequest {
 }
 
 message CreateTransactionRequest {
-  TransactionTypeDto type = 1;
-  CurrencyDto currency = 2;
-  customTypes.DecimalValue amount = 3;
-  map<string, string> metadata = 4;
+  oneof transaction {
+    int32 bundle = 1;
+    CustomTransaction custom = 2;
+  }
+  map<string, string> metadata = 3;
+
+  message CustomTransaction {
+    EnumTransactionType type = 1;
+    EnumCurrency currency = 2;
+    customTypes.DecimalValue amount = 3;
+  }
+}
+
+message CreateTransactionAggregatorRequest {
+  int32 bundle = 1;
 }

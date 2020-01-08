@@ -20,21 +20,17 @@ namespace eDoxa.Cashier.Api.Profiles
         public AccountProfile()
         {
             this.CreateMap<Balance, BalanceDto>()
-                .ForMember(balance => balance.Currency, config => config.MapFrom(balance => balance.Currency.ToEnum<CurrencyDto>()))
+                .ForMember(balance => balance.Currency, config => config.MapFrom(balance => balance.Currency.ToEnum<EnumCurrency>()))
                 .ForMember(balance => balance.Available, config => config.MapFrom<DecimalValue>(balance => balance.Available))
                 .ForMember(balance => balance.Pending, config => config.MapFrom<DecimalValue>(balance => balance.Pending));
-
-            this.CreateMap<Bundle, TransactionBundleDto>()
-                .ForMember(balance => balance.Amount, config => config.MapFrom<DecimalValue>(balance => balance.Currency.Amount))
-                .ForMember(balance => balance.Price, config => config.MapFrom<DecimalValue>(balance => balance.Price.Money.Amount));
 
             this.CreateMap<ITransaction, TransactionDto>()
                 .ForMember(transaction => transaction.Id, config => config.MapFrom(transaction => transaction.Id.ToString()))
                 .ForMember(transaction => transaction.Timestamp, config => config.MapFrom(transaction => transaction.Timestamp.ToTimestampUtc()))
-                .ForMember(transaction => transaction.Currency, config => config.MapFrom(transaction => transaction.Currency.Type.ToEnum<CurrencyDto>()))
+                .ForMember(transaction => transaction.Currency, config => config.MapFrom(transaction => transaction.Currency.Type.ToEnum<EnumCurrency>()))
                 .ForMember(transaction => transaction.Amount, config => config.MapFrom<DecimalValue>(transaction => transaction.Currency.Amount))
-                .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type.ToEnum<TransactionTypeDto>()))
-                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status.ToEnum<TransactionStatusDto>()))
+                .ForMember(transaction => transaction.Type, config => config.MapFrom(transaction => transaction.Type.ToEnum<EnumTransactionType>()))
+                .ForMember(transaction => transaction.Status, config => config.MapFrom(transaction => transaction.Status.ToEnum<EnumTransactionStatus>()))
                 .ForMember(transaction => transaction.Description, config => config.MapFrom(transaction => transaction.Description.Text));
         }
     }

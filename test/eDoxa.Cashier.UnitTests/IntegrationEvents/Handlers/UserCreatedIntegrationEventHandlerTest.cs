@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 {
                     Address = "noreply@edoxa.gg"
                 },
-                Country = CountryDto.Canada
+                Country = EnumCountry.Canada
             };
 
             // Act

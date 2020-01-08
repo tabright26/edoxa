@@ -1,8 +1,8 @@
 ﻿// Filename: CashierGrpcService.cs
-// Date Created: 2019-12-07
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,6 +22,7 @@ using eDoxa.Grpc.Protos.Cashier.Responses;
 using eDoxa.Grpc.Protos.Cashier.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
@@ -38,7 +39,13 @@ namespace eDoxa.Cashier.Api.Services
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IMapper _mapper;
 
-        public CashierGrpcService(IChallengeQuery challengeQuery, IChallengeService challengeService, IAccountService accountService, IServiceBusPublisher serviceBusPublisher, IMapper mapper)
+        public CashierGrpcService(
+            IChallengeQuery challengeQuery,
+            IChallengeService challengeService,
+            IAccountService accountService,
+            IServiceBusPublisher serviceBusPublisher,
+            IMapper mapper
+        )
         {
             _challengeQuery = challengeQuery;
             _challengeService = challengeService;
@@ -60,12 +67,7 @@ namespace eDoxa.Cashier.Api.Services
                 throw context.NotFoundRpcException("User account not found.");
             }
 
-            var result = await _accountService.CreateTransactionAsync(
-                account,
-                request.Amount,
-                request.Currency.ToEnumeration<Currency>(),
-                request.Type.ToEnumeration<TransactionType>(),
-                new TransactionMetadata(request.Metadata));
+            var result = await CreateTransactionOneofCaseAsync();
 
             if (result.IsValid)
             {
@@ -78,6 +80,34 @@ namespace eDoxa.Cashier.Api.Services
             }
 
             throw context.FailedPreconditionRpcException(result, string.Empty);
+
+            async Task<IDomainValidationResult> CreateTransactionOneofCaseAsync()
+            {
+                switch (request.TransactionCase)
+                {
+                    case CreateTransactionRequest.TransactionOneofCase.Bundle:
+                    {
+                        return await _accountService.CreateTransactionAsync(account!, request.Bundle, new TransactionMetadata(request.Metadata));
+                    }
+
+                    case CreateTransactionRequest.TransactionOneofCase.Custom:
+                    {
+                        return await _accountService.CreateTransactionAsync(
+                            account!,
+                            request.Custom.Amount,
+                            request.Custom.Currency.ToEnumeration<Currency>(),
+                            request.Custom.Type.ToEnumeration<TransactionType>(),
+                            new TransactionMetadata(request.Metadata));
+                    }
+                    default:
+                    {
+                        throw context.RpcException(
+                            new Status(
+                                StatusCode.InvalidArgument,
+                                $"The case ({request.TransactionCase}) is not supported for {nameof(this.CreateTransaction)}."));
+                    }
+                }
+            }
         }
 
         public override async Task<FetchChallengePayoutsResponse> FetchChallengePayouts(FetchChallengePayoutsRequest request, ServerCallContext context)

@@ -59,18 +59,18 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
                 {"Gabriel-roy", ProfileErrorDescriber.LastNameUppercase()}
             };
 
-        public static TheoryData<GenderDto> ValidGenders =>
-            new TheoryData<GenderDto>
+        public static TheoryData<EnumGender> ValidGenders =>
+            new TheoryData<EnumGender>
             {
-                GenderDto.Male,
-                GenderDto.Female,
-                GenderDto.Other
+                EnumGender.Male,
+                EnumGender.Female,
+                EnumGender.Other
             };
 
-        public static TheoryData<GenderDto, string> InvalidGenders =>
-            new TheoryData<GenderDto, string>
+        public static TheoryData<EnumGender, string> InvalidGenders =>
+            new TheoryData<EnumGender, string>
             {
-                {GenderDto.None, ProfileErrorDescriber.GenderRequired()}
+                {EnumGender.None, ProfileErrorDescriber.GenderRequired()}
             };
 
         public static TheoryData<DobDto> ValidDob =>
@@ -145,7 +145,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
 
         [Theory]
         [MemberData(nameof(ValidGenders))]
-        public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(GenderDto gender)
+        public void Validate_WhenGenderIsValid_ShouldNotHaveValidationErrorFor(EnumGender gender)
         {
             // Arrange
             var validator = new CreateProfileRequestValidator();
@@ -156,7 +156,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
 
         [Theory]
         [MemberData(nameof(InvalidGenders))]
-        public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(GenderDto gender, string errorMessage)
+        public void Validate_WhenGenderIsInvalid_ShouldHaveValidationErrorFor(EnumGender gender, string errorMessage)
         {
             // Arrange
             var validator = new CreateProfileRequestValidator();

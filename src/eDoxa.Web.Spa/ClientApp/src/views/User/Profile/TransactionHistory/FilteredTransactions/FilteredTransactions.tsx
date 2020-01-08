@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Card, CardHeader } from "reactstrap";
-import TransactionList from "components/User/Account/Transaction/List";
+import TransactionList from "components/User/Transaction/List";
 import Paginate from "components/Shared/Paginate";
 import { compose } from "recompose";
 import { UserTransactionHistoryState } from "store/root/user/transactionHistory/types";

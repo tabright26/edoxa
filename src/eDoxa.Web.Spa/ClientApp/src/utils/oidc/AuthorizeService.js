@@ -1,9 +1,6 @@
 import { UserManager, WebStorageStateStore } from "oidc-client";
 import { ApplicationPaths, ApplicationName } from "./ApiAuthorizationConstants";
-import {
-  REACT_APP_WEB_SPA,
-  REACT_APP_AUTHORITY
-} from "keys";
+import { REACT_APP_WEB_SPA, REACT_APP_AUTHORITY } from "keys";
 
 export class AuthorizeService {
   _callbacks = [];
@@ -253,7 +250,8 @@ export class AuthorizeService {
       client_id: "web-spa",
       redirect_uri: REACT_APP_WEB_SPA + ApplicationPaths.LoginCallback,
       response_type: "token id_token",
-      scope: "openid profile country roles permissions games identity.api payment.api cashier.api challenges.api games.api clans.api challenges.web.aggregator cashier.web.aggregator",
+      scope:
+        "openid profile country stripe roles permissions games identity.api payment.api cashier.api challenges.api games.api clans.api challenges.web.aggregator cashier.web.aggregator",
       authority: REACT_APP_AUTHORITY,
       post_logout_redirect_uri:
         REACT_APP_WEB_SPA + ApplicationPaths.LogOutCallback,

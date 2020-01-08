@@ -15,25 +15,31 @@ export type Gender =
 
 export const CURRENCY_MONEY = "money";
 export const CURRENCY_TOKEN = "token";
+export const CURRENCY_ALL = "all";
 
-export type Currency = typeof CURRENCY_MONEY | typeof CURRENCY_TOKEN;
+export type Currency =
+  | typeof CURRENCY_MONEY
+  | typeof CURRENCY_TOKEN
+  | typeof CURRENCY_ALL;
 
-export const TRANSACTION_TYPE_DEPOSIT = "deposit";
-export const TRANSACTION_TYPE_REWARD = "reward";
-export const TRANSACTION_TYPE_CHARGE = "charge";
-export const TRANSACTION_TYPE_PAYOUT = "payout";
-export const TRANSACTION_TYPE_WITHDRAWAL = "withdrawal";
+export const TRANSACTION_TYPE_DEPOSIT = "Deposit";
+export const TRANSACTION_TYPE_REWARD = "Reward";
+export const TRANSACTION_TYPE_CHARGE = "Charge";
+export const TRANSACTION_TYPE_PAYOUT = "Payout";
+export const TRANSACTION_TYPE_WITHDRAWAL = "Withdrawal";
+export const TRANSACTION_TYPE_ALL = "All";
 
 export type TransactionType =
   | typeof TRANSACTION_TYPE_DEPOSIT
   | typeof TRANSACTION_TYPE_REWARD
   | typeof TRANSACTION_TYPE_CHARGE
   | typeof TRANSACTION_TYPE_PAYOUT
-  | typeof TRANSACTION_TYPE_WITHDRAWAL;
+  | typeof TRANSACTION_TYPE_WITHDRAWAL
+  | typeof TRANSACTION_TYPE_ALL;
 
-export const TRANSACTION_STATUS_PENDING = "pending";
-export const TRANSACTION_STATUS_SUCCEDED = "succeded";
-export const TRANSACTION_STATUS_FAILED = "failed";
+export const TRANSACTION_STATUS_PENDING = "Pending";
+export const TRANSACTION_STATUS_SUCCEDED = "Succeded";
+export const TRANSACTION_STATUS_FAILED = "Failed";
 
 export type TransactionStatus =
   | typeof TRANSACTION_STATUS_PENDING
@@ -50,14 +56,27 @@ export type MemberId = string;
 export type ParticipantId = string;
 export type TransactionId = string;
 export type UserId = string;
+export type TransactionBundleId = number;
 
 interface Entity<TEntityId> {
   readonly id: TEntityId;
 }
 
 export interface TransactionBundle {
-  readonly amount: number;
-  readonly price: number;
+  readonly id: TransactionBundleId;
+  readonly currency: {
+    readonly amount: number;
+    readonly type: Currency;
+  };
+  readonly price: {
+    readonly amount: number;
+    readonly type: Currency;
+  };
+  readonly type: TransactionType;
+  readonly description: string;
+  readonly notes: string;
+  readonly disabled: boolean;
+  readonly deprecated: boolean;
 }
 
 export interface Balance {

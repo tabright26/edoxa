@@ -7,15 +7,9 @@ import {
   CHALLENGE_MATCH_SCORE_MODAL,
   CREATE_STRIPE_PAYMENTMETHOD_MODAL,
   UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
-  DELETE_STRIPE_PAYMENTMETHOD_MODAL,
-  DEPOSIT_MODAL,
-  WITHDRAWAL_MODAL
+  DELETE_STRIPE_PAYMENTMETHOD_MODAL
 } from "modals";
-import {
-  Currency,
-  TransactionBundle,
-  ChallengeParticipantMatchStat
-} from "types";
+import { ChallengeParticipantMatchStat } from "types";
 
 export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
   const Container: FunctionComponent<any> = props => (
@@ -32,10 +26,6 @@ export const withModals = (HighOrderComponent: FunctionComponent<any>) => {
         ) => dispatch(show(CHALLENGE_MATCH_SCORE_MODAL, { stats })),
         showCreateClanModal: actions =>
           dispatch(show(CREATE_CLAN_MODAL, { actions })),
-        showDepositModal: (currency: Currency, bundles: TransactionBundle[]) =>
-          dispatch(show(DEPOSIT_MODAL, { currency, bundles })),
-        showWithdrawalModal: (currency: Currency, bundles: TransactionBundle[]) =>
-          dispatch(show(WITHDRAWAL_MODAL, { currency, bundles })),
         showCreateStripePaymentMethodModal: type =>
           dispatch(show(CREATE_STRIPE_PAYMENTMETHOD_MODAL, { type })),
         showUpdateStripePaymentMethodModal: (paymentMethod: any) =>

@@ -28,7 +28,7 @@ type InnerProps = InjectedFormProps<FormData, Props> & {
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({ handleSubmit }) => (
+const CustomForm: FunctionComponent<Props> = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
     <Button.Submit>Validate</Button.Submit>
   </Form>
@@ -73,4 +73,4 @@ const enhance = compose<any, any>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

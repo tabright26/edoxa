@@ -18,7 +18,7 @@ message ChangePhoneRequest {
 }
 
 message CreateAddressRequest {
-  CountryDto country = 1;
+  EnumCountry country = 1;
   string line1 = 2;
   google.protobuf.StringValue line2 = 3;
   string city = 4;
@@ -29,7 +29,7 @@ message CreateAddressRequest {
 message CreateProfileRequest {
   string firstName = 1;
   string lastName = 2;
-  GenderDto gender = 3;
+  EnumGender gender = 3;
   DobDto dob = 4;
 }
 

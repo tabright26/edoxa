@@ -19,7 +19,7 @@ const validate = values => {
   return errors;
 };
 
-const CreateClanForm: FunctionComponent<any> = ({
+const CustomForm: FunctionComponent<any> = ({
   handleSubmit,
   handleCancel,
   error
@@ -47,4 +47,4 @@ const enhance = compose<any, any>(
   })
 );
 
-export default enhance(CreateClanForm);
+export default enhance(CustomForm);

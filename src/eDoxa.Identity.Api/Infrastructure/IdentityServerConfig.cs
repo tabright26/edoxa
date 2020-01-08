@@ -37,6 +37,8 @@ namespace eDoxa.Identity.Api.Infrastructure
             yield return Seedwork.Security.IdentityResources.Permissions;
 
             yield return Seedwork.Security.IdentityResources.Games;
+
+            yield return Seedwork.Security.IdentityResources.Stripe;
         }
 
         public static IEnumerable<ApiResource> GetApiResources()
@@ -115,6 +117,7 @@ namespace eDoxa.Identity.Api.Infrastructure
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
+                    Scopes.Stripe.Name,
                     Scopes.Country.Name,
                     Scopes.Roles.Name,
                     Scopes.Permissions.Name,

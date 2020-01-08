@@ -1,3 +1,3 @@
-import ReduxForm from "./Create";
+import Create from "./Create";
 
-export default ReduxForm;
+export default Create;

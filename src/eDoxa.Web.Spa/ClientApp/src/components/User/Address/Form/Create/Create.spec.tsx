@@ -23,14 +23,14 @@ const store = configureStore();
 const createWrapper = (): ReactWrapper | any => {
   return mount(
     <Provider store={store}>
-      <Create />
+      <Create handleCancel={() => {}} />
     </Provider>
   );
 };
 
 describe("<UserAddressCreateForm />", () => {
   it("should match the snapshot", () => {
-    const shallowWrapper = shallow(<Create />);
+    const shallowWrapper = shallow(<Create handleCancel={() => {}} />);
     expect(shallowWrapper).toMatchSnapshot();
   });
 
