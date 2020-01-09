@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { connectModal, InjectedProps } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { CREATE_TRANSACTION_MODAL } from "modals";
+import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
 import UserTransactionForm from "components/User/Transaction/Form";
 import { compose } from "recompose";
 import { Currency, TransactionType } from "types";
@@ -21,7 +21,12 @@ const CustomModal: FunctionComponent<Props> = ({
   currency,
   transactionType
 }) => (
-  <Modal size="lg" isOpen={show} toggle={handleHide}>
+  <Modal
+    size="lg"
+    className="modal-dialog-centered"
+    isOpen={show}
+    toggle={handleHide}
+  >
     <ModalHeader toggle={handleHide}>CREATE TRANSACTION</ModalHeader>
     <ModalBody>
       <UserTransactionForm.Create
@@ -34,7 +39,7 @@ const CustomModal: FunctionComponent<Props> = ({
 );
 
 const enhance = compose<InnerProps, OutterProps>(
-  connectModal({ name: CREATE_TRANSACTION_MODAL, destroyOnHide: false })
+  connectModal({ name: CREATE_USER_TRANSACTION_MODAL, destroyOnHide: false })
 );
 
 export default enhance(CustomModal);

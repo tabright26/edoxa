@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { FormGroup, Form } from "reactstrap";
+import { Form } from "reactstrap";
 import { reduxForm, FormErrors, InjectedFormProps } from "redux-form";
 import {
   injectStripe,
@@ -9,7 +9,7 @@ import {
   ReactStripeElements
 } from "react-stripe-elements";
 import Button from "components/Shared/Button";
-import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
+import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { attachStripePaymentMethod } from "store/actions/payment";
@@ -37,22 +37,25 @@ const CreateStripePaymentMethodForm: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
-    <label>
-      Card number
-      <CardNumberElement />
-    </label>
-    <label>
-      Expiration date
-      <CardExpiryElement />
-    </label>
-    <label>
-      CVC
-      <CardCvcElement />
-    </label>
-    <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel onClick={() => handleCancel()} />
-    </FormGroup>
+    <dl className="row mb-0">
+      <dt className="col-sm-4">Card number</dt>
+      <dd className="col-sm-8">
+        <CardNumberElement />
+      </dd>
+      <dt className="col-sm-4">Expiration date</dt>
+      <dd className="col-sm-8">
+        <CardExpiryElement />
+      </dd>
+      <dt className="col-sm-4">CVC</dt>
+      <dd className="col-sm-8">
+        <CardCvcElement />
+      </dd>
+      <dt className="col-sm-4 mb-0"></dt>
+      <dd className="col-sm-8 mb-0">
+        <Button.Save className="mr-2" />
+        <Button.Cancel onClick={() => handleCancel()} />
+      </dd>
+    </dl>
   </Form>
 );
 

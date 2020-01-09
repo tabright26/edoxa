@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { USER_ACCOUNT_DEPOSIT_FORM } from "forms";
+import { USER_ACCOUNT_DEPOSIT_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";

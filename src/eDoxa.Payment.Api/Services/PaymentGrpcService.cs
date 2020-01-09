@@ -119,7 +119,7 @@ namespace eDoxa.Payment.Api.Services
                 var transfer = await _stripeTransferService.CreateTransferAsync(
                     accountId,
                     request.Transaction.Id.ParseEntityId<TransactionId>(),
-                    Convert.ToInt64(request.Transaction.Amount.ToDecimal()),
+                    Convert.ToInt64(-request.Transaction.Amount.ToDecimal()), // TODO: Invalid integer operator.
                     request.Transaction.Description);
 
                 await _serviceBusPublisher.PublishUserWithdrawalSucceededIntegrationEventAsync(userId, request.Transaction);

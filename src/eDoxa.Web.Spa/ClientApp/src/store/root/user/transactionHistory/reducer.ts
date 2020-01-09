@@ -2,25 +2,28 @@ import {
   LOAD_USER_TRANSACTION_HISTORY,
   LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
   LOAD_USER_TRANSACTION_HISTORY_FAIL,
-  UserTransactionHistoryActions
+  UserTransactionActions,
+  CREATE_USER_TRANSACTION,
+  CREATE_USER_TRANSACTION_SUCCESS,
+  CREATE_USER_TRANSACTION_FAIL
 } from "store/actions/cashier/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
-import { UserTransactionHistoryState } from "./types";
+import { UserTransactionState } from "./types";
 
-export const initialState: UserTransactionHistoryState = {
+export const initialState: UserTransactionState = {
   data: [],
   error: null,
   loading: false
 };
 
 export const reducer: Reducer<
-  UserTransactionHistoryState,
-  UserTransactionHistoryActions
+  UserTransactionState,
+  UserTransactionActions
 > = produce(
   (
-    draft: Draft<UserTransactionHistoryState>,
-    action: UserTransactionHistoryActions
+    draft: Draft<UserTransactionState>,
+    action: UserTransactionActions
   ) => {
     switch (action.type) {
       case LOAD_USER_TRANSACTION_HISTORY: {
@@ -46,6 +49,22 @@ export const reducer: Reducer<
         break;
       }
       case LOAD_USER_TRANSACTION_HISTORY_FAIL: {
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+      }
+      case CREATE_USER_TRANSACTION: {
+        draft.error = null;
+        draft.loading = false;
+        break;
+      }
+      case CREATE_USER_TRANSACTION_SUCCESS: {
+        draft.data.push(action.payload.data);
+        draft.error = null;
+        draft.loading = false;
+        break;
+      }
+      case CREATE_USER_TRANSACTION_FAIL: {
         draft.error = action.error;
         draft.loading = false;
         break;

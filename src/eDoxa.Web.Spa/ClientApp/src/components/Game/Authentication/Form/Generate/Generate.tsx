@@ -3,7 +3,7 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { GENERATE_GAME_AUTHENTICATION_FORM } from "forms";
+import { GENERATE_GAME_AUTHENTICATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { Game } from "types";

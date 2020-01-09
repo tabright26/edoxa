@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
-import { UPLOAD_CLAN_LOGO_FORM } from "forms";
+import { UPLOAD_CLAN_LOGO_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 

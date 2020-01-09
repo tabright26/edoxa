@@ -4,7 +4,7 @@ import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import FormField from "components/Shared/Form/Field";
-import { CREATE_USER_ADDRESS_FORM } from "forms";
+import { CREATE_USER_ADDRESS_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { createUserAddress } from "store/actions/identity";

@@ -1,13 +1,22 @@
-import React, { useState } from "react";
-import { connectModal } from "redux-modal";
+import React, { useState, FunctionComponent } from "react";
+import { connectModal, InjectedProps } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { LINK_GAME_CREDENTIAL_MODAL } from "modals";
+import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameAuthenticationFrom from "components/Game/Authentication/Form";
 import { compose } from "recompose";
+import { GameOption } from "types";
 
-// TODO: FRANCIS NEED PROCESS DETAILS.
+type InnerProps = InjectedProps & { gameOption: GameOption };
 
-const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const CustomModal: FunctionComponent<Props> = ({
+  show,
+  handleHide,
+  gameOption
+}) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
     <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
@@ -56,10 +65,8 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
   );
 };
 
-//Todo: This is an hard fixed modal. For some reason, when we use modal with the destroy on hide, the page crash when we cancel or hide the modal. Due
-// to not having the props anymore or because the props have been destroyed ????
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: LINK_GAME_CREDENTIAL_MODAL, destroyOnHide: false })
 );
 
-export default enhance(LinkGameAuthenticationModal);
+export default enhance(CustomModal);

@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Label, FormGroup, Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { DELETE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
+import { DELETE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { detachStripePaymentMethod } from "store/actions/payment";

@@ -9,7 +9,7 @@ import {
 } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { CREATE_USER_PROFILE_FORM } from "forms";
+import { CREATE_USER_PROFILE_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";

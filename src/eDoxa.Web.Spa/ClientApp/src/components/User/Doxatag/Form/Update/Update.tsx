@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { reduxForm, Field, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { UPDATE_USER_DOXATAG_FORM } from "forms";
+import { UPDATE_USER_DOXATAG_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { changeUserDoxatag } from "store/actions/identity";

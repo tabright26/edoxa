@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { CREATE_CLAN_FORM } from "forms";
+import { CREATE_CLAN_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 

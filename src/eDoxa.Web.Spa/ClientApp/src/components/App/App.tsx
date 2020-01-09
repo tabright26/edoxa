@@ -4,7 +4,7 @@ import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/config";
 import UserTransactionModal from "components/User/Transaction/Modal";
-import MatchScoreModal from "components/Challenge/Participant/Match/Modal/Score";
+import CustomModal from "components/Challenge/Participant/Match/Modal/Score";
 import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";
@@ -51,7 +51,7 @@ const App = () => (
     <StripePaymentMethodModal.Update />
     <StripePaymentMethodModal.Delete />
     <UserTransactionModal.Create />
-    <MatchScoreModal />
+    <CustomModal />
     <Router history={history}>
       <Suspense fallback={<Loading />}>
         <Switch>

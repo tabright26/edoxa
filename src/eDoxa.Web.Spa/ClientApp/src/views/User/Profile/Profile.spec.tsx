@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import Profile from "./Profile";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
 import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethod/types";
-import { UserTransactionHistoryState } from "store/root/user/transactionHistory/types";
+import { UserTransactionState } from "store/root/user/transactionHistory/types";
 import { GamesState } from "store/root/game/types";
 import { UserAddressBookState } from "store/root/user/addressBook/types";
 import { UserEmailState } from "store/root/user/email/types";
@@ -51,7 +51,7 @@ it("renders without crashing", () => {
     error: null
   };
 
-  const transactions: UserTransactionHistoryState = {
+  const transactions: UserTransactionState = {
     data: [
       {
         timestamp: 111111,

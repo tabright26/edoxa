@@ -7,7 +7,7 @@ import {
   InjectedFormProps
 } from "redux-form";
 import Button from "components/Shared/Button";
-import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "forms";
+import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import CardIcon from "components/Payment/Stripe/PaymentMethod/Card/Icon";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";

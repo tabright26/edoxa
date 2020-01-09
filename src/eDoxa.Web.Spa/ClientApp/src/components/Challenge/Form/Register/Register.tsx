@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { REGISTER_CHALLENGE_PARTICIPANT_FROM } from "forms";
+import { REGISTER_CHALLENGE_PARTICIPANT_FROM } from "utils/form/constants";
 import { compose } from "recompose";
 import { registerChallengeParticipant } from "store/actions/challenge";
 import {

@@ -12,8 +12,8 @@ import {
   LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
   LOAD_USER_TRANSACTION_HISTORY_FAIL,
   TransactionBundlesActionCreators,
-  UserTransactionHistoryActionCreators as UserTransactionActionCreators,
-  UserAccountBalanceActionCreators as UserBalanceActionCreators,
+  UserTransactionActionCreators,
+  UserAccountBalanceActionCreators,
   CREATE_USER_TRANSACTION,
   CREATE_USER_TRANSACTION_SUCCESS,
   CREATE_USER_TRANSACTION_FAIL
@@ -58,7 +58,9 @@ export function createUserTransaction(
   };
 }
 
-export function loadUserBalance(currency: Currency): UserBalanceActionCreators {
+export function loadUserBalance(
+  currency: Currency
+): UserAccountBalanceActionCreators {
   const payload: AxiosPayload = {
     client: AXIOS_PAYLOAD_CLIENT_CASHIER,
     request: {

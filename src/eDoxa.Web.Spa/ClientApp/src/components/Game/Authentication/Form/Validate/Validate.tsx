@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { VALIDATE_GAME_AUTHENTICATION_FORM } from "forms";
+import { VALIDATE_GAME_AUTHENTICATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { Game } from "types";
 import { validateGameAuthentication, loadGames } from "store/actions/game";

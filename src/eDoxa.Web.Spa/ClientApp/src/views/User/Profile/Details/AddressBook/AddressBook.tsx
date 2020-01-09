@@ -6,11 +6,12 @@ import AddressForm from "components/User/Address/Form";
 import UserAddressModal from "components/User/Address/Modal";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
-import { withModals } from "utils/modal/container";
 import Loading from "components/Shared/Loading";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserAddressBook } from "store/actions/identity";
+import { show } from "redux-modal";
+import { CREATE_USER_ADDRESS_MODAL } from "utils/modal/constants";
 
 const AddressItem: FunctionComponent<any> = ({
   hasMore,
@@ -75,7 +76,7 @@ const AddressBook: FunctionComponent<any> = ({
   className,
   addressBook: { data, error, loading },
   loadAddressBook,
-  modals
+  showCreateUserAddressModal
 }) => {
   useEffect((): void => {
     if (data.length === 0) {
@@ -90,7 +91,7 @@ const AddressBook: FunctionComponent<any> = ({
         <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faPlus}
-          onClick={() => modals.showCreateUserAddressModal()}
+          onClick={() => showCreateUserAddressModal()}
         >
           ADD A NEW ADDRESS
         </Button.Link>
@@ -122,13 +123,11 @@ const mapStateToProps = (state: RootState) => {
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    loadAddressBook: () => dispatch(loadUserAddressBook())
+    loadAddressBook: () => dispatch(loadUserAddressBook()),
+    showCreateUserAddressModal: () => dispatch(show(CREATE_USER_ADDRESS_MODAL))
   };
 };
 
-const enhance = compose<any, any>(
-  connect(mapStateToProps, mapDispatchToProps),
-  withModals
-);
+const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
 
 export default enhance(AddressBook);

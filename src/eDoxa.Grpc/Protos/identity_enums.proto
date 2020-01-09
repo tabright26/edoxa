@@ -5,9 +5,14 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Enums";
 package edoxa.services.identity;
 
 enum EnumCountry {
+  option allow_alias = true;
   ENUM_COUNTRY_NONE = 0;
   ENUM_COUNTRY_CANADA = 1;
+  ENUM_COUNTRY_C_A_N = 1;
+  ENUM_COUNTRY_C_A = 1;
   ENUM_COUNTRY_UNITED_STATES = 2;
+  ENUM_COUNTRY_U_S_A = 2;
+  ENUM_COUNTRY_U_S = 2;
   ENUM_COUNTRY_ALL = -1;
 }
 

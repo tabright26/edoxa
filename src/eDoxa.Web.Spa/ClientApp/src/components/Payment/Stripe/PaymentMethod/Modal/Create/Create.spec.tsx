@@ -3,7 +3,7 @@ import Create from "./Create";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { CREATE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
+import { CREATE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";
 
 it("renders correctly", () => {
   const store: any = {

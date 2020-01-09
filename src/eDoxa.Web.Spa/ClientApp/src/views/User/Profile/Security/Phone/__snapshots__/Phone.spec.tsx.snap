@@ -13,10 +13,10 @@ exports[`renders without crashing 1`] = `
       PHONE
     </strong>
     <span
-      className="px-2 ml-3 my-auto badge badge-success badge-pill"
+      className="px-2 ml-3 my-auto badge badge-primary badge-pill"
     >
       <span>
-        verified
+        Verified
       </span>
     </span>
     <button

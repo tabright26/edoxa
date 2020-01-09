@@ -3,7 +3,7 @@ import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { Field, reduxForm, FormErrors, InjectedFormProps } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
-import { UPDATE_STRIPE_BANKACCOUNT_FORM } from "forms";
+import { UPDATE_STRIPE_BANKACCOUNT_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { updateStripeBankAccount } from "store/actions/payment";
@@ -13,7 +13,6 @@ import {
   UPDATE_STRIPE_BANKACCOUNT_FAIL
 } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
-import { Country } from "utils/localize/types";
 
 interface FormData {
   currency: string;
@@ -23,7 +22,7 @@ interface FormData {
 }
 
 interface OutterProps {
-  country: Country;
+  country: string;
   handleCancel: () => void;
 }
 
@@ -81,7 +80,7 @@ const enhance = compose<InnerProps, OutterProps>(
     form: UPDATE_STRIPE_BANKACCOUNT_FORM,
     onSubmit: async (values, dispatch: any, { country, stripe }) => {
       const options: stripe.BankAccountTokenOptions = {
-        country: country.twoDigitIso,
+        country,
         account_holder_type: "individual",
         account_holder_name: values.accountHolderName,
         routing_number: values.routingNumber,

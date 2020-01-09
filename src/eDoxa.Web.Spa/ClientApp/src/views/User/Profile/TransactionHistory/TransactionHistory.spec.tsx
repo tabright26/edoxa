@@ -2,11 +2,11 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import TransactionHistory from "./TransactionHistory";
-import { UserTransactionHistoryState } from "store/root/user/transactionHistory/types";
+import { UserTransactionState } from "store/root/user/transactionHistory/types";
 
 it("renders without crashing", () => {
   //Arrange
-  const transactionHistory: UserTransactionHistoryState = {
+  const transactionHistory: UserTransactionState = {
     data: [
       {
         timestamp: 111111,

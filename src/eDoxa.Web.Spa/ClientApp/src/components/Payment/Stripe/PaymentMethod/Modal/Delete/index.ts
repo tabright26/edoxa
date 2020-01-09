@@ -1,3 +1,3 @@
-import DeleteStripePaymentMethodModal from "./Delete";
+import CustomModal from "./Delete";
 
-export default DeleteStripePaymentMethodModal;
+export default CustomModal;

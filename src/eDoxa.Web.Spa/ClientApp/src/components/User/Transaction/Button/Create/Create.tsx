@@ -4,7 +4,7 @@ import { compose } from "recompose";
 import { Currency, TransactionType } from "types";
 import { connect, MapDispatchToProps } from "react-redux";
 import { show } from "redux-modal";
-import { CREATE_TRANSACTION_MODAL } from "modals";
+import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
 
 interface DispatchProps {
   showModal: () => void;
@@ -18,14 +18,14 @@ interface OwnProps {
 type InnerProps = DispatchProps;
 
 type OutterProps = OwnProps & {
-  disabled?: boolean;
+  disabled: boolean;
 };
 
 type Props = InnerProps & OutterProps;
 
 const CreateTransactionButton: FunctionComponent<Props> = ({
   showModal,
-  disabled = false,
+  disabled,
   children
 }) => (
   <Button
@@ -46,7 +46,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
   return {
     showModal: () =>
       dispatch(
-        show(CREATE_TRANSACTION_MODAL, {
+        show(CREATE_USER_TRANSACTION_MODAL, {
           currency: ownProps.currency,
           transactionType: ownProps.transactionType
         })

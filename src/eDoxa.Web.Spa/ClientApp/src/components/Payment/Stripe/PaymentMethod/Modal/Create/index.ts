@@ -1,3 +1,3 @@
-import CreateStripePaymentMethodModal from "./Create";
+import CustomModal from "./Create";
 
-export default CreateStripePaymentMethodModal;
+export default CustomModal;

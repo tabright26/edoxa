@@ -1,3 +1,3 @@
-import CreateClanModal from "./Create";
+import CustomModal from "./Create";
 
-export default CreateClanModal;
+export default CustomModal;

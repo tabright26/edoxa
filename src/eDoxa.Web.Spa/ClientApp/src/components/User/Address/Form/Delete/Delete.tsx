@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Label, FormGroup, Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { DELETE_USER_ADDRESS_FORM } from "forms";
+import { DELETE_USER_ADDRESS_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { deleteUserAddress } from "store/actions/identity";

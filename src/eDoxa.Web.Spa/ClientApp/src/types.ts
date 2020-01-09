@@ -173,7 +173,7 @@ export type Games = Map<Game, GameOption>;
 export type GameServiceName = "manager" | "challenge" | "tournament";
 
 export interface GameOption {
-  readonly name: string;
+  readonly name: Game;
   readonly displayName: string;
   readonly displayed: boolean;
   readonly verified: boolean;

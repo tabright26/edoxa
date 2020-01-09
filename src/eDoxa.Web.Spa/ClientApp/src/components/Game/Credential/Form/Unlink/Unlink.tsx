@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { UNLINK_GAME_CREDENTIAL_FORM } from "forms";
+import { UNLINK_GAME_CREDENTIAL_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { Game } from "types";
 import { unlinkGameCredential, loadGames } from "store/actions/game";

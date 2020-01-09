@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { FORGOT_USER_PASSWORD_FORM } from "forms";
+import { FORGOT_USER_PASSWORD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";

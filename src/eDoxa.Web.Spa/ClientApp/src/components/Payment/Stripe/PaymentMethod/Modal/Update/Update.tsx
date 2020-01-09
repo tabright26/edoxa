@@ -1,16 +1,30 @@
 import React, { FunctionComponent } from "react";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { connectModal } from "redux-modal";
+import { connectModal, InjectedProps } from "redux-modal";
 import StripePaymentMethodForm from "components/Payment/Stripe/PaymentMethod/Form";
-import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
+import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
+import { StripePaymentMethod } from "types";
 
-const UpdateStripePaymentMethodModal: FunctionComponent<any> = ({
+type InnerProps = InjectedProps & {
+  paymentMethod: StripePaymentMethod;
+};
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const CustomModal: FunctionComponent<Props> = ({
   show,
   handleHide,
   paymentMethod
 }) => (
-  <Modal size="sm" isOpen={show} toggle={handleHide}>
+  <Modal
+    className="modal-dialog-centered"
+    size="lg"
+    isOpen={show}
+    toggle={handleHide}
+  >
     <ModalHeader toggle={handleHide}>UPDATE PAYMENT METHOD</ModalHeader>
     <ModalBody>
       <StripePaymentMethodForm.Update
@@ -21,11 +35,11 @@ const UpdateStripePaymentMethodModal: FunctionComponent<any> = ({
   </Modal>
 );
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connectModal({
     name: UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
     destroyOnHide: false
   })
 );
 
-export default enhance(UpdateStripePaymentMethodModal);
+export default enhance(CustomModal);

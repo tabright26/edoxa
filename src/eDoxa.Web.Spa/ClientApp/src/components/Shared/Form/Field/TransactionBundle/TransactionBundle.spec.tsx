@@ -8,7 +8,6 @@ import {
   CURRENCY_MONEY,
   TRANSACTION_TYPE_DEPOSIT
 } from "types";
-import { TransactionBundlesState } from "store/static/transactionBundle/types";
 
 it("renders without crashing", () => {
   //Arrange
@@ -69,42 +68,30 @@ it("renders without crashing", () => {
 });
 
 it("renders without crashing", () => {
-  const bundles: TransactionBundlesState = {
-    data: [
-      {
-        id: 0,
-        type: TRANSACTION_TYPE_DEPOSIT,
-        currency: {
-          amount: 10,
-          type: CURRENCY_MONEY
-        },
-        price: {
-          amount: 10,
-          type: CURRENCY_MONEY
-        },
-        description: null,
-        notes: null,
-        disabled: false,
-        deprecated: false
-      }
-    ],
-    error: null,
-    loading: false
-  };
-
   //Arrange
   const store: any = {
     getState: () => {
       return {
-        root: {
-          user: {
-            account: {
-              deposit: {
-                bundles: {
-                  token: bundles
-                }
+        static: {
+          transactionBundle: {
+            data: [
+              {
+                id: 0,
+                type: TRANSACTION_TYPE_DEPOSIT,
+                currency: {
+                  amount: 10000,
+                  type: CURRENCY_TOKEN
+                },
+                price: {
+                  amount: 10000,
+                  type: CURRENCY_TOKEN
+                },
+                description: null,
+                notes: null,
+                disabled: false,
+                deprecated: false
               }
-            }
+            ]
           }
         }
       };

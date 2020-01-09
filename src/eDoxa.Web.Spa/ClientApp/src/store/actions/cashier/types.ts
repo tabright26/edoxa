@@ -81,7 +81,7 @@ export type CreateUserTransactionActionCreator = AxiosActionCreator<
 >;
 export type CreateUserTransactionAction = AxiosAction<
   CreateUserTransactionType,
-  UserTransaction[]
+  UserTransaction
 >;
 
 export const LOAD_USER_TRANSACTION_HISTORY = "LOAD_USER_TRANSACTION_HISTORY";
@@ -102,9 +102,9 @@ export type LoadUserTransactionHistoryAction = AxiosAction<
   UserTransaction[]
 >;
 
-export type UserTransactionHistoryActionCreators =
+export type UserTransactionActionCreators =
   | LoadUserTransactionHistoryActionCreator
   | CreateUserTransactionActionCreator;
-export type UserTransactionHistoryActions =
+export type UserTransactionActions =
   | LoadUserTransactionHistoryAction
   | CreateUserTransactionAction;
