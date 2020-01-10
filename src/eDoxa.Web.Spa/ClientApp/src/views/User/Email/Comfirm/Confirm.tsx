@@ -29,8 +29,9 @@ const EmailConfirm: FunctionComponent<any> = ({
   }
   return (
     <Alert color="primary">
-      <h4 className="alert-heading">Confirm Email</h4>
-      <p className="mb-0">Tank you for confirming your email...</p>
+      <h4 className="alert-heading text-uppercase">Email confirmed</h4>
+      <hr />
+      <p className="mb-0">Thank you for confirming your email.</p>
     </Alert>
   );
 };
