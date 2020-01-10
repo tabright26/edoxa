@@ -8,12 +8,13 @@ export function throwSubmissionError(
   if (error.isAxiosError) {
     const { data, status } = error.response;
     switch (status) {
-      case 400: {
+      case 400:
+      case 412: {
         delete data.errors[""];
         if (data.errors && !data.errors.length) {
           throw new SubmissionError<AxiosErrorData>(data.errors);
         } else {
-          throw new SubmissionError<AxiosErrorData>({ _error: data.title });
+          throw new Error("Something went wrong.");
         }
       }
       default: {

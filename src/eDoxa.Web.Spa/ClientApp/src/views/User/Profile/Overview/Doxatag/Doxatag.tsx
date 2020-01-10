@@ -41,7 +41,7 @@ const Doxatag: FunctionComponent<any> = ({
           <Loading />
         ) : (
           <dl className="row mb-0">
-            <dd className="col-sm-3 mb-0 text-muted">Doxatag</dd>
+            <dd className="col-sm-3 mb-0 text-muted">DoxaTag</dd>
             <dd className="col-sm-5 mb-0">
               {!buttonDisabled && data ? (
                 <span>
