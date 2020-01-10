@@ -84,12 +84,12 @@ namespace eDoxa.Challenges.Api.Application.Services
 
             if (challenge.SoldOut)
             {
-                result.AddDomainValidationError("The challenge was sold out.");
+                result.AddFailedPreconditionError("The challenge was sold out.");
             }
 
             if (challenge.ParticipantExists(userId))
             {
-                result.AddDomainValidationError("The user already is registered.");
+                result.AddFailedPreconditionError("The user already is registered.");
             }
 
             if (result.IsValid)
@@ -125,7 +125,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
             if (!challenge.CanSynchronize())
             {
-                result.AddDomainValidationError("Challenge wasn't synchronized due to is current state.");
+                result.AddFailedPreconditionError("Challenge wasn't synchronized due to is current state.");
             }
 
             if (result.IsValid)
@@ -150,7 +150,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
             if (!challenge.CanClose())
             {
-                result.AddDomainValidationError("Challenge can't be closed.");
+                result.AddFailedPreconditionError("Challenge can't be closed.");
             }
 
             if (result.IsValid)
@@ -171,7 +171,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
             if (!challenge.CanDelete())
             {
-                result.AddDomainValidationError("Challenge can't be deleted.");
+                result.AddFailedPreconditionError("Challenge can't be deleted.");
             }
 
             if (result.IsValid)
@@ -198,7 +198,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
             if (!challenge.ParticipantExists(gamePlayerId))
             {
-                result.AddDomainValidationError("Participant doesn't exists.");
+                result.AddFailedPreconditionError("Participant doesn't exists.");
             }
 
             if (result.IsValid)

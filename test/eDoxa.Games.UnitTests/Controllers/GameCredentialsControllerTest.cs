@@ -120,7 +120,7 @@ namespace eDoxa.Games.UnitTests.Controllers
                 new UtcNowDateTimeProvider());
 
             var validation = new DomainValidationResult();
-            validation.AddDomainValidationError("test", "test error");
+            validation.AddInvalidArgumentError("test", "test error");
 
             mockCredentialService
                 .Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))

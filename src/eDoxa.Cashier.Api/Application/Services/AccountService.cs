@@ -59,10 +59,10 @@ namespace eDoxa.Cashier.Api.Application.Services
         )
         {
             var result = new DomainValidationResult();
-            
+
             if (!await this.TransactionBundleExistsAsync(transactionBundleId))
             {
-                result.AddDomainValidationError($"Transaction bundle with id of '{transactionBundleId}' wasn't found.");
+                result.AddFailedPreconditionError($"Transaction bundle with id of '{transactionBundleId}' wasn't found.");
             }
 
             if (result.IsValid)
@@ -213,7 +213,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(transactionId))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -240,7 +240,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(transactionId))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -267,7 +267,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(transactionId))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -294,7 +294,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(metadata))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -321,7 +321,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(metadata))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -348,7 +348,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(metadata))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -459,14 +459,13 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != money.Amount))
             {
-                result.AddDomainValidationError(
-                    "_error",
+                result.AddFailedPreconditionError(
                     $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.IsDepositAvailable())
             {
-                result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
             }
 
             if (result.IsValid)
@@ -493,19 +492,17 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (transactionBundles.All(withdrawal => new decimal(withdrawal.Currency.Amount) != money.Amount))
             {
-                result.AddDomainValidationError(
-                    "_error",
-                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
+                result.AddFailedPreconditionError($"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.HaveSufficientMoney(money))
             {
-                result.AddDomainValidationError("_error", "Insufficient funds.");
+                result.AddFailedPreconditionError("Insufficient funds.");
             }
 
             if (!account.IsWithdrawalAvailable())
             {
-                result.AddDomainValidationError("_error", $"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
+                result.AddFailedPreconditionError($"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
             }
 
             if (result.IsValid)
@@ -531,7 +528,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.HaveSufficientMoney(money))
             {
-                result.AddDomainValidationError("_error", "Insufficient funds.");
+                result.AddFailedPreconditionError("Insufficient funds.");
             }
 
             if (result.IsValid)
@@ -558,14 +555,12 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != token.Amount))
             {
-                result.AddDomainValidationError(
-                    "_error",
-                    $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
+                result.AddFailedPreconditionError($"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.IsDepositAvailable())
             {
-                result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
             }
 
             if (result.IsValid)
@@ -591,7 +586,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.HaveSufficientMoney(token))
             {
-                result.AddDomainValidationError("_error", "Insufficient funds.");
+                result.AddFailedPreconditionError("Insufficient funds.");
             }
 
             if (result.IsValid)

@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (payout == null)
             {
-                result.AddDomainValidationError("Invalid payout structure. Payout entries doesn't match the chart.");
+                result.AddFailedPreconditionError("Invalid payout structure. Payout entries doesn't match the chart.");
             }
 
             if (result.IsValid)

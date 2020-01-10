@@ -19,5 +19,13 @@ namespace eDoxa.Seedwork.Domain
 
         void AddEntityToMetadata<TEntity>(TEntity entity)
         where TEntity : class;
+
+        IDomainValidationResult AddInvalidArgumentError(string propertyName, string errorMessage);
+
+        IDomainValidationResult AddFailedPreconditionError(string errorMessage);
+
+        IDomainValidationResult AddDebugError(string errorMessage);
+
+        string ToJsonErrors();
     }
 }

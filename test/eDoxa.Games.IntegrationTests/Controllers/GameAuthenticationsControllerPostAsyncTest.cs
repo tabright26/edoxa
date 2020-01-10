@@ -61,7 +61,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
                             var mockAuthFactorService = new Mock<IGameAuthenticationService>();
 
                             var validationFailure = new DomainValidationResult();
-                            validationFailure.AddDomainValidationError("test", "validation failure test");
+                            validationFailure.AddInvalidArgumentError("test", "validation failure test");
 
                             mockAuthFactorService
                                 .Setup(
