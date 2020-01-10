@@ -15,26 +15,28 @@ namespace eDoxa.Seedwork.Application.Grpc.Extensions
     {
         internal const string Errors = "errors";
 
+        private const string Detail = "Please refer to the errors property for additional details.";
+
         public static RpcException InvalidArgumentRpcException(this ServerCallContext context, IDomainValidationResult result)
         {
+            var status = new Status(StatusCode.InvalidArgument, Detail);
+
             var trailers = new Metadata
             {
                 {Errors, result.ToJsonErrors()}
             };
-
-            var status = new Status(StatusCode.InvalidArgument, "The request has invalid argument(s).");
 
             return context.RpcException(status, trailers);
         }
 
-        public static RpcException FailedPreconditionRpcException(this ServerCallContext context, IDomainValidationResult result, string detail)
+        public static RpcException FailedPreconditionRpcException(this ServerCallContext context, IDomainValidationResult result)
         {
+            var status = new Status(StatusCode.FailedPrecondition, Detail);
+
             var trailers = new Metadata
             {
                 {Errors, result.ToJsonErrors()}
             };
-
-            var status = new Status(StatusCode.FailedPrecondition, detail);
 
             return context.RpcException(status, trailers);
         }

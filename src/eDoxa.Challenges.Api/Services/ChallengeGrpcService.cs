@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeGrpcService.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Immutable;
@@ -98,7 +98,7 @@ namespace eDoxa.Challenges.Api.Services
                 return context.Ok(response);
             }
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+            throw context.FailedPreconditionRpcException(result);
         }
 
         public override async Task<SynchronizeChallengeResponse> SynchronizeChallenge(SynchronizeChallengeRequest request, ServerCallContext context)
@@ -124,7 +124,7 @@ namespace eDoxa.Challenges.Api.Services
                 return context.Ok(response);
             }
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+            throw context.FailedPreconditionRpcException(result);
         }
 
         public override async Task<RegisterChallengeParticipantResponse> RegisterChallengeParticipant(
@@ -167,7 +167,7 @@ namespace eDoxa.Challenges.Api.Services
                 userId,
                 request.ParticipantId.ParseEntityId<ParticipantId>());
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+            throw context.FailedPreconditionRpcException(result);
         }
 
         public override async Task<SnapshotChallengeParticipantResponse> SnapshotChallengeParticipant(
@@ -200,7 +200,7 @@ namespace eDoxa.Challenges.Api.Services
                 return context.Ok(response);
             }
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+            throw context.FailedPreconditionRpcException(result);
         }
     }
 }

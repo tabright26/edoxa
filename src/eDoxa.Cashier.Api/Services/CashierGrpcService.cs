@@ -67,7 +67,7 @@ namespace eDoxa.Cashier.Api.Services
                 throw context.NotFoundRpcException("User account not found.");
             }
 
-            var result = await CreateTransactionOneofCaseAsync();
+            var result = await CreateTransactionByOneofCaseAsync();
 
             if (result.IsValid)
             {
@@ -79,9 +79,9 @@ namespace eDoxa.Cashier.Api.Services
                 return context.Ok(response);
             }
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+            throw context.FailedPreconditionRpcException(result);
 
-            async Task<IDomainValidationResult> CreateTransactionOneofCaseAsync()
+            async Task<IDomainValidationResult> CreateTransactionByOneofCaseAsync()
             {
                 switch (request.TransactionCase)
                 {
@@ -163,7 +163,7 @@ namespace eDoxa.Cashier.Api.Services
 
             await _serviceBusPublisher.PublishCreateChallengePayoutFailedIntegrationEventAsync(challengeId);
 
-            throw context.FailedPreconditionRpcException(result, string.Empty);
+            throw context.FailedPreconditionRpcException(result);
         }
     }
 }
