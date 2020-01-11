@@ -5,6 +5,8 @@ import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameAuthenticationFrom from "components/Game/Authentication/Form";
 import { compose } from "recompose";
 import { GameOption } from "types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
 type InnerProps = InjectedProps & { gameOption: GameOption };
 
@@ -31,7 +33,7 @@ const CustomModal: FunctionComponent<Props> = ({
           />
         ) : (
           <>
-            <div className="d-flex justify-content-around">
+            <div className="d-flex justify-content-between">
               <div className="text-center">
                 <h5>Current</h5>
                 <img
@@ -39,6 +41,14 @@ const CustomModal: FunctionComponent<Props> = ({
                   alt="current"
                   height={100}
                   width={100}
+                />
+              </div>
+              <div className="my-auto w-50 px-3 text-center">
+                <div className="text-muted">{gameOption.instructions}</div>
+                <FontAwesomeIcon
+                  className="mt-2 text-primary"
+                  icon={faArrowRight}
+                  size="3x"
                 />
               </div>
               <div className="text-center">

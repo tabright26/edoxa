@@ -176,6 +176,7 @@ export interface GameOption {
   readonly name: Game;
   readonly displayName: string;
   readonly displayed: boolean;
+  readonly instructions: string;
   readonly verified: boolean;
   readonly services: Map<GameServiceName, boolean>;
 }

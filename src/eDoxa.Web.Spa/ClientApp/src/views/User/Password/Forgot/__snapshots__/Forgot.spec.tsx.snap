@@ -39,7 +39,7 @@ exports[`renders correctly 1`] = `
         />
       </div>
       <div
-        className="mb-0 form-group"
+        className="mb-0 d-flex form-group"
       >
         <button
           aria-label={null}
@@ -51,7 +51,7 @@ exports[`renders correctly 1`] = `
         </button>
         <button
           aria-label={null}
-          className="float-right btn btn-link btn-sm"
+          className="ml-auto my-auto btn btn-link btn-sm"
           onClick={[Function]}
           style={
             Object {

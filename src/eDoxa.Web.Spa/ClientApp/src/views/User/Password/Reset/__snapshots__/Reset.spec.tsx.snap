@@ -7,14 +7,11 @@ exports[`renders correctly 1`] = `
   <div
     className="p-4 card-body"
   >
-    <h1>
+    <h1
+      className="mb-3"
+    >
       Reset password
     </h1>
-    <p
-      className="text-muted"
-    >
-      Reset your account password
-    </p>
     <form
       className=""
       onSubmit={[Function]}
@@ -125,7 +122,7 @@ exports[`renders correctly 1`] = `
           onClick={[Function]}
           type="submit"
         >
-          Reset password
+          Reset
         </button>
       </div>
     </form>
