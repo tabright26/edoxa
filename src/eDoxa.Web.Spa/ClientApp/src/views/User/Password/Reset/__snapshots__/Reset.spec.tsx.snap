@@ -8,7 +8,7 @@ exports[`renders correctly 1`] = `
     className="p-4 card-body"
   >
     <h1>
-      Reset Password
+      Reset password
     </h1>
     <p
       className="text-muted"
@@ -84,7 +84,7 @@ exports[`renders correctly 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
-          placeholder="Password"
+          placeholder="New password"
           type="password"
           value=""
         />
@@ -111,7 +111,7 @@ exports[`renders correctly 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
-          placeholder="Confirm Password"
+          placeholder="Confirm new password"
           type="password"
           value=""
         />
@@ -125,7 +125,7 @@ exports[`renders correctly 1`] = `
           onClick={[Function]}
           type="submit"
         >
-          Reset
+          Reset password
         </button>
       </div>
     </form>

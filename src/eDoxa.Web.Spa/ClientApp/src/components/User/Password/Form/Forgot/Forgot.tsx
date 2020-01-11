@@ -34,12 +34,10 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       formGroup={FormGroup}
       component={Input.Text}
     />
-    <FormGroup className="mb-0">
-      <Button.Submit className="w-25" size="sm">
-        Send
-      </Button.Submit>
+    <FormGroup className="mb-0 d-flex">
+      <Button.Submit className="w-25">Send</Button.Submit>
       <Button.Link
-        className="float-right"
+        className="ml-auto my-auto"
         onClick={() => {
           window.location.href = `${REACT_APP_AUTHORITY}/Account/Login`;
         }}

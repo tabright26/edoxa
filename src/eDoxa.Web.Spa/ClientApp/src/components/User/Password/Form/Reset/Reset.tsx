@@ -64,7 +64,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="password"
-        label="Password"
+        label="New password"
         component={Input.Password}
       />
     </InputGroup>
@@ -77,7 +77,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="confirmPassword"
-        label="Confirm Password"
+        label="Confirm new password"
         component={Input.Password}
       />
     </InputGroup>
