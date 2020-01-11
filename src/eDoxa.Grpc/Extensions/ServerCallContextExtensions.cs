@@ -50,11 +50,11 @@ namespace eDoxa.Grpc.Extensions
             return context.RpcException(new Status(StatusCode.NotFound, detail));
         }
 
-        public static RpcException RpcException(this ServerCallContext context, Status status)
+        public static RpcException RpcException(this ServerCallContext context, Status status, Metadata? trailers = null)
         {
             var logger = context.GetLogger();
 
-            var exception = context.ResponseTrailers == null ? new RpcException(status) : new RpcException(status, context.ResponseTrailers);
+            var exception = trailers == null ? new RpcException(status) : new RpcException(status, trailers);
 
             switch (status.StatusCode)
             {

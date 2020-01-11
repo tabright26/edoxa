@@ -1,8 +1,8 @@
 ﻿// Filename: ServerCallContextExtensions.cs
-// Date Created: 2019-12-12
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Extensions;
 using eDoxa.Seedwork.Domain;
@@ -13,16 +13,32 @@ namespace eDoxa.Seedwork.Application.Grpc.Extensions
 {
     public static class ServerCallContextExtensions
     {
-        public static RpcException FailedPreconditionRpcException(this ServerCallContext context, IDomainValidationResult result, string detail)
-        {
-            context.AddDomainValidationResultToResponseTrailers(result);
+        internal const string Errors = "errors";
 
-            return context.RpcException(new Status(StatusCode.FailedPrecondition, detail));
+        private const string Detail = "Please refer to the errors property for additional details.";
+
+        public static RpcException InvalidArgumentRpcException(this ServerCallContext context, IDomainValidationResult result)
+        {
+            var status = new Status(StatusCode.InvalidArgument, Detail);
+
+            var trailers = new Metadata
+            {
+                {Errors, result.ToJsonErrors()}
+            };
+
+            return context.RpcException(status, trailers);
         }
 
-        private static void AddDomainValidationResultToResponseTrailers(this ServerCallContext context, IDomainValidationResult result)
+        public static RpcException FailedPreconditionRpcException(this ServerCallContext context, IDomainValidationResult result)
         {
-            context.ResponseTrailers.Add(nameof(DomainValidationResult), result.Errors.ToString());
+            var status = new Status(StatusCode.FailedPrecondition, Detail);
+
+            var trailers = new Metadata
+            {
+                {Errors, result.ToJsonErrors()}
+            };
+
+            return context.RpcException(status, trailers);
         }
     }
 }

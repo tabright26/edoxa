@@ -1,21 +1,26 @@
 import React, { FunctionComponent } from "react";
-import { Button } from "reactstrap";
-import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
-import { CURRENCY_MONEY } from "types";
-import { withUserAccountWithdrawalBundles } from "store/root/user/account/withdrawal/bundles/container";
-import { withStripeHasAccountEnabled } from "store/root/payment/stripe/account/container";
+import { CURRENCY_MONEY, TRANSACTION_TYPE_WITHDRAWAL } from "types";
+import { withStripeAccount } from "store/root/payment/stripe/account/container";
+import UserTransactionButton from "components/User/Transaction/Button";
+import { StripeAccountState } from "store/root/payment/stripe/account/types";
 
-const Withdrawal: FunctionComponent<any> = ({ modals, bundles: { data, loading }, hasAccountVerified }) => (
-  <Button color="primary" size="sm" block disabled={loading || !hasAccountVerified} onClick={() => modals.showWithdrawalModal(CURRENCY_MONEY, data)}>
+type InnerProps = { account: StripeAccountState };
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const WithdrawalButton: FunctionComponent<Props> = ({ account: { data } }) => (
+  <UserTransactionButton.Create
+    transactionType={TRANSACTION_TYPE_WITHDRAWAL}
+    currency={CURRENCY_MONEY}
+    disabled={data === null ? true : !data.enabled}
+  >
     Withdrawal Money
-  </Button>
+  </UserTransactionButton.Create>
 );
 
-const enhance = compose<any, any>(
-  withModals,
-  withUserAccountWithdrawalBundles,
-  withStripeHasAccountEnabled
-);
+const enhance = compose<InnerProps, OutterProps>(withStripeAccount);
 
-export default enhance(Withdrawal);
+export default enhance(WithdrawalButton);

@@ -1,26 +1,30 @@
 ﻿// Filename: DomainValidationError.cs
-// Date Created: 2019-11-30
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Seedwork.Domain
 {
+    [JsonObject]
     public sealed class DomainValidationError
     {
-        public DomainValidationError(string propertyName, string errorMessage) : this(errorMessage)
+        public const string DebugPropertyName = "_debug";
+        public const string FailedPreconditionPropertyName = "_error";
+
+        [JsonConstructor]
+        public DomainValidationError(string propertyName, string errorMessage)
         {
             PropertyName = propertyName;
-        }
-
-        public DomainValidationError(string errorMessage)
-        {
             ErrorMessage = errorMessage;
-            PropertyName = string.Empty;
         }
 
+        [JsonProperty]
         public string PropertyName { get; }
 
+        [JsonProperty]
         public string ErrorMessage { get; }
     }
 }

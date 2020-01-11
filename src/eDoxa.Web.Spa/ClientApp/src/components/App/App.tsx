@@ -3,8 +3,8 @@ import React, { Suspense, FunctionComponent } from "react";
 import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/config";
-import UserAccountModal from "components/User/Account/Modal";
-import MatchScoreModal from "components/Challenge/Participant/Match/Modal/Score";
+import UserTransactionModal from "components/User/Transaction/Modal";
+import CustomModal from "components/Challenge/Participant/Match/Modal/Score";
 import Loading from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";
@@ -50,9 +50,8 @@ const App = () => (
     </Elements>
     <StripePaymentMethodModal.Update />
     <StripePaymentMethodModal.Delete />
-    <UserAccountModal.Deposit />
-    <UserAccountModal.Withdrawal />
-    <MatchScoreModal />
+    <UserTransactionModal.Create />
+    <CustomModal />
     <Router history={history}>
       <Suspense fallback={<Loading />}>
         <Switch>

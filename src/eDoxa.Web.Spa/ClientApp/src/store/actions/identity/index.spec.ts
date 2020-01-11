@@ -168,7 +168,7 @@ describe("identity actions", () => {
     ];
     const expectedMethod = "POST";
     const expectedUrl = "/identity/api/doxatag-history";
-    const expectedDoxatag = "Doxatag";
+    const expectedDoxatag = "DoxaTag";
 
     const actionCreator = changeUserDoxatag(expectedDoxatag, null);
 

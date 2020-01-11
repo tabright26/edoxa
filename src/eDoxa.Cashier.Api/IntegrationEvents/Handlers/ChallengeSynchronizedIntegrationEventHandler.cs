@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
                     challenge.Payout,
                     integrationEvent.Scoreboard.ToDictionary(participant => participant.UserId.ParseEntityId<UserId>(), participant => participant.Score?.ToDecimal()));
 
-                var result = await _accountService.PayoutChallengeAsync(scoreboard);
+                var result = await _accountService.ProcessChallengePayoutAsync(scoreboard);
 
                 if (result.IsValid)
                 {

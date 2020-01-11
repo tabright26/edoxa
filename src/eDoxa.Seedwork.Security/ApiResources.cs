@@ -27,7 +27,7 @@ namespace eDoxa.Seedwork.Security
             internal PaymentResource() : base(
                 Security.Scopes.PaymentApi.Name,
                 Security.Scopes.PaymentApi.DisplayName,
-                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims))
+                IdentityResources.Roles.UserClaims.Union(IdentityResources.Permissions.UserClaims.Union(IdentityResources.Stripe.UserClaims)))
             {
                 ApiSecrets.Add(new Secret("secret".Sha256()));
             }

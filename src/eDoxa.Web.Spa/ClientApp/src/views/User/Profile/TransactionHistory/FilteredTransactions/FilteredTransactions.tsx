@@ -1,9 +1,9 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Card, CardHeader } from "reactstrap";
-import TransactionList from "components/User/Account/Transaction/List";
+import TransactionList from "components/User/Transaction/List";
 import Paginate from "components/Shared/Paginate";
 import { compose } from "recompose";
-import { UserTransactionHistoryState } from "store/root/user/transactionHistory/types";
+import { UserTransactionState } from "store/root/user/transactionHistory/types";
 import { Currency, TransactionType, TransactionStatus } from "types";
 import Loading from "components/Shared/Loading";
 import { connect, MapStateToProps } from "react-redux";
@@ -13,7 +13,7 @@ import { loadUserTransactionHistory } from "store/actions/cashier";
 const pageSize = 10;
 
 interface FilteredTransactionsInnerProps {
-  transactionHistory: UserTransactionHistoryState;
+  transactionHistory: UserTransactionState;
   loadUserTransactionHistory: () => void;
 }
 
@@ -27,7 +27,7 @@ type FilteredTransactionsProps = FilteredTransactionsInnerProps &
   FilteredTransactionsOutterProps;
 
 interface UserAccountTransactionsStateProps {
-  transactionHistory: UserTransactionHistoryState;
+  transactionHistory: UserTransactionState;
 }
 
 interface UserAccountTransactionsOwnProps {

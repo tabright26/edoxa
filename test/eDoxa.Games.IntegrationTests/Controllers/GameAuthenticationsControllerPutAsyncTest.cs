@@ -103,7 +103,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
                             var mockCredentialService = new Mock<IGameCredentialService>();
 
                             var validationFailure = new DomainValidationResult();
-                            validationFailure.AddDomainValidationError("test", "validation failure test");
+                            validationFailure.AddInvalidArgumentError("test", "validation failure test");
 
                             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                                 .ReturnsAsync(credential)

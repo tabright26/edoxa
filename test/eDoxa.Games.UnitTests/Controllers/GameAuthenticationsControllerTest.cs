@@ -93,7 +93,7 @@ namespace eDoxa.Games.UnitTests.Controllers
             var mockMapper = new Mock<IMapper>();
 
             var validation = new DomainValidationResult();
-            validation.AddDomainValidationError("test", "test error");
+            validation.AddInvalidArgumentError("test", "test error");
 
             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(validation)

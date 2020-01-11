@@ -2,7 +2,7 @@ import React from "react";
 import Create from "./Create";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { CREATE_CLAN_MODAL } from "modals";
+import { CREATE_CLAN_MODAL } from "utils/modal/constants";
 
 it("renders correctly", () => {
   const store: any = {

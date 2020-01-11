@@ -1,3 +1,3 @@
-import ReduxForm from "./Unlink";
+import Unlink from "./Unlink";
 
-export default ReduxForm;
+export default Unlink;

@@ -40,8 +40,8 @@ message DobDto {
 
 message AddressDto {
   string id = 1;
-  AddressTypeDto type = 2;
-  CountryDto country = 3;
+  EnumAddressType type = 2;
+  EnumCountry country = 3;
   string line1 = 4;
   google.protobuf.StringValue line2 = 5;
   string city = 6;
@@ -63,6 +63,6 @@ message ProfileDto {
   string name = 1;
   string firstName = 2;
   string lastName = 3;
-  GenderDto gender = 4;
+  EnumGender gender = 4;
   DobDto dob = 5;
 }

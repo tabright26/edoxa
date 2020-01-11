@@ -1,3 +1,3 @@
-import ReduxForm from "./Delete";
+import Delete from "./Delete";
 
-export default ReduxForm;
+export default Delete;

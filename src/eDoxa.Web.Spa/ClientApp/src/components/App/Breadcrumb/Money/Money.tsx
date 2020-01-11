@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
-import Balance from "components/User/Account/Balance";
+import Balance from "components/User/Balance";
 import DepositMoney from "./Deposit";
 import WithdrawalMoney from "./Withdrawal";
 import { CURRENCY_MONEY } from "types";
@@ -40,15 +40,15 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
             </dd>
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
-              <Balance currency={CURRENCY_MONEY} attribute="pending" alignment="right" />
+              <Balance
+                currency={CURRENCY_MONEY}
+                attribute="pending"
+                alignment="right"
+              />
             </dd>
           </dl>
-          {process.env.NODE_ENV !== "production" && (
-            <DepositMoney currency={CURRENCY_MONEY} />
-          )}
-          {process.env.NODE_ENV !== "production" && (
-            <WithdrawalMoney currency={CURRENCY_MONEY} />
-          )}
+          {process.env.NODE_ENV !== "production" && <DepositMoney />}
+          {process.env.NODE_ENV !== "production" && <WithdrawalMoney />}
         </PopoverBody>
       </Popover>
     </div>

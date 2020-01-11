@@ -1,3 +1,3 @@
-import ReduxForm from "./Forgot";
+import Forgot from "./Forgot";
 
-export default ReduxForm;
+export default Forgot;

@@ -53,7 +53,10 @@ import {
 } from "./types";
 
 import { AddressId } from "types";
-import { AxiosActionCreatorMeta } from "utils/axios/types";
+import {
+  AxiosActionCreatorMeta,
+  AXIOS_PAYLOAD_CLIENT_DEFAULT
+} from "utils/axios/types";
 
 export function loadUserAddressBook(): UserAddressBookActionCreators {
   return {
@@ -63,6 +66,7 @@ export function loadUserAddressBook(): UserAddressBookActionCreators {
       LOAD_USER_ADDRESSBOOK_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/identity/api/address-book`
@@ -82,6 +86,7 @@ export function createUserAddress(
       CREATE_USER_ADDRESS_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/identity/api/address-book",
@@ -104,6 +109,7 @@ export function updateUserAddress(
       UPDATE_USER_ADDRESS_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "PUT",
         url: `/identity/api/address-book/${addressId}`,
@@ -125,6 +131,7 @@ export function deleteUserAddress(
       DELETE_USER_ADDRESS_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "DELETE",
         url: `/identity/api/address-book/${addressId}`
@@ -142,6 +149,7 @@ export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
       LOAD_USER_DOXATAGHISTORY_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: "/identity/api/doxatag-history"
@@ -161,6 +169,7 @@ export function changeUserDoxatag(
       CHANGE_USER_DOXATAG_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/identity/api/doxatag-history",
@@ -175,6 +184,7 @@ export function loadUserEmail(): UserEmailActionCreators {
   return {
     types: [LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: "/identity/api/email"
@@ -187,7 +197,6 @@ export function confirmUserEmail(
   userId: string,
   code: string
 ): UserEmailActionCreators {
-  console.log(code);
   return {
     types: [
       CONFIRM_USER_EMAIL,
@@ -195,6 +204,7 @@ export function confirmUserEmail(
       CONFIRM_USER_EMAIL_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: "/identity/api/email/confirm",
@@ -215,6 +225,7 @@ export function loadUserProfile(): UserProfileActionCreators {
       LOAD_USER_PROFILE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: "/identity/api/profile"
@@ -255,6 +266,7 @@ export function updateUserProfile(
       UPDATE_USER_PROFILE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "PUT",
         url: "/identity/api/profile",
@@ -278,6 +290,7 @@ export function forgotUserPassword(
       FORGOT_USER_PASSWORD_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/identity/api/password/forgot",
@@ -299,6 +312,7 @@ export function resetUserPassword(
       RESET_USER_PASSWORD_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/identity/api/password/reset",
@@ -313,6 +327,7 @@ export function loadUserPhone(): UserPhoneActionCreators {
   return {
     types: [LOAD_USER_PHONE, LOAD_USER_PHONE_SUCCESS, LOAD_USER_PHONE_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: "/identity/api/phone"
@@ -332,6 +347,7 @@ export function updateUserPhone(
       UPDATE_USER_PHONE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/identity/api/phone",

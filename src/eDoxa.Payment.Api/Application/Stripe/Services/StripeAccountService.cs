@@ -58,7 +58,7 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                 }
                 catch (StripeException exception)
                 {
-                    result.AddDomainValidationError(exception.Message);
+                    result.AddFailedPreconditionError(exception.Message);
                 }
             }
 

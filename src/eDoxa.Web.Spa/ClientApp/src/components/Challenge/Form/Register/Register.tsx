@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { REGISTER_CHALLENGE_PARTICIPANT_FROM } from "forms";
+import { REGISTER_CHALLENGE_PARTICIPANT_FROM } from "utils/form/constants";
 import { compose } from "recompose";
 import { registerChallengeParticipant } from "store/actions/challenge";
 import {
@@ -24,7 +24,7 @@ type InnerProps = InjectedFormProps<FormData, Props> &
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({ handleSubmit }) => (
+const CustomForm: FunctionComponent<Props> = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit} className="h-100">
     <Button.Submit
       color="primary"
@@ -59,4 +59,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

@@ -2,7 +2,7 @@ import React from "react";
 import Update from "./Update";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "modals";
+import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";
 
 it("renders correctly", () => {
   const store: any = {

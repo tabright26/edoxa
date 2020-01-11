@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Swashbuckle.AspNetCore.Annotations;
 
+using static eDoxa.Grpc.Protos.Cashier.Requests.CreateTransactionRequest.Types;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
 
 namespace eDoxa.Challenges.Web.Aggregator.Controllers
@@ -89,9 +90,12 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
 
             var createTransactionRequest = new CreateTransactionRequest
             {
-                Type = TransactionTypeDto.Charge,
-                Amount = challengePayoutResponse.Payout.EntryFee.Amount,
-                Currency = challengePayoutResponse.Payout.EntryFee.Currency,
+                Custom = new CustomTransaction
+                {
+                    Type = EnumTransactionType.Charge,
+                    Amount = challengePayoutResponse.Payout.EntryFee.Amount,
+                    Currency = challengePayoutResponse.Payout.EntryFee.Currency
+                },
                 Metadata =
                 {
                     new Dictionary<string, string>

@@ -16,7 +16,7 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.0" />
-    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.25.0" />
+    <PackageReference Include="Grpc.AspNetCore.Server" Version="2.26.0" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="4.0.0-beta.1" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.0" />

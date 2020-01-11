@@ -9,7 +9,7 @@ import {
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { RESET_USER_PASSWORD_FORM } from "forms";
+import { RESET_USER_PASSWORD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
@@ -45,7 +45,7 @@ type InnerProps = InjectedFormProps<FormData, Props> &
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <Field type="hidden" name="code" component={Input.Text} />
@@ -64,7 +64,7 @@ const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="password"
-        label="Password"
+        label="New password"
         component={Input.Password}
       />
     </InputGroup>
@@ -77,7 +77,7 @@ const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="confirmPassword"
-        label="Confirm Password"
+        label="Confirm new password"
         component={Input.Password}
       />
     </InputGroup>
@@ -135,4 +135,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

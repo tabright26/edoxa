@@ -8,12 +8,12 @@ exports[`renders correctly 1`] = `
     className="p-4 card-body"
   >
     <h1>
-      Forgot Password
+      Forgot password
     </h1>
     <p
       className="text-muted"
     >
-      Forgot your account password
+      Enter your email address. You will receive a link to reset your password.
     </p>
     <form
       className=""
@@ -39,15 +39,33 @@ exports[`renders correctly 1`] = `
         />
       </div>
       <div
-        className="mb-0 form-group"
+        className="mb-0 d-flex form-group"
       >
         <button
           aria-label={null}
-          className="btn btn-primary btn-block"
+          className="w-25 btn btn-primary"
           onClick={[Function]}
           type="submit"
         >
-          Send Email
+          Send
+        </button>
+        <button
+          aria-label={null}
+          className="ml-auto my-auto btn btn-link btn-sm"
+          onClick={[Function]}
+          style={
+            Object {
+              "textDecoration": "none",
+            }
+          }
+          type="button"
+        >
+          <small
+            className="text-uppercase"
+          >
+             
+            Return to login page
+          </small>
         </button>
       </div>
     </form>

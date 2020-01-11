@@ -31,16 +31,18 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override async Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
         {
+            var result = new DomainValidationResult();
+
             await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
 
             var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByAccountIdAsync(Region.Na, gameAuthentication.PlayerId);
             
             if (summoner.ProfileIconId != gameAuthentication.Factor.ExpectedSummonerProfileIconId)
             {
-                return DomainValidationResult.Failure("_error", $"{Game} authentication process failed.");
+                result.AddFailedPreconditionError($"{Game} authentication process failed.");
             }
 
-            return new DomainValidationResult();
+            return result;
         }
     }
 }

@@ -1,14 +1,16 @@
 ﻿// Filename: ProblemDetailsOptionsExtensions.cs
-// Date Created: 2019-12-12
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using Grpc.Core;
 
 using Hellang.Middleware.ProblemDetails;
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace eDoxa.Seedwork.Application.Grpc.Extensions
 {
@@ -38,12 +40,28 @@ namespace eDoxa.Seedwork.Application.Grpc.Extensions
 
                         case StatusCode.InvalidArgument:
                         {
-                            return new ExceptionProblemDetails(exception, StatusCodes.Status400BadRequest); // TODO: Add errros from tillers.
+                            const int statusCode = StatusCodes.Status400BadRequest;
+
+                            return new ValidationProblemDetails(exception.Trailers.GetInvalidArgumentErrors())
+                            {
+                                Type = $"https://httpstatuses.com/{statusCode}",
+                                Title = ReasonPhrases.GetReasonPhrase(statusCode),
+                                Detail = exception.Status.Detail,
+                                Status = statusCode
+                            };
                         }
 
                         case StatusCode.FailedPrecondition:
                         {
-                            return new ExceptionProblemDetails(exception, StatusCodes.Status412PreconditionFailed); // TODO: Add errros from tillers.
+                            const int statusCode = StatusCodes.Status412PreconditionFailed;
+
+                            return new ValidationProblemDetails(exception.Trailers.GetFailedPreconditionErrors())
+                            {
+                                Type = $"https://httpstatuses.com/{statusCode}",
+                                Title = ReasonPhrases.GetReasonPhrase(statusCode),
+                                Detail = exception.Status.Detail,
+                                Status = statusCode
+                            };
                         }
 
                         case StatusCode.Unimplemented:

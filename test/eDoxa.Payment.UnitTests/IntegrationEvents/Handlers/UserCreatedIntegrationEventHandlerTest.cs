@@ -69,7 +69,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 {
                     Address = "gabriel@edoxa.gg"
                 },
-                Country = CountryDto.Canada
+                Country = EnumCountry.Canada
             };
 
             // Act

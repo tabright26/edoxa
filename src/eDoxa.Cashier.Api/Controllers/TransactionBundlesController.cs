@@ -1,17 +1,15 @@
 ﻿// Filename: TransactionBundlesController.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-using AutoMapper;
-
-using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,49 +19,33 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Cashier.Api.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [ApiVersion("1.0")]
-    [Route("api/transactions/{transactionType}/bundles")]
+    [Route("api/transaction-bundles")]
     [ApiExplorerSettings(GroupName = "Transactions")]
     public sealed class TransactionBundlesController : ControllerBase
     {
-        private readonly IBundleService _bundleService;
-        private readonly IMapper _mapper;
+        private readonly IAccountService _accountService;
 
-        public TransactionBundlesController(IBundleService bundleService, IMapper mapper)
+        public TransactionBundlesController(IAccountService accountService)
         {
-            _bundleService = bundleService;
-            _mapper = mapper;
+            _accountService = accountService;
         }
 
         [HttpGet]
-        [SwaggerOperation("Get bundles by currency.")]
+        [SwaggerOperation("Fetch transaction bundles.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionBundleDto[]))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public IActionResult Get(TransactionType transactionType, [FromQuery] Currency currency)
+        [SwaggerResponse(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetAsync([FromQuery] EnumTransactionType transactionType, [FromQuery] EnumCurrency currency)
         {
-            if (currency == Currency.Money)
-            {
-                if (transactionType == TransactionType.Deposit)
-                {
-                    return this.Ok(_mapper.Map<IEnumerable<TransactionBundleDto>>(_bundleService.FetchDepositMoneyBundles()));
-                }
+            var transactionBundles = await _accountService.FetchTransactionBundlesAsync(transactionType, currency, true);
 
-                if (transactionType == TransactionType.Withdrawal)
-                {
-                    return this.Ok(_mapper.Map<IEnumerable<TransactionBundleDto>>(_bundleService.FetchWithdrawalMoneyBundles()));
-                }
+            if (!transactionBundles.Any())
+            {
+                return this.NotFound();
             }
 
-            if (currency == Currency.Token)
-            {
-                if (transactionType == TransactionType.Deposit)
-                {
-                    return this.Ok(_mapper.Map<IEnumerable<TransactionBundleDto>>(_bundleService.FetchDepositTokenBundles()));
-                }
-            }
-
-            return this.NotFound("Invalid or unsuported currency.");
+            return this.Ok(transactionBundles);
         }
     }
 }

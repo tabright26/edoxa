@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { reduxForm, Field, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { UPDATE_USER_DOXATAG_FORM } from "forms";
+import { UPDATE_USER_DOXATAG_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { changeUserDoxatag } from "store/actions/identity";
@@ -37,7 +37,7 @@ type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({
+const CustomForm: FunctionComponent<Props> = ({
   error,
   handleSubmit,
   handleCancel
@@ -105,4 +105,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

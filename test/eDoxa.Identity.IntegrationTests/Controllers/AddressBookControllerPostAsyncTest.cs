@@ -65,7 +65,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                     using var response = await this.ExecuteAsync(
                         new CreateAddressRequest
                         {
-                            Country = CountryDto.Canada,
+                            Country = EnumCountry.Canada,
                             Line1 = "1234 Test Street",
                             Line2 = null,
                             City = "Toronto",

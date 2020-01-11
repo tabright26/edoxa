@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { FORGOT_USER_PASSWORD_FORM } from "forms";
+import { FORGOT_USER_PASSWORD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
@@ -11,6 +11,8 @@ import { forgotUserPassword } from "store/actions/identity";
 import { EMAIL_REQUIRED, EMAIL_INVALID, emailRegex } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
+import { toastr } from "react-redux-toastr";
+import { REACT_APP_AUTHORITY } from "keys";
 
 interface FormData {
   email: string;
@@ -22,7 +24,7 @@ type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <Field
@@ -32,8 +34,16 @@ const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       formGroup={FormGroup}
       component={Input.Text}
     />
-    <FormGroup className="mb-0">
-      <Button.Submit block>Send Email</Button.Submit>
+    <FormGroup className="mb-0 d-flex">
+      <Button.Submit className="w-25">Send</Button.Submit>
+      <Button.Link
+        className="ml-auto my-auto"
+        onClick={() => {
+          window.location.href = `${REACT_APP_AUTHORITY}/Account/Login`;
+        }}
+      >
+        Return to login page
+      </Button.Link>
     </FormGroup>
   </Form>
 );
@@ -51,7 +61,16 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (_result, dispatch) => dispatch(push("/")),
+    onSubmitSuccess: (_result, dispatch) => {
+      dispatch(push("/"));
+      setTimeout(function() {
+        toastr.success(
+          "Email sent",
+          "We have sent you a link to reset your password by email.",
+          { timeOut: 7500 }
+        );
+      }, 2500);
+    },
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.email) {
@@ -64,4 +83,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

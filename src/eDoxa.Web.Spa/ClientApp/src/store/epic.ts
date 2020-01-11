@@ -2,14 +2,8 @@ import { combineEpics, ofType } from "redux-observable";
 import { NEVER } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import {
-  USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS,
-  USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS,
-  USER_ACCOUNT_DEPOSIT_MONEY_FAIL,
-  USER_ACCOUNT_DEPOSIT_TOKEN_FAIL
-} from "store/actions/cashier/types";
-import {
-  USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL,
-  USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS
+  CREATE_USER_TRANSACTION_SUCCESS,
+  CREATE_USER_TRANSACTION_FAIL
 } from "store/actions/cashier/types";
 import {
   CREATE_USER_ADDRESS_SUCCESS,
@@ -39,13 +33,18 @@ import {
   UPDATE_USER_PHONE_SUCCESS,
   UPDATE_USER_PHONE_FAIL
 } from "store/actions/identity/types";
+import {
+  VALIDATE_GAME_AUTHENTICATION_FAIL,
+  VALIDATE_GAME_AUTHENTICATION_SUCCESS,
+  GENERATE_GAME_AUTHENTICATION_SUCCESS,
+  GENERATE_GAME_AUTHENTICATION_FAIL,
+  UNLINK_GAME_CREDENTIAL_SUCCESS,
+  UNLINK_GAME_CREDENTIAL_FAIL
+} from "./actions/game/types";
 
 const formSuccessEpic = (action$: any): any =>
   action$.pipe(
     ofType(
-      USER_ACCOUNT_DEPOSIT_MONEY_SUCCESS,
-      USER_ACCOUNT_DEPOSIT_TOKEN_SUCCESS,
-      USER_ACCOUNT_WITHDRAWAL_MONEY_SUCCESS,
       CREATE_USER_ADDRESS_SUCCESS,
       DELETE_USER_ADDRESS_SUCCESS,
       UPDATE_USER_ADDRESS_SUCCESS,
@@ -54,7 +53,11 @@ const formSuccessEpic = (action$: any): any =>
       UPDATE_USER_PROFILE_SUCCESS,
       FORGOT_USER_PASSWORD_SUCCESS,
       RESET_USER_PASSWORD_SUCCESS,
-      UPDATE_USER_PHONE_SUCCESS
+      UPDATE_USER_PHONE_SUCCESS,
+      CREATE_USER_TRANSACTION_SUCCESS,
+      VALIDATE_GAME_AUTHENTICATION_SUCCESS,
+      GENERATE_GAME_AUTHENTICATION_SUCCESS,
+      UNLINK_GAME_CREDENTIAL_SUCCESS
     ),
     switchMap((action: any): any => {
       const { resolve } = action.meta.previousAction.meta;
@@ -68,9 +71,6 @@ const formSuccessEpic = (action$: any): any =>
 const formFailEpic = (action$: any) =>
   action$.pipe(
     ofType(
-      USER_ACCOUNT_DEPOSIT_MONEY_FAIL,
-      USER_ACCOUNT_DEPOSIT_TOKEN_FAIL,
-      USER_ACCOUNT_WITHDRAWAL_MONEY_FAIL,
       CREATE_USER_ADDRESS_FAIL,
       DELETE_USER_ADDRESS_FAIL,
       UPDATE_USER_ADDRESS_FAIL,
@@ -79,7 +79,11 @@ const formFailEpic = (action$: any) =>
       UPDATE_USER_PROFILE_FAIL,
       FORGOT_USER_PASSWORD_FAIL,
       RESET_USER_PASSWORD_FAIL,
-      UPDATE_USER_PHONE_FAIL
+      UPDATE_USER_PHONE_FAIL,
+      CREATE_USER_TRANSACTION_FAIL,
+      VALIDATE_GAME_AUTHENTICATION_FAIL,
+      GENERATE_GAME_AUTHENTICATION_FAIL,
+      UNLINK_GAME_CREDENTIAL_FAIL
     ),
     switchMap((action: any) => {
       const { reject } = action.meta.previousAction.meta;

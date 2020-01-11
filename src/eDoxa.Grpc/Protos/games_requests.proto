@@ -12,17 +12,17 @@ import "games_enums.proto";
 package edoxa.services.games;
 
 message FetchChallengeScoringRequest {
-  GameDto game = 1;
-  services.challenges.ChallengeTypeDto challengeType = 2;
+  EnumGame game = 1;
+  services.challenges.EnumChallengeType challengeType = 2;
 }
 
 message FetchChallengeMatchesRequest {
-  GameDto game = 1;
+  EnumGame game = 1;
   google.protobuf.Timestamp startedAt = 2;
   google.protobuf.Timestamp endedAt = 3;
   repeated challenges.ParticipantDto participants = 4;
 }
 
 message FindPlayerGameCredentialRequest {
-  GameDto game = 1;
+  EnumGame game = 1;
 }

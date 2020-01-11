@@ -6,17 +6,20 @@ interface VerificationBadgeProps {
   verified: boolean;
 }
 
-const VerificationBadge: FunctionComponent<VerificationBadgeProps> = ({ className, verified }) => {
+const VerificationBadge: FunctionComponent<VerificationBadgeProps> = ({
+  className,
+  verified
+}) => {
   if (verified) {
     return (
-      <Badge pill className={`px-2 ${className}`} color="success">
-        <span>verified</span>
+      <Badge pill className={`px-2 ${className}`} color="primary">
+        <span>Verified</span>
       </Badge>
     );
   } else {
     return (
       <Badge pill className={`px-2 ${className}`} color="secondary">
-        <span>unverified</span>
+        <span>Unverified</span>
       </Badge>
     );
   }

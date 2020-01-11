@@ -1,4 +1,4 @@
-import { loadUserTransactionHistory, loadUserAccountBalance } from "./index";
+import { loadUserTransactionHistory, loadUserBalance } from "./index";
 
 import {
   LOAD_USER_MONEY_ACCOUNT_BALANCE,
@@ -25,7 +25,7 @@ describe("cashier actions", () => {
     const expectedMethod = "GET";
     const expectedUrl = `/cashier/api/balance/${expectedCurrency}`;
 
-    const actionCreator = loadUserAccountBalance(expectedCurrency);
+    const actionCreator = loadUserBalance(expectedCurrency);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);
@@ -42,7 +42,7 @@ describe("cashier actions", () => {
     const expectedMethod = "GET";
     const expectedUrl = `/cashier/api/balance/${expectedCurrency}`;
 
-    const actionCreator = loadUserAccountBalance(expectedCurrency);
+    const actionCreator = loadUserBalance(expectedCurrency);
 
     expect(actionCreator.types).toEqual(expectedType);
     expect(actionCreator.payload.request.method).toEqual(expectedMethod);

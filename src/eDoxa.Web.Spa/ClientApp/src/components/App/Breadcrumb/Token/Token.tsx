@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
-import Balance from "components/User/Account/Balance";
+import Balance from "components/User/Balance";
 import BuyToken from "./Buy";
 import { CURRENCY_TOKEN } from "types";
 
@@ -39,12 +39,14 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
             </dd>
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
-              <Balance currency={CURRENCY_TOKEN} attribute="pending" alignment="right" />
+              <Balance
+                currency={CURRENCY_TOKEN}
+                attribute="pending"
+                alignment="right"
+              />
             </dd>
           </dl>
-          {process.env.NODE_ENV !== "production" && (
-            <BuyToken currency={CURRENCY_TOKEN} />
-          )}
+          {process.env.NODE_ENV !== "production" && <BuyToken />}
         </PopoverBody>
       </Popover>
     </div>

@@ -203,6 +203,7 @@ services:
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
+      - ChallengesWebGatewayUrl=http://cashier-web-gateway
       - ChallengesWebGatewayUrl=http://challenges-web-gateway
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq

@@ -1,3 +1,3 @@
-import UpdateStripePaymentMethodModal from "./Update";
+import CustomModal from "./Update";
 
-export default UpdateStripePaymentMethodModal;
+export default CustomModal;

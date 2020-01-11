@@ -1,5 +1,5 @@
 ﻿// Filename: GameGrpcServiceTest.cs
-// Date Created: 2020-01-03
+// Date Created: 2020-01-05
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -94,7 +94,7 @@ namespace eDoxa.Games.IntegrationTests.Services
             await foreach (var fetchChallengeMatchesResponse in client.FetchChallengeMatches(
                     new FetchChallengeMatchesRequest
                     {
-                        Game = GameDto.LeagueOfLegends,
+                        Game = EnumGame.LeagueOfLegends,
                         StartedAt = startedAt.ToTimestamp(),
                         EndedAt = endedAt.ToTimestamp(),
                         Participants =

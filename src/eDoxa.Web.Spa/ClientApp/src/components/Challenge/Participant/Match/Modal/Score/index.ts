@@ -1,3 +1,3 @@
-import MatchScoreModal from "./Score";
+import CustomModal from "./Score";
 
-export default MatchScoreModal;
+export default CustomModal;

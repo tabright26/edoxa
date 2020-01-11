@@ -1,0 +1,67 @@
+import React, { FunctionComponent } from "react";
+import { FormGroup, Form } from "reactstrap";
+import { reduxForm, InjectedFormProps } from "redux-form";
+import Button from "components/Shared/Button";
+import { USER_ACCOUNT_DEPOSIT_FORM } from "utils/form/constants";
+import { compose } from "recompose";
+import FormValidation from "components/Shared/Form/Validation";
+import { throwSubmissionError } from "utils/form/types";
+import { createUserTransaction } from "store/actions/cashier";
+import { Currency, TransactionType, TransactionBundleId } from "types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
+import FormField from "components/Shared/Form/Field";
+
+interface FormData {
+  transactionBundleId: TransactionBundleId;
+}
+
+interface OutterProps {
+  currency: Currency;
+  transactionType: TransactionType;
+  handleCancel: () => void;
+}
+
+type InnerProps = InjectedFormProps<FormData, Props>;
+
+type Props = InnerProps & OutterProps;
+
+const CustomForm: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  handleCancel,
+  currency,
+  transactionType
+}) => (
+  <Form onSubmit={handleSubmit}>
+    {error && <FormValidation error={error} />}
+    <FormField.TransactionBundle
+      name="transactionBundleId"
+      transactionType={transactionType}
+      currency={currency}
+    />
+    <hr className="border-secondary" />
+    <FormGroup className="mb-0">
+      <Button.Save className="mr-2" />
+      <Button.Cancel onClick={() => handleCancel()} />
+    </FormGroup>
+  </Form>
+);
+
+const enhance = compose<InnerProps, OutterProps>(
+  reduxForm<FormData, Props>({
+    form: USER_ACCOUNT_DEPOSIT_FORM,
+    onSubmit: async (values, dispatch) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(createUserTransaction(values.transactionBundleId, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel()
+  })
+);
+
+export default enhance(CustomForm);

@@ -1,3 +1,3 @@
-import ReduxForm from "./Register";
+import Register from "./Register";
 
-export default ReduxForm;
+export default Register;

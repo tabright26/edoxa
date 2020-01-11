@@ -20,7 +20,7 @@ namespace eDoxa.Games.Api.Application.Profiles
             this.CreateMap<Credential, GameCredentialDto>()
                 .ForMember(credential => credential.UserId, config => config.MapFrom(credential => credential.UserId.ToString()))
                 .ForMember(credential => credential.PlayerId, config => config.MapFrom(credential => credential.PlayerId.ToString()))
-                .ForMember(credential => credential.Game, config => config.MapFrom(credential => credential.Game.ToEnum<GameDto>()));
+                .ForMember(credential => credential.Game, config => config.MapFrom(credential => credential.Game.ToEnum<EnumGame>()));
         }
     }
 }
