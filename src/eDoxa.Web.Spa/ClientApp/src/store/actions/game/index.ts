@@ -17,7 +17,10 @@ import {
 } from "./types";
 
 import { Game } from "types";
-import { AXIOS_PAYLOAD_CLIENT_DEFAULT } from "utils/axios/types";
+import {
+  AXIOS_PAYLOAD_CLIENT_DEFAULT,
+  AxiosActionCreatorMeta
+} from "utils/axios/types";
 
 export function loadGames(): GamesActionCreators {
   return {
@@ -34,7 +37,8 @@ export function loadGames(): GamesActionCreators {
 
 export function generateGameAuthentication(
   game: Game,
-  data: any
+  data: any,
+  meta: AxiosActionCreatorMeta
 ): GameAuthenticationActionCreators {
   return {
     types: [
@@ -49,12 +53,14 @@ export function generateGameAuthentication(
         url: `games/api/games/${game}/authentications`,
         data
       }
-    }
+    },
+    meta
   };
 }
 
 export function validateGameAuthentication(
-  game: Game
+  game: Game,
+  meta: AxiosActionCreatorMeta
 ): GameAuthenticationActionCreators {
   return {
     types: [
@@ -68,11 +74,15 @@ export function validateGameAuthentication(
         method: "PUT",
         url: `games/api/games/${game}/authentications`
       }
-    }
+    },
+    meta
   };
 }
 
-export function unlinkGameCredential(game: Game): GameCredentialActionCreators {
+export function unlinkGameCredential(
+  game: Game,
+  meta: AxiosActionCreatorMeta
+): GameCredentialActionCreators {
   return {
     types: [
       UNLINK_GAME_CREDENTIAL,
@@ -85,6 +95,7 @@ export function unlinkGameCredential(game: Game): GameCredentialActionCreators {
         method: "DELETE",
         url: `games/api/games/${game}/credentials`
       }
-    }
+    },
+    meta
   };
 }

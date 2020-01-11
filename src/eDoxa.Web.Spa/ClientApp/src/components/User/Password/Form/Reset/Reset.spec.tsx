@@ -43,7 +43,7 @@ describe("<UserPasswordResetForm />", () => {
       const field = wrapper.findFieldByName("password");
 
       expect(field.prop("type")).toBe("password");
-      expect(field.prop("label")).toBe("Password");
+      expect(field.prop("label")).toBe("New password");
       expect(field.prop("component")).toBe(Input.Password);
     });
 
@@ -52,7 +52,7 @@ describe("<UserPasswordResetForm />", () => {
       const field = wrapper.findFieldByName("confirmPassword");
 
       expect(field.prop("type")).toBe("password");
-      expect(field.prop("label")).toBe("Confirm Password");
+      expect(field.prop("label")).toBe("Confirm new password");
       expect(field.prop("component")).toBe(Input.Password);
     });
 
@@ -85,27 +85,5 @@ describe("<UserPasswordResetForm />", () => {
         expect(errorPresent).toBeTruthy();
       });
     });
-
-    // TODO: REDUX FORM IS NOT CREATING THE FORMFEEDBACK FOR PASSWORD TYPE EVEN THOUGH IT GOES INTO THE VALIDATION PROPERLY.
-    //
-    // describe("password validation", () => {
-    //   it("shows error when password is set to blank", () => {
-    //     const wrapper = createWrapper();
-    //     const input = wrapper.findInputByName("password");
-    //     input.simulate("blur");
-
-    //     const errorPresent = wrapper.findFormFeedback(PASSWORD_REQUIRED);
-    //     expect(errorPresent).toBeTruthy();
-    //   });
-
-    //   it("shows error when password is set to invalid", () => {
-    //     const wrapper = createWrapper();
-    //     const input = wrapper.findInputByName("password");
-    //     input.simulate("change", { target: { value: "!" } });
-
-    //     const errorPresent = wrapper.findFormFeedback(PASSWORD_INVALID);
-    //     expect(errorPresent).toBeTruthy();
-    //   });
-    // });
   });
 });

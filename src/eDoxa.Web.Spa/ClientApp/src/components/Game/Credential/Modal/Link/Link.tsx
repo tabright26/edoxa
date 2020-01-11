@@ -46,7 +46,7 @@ const CustomModal: FunctionComponent<Props> = ({
               <div className="my-auto w-50 px-3 text-center">
                 <div className="text-muted">{gameOption.instructions}</div>
                 <FontAwesomeIcon
-                  className="mt-2 text-primary"
+                  className="mt-2"
                   icon={faArrowRight}
                   size="3x"
                 />
