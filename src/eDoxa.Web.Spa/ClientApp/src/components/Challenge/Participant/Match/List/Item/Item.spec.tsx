@@ -242,7 +242,7 @@ it("renders without crashing", () => {
   const participant = challenge.participants.find(
     participant => participant.id === "id1"
   );
-  const match = participant.matches.find(match => match.id === "1");
+  const match = participant.matches.find(match => match.id === "3");
 
   //Act
   const tree = renderer

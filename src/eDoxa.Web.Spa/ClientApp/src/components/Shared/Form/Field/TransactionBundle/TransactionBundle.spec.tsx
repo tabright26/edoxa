@@ -43,7 +43,7 @@ it("renders without crashing", () => {
   };
 
   const FormWrapper = () => (
-    <Form>
+    <Form onSubmit={() => {}}>
       <TransactionBundle
         name="transactionBundleId"
         currency={CURRENCY_MONEY}
@@ -101,7 +101,7 @@ it("renders without crashing", () => {
   };
 
   const FormWrapper = () => (
-    <Form>
+    <Form onSubmit={() => {}}>
       <TransactionBundle
         name="transactionBundleId"
         currency={CURRENCY_TOKEN}

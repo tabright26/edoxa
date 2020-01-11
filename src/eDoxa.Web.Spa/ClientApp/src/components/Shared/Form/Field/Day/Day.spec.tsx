@@ -13,7 +13,7 @@ it("renders without crashing", () => {
   };
 
   const FormWrapper = () => (
-    <Form>
+    <Form onSubmit={() => {}}>
       <Day />
     </Form>
   );

@@ -15,7 +15,9 @@ exports[`renders without crashing 1`] = `
     <span
       className="badge badge-secondary"
       variant="light"
-    />
+    >
+      1
+    </span>
   </div>
   <div
     className="py-2 text-center mx-auto"
@@ -37,7 +39,7 @@ exports[`renders without crashing 1`] = `
     }
   >
     <span>
-      --
+      20.00
     </span>
   </div>
 </div>

@@ -197,7 +197,6 @@ export function confirmUserEmail(
   userId: string,
   code: string
 ): UserEmailActionCreators {
-  console.log(code);
   return {
     types: [
       CONFIRM_USER_EMAIL,

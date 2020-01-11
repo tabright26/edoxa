@@ -43,28 +43,35 @@ namespace eDoxa.Clans.Api.Application.Services
 
         public async Task<IDomainValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
         {
+            var result = new DomainValidationResult();
+
             if (!await _clanRepository.IsOwnerAsync(clanId, ownerId))
             {
-                return DomainValidationResult.Failure("Permission required.");
+                result.AddDebugError("Permission required.");
             }
 
             if (await _clanRepository.IsMemberAsync(userId))
             {
-                return DomainValidationResult.Failure("Target already in a clan.");
+                result.AddDebugError("Target already in a clan.");
             }
 
             if (await _invitationRepository.ExistsAsync(ownerId, clanId))
             {
-                return DomainValidationResult.Failure("_error", "The invitation from this clan to that member already exist.");
+                result.AddFailedPreconditionError("The invitation from this clan to that member already exist.");
             }
 
-            var invitation = new Invitation(userId, clanId);
+            if (result.IsValid)
+            {
+                var invitation = new Invitation(userId, clanId);
 
-            _invitationRepository.Create(invitation);
+                _invitationRepository.Create(invitation);
 
-            await _invitationRepository.UnitOfWork.CommitAsync();
+                await _invitationRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+                result.AddEntityToMetadata(invitation);
+            }
+
+            return result;
         }
 
         public async Task<IDomainValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId)
