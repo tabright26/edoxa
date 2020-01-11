@@ -63,7 +63,7 @@ const CustomModal: FunctionComponent<Props> = ({
             </div>
             <div className="d-flex justify-content-center mt-3">
               <GameAuthenticationFrom.Validate
-                game={gameOption.name}
+                gameOption={gameOption}
                 handleCancel={handleHide}
                 setAuthenticationFactor={setAuthenticationFactor}
               />
