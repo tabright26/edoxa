@@ -1,8 +1,8 @@
 ﻿// Filename: UserGameCredentialRemovedIntegrationEventHandlerTest.cs
-// Date Created: 2019-12-17
-//
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -42,10 +42,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             var mockUserService = new Mock<IUserService>();
             var mockLogger = new MockLogger<UserGameCredentialRemovedIntegrationEventHandler>();
 
-
-            mockUserService.Setup(userService => userService.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(user)
-                .Verifiable();
+            mockUserService.Setup(userService => userService.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
             mockUserService.Setup(userService => userService.RemoveClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()))
                 .ReturnsAsync(new IdentityResult())
@@ -55,12 +52,14 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserGameCredentialRemovedIntegrationEvent
 
-            { Credential = new GameCredentialDto()
             {
-                Game = GameDto.LeagueOfLegends,
-                PlayerId = new PlayerId(),
-                UserId = userId
-            }};
+                Credential = new GameCredentialDto
+                {
+                    Game = EnumGame.LeagueOfLegends,
+                    PlayerId = new PlayerId(),
+                    UserId = userId
+                }
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);

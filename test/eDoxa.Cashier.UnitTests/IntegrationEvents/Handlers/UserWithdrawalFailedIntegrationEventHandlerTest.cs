@@ -1,8 +1,8 @@
 ﻿// Filename: UserWithdrawalFailedIntegrationEventHandlerTest.cs
-// Date Created: 2019-12-17
-//
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -49,9 +49,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             mockAccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockAccountService.Setup(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(account)
-                .Verifiable();
+            mockAccountService.Setup(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
             mockAccountService
                 .Setup(
@@ -64,7 +62,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var handler = new UserWithdrawalFailedIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);
 
-            var integrationEvent = new UserWithdrawalFailedIntegrationEvent()
+            var integrationEvent = new UserWithdrawalFailedIntegrationEvent
             {
                 UserId = userId,
                 Transaction = new TransactionDto
@@ -72,10 +70,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                     Amount = new DecimalValue(50.0m),
                     Id = new TransactionId(),
                     Description = "test",
-                    Status = TransactionStatusDto.Failed,
-                    Currency = CurrencyDto.Money,
+                    Status = EnumTransactionStatus.Failed,
+                    Currency = EnumCurrency.Money,
                     Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
-                    Type = TransactionTypeDto.Withdrawal
+                    Type = EnumTransactionType.Withdrawal
                 }
             };
 
@@ -85,10 +83,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             // Assert
             mockAccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
+
             mockAccountService.Verify(
                 accountService =>
                     accountService.MarkAccountTransactionAsFailedAsync(It.IsAny<IAccount>(), It.IsAny<TransactionId>(), It.IsAny<CancellationToken>()),
                 Times.Once);
+
             mockLogger.Verify(Times.Once());
         }
     }

@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeParticipantRegisteredIntegrationEventHandlerTest.cs
-// Date Created: 2019-12-18
-//
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading;
@@ -96,8 +96,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             mockAccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
             mockAccountService.Verify(
-                accountService =>
-                    accountService.MarkAccountTransactionAsSuccededAsync(It.IsAny<IAccount>(), It.IsAny<TransactionMetadata>(), It.IsAny<CancellationToken>()),
+                accountService => accountService.MarkAccountTransactionAsSuccededAsync(
+                    It.IsAny<IAccount>(),
+                    It.IsAny<TransactionMetadata>(),
+                    It.IsAny<CancellationToken>()),
                 Times.Once);
 
             mockLogger.Verify(Times.Once());
