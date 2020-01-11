@@ -11,6 +11,8 @@ import { forgotUserPassword } from "store/actions/identity";
 import { EMAIL_REQUIRED, EMAIL_INVALID, emailRegex } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
+import { toastr } from "react-redux-toastr";
+import { REACT_APP_AUTHORITY } from "keys";
 
 interface FormData {
   email: string;
@@ -33,7 +35,17 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       component={Input.Text}
     />
     <FormGroup className="mb-0">
-      <Button.Submit block>Send Email</Button.Submit>
+      <Button.Submit className="w-25" size="sm">
+        Send
+      </Button.Submit>
+      <Button.Link
+        className="float-right"
+        onClick={() => {
+          window.location.href = `${REACT_APP_AUTHORITY}/Account/Login`;
+        }}
+      >
+        Return to login page
+      </Button.Link>
     </FormGroup>
   </Form>
 );
@@ -51,7 +63,16 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (_result, dispatch) => dispatch(push("/")),
+    onSubmitSuccess: (_result, dispatch) => {
+      dispatch(push("/"));
+      setTimeout(function() {
+        toastr.success(
+          "Email sent",
+          "We have sent you a link to reset your password by email.",
+          { timeOut: 7500 }
+        );
+      }, 2500);
+    },
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.email) {

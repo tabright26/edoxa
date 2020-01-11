@@ -10,7 +10,7 @@ exports[`renders without crashing 1`] = `
     <strong
       className="text-uppercase"
     >
-      Scoring
+      Scoring legend
     </strong>
   </div>
   <table
