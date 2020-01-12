@@ -1,8 +1,8 @@
 ﻿// Filename: ClanMemberAddedIntegrationEventHandlerTest.cs
-// Date Created: 2019-12-17
-//
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,7 +17,6 @@ using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
 
-using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore.Identity;
 
 using Moq;
@@ -44,10 +43,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             var mockUserService = new Mock<IUserService>();
             var mockLogger = new MockLogger<ClanMemberAddedIntegrationEventHandler>();
 
-
-            mockUserService.Setup(userService => userService.FindByIdAsync(It.IsAny<string>()))
-                .ReturnsAsync(user)
-                .Verifiable();
+            mockUserService.Setup(userService => userService.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
             mockUserService.Setup(userService => userService.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()))
                 .ReturnsAsync(new IdentityResult())

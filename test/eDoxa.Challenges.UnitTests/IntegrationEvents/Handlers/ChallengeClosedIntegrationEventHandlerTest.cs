@@ -1,6 +1,6 @@
 ﻿// Filename: ChallengeClosedIntegrationEventHandlerTest.cs
-// Date Created: 2019-12-18
-//
+// Date Created: 2019-12-26
+// 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -83,7 +83,7 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
                         "test1", new PrizeDto
                         {
                             Amount = 50.0m,
-                            Currency = CurrencyDto.Money
+                            Currency = EnumCurrency.Money
                         }
                     }
                 }

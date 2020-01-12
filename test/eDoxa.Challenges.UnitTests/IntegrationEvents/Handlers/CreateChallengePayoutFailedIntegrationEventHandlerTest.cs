@@ -1,8 +1,8 @@
 ﻿// Filename: CreateChallengePayoutFailedIntegrationEventHandlerTest.cs
-// Date Created: 2019-12-17
-//
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading;
@@ -42,7 +42,6 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
                 {new StatName(Game.LeagueOfLegends), new StatWeighting(50.0f)}
             };
 
-
             var challenge = new Challenge(
                 challengeId,
                 new ChallengeName("test"),
@@ -60,17 +59,16 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
 
             mockChallengeService.Setup(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
-            mockChallengeService
-                .Setup(
-                    challengeService => challengeService.DeleteChallengeAsync(
-                        It.IsAny<Challenge>(),
-                        It.IsAny<CancellationToken>()))
+            mockChallengeService.Setup(challengeService => challengeService.DeleteChallengeAsync(It.IsAny<Challenge>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
             var handler = new CreateChallengePayoutFailedIntegrationEventHandler(mockChallengeService.Object, mockLogger.Object);
 
-            var integrationEvent = new CreateChallengePayoutFailedIntegrationEvent{ ChallengeId = challengeId};
+            var integrationEvent = new CreateChallengePayoutFailedIntegrationEvent
+            {
+                ChallengeId = challengeId
+            };
 
             // Act
             await handler.HandleAsync(integrationEvent);
@@ -80,9 +78,7 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
             mockChallengeService.Verify(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockChallengeService.Verify(
-                challengeService => challengeService.DeleteChallengeAsync(
-                    It.IsAny<Challenge>(),
-                    It.IsAny<CancellationToken>()),
+                challengeService => challengeService.DeleteChallengeAsync(It.IsAny<Challenge>(), It.IsAny<CancellationToken>()),
                 Times.Once);
 
             mockLogger.Verify(Times.Once());

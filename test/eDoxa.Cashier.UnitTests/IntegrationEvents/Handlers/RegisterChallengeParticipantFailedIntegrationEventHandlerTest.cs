@@ -1,8 +1,8 @@
-﻿// Filename: CreateChallengeFailedIntegrationEventHandlerTest.cs
-// Date Created: 2019-12-17
-//
+﻿// Filename: RegisterChallengeParticipantFailedIntegrationEventHandlerTest.cs
+// Date Created: 2020-01-11
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading;
@@ -30,7 +30,9 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class RegisterChallengeParticipantFailedIntegrationEventHandlerTest : UnitTest
     {
-        public RegisterChallengeParticipantFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public RegisterChallengeParticipantFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(
+            testData,
+            testMapper)
         {
         }
 
@@ -96,8 +98,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             mockAccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
             mockAccountService.Verify(
-                accountService =>
-                    accountService.MarkAccountTransactionAsCanceledAsync(It.IsAny<IAccount>(), It.IsAny<TransactionMetadata>(), It.IsAny<CancellationToken>()),
+                accountService => accountService.MarkAccountTransactionAsCanceledAsync(
+                    It.IsAny<IAccount>(),
+                    It.IsAny<TransactionMetadata>(),
+                    It.IsAny<CancellationToken>()),
                 Times.Once);
 
             mockLogger.Verify(Times.Once());

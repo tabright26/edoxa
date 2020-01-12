@@ -1,5 +1,5 @@
 ﻿// Filename: GameGrpcServiceTest.cs
-// Date Created: 2020-01-05
+// Date Created: 2020-01-11
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -28,7 +28,7 @@ using Xunit;
 
 namespace eDoxa.Games.IntegrationTests.Services
 {
-    public sealed class GameGrpcServiceTest : IntegrationTest
+    public sealed class GameGrpcServiceTest : IntegrationTest // TODO: INTEGRATION TESTS
     {
         public static TheoryData<string, DateTime, DateTime, int> Senarios = new TheoryData<string, DateTime, DateTime, int>
         {
@@ -78,7 +78,7 @@ namespace eDoxa.Games.IntegrationTests.Services
 
         [Theory]
         [MemberData(nameof(Senarios))]
-        public async Task Test(
+        public async Task FetchChallengeMatches(
             string playerId,
             DateTime startedAt,
             DateTime endedAt,

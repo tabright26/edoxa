@@ -1,8 +1,8 @@
 ﻿// Filename: UserCreatedIntegrationEventHandlerTest.cs
 // Date Created: 2019-11-25
-//
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading.Tasks;
@@ -80,6 +80,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             // Assert
             mockStripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.CreateCustomerAsync(It.IsAny<UserId>(), It.IsAny<string>()), Times.Once);
+
             mockAccountService.Verify(
                 accountService => accountService.CreateAccountAsync(
                     It.IsAny<UserId>(),
@@ -87,9 +88,8 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<Country>(),
                     It.IsAny<string>()),
                 Times.Once);
-            mockStripeService.Verify(
-                referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()),
-                Times.Once);
+
+            mockStripeService.Verify(referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             mockLogger.Verify(Times.Once());
         }
     }
