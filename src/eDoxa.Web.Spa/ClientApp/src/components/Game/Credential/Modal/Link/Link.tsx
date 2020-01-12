@@ -21,7 +21,13 @@ const CustomModal: FunctionComponent<Props> = ({
 }) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
-    <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
+    <Modal
+      unmountOnClose={false}
+      backdrop="static"
+      centered
+      isOpen={show}
+      toggle={handleHide}
+    >
       <ModalHeader toggle={handleHide}>
         <strong>{gameOption.displayName} Authentications</strong>
       </ModalHeader>

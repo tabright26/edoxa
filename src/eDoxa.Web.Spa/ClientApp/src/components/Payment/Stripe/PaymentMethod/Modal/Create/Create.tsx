@@ -11,11 +11,14 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const CustomModal: FunctionComponent<Props> = ({
-  show,
-  handleHide
-}) => (
-  <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
+const CustomModal: FunctionComponent<Props> = ({ show, handleHide }) => (
+  <Modal
+    unmountOnClose={false}
+    backdrop="static"
+    centered
+    isOpen={show}
+    toggle={handleHide}
+  >
     <ModalHeader toggle={handleHide}>ADD NEW PAYMENT METHOD</ModalHeader>
     <ModalBody>
       <StripePaymentMethodForm.Create handleCancel={() => handleHide()} />

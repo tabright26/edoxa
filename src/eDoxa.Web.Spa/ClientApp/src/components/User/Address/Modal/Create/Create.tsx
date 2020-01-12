@@ -12,7 +12,13 @@ type OutterProps = {};
 type Props = InnerProps & OutterProps;
 
 const CustomModal: FunctionComponent<Props> = ({ show, handleHide }) => (
-  <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
+  <Modal
+    unmountOnClose={false}
+    backdrop="static"
+    centered
+    isOpen={show}
+    toggle={handleHide}
+  >
     <ModalHeader toggle={handleHide}>Add new address</ModalHeader>
     <ModalBody>
       <dl className="row mb-0">

@@ -22,8 +22,10 @@ const CustomModal: FunctionComponent<Props> = ({
   transactionType
 }) => (
   <Modal
+    unmountOnClose={false}
+    backdrop="static"
     size="lg"
-    className="modal-dialog-centered"
+    centered
     isOpen={show}
     toggle={handleHide}
   >

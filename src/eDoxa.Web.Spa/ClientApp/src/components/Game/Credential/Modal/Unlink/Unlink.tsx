@@ -19,7 +19,13 @@ const CustomModal: FunctionComponent<Props> = ({
   handleHide,
   gameOption
 }) => (
-  <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
+  <Modal
+    unmountOnClose={false}
+    backdrop="static"
+    centered
+    isOpen={show}
+    toggle={handleHide}
+  >
     <ModalHeader toggle={handleHide}>
       <strong>
         Are you sure to unlink {gameOption.displayName} credential?
