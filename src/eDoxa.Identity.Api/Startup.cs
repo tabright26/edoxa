@@ -13,6 +13,7 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
@@ -277,6 +278,8 @@ namespace eDoxa.Identity.Api
 
                     endpoints.MapCustomHealthChecks();
                 });
+
+            application.UseAuthenticationLoginRedirects();
 
             application.UseSwagger(AppSettings);
 
