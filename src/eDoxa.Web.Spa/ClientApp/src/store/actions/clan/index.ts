@@ -59,6 +59,7 @@ import {
   ClanMembersActionCreators,
   ClanLogosActionCreators
 } from "./types";
+import { AXIOS_PAYLOAD_CLIENT_DEFAULT } from "utils/axios/types";
 
 export function loadClanCandidatures(
   type: string,
@@ -71,6 +72,7 @@ export function loadClanCandidatures(
       LOAD_CLAN_CANDIDATURES_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/clans/api/candidatures?${type}Id=${id}` // FRANCIS: This is wrong.
@@ -89,6 +91,7 @@ export function loadClanCandidature(
       LOAD_CLAN_CANDIDATURE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/organizations/clans/api/candidatures/${candidatureId}`
@@ -108,6 +111,7 @@ export function sendClanCandidature(
       SEND_CLAN_CANDIDATURE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/organizations/clans/api/candidatures",
@@ -130,6 +134,7 @@ export function acceptClanCandidature(
       ACCEPT_CLAN_CANDIDATURE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: `/organizations/clans/api/candidatures/${candidatureId}`
@@ -148,6 +153,7 @@ export function declineClanCandidature(
       DECLINE_CLAN_CANDIDATURE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "DELETE",
         url: `/organizations/clans/api/candidatures/${candidatureId}`
@@ -160,6 +166,7 @@ export function loadClans(): ClansActionCreators {
   return {
     types: [LOAD_CLANS, LOAD_CLANS_SUCCESS, LOAD_CLANS_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: "/clans/api/clans"
@@ -172,6 +179,7 @@ export function loadClan(clanId: string): ClansActionCreators {
   return {
     types: [LOAD_CLAN, LOAD_CLAN_SUCCESS, LOAD_CLAN_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/clans/api/clans/${clanId}`
@@ -184,6 +192,7 @@ export function createClan(data: any): ClansActionCreators {
   return {
     types: [CREATE_CLAN, CREATE_CLAN_SUCCESS, CREATE_CLAN_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/organizations/clans/api/clans",
@@ -197,6 +206,7 @@ export function leaveClan(clanId: string): ClansActionCreators {
   return {
     types: [LEAVE_CLAN, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "DELETE",
         url: `/organizations/clans/api/clans/${clanId}/members`
@@ -216,6 +226,7 @@ export function loadClanInvitations(
       LOAD_CLAN_INVITATIONS_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/clans/api/invitations?${type}Id=${id}`
@@ -234,6 +245,7 @@ export function loadClanInvitation(
       LOAD_CLAN_INVITATION_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/clans/api/invitations/${invitationId}`
@@ -253,6 +265,7 @@ export function sendClanInvitation(
       SEND_CLAN_INVITATION_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/clans/api/invitations",
@@ -275,6 +288,7 @@ export function acceptClanInvitation(
       ACCEPT_CLAN_INVITATION_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: `/clans/api/invitations/${invitationId}`
@@ -293,6 +307,7 @@ export function declineClanInvitation(
       DECLINE_CLAN_INVITATION_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "DELETE",
         url: `/clans/api/invitations/${invitationId}`
@@ -309,6 +324,7 @@ export function downloadClanLogo(clanId: string): ClanLogosActionCreators {
       DOWNLOAD_CLAN_LOGO_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/clans/api/clans/${clanId}/logo`
@@ -324,6 +340,7 @@ export function uploadClanLogo(
   return {
     types: [UPLOAD_CLAN_LOGO, UPLOAD_CLAN_LOGO_SUCCESS, UPLOAD_CLAN_LOGO_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: `/clans/api/clans/${clanId}/logo`,
@@ -341,6 +358,7 @@ export function loadClanMembers(clanId: string): ClanMembersActionCreators {
       LOAD_CLAN_MEMBERS_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
         url: `/clans/api/clans/${clanId}/members`
@@ -356,6 +374,7 @@ export function kickClanMember(
   return {
     types: [KICK_CLAN_MEMBER, KICK_CLAN_MEMBER_SUCCESS, KICK_CLAN_MEMBER_FAIL],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "DELETE",
         url: `/clans/api/clans/${clanId}/members/${memberId}`

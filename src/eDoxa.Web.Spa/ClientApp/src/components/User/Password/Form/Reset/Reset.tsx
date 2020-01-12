@@ -9,7 +9,7 @@ import {
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { RESET_USER_PASSWORD_FORM } from "forms";
+import { RESET_USER_PASSWORD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
@@ -23,11 +23,11 @@ import {
   PASSWORD_INVALID
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-import { REACT_APP_AUTHORITY } from "keys";
 import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
 import queryString, { ParseOptions } from "query-string";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { push } from "connected-react-router";
 
 interface StateProps {}
 
@@ -45,7 +45,7 @@ type InnerProps = InjectedFormProps<FormData, Props> &
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <Field type="hidden" name="code" component={Input.Text} />
@@ -64,7 +64,7 @@ const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="password"
-        label="Password"
+        label="New password"
         component={Input.Password}
       />
     </InputGroup>
@@ -77,7 +77,7 @@ const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="confirmPassword"
-        label="Confirm Password"
+        label="Confirm new password"
         component={Input.Password}
       />
     </InputGroup>
@@ -115,8 +115,8 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: () => {
-      window.location.href = `${REACT_APP_AUTHORITY}/account/login`; // TODO: Should be router constants.
+    onSubmitSuccess: (result, dispatch) => {
+      dispatch(push("/authentication/login"));
     },
     validate: values => {
       const errors: FormErrors<FormData> = {};
@@ -135,4 +135,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

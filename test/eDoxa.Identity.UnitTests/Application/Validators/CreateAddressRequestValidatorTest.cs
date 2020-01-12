@@ -18,18 +18,18 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
 {
     public sealed class CreateAddressRequestValidatorTest
     {
-        public static TheoryData<CountryDto> ValidCountries =>
-            new TheoryData<CountryDto>
+        public static TheoryData<EnumCountry> ValidCountries =>
+            new TheoryData<EnumCountry>
             {
-                CountryDto.Canada,
-                CountryDto.UnitedStates
+                EnumCountry.Canada,
+                EnumCountry.UnitedStates
             };
 
-        public static TheoryData<CountryDto, string> InvalidCountries =>
-            new TheoryData<CountryDto, string>
+        public static TheoryData<EnumCountry, string> InvalidCountries =>
+            new TheoryData<EnumCountry, string>
             {
-                {CountryDto.None, AddressBookErrorDescriber.CountryInvalid()},
-                {CountryDto.All, AddressBookErrorDescriber.CountryInvalid()}
+                {EnumCountry.None, AddressBookErrorDescriber.CountryInvalid()},
+                {EnumCountry.All, AddressBookErrorDescriber.CountryInvalid()}
             };
 
         public static TheoryData<string> ValidLine1Address =>
@@ -106,7 +106,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
 
         [Theory]
         [MemberData(nameof(ValidCountries))]
-        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(CountryDto country)
+        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(EnumCountry country)
         {
             // Arrange
             var validator = new CreateAddressRequestValidator();
@@ -117,7 +117,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
 
         [Theory]
         [MemberData(nameof(InvalidCountries))]
-        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(CountryDto country, string errorMessage)
+        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(EnumCountry country, string errorMessage)
         {
             // Arrange
             var validator = new CreateAddressRequestValidator();

@@ -30,14 +30,14 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
             _gameServiceClient = gameServiceClient;
         }
 
-        private async Task<IEnumerable<ChallengeDto>> FetchChallengesAsync(GameDto game)
+        private async Task<IEnumerable<ChallengeDto>> FetchChallengesAsync(EnumGame game)
         {
             var challenges = new List<ChallengeDto>();
 
             var fetchInProgressChallengesRequest = new FetchChallengesRequest
             {
                 Game = game,
-                State = ChallengeStateDto.InProgress
+                State = EnumChallengeState.InProgress
             };
 
             var fetchInProgressChallengesResponse = await _challengeServiceClient.FetchChallengesAsync(fetchInProgressChallengesRequest);
@@ -47,7 +47,7 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
             var fetchEndedChallengesRequest = new FetchChallengesRequest
             {
                 Game = game,
-                State = ChallengeStateDto.Ended
+                State = EnumChallengeState.Ended
             };
 
             var fetchEndedChallengesResponse = await _challengeServiceClient.FetchChallengesAsync(fetchEndedChallengesRequest);
@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
             return challenges;
         }
 
-        public async Task SynchronizeChallengesAsync(GameDto game)
+        public async Task SynchronizeChallengesAsync(EnumGame game)
         {
             foreach (var challenge in await this.FetchChallengesAsync(game))
             {

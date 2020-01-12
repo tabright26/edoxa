@@ -18,5 +18,5 @@ message GameMatchDto {
 message GameCredentialDto {
   string userId = 1;
   string playerId = 2;
-  GameDto game = 3;
+  EnumGame game = 3;
 }

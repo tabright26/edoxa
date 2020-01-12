@@ -55,7 +55,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     Address = user.Email,
                     Verified = user.EmailConfirmed
                 },
-                Country = user.Country.ToEnum<CountryDto>()
+                Country = user.Country.ToEnum<EnumCountry>()
             };
 
             await publisher.PublishAsync(integrationEvent);
@@ -69,8 +69,8 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                 Address = new AddressDto
                 {
                     Id = address.Id,
-                    Type = address.Type.ToEnumOrDefault<AddressTypeDto>(),
-                    Country = address.Country.ToEnum<CountryDto>(),
+                    Type = address.Type.ToEnumOrDefault<EnumAddressType>(),
+                    Country = address.Country.ToEnum<EnumCountry>(),
                     Line1 = address.Line1,
                     Line2 = address.Line2,
                     State = address.State,
@@ -106,7 +106,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                 {
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
-                    Gender = profile.Gender.ToEnum<GenderDto>(),
+                    Gender = profile.Gender.ToEnum<EnumGender>(),
                     Dob = new DobDto
                     {
                         Day = profile.Dob.Day,

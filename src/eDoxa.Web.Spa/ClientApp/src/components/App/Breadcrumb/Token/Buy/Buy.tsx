@@ -1,21 +1,27 @@
-import React from "react";
-import { Button } from "reactstrap";
-import { withModals } from "utils/modal/container";
+import React, { FunctionComponent } from "react";
 import { compose } from "recompose";
-import { CURRENCY_TOKEN } from "types";
-import { withUserAccountDepositBundles } from "store/root/user/account/deposit/bundles/container";
+import { CURRENCY_TOKEN, TRANSACTION_TYPE_DEPOSIT } from "types";
 import { withStripeCustomerHasDefaultPaymentMethod } from "store/root/payment/stripe/customer/container";
+import UserTransactionButton from "components/User/Transaction/Button";
 
-const DepositButton = ({ modals, bundles: { data, loading }, hasDefaultPaymentMethod }) => (
-  <Button color="primary" size="sm" block disabled={loading || !hasDefaultPaymentMethod} onClick={() => modals.showDepositModal(CURRENCY_TOKEN, data)}>
+type InnerProps = { hasDefaultPaymentMethod: boolean };
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const BuyButton: FunctionComponent<Props> = ({ hasDefaultPaymentMethod }) => (
+  <UserTransactionButton.Create
+    transactionType={TRANSACTION_TYPE_DEPOSIT}
+    currency={CURRENCY_TOKEN}
+    disabled={!hasDefaultPaymentMethod}
+  >
     Buy Token
-  </Button>
+  </UserTransactionButton.Create>
 );
 
-const enhance = compose<any, any>(
-  withModals,
-  withUserAccountDepositBundles,
+const enhance = compose<InnerProps, OutterProps>(
   withStripeCustomerHasDefaultPaymentMethod
 );
 
-export default enhance(DepositButton);
+export default enhance(BuyButton);

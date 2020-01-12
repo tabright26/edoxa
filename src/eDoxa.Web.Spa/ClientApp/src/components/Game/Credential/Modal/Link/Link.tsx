@@ -1,16 +1,33 @@
-import React, { useState } from "react";
-import { connectModal } from "redux-modal";
+import React, { useState, FunctionComponent } from "react";
+import { connectModal, InjectedProps } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { LINK_GAME_CREDENTIAL_MODAL } from "modals";
+import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameAuthenticationFrom from "components/Game/Authentication/Form";
 import { compose } from "recompose";
+import { GameOption } from "types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-// TODO: FRANCIS NEED PROCESS DETAILS.
+type InnerProps = InjectedProps & { gameOption: GameOption };
 
-const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const CustomModal: FunctionComponent<Props> = ({
+  show,
+  handleHide,
+  gameOption
+}) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
-    <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
+    <Modal
+      unmountOnClose={false}
+      backdrop="static"
+      centered
+      isOpen={show}
+      toggle={handleHide}
+    >
       <ModalHeader toggle={handleHide}>
         <strong>{gameOption.displayName} Authentications</strong>
       </ModalHeader>
@@ -22,7 +39,7 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
           />
         ) : (
           <>
-            <div className="d-flex justify-content-around">
+            <div className="d-flex justify-content-between">
               <div className="text-center">
                 <h5>Current</h5>
                 <img
@@ -30,6 +47,14 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
                   alt="current"
                   height={100}
                   width={100}
+                />
+              </div>
+              <div className="my-auto w-50 px-3 text-center">
+                <div className="text-muted">{gameOption.instructions}</div>
+                <FontAwesomeIcon
+                  className="mt-2"
+                  icon={faArrowRight}
+                  size="3x"
                 />
               </div>
               <div className="text-center">
@@ -44,7 +69,7 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
             </div>
             <div className="d-flex justify-content-center mt-3">
               <GameAuthenticationFrom.Validate
-                game={gameOption.name}
+                gameOption={gameOption}
                 handleCancel={handleHide}
                 setAuthenticationFactor={setAuthenticationFactor}
               />
@@ -56,10 +81,8 @@ const LinkGameAuthenticationModal = ({ show, handleHide, gameOption }) => {
   );
 };
 
-//Todo: This is an hard fixed modal. For some reason, when we use modal with the destroy on hide, the page crash when we cancel or hide the modal. Due
-// to not having the props anymore or because the props have been destroyed ????
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: LINK_GAME_CREDENTIAL_MODAL, destroyOnHide: false })
 );
 
-export default enhance(LinkGameAuthenticationModal);
+export default enhance(CustomModal);

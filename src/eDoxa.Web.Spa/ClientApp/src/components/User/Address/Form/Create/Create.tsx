@@ -4,7 +4,7 @@ import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import FormField from "components/Shared/Form/Field";
-import { CREATE_USER_ADDRESS_FORM } from "forms";
+import { CREATE_USER_ADDRESS_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { createUserAddress } from "store/actions/identity";
@@ -45,7 +45,7 @@ type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({
+const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel
@@ -148,4 +148,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

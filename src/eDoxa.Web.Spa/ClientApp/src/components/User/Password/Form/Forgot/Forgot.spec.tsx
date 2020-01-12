@@ -40,7 +40,7 @@ describe("<UserPasswordForgotForm />", () => {
       const submitButton = wrapper.findSubmitButton();
 
       expect(submitButton.prop("type")).toBe("submit");
-      expect(submitButton.text()).toBe("Send Email");
+      expect(submitButton.text()).toBe("Send");
     });
   });
 

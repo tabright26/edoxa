@@ -2,18 +2,14 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Deposit from "./Deposit";
-import { UserAccountDepositBundlesState } from "store/root/user/account/deposit/bundles/types";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
 import { CURRENCY_MONEY } from "types";
+import { TransactionBundlesState } from "store/static/transactionBundle/types";
 
 it("renders without crashing", () => {
   //Arrange
-  const moneyBundles: UserAccountDepositBundlesState = {
-    data: [
-      { amount: 100, price: 100 },
-      { amount: 200, price: 200 },
-      { amount: 300, price: 300 }
-    ],
+  const moneyBundles: TransactionBundlesState = {
+    data: [],
     loading: false,
     error: null
   };

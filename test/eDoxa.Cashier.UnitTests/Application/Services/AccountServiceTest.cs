@@ -1,25 +1,28 @@
 ﻿// Filename: AccountServiceTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Services;
+using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
+
+using Microsoft.Extensions.Options;
 
 using Moq;
 
@@ -38,8 +41,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var userId = new UserId();
 
@@ -49,7 +50,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             await service.CreateAccountAsync(userId);
@@ -65,8 +66,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
+
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -97,12 +97,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -121,7 +119,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
 
             var account = new Account(new UserId());
             var tokenAccount = new TokenAccountDecorator(account);
@@ -133,7 +130,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -153,12 +150,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -177,12 +172,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -201,14 +194,16 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
-
-            mockBundlesService.Setup(x => x.FetchDepositMoneyBundles()).Returns(new List<Bundle>().ToImmutableHashSet()).Verifiable();
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = Array.Empty<TransactionBundleDto>()
+                    }));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -226,14 +221,16 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
-
-            mockBundlesService.Setup(x => x.FetchDepositTokenBundles()).Returns(new List<Bundle>().ToImmutableHashSet()).Verifiable();
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = Array.Empty<TransactionBundleDto>()
+                    }));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -246,16 +243,15 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             result.Should().BeOfType<DomainValidationResult>();
         }
 
-        [Fact] //TODO: Validation with TryGetValue
+        [Fact]
         public async Task CreateTransactionAsync_WithWrongAmount_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -266,6 +262,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
+
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -274,8 +271,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
 
@@ -283,30 +278,46 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            //mockServiceBusPublisher.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserAccountDepositIntegrationEvent>()))
-            //    .Returns(Task.CompletedTask)
-            //    .Verifiable();
-
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Money(100), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
-            var result = await service.CreateTransactionAsync(account, Money.OneHundred.Amount, Currency.Money, TransactionType.Deposit);
+            var result = await service.CreateTransactionAsync(
+                account,
+                Money.OneHundred.Amount,
+                Currency.Money,
+                TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchDepositMoneyBundles(), Times.Once());
-
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
-
-            //mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserAccountDepositIntegrationEvent>()), Times.Once());
         }
 
         [Fact]
@@ -314,31 +325,53 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
+
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceded();
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Money(100), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
-            var result = await service.CreateTransactionAsync(moneyAccount, Money.OneHundred.Amount, Currency.Money, TransactionType.Deposit);
+            var result = await service.CreateTransactionAsync(
+                moneyAccount,
+                Money.OneHundred.Amount,
+                Currency.Money,
+                TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchDepositMoneyBundles(), Times.Once());
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -346,84 +379,107 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Money(20), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Withdrawal,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
-            var result = await service.CreateTransactionAsync(account, Money.OneHundred.Amount, Currency.Money, TransactionType.Deposit);
+            var result = await service.CreateTransactionAsync(
+                account,
+                Money.OneHundred.Amount,
+                Currency.Money,
+                TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
             result.Errors.Should().NotBeEmpty();
-
-            mockBundlesService.Verify(bundleService => bundleService.FetchDepositMoneyBundles(), Times.Once());
         }
-
-        //[Fact]
-        //public void DepositAsync_WithCurrencyNull_ShouldThrowInvalidOperationException()
-        //{
-        //    // Arrange
-        //    var mockAccountRepository = new Mock<IAccountRepository>();
-        //    var mockBundlesService = new Mock<IBundlesService>();
-        //    
-
-        //    var account = new Account(new UserId());
-
-        //    var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
-
-        //    // Act
-        //    var action = new Func<Task<IDomainValidationResult>>(async () => await service.CreateTransactionAsync(account, 0, null, TransactionType.Deposit));
-
-        //    // Assert
-        //    action.Should().Throw<InvalidOperationException>();
-        //}
 
         [Fact]
         public async Task DepositAsync_WithCurrencyToken_ShouldBeOfTypeValidationResult()
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
+
+            //var tokenAccount = new TokenAccountDecorator(account);
+
+            //tokenAccount.Deposit(Token.OneMillion);
 
             mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            //mockServiceBusPublisher.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserAccountDepositIntegrationEvent>()))
-            //    .Returns(Task.CompletedTask)
-            //    .Verifiable();
-
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Token(50000), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var accountService = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Token,
+                                    Amount = Convert.ToDouble(Token.OneMillion.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
-            var result = await service.CreateTransactionAsync(account, Token.FiftyThousand.Amount, Currency.Token, TransactionType.Deposit);
+            var result = await accountService.CreateTransactionAsync(
+                account,
+                Token.OneMillion.Amount,
+                Currency.Token,
+                TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
-            mockBundlesService.Verify(bundleService => bundleService.FetchDepositTokenBundles(), Times.Once());
+
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
-            //mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserAccountDepositIntegrationEvent>()), Times.Once());
         }
 
         [Fact]
@@ -431,31 +487,53 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
+
             var account = new Account(new UserId());
             var tokenAccount = new TokenAccountDecorator(account);
             var transaction = tokenAccount.Deposit(Token.FiftyThousand);
 
             transaction.MarkAsSucceded();
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Token(50000), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
-            var result = await service.CreateTransactionAsync(tokenAccount, Token.FiftyThousand.Amount, Currency.Token, TransactionType.Deposit);
+            var result = await service.CreateTransactionAsync(
+                tokenAccount,
+                Token.FiftyThousand.Amount,
+                Currency.Token,
+                TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchDepositTokenBundles(), Times.Once());
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -463,28 +541,49 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Token(1000), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
-            var result = await service.CreateTransactionAsync(account, Token.FiftyThousand.Amount, Currency.Token, TransactionType.Deposit);
+            var result = await service.CreateTransactionAsync(
+                account,
+                Token.FiftyThousand.Amount,
+                Currency.Token,
+                TransactionType.Deposit);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchDepositTokenBundles(), Times.Once());
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -492,15 +591,13 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var userId = new UserId();
             var account = new Account(userId);
 
             mockAccountRepository.Setup(accountRepository => accountRepository.FindAccountOrNullAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.FindAccountOrNullAsync(userId);
@@ -516,8 +613,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
+
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
@@ -528,29 +624,45 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            //mockServiceBusPublisher.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserAccountWithdrawalIntegrationEvent>()))
-            //    .Returns(Task.CompletedTask)
-            //    .Verifiable();
-
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Money(20), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
             var metadata = new TransactionMetadata
             {
                 {"UserId", account.Id.ToString()},
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Withdrawal,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
             var result = await service.CreateTransactionAsync(
                 moneyAccount,
-                Money.Twenty.Amount,
+                Money.OneHundred.Amount,
                 Currency.Money,
                 TransactionType.Withdrawal,
                 metadata);
@@ -558,11 +670,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());
-
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
-
-            //mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserAccountWithdrawalIntegrationEvent>()), Times.Once());
         }
 
         [Fact]
@@ -570,12 +678,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-
-            var mockBundlesService = new Mock<IBundleService>();
-
-            mockBundlesService.Setup(x => x.FetchWithdrawalMoneyBundles()).Returns(new List<Bundle>().ToImmutableHashSet).Verifiable();
-
-            
 
             var account = new Account(new UserId());
 
@@ -585,7 +687,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(mockAccountRepository.Object, new OptionsWrapper<CashierAppSettings>(new CashierAppSettings()));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -597,6 +699,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
+
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -606,18 +709,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
 
-            var mockBundlesService = new Mock<IBundleService>();
-
-            
-
             var account = new Account(new UserId());
-
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Money(20), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
             var metadata = new TransactionMetadata
             {
@@ -625,7 +717,34 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -637,9 +756,8 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -647,22 +765,41 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
+
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceded();
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Money(20), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-            
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -673,9 +810,8 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());
+            result.Errors.Should().NotBeEmpty();
         }
 
         [Fact]
@@ -683,17 +819,8 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         {
             // Arrange
             var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockBundlesService = new Mock<IBundleService>();
-            
 
             var account = new Account(new UserId());
-
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Money(100), new Price(new Money(100)))
-            };
-
-            mockBundlesService.Setup(bundleService => bundleService.FetchWithdrawalMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
 
             var metadata = new TransactionMetadata
             {
@@ -701,7 +828,34 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, mockBundlesService.Object);
+            var service = new AccountService(
+                mockAccountRepository.Object,
+                new OptionsWrapper<CashierAppSettings>(
+                    new CashierAppSettings
+                    {
+                        TransactionBundles = new[]
+                        {
+                            new TransactionBundleDto
+                            {
+                                Id = 1,
+                                Type = EnumTransactionType.Deposit,
+                                Currency = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Price = new CurrencyDto
+                                {
+                                    Type = EnumCurrency.Money,
+                                    Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                                },
+                                Description = null,
+                                Notes = null,
+                                Deprecated = false,
+                                Disabled = false
+                            }
+                        }
+                    }));
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -713,9 +867,8 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
 
-            mockBundlesService.Verify(bundleService => bundleService.FetchWithdrawalMoneyBundles(), Times.Once());
+            result.Errors.Should().NotBeEmpty();
         }
     }
 }

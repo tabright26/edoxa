@@ -1,8 +1,8 @@
 ﻿// Filename: DecimalValueConverter.cs
-// Date Created: 2019-12-13
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -34,14 +34,7 @@ namespace eDoxa.Seedwork.Application.Converters
             JsonSerializer serializer
         )
         {
-            if (reader.Value is double value)
-            {
-                return DecimalValue.FromDecimal(new decimal(value));
-            }
-            else
-            {
-                return null;
-            }
+            return reader.Value is double value ? DecimalValue.FromDecimal(new decimal(value)) : null;
         }
     }
 }

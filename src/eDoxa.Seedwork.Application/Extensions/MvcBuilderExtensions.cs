@@ -27,6 +27,7 @@ namespace eDoxa.Seedwork.Application.Extensions
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     options.SerializerSettings.Converters.Add(new DecimalValueConverter());
+                    options.SerializerSettings.Converters.Add(new TimestampConverter());
                 });
         }
 

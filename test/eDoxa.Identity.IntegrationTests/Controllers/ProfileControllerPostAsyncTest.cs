@@ -71,7 +71,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                 {
                     FirstName = "Bod",
                     LastName = "Bod",
-                    Gender = GenderDto.Male,
+                    Gender = EnumGender.Male,
                     Dob = new DobDto
                     {
                         Day = 1,

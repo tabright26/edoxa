@@ -12,14 +12,16 @@ const store = configureStore();
 const createWrapper = (): ReactWrapper | any => {
   return mount(
     <Provider store={store}>
-      <Delete />
+      <Delete addressId="addressId" handleCancel={() => {}} />
     </Provider>
   );
 };
 
 describe("<UserAddressDeleteForm />", () => {
   it("should match the snapshot", () => {
-    const shallowWrapper = shallow(<Delete />);
+    const shallowWrapper = shallow(
+      <Delete addressId="addressId" handleCancel={() => {}} />
+    );
     expect(shallowWrapper).toMatchSnapshot();
   });
 

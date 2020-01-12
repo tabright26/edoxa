@@ -27,13 +27,13 @@
         .image {
             background-image: url("../../images/panel.jpg");
 
-            /* Full height */
-            height: 100%;
-
             /* Center and scale the image nicely */
             background-position: center;
+
             background-repeat: no-repeat;
             background-size: cover;
+            /* Full height */
+            height: 100%;
         }
     </style>
     @Html.Raw(JavaScriptSnippet.FullScript)
@@ -44,7 +44,7 @@
         <i class="fas fa-arrow-circle-left"></i>
         Return to https://edoxa.gg
     </a>
-    <a asp-action="Login" asp-area="" asp-controller="Account" class="btn btn-outline-primary mx-2 my-4 float-right">
+    <a href="@RedirectService.RedirectToWebSpa("/authentication/login")" class="btn btn-outline-primary mx-2 my-4 float-right">
         <i class="fas fa-sign-in-alt"></i>
         Login
     </a>

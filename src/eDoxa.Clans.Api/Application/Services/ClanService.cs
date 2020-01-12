@@ -39,23 +39,30 @@ namespace eDoxa.Clans.Api.Application.Services
 
         public async Task<IDomainValidationResult> CreateClanAsync(UserId userId, string name)
         {
+            var result = new DomainValidationResult();
+
             if (await _clanRepository.IsMemberAsync(userId))
             {
-                return DomainValidationResult.Failure("User already in a clan.");
+                result.AddFailedPreconditionError("User already in a clan.");
             }
 
             if (await _clanRepository.ExistsAsync(name))
             {
-                return DomainValidationResult.Failure("_error", "Clan with the same name already exist");
+                result.AddFailedPreconditionError("Clan with the same name already exist");
             }
 
-            var clan = new Clan(name, userId);
+            if (result.IsValid)
+            {
+                var clan = new Clan(name, userId);
 
-            _clanRepository.Create(clan);
+                _clanRepository.Create(clan);
 
-            await _clanRepository.UnitOfWork.CommitAsync();
+                await _clanRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+                result.AddEntityToMetadata(clan);
+            }
+
+            return result;
         }
 
         public async Task<IDomainValidationResult> UpdateClanAsync(Clan clan, UserId userId, string? summary)

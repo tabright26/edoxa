@@ -14,7 +14,7 @@ const store = configureStore();
 const createWrapper = (): ReactWrapper | any => {
   return mount(
     <Provider store={store}>
-      <Update />
+      <Update handleCancel={() => {}} />
     </Provider>
   );
 };
@@ -23,7 +23,7 @@ describe("<UserPhoneUpdateForm />", () => {
   it("should match the snapshot", () => {
     const shallowWrapper = shallow(
       <Provider store={store}>
-        <Update />
+        <Update handleCancel={() => {}} />
       </Provider>
     );
     expect(shallowWrapper).toMatchSnapshot();

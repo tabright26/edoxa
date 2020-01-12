@@ -1,3 +1,3 @@
-import CreateAddressModal from "./Create";
+import CustomModal from "./Create";
 
-export default CreateAddressModal;
+export default CustomModal;

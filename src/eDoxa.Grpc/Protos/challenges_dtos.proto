@@ -13,9 +13,9 @@ package edoxa.services.challenges;
 message ChallengeDto {
   string id = 1;
   string name = 2;
-  games.GameDto game = 3;
-  ChallengeTypeDto type = 4;
-  ChallengeStateDto state = 5;
+  games.EnumGame game = 3;
+  EnumChallengeType type = 4;
+  EnumChallengeState state = 5;
   int32 bestOf = 6;
   int32 entries = 7;
   google.protobuf.Timestamp synchronizedAt = 8;

@@ -1,32 +1,39 @@
 ﻿// Filename: AccountService.cs
-// Date Created: 2019-12-08
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Cashier.Api.Application.Services
 {
     public sealed class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IBundleService _bundleService;
+        private readonly CashierAppSettings _appSettings;
 
-        public AccountService(IAccountRepository accountRepository, IBundleService bundleService)
+        public AccountService(IAccountRepository accountRepository, IOptions<CashierAppSettings> options)
         {
             _accountRepository = accountRepository;
-            _bundleService = bundleService;
+            _appSettings = options.Value;
         }
 
         public async Task<IAccount> FindAccountAsync(UserId userId)
@@ -44,8 +51,38 @@ namespace eDoxa.Cashier.Api.Application.Services
             return await _accountRepository.AccountExistsAsync(userId);
         }
 
+        public async Task<IDomainValidationResult> CreateTransactionAsync(
+            IAccount account,
+            int transactionBundleId,
+            TransactionMetadata? transactionMetadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (!await this.TransactionBundleExistsAsync(transactionBundleId))
+            {
+                result.AddFailedPreconditionError($"Transaction bundle with id of '{transactionBundleId}' wasn't found.");
+            }
+
+            if (result.IsValid)
+            {
+                var transactionBundle = await this.FindTransactionBundleAsync(transactionBundleId);
+
+                return await this.CreateTransactionAsync(
+                    account,
+                    new decimal(transactionBundle.Currency.Amount),
+                    transactionBundle.Currency.Type.ToEnumeration<Currency>(),
+                    transactionBundle.Type.ToEnumeration<TransactionType>(),
+                    transactionMetadata,
+                    cancellationToken);
+            }
+
+            return result;
+        }
+
         // TODO: Need to be refactored.
-        public async Task<IDomainValidationResult> PayoutChallengeAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default)
+        public async Task<IDomainValidationResult> ProcessChallengePayoutAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default)
         {
             var result = new DomainValidationResult();
 
@@ -64,14 +101,14 @@ namespace eDoxa.Cashier.Api.Application.Services
                         if (score == null)
                         {
                             // TODO: Need to be refactored.
-                            await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, 0);
+                            await this.ProcessChallengePayoutAsync(user, scoreboard.PayoutCurrency, 0);
 
                             payoutPrizes.Add(user, new Prize(0, scoreboard.PayoutCurrency));
                         }
                         else
                         {
                             // TODO: Need to be refactored.
-                            await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, ladderGroup.Prize);
+                            await this.ProcessChallengePayoutAsync(user, scoreboard.PayoutCurrency, ladderGroup.Prize);
 
                             payoutPrizes.Add(user, new Prize(ladderGroup.Prize.Amount, scoreboard.PayoutCurrency));
                         }
@@ -85,14 +122,14 @@ namespace eDoxa.Cashier.Api.Application.Services
                     if (score == null)
                     {
                         // TODO: Need to be refactored.
-                        await this.PayoutChallengeAsync(user, scoreboard.PayoutCurrency, 0);
+                        await this.ProcessChallengePayoutAsync(user, scoreboard.PayoutCurrency, 0);
 
                         payoutPrizes.Add(user, new Prize(0, scoreboard.PayoutCurrency));
                     }
                     else
                     {
                         // TODO: Need to be refactored.
-                        await this.PayoutChallengeAsync(user, Currency.Token, Token.MinValue);
+                        await this.ProcessChallengePayoutAsync(user, Currency.Token, Token.MinValue);
 
                         payoutPrizes.Add(user, new Prize(Token.MinValue.Amount, Currency.Token));
                     }
@@ -176,7 +213,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(transactionId))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -203,7 +240,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(transactionId))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -230,7 +267,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(transactionId))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -257,7 +294,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(metadata))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -284,7 +321,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(metadata))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -311,7 +348,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.TransactionExists(metadata))
             {
-                result.AddDomainValidationError("Transaction does not exists.");
+                result.AddFailedPreconditionError("Transaction does not exists.");
             }
 
             if (result.IsValid)
@@ -328,7 +365,40 @@ namespace eDoxa.Cashier.Api.Application.Services
             return result;
         }
 
-        private async Task PayoutChallengeAsync(UserId userId, Currency currency, decimal amount)
+        public async Task<IReadOnlyCollection<TransactionBundleDto>> FetchTransactionBundlesAsync(
+            EnumTransactionType transactionType = EnumTransactionType.All,
+            EnumCurrency currency = EnumCurrency.All,
+            bool includeDisabled = false
+        )
+        {
+            var transactionBundles = _appSettings.TransactionBundles.Where(
+                transactionBundle => (transactionType == EnumTransactionType.All || transactionType == transactionBundle.Type) &&
+                                     (currency == EnumCurrency.All || currency == transactionBundle.Currency.Type) &&
+                                     !transactionBundle.Deprecated);
+
+            if (!includeDisabled)
+            {
+                transactionBundles = transactionBundles.Where(transactionBundle => !transactionBundle.Disabled);
+            }
+
+            return await Task.FromResult(transactionBundles.OrderBy(transactionBundle => transactionBundle.Id).ToList());
+        }
+
+        private async Task<bool> TransactionBundleExistsAsync(int transactionBundleId)
+        {
+            var transactionBundles = await this.FetchTransactionBundlesAsync();
+
+            return transactionBundles.Any(transactionBundle => transactionBundle.Id == transactionBundleId);
+        }
+
+        private async Task<TransactionBundleDto> FindTransactionBundleAsync(int transactionBundleId)
+        {
+            var transactionBundles = await this.FetchTransactionBundlesAsync();
+
+            return transactionBundles.Single(transactionBundle => transactionBundle.Id == transactionBundleId);
+        }
+
+        private async Task ProcessChallengePayoutAsync(UserId userId, Currency currency, decimal amount)
         {
             var account = await _accountRepository.FindAccountOrNullAsync(userId);
 
@@ -336,14 +406,14 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var moneyAccount = new MoneyAccountDecorator(account!);
 
-                moneyAccount.Payout(new Money(amount));
+                moneyAccount.Payout(new Money(amount)).MarkAsSucceded();
             }
 
             if (currency == Currency.Token)
             {
                 var tokenAccount = new TokenAccountDecorator(account!);
 
-                tokenAccount.Payout(new Token(amount));
+                tokenAccount.Payout(new Token(amount)).MarkAsSucceded();
             }
         }
 
@@ -385,18 +455,17 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var bundles = _bundleService.FetchDepositMoneyBundles();
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrency.Money);
 
-            if (bundles.All(deposit => deposit.Currency.Amount != money.Amount))
+            if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != money.Amount))
             {
-                result.AddDomainValidationError(
-                    "_error",
-                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
+                result.AddFailedPreconditionError(
+                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.IsDepositAvailable())
             {
-                result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
             }
 
             if (result.IsValid)
@@ -419,23 +488,21 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var bundles = _bundleService.FetchWithdrawalMoneyBundles();
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Withdrawal, EnumCurrency.Money);
 
-            if (bundles.All(withdrawal => withdrawal.Currency.Amount != money.Amount))
+            if (transactionBundles.All(withdrawal => new decimal(withdrawal.Currency.Amount) != money.Amount))
             {
-                result.AddDomainValidationError(
-                    "_error",
-                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
+                result.AddFailedPreconditionError($"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.HaveSufficientMoney(money))
             {
-                result.AddDomainValidationError("_error", "Insufficient funds.");
+                result.AddFailedPreconditionError("Insufficient funds.");
             }
 
             if (!account.IsWithdrawalAvailable())
             {
-                result.AddDomainValidationError("_error", $"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
+                result.AddFailedPreconditionError($"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
             }
 
             if (result.IsValid)
@@ -445,13 +512,6 @@ namespace eDoxa.Cashier.Api.Application.Services
                 await _accountRepository.CommitAsync(cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
-
-                //await _serviceBusPublisher.PublishUserAccountWithdrawalIntegrationEventAsync(
-                //    UserId.Parse(transactionMetadata["USERID"]),
-                //    transactionMetadata["EMAIL"],
-                //    transaction.Id,
-                //    transaction.Description.Text,
-                //    transaction.Price.ToCents()); 
             }
 
             return result;
@@ -468,7 +528,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.HaveSufficientMoney(money))
             {
-                result.AddDomainValidationError("_error", "Insufficient funds.");
+                result.AddFailedPreconditionError("Insufficient funds.");
             }
 
             if (result.IsValid)
@@ -491,18 +551,16 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var bundles = _bundleService.FetchDepositTokenBundles();
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrency.Token);
 
-            if (bundles.All(deposit => deposit.Currency.Amount != token.Amount))
+            if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != token.Amount))
             {
-                result.AddDomainValidationError(
-                    "_error",
-                    $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", bundles.Select(deposit => deposit.Currency.Amount))}].");
+                result.AddFailedPreconditionError($"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.IsDepositAvailable())
             {
-                result.AddDomainValidationError("_error", $"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
             }
 
             if (result.IsValid)
@@ -528,7 +586,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.HaveSufficientMoney(token))
             {
-                result.AddDomainValidationError("_error", "Insufficient funds.");
+                result.AddFailedPreconditionError("Insufficient funds.");
             }
 
             if (result.IsValid)

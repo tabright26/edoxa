@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
                         payoutPrize => new PrizeDto
                         {
                             Amount = payoutPrize.Value.Amount,
-                            Currency = payoutPrize.Value.Currency.ToEnum<CurrencyDto>()
+                            Currency = payoutPrize.Value.Currency.ToEnum<EnumCurrency>()
                         })
                 }
             };

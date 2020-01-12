@@ -1,19 +1,19 @@
 ﻿// Filename: AccountDepositControllerTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Collections.Immutable;
+using System;
+using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Cashier.TestHelper.Mocks;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
 
 using FluentAssertions;
 
@@ -32,226 +32,119 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         }
 
         [Fact]
-        public void GetAsync_WithCurrencyAll_ShouldBeOfTypeNotFoundObjectResult()
+        public async Task GetAsync_WithCurrencyAll_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            var mockBundlesService = new Mock<IBundleService>();
+            var mockAccountService = new Mock<IAccountService>();
 
-            var controller = new TransactionBundlesController(mockBundlesService.Object, TestMapper);
+            mockAccountService
+                .Setup(accountService => accountService.FetchTransactionBundlesAsync(It.IsAny<EnumTransactionType>(), It.IsAny<EnumCurrency>(), true))
+                .ReturnsAsync(Array.Empty<TransactionBundleDto>())
+                .Verifiable();
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var controller = new TransactionBundlesController(mockAccountService.Object);
 
             // Act
-            var result = controller.Get(TransactionType.Deposit, Currency.All);
+            var result = await controller.GetAsync(EnumTransactionType.Charge, EnumCurrency.Money);
 
             // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
+            result.Should().BeOfType<NotFoundResult>();
+
+            mockAccountService.Verify(
+                accountService => accountService.FetchTransactionBundlesAsync(It.IsAny<EnumTransactionType>(), It.IsAny<EnumCurrency>(), true),
+                Times.Once);
         }
 
         [Fact]
-        public void GetAsync_WithCurrencyMoney_ShouldBeOfTypeOkObjectResult()
+        public async Task GetAsync_WithCurrencyMoney_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockBundlesService = new Mock<IBundleService>();
+            var mockAccountService = new Mock<IAccountService>();
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Token(50), new Price(new Money(20)))
-            };
+            mockAccountService
+                .Setup(accountService => accountService.FetchTransactionBundlesAsync(It.IsAny<EnumTransactionType>(), It.IsAny<EnumCurrency>(), true))
+                .ReturnsAsync(
+                    new[]
+                    {
+                        new TransactionBundleDto
+                        {
+                            Id = 1,
+                            Type = EnumTransactionType.Deposit,
+                            Currency = new CurrencyDto
+                            {
+                                Type = EnumCurrency.Money,
+                                Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                            },
+                            Price = new CurrencyDto
+                            {
+                                Type = EnumCurrency.Money,
+                                Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                            },
+                            Description = null,
+                            Notes = null,
+                            Deprecated = false,
+                            Disabled = false
+                        }
+                    })
+                .Verifiable();
 
-            mockBundlesService.Setup(accountService => accountService.FetchDepositMoneyBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
-            var controller = new TransactionBundlesController(mockBundlesService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var controller = new TransactionBundlesController(mockAccountService.Object);
 
             // Act
-            var result = controller.Get(TransactionType.Deposit, Currency.Money);
+            var result = await controller.GetAsync(EnumTransactionType.Deposit, EnumCurrency.Money);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockBundlesService.Verify(accountService => accountService.FetchDepositMoneyBundles(), Times.Once);
+            mockAccountService.Verify(
+                accountService => accountService.FetchTransactionBundlesAsync(It.IsAny<EnumTransactionType>(), It.IsAny<EnumCurrency>(), true),
+                Times.Once);
         }
 
         [Fact]
-        public void GetAsync_WithCurrencyToken_ShouldBeOfTypeOkObjectResult()
+        public async Task GetAsync_WithCurrencyToken_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockBundlesService = new Mock<IBundleService>();
+            var mockAccountService = new Mock<IAccountService>();
 
-            var bundle = new List<Bundle>
-            {
-                new Bundle(new Token(50), new Price(new Money(20)))
-            };
+            mockAccountService
+                .Setup(accountService => accountService.FetchTransactionBundlesAsync(It.IsAny<EnumTransactionType>(), It.IsAny<EnumCurrency>(), true))
+                .ReturnsAsync(
+                    new[]
+                    {
+                        new TransactionBundleDto
+                        {
+                            Id = 1,
+                            Type = EnumTransactionType.Deposit,
+                            Currency = new CurrencyDto
+                            {
+                                Type = EnumCurrency.Token,
+                                Amount = Convert.ToDouble(Token.OneMillion.Amount)
+                            },
+                            Price = new CurrencyDto
+                            {
+                                Type = EnumCurrency.Money,
+                                Amount = Convert.ToDouble(Money.OneHundred.Amount)
+                            },
+                            Description = null,
+                            Notes = null,
+                            Deprecated = false,
+                            Disabled = false
+                        }
+                    })
+                .Verifiable();
 
-            mockBundlesService.Setup(accountService => accountService.FetchDepositTokenBundles()).Returns(bundle.ToImmutableHashSet()).Verifiable();
-
-            var controller = new TransactionBundlesController(mockBundlesService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var controller = new TransactionBundlesController(mockAccountService.Object);
 
             // Act
-            var result = controller.Get(TransactionType.Deposit, Currency.Token);
+            var result = await controller.GetAsync(EnumTransactionType.Deposit, EnumCurrency.Token);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockBundlesService.Verify(accountService => accountService.FetchDepositTokenBundles(), Times.Once);
+            mockAccountService.Verify(
+                accountService => accountService.FetchTransactionBundlesAsync(It.IsAny<EnumTransactionType>(), It.IsAny<EnumCurrency>(), true),
+                Times.Once);
         }
-
-        //[Fact]
-        //public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
-        //{
-        //    // Arrange
-        //    var mockAccountService = new Mock<IAccountService>();
-
-        //    mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()))
-        //        .ReturnsAsync(new Account(new UserId()))
-        //        .Verifiable();
-
-        //    mockAccountService.Setup(
-        //            accountService => accountService.CreateTransactionAsync(
-        //                It.IsAny<IAccount>(),
-        //                It.IsAny<decimal>(),
-        //                It.IsAny<Currency>(),
-        //                It.IsAny<TransactionType>(),
-        //                It.IsAny<TransactionMetadata>(),
-        //                It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(DomainValidationResult.Failure("test", "test error"))
-        //        .Verifiable();
-
-        //    var mockBundlesService = new Mock<IBundlesService>();
-
-        //    var controller = new AccountDepositController(mockBundlesService.Object, TestMapper);
-
-        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-        //    // Act
-        //    var result = await controller.PostAsync(Currency.Token, Token.FiftyThousand);
-
-        //    // Assert
-        //    result.Should().BeOfType<BadRequestObjectResult>();
-
-        //    mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
-
-        //    mockHttpContextAccessor.VerifyGet(Times.Exactly(2));
-
-        //    mockAccountService.Verify(
-        //        accountService => accountService.CreateTransactionAsync(
-        //            It.IsAny<IAccount>(),
-        //            It.IsAny<decimal>(),
-        //            It.IsAny<Currency>(),
-        //            It.IsAny<TransactionType>(),
-        //            It.IsAny<TransactionMetadata>(),
-        //            It.IsAny<CancellationToken>()),
-        //        Times.Once);
-        //}
-
-        //[Fact]
-        //public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
-        //{
-        //    // Arrange
-        //    var mockAccountService = new Mock<IAccountService>();
-
-        //    mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>())).Verifiable();
-
-        //    mockAccountService.Setup(
-        //            accountService => accountService.CreateTransactionAsync(
-        //                It.IsAny<IAccount>(),
-        //                It.IsAny<decimal>(),
-        //                It.IsAny<Currency>(),
-        //                It.IsAny<TransactionType>(),
-        //                It.IsAny<TransactionMetadata>(),
-        //                It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(new DomainValidationResult())
-        //        .Verifiable();
-
-        //    var mockBundlesService = new Mock<IBundlesService>();
-
-        //    var controller = new AccountDepositController(mockBundlesService.Object, TestMapper);
-
-        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-        //    // Act
-        //    var result = await controller.PostAsync(Currency.Token, Token.FiftyThousand);
-
-        //    // Assert
-        //    result.Should().BeOfType<NotFoundObjectResult>();
-
-        //    mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
-
-        //    mockHttpContextAccessor.VerifyGet(Times.Exactly(2));
-
-        //    mockAccountService.Verify(
-        //        accountService => accountService.CreateTransactionAsync(
-        //            It.IsAny<IAccount>(),
-        //            It.IsAny<decimal>(),
-        //            It.IsAny<Currency>(),
-        //            It.IsAny<TransactionType>(),
-        //            It.IsAny<TransactionMetadata>(),
-        //            It.IsAny<CancellationToken>()),
-        //        Times.Never);
-        //}
-
-        //[Fact]
-        //public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
-        //{
-        //    // Arrange
-        //    var mockAccountService = new Mock<IAccountService>();
-
-        //    mockAccountService.Setup(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()))
-        //        .ReturnsAsync(new Account(new UserId()))
-        //        .Verifiable();
-
-        //    mockAccountService.Setup(
-        //            accountService => accountService.CreateTransactionAsync(
-        //                It.IsAny<IAccount>(),
-        //                It.IsAny<decimal>(),
-        //                It.IsAny<Currency>(),
-        //                It.IsAny<TransactionType>(),
-        //                It.IsAny<TransactionMetadata>(),
-        //                It.IsAny<CancellationToken>()))
-        //        .ReturnsAsync(new DomainValidationResult())
-        //        .Verifiable();
-
-        //    var mockBundlesService = new Mock<IBundlesService>();
-
-        //    var controller = new AccountDepositController(mockBundlesService.Object, TestMapper);
-
-        //    var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-        //    controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-        //    // Act
-        //    var result = await controller.PostAsync(Currency.Token, Token.FiftyThousand);
-
-        //    // Assert
-        //    result.Should().BeOfType<OkObjectResult>();
-
-        //    mockAccountService.Verify(accountService => accountService.FindUserAccountAsync(It.IsAny<UserId>()), Times.Once);
-
-        //    mockHttpContextAccessor.VerifyGet(Times.Exactly(2));
-
-        //    mockAccountService.Verify(
-        //        accountService => accountService.CreateTransactionAsync(
-        //            It.IsAny<IAccount>(),
-        //            It.IsAny<decimal>(),
-        //            It.IsAny<Currency>(),
-        //            It.IsAny<TransactionType>(),
-        //            It.IsAny<TransactionMetadata>(),
-        //            It.IsAny<CancellationToken>()),
-        //        Times.Once);
-        //}
     }
 }

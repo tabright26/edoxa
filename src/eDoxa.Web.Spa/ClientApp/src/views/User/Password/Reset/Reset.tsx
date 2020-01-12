@@ -5,8 +5,7 @@ import PasswordForm from "components/User/Password/Form";
 const ResetPassword: FunctionComponent = () => (
   <Card className="mx-4">
     <CardBody className="p-4">
-      <h1>Reset Password</h1>
-      <p className="text-muted">Reset your account password</p>
+      <h1 className="mb-3">Reset password</h1>
       <PasswordForm.Reset />
     </CardBody>
   </Card>

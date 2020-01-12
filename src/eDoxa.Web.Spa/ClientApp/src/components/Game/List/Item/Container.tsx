@@ -2,7 +2,7 @@ import { connect, MapDispatchToProps } from "react-redux";
 import {
   LINK_GAME_CREDENTIAL_MODAL,
   UNLINK_GAME_CREDENTIAL_MODAL
-} from "modals";
+} from "utils/modal/constants";
 import Item from "./Item";
 import { show } from "redux-modal";
 import { GameOption } from "types";

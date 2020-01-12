@@ -5,7 +5,7 @@ exports[`renders without crashing 1`] = `
   className="px-2  badge badge-secondary badge-pill"
 >
   <span>
-    unverified
+    Unverified
   </span>
 </span>
 `;

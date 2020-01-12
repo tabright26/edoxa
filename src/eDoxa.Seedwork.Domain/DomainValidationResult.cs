@@ -1,12 +1,14 @@
 ﻿// Filename: DomainValidationResult.cs
-// Date Created: 2019-11-30
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Newtonsoft.Json;
 
 namespace eDoxa.Seedwork.Domain
 {
@@ -36,6 +38,40 @@ namespace eDoxa.Seedwork.Domain
             _metadata.AddEntity(entity);
         }
 
+        public IDomainValidationResult AddInvalidArgumentError(string propertyName, string errorMessage)
+        {
+            if (propertyName == DomainValidationError.FailedPreconditionPropertyName)
+            {
+                throw new ArgumentException($"Use the {nameof(this.AddFailedPreconditionError)} method instead.");
+            }
+
+            if (propertyName == DomainValidationError.DebugPropertyName)
+            {
+                throw new ArgumentException($"Use the {nameof(this.AddDebugError)} method instead.");
+            }
+
+            return this.AddError(propertyName, errorMessage);
+        }
+
+        public IDomainValidationResult AddFailedPreconditionError(string errorMessage)
+        {
+            return this.AddError(DomainValidationError.FailedPreconditionPropertyName, errorMessage);
+        }
+
+        public IDomainValidationResult AddDebugError(string errorMessage)
+        {
+            return this.AddError(DomainValidationError.DebugPropertyName, errorMessage);
+        }
+
+        public string ToJsonErrors()
+        {
+            return JsonConvert.SerializeObject(
+                _errors.GroupBy(error => error.PropertyName)
+                    .Where(grouping => grouping.Key != DomainValidationError.DebugPropertyName)
+                    .ToDictionary(grouping => grouping.Key, grouping => grouping.Select(error => error.ErrorMessage)),
+                Formatting.None);
+        }
+
         public static IDomainValidationResult Succeded<TEntity>(TEntity entity)
         where TEntity : class
         {
@@ -48,30 +84,24 @@ namespace eDoxa.Seedwork.Domain
 
         public static IDomainValidationResult Failure(string propertyName, string errorMessage)
         {
-            var result = new DomainValidationResult();
-
-            result.AddDomainValidationError(propertyName, errorMessage);
-
-            return result;
+            return new DomainValidationResult().AddInvalidArgumentError(propertyName, errorMessage);
         }
 
         public static IDomainValidationResult Failure(string errorMessage)
         {
-            var result = new DomainValidationResult();
-
-            result.AddDomainValidationError(errorMessage);
-
-            return result;
+            return new DomainValidationResult().AddFailedPreconditionError(errorMessage);
         }
 
-        public void AddDomainValidationError(string propertyName, string errorMessage)
+        private IDomainValidationResult AddError(string propertyName, string errorMessage)
         {
+            if (string.IsNullOrWhiteSpace(propertyName) || string.IsNullOrWhiteSpace(errorMessage))
+            {
+                throw new ArgumentException();
+            }
+
             _errors.Add(new DomainValidationError(propertyName, errorMessage));
-        }
 
-        public void AddDomainValidationError(string errorMessage)
-        {
-            _errors.Add(new DomainValidationError(errorMessage));
+            return this;
         }
     }
 }

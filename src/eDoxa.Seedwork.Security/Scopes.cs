@@ -11,6 +11,7 @@ namespace eDoxa.Seedwork.Security
     public static class Scopes
     {
         public static readonly Scope Country = new Scope("country");
+        public static readonly Scope Stripe = new Scope("stripe");
         public static readonly Scope Roles = new Scope("roles");
         public static readonly Scope Permissions = new Scope("permissions");
         public static readonly Scope Games = new Scope("games");

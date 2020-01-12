@@ -4,12 +4,15 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -17,6 +20,12 @@ namespace eDoxa.Cashier.Domain.Services
 {
     public interface IAccountService
     {
+        Task<IReadOnlyCollection<TransactionBundleDto>> FetchTransactionBundlesAsync(
+            EnumTransactionType transactionType,
+            EnumCurrency currency,
+            bool includeDisabled = false
+        );
+
         Task<IDomainValidationResult> CreateAccountAsync(UserId userId);
 
         Task<IAccount> FindAccountAsync(UserId userId);
@@ -27,6 +36,13 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
+            int transactionBundleId,
+            TransactionMetadata? transactionMetadata = null,
+            CancellationToken cancellationToken = default
+        );
+
+        Task<IDomainValidationResult> CreateTransactionAsync(
+            IAccount account,
             decimal amount,
             Currency currency,
             TransactionType transactionType,
@@ -34,7 +50,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> PayoutChallengeAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default);
+        Task<IDomainValidationResult> ProcessChallengePayoutAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default);
 
         Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId);
 

@@ -23,7 +23,7 @@ const store = configureStore();
 const createWrapper = (): ReactWrapper | any => {
   return mount(
     <Provider store={store}>
-      <Update />
+      <Update addressId="addressId" handleCancel={() => {}} />
     </Provider>
   );
 };
@@ -32,7 +32,7 @@ describe("<UserAddressUpdateForm />", () => {
   it("should match the snapshot", () => {
     const shallowWrapper = shallow(
       <Provider store={store}>
-        <Update />
+        <Update addressId="addressId" handleCancel={() => {}} />
       </Provider>
     );
     expect(shallowWrapper).toMatchSnapshot();

@@ -182,7 +182,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 {
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
-                    Gender = profile.Gender.ToEnum<GenderDto>(),
+                    Gender = profile.Gender.ToEnum<EnumGender>(),
                     Dob = new DobDto
                     {
                         Year = profile.Dob.Year,

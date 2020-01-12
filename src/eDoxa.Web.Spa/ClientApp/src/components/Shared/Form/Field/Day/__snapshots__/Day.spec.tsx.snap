@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders without crashing 1`] = `
-<form>
+<form
+  onSubmit={[Function]}
+>
   <select
     className="form-control-sm form-control"
     disabled={false}

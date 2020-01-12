@@ -11,6 +11,7 @@ import { middleware as axiosMiddleware } from "utils/axios/middleware";
 import { middleware as signalrMiddleware } from "utils/signalr/middleware";
 import { middleware as loggerMiddleware } from "utils/logger/middleware";
 import { middleware as epicMiddleware } from "utils/observable/middleware";
+import { loadTransactionBundles } from "./actions/cashier";
 
 // This enables the webpack development tools such as the Hot Module Replacement.
 const composeEnhancers =
@@ -54,5 +55,14 @@ const configure = (initialState: RootState | any = {}) => {
 export const configureStore = (initialState: RootState | any = {}) => {
   const store = configure(initialState);
   epicMiddleware.run(rootEpic);
+  switch (process.env.NODE_ENV) {
+    case "test": {
+      break;
+    }
+    default: {
+      store.dispatch<any>(loadTransactionBundles());
+      break;
+    }
+  }
   return store;
 };

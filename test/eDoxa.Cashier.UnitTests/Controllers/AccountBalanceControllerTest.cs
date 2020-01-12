@@ -30,31 +30,6 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         {
         }
 
-        //[Fact]
-        //public async Task GetByCurrencyAsync_ShouldBeOfTypeBadRequestObjectResult()
-        //{
-        //    // Arrange
-        //    var mockAccountQuery = new Mock<IAccountQuery>();
-
-        //    mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
-
-        //    mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
-
-        //    var controller = new AccountBalanceController(mockAccountQuery.Object);
-
-        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
-
-        //    // Act
-        //    var result = await controller.GetByCurrencyAsync(Currency.Money);
-
-        //    // Assert
-        //    result.Should().BeOfType<BadRequestObjectResult>();
-
-        //    mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Never);
-
-        //    mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Never);
-        //}
-
         [Fact]
         public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()
         {

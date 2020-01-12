@@ -13,8 +13,8 @@ package edoxa.services.challenges;
 
 message CreateChallangeAggregateRequest {
   string name = 1;
-  games.GameDto game = 2;
-  ChallengeTypeDto type = 3;
+  games.EnumGame game = 2;
+  EnumChallengeType type = 3;
   int32 bestOf = 4;
   int32 entries = 5;
   int32 duration = 6;
@@ -24,9 +24,9 @@ message CreateChallangeAggregateRequest {
 message ChallengeAggregate {
   string id = 1;
   string name = 2;
-  games.GameDto game = 3;
-  ChallengeTypeDto type = 4;
-  ChallengeStateDto state = 5;
+  games.EnumGame game = 3;
+  EnumChallengeType type = 4;
+  EnumChallengeState state = 5;
   int32 bestOf = 6;
   int32 entries = 7;
   int32 payoutEntries = 8;
@@ -82,7 +82,7 @@ message ChallengeAggregate {
     repeated BucketAggregate buckets = 4;
   
     message PrizePoolAggregate {
-      cashier.CurrencyDto currency = 1;
+      cashier.EnumCurrency currency = 1;
       customTypes.DecimalValue amount = 2;
     }
 
@@ -95,5 +95,5 @@ message ChallengeAggregate {
 
 message EntryFeeAggregate {
   customTypes.DecimalValue amount = 1;
-  cashier.CurrencyDto currency = 2;
+  cashier.EnumCurrency currency = 2;
 }

@@ -11,14 +11,27 @@ interface LinkButtonProps {
   className?: string;
   children: any;
   disabled?: boolean;
-  icon: IconDefinition;
+  icon?: IconDefinition;
   onClick: () => void;
 }
 
-const LinkButton: FunctionComponent<LinkButtonProps> = ({ className, children, onClick, icon, disabled }) => (
-  <Button style={style} size="sm" color="link" disabled={disabled} className={className} onClick={onClick}>
+const LinkButton: FunctionComponent<LinkButtonProps> = ({
+  className,
+  children,
+  onClick,
+  icon = null,
+  disabled
+}) => (
+  <Button
+    style={style}
+    size="sm"
+    color="link"
+    disabled={disabled}
+    className={className}
+    onClick={onClick}
+  >
     <small className="text-uppercase">
-      <FontAwesomeIcon icon={icon} /> {children}
+      {icon && <FontAwesomeIcon icon={icon} />} {children}
     </small>
   </Button>
 );

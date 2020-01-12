@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import Games from "./Games";
 import { GamesState } from "store/root/game/types";
 import { Game, GameOption } from "types";
-import { LINK_GAME_CREDENTIAL_MODAL } from "modals";
+import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 
 it("renders without crashing", () => {
   //Arrange

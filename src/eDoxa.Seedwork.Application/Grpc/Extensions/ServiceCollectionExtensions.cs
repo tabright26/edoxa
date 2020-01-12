@@ -12,7 +12,9 @@ namespace eDoxa.Seedwork.Application.Grpc.Extensions
     {
         public static IServiceCollection AddCustomGrpc(this IServiceCollection services)
         {
-            return services.AddGrpc(options => options.EnableDetailedErrors = true).Services;
+            services.AddGrpc(options => options.EnableDetailedErrors = true);
+
+            return services;
         }
     }
 }

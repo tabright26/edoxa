@@ -21,7 +21,7 @@ namespace eDoxa.Identity.Api.Application.Validators
             this.RuleFor(request => request.Country)
                 .IsInEnum()
                 .WithMessage(AddressBookErrorDescriber.CountryInvalid())
-                .Must(country => country != CountryDto.All && country != CountryDto.None)
+                .Must(country => country != EnumCountry.All && country != EnumCountry.None)
                 .WithMessage(AddressBookErrorDescriber.CountryInvalid());
 
             this.RuleFor(request => request.Line1)

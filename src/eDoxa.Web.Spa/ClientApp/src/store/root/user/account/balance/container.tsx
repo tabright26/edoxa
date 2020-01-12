@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { loadUserAccountBalance } from "store/actions/cashier";
+import { loadUserBalance } from "store/actions/cashier";
 import { RootState } from "store/types";
 import { Currency } from "types";
-import { UserAccountBalanceState } from "./types";
+import { UserBalanceState } from "./types";
 
 interface UserAccountBalanceStateProps {
-  balance: UserAccountBalanceState;
+  balance: UserBalanceState;
 }
 
 interface UserAccountBalanceOwnProps {
@@ -40,7 +40,7 @@ export const withUserAccountBalance = (
   ) => {
     return {
       loadUserAccountBalance: () =>
-        dispatch(loadUserAccountBalance(ownProps.currency))
+        dispatch(loadUserBalance(ownProps.currency))
     };
   };
 

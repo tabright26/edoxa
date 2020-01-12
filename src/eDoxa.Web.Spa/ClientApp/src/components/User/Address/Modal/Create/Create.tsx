@@ -1,16 +1,23 @@
-import React from "react";
-import { connectModal } from "redux-modal";
+import React, { FunctionComponent } from "react";
+import { connectModal, InjectedProps } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { CREATE_USER_ADDRESS_MODAL } from "modals";
+import { CREATE_USER_ADDRESS_MODAL } from "utils/modal/constants";
 import AddressForm from "components/User/Address/Form";
 import { compose } from "recompose";
 
-const CreateAddressModal = ({ show, handleHide, className }) => (
+type InnerProps = InjectedProps;
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const CustomModal: FunctionComponent<Props> = ({ show, handleHide }) => (
   <Modal
-    size="lg"
+    unmountOnClose={false}
+    backdrop="static"
+    centered
     isOpen={show}
     toggle={handleHide}
-    className={"modal-primary " + className}
   >
     <ModalHeader toggle={handleHide}>Add new address</ModalHeader>
     <ModalBody>
@@ -24,8 +31,8 @@ const CreateAddressModal = ({ show, handleHide, className }) => (
   </Modal>
 );
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: CREATE_USER_ADDRESS_MODAL, destroyOnHide: false })
 );
 
-export default enhance(CreateAddressModal);
+export default enhance(CustomModal);

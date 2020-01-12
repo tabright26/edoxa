@@ -18,6 +18,21 @@ namespace eDoxa.Seedwork.Security
         public static readonly PermissionIdentityResource Permissions = new PermissionIdentityResource();
         public static readonly GameIdentityResource Games = new GameIdentityResource();
         public static readonly CountryIdentityResource Country = new CountryIdentityResource();
+        public static readonly StripeIdentityResource Stripe = new StripeIdentityResource();
+
+        public sealed class StripeIdentityResource : IdentityResource
+        {
+            internal StripeIdentityResource() : base(
+                Scopes.Stripe.Name,
+                "Stripe.js",
+                new HashSet<string>
+                {
+                    CustomClaimTypes.StripeCustomer,
+                    CustomClaimTypes.StripeAccount
+                })
+            {
+            }
+        }
 
         public sealed class CountryIdentityResource : IdentityResource
         {
@@ -26,7 +41,7 @@ namespace eDoxa.Seedwork.Security
                 "Your legal country",
                 new HashSet<string>
                 {
-                    "country"
+                    CustomClaimTypes.Country
                 })
             {
             }

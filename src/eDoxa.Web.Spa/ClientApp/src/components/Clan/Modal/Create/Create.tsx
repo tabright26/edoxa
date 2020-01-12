@@ -1,21 +1,30 @@
 import React, { FunctionComponent } from "react";
-import { connectModal } from "redux-modal";
+import { connectModal, InjectedProps } from "redux-modal";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
-import { CREATE_CLAN_MODAL } from "modals";
+import { CREATE_CLAN_MODAL } from "utils/modal/constants";
 import ClanForm from "components/Clan/Form";
 import { compose } from "recompose";
 
-const CreateClanModal: FunctionComponent<any> = ({
+type InnerProps = InjectedProps & {
+  actions: any;
+};
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const CustomModal: FunctionComponent<Props> = ({
   show,
   handleHide,
-  className,
   actions
 }) => (
   <Modal
+    unmountOnClose={false}
+    backdrop="static"
     size="lg"
     isOpen={show}
     toggle={handleHide}
-    className={"modal-primary " + className}
+    centered
   >
     <ModalHeader toggle={handleHide}>Create a new clan</ModalHeader>
     <ModalBody>
@@ -34,8 +43,8 @@ const CreateClanModal: FunctionComponent<any> = ({
   </Modal>
 );
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: CREATE_CLAN_MODAL, destroyOnHide: false })
 );
 
-export default enhance(CreateClanModal);
+export default enhance(CustomModal);

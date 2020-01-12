@@ -25,7 +25,7 @@ namespace eDoxa.Games.Api.IntegrationEvents.Extensions
                 {
                     UserId = credential.UserId,
                     PlayerId = credential.PlayerId,
-                    Game = credential.Game.ToEnum<GameDto>()
+                    Game = credential.Game.ToEnum<EnumGame>()
                 }
             };
 
@@ -40,7 +40,7 @@ namespace eDoxa.Games.Api.IntegrationEvents.Extensions
                 {
                     UserId = credential.UserId,
                     PlayerId = credential.PlayerId,
-                    Game = credential.Game.ToEnum<GameDto>()
+                    Game = credential.Game.ToEnum<EnumGame>()
                 }
             };
 

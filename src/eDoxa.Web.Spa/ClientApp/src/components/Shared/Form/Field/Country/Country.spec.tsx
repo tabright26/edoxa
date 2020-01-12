@@ -13,18 +13,18 @@ it("renders without crashing", () => {
   };
 
   const FormWrapper = () => (
-    <Form>
+    <Form onSubmit={() => {}}>
       <Country />
     </Form>
   );
 
-  const ReduxForm = reduxForm({ form: "TEST_FORM" })(FormWrapper);
+  const CustomForm = reduxForm({ form: "TEST_FORM" })(FormWrapper);
 
   // Act
   const tree = renderer
     .create(
       <Provider store={store}>
-        <ReduxForm />
+        <CustomForm />
       </Provider>
     )
     .toJSON();

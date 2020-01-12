@@ -1,3 +1,3 @@
-import CreateClanForm from "./Create";
+import CustomForm from "./Create";
 
-export default CreateClanForm;
+export default CustomForm;

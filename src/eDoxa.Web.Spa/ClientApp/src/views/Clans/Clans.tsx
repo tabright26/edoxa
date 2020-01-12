@@ -7,17 +7,18 @@ import CandidatureList from "components/Clan/Candidature/List/List";
 import InvitationList from "components/Clan/Invitation/List/List";
 import ClanModal from "components/Clan/Modal";
 import ErrorBoundary from "components/Shared/ErrorBoundary";
-import { withModals } from "utils/modal/container";
 import { compose } from "recompose";
 import Loading from "components/Shared/Loading";
 import { getClanDashboardPath } from "utils/router/constants";
+import { show } from "redux-modal";
+import { CREATE_CLAN_MODAL } from "utils/modal/constants";
+import { connect } from "react-redux";
 
 const ClansIndex: FunctionComponent<any> = ({
-  modals,
+  showCreateClanModal,
   clans: { data, loading },
   userId,
-  userClan,
-  actions
+  userClan
 }) => {
   const [clanList, setClanList] = useState(null);
   const [searchValue, setSearchValue] = useState("");
@@ -96,7 +97,7 @@ const ClansIndex: FunctionComponent<any> = ({
                     <Fragment>
                       <div
                         className="btn-link"
-                        onClick={() => modals.showCreateClanModal(actions)}
+                        onClick={() => showCreateClanModal()}
                       >
                         or create your own
                       </div>
@@ -148,6 +149,13 @@ const ClansIndex: FunctionComponent<any> = ({
   );
 };
 
-const enhance = compose<any, any>(withClans, withModals);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    showCreateClanModal: () =>
+      dispatch(show(CREATE_CLAN_MODAL, { actions: ownProps.actions }))
+  };
+};
+
+const enhance = compose<any, any>(withClans, connect(null, mapDispatchToProps));
 
 export default enhance(ClansIndex);

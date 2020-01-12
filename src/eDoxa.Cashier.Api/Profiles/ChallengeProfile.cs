@@ -29,11 +29,11 @@ namespace eDoxa.Cashier.Api.Profiles
                 .ForMember(bucket => bucket.Prize, config => config.MapFrom<DecimalValue>(bucket => bucket.Prize.Amount));
 
             this.CreateMap<EntryFee, EntryFeeDto>()
-                .ForMember(entryFee => entryFee.Currency, config => config.MapFrom(entryFee => entryFee.Currency.ToEnum<CurrencyDto>()))
+                .ForMember(entryFee => entryFee.Currency, config => config.MapFrom(entryFee => entryFee.Currency.ToEnum<EnumCurrency>()))
                 .ForMember(entryFee => entryFee.Amount, config => config.MapFrom<DecimalValue>(entryFee => entryFee.Amount));
 
             this.CreateMap<PrizePool, ChallengePayoutDto.Types.PrizePoolDto>()
-                .ForMember(prizePool => prizePool.Currency, config => config.MapFrom(prizePool => prizePool.Currency.ToEnum<CurrencyDto>()))
+                .ForMember(prizePool => prizePool.Currency, config => config.MapFrom(prizePool => prizePool.Currency.ToEnum<EnumCurrency>()))
                 .ForMember(prizePool => prizePool.Amount, config => config.MapFrom<DecimalValue>(prizePool => prizePool.Amount));
         }
     }

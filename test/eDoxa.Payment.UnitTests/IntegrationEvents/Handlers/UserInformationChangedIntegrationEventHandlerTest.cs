@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserInformationChangedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS.
+    public sealed class UserInformationChangedIntegrationEventHandlerTest : UnitTest
     {
         public UserInformationChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
@@ -57,7 +57,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 {
                     FirstName = "Gabriel",
                     LastName = "Roy",
-                    Gender = GenderDto.Male,
+                    Gender = EnumGender.Male,
                     Dob = new DobDto
                     {
                         Day = 1,
@@ -71,8 +71,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
+            mockStripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
+            mockLogger.Verify(Times.Once());
         }
     }
 }

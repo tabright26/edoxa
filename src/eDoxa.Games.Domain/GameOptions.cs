@@ -25,6 +25,7 @@ namespace eDoxa.Games.Domain
                 ["manager"] = false,
                 ["tournament"] = false
             };
+            
             Scoring = new Dictionary<string, float>();
         }
 
@@ -33,6 +34,9 @@ namespace eDoxa.Games.Domain
 
         [JsonProperty("displayName")]
         public string DisplayName { get; set; }
+
+        [JsonProperty("instructions")]
+        public string Instructions { get; set; }
 
         [JsonProperty("displayed")]
         public bool Displayed { get; set; }

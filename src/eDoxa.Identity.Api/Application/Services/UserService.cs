@@ -97,7 +97,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
             if (user.Profile != null)
             {
-                result.AddDomainValidationError("The user's profile has already been created.");
+                result.AddFailedPreconditionError("The user's profile has already been created.");
             }
 
             if (result.IsValid)
@@ -128,7 +128,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
             if (user.Profile == null)
             {
-                result.AddDomainValidationError("The user's personal informations does not exist.");
+                result.AddFailedPreconditionError("The user's personal informations does not exist.");
             }
 
             if (result.IsValid)

@@ -3,17 +3,13 @@ import { Form, FormGroup } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { GENERATE_GAME_AUTHENTICATION_FORM } from "forms";
+import { GENERATE_GAME_AUTHENTICATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { Game } from "types";
 import { generateGameAuthentication } from "store/actions/game";
-import {
-  GameAuthenticationActions,
-  GENERATE_GAME_AUTHENTICATION_FAIL,
-  GENERATE_GAME_AUTHENTICATION_SUCCESS
-} from "store/actions/game/types";
 import { throwSubmissionError } from "utils/form/types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface FormData {}
 
@@ -28,7 +24,7 @@ type InnerProps = InjectedFormProps<FormData, Props> & {
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <FormGroup>
@@ -48,28 +44,20 @@ const ReduxForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
 const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
     form: GENERATE_GAME_AUTHENTICATION_FORM,
-    onSubmit: async (
-      values,
-      dispatch: any,
-      { game, setAuthenticationFactor }
-    ) => {
-      return await dispatch(generateGameAuthentication(game, values)).then(
-        (action: GameAuthenticationActions) => {
-          switch (action.type) {
-            case GENERATE_GAME_AUTHENTICATION_SUCCESS: {
-              setAuthenticationFactor(action.payload.data);
-              break;
-            }
-            case GENERATE_GAME_AUTHENTICATION_FAIL: {
-              throwSubmissionError(action.error);
-              break;
-            }
-          }
-          return Promise.resolve(action);
-        }
-      );
+    onSubmit: async (values, dispatch: any, { game }) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(generateGameAuthentication(game, values, meta));
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
+    },
+    onSubmitSuccess: (result, dispatch, { setAuthenticationFactor }) => {
+      setAuthenticationFactor(result.data);
     }
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);

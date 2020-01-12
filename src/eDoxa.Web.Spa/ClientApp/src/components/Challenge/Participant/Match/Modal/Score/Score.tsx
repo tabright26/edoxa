@@ -1,17 +1,26 @@
 import React, { FunctionComponent } from "react";
-import { connectModal } from "redux-modal";
+import { connectModal, InjectedProps } from "redux-modal";
 import { Modal, ModalFooter, ModalHeader, Table } from "reactstrap";
 import Button from "components/Shared/Button";
 import Format from "components/Shared/Format";
-import { CHALLENGE_MATCH_SCORE_MODAL } from "modals";
+import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
+import { ChallengeParticipantMatchStat } from "types";
 
-const MatchScoreModal: FunctionComponent<any> = ({
-  show,
-  handleHide,
-  stats
-}) => (
-  <Modal isOpen={show} toggle={handleHide} className="modal-primary">
+type InnerProps = InjectedProps & { stats: ChallengeParticipantMatchStat[] };
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
+  <Modal
+    unmountOnClose={false}
+    backdrop="static"
+    isOpen={show}
+    toggle={handleHide}
+    centered
+  >
     <ModalHeader toggle={handleHide}>Score Details</ModalHeader>
     <Table className="mb-0" size="sm" responsive striped dark>
       <thead>
@@ -56,8 +65,8 @@ const MatchScoreModal: FunctionComponent<any> = ({
   </Modal>
 );
 
-const enhance = compose<any, any>(
+const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: CHALLENGE_MATCH_SCORE_MODAL, destroyOnHide: false })
 );
 
-export default enhance(MatchScoreModal);
+export default enhance(CustomModal);

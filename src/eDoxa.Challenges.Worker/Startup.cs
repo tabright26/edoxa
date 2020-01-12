@@ -129,8 +129,8 @@ namespace eDoxa.Challenges.Worker
                 manager =>
                 {
                     manager.AddOrUpdate<ChallengeRecurringJob>(
-                        GameDto.LeagueOfLegends.ToString(),
-                        service => service.SynchronizeChallengesAsync(GameDto.LeagueOfLegends),
+                        EnumGame.LeagueOfLegends.ToString(),
+                        service => service.SynchronizeChallengesAsync(EnumGame.LeagueOfLegends),
                         Cron.Hourly);
                 });
         }

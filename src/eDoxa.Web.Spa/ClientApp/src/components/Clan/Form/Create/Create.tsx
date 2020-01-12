@@ -3,7 +3,7 @@ import { FormGroup, Form } from "reactstrap";
 import { Field, reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import { CREATE_CLAN_FORM } from "forms";
+import { CREATE_CLAN_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 
@@ -19,7 +19,7 @@ const validate = values => {
   return errors;
 };
 
-const CreateClanForm: FunctionComponent<any> = ({
+const CustomForm: FunctionComponent<any> = ({
   handleSubmit,
   handleCancel,
   error
@@ -47,4 +47,4 @@ const enhance = compose<any, any>(
   })
 );
 
-export default enhance(CreateClanForm);
+export default enhance(CustomForm);

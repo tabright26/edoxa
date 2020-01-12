@@ -1,8 +1,8 @@
 ﻿// Filename: PaymentGrpcService.cs
-// Date Created: 2019-12-05
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading.Tasks;
@@ -11,7 +11,6 @@ using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
-using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
@@ -61,12 +60,12 @@ namespace eDoxa.Payment.Api.Services
 
             var userId = httpContext.GetUserId();
 
-            var customerId = httpContext.GetStripeCustomertId();
-
             var email = httpContext.GetEmail();
 
             try
             {
+                var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
+
                 if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
                 {
                     const string detail = "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.";
@@ -94,7 +93,7 @@ namespace eDoxa.Payment.Api.Services
 
                 var message = $"Failed to process deposit for the user '{email}'. (userId=\"{userId}\")";
 
-                throw this.RpcExceptionWithInternalStatus(exception, message); // TODO
+                throw this.RpcExceptionWithInternalStatus(exception, message);
             }
         }
 
@@ -106,10 +105,10 @@ namespace eDoxa.Payment.Api.Services
 
             var email = httpContext.GetEmail();
 
-            var accountId = httpContext.GetStripeAccountId();
-
             try
             {
+                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
+
                 if (!await _stripeAccountService.HasAccountVerifiedAsync(accountId))
                 {
                     const string detail = "The user's Stripe Account isn't verified. The user's cannot process a withdrawal transaction.";
@@ -120,7 +119,7 @@ namespace eDoxa.Payment.Api.Services
                 var transfer = await _stripeTransferService.CreateTransferAsync(
                     accountId,
                     request.Transaction.Id.ParseEntityId<TransactionId>(),
-                    Convert.ToInt64(request.Transaction.Amount.ToDecimal()),
+                    Convert.ToInt64(-request.Transaction.Amount.ToDecimal()), // TODO: Invalid integer operator.
                     request.Transaction.Description);
 
                 await _serviceBusPublisher.PublishUserWithdrawalSucceededIntegrationEventAsync(userId, request.Transaction);
@@ -137,11 +136,11 @@ namespace eDoxa.Payment.Api.Services
 
                 var message = $"Failed to process withdrawal for the user '{email}'. (userId=\"{userId}\")";
 
-                throw this.RpcExceptionWithInternalStatus(exception, message); // TODO
+                throw this.RpcExceptionWithInternalStatus(exception, message);
             }
         }
 
-        private RpcException RpcExceptionWithInternalStatus(Exception exception, string message) // TODO
+        private RpcException RpcExceptionWithInternalStatus(Exception exception, string message)
         {
             _logger.LogError(exception, message);
 

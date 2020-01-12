@@ -9,7 +9,7 @@ import {
 } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
-import { UPDATE_USER_PROFILE_FORM } from "forms";
+import { UPDATE_USER_PROFILE_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormField from "components/Shared/Form/Field";
 import FormValidation from "components/Shared/Form/Validation";
@@ -38,7 +38,7 @@ type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const ReduxForm: FunctionComponent<Props> = ({
+const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   handleCancel,
   error
@@ -124,4 +124,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(ReduxForm);
+export default enhance(CustomForm);
