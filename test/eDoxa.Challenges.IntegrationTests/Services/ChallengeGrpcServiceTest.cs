@@ -21,7 +21,7 @@ using Xunit;
 
 namespace eDoxa.Challenges.IntegrationTests.Services
 {
-    public sealed class ChallengeGrpcServiceTest : IntegrationTest
+    public sealed class ChallengeGrpcServiceTest : IntegrationTest // TODO: INTEGRATION TESTS
     {
         public ChallengeGrpcServiceTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
         {
