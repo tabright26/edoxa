@@ -13,12 +13,14 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const CustomModal: FunctionComponent<Props> = ({
-  show,
-  handleHide,
-  stats
-}) => (
-  <Modal isOpen={show} toggle={handleHide} className="modal-dialog-centered">
+const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
+  <Modal
+    unmountOnClose={false}
+    backdrop="static"
+    isOpen={show}
+    toggle={handleHide}
+    centered
+  >
     <ModalHeader toggle={handleHide}>Score Details</ModalHeader>
     <Table className="mb-0" size="sm" responsive striped dark>
       <thead>

@@ -19,7 +19,13 @@ const CustomModal: FunctionComponent<Props> = ({
   handleHide,
   paymentMethod
 }) => (
-  <Modal className="modal-dialog-centered" isOpen={show} toggle={handleHide}>
+  <Modal
+    unmountOnClose={false}
+    backdrop="static"
+    centered
+    isOpen={show}
+    toggle={handleHide}
+  >
     <ModalHeader toggle={handleHide}>DELETE PAYMENT METHOD</ModalHeader>
     <ModalBody>
       <StripePaymentMethodForm.Delete

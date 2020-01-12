@@ -19,10 +19,12 @@ const CustomModal: FunctionComponent<Props> = ({
   actions
 }) => (
   <Modal
+    unmountOnClose={false}
+    backdrop="static"
     size="lg"
     isOpen={show}
     toggle={handleHide}
-    className="modal-dialog-centered"
+    centered
   >
     <ModalHeader toggle={handleHide}>Create a new clan</ModalHeader>
     <ModalBody>

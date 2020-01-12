@@ -20,7 +20,9 @@ const CustomModal: FunctionComponent<Props> = ({
   paymentMethod
 }) => (
   <Modal
-    className="modal-dialog-centered"
+    unmountOnClose={false}
+    backdrop="static"
+    centered
     size="lg"
     isOpen={show}
     toggle={handleHide}
