@@ -33,6 +33,8 @@ namespace eDoxa.Challenges.IntegrationTests.Services
             // Arrange
             var factory = TestHost;
 
+            factory.Server.CleanupDbContext();
+
             var client = new ChallengeService.ChallengeServiceClient(factory.CreateChannel());
 
             var request = new FetchChallengesRequest
