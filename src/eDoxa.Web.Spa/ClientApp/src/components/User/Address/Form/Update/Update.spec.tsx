@@ -51,8 +51,8 @@ describe("<UserAddressUpdateForm />", () => {
       ["line1", "Address line 1"],
       ["line2", "Address line 2 (optional)"],
       ["city", "City"],
-      ["state", "State"],
-      ["postalCode", "Postal Code"]
+      ["state", "State / Province"],
+      ["postalCode", "Zip / Postal code"]
     ])("renders name fields", (name: string, label: string) => {
       const wrapper = createWrapper();
       const field = wrapper.findFieldByName(name);

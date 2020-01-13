@@ -81,7 +81,7 @@ const CustomForm: FunctionComponent<Props> = ({
         <Field
           type="text"
           name="state"
-          label="State"
+          label="State / Province"
           formGroup={FormGroup}
           component={Input.Text}
         />
@@ -90,7 +90,7 @@ const CustomForm: FunctionComponent<Props> = ({
         <Field
           type="text"
           name="postalCode"
-          label="Postal code"
+          label="Zip / Postal code"
           formGroup={FormGroup}
           component={Input.Text}
         />

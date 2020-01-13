@@ -83,7 +83,7 @@ const CustomForm: FunctionComponent<Props> = ({
         <Field
           type="text"
           name="state"
-          label="State"
+          label="State / Province"
           formGroup={FormGroup}
           component={Input.Text}
         />
@@ -92,7 +92,7 @@ const CustomForm: FunctionComponent<Props> = ({
         <Field
           type="text"
           name="postalCode"
-          label="Postal Code"
+          label="Zip / Postal code"
           formGroup={FormGroup}
           component={Input.Text}
         />
@@ -149,7 +149,10 @@ const enhance = compose<InnerProps, OutterProps>(
       if (values.state && !ADDRESS_STATE_REGEXP.test(values.state)) {
         errors.state = ADDRESS_STATE_INVALID;
       }
-      if (values.postalCode && !ADDRESS_POSTAL_CODE_REGEXP.test(values.postalCode)) {
+      if (
+        values.postalCode &&
+        !ADDRESS_POSTAL_CODE_REGEXP.test(values.postalCode)
+      ) {
         errors.postalCode = ADDRESS_POSTAL_CODE_INVALID;
       }
       return errors;
