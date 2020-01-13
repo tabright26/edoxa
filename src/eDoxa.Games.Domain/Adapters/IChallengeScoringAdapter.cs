@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Domain.Adapters
@@ -15,6 +15,6 @@ namespace eDoxa.Games.Domain.Adapters
     {
         Game Game { get; }
 
-        Task<Scoring> GetScoringAsync();
+        Task<ChallengeScoringDto> GetScoringAsync();
     }
 }

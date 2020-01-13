@@ -36,7 +36,7 @@ namespace eDoxa.Seedwork.Application.Converters
             JsonSerializer serializer
         )
         {
-            return reader.Value is long value ? DateTimeOffset.FromUnixTimeSeconds(value).ToTimestamp() : null;
+            return reader.Value != null ? DateTimeOffset.FromUnixTimeSeconds(Convert.ToInt64(reader.Value)).ToTimestamp() : null;
         }
     }
 }

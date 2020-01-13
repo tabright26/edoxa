@@ -315,12 +315,12 @@ namespace eDoxa.FunctionalTests
 
             var gamesServiceClient = new GameService.GameServiceClient(gamesHost.CreateChannel());
 
-            var fetchChallengeScoringRequest = new FetchChallengeScoringRequest
+            var findChallengeScoringRequest = new FindChallengeScoringRequest
             {
                 Game = EnumGame.LeagueOfLegends
             };
 
-            var fetchChallengeScoringResponse = await gamesServiceClient.FetchChallengeScoringAsync(fetchChallengeScoringRequest);
+            var findChallengeScoringResponse = await gamesServiceClient.FindChallengeScoringAsync(findChallengeScoringRequest);
 
             var createdAt = new DateTimeProvider(
                 new DateTime(
@@ -349,7 +349,7 @@ namespace eDoxa.FunctionalTests
                 BestOf.One,
                 Entries.Two,
                 new ChallengeTimeline(createdAt, ChallengeDuration.OneDay),
-                new Scoring(fetchChallengeScoringResponse.Scoring));
+                new Scoring(findChallengeScoringResponse.Scoring.Items.OrderBy(scoring => scoring.Order).ToDictionary(scoring => scoring.StatName, scoring => scoring.StatWeighting)));
 
             var participant = new Participant(
                 new ParticipantId(),

@@ -6,8 +6,8 @@ import "games_dtos.proto";
 
 package edoxa.services.games;
 
-message FetchChallengeScoringResponse {
-  map<string, float> scoring = 1;
+message FindChallengeScoringResponse {
+  ChallengeScoringDto scoring = 1;
 }
 
 message FetchChallengeMatchesResponse {

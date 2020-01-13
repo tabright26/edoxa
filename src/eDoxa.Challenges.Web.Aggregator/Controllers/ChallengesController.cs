@@ -74,41 +74,43 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> CreateChallengeAsync([FromBody] CreateChallangeAggregateRequest request)
         {
-            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
+            var fetchDoxatagsRequest = new FetchDoxatagsRequest();
+            
+            var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(fetchDoxatagsRequest);
 
-            var fetchChallengeScoringResponse = await _gameServiceClient.FetchChallengeScoringAsync(
-                new FetchChallengeScoringRequest
-                {
-                    Game = request.Game
-                });
+            var findChallengeScoringRequest = new FindChallengeScoringRequest
+            {
+                Game = request.Game
+            };
 
-            var createChallengeResponse = await _challengesServiceClient.CreateChallengeAsync(
-                new CreateChallengeRequest
-                {
-                    Name = request.Name,
-                    Game = request.Game,
-                    BestOf = request.BestOf,
-                    Entries = request.Entries,
-                    Duration = request.Duration,
-                    Scoring =
-                    {
-                        fetchChallengeScoringResponse.Scoring
-                    }
-                });
+            var findChallengeScoringResponse = await _gameServiceClient.FindChallengeScoringAsync(findChallengeScoringRequest);
+
+            var createChallengeRequest = new CreateChallengeRequest
+            {
+                Name = request.Name,
+                Game = request.Game,
+                BestOf = request.BestOf,
+                Entries = request.Entries,
+                Duration = request.Duration,
+                Scoring = findChallengeScoringResponse.Scoring
+            };
+
+            var createChallengeResponse = await _challengesServiceClient.CreateChallengeAsync(createChallengeRequest);
 
             var challenge = createChallengeResponse.Challenge;
 
-            var createChallengePayoutResponse = await _cashierServiceClient.CreateChallengePayoutAsync(
-                new CreateChallengePayoutRequest
+            var createChallengePayoutRequest = new CreateChallengePayoutRequest
+            {
+                ChallengeId = challenge.Id,
+                PayoutEntries = challenge.Entries / 2, // TODO
+                EntryFee = new EntryFeeDto
                 {
-                    ChallengeId = challenge.Id,
-                    PayoutEntries = challenge.Entries / 2, // TODO
-                    EntryFee = new EntryFeeDto
-                    {
-                        Amount = request.EntryFee.Amount,
-                        Currency = request.EntryFee.Currency
-                    }
-                });
+                    Amount = request.EntryFee.Amount,
+                    Currency = request.EntryFee.Currency
+                }
+            };
+
+            var createChallengePayoutResponse = await _cashierServiceClient.CreateChallengePayoutAsync(createChallengePayoutRequest);
 
             return this.Ok(ChallengeMapper.Map(challenge, createChallengePayoutResponse.Payout, fetchDoxatagsResponse.Doxatags));
         }
