@@ -25,10 +25,8 @@ namespace eDoxa.Identity.Api.Application.Validators
                 .WithMessage(ProfileErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
                 .WithMessage(ProfileErrorDescriber.FirstNameLength())
-                .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(ProfileErrorDescriber.FirstNameInvalid())
-                .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(ProfileErrorDescriber.FirstNameUppercase());
+                .Matches(new Regex("^[A-Za-z]((-)[a-zA-Z]|[a-z]){1,15}$"))
+                .WithMessage(ProfileErrorDescriber.FirstNameInvalid());
 
             this.RuleFor(request => request.LastName)
                 .NotNull()
@@ -37,10 +35,8 @@ namespace eDoxa.Identity.Api.Application.Validators
                 .WithMessage(ProfileErrorDescriber.LastNameRequired())
                 .Length(2, 16)
                 .WithMessage(ProfileErrorDescriber.LastNameLength())
-                .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(ProfileErrorDescriber.LastNameInvalid())
-                .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(ProfileErrorDescriber.LastNameUppercase());
+                .Matches(new Regex("^[A-Za-z]((-)[a-zA-Z]|[a-z]){1,15}$"))
+                .WithMessage(ProfileErrorDescriber.LastNameInvalid());
 
             this.RuleFor(request => request.Gender)
                 .NotNull()

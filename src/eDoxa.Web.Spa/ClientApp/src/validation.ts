@@ -16,14 +16,14 @@ export const DOXATAG_MAX_LENGTH_INVALID = sentenceCase(
   `DoxaTag must be less or equal to ${DOXATAG_MAX_LENGTH} characters (Max. ${DOXATAG_MAX_LENGTH})`
 );
 export const PROFILE_FIRST_NAME_REGEXP = new RegExp(
-  "^[A-Z]((-)[a-zA-Z]|[a-z]){1,15}$"
+  "^[A-Za-z]((-)[a-zA-Z]|[a-z]){1,15}$"
 );
 export const PROFILE_FIRST_NAME_REQUIRED = sentenceCase(
   "First name is required"
 );
 export const PROFILE_FIRST_NAME_INVALID = sentenceCase("Invalid first name");
 export const PROFILE_LAST_NAME_REGEXP = new RegExp(
-  "^[A-Z]((-)[a-zA-Z]|[a-z]){1,15}$"
+  "^[A-Za-z]((-)[a-zA-Z]|[a-z]){1,15}$"
 );
 export const PROFILE_LAST_NAME_REQUIRED = sentenceCase("Last name is required");
 export const PROFILE_LAST_NAME_INVALID = sentenceCase("Invalid last name");

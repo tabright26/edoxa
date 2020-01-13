@@ -24,10 +24,8 @@ namespace eDoxa.Identity.Api.Application.Validators
                 .WithMessage(ProfileErrorDescriber.FirstNameRequired())
                 .Length(2, 16)
                 .WithMessage(ProfileErrorDescriber.FirstNameLength())
-                .Matches(new Regex("^[a-zA-Z-]{2,16}$"))
-                .WithMessage(ProfileErrorDescriber.FirstNameInvalid())
-                .Matches(new Regex("^[A-Z](((-)[A-Z])|[a-z]){1,15}$"))
-                .WithMessage(ProfileErrorDescriber.FirstNameUppercase());
+                .Matches(new Regex("^[A-Za-z]((-)[a-zA-Z]|[a-z]){1,15}$"))
+                .WithMessage(ProfileErrorDescriber.FirstNameInvalid());
         }
     }
 }
