@@ -10,18 +10,18 @@ import FormValidation from "components/Shared/Form/Validation";
 import { updateUserAddress } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
-  LINE1_REQUIRED,
-  line1Regex,
-  LINE1_INVALID,
-  line2Regex,
-  LINE2_INVALID,
-  CITY_REQUIRED,
-  cityRegex,
-  CITY_INVALID,
-  stateRegex,
-  STATE_INVALID,
-  postalRegex,
-  POSTAL_INVALID
+  ADDRESS_LINE1_REQUIRED,
+  ADDRESS_LINE1_REGEXP,
+  ADDRESS_LINE1_INVALID,
+  ADDRESS_LINE2_REGEXP,
+  ADDRESS_LINE2_INVALID,
+  ADDRESS_CITY_REQUIRED,
+  ADDRESS_CITY_REGEXP,
+  ADDRESS_CITY_INVALID,
+  ADDRESS_STATE_REGEXP,
+  ADDRESS_STATE_INVALID,
+  ADDRESS_POSTAL_CODE_REGEXP,
+  ADDRESS_POSTAL_CODE_INVALID
 } from "validation";
 import { connect, MapStateToProps } from "react-redux";
 import { AddressId } from "types";
@@ -134,23 +134,23 @@ const enhance = compose<InnerProps, OutterProps>(
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.line1) {
-        errors.line1 = LINE1_REQUIRED;
-      } else if (!line1Regex.test(values.line1)) {
-        errors.line1 = LINE1_INVALID;
+        errors.line1 = ADDRESS_LINE1_REQUIRED;
+      } else if (!ADDRESS_LINE1_REGEXP.test(values.line1)) {
+        errors.line1 = ADDRESS_LINE1_INVALID;
       }
-      if (values.line2 && !line2Regex.test(values.line2)) {
-        errors.line2 = LINE2_INVALID;
+      if (values.line2 && !ADDRESS_LINE2_REGEXP.test(values.line2)) {
+        errors.line2 = ADDRESS_LINE2_INVALID;
       }
       if (!values.city) {
-        errors.city = CITY_REQUIRED;
-      } else if (!cityRegex.test(values.city)) {
-        errors.city = CITY_INVALID;
+        errors.city = ADDRESS_CITY_REQUIRED;
+      } else if (!ADDRESS_CITY_REGEXP.test(values.city)) {
+        errors.city = ADDRESS_CITY_INVALID;
       }
-      if (values.state && !stateRegex.test(values.state)) {
-        errors.state = STATE_INVALID;
+      if (values.state && !ADDRESS_STATE_REGEXP.test(values.state)) {
+        errors.state = ADDRESS_STATE_INVALID;
       }
-      if (values.postalCode && !postalRegex.test(values.postalCode)) {
-        errors.postalCode = POSTAL_INVALID;
+      if (values.postalCode && !ADDRESS_POSTAL_CODE_REGEXP.test(values.postalCode)) {
+        errors.postalCode = ADDRESS_POSTAL_CODE_INVALID;
       }
       return errors;
     }

@@ -9,12 +9,12 @@ import FormValidation from "components/Shared/Form/Validation";
 import { changeUserDoxatag } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
-  doxatagSpecialRegex,
-  DOXATAG_MINIMUM_LENGTH,
-  DOXATAG_MAXIMUM_LENGTH,
+  DOXATAG_REGEXP,
+  DOXATAG_MIN_LENGTH,
+  DOXATAG_MAX_LENGTH,
   DOXATAG_REQUIRED,
-  DOXATAG_LENGTH_UNDER_INVALID,
-  DOXATAG_LENGTH_OVER_INVALID,
+  DOXATAG_MIN_LENGTH_INVALID,
+  DOXATAG_MAX_LENGTH_INVALID,
   DOXATAG_INVALID
 } from "validation";
 import { connect, MapStateToProps } from "react-redux";
@@ -93,11 +93,11 @@ const enhance = compose<InnerProps, OutterProps>(
       const errors: FormErrors<FormData> = {};
       if (!values.name) {
         errors.name = DOXATAG_REQUIRED;
-      } else if (values.name.length < DOXATAG_MINIMUM_LENGTH) {
-        errors.name = DOXATAG_LENGTH_UNDER_INVALID;
-      } else if (values.name.length > DOXATAG_MAXIMUM_LENGTH) {
-        errors.name = DOXATAG_LENGTH_OVER_INVALID;
-      } else if (!doxatagSpecialRegex.test(values.name)) {
+      } else if (values.name.length < DOXATAG_MIN_LENGTH) {
+        errors.name = DOXATAG_MIN_LENGTH_INVALID;
+      } else if (values.name.length > DOXATAG_MAX_LENGTH) {
+        errors.name = DOXATAG_MAX_LENGTH_INVALID;
+      } else if (!DOXATAG_REGEXP.test(values.name)) {
         errors.name = DOXATAG_INVALID;
       }
       return errors;

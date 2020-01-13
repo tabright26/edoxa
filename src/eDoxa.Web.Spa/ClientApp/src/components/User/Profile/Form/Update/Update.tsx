@@ -18,9 +18,9 @@ import { throwSubmissionError } from "utils/form/types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import {
-  PERSONALINFO_FIRSTNAME_REQUIRED,
-  PERSONALINFO_FIRSTNAME_INVALID,
-  personalInfoNameRegex
+  PROFILE_FIRST_NAME_REQUIRED,
+  PROFILE_FIRST_NAME_INVALID,
+  PROFILE_FIRST_NAME_REGEXP
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
@@ -49,9 +49,9 @@ const CustomForm: FunctionComponent<Props> = ({
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
         <dl className="row">
-          <dt className="col-sm-4 mb-0">
+          <dd className="col-sm-4 mb-0">
             <Field name="firstName" label="First Name" component={Input.Text} />
-          </dt>
+          </dd>
           <dd className="col-sm-4 mb-0">
             <Field
               name="lastName"
@@ -66,11 +66,11 @@ const CustomForm: FunctionComponent<Props> = ({
       <dd className="col-sm-9 mb-0">
         <FormGroup>
           <FormSection name="dob">
-            <FormField.Year className="d-inline" width="75px" disabled />
-            <span className="d-inline mx-2">/</span>
             <FormField.Month className="d-inline" width="60px" disabled />
             <span className="d-inline mx-2">/</span>
             <FormField.Day className="d-inline" width="60px" disabled />
+            <span className="d-inline mx-2">/</span>
+            <FormField.Year className="d-inline" width="75px" disabled />
           </FormSection>
         </FormGroup>
       </dd>
@@ -78,6 +78,8 @@ const CustomForm: FunctionComponent<Props> = ({
       <dd className="col-sm-3 mb-0">
         <Field name="gender" label="Gender" component={Input.Text} disabled />
       </dd>
+      <dd className="col-sm-6 mb-0"></dd>
+      <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
         <Button.Save className="mt-3 mr-2" />
         <Button.Cancel className="mt-3" onClick={() => handleCancel()} />
@@ -115,9 +117,9 @@ const enhance = compose<InnerProps, OutterProps>(
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.firstName) {
-        errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
-      } else if (!personalInfoNameRegex.test(values.firstName)) {
-        errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
+        errors.firstName = PROFILE_FIRST_NAME_REQUIRED;
+      } else if (!PROFILE_FIRST_NAME_REGEXP.test(values.firstName)) {
+        errors.firstName = PROFILE_FIRST_NAME_INVALID;
       }
       return errors;
     }

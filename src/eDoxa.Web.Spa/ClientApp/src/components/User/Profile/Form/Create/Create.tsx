@@ -16,12 +16,12 @@ import FormValidation from "components/Shared/Form/Validation";
 import { createUserProfile } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
-  personalInfoNameRegex,
-  PERSONALINFO_FIRSTNAME_REQUIRED,
-  PERSONALINFO_FIRSTNAME_INVALID,
-  PERSONALINFO_LASTNAME_REQUIRED,
-  PERSONALINFO_LASTNAME_INVALID,
-  PERSONALINFO_GENDER_REQUIRED
+  PROFILE_FIRST_NAME_REGEXP,
+  PROFILE_FIRST_NAME_REQUIRED,
+  PROFILE_FIRST_NAME_INVALID,
+  PROFILE_LAST_NAME_REQUIRED,
+  PROFILE_LAST_NAME_INVALID,
+  PROFILE_GENDER_REQUIRED
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
@@ -51,9 +51,9 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">
         <dl className="row">
-          <dt className="col-sm-4 mb-0">
+          <dd className="col-sm-4 mb-0">
             <Field name="firstName" label="First Name" component={Input.Text} />
-          </dt>
+          </dd>
           <dd className="col-sm-4 mb-0">
             <Field name="lastName" label="Last Name" component={Input.Text} />
           </dd>
@@ -63,15 +63,15 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <dd className="col-sm-9 mb-0">
         <FormGroup>
           <FormSection name="dob">
-            <FormField.Year className="d-inline" width="75px" />
-            <span className="d-inline mx-2">/</span>
             <FormField.Month className="d-inline" width="60px" />
             <span className="d-inline mx-2">/</span>
             <FormField.Day className="d-inline" width="60px" />
+            <span className="d-inline mx-2">/</span>
+            <FormField.Year className="d-inline" width="75px" />
           </FormSection>
         </FormGroup>
       </dd>
-      <dd className="col-sm-3 text-muted mb-0">Gender</dd>
+      <dd className="col-sm-3 mb-0 text-muted">Gender</dd>
       <dd className="col-sm-3 mb-0">
         <FormGroup>
           <Field name="gender" type="select" component={Input.Select}>
@@ -82,6 +82,8 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
           </Field>
         </FormGroup>
       </dd>
+      <dd className="col-sm-6 mb-0"></dd>
+      <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
         <Button.Save />
       </dd>
@@ -106,33 +108,19 @@ const enhance = compose<InnerProps, OutterProps>(
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.firstName) {
-        errors.firstName = PERSONALINFO_FIRSTNAME_REQUIRED;
-      } else if (!personalInfoNameRegex.test(values.firstName)) {
-        errors.firstName = PERSONALINFO_FIRSTNAME_INVALID;
+        errors.firstName = PROFILE_FIRST_NAME_REQUIRED;
+      } else if (!PROFILE_FIRST_NAME_REGEXP.test(values.firstName)) {
+        errors.firstName = PROFILE_FIRST_NAME_INVALID;
       }
       if (!values.lastName) {
-        errors.lastName = PERSONALINFO_LASTNAME_REQUIRED;
-      } else if (!personalInfoNameRegex.test(values.lastName)) {
-        errors.lastName = PERSONALINFO_LASTNAME_INVALID;
+        errors.lastName = PROFILE_LAST_NAME_REQUIRED;
+      } else if (!PROFILE_FIRST_NAME_REGEXP.test(values.lastName)) {
+        errors.lastName = PROFILE_LAST_NAME_INVALID;
       }
       if (!values.gender) {
-        errors.gender = PERSONALINFO_GENDER_REQUIRED;
+        errors.gender = PROFILE_GENDER_REQUIRED;
       }
-      // if (!values.dob.year) {
-      //   errors.dob = PERSONALINFO_YEAR_REQUIRED;
-      // } else if (!personalInfoYearRegex.test(values.dob.year)) {
-      //   errors.dob = PERSONALINFO_YEAR_INVALID;
-      // }
-      // if (!values.dob.month) {
-      //   errors.dob = PERSONALINFO_MONTH_REQUIRED;
-      // } else if (!personalInfoMonthRegex.test(values.dob.month)) {
-      //   errors.dob = PERSONALINFO_MONTH_INVALID;
-      // }
-      // if (!values.dob.day) {
-      //   errors.dob = PERSONALINFO_DAY_REQUIRED;
-      // } else if (!personalInfoDayRegex.test(values.dob.day)) {
-      //   errors.dob = PERSONALINFO_DAY_INVALID;
-      // }
+
       return errors;
     }
   })

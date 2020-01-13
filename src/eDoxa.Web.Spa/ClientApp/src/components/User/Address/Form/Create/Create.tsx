@@ -10,21 +10,21 @@ import FormValidation from "components/Shared/Form/Validation";
 import { createUserAddress } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
-  countryRegex,
-  line1Regex,
-  line2Regex,
-  cityRegex,
-  stateRegex,
-  postalRegex,
-  COUNTRY_REQUIRED,
-  COUNTRY_INVALID,
-  LINE1_REQUIRED,
-  LINE1_INVALID,
-  LINE2_INVALID,
-  CITY_REQUIRED,
-  CITY_INVALID,
-  STATE_INVALID,
-  POSTAL_INVALID
+  ADDRESS_COUNTRY_REGEXP,
+  ADDRESS_LINE1_REGEXP,
+  ADDRESS_LINE2_REGEXP,
+  ADDRESS_CITY_REGEXP,
+  ADDRESS_STATE_REGEXP,
+  ADDRESS_POSTAL_CODE_REGEXP,
+  ADDRESS_COUNTRY_REQUIRED,
+  ADDRESS_COUNTRY_INVALID,
+  ADDRESS_LINE1_REQUIRED,
+  ADDRESS_LINE1_INVALID,
+  ADDRESS_LINE2_INVALID,
+  ADDRESS_CITY_REQUIRED,
+  ADDRESS_CITY_INVALID,
+  ADDRESS_STATE_INVALID,
+  ADDRESS_POSTAL_CODE_INVALID
 } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
@@ -90,7 +90,7 @@ const CustomForm: FunctionComponent<Props> = ({
         <Field
           type="text"
           name="postalCode"
-          label="Postal Code"
+          label="Postal code"
           formGroup={FormGroup}
           component={Input.Text}
         />
@@ -120,28 +120,28 @@ const enhance = compose<InnerProps, OutterProps>(
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.country) {
-        errors.country = COUNTRY_REQUIRED;
-      } else if (!countryRegex.test(values.country)) {
-        errors.country = COUNTRY_INVALID;
+        errors.country = ADDRESS_COUNTRY_REQUIRED;
+      } else if (!ADDRESS_COUNTRY_REGEXP.test(values.country)) {
+        errors.country = ADDRESS_COUNTRY_INVALID;
       }
       if (!values.line1) {
-        errors.line1 = LINE1_REQUIRED;
-      } else if (!line1Regex.test(values.line1)) {
-        errors.line1 = LINE1_INVALID;
+        errors.line1 = ADDRESS_LINE1_REQUIRED;
+      } else if (!ADDRESS_LINE1_REGEXP.test(values.line1)) {
+        errors.line1 = ADDRESS_LINE1_INVALID;
       }
-      if (values.line2 && !line2Regex.test(values.line2)) {
-        errors.line2 = LINE2_INVALID;
+      if (values.line2 && !ADDRESS_LINE2_REGEXP.test(values.line2)) {
+        errors.line2 = ADDRESS_LINE2_INVALID;
       }
       if (!values.city) {
-        errors.city = CITY_REQUIRED;
-      } else if (!cityRegex.test(values.city)) {
-        errors.city = CITY_INVALID;
+        errors.city = ADDRESS_CITY_REQUIRED;
+      } else if (!ADDRESS_CITY_REGEXP.test(values.city)) {
+        errors.city = ADDRESS_CITY_INVALID;
       }
-      if (values.state && !stateRegex.test(values.state)) {
-        errors.state = STATE_INVALID;
+      if (values.state && !ADDRESS_STATE_REGEXP.test(values.state)) {
+        errors.state = ADDRESS_STATE_INVALID;
       }
-      if (values.postalCode && !postalRegex.test(values.postalCode)) {
-        errors.postalCode = POSTAL_INVALID;
+      if (values.postalCode && !ADDRESS_POSTAL_CODE_REGEXP.test(values.postalCode)) {
+        errors.postalCode = ADDRESS_POSTAL_CODE_INVALID;
       }
       return errors;
     }

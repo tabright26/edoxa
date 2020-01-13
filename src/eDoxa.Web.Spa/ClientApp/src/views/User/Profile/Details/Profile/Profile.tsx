@@ -25,7 +25,7 @@ const Profile: FunctionComponent<any> = ({
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
-        <strong className="text-uppercase my-auto">INFORMATIONS</strong>
+        <strong className="text-uppercase my-auto">PERSONAL INFORMATION</strong>
         <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faEdit}

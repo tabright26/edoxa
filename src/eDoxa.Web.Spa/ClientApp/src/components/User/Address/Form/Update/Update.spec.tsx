@@ -6,13 +6,13 @@ import { configureStore } from "store";
 import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";
 import {
-  LINE1_REQUIRED,
-  LINE1_INVALID,
-  LINE2_INVALID,
-  CITY_REQUIRED,
-  CITY_INVALID,
-  STATE_INVALID,
-  POSTAL_INVALID
+  ADDRESS_LINE1_REQUIRED,
+  ADDRESS_LINE1_INVALID,
+  ADDRESS_LINE2_INVALID,
+  ADDRESS_CITY_REQUIRED,
+  ADDRESS_CITY_INVALID,
+  ADDRESS_STATE_INVALID,
+  ADDRESS_POSTAL_CODE_INVALID
 } from "validation";
 
 const shallow = global["shallow"];
@@ -83,8 +83,8 @@ describe("<UserAddressUpdateForm />", () => {
   describe("form validation", () => {
     describe("text fields validation", () => {
       test.each([
-        ["line1", LINE1_REQUIRED],
-        ["city", CITY_REQUIRED]
+        ["line1", ADDRESS_LINE1_REQUIRED],
+        ["city", ADDRESS_CITY_REQUIRED]
       ])("name fields blank validation", (name: string, message: string) => {
         const wrapper = createWrapper();
         const input = wrapper.findInputByName(name);
@@ -95,11 +95,11 @@ describe("<UserAddressUpdateForm />", () => {
       });
 
       test.each([
-        ["line1", LINE1_INVALID],
-        ["line2", LINE2_INVALID],
-        ["city", CITY_INVALID],
-        ["state", STATE_INVALID],
-        ["postalCode", POSTAL_INVALID]
+        ["line1", ADDRESS_LINE1_INVALID],
+        ["line2", ADDRESS_LINE2_INVALID],
+        ["city", ADDRESS_CITY_INVALID],
+        ["state", ADDRESS_STATE_INVALID],
+        ["postalCode", ADDRESS_POSTAL_CODE_INVALID]
       ])("name fields blank validation", (name: string, message: string) => {
         const wrapper = createWrapper();
         const input = wrapper.findInputByName(name);
