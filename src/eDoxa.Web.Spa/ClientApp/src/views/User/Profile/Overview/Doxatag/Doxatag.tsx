@@ -23,6 +23,7 @@ const Doxatag: FunctionComponent<any> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const disabled = !data || buttonDisabled;
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
@@ -30,7 +31,7 @@ const Doxatag: FunctionComponent<any> = ({
         <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faEdit}
-          disabled={buttonDisabled}
+          disabled={disabled}
           onClick={() => setButtonDisabled(true)}
         >
           UPDATE
@@ -43,14 +44,15 @@ const Doxatag: FunctionComponent<any> = ({
           <dl className="row mb-0">
             <dd className="col-sm-3 mb-0 text-muted">DoxaTag</dd>
             <dd className="col-sm-5 mb-0">
-              {!buttonDisabled && data ? (
-                <span>
-                  {data.name}#{data.code}
-                </span>
-              ) : (
+              {disabled && (
                 <DoxatagForm.Update
                   handleCancel={() => setButtonDisabled(false)}
                 />
+              )}
+              {!disabled && (
+                <span>
+                  {data.name}#{data.code}
+                </span>
               )}
             </dd>
           </dl>
