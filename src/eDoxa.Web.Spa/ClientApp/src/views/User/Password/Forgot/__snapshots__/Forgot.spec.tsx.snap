@@ -49,24 +49,15 @@ exports[`renders correctly 1`] = `
         >
           Send
         </button>
-        <button
+        <a
           aria-label={null}
           className="ml-auto my-auto btn btn-link btn-sm"
+          href="/authentication/login"
           onClick={[Function]}
-          style={
-            Object {
-              "textDecoration": "none",
-            }
-          }
-          type="button"
         >
-          <small
-            className="text-uppercase"
-          >
-             
-            Return to login page
-          </small>
-        </button>
+           
+          Return to login page
+        </a>
       </div>
     </form>
   </div>
