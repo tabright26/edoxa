@@ -59,57 +59,57 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                     {
                         var moneyAccount = new MoneyAccountDecorator(adminAccount);
 
-                        moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceded(); // 500
+                        moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceeded(); // 500
 
-                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 490
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 490
 
-                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 480
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 480
 
-                        moneyAccount.Charge(Money.Five).MarkAsSucceded(); // 475
+                        moneyAccount.Charge(Money.Five).MarkAsSucceeded(); // 475
 
-                        moneyAccount.Charge(Money.Fifty).MarkAsSucceded(); // 425
+                        moneyAccount.Charge(Money.Fifty).MarkAsSucceeded(); // 425
 
-                        moneyAccount.Payout(Money.Twenty).MarkAsSucceded(); // 445
+                        moneyAccount.Payout(Money.Twenty).MarkAsSucceeded(); // 445
 
-                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 435
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 435
 
-                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 425
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 425
 
-                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 415
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 415
 
-                        moneyAccount.Payout(Money.Twenty).MarkAsSucceded(); // 435
+                        moneyAccount.Payout(Money.Twenty).MarkAsSucceeded(); // 435
 
-                        moneyAccount.Withdrawal(Money.OneHundred).MarkAsSucceded(); // 335
+                        moneyAccount.Withdrawal(Money.OneHundred).MarkAsSucceeded(); // 335
 
-                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 325
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 325
 
-                        moneyAccount.Charge(Money.Five).MarkAsSucceded(); // 320
+                        moneyAccount.Charge(Money.Five).MarkAsSucceeded(); // 320
 
-                        moneyAccount.Charge(Money.Fifty).MarkAsSucceded(); // 270
+                        moneyAccount.Charge(Money.Fifty).MarkAsSucceeded(); // 270
 
-                        moneyAccount.Charge(Money.Ten).MarkAsSucceded(); // 260
+                        moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 260
 
                         var tokenAccount = new TokenAccountDecorator(adminAccount);
 
-                        tokenAccount.Deposit(Token.OneMillion).MarkAsSucceded(); // 1000000
+                        tokenAccount.Deposit(Token.OneMillion).MarkAsSucceeded(); // 1000000
 
-                        tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceded(); // 1050000
+                        tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceeded(); // 1050000
 
-                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceded(); // 1000000
+                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceeded(); // 1000000
 
-                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceded(); // 950000
+                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceeded(); // 950000
 
-                        tokenAccount.Charge(Token.TwoHundredFiftyThousand).MarkAsSucceded(); // 700000
+                        tokenAccount.Charge(Token.TwoHundredFiftyThousand).MarkAsSucceeded(); // 700000
 
-                        tokenAccount.Charge(Token.FiveHundredThousand).MarkAsSucceded(); // 200000
+                        tokenAccount.Charge(Token.FiveHundredThousand).MarkAsSucceeded(); // 200000
 
-                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceded(); // 150000
+                        tokenAccount.Charge(Token.FiftyThousand).MarkAsSucceeded(); // 150000
 
-                        tokenAccount.Payout(Token.OneHundredThousand).MarkAsSucceded(); // 250000
+                        tokenAccount.Payout(Token.OneHundredThousand).MarkAsSucceeded(); // 250000
 
-                        tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceded(); // 300000
+                        tokenAccount.Reward(Token.FiftyThousand).MarkAsSucceeded(); // 300000
 
-                        tokenAccount.Charge(Token.OneHundredThousand).MarkAsSucceded(); // 200000
+                        tokenAccount.Charge(Token.OneHundredThousand).MarkAsSucceeded(); // 200000
 
                         _accountRepository.Create(adminAccount);
                     }
@@ -152,11 +152,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                 var moneyAccount = new MoneyAccountDecorator(account);
 
-                moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceded();
+                moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceeded();
 
                 var tokenAccount = new TokenAccountDecorator(account);
 
-                tokenAccount.Deposit(Token.FiveMillions).MarkAsSucceded();
+                tokenAccount.Deposit(Token.FiveMillions).MarkAsSucceeded();
 
                 _accountRepository.Create(account);
 

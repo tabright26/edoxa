@@ -203,7 +203,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             return await Task.FromResult(account.TransactionExists(transactionId) ? account.FindTransaction(transactionId) : null);
         }
 
-        public async Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsSucceededAsync(
             IAccount account,
             TransactionId transactionId,
             CancellationToken cancellationToken = default
@@ -220,7 +220,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var transaction = account.FindTransaction(transactionId);
 
-                transaction.MarkAsSucceded();
+                transaction.MarkAsSucceeded();
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
@@ -284,7 +284,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             return result;
         }
 
-        public async Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+        public async Task<IDomainValidationResult> MarkAccountTransactionAsSucceededAsync(
             IAccount account,
             TransactionMetadata metadata,
             CancellationToken cancellationToken = default
@@ -301,7 +301,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var transaction = account.FindTransaction(metadata);
 
-                transaction.MarkAsSucceded();
+                transaction.MarkAsSucceeded();
 
                 await _accountRepository.CommitAsync(cancellationToken);
 
@@ -406,14 +406,14 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var moneyAccount = new MoneyAccountDecorator(account!);
 
-                moneyAccount.Payout(new Money(amount)).MarkAsSucceded();
+                moneyAccount.Payout(new Money(amount)).MarkAsSucceeded();
             }
 
             if (currency == Currency.Token)
             {
                 var tokenAccount = new TokenAccountDecorator(account!);
 
-                tokenAccount.Payout(new Token(amount)).MarkAsSucceded();
+                tokenAccount.Payout(new Token(amount)).MarkAsSucceeded();
             }
         }
 

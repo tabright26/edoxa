@@ -171,7 +171,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                         It.IsAny<int>(),
                         It.IsAny<int>(),
                         It.IsAny<int>()))
-                .ReturnsAsync(DomainValidationResult.Succeded(profile))
+                .ReturnsAsync(DomainValidationResult.Succeeded(profile))
                 .Verifiable();
 
             var controller = new ProfileController(mockUserManager.Object, TestMapper);
@@ -270,7 +270,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             mockUserManager.Setup(userManager => userManager.UpdateProfileAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(DomainValidationResult.Succeded(user.Profile))
+                .ReturnsAsync(DomainValidationResult.Succeeded(user.Profile))
                 .Verifiable();
 
             var controller = new ProfileController(mockUserManager.Object, TestMapper);

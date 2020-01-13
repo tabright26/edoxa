@@ -109,7 +109,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .Verifiable();
 
             mockAddressService.Setup(addressService => addressService.RemoveAddressAsync(It.IsAny<Address>()))
-                .ReturnsAsync(DomainValidationResult.Succeded(address))
+                .ReturnsAsync(DomainValidationResult.Succeeded(address))
                 .Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
@@ -235,7 +235,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>()))
-                .ReturnsAsync(DomainValidationResult.Succeded(address))
+                .ReturnsAsync(DomainValidationResult.Succeeded(address))
                 .Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);
@@ -359,7 +359,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<string>()))
-                .ReturnsAsync(DomainValidationResult.Succeded(address))
+                .ReturnsAsync(DomainValidationResult.Succeeded(address))
                 .Verifiable();
 
             var controller = new AddressBookController(mockUserManager.Object, mockAddressService.Object, TestMapper);

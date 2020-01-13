@@ -54,7 +54,7 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId);
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+        Task<IDomainValidationResult> MarkAccountTransactionAsSucceededAsync(
             IAccount account,
             TransactionId transactionId,
             CancellationToken cancellationToken = default
@@ -72,7 +72,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsSuccededAsync(
+        Task<IDomainValidationResult> MarkAccountTransactionAsSucceededAsync(
             IAccount account,
             TransactionMetadata metadata,
             CancellationToken cancellationToken = default

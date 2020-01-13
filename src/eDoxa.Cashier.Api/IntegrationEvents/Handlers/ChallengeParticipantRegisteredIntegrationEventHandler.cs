@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
                     [nameof(ParticipantId)] = participantId
                 };
 
-                var result = await _accountService.MarkAccountTransactionAsSuccededAsync(account, metadata);
+                var result = await _accountService.MarkAccountTransactionAsSucceededAsync(account, metadata);
 
                 if (result.IsValid)
                 {
