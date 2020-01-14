@@ -46,7 +46,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
               />
             </dd>
           </dl>
-          {process.env.NODE_ENV !== "production" && <BuyToken />}
+          <BuyToken />
         </PopoverBody>
       </Popover>
     </div>
