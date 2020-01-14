@@ -91,7 +91,7 @@ namespace eDoxa.FunctionalTests
 
             var moneyAccount = new MoneyAccountDecorator(account);
 
-            moneyAccount.Deposit(Money.TwoHundred).MarkAsSucceded();
+            moneyAccount.Deposit(Money.TwoHundred).MarkAsSucceeded();
 
             var doxatag = new Doxatag(
                 account.Id,

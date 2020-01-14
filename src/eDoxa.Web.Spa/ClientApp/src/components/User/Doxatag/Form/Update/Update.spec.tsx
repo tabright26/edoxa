@@ -8,8 +8,8 @@ import Input from "components/Shared/Input";
 import {
   DOXATAG_REQUIRED,
   DOXATAG_INVALID,
-  DOXATAG_LENGTH_UNDER_INVALID,
-  DOXATAG_LENGTH_OVER_INVALID
+  DOXATAG_MIN_LENGTH_INVALID,
+  DOXATAG_MAX_LENGTH_INVALID
 } from "validation";
 
 const shallow = global["shallow"];
@@ -82,7 +82,7 @@ describe("<UserDoxatagUpdateForm />", () => {
         input.simulate("change", { target: { value: "_" } });
 
         const errorPresent = wrapper.findFormFeedback(
-          DOXATAG_LENGTH_UNDER_INVALID
+          DOXATAG_MIN_LENGTH_INVALID
         );
         expect(errorPresent).toBeTruthy();
       });
@@ -93,7 +93,7 @@ describe("<UserDoxatagUpdateForm />", () => {
         input.simulate("change", { target: { value: "_Doxatag_Test_1234" } });
 
         const errorPresent = wrapper.findFormFeedback(
-          DOXATAG_LENGTH_OVER_INVALID
+          DOXATAG_MAX_LENGTH_INVALID
         );
         expect(errorPresent).toBeTruthy();
       });

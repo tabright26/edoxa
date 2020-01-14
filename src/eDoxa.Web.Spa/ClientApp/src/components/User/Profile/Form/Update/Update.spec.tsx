@@ -5,8 +5,8 @@ import Update from "./Update";
 import { configureStore } from "store";
 import Input from "components/Shared/Input";
 import {
-  PERSONALINFO_FIRSTNAME_REQUIRED,
-  PERSONALINFO_FIRSTNAME_INVALID
+  PROFILE_FIRST_NAME_REQUIRED,
+  PROFILE_FIRST_NAME_INVALID
 } from "validation";
 
 const shallow = global["shallow"];
@@ -66,7 +66,7 @@ describe("<UserInformationUpdateForm />", () => {
         input.simulate("blur");
 
         const errorPresent = wrapper.findFormFeedback(
-          PERSONALINFO_FIRSTNAME_REQUIRED
+          PROFILE_FIRST_NAME_REQUIRED
         );
         expect(errorPresent).toBeTruthy();
       });
@@ -77,7 +77,7 @@ describe("<UserInformationUpdateForm />", () => {
         input.simulate("change", { target: { value: "_123" } });
 
         const errorPresent = wrapper.findFormFeedback(
-          PERSONALINFO_FIRSTNAME_INVALID
+          PROFILE_FIRST_NAME_INVALID
         );
         expect(errorPresent).toBeTruthy();
       });

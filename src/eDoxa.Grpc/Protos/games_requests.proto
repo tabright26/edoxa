@@ -11,7 +11,7 @@ import "games_enums.proto";
 
 package edoxa.services.games;
 
-message FetchChallengeScoringRequest {
+message FindChallengeScoringRequest {
   EnumGame game = 1;
   services.challenges.EnumChallengeType challengeType = 2;
 }

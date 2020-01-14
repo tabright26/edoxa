@@ -11,11 +11,6 @@ Array [
     className="card-accent-primary mt-4 mb-3 card"
   >
     <div
-      className="card-header"
-    >
-      Filtering fields
-    </div>
-    <div
       className="table-responsive"
     >
       <table

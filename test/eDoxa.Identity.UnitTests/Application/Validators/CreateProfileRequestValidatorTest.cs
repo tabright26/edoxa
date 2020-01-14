@@ -24,7 +24,9 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             {
                 "Gabriel",
                 "Gabriel-Roy",
-                "Gabriel-Roy-R"
+                "Gabriel-Roy-R",
+                "gabriel-Roy",
+                "Gabriel-roy"
             };
 
         public static TheoryData<string> ValidLastNames =>
@@ -32,7 +34,9 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             {
                 "Gabriel",
                 "Gabriel-Roy",
-                "Gabriel-Roy-R"
+                "Gabriel-Roy-R",
+                "gabriel-Roy",
+                "Gabriel-roy"
             };
 
         public static TheoryData<string, string> InvalidFirstNames =>
@@ -42,9 +46,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
                 {"G", ProfileErrorDescriber.FirstNameLength()},
                 {"Gabriel-Roy-Gab-R", ProfileErrorDescriber.FirstNameLength()},
                 {"Gab123", ProfileErrorDescriber.FirstNameInvalid()},
-                {"Gabriel-Ro_Roy", ProfileErrorDescriber.FirstNameInvalid()},
-                {"gabriel-Roy", ProfileErrorDescriber.FirstNameUppercase()},
-                {"Gabriel-roy", ProfileErrorDescriber.FirstNameUppercase()}
+                {"Gabriel-Ro_Roy", ProfileErrorDescriber.FirstNameInvalid()}
             };
 
         public static TheoryData<string, string> InvalidLastNames =>
@@ -54,9 +56,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
                 {"G", ProfileErrorDescriber.LastNameLength()},
                 {"Gabriel-Roy-Gab-R", ProfileErrorDescriber.LastNameLength()},
                 {"Gab123", ProfileErrorDescriber.LastNameInvalid()},
-                {"Gabriel-Ro_Roy", ProfileErrorDescriber.LastNameInvalid()},
-                {"gabriel-Roy", ProfileErrorDescriber.LastNameUppercase()},
-                {"Gabriel-roy", ProfileErrorDescriber.LastNameUppercase()}
+                {"Gabriel-Ro_Roy", ProfileErrorDescriber.LastNameInvalid()}
             };
 
         public static TheoryData<EnumGender> ValidGenders =>

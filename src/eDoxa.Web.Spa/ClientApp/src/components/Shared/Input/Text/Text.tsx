@@ -18,7 +18,7 @@ const TextInput = ({
       placeholder={label}
       invalid={!disabled && meta.touched && !!meta.error}
     />
-    {meta ? <FormFeedback>{meta.error}</FormFeedback> : null}
+    {meta && <FormFeedback>{meta.error}</FormFeedback>}
   </FormGroup>
 );
 

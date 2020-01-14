@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     {
         public Balance(IReadOnlyCollection<ITransaction> transactions, Currency currency)
         {
-            Available = transactions.Where(transaction => transaction.Currency.Type == currency && transaction.Status == TransactionStatus.Succeded)
+            Available = transactions.Where(transaction => transaction.Currency.Type == currency && transaction.Status == TransactionStatus.Succeeded)
                 .Sum(transaction => transaction.Currency.Amount);
 
             Pending = transactions.Where(transaction => transaction.Currency.Type == currency && transaction.Status == TransactionStatus.Pending)

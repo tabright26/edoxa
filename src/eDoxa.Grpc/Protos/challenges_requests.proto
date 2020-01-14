@@ -24,7 +24,7 @@ message CreateChallengeRequest {
   int32 bestOf = 4;
   int32 entries = 5;
   int32 duration = 6;
-  map<string, float> scoring = 7;
+  games.ChallengeScoringDto scoring = 7;
 }
 
 message SynchronizeChallengeRequest {

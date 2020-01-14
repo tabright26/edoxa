@@ -8,11 +8,10 @@ import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
 import { forgotUserPassword } from "store/actions/identity";
-import { EMAIL_REQUIRED, EMAIL_INVALID, emailRegex } from "validation";
+import { EMAIL_REQUIRED, EMAIL_INVALID, EMAIL_REGEXP } from "validation";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 import { toastr } from "react-redux-toastr";
-import { REACT_APP_AUTHORITY } from "keys";
 
 interface FormData {
   email: string;
@@ -36,12 +35,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
     />
     <FormGroup className="mb-0 d-flex">
       <Button.Submit className="w-25">Send</Button.Submit>
-      <Button.Link
-        className="ml-auto my-auto"
-        onClick={() => {
-          window.location.href = `${REACT_APP_AUTHORITY}/Account/Login`;
-        }}
-      >
+      <Button.Link className="ml-auto my-auto" to="/authentication/login">
         Return to login page
       </Button.Link>
     </FormGroup>
@@ -75,7 +69,7 @@ const enhance = compose<InnerProps, OutterProps>(
       const errors: FormErrors<FormData> = {};
       if (!values.email) {
         errors.email = EMAIL_REQUIRED;
-      } else if (!emailRegex.test(values.email)) {
+      } else if (!EMAIL_REGEXP.test(values.email)) {
         errors.email = EMAIL_INVALID;
       }
       return errors;

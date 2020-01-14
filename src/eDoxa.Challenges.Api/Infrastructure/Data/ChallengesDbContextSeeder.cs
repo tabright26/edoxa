@@ -59,13 +59,13 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
                     new Dictionary<string, float>
                     {
                         ["Kills"] = 4.5F,
-                        ["Assists"] = 3.5F,
                         ["Deaths"] = -4F,
-                        ["Minions"] = 0.04F,
-                        ["TotalDamageDealt"] = 0.0009F,
+                        ["Assists"] = 3.5F,
+                        ["TotalDamageDealtToChampions"] = 0.0009F,
                         ["TotalDamageTaken"] = 0.00125F,
                         ["VisionScore"] = 0.38F,
-                        ["Win"] = 20F
+                        ["TotalMinionsKilled"] = 0.04F,
+                        ["Winner"] = 20F
                     });
 
                 var timeline = new ChallengeTimeline(new UtcNowDateTimeProvider(), new ChallengeDuration(TimeSpan.FromDays(1)));

@@ -8,7 +8,9 @@ exports[`renders correctly 1`] = `
   <div
     className="form-group"
   >
-    <label>
+    <label
+      className=""
+    >
       Summoner name
     </label>
     <input
@@ -30,7 +32,9 @@ exports[`renders correctly 1`] = `
   <div
     className="form-group"
   >
-    <label>
+    <label
+      className=""
+    >
       Region
     </label>
     <select
@@ -53,7 +57,7 @@ exports[`renders correctly 1`] = `
   </div>
   <button
     aria-label={null}
-    className="btn btn-primary btn-sm"
+    className="w-25 btn btn-primary"
     onClick={[Function]}
     type="submit"
   >

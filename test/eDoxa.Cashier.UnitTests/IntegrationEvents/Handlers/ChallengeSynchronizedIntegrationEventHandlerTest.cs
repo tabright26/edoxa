@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             mockChallengeService.Setup(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             mockAccountService.Setup(accountService => accountService.ProcessChallengePayoutAsync(It.IsAny<Scoreboard>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(DomainValidationResult.Succeded(new PayoutPrizes()))
+                .ReturnsAsync(DomainValidationResult.Succeeded(new PayoutPrizes()))
                 .Verifiable();
 
             mockServiceBus.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<ChallengeClosedIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();

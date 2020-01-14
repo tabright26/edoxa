@@ -51,7 +51,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                     Currency = EnumCurrency.Money,
                     Description = "test",
                     Id = new TransactionId(),
-                    Status = EnumTransactionStatus.Succeded,
+                    Status = EnumTransactionStatus.Succeeded,
                     Timestamp = DateTime.UtcNow.ToTimestamp(),
                     Type = EnumTransactionType.Withdrawal
                 },

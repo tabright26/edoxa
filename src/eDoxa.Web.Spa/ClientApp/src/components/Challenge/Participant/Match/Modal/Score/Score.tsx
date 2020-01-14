@@ -6,6 +6,7 @@ import Format from "components/Shared/Format";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
 import { ChallengeParticipantMatchStat } from "types";
+import { sentenceCase } from "change-case";
 
 type InnerProps = InjectedProps & { stats: ChallengeParticipantMatchStat[] };
 
@@ -15,6 +16,7 @@ type Props = InnerProps & OutterProps;
 
 const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
   <Modal
+    size="lg"
     unmountOnClose={false}
     backdrop="static"
     isOpen={show}
@@ -36,7 +38,7 @@ const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
       <tbody>
         {stats.map((stat, index) => (
           <tr key={index}>
-            <td>{stat.name}</td>
+            <td>{sentenceCase(stat.name)}</td>
             <td className="text-center">{stat.value}</td>
             <td className="text-center">&#10005;</td>
             <td className="text-center">{stat.weighting}</td>

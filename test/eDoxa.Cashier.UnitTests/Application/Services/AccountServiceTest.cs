@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -124,7 +124,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var tokenAccount = new TokenAccountDecorator(account);
             var transaction = tokenAccount.Deposit(Token.TwoHundredFiftyThousand);
 
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -330,7 +330,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             var service = new AccountService(
                 mockAccountRepository.Object,
@@ -492,7 +492,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var tokenAccount = new TokenAccountDecorator(account);
             var transaction = tokenAccount.Deposit(Token.FiftyThousand);
 
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             var service = new AccountService(
                 mockAccountRepository.Object,
@@ -618,7 +618,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -770,7 +770,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             var service = new AccountService(
                 mockAccountRepository.Object,

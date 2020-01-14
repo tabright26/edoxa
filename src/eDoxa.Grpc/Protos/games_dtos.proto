@@ -8,6 +8,16 @@ import "games_enums.proto";
 
 package edoxa.services.games;
 
+message ChallengeScoringDto {
+  repeated Item items = 1;
+
+  message Item {
+    string statName = 1;
+    float statWeighting = 2;
+    int32 order = 3;
+  }
+}
+
 message GameMatchDto {
   string gameUuid = 1;
   google.protobuf.Timestamp timestamp = 2;

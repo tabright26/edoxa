@@ -38,12 +38,12 @@ export type TransactionType =
   | typeof TRANSACTION_TYPE_ALL;
 
 export const TRANSACTION_STATUS_PENDING = "Pending";
-export const TRANSACTION_STATUS_SUCCEDED = "Succeded";
+export const TRANSACTION_STATUS_SUCCEEDED = "Succeeded";
 export const TRANSACTION_STATUS_FAILED = "Failed";
 
 export type TransactionStatus =
   | typeof TRANSACTION_STATUS_PENDING
-  | typeof TRANSACTION_STATUS_SUCCEDED
+  | typeof TRANSACTION_STATUS_SUCCEEDED
   | typeof TRANSACTION_STATUS_FAILED;
 
 export type AddressId = string;

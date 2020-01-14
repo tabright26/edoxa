@@ -19,6 +19,7 @@ const BankAccount: FunctionComponent<any> = ({
   useEffect(() => {
     authorizeService.getUser().then((user: User) => setUser(user));
   }, []);
+  const disabled = buttonDisabled || !hasBankAccount;
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
@@ -26,7 +27,7 @@ const BankAccount: FunctionComponent<any> = ({
         <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faEdit}
-          disabled={buttonDisabled}
+          disabled={disabled}
           onClick={() => setButtonDisabled(true)}
         >
           UPDATE
@@ -39,14 +40,13 @@ const BankAccount: FunctionComponent<any> = ({
           <dl className="row mb-0">
             <dd className="col-sm-3 text-muted mb-0">Bank account</dd>
             <dd className="col-sm-5 mb-0">
-              {buttonDisabled || !hasBankAccount ? (
+              {disabled && (
                 <BankAccountForm.Update
                   country={user["country"]}
                   handleCancel={() => setButtonDisabled(false)}
                 />
-              ) : (
-                <span>XXXXX-{data.last4}</span>
               )}
+              {!disabled && <span>XXXXX-{data.last4}</span>}
             </dd>
           </dl>
         )}

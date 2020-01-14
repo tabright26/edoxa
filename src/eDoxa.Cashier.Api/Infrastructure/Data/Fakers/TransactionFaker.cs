@@ -89,9 +89,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 
                             var status = faker.PickRandom(statuses);
 
-                            if (status == TransactionStatus.Succeded)
+                            if (status == TransactionStatus.Succeeded)
                             {
-                                transaction.MarkAsSucceded();
+                                transaction.MarkAsSucceeded();
                             }
 
                             if (status == TransactionStatus.Failed)
@@ -139,9 +139,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
 
                             var status = faker.PickRandom(statuses);
 
-                            if (status == TransactionStatus.Succeded)
+                            if (status == TransactionStatus.Succeeded)
                             {
-                                transaction.MarkAsSucceded();
+                                transaction.MarkAsSucceeded();
                             }
 
                             if (status == TransactionStatus.Failed)

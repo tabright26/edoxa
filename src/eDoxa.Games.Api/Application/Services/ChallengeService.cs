@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Games.Domain.Factories;
 using eDoxa.Games.Domain.Services;
+using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Api.Application.Services
@@ -21,7 +22,7 @@ namespace eDoxa.Games.Api.Application.Services
             _challengeMatchesFactory = challengeMatchesFactory;
         }
 
-        public async Task<Scoring> GetScoringAsync(Game game)
+        public async Task<ChallengeScoringDto> GetScoringAsync(Game game)
         {
             var adapter = _challengeScoringFactory.CreateInstance(game);
 

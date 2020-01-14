@@ -72,7 +72,7 @@ namespace eDoxa.Seedwork.Domain
                 Formatting.None);
         }
 
-        public static IDomainValidationResult Succeded<TEntity>(TEntity entity)
+        public static IDomainValidationResult Succeeded<TEntity>(TEntity entity)
         where TEntity : class
         {
             var result = new DomainValidationResult();

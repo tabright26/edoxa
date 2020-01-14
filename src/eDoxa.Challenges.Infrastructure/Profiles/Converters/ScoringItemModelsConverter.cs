@@ -1,8 +1,8 @@
 ﻿// Filename: ScoringItemModelsConverter.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -19,10 +19,11 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.Converters
         public ICollection<ScoringItemModel> Convert(IScoring sourceMember, ResolutionContext context)
         {
             return sourceMember.Select(
-                    scoring => new ScoringItemModel
+                    (scoring, index) => new ScoringItemModel
                     {
                         Name = scoring.Key,
-                        Weighting = scoring.Value
+                        Weighting = scoring.Value,
+                        Order = index
                     })
                 .ToList();
         }

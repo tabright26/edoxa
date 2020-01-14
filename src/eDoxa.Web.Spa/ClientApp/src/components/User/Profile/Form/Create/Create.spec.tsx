@@ -5,10 +5,10 @@ import Create from "./Create";
 import { configureStore } from "store";
 import Input from "components/Shared/Input";
 import {
-  PERSONALINFO_FIRSTNAME_REQUIRED,
-  PERSONALINFO_FIRSTNAME_INVALID,
-  PERSONALINFO_LASTNAME_REQUIRED,
-  PERSONALINFO_LASTNAME_INVALID
+  PROFILE_FIRST_NAME_REQUIRED,
+  PROFILE_FIRST_NAME_INVALID,
+  PROFILE_LAST_NAME_REQUIRED,
+  PROFILE_LAST_NAME_INVALID
 } from "validation";
 
 const shallow = global["shallow"];
@@ -73,8 +73,8 @@ describe("<UserInformationCreateForm />", () => {
   describe("form validation", () => {
     describe("name fields validation", () => {
       test.each([
-        ["firstName", PERSONALINFO_FIRSTNAME_REQUIRED],
-        ["lastName", PERSONALINFO_LASTNAME_REQUIRED]
+        ["firstName", PROFILE_FIRST_NAME_REQUIRED],
+        ["lastName", PROFILE_LAST_NAME_REQUIRED]
       ])("name fields blank validation", (name: string, message: string) => {
         const wrapper = createWrapper();
         const input = wrapper.findInputByName(name);
@@ -85,8 +85,8 @@ describe("<UserInformationCreateForm />", () => {
       });
 
       test.each([
-        ["firstName", PERSONALINFO_FIRSTNAME_INVALID],
-        ["lastName", PERSONALINFO_LASTNAME_INVALID]
+        ["firstName", PROFILE_FIRST_NAME_INVALID],
+        ["lastName", PROFILE_LAST_NAME_INVALID]
       ])("name fields invalid validation", (name: string, message: string) => {
         const wrapper = createWrapper();
         const input = wrapper.findInputByName(name);

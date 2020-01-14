@@ -22,6 +22,7 @@ const Phone: FunctionComponent<any> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [buttonDisabled, setButtonDisabled] = useState(false);
+  const disabled = !data || buttonDisabled;
   return (
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
@@ -35,7 +36,7 @@ const Phone: FunctionComponent<any> = ({
         <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faEdit}
-          disabled={buttonDisabled}
+          disabled={disabled}
           onClick={() => setButtonDisabled(true)}
         >
           UPDATE
@@ -48,13 +49,12 @@ const Phone: FunctionComponent<any> = ({
           <dl className="row mb-0">
             <dd className="col-sm-3 text-muted mb-0">Number</dd>
             <dd className="col-sm-5 mb-0">
-              {buttonDisabled || !data ? (
+              {disabled && (
                 <UserPhoneForm.Update
                   handleCancel={() => setButtonDisabled(false)}
                 />
-              ) : (
-                <span>{data.number}</span>
               )}
+              {!disabled && <span>{data.number}</span>}
             </dd>
           </dl>
         )}

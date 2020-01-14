@@ -14,7 +14,7 @@ it("renders without crashing", () => {
   //       amount: 100,
   //       description: "test",
   //       type: "charge",
-  //       status: "succeded",
+  //       status: "succeeded",
   //       id: "1"
   //     },
   //     {
@@ -23,7 +23,7 @@ it("renders without crashing", () => {
   //       amount: 100,
   //       description: "test",
   //       type: "deposit",
-  //       status: "succeded",
+  //       status: "succeeded",
   //       id: "2"
   //     },
   //     {
@@ -32,7 +32,7 @@ it("renders without crashing", () => {
   //       amount: 100,
   //       description: "test",
   //       type: "withdrawal",
-  //       status: "succeded",
+  //       status: "succeeded",
   //       id: "3"
   //     }
   //   ],

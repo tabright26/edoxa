@@ -27,15 +27,15 @@ namespace eDoxa.Challenges.Infrastructure.Configurations
 
             builder.OwnsMany(
                 challenge => challenge.ScoringItems,
-                challengeStats =>
+                scoringItem =>
                 {
-                    challengeStats.ToTable("ScoringItem");
+                    scoringItem.ToTable("ScoringItem");
 
-                    challengeStats.WithOwner().HasForeignKey("ChallengeId");
+                    scoringItem.WithOwner().HasForeignKey("ChallengeId");
 
-                    challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
+                    scoringItem.Property<Guid>("Id").ValueGeneratedOnAdd();
 
-                    challengeStats.HasKey("ChallengeId", "Id");
+                    scoringItem.HasKey("ChallengeId", "Id");
                 });
 
             builder.HasMany(challenge => challenge.Participants).WithOne(participant => participant.Challenge).OnDelete(DeleteBehavior.Cascade);

@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
             {
                 var account = await _accountService.FindAccountAsync(userId);
 
-                var result = await _accountService.MarkAccountTransactionAsSuccededAsync(account, transactionId);
+                var result = await _accountService.MarkAccountTransactionAsSucceededAsync(account, transactionId);
 
                 if (result.IsValid)
                 {

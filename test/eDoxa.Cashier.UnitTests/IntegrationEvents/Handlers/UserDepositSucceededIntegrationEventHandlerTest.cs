@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             mockAccountService
                 .Setup(
-                    accountService => accountService.MarkAccountTransactionAsSuccededAsync(
+                    accountService => accountService.MarkAccountTransactionAsSucceededAsync(
                         It.IsAny<IAccount>(),
                         It.IsAny<TransactionId>(),
                         It.IsAny<CancellationToken>()))
@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                     Amount = new DecimalValue(50.0m),
                     Id = new TransactionId(),
                     Description = "test",
-                    Status = EnumTransactionStatus.Succeded,
+                    Status = EnumTransactionStatus.Succeeded,
                     Currency = EnumCurrency.Money,
                     Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
                     Type = EnumTransactionType.Deposit
@@ -86,7 +86,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             mockAccountService.Verify(
                 accountService =>
-                    accountService.MarkAccountTransactionAsSuccededAsync(It.IsAny<IAccount>(), It.IsAny<TransactionId>(), It.IsAny<CancellationToken>()),
+                    accountService.MarkAccountTransactionAsSucceededAsync(It.IsAny<IAccount>(), It.IsAny<TransactionId>(), It.IsAny<CancellationToken>()),
                 Times.Once);
 
             mockLogger.Verify(Times.Once());

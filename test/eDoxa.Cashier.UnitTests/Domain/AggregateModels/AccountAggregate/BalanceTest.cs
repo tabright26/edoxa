@@ -27,22 +27,22 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
         private static IEnumerable<ITransaction> CreateTransactions()
         {
             yield return new TransactionBuilder(TransactionType.Deposit, Money.Ten).Build();
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Deposit, Money.Fifty).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Deposit, Money.Fifty).Build());
             yield return MarkAsFailed(new TransactionBuilder(TransactionType.Deposit, Money.FiveHundred).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Charge, Money.Fifty).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Payout, Money.OneHundred).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Withdrawal, Money.Fifty).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Money.Fifty).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Payout, Money.OneHundred).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Withdrawal, Money.Fifty).Build());
             yield return MarkAsFailed(new TransactionBuilder(TransactionType.Charge, Token.FiveHundredThousand).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Deposit, Token.OneHundredThousand).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Payout, Token.TwoHundredFiftyThousand).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Charge, Token.OneHundredThousand).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Charge, Token.TwoHundredFiftyThousand).Build());
-            yield return MarkAsSucceded(new TransactionBuilder(TransactionType.Reward, Token.FiftyThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Deposit, Token.OneHundredThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Payout, Token.TwoHundredFiftyThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Token.OneHundredThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Token.TwoHundredFiftyThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Reward, Token.FiftyThousand).Build());
         }
 
-        private static ITransaction MarkAsSucceded(ITransaction transaction)
+        private static ITransaction MarkAsSucceeded(ITransaction transaction)
         {
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             return transaction;
         }

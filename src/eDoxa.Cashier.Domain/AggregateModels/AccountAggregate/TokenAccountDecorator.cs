@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             Transactions.Where(
                     transaction => transaction.Currency.Type == Currency.Token &&
                                    transaction.Type == TransactionType.Deposit &&
-                                   transaction.Status == TransactionStatus.Succeded)
+                                   transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction)
                 .FirstOrDefault()
                 ?.Timestamp;
