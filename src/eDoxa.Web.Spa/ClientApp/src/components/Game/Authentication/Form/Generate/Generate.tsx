@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Form, FormGroup } from "reactstrap";
+import { Form, FormGroup, Label } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
@@ -28,16 +28,16 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
     <FormGroup>
-      <label>Summoner name</label>
+      <Label>Summoner name</Label>
       <Field name="summonerName" component={Input.Text} />
     </FormGroup>
     <FormGroup>
-      <label>Region</label>
+      <Label>Region</Label>
       <Field name="region" component={Input.Select} disabled={true}>
         <option value="NA">North America</option>
       </Field>
     </FormGroup>
-    <Button.Submit size="sm">Search</Button.Submit>
+    <Button.Submit className="w-25">Search</Button.Submit>
   </Form>
 );
 

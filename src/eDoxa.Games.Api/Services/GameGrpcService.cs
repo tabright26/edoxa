@@ -73,14 +73,11 @@ namespace eDoxa.Games.Api.Services
             return context.Ok(response);
         }
 
-        public override async Task<FetchChallengeScoringResponse> FetchChallengeScoring(FetchChallengeScoringRequest request, ServerCallContext context)
+        public override async Task<FindChallengeScoringResponse> FindChallengeScoring(FindChallengeScoringRequest request, ServerCallContext context)
         {
-            return new FetchChallengeScoringResponse
+            return new FindChallengeScoringResponse
             {
-                Scoring =
-                {
-                    await _challengeService.GetScoringAsync(request.Game.ToEnumeration<Game>())
-                }
+                Scoring = await _challengeService.GetScoringAsync(request.Game.ToEnumeration<Game>())
             };
         }
 

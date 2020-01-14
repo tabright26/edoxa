@@ -1,42 +1,38 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
-import { Card, CardHeader } from "reactstrap";
+import { Card } from "reactstrap";
 import TransactionList from "components/User/Transaction/List";
 import Paginate from "components/Shared/Paginate";
 import { compose } from "recompose";
 import { UserTransactionState } from "store/root/user/transactionHistory/types";
 import { Currency, TransactionType, TransactionStatus } from "types";
 import Loading from "components/Shared/Loading";
-import { connect, MapStateToProps } from "react-redux";
+import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserTransactionHistory } from "store/actions/cashier";
 
 const pageSize = 10;
 
-interface FilteredTransactionsInnerProps {
+interface StateProps {
   transactionHistory: UserTransactionState;
+}
+
+interface DispatchProps {
   loadUserTransactionHistory: () => void;
 }
 
-interface FilteredTransactionsOutterProps {
+interface OwnProps {
   currency?: Currency | null;
   type?: TransactionType | null;
   status?: TransactionStatus | null;
 }
 
-type FilteredTransactionsProps = FilteredTransactionsInnerProps &
-  FilteredTransactionsOutterProps;
+type InnerProps = StateProps & DispatchProps;
 
-interface UserAccountTransactionsStateProps {
-  transactionHistory: UserTransactionState;
-}
+type OutterProps = OwnProps;
 
-interface UserAccountTransactionsOwnProps {
-  currency?: Currency | null;
-  type?: TransactionType | null;
-  status?: TransactionStatus | null;
-}
+type Props = InnerProps & OutterProps;
 
-const FilteredTransactions: FunctionComponent<FilteredTransactionsProps> = ({
+const FilteredTransactions: FunctionComponent<Props> = ({
   transactionHistory: { data, error, loading },
   loadUserTransactionHistory
 }) => {
@@ -53,7 +49,6 @@ const FilteredTransactions: FunctionComponent<FilteredTransactionsProps> = ({
   return (
     <>
       <Card className="card-accent-primary mt-4 mb-3">
-        <CardHeader>Filtering fields</CardHeader>
         {loading ? (
           <Loading />
         ) : (
@@ -74,8 +69,8 @@ const FilteredTransactions: FunctionComponent<FilteredTransactionsProps> = ({
 };
 
 const mapStateToProps: MapStateToProps<
-  UserAccountTransactionsStateProps,
-  UserAccountTransactionsOwnProps,
+  StateProps,
+  OwnProps,
   RootState
 > = state => {
   return {
@@ -83,9 +78,9 @@ const mapStateToProps: MapStateToProps<
   };
 };
 
-const mapDispatchToProps = (
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
   dispatch: any,
-  ownProps: UserAccountTransactionsOwnProps
+  ownProps
 ) => {
   return {
     loadUserTransactionHistory: () =>
@@ -99,9 +94,8 @@ const mapDispatchToProps = (
   };
 };
 
-const enhance = compose<
-  FilteredTransactionsInnerProps,
-  FilteredTransactionsOutterProps
->(connect(mapStateToProps, mapDispatchToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  connect(mapStateToProps, mapDispatchToProps)
+);
 
 export default enhance(FilteredTransactions);

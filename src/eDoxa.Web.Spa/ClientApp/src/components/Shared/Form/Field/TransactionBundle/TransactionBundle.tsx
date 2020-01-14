@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
-import { Col, Row, Input } from "reactstrap";
+import { Col, Row, Input, Label } from "reactstrap";
 import { Field } from "redux-form";
 import Format from "components/Shared/Format";
 import {
@@ -52,7 +52,7 @@ const FormFieldTransactionBundle: FunctionComponent<Props> = ({
               const checked = id === input.value;
               return (
                 <Col key={index} xs="2">
-                  <label
+                  <Label
                     className={`btn btn-dark btn-block rounded py-3 px-4 m-0 ${checked &&
                       "active"}`}
                   >
@@ -69,7 +69,7 @@ const FormFieldTransactionBundle: FunctionComponent<Props> = ({
                       amount={amount}
                       alignment="center"
                     />
-                  </label>
+                  </Label>
                 </Col>
               );
             }

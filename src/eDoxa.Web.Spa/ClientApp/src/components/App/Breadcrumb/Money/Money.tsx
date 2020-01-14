@@ -47,8 +47,8 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
               />
             </dd>
           </dl>
-          {process.env.NODE_ENV !== "production" && <DepositMoney />}
-          {process.env.NODE_ENV !== "production" && <WithdrawalMoney />}
+          <DepositMoney />
+          <WithdrawalMoney />
         </PopoverBody>
       </Popover>
     </div>

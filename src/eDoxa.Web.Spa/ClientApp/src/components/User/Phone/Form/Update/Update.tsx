@@ -11,7 +11,7 @@ import { throwSubmissionError } from "utils/form/types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-import { PHONE_REQUIRED, PHONE_INVALID, phoneRegex } from "validation";
+import { PHONE_REQUIRED, PHONE_INVALID, PHONE_REGEXP } from "validation";
 
 interface StateProps {}
 
@@ -77,7 +77,7 @@ const enhance = compose<InnerProps, OutterProps>(
       const errors: FormErrors<FormData> = {};
       if (!values.number) {
         errors.number = PHONE_REQUIRED;
-      } else if (!phoneRegex.test(values.number.toString())) {
+      } else if (!PHONE_REGEXP.test(values.number.toString())) {
         errors.number = PHONE_INVALID;
       }
       return errors;

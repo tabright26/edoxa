@@ -17,11 +17,6 @@
             return "First name invalid. Only letters and hyphens allowed";
         }
 
-        public static string FirstNameUppercase()
-        {
-            return "First name invalid. Every part must start with an uppercase";
-        }
-
         public static string LastNameRequired()
         {
             return "Last name is required";
@@ -35,11 +30,6 @@
         public static string LastNameInvalid()
         {
             return "Last name invalid. Only letters and hyphens allowed";
-        }
-
-        public static string LastNameUppercase()
-        {
-            return "Last name invalid. Every part must start with an uppercase";
         }
 
         public static string GenderRequired()

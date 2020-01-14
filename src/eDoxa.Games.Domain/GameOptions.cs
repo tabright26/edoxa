@@ -7,7 +7,7 @@
 #nullable disable
 
 using System.Collections.Generic;
-
+using eDoxa.Grpc.Protos.Games.Dtos;
 using Newtonsoft.Json;
 
 namespace eDoxa.Games.Domain
@@ -25,8 +25,6 @@ namespace eDoxa.Games.Domain
                 ["manager"] = false,
                 ["tournament"] = false
             };
-            
-            Scoring = new Dictionary<string, float>();
         }
 
         [JsonProperty("name")]
@@ -48,7 +46,7 @@ namespace eDoxa.Games.Domain
         public IDictionary<string, bool> Services { get; set; }
 
         [JsonProperty("scoring")]
-        public IDictionary<string, float> Scoring { get; set; }
+        public ChallengeScoringDto Scoring { get; set; }
 
         [JsonIgnore]
         public string ApiKey { get; set; }

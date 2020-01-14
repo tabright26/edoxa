@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             mockAccountService
                 .Setup(
-                    accountService => accountService.MarkAccountTransactionAsSuccededAsync(
+                    accountService => accountService.MarkAccountTransactionAsSucceededAsync(
                         It.IsAny<IAccount>(),
                         It.IsAny<TransactionMetadata>(),
                         It.IsAny<CancellationToken>()))
@@ -96,7 +96,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             mockAccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
             mockAccountService.Verify(
-                accountService => accountService.MarkAccountTransactionAsSuccededAsync(
+                accountService => accountService.MarkAccountTransactionAsSucceededAsync(
                     It.IsAny<IAccount>(),
                     It.IsAny<TransactionMetadata>(),
                     It.IsAny<CancellationToken>()),

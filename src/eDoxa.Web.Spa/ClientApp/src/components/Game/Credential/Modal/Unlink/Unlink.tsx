@@ -27,11 +27,10 @@ const CustomModal: FunctionComponent<Props> = ({
     toggle={handleHide}
   >
     <ModalHeader toggle={handleHide}>
-      <strong>
-        Are you sure to unlink {gameOption.displayName} credential?
-      </strong>
+      <strong>Unlink your {gameOption.displayName} credential?</strong>
     </ModalHeader>
     <ModalBody>
+      <p>You can unlink your credential once a month.</p>
       <GameCredentialFrom.Unlink
         game={gameOption.name}
         handleCancel={handleHide}

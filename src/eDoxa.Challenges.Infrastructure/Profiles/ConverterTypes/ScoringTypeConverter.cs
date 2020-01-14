@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
+using System.Linq;
 
 using AutoMapper;
 
@@ -20,7 +21,7 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
         {
             var scoring = new Scoring();
 
-            foreach (var item in source)
+            foreach (var item in source.OrderBy(item => item.Order).ToList())
             {
                 scoring.Add(new StatName(item.Name), new StatWeighting(item.Weighting));
             }

@@ -43,14 +43,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public TransactionStatus Status { get; private set; }
 
-        public void MarkAsSucceded()
+        public void MarkAsSucceeded()
         {
             if (Status != TransactionStatus.Pending)
             {
                 throw new InvalidOperationException();
             }
 
-            Status = TransactionStatus.Succeded;
+            Status = TransactionStatus.Succeeded;
         }
 
         public void MarkAsFailed()

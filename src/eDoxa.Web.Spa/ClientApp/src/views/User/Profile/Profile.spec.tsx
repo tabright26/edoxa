@@ -15,7 +15,12 @@ import {
   GAME_LEAGUE_OF_LEGENDS,
   Game,
   GameOption,
-  GameServiceName
+  GameServiceName,
+  TRANSACTION_STATUS_SUCCEEDED,
+  TRANSACTION_TYPE_WITHDRAWAL,
+  TRANSACTION_TYPE_DEPOSIT,
+  TRANSACTION_TYPE_CHARGE,
+  CURRENCY_MONEY
 } from "types";
 
 it("renders without crashing", () => {
@@ -55,29 +60,29 @@ it("renders without crashing", () => {
     data: [
       {
         timestamp: 111111,
-        currency: "money",
+        currency: CURRENCY_MONEY,
         amount: 100,
         description: "test",
-        type: "charge",
-        status: "succeded",
+        type: TRANSACTION_TYPE_CHARGE,
+        status: TRANSACTION_STATUS_SUCCEEDED,
         id: "1"
       },
       {
         timestamp: 222222,
-        currency: "money",
+        currency: CURRENCY_MONEY,
         amount: 100,
         description: "test",
-        type: "deposit",
-        status: "succeded",
+        type: TRANSACTION_TYPE_DEPOSIT,
+        status: TRANSACTION_STATUS_SUCCEEDED,
         id: "2"
       },
       {
         timestamp: 333333,
-        currency: "money",
+        currency: CURRENCY_MONEY,
         amount: 100,
         description: "test",
-        type: "withdrawal",
-        status: "succeded",
+        type: TRANSACTION_TYPE_WITHDRAWAL,
+        status: TRANSACTION_STATUS_SUCCEEDED,
         id: "3"
       }
     ],
@@ -92,10 +97,11 @@ it("renders without crashing", () => {
   };
 
   games.data.set(GAME_LEAGUE_OF_LEGENDS, {
-    name: "",
-    displayName: "",
+    name: GAME_LEAGUE_OF_LEGENDS,
+    displayName: "League of Legends",
     displayed: true,
     verified: true,
+    instructions: null,
     services: new Map<GameServiceName, boolean>()
   });
 

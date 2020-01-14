@@ -1,18 +1,22 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-11-29
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Security;
 using eDoxa.Swagger.Extensions;
 using eDoxa.Swagger.Filters;
 using eDoxa.Swagger.Options;
 
+using Google.Protobuf.WellKnownTypes;
+
 using IdentityServer4.Models;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
 namespace eDoxa.Seedwork.Application.Swagger
 {
@@ -34,6 +38,18 @@ namespace eDoxa.Seedwork.Application.Swagger
                 xmlCommentsFilePath,
                 options =>
                 {
+                    options.MapType<DecimalValue>(
+                        () => new OpenApiSchema
+                        {
+                            Type = "number"
+                        });
+
+                    options.MapType<Timestamp>(
+                        () => new OpenApiSchema
+                        {
+                            Type = "integer"
+                        });
+
                     options.EnableAnnotations(true);
 
                     options.DescribeAllEnumerationsAsStrings();

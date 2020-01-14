@@ -9,6 +9,6 @@ package edoxa.services.games;
 
 service GameService {
   rpc FindPlayerGameCredential(FindPlayerGameCredentialRequest) returns (FindPlayerGameCredentialResponse);
-  rpc FetchChallengeScoring(FetchChallengeScoringRequest) returns (FetchChallengeScoringResponse);
+  rpc FindChallengeScoring(FindChallengeScoringRequest) returns (FindChallengeScoringResponse);
   rpc FetchChallengeMatches(FetchChallengeMatchesRequest) returns (stream FetchChallengeMatchesResponse);
 }

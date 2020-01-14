@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
         }
 
         [Fact]
-        public void MarkAsFailed_WhenTransactionStatusSucceded_ShouldThrowInvalidOperationException()
+        public void MarkAsFailed_WhenTransactionStatusSucceeded_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var currency = Money.Fifty;
@@ -61,7 +61,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
                 type,
                 provider);
 
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             // Act
             var action = new Action(() => transaction.MarkAsFailed());
@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
         }
 
         [Fact]
-        public void MarkAsSucceded_StatusPending_ShouldBeStatusSucceded()
+        public void MarkAsSucceeded_StatusPending_ShouldBeStatusSucceded()
         {
             // Arrange
             var currency = Money.Fifty;
@@ -86,14 +86,14 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
                 provider);
 
             // Act
-            transaction.MarkAsSucceded();
+            transaction.MarkAsSucceeded();
 
             // Assert
-            transaction.Status.Should().Be(TransactionStatus.Succeded);
+            transaction.Status.Should().Be(TransactionStatus.Succeeded);
         }
 
         [Fact]
-        public void MarkAsSucceded_WhenTransactionStatusFailed_ShouldThrowInvalidOperationException()
+        public void MarkAsSucceeded_WhenTransactionStatusFailed_ShouldThrowInvalidOperationException()
         {
             // Arrange
             var currency = Money.Fifty;
@@ -110,7 +110,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             transaction.MarkAsFailed();
 
             // Act
-            var action = new Action(() => transaction.MarkAsSucceded());
+            var action = new Action(() => transaction.MarkAsSucceeded());
 
             // Assert
             action.Should().Throw<InvalidOperationException>();

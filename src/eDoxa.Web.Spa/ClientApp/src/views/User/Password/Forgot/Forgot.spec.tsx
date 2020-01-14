@@ -2,6 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import Forgot from "./Forgot";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 
 it("renders correctly", () => {
   const store: any = {
@@ -24,7 +25,9 @@ it("renders correctly", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Forgot />
+        <MemoryRouter>
+          <Forgot />
+        </MemoryRouter>
       </Provider>
     )
     .toJSON();

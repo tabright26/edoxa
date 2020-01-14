@@ -15,6 +15,7 @@ exports[`renders without crashing 1`] = `
     className="text-uppercase"
   >
      
+    Link
   </small>
 </button>
 `;

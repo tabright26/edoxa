@@ -20,5 +20,7 @@ namespace eDoxa.Challenges.Infrastructure.Models
         public string Name { get; set; }
 
         public float Weighting { get; set; }
+
+        public int? Order { get; set; }
     }
 }

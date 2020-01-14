@@ -47,20 +47,14 @@ const AddressItem: FunctionComponent<any> = ({
             <Button.Link
               className="p-0 ml-auto"
               icon={faTimes}
-              onClick={() => {
-                hideUpdateForm(true);
-                hideDeleteForm(false);
-              }}
+              onClick={() => hideDeleteForm(false)}
             >
               REMOVE
             </Button.Link>
             <Button.Link
               className="p-0 ml-auto"
               icon={faEdit}
-              onClick={() => {
-                hideDeleteForm(true);
-                hideUpdateForm(false);
-              }}
+              onClick={() => hideUpdateForm(false)}
             >
               UPDATE
             </Button.Link>

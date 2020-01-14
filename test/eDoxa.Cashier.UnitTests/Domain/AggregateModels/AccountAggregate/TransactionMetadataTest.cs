@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             // Arrange
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
-            moneyAccount.Deposit(Money.Fifty).MarkAsSucceded();
+            moneyAccount.Deposit(Money.Fifty).MarkAsSucceeded();
             moneyAccount.Charge(Money.Ten, transactionMetadata);
 
             // Act
@@ -54,7 +54,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             // Arrange
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
-            moneyAccount.Deposit(Money.Fifty).MarkAsSucceded();
+            moneyAccount.Deposit(Money.Fifty).MarkAsSucceeded();
             moneyAccount.Charge(Money.Ten, transactionMetadata);
 
             // Act
@@ -74,7 +74,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             // Arrange
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
-            moneyAccount.Deposit(Money.Fifty).MarkAsSucceded();
+            moneyAccount.Deposit(Money.Fifty).MarkAsSucceeded();
             var expectedTransaction = moneyAccount.Charge(Money.Ten, transactionMetadata);
 
             // Act
@@ -94,7 +94,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             // Arrange
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
-            moneyAccount.Deposit(Money.Fifty).MarkAsSucceded();
+            moneyAccount.Deposit(Money.Fifty).MarkAsSucceeded();
             moneyAccount.Charge(Money.Ten, transactionMetadata);
 
             // Act

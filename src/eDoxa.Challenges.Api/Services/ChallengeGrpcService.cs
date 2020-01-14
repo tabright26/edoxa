@@ -86,7 +86,7 @@ namespace eDoxa.Challenges.Api.Services
                 new Entries(request.Entries),
                 new ChallengeDuration(TimeSpan.FromDays(request.Duration)),
                 new UtcNowDateTimeProvider(),
-                new Scoring(request.Scoring));
+                new Scoring(request.Scoring.Items.OrderBy(item => item.Order).ToDictionary(item => item.StatName, item => item.StatWeighting)));
 
             if (result.IsValid)
             {

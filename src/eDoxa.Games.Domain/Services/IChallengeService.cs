@@ -10,13 +10,14 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Domain.Services
 {
     public interface IChallengeService
     {
-        Task<Scoring> GetScoringAsync(Game game);
+        Task<ChallengeScoringDto> GetScoringAsync(Game game);
 
         Task<IReadOnlyCollection<ChallengeMatch>> GetMatchesAsync(
             Game game,

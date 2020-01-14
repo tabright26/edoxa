@@ -54,11 +54,9 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
           <LinkContainer to={getUserProfileDetailsPath()}>
             <ListGroupItem>Details</ListGroupItem>
           </LinkContainer>
-          {process.env.NODE_ENV !== "production" && (
-            <LinkContainer to={getUserProfileSecurityPath()}>
-              <ListGroupItem>Security</ListGroupItem>
-            </LinkContainer>
-          )}
+          <LinkContainer to={getUserProfileSecurityPath()}>
+            <ListGroupItem>Security</ListGroupItem>
+          </LinkContainer>
         </ListGroup>
       </Card>
       <Card>
@@ -66,11 +64,9 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
           <strong>Cashier</strong>
         </CardHeader>
         <ListGroup flush>
-          {process.env.NODE_ENV !== "production" && (
-            <LinkContainer to={getUserProfilePaymentMethodsPath()}>
-              <ListGroupItem>Payment Methods</ListGroupItem>
-            </LinkContainer>
-          )}
+          <LinkContainer to={getUserProfilePaymentMethodsPath()}>
+            <ListGroupItem>Payment Methods</ListGroupItem>
+          </LinkContainer>
           <LinkContainer to={getUserProfileTransactionHistoryPath()}>
             <ListGroupItem>Transaction History</ListGroupItem>
           </LinkContainer>
@@ -102,28 +98,24 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
             name="Profile Details"
             render={props => <ProfileDetails {...props} />}
           />
-          {process.env.NODE_ENV !== "production" && (
-            <Route<RouteProps>
-              path={getUserProfileSecurityPath()}
-              exact
-              name="Security"
-              render={props => <ProfileSecurity {...props} />}
-            />
-          )}
+          <Route<RouteProps>
+            path={getUserProfileSecurityPath()}
+            exact
+            name="Security"
+            render={props => <ProfileSecurity {...props} />}
+          />
           <Route<RouteProps>
             path={getUserProfileGamesPath()}
             exact
             name="Connections"
             render={props => <ProfileConnections {...props} />}
           />
-          {process.env.NODE_ENV !== "production" && (
-            <Route<RouteProps>
-              path={getUserProfilePaymentMethodsPath()}
-              exact
-              name="Payment Methods"
-              render={props => <ProfilePaymentMethods {...props} />}
-            />
-          )}
+          <Route<RouteProps>
+            path={getUserProfilePaymentMethodsPath()}
+            exact
+            name="Payment Methods"
+            render={props => <ProfilePaymentMethods {...props} />}
+          />
           <Route<RouteProps>
             path={getUserProfileTransactionHistoryPath()}
             exact

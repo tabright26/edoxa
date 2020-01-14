@@ -31,9 +31,9 @@ namespace eDoxa.Cashier.Infrastructure.Profiles.Converters
 
             var status = TransactionStatus.FromValue(source.Status);
 
-            if (status == TransactionStatus.Succeded)
+            if (status == TransactionStatus.Succeeded)
             {
-                transaction.MarkAsSucceded();
+                transaction.MarkAsSucceeded();
             }
 
             if (status == TransactionStatus.Failed)

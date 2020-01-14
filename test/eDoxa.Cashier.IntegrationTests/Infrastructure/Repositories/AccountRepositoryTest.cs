@@ -94,7 +94,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     account.Should().Be(userAccount);
                     var transaction = account?.Transactions.Single(accountTransaction => accountTransaction.Id == moneyDepositTransaction.Id);
                     transaction.Should().NotBeNull();
-                    transaction?.MarkAsSucceded();
+                    transaction?.MarkAsSucceeded();
                     await accountRepository.CommitAsync();
                 });
 
@@ -119,7 +119,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
                     account?.Transactions.Should().Contain(moneyDepositTransaction);
-                    account?.Transactions.Should().ContainSingle(transaction => transaction.Status == TransactionStatus.Succeded);
+                    account?.Transactions.Should().ContainSingle(transaction => transaction.Status == TransactionStatus.Succeeded);
                 });
         }
     }

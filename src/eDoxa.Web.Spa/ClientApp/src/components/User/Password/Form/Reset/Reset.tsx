@@ -15,8 +15,8 @@ import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
 import { resetUserPassword } from "store/actions/identity";
 import {
-  emailRegex,
-  passwordRegex,
+  EMAIL_REGEXP,
+  PASSWORD_REGEXP,
   EMAIL_REQUIRED,
   EMAIL_INVALID,
   PASSWORD_REQUIRED,
@@ -122,12 +122,12 @@ const enhance = compose<InnerProps, OutterProps>(
       const errors: FormErrors<FormData> = {};
       if (!values.email) {
         errors.email = EMAIL_REQUIRED;
-      } else if (!emailRegex.test(values.email)) {
+      } else if (!EMAIL_REGEXP.test(values.email)) {
         errors.email = EMAIL_INVALID;
       }
       if (!values.password) {
         errors.password = PASSWORD_REQUIRED;
-      } else if (!passwordRegex.test(values.password)) {
+      } else if (!PASSWORD_REGEXP.test(values.password)) {
         errors.password = PASSWORD_INVALID;
       }
       return errors;
