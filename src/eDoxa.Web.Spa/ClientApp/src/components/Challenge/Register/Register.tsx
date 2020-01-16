@@ -1,31 +1,39 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import { Card } from "reactstrap";
 import ChallengeForm from "components/Challenge/Form";
-import authorizeService from "utils/oidc/AuthorizeService";
-import { User } from "oidc-client";
+import {
+  HocUserIsAuthenticatedStateProps,
+  withUserIsAuthenticated,
+  HocUserProfileUserIdStateProps,
+  withUserProfileUserId
+} from "utils/oidc/containers";
+import { compose } from "recompose";
 
-interface Props {
+type InnerProps = HocUserIsAuthenticatedStateProps &
+  HocUserProfileUserIdStateProps;
+
+type OutterProps = {
   readonly className?: string;
   readonly canRegister: boolean;
-}
+};
+
+type Props = InnerProps & OutterProps;
 
 const ChallengeRegister: FunctionComponent<Props> = ({
   className,
+  userId,
+  isAuthenticated,
   canRegister
-}) => {
-  const [user, setUser] = useState<User>(null);
-  useEffect(() => {
-    authorizeService.getUser().then((user: User) => setUser(user));
-  }, []);
-  return (
-    <>
-      {canRegister && user && (
-        <Card className={className}>
-          <ChallengeForm.Register userId={user["sub"]} />
-        </Card>
-      )}
-    </>
+}) =>
+  canRegister &&
+  isAuthenticated && (
+    <Card className={className}>
+      <ChallengeForm.Register userId={userId} />
+    </Card>
   );
-};
+const enhance = compose<InnerProps, OutterProps>(
+  withUserIsAuthenticated,
+  withUserProfileUserId
+);
 
-export default ChallengeRegister;
+export default enhance(ChallengeRegister);

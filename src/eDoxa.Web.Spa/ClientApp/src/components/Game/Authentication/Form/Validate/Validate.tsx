@@ -6,7 +6,7 @@ import { VALIDATE_GAME_AUTHENTICATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { validateGameAuthentication, loadGames } from "store/actions/game";
 import { toastr } from "react-redux-toastr";
-import authorize from "utils/oidc/AuthorizeService";
+import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { throwSubmissionError } from "utils/form/types";
 import { GameOption } from "types";
@@ -46,7 +46,7 @@ const enhance = compose<InnerProps, OutterProps>(
     },
     onSubmitSuccess: (result, dispatch: any, { gameOption }) => {
       dispatch(loadGames()).then(() =>
-        authorize
+        authorizeService
           .signIn({
             returnUrl: window.location.pathname
           })

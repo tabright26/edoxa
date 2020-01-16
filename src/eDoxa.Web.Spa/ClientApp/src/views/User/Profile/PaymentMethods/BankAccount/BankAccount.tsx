@@ -1,4 +1,4 @@
-import React, { useState, FunctionComponent, useEffect } from "react";
+import React, { useState, FunctionComponent } from "react";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
@@ -6,19 +6,30 @@ import BankAccountForm from "components/Payment/Stripe/BankAccount/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
 import Loading from "components/Shared/Loading";
-import authorizeService from "utils/oidc/AuthorizeService";
-import { User } from "oidc-client";
+import {
+  withUserProfileCountry,
+  HocUserProfileCountryStateProps
+} from "utils/oidc/containers";
+import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
 
-const BankAccount: FunctionComponent<any> = ({
-  className,
+type InnerProps = HocUserProfileCountryStateProps & {
+  bankAccount: StripeBankAccountState;
+  hasBankAccount: boolean;
+};
+
+type OutterProps = {
+  className?: string;
+};
+
+type Props = InnerProps & OutterProps;
+
+const BankAccount: FunctionComponent<Props> = ({
+  className = null,
+  country,
   bankAccount: { data, loading, error },
   hasBankAccount
 }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [user, setUser] = useState<User>(null);
-  useEffect(() => {
-    authorizeService.getUser().then((user: User) => setUser(user));
-  }, []);
   const disabled = buttonDisabled || !hasBankAccount;
   return (
     <Card className={`card-accent-primary ${className}`}>
@@ -34,7 +45,7 @@ const BankAccount: FunctionComponent<any> = ({
         </Button.Link>
       </CardHeader>
       <CardBody>
-        {loading || !user ? (
+        {loading ? (
           <Loading />
         ) : (
           <dl className="row mb-0">
@@ -42,7 +53,7 @@ const BankAccount: FunctionComponent<any> = ({
             <dd className="col-sm-5 mb-0">
               {disabled && (
                 <BankAccountForm.Update
-                  country={user["country"]}
+                  country={country}
                   handleCancel={() => setButtonDisabled(false)}
                 />
               )}
@@ -55,6 +66,9 @@ const BankAccount: FunctionComponent<any> = ({
   );
 };
 
-const enhance = compose<any, any>(withStripeBankAccount);
+const enhance = compose<InnerProps, OutterProps>(
+  withUserProfileCountry,
+  withStripeBankAccount
+);
 
 export default enhance(BankAccount);

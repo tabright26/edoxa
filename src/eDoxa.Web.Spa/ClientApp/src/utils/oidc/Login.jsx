@@ -1,7 +1,8 @@
 import React from "react";
 import { Component } from "react";
-import authService from "./AuthorizeService";
-import { AuthenticationResultStatus } from "./AuthorizeService";
+import authorizeService, {
+  AuthenticationResultStatus
+} from "./AuthorizeService";
 import {
   LoginActions,
   QueryParameterNames,
@@ -69,7 +70,7 @@ export class Login extends Component {
 
   async login(returnUrl) {
     const state = { returnUrl };
-    const result = await authService.signIn(state);
+    const result = await authorizeService.signIn(state);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         // We replace the location here so that in case the user hits the back
@@ -90,7 +91,7 @@ export class Login extends Component {
 
   async processLoginCallback() {
     const url = window.location.href;
-    const result = await authService.completeSignIn(url);
+    const result = await authorizeService.completeSignIn(url);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         // There should not be any redirects as the only time completeSignIn finishes

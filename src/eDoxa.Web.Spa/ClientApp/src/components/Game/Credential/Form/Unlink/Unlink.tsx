@@ -7,7 +7,7 @@ import { compose } from "recompose";
 import { Game } from "types";
 import { unlinkGameCredential, loadGames } from "store/actions/game";
 import { throwSubmissionError } from "utils/form/types";
-import authorize from "utils/oidc/AuthorizeService";
+import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface FormData {}
@@ -50,7 +50,7 @@ const enhance = compose<InnerProps, OutterProps>(
     },
     onSubmitSuccess: (_result, dispatch: any) => {
       dispatch(loadGames()).then(() =>
-        authorize.signIn({
+        authorizeService.signIn({
           returnUrl: window.location.pathname
         })
       );

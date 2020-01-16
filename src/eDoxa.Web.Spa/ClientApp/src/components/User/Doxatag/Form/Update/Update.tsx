@@ -22,6 +22,7 @@ import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import produce, { Draft } from "immer";
 import { UserDoxatag } from "types";
+import authorizeService from "utils/oidc/AuthorizeService";
 
 interface FormData {
   name: string;
@@ -88,7 +89,12 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => {
+      handleCancel();
+      authorizeService.signIn({
+        returnUrl: window.location.pathname
+      });
+    },
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.name) {

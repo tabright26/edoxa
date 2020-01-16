@@ -1,7 +1,32 @@
 import React, { FunctionComponent } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { COUNTRY_CLAIM_TYPE } from "utils/oidc/types";
+import { COUNTRY_CLAIM_TYPE, SUB_CLAIM_TYPE } from "utils/oidc/types";
 import { RootState } from "store/types";
+import { UserId } from "types";
+
+export interface HocUserProfileUserIdStateProps {
+  userId: UserId;
+}
+
+export const withUserProfileUserId = (WrappedComponent: FunctionComponent) => {
+  interface OwnProps {}
+
+  const EnhancedComponent: FunctionComponent<HocUserProfileUserIdStateProps> = props => {
+    return <WrappedComponent {...props} />;
+  };
+
+  const mapStateToProps: MapStateToProps<
+    HocUserProfileUserIdStateProps,
+    OwnProps,
+    RootState
+  > = state => {
+    return {
+      userId: state.oidc.user.profile[SUB_CLAIM_TYPE]
+    };
+  };
+
+  return connect(mapStateToProps)(EnhancedComponent);
+};
 
 export interface HocUserProfileCountryStateProps {
   country: string;
