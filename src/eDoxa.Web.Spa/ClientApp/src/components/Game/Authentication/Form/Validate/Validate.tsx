@@ -45,25 +45,18 @@ const enhance = compose<InnerProps, OutterProps>(
       }
     },
     onSubmitSuccess: (result, dispatch: any, { gameOption }) => {
-      dispatch(loadGames()).then(() => {
-        console.log(window.location.pathname);
-        return authorize
-          .getUser()
-          .then(user => console.log(user))
-          .then(() =>
-            authorize
-              .signIn({
-                returnUrl: window.location.pathname
-              })
-              .then(() => {
-                toastr.success(
-                  "Game credentials linked",
-                  `Your ${gameOption.displayName} credentials have been successfully linked.`
-                );
-                return authorize.getUser().then(x => console.log(x));
-              })
-          );
-      });
+      dispatch(loadGames()).then(() =>
+        authorize
+          .signIn({
+            returnUrl: window.location.pathname
+          })
+          .then(() => {
+            toastr.success(
+              "Game credentials linked",
+              `Your ${gameOption.displayName} credentials have been successfully linked.`
+            );
+          })
+      );
     },
     onSubmitFail: (
       error,

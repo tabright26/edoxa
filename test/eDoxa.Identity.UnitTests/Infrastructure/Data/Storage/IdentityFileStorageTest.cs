@@ -15,9 +15,6 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class IdentityFileStorageTest : UnitTest
     {
-        public IdentityFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
 
         [Fact]
         public void GetRoleClaims_WithOneRecord_ShouldHaveCountOfOne()
@@ -43,6 +40,10 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             roles.Should().HaveCount(1);
+        }
+
+        public IdentityFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

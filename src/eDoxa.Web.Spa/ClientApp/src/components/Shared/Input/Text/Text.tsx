@@ -1,21 +1,23 @@
 import React, { Fragment } from "react";
-import { Input, FormFeedback } from "reactstrap";
+import { Input, FormFeedback, Label } from "reactstrap";
 
 const TextInput = ({
   formGroup: FormGroup = Fragment,
-  input = null,
   label = null,
+  input = null,
+  placeholder = null,
   disabled,
   meta = null,
   ...attributes
 }) => (
   <FormGroup>
+    {label && <Label>{label}</Label>}
     <Input
       {...input}
       {...attributes}
       bsSize="sm"
       disabled={disabled}
-      placeholder={label}
+      placeholder={placeholder}
       invalid={!disabled && meta.touched && !!meta.error}
     />
     {meta && <FormFeedback>{meta.error}</FormFeedback>}

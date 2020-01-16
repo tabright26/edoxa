@@ -10,7 +10,7 @@ import {
   DOXATAG_INVALID,
   DOXATAG_MIN_LENGTH_INVALID,
   DOXATAG_MAX_LENGTH_INVALID
-} from "validation";
+} from "utils/form/validators";
 
 const shallow = global["shallow"];
 const mount = global["mount"];

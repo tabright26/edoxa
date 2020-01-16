@@ -1,8 +1,8 @@
 ﻿// Filename: AddressBookControllerTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,10 @@ namespace eDoxa.Identity.UnitTests.Controllers
 {
     public sealed class AddressBookControllerTest : UnitTest
     {
-        public AddressBookControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public AddressBookControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
         {
         }
 
@@ -119,7 +122,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            
+
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockAddressService.Verify(addressService => addressService.FindUserAddressAsync(It.IsAny<User>(), It.IsAny<AddressId>()), Times.Once);
@@ -242,7 +245,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var request = new CreateAddressRequest
             {
-                Country = EnumCountry.Canada,
+                Country = EnumCountry.CA,
                 Line1 = "1234 Test Street",
                 Line2 = null,
                 City = "Toronto",

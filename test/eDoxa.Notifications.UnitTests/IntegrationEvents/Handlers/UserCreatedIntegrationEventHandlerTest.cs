@@ -50,7 +50,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                Country = EnumCountry.Canada,
+                Country = EnumCountry.CA,
                 Email = new EmailDto
                 {
                     Address = "test@email.com",

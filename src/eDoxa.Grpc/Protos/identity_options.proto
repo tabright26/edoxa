@@ -1,0 +1,92 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Options";
+
+import "custom_types.proto";
+
+package edoxa.services.identity;
+
+message IdentityStaticOptions {
+  DefaultOptions default = 1;
+  AddressBookOptions addressBook = 2;
+
+  message DefaultOptions {
+    AddressOptions address = 1;
+  }
+
+  message AddressBookOptions {
+    int32 limit = 1;
+    repeated CountryOptions countries = 2;
+
+    message CountryOptions {
+      string id = 1;
+      string name = 2;
+      string twoIso = 3;
+      string threeIso = 4;
+      string code = 5;
+      AddressOptions address = 6;
+      repeated RegionOptions regions = 7;
+
+      message RegionOptions {
+        string name = 1;
+        string code = 2;
+      }
+    }
+  }
+
+  message AddressOptions {
+    FieldsOptions fields = 1;
+    ValidatorOptions validator = 2;
+
+    message FieldsOptions {
+      CountryFieldOptions country = 1;
+      Line1FieldOptions line1 = 2;
+      Line2FieldOptions line2 = 3;
+      CityFieldOptions city = 4;
+      StateFieldOptions state = 5;
+      PostalCodeFieldOptions postalCode = 6;
+
+      message CountryFieldOptions {
+        string label = 1;
+        string placeholder = 2;
+      }
+
+      message Line1FieldOptions {
+        string label = 1;
+        string placeholder = 2;
+      }
+
+      message Line2FieldOptions {
+        string label = 1;
+        string placeholder = 2;
+        bool excluded = 3;
+      }
+
+      message CityFieldOptions {
+        string label = 1;
+        string placeholder = 2;
+      }
+
+      message StateFieldOptions {
+        string label = 1;
+        string placeholder = 2;
+        bool excluded = 3;
+      }
+
+      message PostalCodeFieldOptions {
+        string label = 1;
+        string placeholder = 2;
+        bool excluded = 3;
+        string mask = 4;
+      }
+	}
+
+    message ValidatorOptions {
+      repeated customTypes.FieldValidationRule line1 = 1;
+      repeated customTypes.FieldValidationRule line2 = 2;
+      repeated customTypes.FieldValidationRule city = 3;
+      repeated customTypes.FieldValidationRule state = 4;
+      repeated customTypes.FieldValidationRule postalCode = 5;
+    }
+  }
+}

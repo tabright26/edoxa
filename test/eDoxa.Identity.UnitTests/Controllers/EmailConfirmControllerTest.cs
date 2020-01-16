@@ -111,7 +111,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
         }
 
-        public EmailConfirmControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
+        public EmailConfirmControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
         {
         }
     }

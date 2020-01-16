@@ -1,27 +1,33 @@
-﻿// Filename: UnitTestClass.cs
-// Date Created: 2019-09-28
+﻿// Filename: UnitTest.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using AutoMapper;
 
+using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Identity.TestHelper.Fixtures;
+
+using Microsoft.Extensions.Options;
 
 using Xunit;
 
 namespace eDoxa.Identity.TestHelper
 {
-    public abstract class UnitTest : IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>
+    public abstract class UnitTest : IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>, IClassFixture<TestValidator>
     {
-        protected UnitTest(TestDataFixture testData, TestMapperFixture testMapper)
+        protected UnitTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator)
         {
             TestData = testData;
             TestMapper = testMapper.Instance;
+            TestOptionsWrapper = testValidator.OptionsWrapper;
         }
 
         protected TestDataFixture TestData { get; }
 
         protected IMapper TestMapper { get; }
+
+        protected OptionsWrapper<IdentityStaticOptions> TestOptionsWrapper { get; }
     }
 }

@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
@@ -69,8 +70,8 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                         "1234 Test Street",
                         null,
                         "Toronto",
-                        "Ontario",
-                        "A1A1A1");
+                        "ON",
+                        "A1A 1A1");
 
                     result.IsValid.Should().BeTrue();
 
@@ -81,11 +82,12 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                         addressBook.First().Id,
                         new UpdateAddressRequest
                         {
+                            Country = EnumCountry.CA,
                             Line1 = "1234 Test Street",
                             Line2 = null,
                             City = "Toronto",
-                            State = "Ontario",
-                            PostalCode = "A1A1A1"
+                            State = "ON",
+                            PostalCode = "A1A 1A1"
                         });
 
                     // Assert

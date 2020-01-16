@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\identity_options.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.26.0" />
     <PackageReference Include="Grpc.Tools" Version="2.26.0">
       <PrivateAssets>all</PrivateAssets>
@@ -40,6 +44,7 @@
     <Protobuf Include="Protos\games_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\identity_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\payment_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\identity_options.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\cashier_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\challenges_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\clans_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />

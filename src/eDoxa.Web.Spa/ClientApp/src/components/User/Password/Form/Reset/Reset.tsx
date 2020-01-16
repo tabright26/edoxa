@@ -21,7 +21,7 @@ import {
   EMAIL_INVALID,
   PASSWORD_REQUIRED,
   PASSWORD_INVALID
-} from "validation";
+} from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
@@ -53,7 +53,12 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <InputGroupAddon addonType="prepend">
         <InputGroupText>@</InputGroupText>
       </InputGroupAddon>
-      <Field type="text" name="email" label="Email" component={Input.Text} />
+      <Field
+        type="text"
+        name="email"
+        placeholder="Email"
+        component={Input.Text}
+      />
     </InputGroup>
     <InputGroup size="sm" className="mb-3">
       <InputGroupAddon addonType="prepend">
@@ -64,7 +69,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="password"
-        label="New password"
+        placeholder="New password"
         component={Input.Password}
       />
     </InputGroup>
@@ -77,7 +82,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Field
         type="password"
         name="confirmPassword"
-        label="Confirm new password"
+        placeholder="Confirm new password"
         component={Input.Password}
       />
     </InputGroup>

@@ -8,7 +8,7 @@ import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { throwSubmissionError } from "utils/form/types";
 import { forgotUserPassword } from "store/actions/identity";
-import { EMAIL_REQUIRED, EMAIL_INVALID, EMAIL_REGEXP } from "validation";
+import { EMAIL_REQUIRED, EMAIL_INVALID, EMAIL_REGEXP } from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 import { toastr } from "react-redux-toastr";
@@ -29,7 +29,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
     <Field
       type="text"
       name="email"
-      label="Email"
+      placeholder="Email"
       formGroup={FormGroup}
       component={Input.Text}
     />

@@ -48,20 +48,12 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch: any) => {
-      dispatch(loadGames()).then(() => {
-        console.log(window.location.pathname);
-        return authorize
-          .getUser()
-          .then(user => console.log(user))
-          .then(() =>
-            authorize
-              .signIn({
-                returnUrl: window.location.pathname
-              })
-              .then(() => authorize.getUser().then(x => console.log(x)))
-          );
-      });
+    onSubmitSuccess: (_result, dispatch: any) => {
+      dispatch(loadGames()).then(() =>
+        authorize.signIn({
+          returnUrl: window.location.pathname
+        })
+      );
     }
   })
 );

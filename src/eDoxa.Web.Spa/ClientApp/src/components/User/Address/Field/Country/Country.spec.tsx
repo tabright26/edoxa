@@ -14,7 +14,7 @@ it("renders without crashing", () => {
 
   const FormWrapper = () => (
     <Form onSubmit={() => {}}>
-      <Country />
+      <Country placeholder="Country" />
     </Form>
   );
 

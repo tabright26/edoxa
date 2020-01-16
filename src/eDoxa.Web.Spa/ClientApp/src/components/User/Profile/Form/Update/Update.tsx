@@ -21,7 +21,7 @@ import {
   PROFILE_FIRST_NAME_REQUIRED,
   PROFILE_FIRST_NAME_INVALID,
   PROFILE_FIRST_NAME_REGEXP
-} from "validation";
+} from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface StateProps {}
@@ -50,12 +50,16 @@ const CustomForm: FunctionComponent<Props> = ({
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dd className="col-sm-4 mb-0">
-            <Field name="firstName" label="First Name" component={Input.Text} />
+            <Field
+              name="firstName"
+              placeholder="First Name"
+              component={Input.Text}
+            />
           </dd>
           <dd className="col-sm-4 mb-0">
             <Field
               name="lastName"
-              label="Last Name"
+              placeholder="Last Name"
               component={Input.Text}
               disabled
             />
@@ -76,7 +80,12 @@ const CustomForm: FunctionComponent<Props> = ({
       </dd>
       <dd className="col-sm-3 mb-0 text-muted">Gender</dd>
       <dd className="col-sm-3 mb-0">
-        <Field name="gender" label="Gender" component={Input.Text} disabled />
+        <Field
+          name="gender"
+          placeholder="Gender"
+          component={Input.Text}
+          disabled
+        />
       </dd>
       <dd className="col-sm-6 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>

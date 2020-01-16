@@ -23,7 +23,7 @@ const AddressItem: FunctionComponent<any> = ({
   return (
     <>
       <dl className={`row ${!hasMore && "mb-0"}`}>
-        <dd className="col-sm-3 m-0 text-muted">{`Address ${position}`}</dd>
+        <dd className="col-sm-3 m-0 text-muted">Address</dd>
         {!updateFormHidden ? (
           <dd className="col-sm-6 m-0">
             <AddressForm.Update
@@ -68,6 +68,7 @@ const AddressItem: FunctionComponent<any> = ({
 
 const AddressBook: FunctionComponent<any> = ({
   className,
+  limit,
   addressBook: { data, error, loading },
   loadAddressBook,
   showCreateUserAddressModal
@@ -82,10 +83,14 @@ const AddressBook: FunctionComponent<any> = ({
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">ADDRESS BOOK</strong>
+        <small className="ml-2 my-auto text-muted">
+          ({data.length}/{limit})
+        </small>
         <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faPlus}
           onClick={() => showCreateUserAddressModal()}
+          disabled={data.length >= limit}
         >
           ADD A NEW ADDRESS
         </Button.Link>
@@ -111,7 +116,8 @@ const AddressBook: FunctionComponent<any> = ({
 
 const mapStateToProps = (state: RootState) => {
   return {
-    addressBook: state.root.user.addressBook
+    addressBook: state.root.user.addressBook,
+    limit: state.static.identity.data.addressBook.limit
   };
 };
 

@@ -12,6 +12,7 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Infrastructure;
@@ -100,6 +101,8 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
+            services.Configure<IdentityStaticOptions>(Configuration.GetSection("Static"));
+            
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
             services.Configure<CookiePolicyOptions>(
@@ -292,6 +295,8 @@ namespace eDoxa.Identity.Api
         public void ConfigureTestServices(IServiceCollection services)
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
+
+            services.Configure<IdentityStaticOptions>(Configuration.GetSection("Static"));
 
             services.AddCustomDbContext<IdentityDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

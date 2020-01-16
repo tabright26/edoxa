@@ -1,32 +1,40 @@
 import React, { FunctionComponent } from "react";
 import { FormGroup, Col, Form } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
+import {
+  Field,
+  reduxForm,
+  InjectedFormProps,
+  FormErrors,
+  formValueSelector
+} from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
-import FormField from "components/Shared/Form/Field";
+import FormField from "components/User/Address/Field";
 import { CREATE_USER_ADDRESS_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import FormValidation from "components/Shared/Form/Validation";
 import { createUserAddress } from "store/actions/identity";
-import { throwSubmissionError } from "utils/form/types";
 import {
-  ADDRESS_COUNTRY_REGEXP,
-  ADDRESS_LINE1_REGEXP,
-  ADDRESS_LINE2_REGEXP,
-  ADDRESS_CITY_REGEXP,
-  ADDRESS_STATE_REGEXP,
-  ADDRESS_POSTAL_CODE_REGEXP,
-  ADDRESS_COUNTRY_REQUIRED,
-  ADDRESS_COUNTRY_INVALID,
-  ADDRESS_LINE1_REQUIRED,
-  ADDRESS_LINE1_INVALID,
-  ADDRESS_LINE2_INVALID,
-  ADDRESS_CITY_REQUIRED,
-  ADDRESS_CITY_INVALID,
-  ADDRESS_STATE_INVALID,
-  ADDRESS_POSTAL_CODE_INVALID
-} from "validation";
+  throwSubmissionError,
+  getFieldValidationRuleMessage
+} from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import InputMask from "react-input-mask";
+import { connect, MapStateToProps } from "react-redux";
+import { RootState } from "store/types";
+import {
+  AddressFieldsOptions,
+  AddressValidatorOptions,
+  CountryRegionOptions
+} from "types";
+
+interface OwnProps {}
+
+interface StateProps {
+  fieldsOptions: AddressFieldsOptions;
+  validatorOptions: AddressValidatorOptions;
+  regions: CountryRegionOptions[];
+}
 
 interface FormData {
   country: string;
@@ -37,73 +45,124 @@ interface FormData {
   postalCode: string;
 }
 
-interface OutterProps {
+type OutterProps = OwnProps & {
   handleCancel: () => void;
-}
+};
 
-type InnerProps = InjectedFormProps<FormData, Props>;
+type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
 
 type Props = InnerProps & OutterProps;
 
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  handleCancel
+  handleCancel,
+  reset,
+  regions,
+  fieldsOptions: { country, line1, line2, city, state, postalCode }
 }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
-    <FormGroup>
-      <FormField.Country />
-    </FormGroup>
+    <FormField.Country
+      label={country.label}
+      placeholder={country.placeholder}
+      onChange={() => reset()}
+    />
     <Field
       type="text"
       name="line1"
-      label="Address line 1"
+      label={line1.label}
+      placeholder={line1.placeholder}
       formGroup={FormGroup}
       component={Input.Text}
     />
-    <Field
-      type="text"
-      name="line2"
-      label="Address line 2 (optional)"
-      formGroup={FormGroup}
-      component={Input.Text}
-    />
+    {!line2.excluded && (
+      <Field
+        type="text"
+        name="line2"
+        label={line2.label}
+        placeholder={line2.placeholder}
+        formGroup={FormGroup}
+        component={Input.Text}
+      />
+    )}
     <Field
       type="text"
       name="city"
-      label="City"
+      label={city.label}
+      placeholder={city.placeholder}
       formGroup={FormGroup}
       component={Input.Text}
     />
     <FormGroup row className="my-0">
       <Col xs="8">
-        <Field
-          type="text"
-          name="state"
-          label="State / Province"
-          formGroup={FormGroup}
-          component={Input.Text}
-        />
+        {!state.excluded && (
+          <FormField.State
+            label={state.label}
+            placeholder={state.placeholder}
+            regions={regions}
+          />
+        )}
       </Col>
       <Col xs="4">
-        <Field
-          type="text"
-          name="postalCode"
-          label="Zip / Postal code"
-          formGroup={FormGroup}
-          component={Input.Text}
-        />
+        {!postalCode.excluded && (
+          <Field
+            type="text"
+            name="postalCode"
+            label={postalCode.label}
+            placeholder={postalCode.placeholder}
+            formGroup={FormGroup}
+            component={Input.Text}
+            tag={InputMask}
+            mask={postalCode.mask}
+            maskChar={null}
+            formatChars={{
+              "1": "[0-9]",
+              A: "[A-Z]"
+            }}
+          />
+        )}
       </Col>
     </FormGroup>
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
-      <Button.Cancel onClick={() => handleCancel()} />
+      <Button.Cancel
+        onClick={() => {
+          handleCancel();
+          reset();
+        }}
+      />
     </FormGroup>
   </Form>
 );
 
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  OwnProps,
+  RootState
+> = state => {
+  const selector = formValueSelector(CREATE_USER_ADDRESS_FORM);
+  const countryTwoIso = selector(state, "country");
+  const {
+    default: { address },
+    addressBook: { countries }
+  } = state.static.identity.data;
+  const countryOptions = countries.find(
+    country => country.twoIso === countryTwoIso
+  );
+  return {
+    initialValues: {
+      country: "CA", // TODO: Retrieved default country from user claims.
+      state: "AB"
+    },
+    fieldsOptions: address.fields,
+    validatorOptions: address.validator,
+    regions: countryOptions ? countryOptions.regions : []
+  };
+};
+
 const enhance = compose<InnerProps, OutterProps>(
+  connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: CREATE_USER_ADDRESS_FORM,
     onSubmit: async (values, dispatch) => {
@@ -117,32 +176,38 @@ const enhance = compose<InnerProps, OutterProps>(
       }
     },
     onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
-    validate: values => {
+    validate: (values, { fieldsOptions, validatorOptions }) => {
       const errors: FormErrors<FormData> = {};
-      if (!values.country) {
-        errors.country = ADDRESS_COUNTRY_REQUIRED;
-      } else if (!ADDRESS_COUNTRY_REGEXP.test(values.country)) {
-        errors.country = ADDRESS_COUNTRY_INVALID;
+      for (let [key, value] of Object.entries(validatorOptions)) {
+        errors[key] = getFieldValidationRuleMessage(value, values[key]);
       }
-      if (!values.line1) {
-        errors.line1 = ADDRESS_LINE1_REQUIRED;
-      } else if (!ADDRESS_LINE1_REGEXP.test(values.line1)) {
-        errors.line1 = ADDRESS_LINE1_INVALID;
-      }
-      if (values.line2 && !ADDRESS_LINE2_REGEXP.test(values.line2)) {
-        errors.line2 = ADDRESS_LINE2_INVALID;
-      }
-      if (!values.city) {
-        errors.city = ADDRESS_CITY_REQUIRED;
-      } else if (!ADDRESS_CITY_REGEXP.test(values.city)) {
-        errors.city = ADDRESS_CITY_INVALID;
-      }
-      if (values.state && !ADDRESS_STATE_REGEXP.test(values.state)) {
-        errors.state = ADDRESS_STATE_INVALID;
-      }
-      if (values.postalCode && !ADDRESS_POSTAL_CODE_REGEXP.test(values.postalCode)) {
-        errors.postalCode = ADDRESS_POSTAL_CODE_INVALID;
-      }
+
+      // errors.line1 = tryGetFieldValidationRuleMessage(
+      //   validatorOptions.line1,
+      //   values.line1
+      // );
+      // if (fieldsOptions.line2.excluded) {
+      //   errors.line2 = tryGetFieldValidationRuleMessage(
+      //     validatorOptions.line2,
+      //     values.line2
+      //   );
+      // }
+      // errors.city = tryGetFieldValidationRuleMessage(
+      //   validatorOptions.city,
+      //   values.city
+      // );
+      // if (fieldsOptions.state.excluded) {
+      //   errors.state = tryGetFieldValidationRuleMessage(
+      //     validatorOptions.state,
+      //     values.state
+      //   );
+      // }
+      // if (fieldsOptions.postalCode.excluded) {
+      //   errors.postalCode = tryGetFieldValidationRuleMessage(
+      //     validatorOptions.postalCode,
+      //     values.postalCode
+      //   );
+      // }
       return errors;
     }
   })

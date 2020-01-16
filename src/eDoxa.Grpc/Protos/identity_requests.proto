@@ -44,11 +44,12 @@ message ResetPasswordRequest {
 }
 
 message UpdateAddressRequest {
-  string line1 = 1;
-  google.protobuf.StringValue line2 = 2;
-  string city = 3;
-  google.protobuf.StringValue state = 4;
-  google.protobuf.StringValue postalCode = 5;
+  EnumCountry country = 1;
+  string line1 = 2;
+  google.protobuf.StringValue line2 = 3;
+  string city = 4;
+  google.protobuf.StringValue state = 5;
+  google.protobuf.StringValue postalCode = 6;
 }
 
 message UpdateProfileRequest {

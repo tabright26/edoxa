@@ -16,7 +16,7 @@ import {
   DOXATAG_MIN_LENGTH_INVALID,
   DOXATAG_MAX_LENGTH_INVALID,
   DOXATAG_INVALID
-} from "validation";
+} from "utils/form/validators";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
@@ -47,7 +47,7 @@ const CustomForm: FunctionComponent<Props> = ({
     <Field
       type="text"
       name="name"
-      label="Name"
+      placeholder="Name"
       formGroup={FormGroup}
       component={Input.Text}
     />
