@@ -23,7 +23,7 @@ import {
   AddressId,
   AddressFieldsOptions,
   AddressValidatorOptions,
-  CountryRegionOptions
+  CountryId
 } from "types";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
@@ -32,7 +32,7 @@ import InputMask from "react-input-mask";
 interface StateProps {
   fieldsOptions: AddressFieldsOptions;
   validatorOptions: AddressValidatorOptions;
-  regions: CountryRegionOptions[];
+  countryId: CountryId;
 }
 
 interface FormData {
@@ -56,7 +56,7 @@ const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
-  regions,
+  countryId,
   reset,
   fieldsOptions: { country, line1, line2, city, state, postalCode }
 }) => (
@@ -89,7 +89,7 @@ const CustomForm: FunctionComponent<Props> = ({
     <FormGroup row className="my-0">
       <Col xs="8">
         {!state.excluded && (
-          <FormField.State placeholder={state.label} regions={regions} />
+          <FormField.State placeholder={state.label} countryId={countryId} />
         )}
       </Col>
       <Col xs="4">
@@ -127,21 +127,19 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
   state,
   ownProps
 ) => {
-  const selector = formValueSelector(UPDATE_USER_ADDRESS_FORM);
-  const countryTwoIso = selector(state, "country");
-  const { data } = state.root.user.addressBook;
-  const {
-    default: { address },
-    addressBook: { countries }
-  } = state.static.identity.data;
-  const countryOptions = countries.find(
-    country => country.twoIso === countryTwoIso
+  const address = state.root.user.addressBook.data.find(
+    address => address.id === ownProps.addressId
   );
+  const selector = formValueSelector(UPDATE_USER_ADDRESS_FORM);
+  const countryId = selector(state, "country") || address.country;
+  const {
+    default: { address: addressOptions }
+  } = state.static.identity.data;
   return {
-    initialValues: data.find(address => address.id === ownProps.addressId),
-    fieldsOptions: address.fields,
-    validatorOptions: address.validator,
-    regions: countryOptions ? countryOptions.regions : []
+    initialValues: address,
+    fieldsOptions: addressOptions.fields,
+    validatorOptions: addressOptions.validator,
+    countryId
   };
 };
 
@@ -159,11 +157,11 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
     validate: (values, { fieldsOptions, validatorOptions }) => {
       const errors: FormErrors<FormData> = {};
       for (let [key, value] of Object.entries(validatorOptions)) {
-        if (fieldsOptions[key].excluded) {
+        if (!fieldsOptions[key].excluded) {
           errors[key] = getFieldValidationRuleMessage(value, values[key]);
         }
       }

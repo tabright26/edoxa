@@ -3,12 +3,20 @@ import { Field } from "redux-form";
 import Input from "components/Shared/Input";
 import { CountryRegionOptions } from "types";
 import { FormGroup, Label } from "reactstrap";
+import { connect, MapStateToProps } from "react-redux";
+import { RootState } from "store/types";
 
-interface Props {
+interface OwnProps {
   label?: string;
   placeholder: string;
+  countryId: string;
+}
+
+interface StateProps {
   regions: CountryRegionOptions[];
 }
+
+type Props = OwnProps & StateProps;
 
 const CountryField: FunctionComponent<Props> = ({
   regions,
@@ -32,4 +40,15 @@ const CountryField: FunctionComponent<Props> = ({
   </FormGroup>
 );
 
-export default CountryField;
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  state,
+  ownProps
+) => {
+  return {
+    regions: state.static.identity.data.addressBook.countries.find(
+      country => country.id === ownProps.countryId
+    ).regions
+  };
+};
+
+export default connect(mapStateToProps)(CountryField);

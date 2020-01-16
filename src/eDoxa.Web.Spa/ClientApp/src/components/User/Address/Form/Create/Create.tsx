@@ -25,15 +25,19 @@ import { RootState } from "store/types";
 import {
   AddressFieldsOptions,
   AddressValidatorOptions,
-  CountryRegionOptions
+  CountryId
 } from "types";
+import {
+  withUserProfileCountry,
+  HocUserProfileCountryStateProps
+} from "utils/oidc/containers";
 
-interface OwnProps {}
+type OwnProps = HocUserProfileCountryStateProps;
 
 interface StateProps {
   fieldsOptions: AddressFieldsOptions;
   validatorOptions: AddressValidatorOptions;
-  regions: CountryRegionOptions[];
+  countryId: CountryId;
 }
 
 interface FormData {
@@ -45,7 +49,7 @@ interface FormData {
   postalCode: string;
 }
 
-type OutterProps = OwnProps & {
+type OutterProps = {
   handleCancel: () => void;
 };
 
@@ -58,7 +62,7 @@ const CustomForm: FunctionComponent<Props> = ({
   error,
   handleCancel,
   reset,
-  regions,
+  countryId,
   fieldsOptions: { country, line1, line2, city, state, postalCode }
 }) => (
   <Form onSubmit={handleSubmit}>
@@ -100,7 +104,7 @@ const CustomForm: FunctionComponent<Props> = ({
           <FormField.State
             label={state.label}
             placeholder={state.placeholder}
-            regions={regions}
+            countryId={countryId}
           />
         )}
       </Col>
@@ -136,32 +140,30 @@ const CustomForm: FunctionComponent<Props> = ({
   </Form>
 );
 
-const mapStateToProps: MapStateToProps<
-  StateProps,
-  OwnProps,
-  RootState
-> = state => {
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  state,
+  ownProps
+) => {
   const selector = formValueSelector(CREATE_USER_ADDRESS_FORM);
-  const countryTwoIso = selector(state, "country");
+  const countryId: string = selector(state, "country") || ownProps.country;
   const {
     default: { address },
     addressBook: { countries }
   } = state.static.identity.data;
-  const countryOptions = countries.find(
-    country => country.twoIso === countryTwoIso
-  );
+  const countryOptions = countries.find(country => country.id === countryId);
   return {
     initialValues: {
-      country: "CA", // TODO: Retrieved default country from user claims.
-      state: "AB"
+      country: countryId,
+      state: countryOptions.regions[0].code
     },
     fieldsOptions: address.fields,
     validatorOptions: address.validator,
-    regions: countryOptions ? countryOptions.regions : []
+    countryId
   };
 };
 
 const enhance = compose<InnerProps, OutterProps>(
+  withUserProfileCountry,
   connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: CREATE_USER_ADDRESS_FORM,
@@ -175,39 +177,14 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
     validate: (values, { fieldsOptions, validatorOptions }) => {
       const errors: FormErrors<FormData> = {};
       for (let [key, value] of Object.entries(validatorOptions)) {
-        errors[key] = getFieldValidationRuleMessage(value, values[key]);
+        if (!fieldsOptions[key].excluded) {
+          errors[key] = getFieldValidationRuleMessage(value, values[key]);
+        }
       }
-
-      // errors.line1 = tryGetFieldValidationRuleMessage(
-      //   validatorOptions.line1,
-      //   values.line1
-      // );
-      // if (fieldsOptions.line2.excluded) {
-      //   errors.line2 = tryGetFieldValidationRuleMessage(
-      //     validatorOptions.line2,
-      //     values.line2
-      //   );
-      // }
-      // errors.city = tryGetFieldValidationRuleMessage(
-      //   validatorOptions.city,
-      //   values.city
-      // );
-      // if (fieldsOptions.state.excluded) {
-      //   errors.state = tryGetFieldValidationRuleMessage(
-      //     validatorOptions.state,
-      //     values.state
-      //   );
-      // }
-      // if (fieldsOptions.postalCode.excluded) {
-      //   errors.postalCode = tryGetFieldValidationRuleMessage(
-      //     validatorOptions.postalCode,
-      //     values.postalCode
-      //   );
-      // }
       return errors;
     }
   })

@@ -44,6 +44,7 @@ export type TransactionStatus =
   | typeof TRANSACTION_STATUS_SUCCEEDED
   | typeof TRANSACTION_STATUS_FAILED;
 
+export type CountryId = string;
 export type AddressId = string;
 export type CandidatureId = string;
 export type ChallengeId = string;
@@ -163,7 +164,7 @@ export interface AddressValidatorOptions {
 }
 
 export interface CountryOptions {
-  readonly id: string;
+  readonly id: CountryId;
   readonly name: string;
   readonly twoIso: string;
   readonly threeIso: string;

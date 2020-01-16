@@ -20,32 +20,21 @@ export function getFieldValidationRuleMessage(
     .sort((left, right) => (left.order < right.order ? -1 : 1));
   for (let index = 0; index < validationRules.length; index++) {
     const validationRule = validationRules[index];
-    if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_REQUIRED) {
-      if (!value) {
-        return format(validationRule.message, validationRule.value);
-      }
+    if (
+      (validationRule.type === FIELD_VALIDATION_RULE_TYPE_REQUIRED && !value) ||
+      (validationRule.type === FIELD_VALIDATION_RULE_TYPE_REGEX &&
+        !new RegExp(validationRule.value).test(value)) ||
+      (validationRule.type === FIELD_VALIDATION_RULE_TYPE_LENGTH &&
+        !value.length) ||
+      (validationRule.type === FIELD_VALIDATION_RULE_TYPE_MIN_LENGTH &&
+        value.length < validationRule.value) ||
+      (validationRule.type === FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH &&
+        value.length > validationRule.value)
+    ) {
+      return format(validationRule.message, validationRule.value);
+    } else {
+      return undefined;
     }
-    if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_REGEX) {
-      if (!new RegExp(validationRule.value).test(value)) {
-        return format(validationRule.message, validationRule.value);
-      }
-    }
-    if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_LENGTH) {
-      if (!value.length) {
-        return format(validationRule.message, validationRule.value);
-      }
-    }
-    if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_MIN_LENGTH) {
-      if (value.length < validationRule.value) {
-        return format(validationRule.message, validationRule.value);
-      }
-    }
-    if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH) {
-      if (value.length > validationRule.value) {
-        return format(validationRule.message, validationRule.value);
-      }
-    }
-    return undefined;
   }
 }
 
