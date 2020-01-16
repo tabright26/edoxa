@@ -23,16 +23,20 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
+using Xunit.Abstractions;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
     public sealed class AddressBookControllerPostAsyncTest : IntegrationTest
     {
-        public AddressBookControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public AddressBookControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper, ITestOutputHelper testOutputHelper) : base(
             testHost,
             testData,
             testMapper)
         {
+            _testOutputHelper = testOutputHelper;
         }
 
         private async Task<HttpResponseMessage> ExecuteAsync(CreateAddressRequest request)
@@ -74,13 +78,17 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                         });
 
                     // Assert
+                    var message = await response.Content.ReadAsStringAsync();
+
+                    _testOutputHelper.WriteLine(message);
+
                     response.EnsureSuccessStatusCode();
 
                     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                    var message = await response.Content.ReadAsStringAsync();
+                    //var message = await response.Content.ReadAsStringAsync();
 
-                    message.Should().NotBeNullOrWhiteSpace();
+                    //message.Should().NotBeNullOrWhiteSpace();
                 });
         }
     }

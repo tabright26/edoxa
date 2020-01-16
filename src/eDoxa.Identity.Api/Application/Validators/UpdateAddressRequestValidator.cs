@@ -10,6 +10,7 @@ using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 
 using FluentValidation;
+using FluentValidation.Results;
 
 using Microsoft.Extensions.Options;
 
@@ -17,8 +18,12 @@ namespace eDoxa.Identity.Api.Application.Validators
 {
     public class UpdateAddressRequestValidator : AbstractValidator<UpdateAddressRequest>
     {
+        private readonly IOptions<IdentityStaticOptions> _options;
+
         public UpdateAddressRequestValidator(IOptions<IdentityStaticOptions> options)
         {
+            _options = options;
+
             this.RuleFor(request => request.Country)
                 .NotNull()
                 .NotEmpty()
@@ -27,24 +32,48 @@ namespace eDoxa.Identity.Api.Application.Validators
                 .DependentRules(
                     () =>
                     {
-                        var addressOptions = options.Value.Default.Address;
-                        var fieldsOptions = addressOptions.Fields;
-                        var validatorOptions = addressOptions.Validator;
+                        this.RuleFor(request => request)
+                            .Custom(
+                                (x, context) =>
+                                {
+                                    var fieldsOptions =
+                                        (IdentityStaticOptions.Types.AddressOptions.Types.FieldsOptions) context.ParentContext.RootContextData["FieldsOptions"];
 
-                        this.RuleFor(request => request.Line1).Custom(validatorOptions.Line1);
+                                    var validatorOptions =
+                                        (IdentityStaticOptions.Types.AddressOptions.Types.ValidatorOptions) context.ParentContext.RootContextData[
+                                            "ValidatorOptions"];
 
-                        this.When(
-                            request => !addressOptions.Fields.Line2.Excluded && !string.IsNullOrWhiteSpace(request.Line2),
-                            () => this.RuleFor(request => request.Line2).Custom(validatorOptions.Line2));
+                                    context.ValidateCustomRule(nameof(x.Line1), x.Line1, validatorOptions.Line1);
 
-                        this.RuleFor(request => request.City).Custom(validatorOptions.City);
+                                    if (!fieldsOptions.Line2.Excluded)
+                                    {
+                                        context.ValidateCustomRule(nameof(x.Line2), x.Line2, validatorOptions.Line2);
+                                    }
 
-                        this.When(request => !fieldsOptions.State.Excluded, () => this.RuleFor(request => request.State).Custom(validatorOptions.State));
+                                    context.ValidateCustomRule(nameof(x.City), x.City, validatorOptions.City);
 
-                        this.When(
-                            request => !fieldsOptions.PostalCode.Excluded,
-                            () => this.RuleFor(request => request.PostalCode).Custom(validatorOptions.PostalCode));
+                                    if (!fieldsOptions.State.Excluded)
+                                    {
+                                        context.ValidateCustomRule(nameof(x.State), x.State, validatorOptions.State);
+                                    }
+
+                                    if (!fieldsOptions.PostalCode.Excluded)
+                                    {
+                                        context.ValidateCustomRule(nameof(x.PostalCode), x.PostalCode, validatorOptions.PostalCode);
+                                    }
+                                });
                     });
+        }
+
+        protected override bool PreValidate(ValidationContext<UpdateAddressRequest> context, ValidationResult result)
+        {
+            var addressOptions = _options.Value.GetAddressOptionsFor(context.InstanceToValidate.Country);
+
+            context.RootContextData.Add("FieldsOptions", addressOptions.Fields);
+
+            context.RootContextData.Add("ValidatorOptions", addressOptions.Validator);
+
+            return base.PreValidate(context, result);
         }
     }
 }

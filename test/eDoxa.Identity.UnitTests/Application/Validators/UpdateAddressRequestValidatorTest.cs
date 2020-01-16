@@ -1,4 +1,4 @@
-﻿// Filename: CreateAddressRequestValidatorTest.cs
+﻿// Filename: UpdateAddressRequestValidatorTest.cs
 // Date Created: 2019-12-26
 // 
 // ================================================
@@ -20,9 +20,9 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Application.Validators
 {
-    public sealed class CreateAddressRequestValidatorTest : UnitTest
+    public sealed class UpdateAddressRequestValidatorTest : UnitTest
     {
-        public CreateAddressRequestValidatorTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+        public UpdateAddressRequestValidatorTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
             testData,
             testMapper,
             testValidator)
@@ -86,8 +86,8 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public static TheoryData<EnumCountry, string> ValidStates =>
             new TheoryData<EnumCountry, string>
             {
-                {EnumCountry.CA, "State"},
-                {EnumCountry.CA, "State-of Testing"}
+                {EnumCountry.CA, "QC"},
+                {EnumCountry.CA, "ON"}
             };
 
         public static TheoryData<EnumCountry, string> InvalidStates =>
@@ -119,7 +119,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(EnumCountry country)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.Country, country);
@@ -130,7 +130,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(EnumCountry country)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act
             validator.ShouldHaveValidationErrorFor(request => request.Country, country);
@@ -141,12 +141,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public void Validate_WhenLine1IsValid_ShouldNotHaveValidationErrorFor(EnumCountry country, string line1)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(
                 request => request.Line1,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     Line1 = line1
@@ -159,12 +159,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         {
             // Arrange
             var errors = TestOptionsWrapper.Value.GetLine1ErrorsFor(country);
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act
             var failures = validator.ShouldHaveValidationErrorFor(
                 request => request.Line1,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     Line1 = line1
@@ -179,12 +179,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public void Validate_WhenLine2IsValid_ShouldNotHaveValidationErrorFor(EnumCountry country, string line2)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(
                 request => request.Line2,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     Line2 = line2
@@ -197,12 +197,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         {
             // Arrange
             var errors = TestOptionsWrapper.Value.GetLine2ErrorsFor(country);
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act
             var failures = validator.ShouldHaveValidationErrorFor(
                 request => request.Line2,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     Line2 = line2
@@ -217,12 +217,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public void Validate_WhenCityIsValid_ShouldNotHaveValidationErrorFor(EnumCountry country, string city)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(
                 request => request.City,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     City = city
@@ -235,12 +235,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         {
             // Arrange
             var errors = TestOptionsWrapper.Value.GetCityErrorsFor(country);
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act
             var failures = validator.ShouldHaveValidationErrorFor(
                 request => request.City,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     City = city
@@ -255,12 +255,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public void Validate_WhenStateIsValid_ShouldNotHaveValidationErrorFor(EnumCountry country, string state)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(
                 request => request.State,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     State = state
@@ -273,12 +273,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         {
             // Arrange
             var errors = TestOptionsWrapper.Value.GetStateErrorsFor(country);
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act
             var failures = validator.ShouldHaveValidationErrorFor(
                 request => request.State,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     State = state
@@ -293,12 +293,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public void Validate_WhenPostalCodeIsValid_ShouldNotHaveValidationErrorFor(EnumCountry country, string postalCode)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(
                 request => request.PostalCode,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     PostalCode = postalCode
@@ -311,12 +311,12 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         {
             // Arrange
             var errors = TestOptionsWrapper.Value.GetPostalCodeErrorsFor(country);
-            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
+            var validator = new UpdateAddressRequestValidator(TestOptionsWrapper);
 
             // Act
             var failures = validator.ShouldHaveValidationErrorFor(
                 request => request.PostalCode,
-                new CreateAddressRequest
+                new UpdateAddressRequest
                 {
                     Country = country,
                     PostalCode = postalCode
