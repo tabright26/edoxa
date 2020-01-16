@@ -9,6 +9,7 @@ import {
   FIELD_VALIDATION_RULE_TYPE_MIN_LENGTH,
   FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH
 } from "types";
+import format from "string-format";
 
 export function getFieldValidationRuleMessage(
   validationRules: FieldValidationRule[],
@@ -21,27 +22,27 @@ export function getFieldValidationRuleMessage(
     const validationRule = validationRules[index];
     if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_REQUIRED) {
       if (!value) {
-        return validationRule.message;
+        return format(validationRule.message, validationRule.value);
       }
     }
     if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_REGEX) {
       if (!new RegExp(validationRule.value).test(value)) {
-        return validationRule.message;
+        return format(validationRule.message, validationRule.value);
       }
     }
     if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_LENGTH) {
       if (!value.length) {
-        return validationRule.message;
+        return format(validationRule.message, validationRule.value);
       }
     }
     if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_MIN_LENGTH) {
       if (value.length < validationRule.value) {
-        return validationRule.message;
+        return format(validationRule.message, validationRule.value);
       }
     }
     if (validationRule.type === FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH) {
       if (value.length > validationRule.value) {
-        return validationRule.message;
+        return format(validationRule.message, validationRule.value);
       }
     }
     return undefined;
