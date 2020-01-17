@@ -18,7 +18,7 @@ message ChangePhoneRequest {
 }
 
 message CreateAddressRequest {
-  EnumCountry country = 1;
+  EnumCountryIsoCode countryIsoCode = 1;
   string line1 = 2;
   google.protobuf.StringValue line2 = 3;
   string city = 4;
@@ -44,7 +44,7 @@ message ResetPasswordRequest {
 }
 
 message UpdateAddressRequest {
-  EnumCountry country = 1;
+  EnumCountryIsoCode countryIsoCode = 1;
   string line1 = 2;
   google.protobuf.StringValue line2 = 3;
   string city = 4;

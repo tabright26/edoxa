@@ -101,7 +101,7 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
-            services.Configure<IdentityStaticOptions>(Configuration.GetSection("Static"));
+            services.Configure<IdentityApiOptions>(Configuration.GetSection("Api"));
             
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
@@ -296,7 +296,7 @@ namespace eDoxa.Identity.Api
         {
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
-            services.Configure<IdentityStaticOptions>(Configuration.GetSection("Static"));
+            services.Configure<IdentityApiOptions>(Configuration.GetSection("Api"));
 
             services.AddCustomDbContext<IdentityDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

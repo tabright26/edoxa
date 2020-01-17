@@ -25,7 +25,7 @@ import { RootState } from "store/types";
 import {
   AddressFieldsOptions,
   AddressValidatorOptions,
-  CountryId
+  CountryIsoCode
 } from "types";
 import {
   withUserProfileCountry,
@@ -37,7 +37,7 @@ type OwnProps = HocUserProfileCountryStateProps;
 interface StateProps {
   fieldsOptions: AddressFieldsOptions;
   validatorOptions: AddressValidatorOptions;
-  countryId: CountryId;
+  countryIsoCode: CountryIsoCode;
 }
 
 interface FormData {
@@ -62,103 +62,106 @@ const CustomForm: FunctionComponent<Props> = ({
   error,
   handleCancel,
   reset,
-  countryId,
+  countryIsoCode,
   fieldsOptions: { country, line1, line2, city, state, postalCode }
-}) => (
-  <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
-    <FormField.Country
-      label={country.label}
-      placeholder={country.placeholder}
-      onChange={() => reset()}
-    />
-    <Field
-      type="text"
-      name="line1"
-      label={line1.label}
-      placeholder={line1.placeholder}
-      formGroup={FormGroup}
-      component={Input.Text}
-    />
-    {!line2.excluded && (
+}) => {
+  console.log(countryIsoCode);
+  console.log(country, line1, line2, city, state, postalCode);
+  return (
+    <Form onSubmit={handleSubmit}>
+      {error && <FormValidation error={error} />}
+      <FormField.CountryIsoCode
+        label={country.label}
+        placeholder={country.placeholder}
+        onChange={() => reset()}
+      />
       <Field
         type="text"
-        name="line2"
-        label={line2.label}
-        placeholder={line2.placeholder}
+        name="line1"
+        label={line1.label}
+        placeholder={line1.placeholder}
         formGroup={FormGroup}
         component={Input.Text}
       />
-    )}
-    <Field
-      type="text"
-      name="city"
-      label={city.label}
-      placeholder={city.placeholder}
-      formGroup={FormGroup}
-      component={Input.Text}
-    />
-    <FormGroup row className="my-0">
-      <Col xs="8">
-        {!state.excluded && (
-          <FormField.State
-            label={state.label}
-            placeholder={state.placeholder}
-            countryId={countryId}
-          />
-        )}
-      </Col>
-      <Col xs="4">
-        {!postalCode.excluded && (
-          <Field
-            type="text"
-            name="postalCode"
-            label={postalCode.label}
-            placeholder={postalCode.placeholder}
-            formGroup={FormGroup}
-            component={Input.Text}
-            tag={InputMask}
-            mask={postalCode.mask}
-            maskChar={null}
-            formatChars={{
-              "1": "[0-9]",
-              A: "[A-Z]"
-            }}
-          />
-        )}
-      </Col>
-    </FormGroup>
-    <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel
-        onClick={() => {
-          handleCancel();
-          reset();
-        }}
+      {!line2.excluded && (
+        <Field
+          type="text"
+          name="line2"
+          label={line2.label}
+          placeholder={line2.placeholder}
+          formGroup={FormGroup}
+          component={Input.Text}
+        />
+      )}
+      <Field
+        type="text"
+        name="city"
+        label={city.label}
+        placeholder={city.placeholder}
+        formGroup={FormGroup}
+        component={Input.Text}
       />
-    </FormGroup>
-  </Form>
-);
+      <FormGroup row className="my-0">
+        <Col xs="8">
+          {!state.excluded && (
+            <FormField.State
+              label={state.label}
+              placeholder={state.placeholder}
+              countryIsoCode={countryIsoCode}
+            />
+          )}
+        </Col>
+        <Col xs="4">
+          {!postalCode.excluded && (
+            <Field
+              type="text"
+              name="postalCode"
+              label={postalCode.label}
+              placeholder={postalCode.placeholder}
+              formGroup={FormGroup}
+              component={Input.Text}
+              tag={InputMask}
+              mask={postalCode.mask}
+              maskChar={null}
+              formatChars={{
+                "1": "[0-9]",
+                A: "[A-Z]"
+              }}
+            />
+          )}
+        </Col>
+      </FormGroup>
+      <FormGroup className="mb-0">
+        <Button.Save className="mr-2" />
+        <Button.Cancel
+          onClick={() => {
+            handleCancel();
+            reset();
+          }}
+        />
+      </FormGroup>
+    </Form>
+  );
+};
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   state,
   ownProps
 ) => {
   const selector = formValueSelector(CREATE_USER_ADDRESS_FORM);
-  const countryId: string = selector(state, "country") || ownProps.country;
-  const {
-    default: { address },
-    addressBook: { countries }
-  } = state.static.identity.data;
-  const countryOptions = countries.find(country => country.id === countryId);
+  const countryIsoCode: string =
+    selector(state, "countryIsoCode") || ownProps.country;
+  const country = state.static.identity.data.countries.find(
+    country => country.isoCode === countryIsoCode
+  );
   return {
     initialValues: {
-      country: countryId,
-      state: countryOptions.regions[0].code
+      country: countryIsoCode,
+      state: country.regions[0].code
     },
-    fieldsOptions: address.fields,
-    validatorOptions: address.validator,
-    countryId
+    fieldsOptions: country.address.fields,
+    validatorOptions: country.address.validator,
+    countryIsoCode
   };
 };
 

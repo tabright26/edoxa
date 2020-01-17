@@ -82,7 +82,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                         addressBook.First().Id,
                         new UpdateAddressRequest
                         {
-                            Country = EnumCountry.CA,
+                            CountryIsoCode = EnumCountryIsoCode.CA,
                             Line1 = "1234 Test Street",
                             Line2 = null,
                             City = "Toronto",

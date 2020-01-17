@@ -3,35 +3,38 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Identity.Options";
 
 import "custom_types.proto";
+import "identity_enums.proto";
 
 package edoxa.services.identity;
 
-message IdentityStaticOptions {
-  DefaultOptions default = 1;
-  AddressBookOptions addressBook = 2;
-
-  message DefaultOptions {
-    AddressOptions address = 1;
-  }
-
-  message AddressBookOptions {
-    int32 limit = 1;
+message IdentityApiOptions {
+  StaticOptions static = 1;
+  DefaultOptions default = 2;
+  
+  message StaticOptions {
+    AddressBookOptions addressBook = 1;
     repeated CountryOptions countries = 2;
 
+    message AddressBookOptions {
+      int32 limit = 1;
+    }
+
     message CountryOptions {
-      string id = 1;
+      EnumCountryIsoCode isoCode = 1;
       string name = 2;
-      string twoIso = 3;
-      string threeIso = 4;
-      string code = 5;
-      AddressOptions address = 6;
-      repeated RegionOptions regions = 7;
+      string code = 3;
+      AddressOptions address = 4;
+      repeated RegionOptions regions = 5;
 
       message RegionOptions {
         string name = 1;
         string code = 2;
       }
     }
+  }
+
+  message DefaultOptions {
+    AddressOptions address = 1;
   }
 
   message AddressOptions {

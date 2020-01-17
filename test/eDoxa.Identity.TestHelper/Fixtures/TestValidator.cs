@@ -18,9 +18,9 @@ namespace eDoxa.Identity.TestHelper.Fixtures
             var builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json", false);
             var configuration = builder.Build();
-            OptionsWrapper = new OptionsWrapper<IdentityStaticOptions>(configuration.GetSection("Static").Get<IdentityStaticOptions>());
+            OptionsWrapper = new OptionsWrapper<IdentityApiOptions>(configuration.GetSection("Api").Get<IdentityApiOptions>());
         }
 
-        public OptionsWrapper<IdentityStaticOptions> OptionsWrapper { get; }
+        public OptionsWrapper<IdentityApiOptions> OptionsWrapper { get; }
     }
 }

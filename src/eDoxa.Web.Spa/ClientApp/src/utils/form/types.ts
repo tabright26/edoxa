@@ -50,7 +50,9 @@ export function throwSubmissionError(
         if (data.errors && !data.errors.length) {
           throw new SubmissionError<AxiosErrorData>(data.errors);
         } else {
-          throw new Error("Something went wrong.");
+          throw new SubmissionError<AxiosErrorData>({
+            _error: "Something went wrong. You should try again later ..."
+          });
         }
       }
       default: {

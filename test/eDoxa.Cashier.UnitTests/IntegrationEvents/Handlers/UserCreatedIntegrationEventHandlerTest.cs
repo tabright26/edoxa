@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 {
                     Address = "noreply@edoxa.gg"
                 },
-                Country = EnumCountry.CA
+                CountryIsoCode = EnumCountryIsoCode.CA
             };
 
             // Act

@@ -24,7 +24,7 @@ namespace eDoxa.Seedwork.Application.FluentValidation.Extensions
             IEnumerable<FieldValidationRule> validationRules
         )
         {
-            foreach (var validationRule in validationRules.Where(validationRule => validationRule.Enabled).OrderBy(validationRule => validationRule.Order))
+            foreach (var validationRule in validationRules.Where(validationRule => validationRule.Enabled).OrderBy(validationRule => validationRule.Priority))
             {
                 if (!validationRule.IsValid(propertyValue))
                 {

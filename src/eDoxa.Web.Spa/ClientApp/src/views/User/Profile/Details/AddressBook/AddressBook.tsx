@@ -1,7 +1,7 @@
 import React, { useState, FunctionComponent, useEffect } from "react";
 import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import Address from "utils/localize/components/Address";
+import AddressDetails from "components/User/Address/Details";
 import AddressForm from "components/User/Address/Form";
 import UserAddressModal from "components/User/Address/Modal";
 import { compose } from "recompose";
@@ -13,11 +13,7 @@ import { loadUserAddressBook } from "store/actions/identity";
 import { show } from "redux-modal";
 import { CREATE_USER_ADDRESS_MODAL } from "utils/modal/constants";
 
-const AddressItem: FunctionComponent<any> = ({
-  hasMore,
-  position,
-  address
-}) => {
+const AddressItem: FunctionComponent<any> = ({ hasMore, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
   const [deleteFormHidden, hideDeleteForm] = useState(true);
   return (
@@ -33,7 +29,7 @@ const AddressItem: FunctionComponent<any> = ({
           </dd>
         ) : (
           <dd className="col-sm-5 m-0">
-            <Address address={address} />
+            <AddressDetails address={address} />
             {!deleteFormHidden && (
               <AddressForm.Delete
                 addressId={address.id}
@@ -104,7 +100,6 @@ const AddressBook: FunctionComponent<any> = ({
             <AddressItem
               key={index}
               address={address}
-              position={index + 1}
               hasMore={data.length !== index + 1}
             />
           ))

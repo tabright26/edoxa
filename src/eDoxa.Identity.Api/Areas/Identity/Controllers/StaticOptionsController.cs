@@ -1,4 +1,4 @@
-﻿// Filename: CountriesController.cs
+﻿// Filename: StaticOptionsController.cs
 // Date Created: 2020-01-13
 // 
 // ================================================
@@ -22,11 +22,16 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
     public sealed class StaticOptionsController : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromServices] IOptions<IdentityStaticOptions> options)
+        public async Task<IActionResult> GetAsync([FromServices] IOptionsSnapshot<IdentityApiOptions> snapshot)
         {
-            var staticOptions = await Task.FromResult(options.Value);
+            var options = snapshot.Value;
 
-            return this.Ok(staticOptions);
+            foreach (var country in options.Static.Countries)
+            {
+                country.Address = options.TryOverridesAddressOptionsFor(country.IsoCode);
+            }
+
+            return await Task.FromResult(this.Ok(options.Static));
         }
     }
 }

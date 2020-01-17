@@ -23,7 +23,7 @@ import {
   AddressId,
   AddressFieldsOptions,
   AddressValidatorOptions,
-  CountryId
+  CountryIsoCode
 } from "types";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
@@ -32,7 +32,7 @@ import InputMask from "react-input-mask";
 interface StateProps {
   fieldsOptions: AddressFieldsOptions;
   validatorOptions: AddressValidatorOptions;
-  countryId: CountryId;
+  countryIsoCode: CountryIsoCode;
 }
 
 interface FormData {
@@ -56,13 +56,13 @@ const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
-  countryId,
+  countryIsoCode,
   reset,
   fieldsOptions: { country, line1, line2, city, state, postalCode }
 }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
-    <FormField.Country placeholder={country.label} disabled />
+    <FormField.CountryIsoCode placeholder={country.label} disabled />
     <Field
       type="text"
       name="line1"
@@ -89,7 +89,10 @@ const CustomForm: FunctionComponent<Props> = ({
     <FormGroup row className="my-0">
       <Col xs="8">
         {!state.excluded && (
-          <FormField.State placeholder={state.label} countryId={countryId} />
+          <FormField.State
+            placeholder={state.label}
+            countryIsoCode={countryIsoCode}
+          />
         )}
       </Col>
       <Col xs="4">
@@ -131,15 +134,16 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
     address => address.id === ownProps.addressId
   );
   const selector = formValueSelector(UPDATE_USER_ADDRESS_FORM);
-  const countryId = selector(state, "country") || address.country;
-  const {
-    default: { address: addressOptions }
-  } = state.static.identity.data;
+  const countryIsoCode =
+    selector(state, "countryIsoCode") || address.countryIsoCode;
+  const country = state.static.identity.data.countries.find(
+    country => country.isoCode === countryIsoCode
+  );
   return {
     initialValues: address,
-    fieldsOptions: addressOptions.fields,
-    validatorOptions: addressOptions.validator,
-    countryId
+    fieldsOptions: country.address.fields,
+    validatorOptions: country.address.validator,
+    countryIsoCode
   };
 };
 

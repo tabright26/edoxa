@@ -24,7 +24,7 @@ message FieldValidationRule {
   string message = 2;
   string value = 3;
   bool enabled = 4;
-  int32 order = 5;
+  int32 priority = 5;
 }
 
 enum FieldValidationRuleType {

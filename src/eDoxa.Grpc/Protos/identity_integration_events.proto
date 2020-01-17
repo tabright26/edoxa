@@ -10,7 +10,7 @@ package edoxa.services.identity;
 message UserCreatedIntegrationEvent {
   string userId = 1;
   EmailDto email = 2;
-  EnumCountry country = 3;
+  EnumCountryIsoCode countryIsoCode = 3;
 }
 
 message UserProfileChangedIntegrationEvent {

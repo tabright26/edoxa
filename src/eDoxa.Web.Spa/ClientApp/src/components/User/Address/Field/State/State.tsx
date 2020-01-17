@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Field } from "redux-form";
 import Input from "components/Shared/Input";
-import { CountryRegionOptions } from "types";
+import { CountryRegionOptions, CountryIsoCode } from "types";
 import { FormGroup, Label } from "reactstrap";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
@@ -9,7 +9,7 @@ import { RootState } from "store/types";
 interface OwnProps {
   label?: string;
   placeholder: string;
-  countryId: string;
+  countryIsoCode: CountryIsoCode;
 }
 
 interface StateProps {
@@ -45,8 +45,8 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   ownProps
 ) => {
   return {
-    regions: state.static.identity.data.addressBook.countries.find(
-      country => country.id === ownProps.countryId
+    regions: state.static.identity.data.countries.find(
+      country => country.isoCode === ownProps.countryIsoCode
     ).regions
   };
 };

@@ -44,7 +44,7 @@ export type TransactionStatus =
   | typeof TRANSACTION_STATUS_SUCCEEDED
   | typeof TRANSACTION_STATUS_FAILED;
 
-export type CountryId = string;
+export type CountryIsoCode = string;
 export type AddressId = string;
 export type CandidatureId = string;
 export type ChallengeId = string;
@@ -115,17 +115,25 @@ export interface FieldValidationRule {
 
 // Identity
 export interface IdentityStaticOptions {
-  readonly default: IdentityStaticDefaultOptions;
   readonly addressBook: AddressBookOptions;
-}
-
-export interface IdentityStaticDefaultOptions {
-  readonly address: AddressOptions;
+  readonly countries: CountryOptions[];
 }
 
 export interface AddressBookOptions {
   readonly limit: number;
-  readonly countries: CountryOptions[];
+}
+
+export interface CountryOptions {
+  readonly isoCode: CountryIsoCode;
+  readonly name: string;
+  readonly code: string;
+  readonly address: AddressOptions;
+  readonly regions: CountryRegionOptions[];
+}
+
+export interface CountryRegionOptions {
+  readonly name: string;
+  readonly code: string;
 }
 
 export interface AddressOptions {
@@ -163,21 +171,6 @@ export interface AddressValidatorOptions {
   readonly postalCode: FieldValidationRule[];
 }
 
-export interface CountryOptions {
-  readonly id: CountryId;
-  readonly name: string;
-  readonly twoIso: string;
-  readonly threeIso: string;
-  readonly code: string;
-  readonly address: AddressOptions;
-  readonly regions: CountryRegionOptions[];
-}
-
-export interface CountryRegionOptions {
-  readonly name: string;
-  readonly code: string;
-}
-
 export interface UserEmail {
   readonly address: string;
   readonly verified: boolean;
@@ -202,7 +195,7 @@ export interface UserDob {
 }
 
 export interface UserAddress extends Entity<AddressId> {
-  readonly country: CountryOptions | string;
+  readonly countryIsoCode: CountryIsoCode;
   readonly line1: string;
   readonly line2?: string;
   readonly city: string;

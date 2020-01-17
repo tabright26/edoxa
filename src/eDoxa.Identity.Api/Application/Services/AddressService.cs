@@ -25,16 +25,16 @@ namespace eDoxa.Identity.Api.Application.Services
     {
         private readonly IAddressRepository _addressRepository;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IOptions<IdentityStaticOptions> _options;
+        private readonly IOptions<IdentityApiOptions> _options;
 
-        public AddressService(IAddressRepository addressRepository, IServiceBusPublisher serviceBusPublisher, IOptions<IdentityStaticOptions> options)
+        public AddressService(IAddressRepository addressRepository, IServiceBusPublisher serviceBusPublisher, IOptions<IdentityApiOptions> options)
         {
             _addressRepository = addressRepository;
             _serviceBusPublisher = serviceBusPublisher;
             _options = options;
         }
 
-        private IdentityStaticOptions Options => _options.Value;
+        private IdentityApiOptions Options => _options.Value;
 
         public async Task<Address?> FindUserAddressAsync(User user, AddressId addressId)
         {
@@ -78,7 +78,7 @@ namespace eDoxa.Identity.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var addressBookLimit = Options.AddressBook.Limit;
+            var addressBookLimit = Options.Static.AddressBook.Limit;
 
             if (await _addressRepository.AddressCountAsync(userId) >= addressBookLimit)
             {

@@ -18,17 +18,17 @@ namespace eDoxa.Identity.Api.Application.Validators
 {
     public sealed class CreateAddressRequestValidator : AbstractValidator<CreateAddressRequest>
     {
-        private readonly IOptions<IdentityStaticOptions> _options;
+        private readonly IOptions<IdentityApiOptions> _options;
 
-        public CreateAddressRequestValidator(IOptions<IdentityStaticOptions> options)
+        public CreateAddressRequestValidator(IOptions<IdentityApiOptions> options)
         {
             _options = options;
 
-            this.RuleFor(request => request.Country)
+            this.RuleFor(request => request.CountryIsoCode)
                 .NotNull()
                 .NotEmpty()
                 .IsInEnum()
-                .Must(country => country != EnumCountry.None && country != EnumCountry.All)
+                .Must(countryIsoCode => countryIsoCode != EnumCountryIsoCode.None && countryIsoCode != EnumCountryIsoCode.All)
                 .DependentRules(
                     () =>
                     {
@@ -37,10 +37,10 @@ namespace eDoxa.Identity.Api.Application.Validators
                                 (x, context) =>
                                 {
                                     var fieldsOptions =
-                                        (IdentityStaticOptions.Types.AddressOptions.Types.FieldsOptions) context.ParentContext.RootContextData["FieldsOptions"];
+                                        (IdentityApiOptions.Types.AddressOptions.Types.FieldsOptions) context.ParentContext.RootContextData["FieldsOptions"];
 
                                     var validatorOptions =
-                                        (IdentityStaticOptions.Types.AddressOptions.Types.ValidatorOptions) context.ParentContext.RootContextData[
+                                        (IdentityApiOptions.Types.AddressOptions.Types.ValidatorOptions) context.ParentContext.RootContextData[
                                             "ValidatorOptions"];
 
                                     context.ValidateCustomRule(nameof(x.Line1), x.Line1, validatorOptions.Line1);
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api.Application.Validators
 
         protected override bool PreValidate(ValidationContext<CreateAddressRequest> context, ValidationResult result)
         {
-            var addressOptions = _options.Value.GetAddressOptionsFor(context.InstanceToValidate.Country);
+            var addressOptions = _options.Value.TryOverridesAddressOptionsFor(context.InstanceToValidate.CountryIsoCode);
 
             context.RootContextData.Add("FieldsOptions", addressOptions.Fields);
 

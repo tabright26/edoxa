@@ -74,7 +74,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
             
             var result = await _addressService.AddAddressAsync(
                 user.Id.ConvertTo<UserId>(),
-                request.Country.ToEnumeration<Country>(),
+                request.CountryIsoCode.ToEnumeration<Country>(),
                 request.Line1,
                 request.Line2,
                 request.City,

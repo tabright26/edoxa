@@ -34,7 +34,7 @@ const CountryField: FunctionComponent<Props> = ({
   <FormGroup>
     {label && <Label>{label}</Label>}
     <Field
-      name="country"
+      name="countryIsoCode"
       type="select"
       placeholder={placeholder}
       component={Input.Select}
@@ -42,7 +42,7 @@ const CountryField: FunctionComponent<Props> = ({
       onChange={onChange}
     >
       {countries.map((country, index) => (
-        <option key={index} value={country.twoIso}>
+        <option key={index} value={country.isoCode}>
           {country.name}
         </option>
       ))}
@@ -56,7 +56,7 @@ const mapStateToProps: MapStateToProps<
   RootState
 > = state => {
   return {
-    countries: state.static.identity.data.addressBook.countries
+    countries: state.static.identity.data.countries
   };
 };
 

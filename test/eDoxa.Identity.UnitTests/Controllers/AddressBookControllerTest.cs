@@ -245,7 +245,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var request = new CreateAddressRequest
             {
-                Country = EnumCountry.CA,
+                CountryIsoCode = EnumCountryIsoCode.CA,
                 Line1 = "1234 Test Street",
                 Line2 = null,
                 City = "Toronto",

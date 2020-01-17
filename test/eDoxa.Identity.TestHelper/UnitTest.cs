@@ -28,6 +28,6 @@ namespace eDoxa.Identity.TestHelper
 
         protected IMapper TestMapper { get; }
 
-        protected OptionsWrapper<IdentityStaticOptions> TestOptionsWrapper { get; }
+        protected OptionsWrapper<IdentityApiOptions> TestOptionsWrapper { get; }
     }
 }

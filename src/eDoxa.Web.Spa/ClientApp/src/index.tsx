@@ -12,7 +12,7 @@ import { configureStore } from "./store";
 import ReduxToastr from "react-redux-toastr";
 import { StripeProvider } from "react-stripe-elements";
 import { LocalizeProvider } from "react-localize-redux";
-import { config } from "utils/localize/config";
+import { initialize } from "utils/localize/initialize";
 import { OidcProvider } from "redux-oidc";
 import { userManager } from "utils/oidc/UserManager";
 
@@ -20,21 +20,21 @@ const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <OidcProvider userManager={userManager} store={store}>
-      <LocalizeProvider store={store} initialize={config}>
+    <OidcProvider store={store} userManager={userManager}>
+      <LocalizeProvider store={store} initialize={initialize}>
         <StripeProvider apiKey={REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}>
           <App />
         </StripeProvider>
       </LocalizeProvider>
     </OidcProvider>
     <ReduxToastr
-      timeOut={4000}
+      timeOut={7500}
       newestOnTop={false}
       preventDuplicates
       position="bottom-right"
       transitionIn="fadeIn"
       transitionOut="fadeOut"
-      progressBar
+      progressBar={false}
       closeOnToastrClick
     />
   </Provider>,
