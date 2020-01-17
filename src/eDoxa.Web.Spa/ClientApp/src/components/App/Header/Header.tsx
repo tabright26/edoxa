@@ -5,7 +5,7 @@ import {
   AppSidebarToggler,
   AppAsideToggler
 } from "@coreui/react";
-import { LoginMenu } from "utils/oidc/LoginMenu";
+import LoginMenu from "utils/oidc/LoginMenu";
 import logo from "assets/img/brand/logo.png";
 import sygnet from "assets/img/brand/sygnet.png";
 import { getHomePath } from "utils/router/constants";

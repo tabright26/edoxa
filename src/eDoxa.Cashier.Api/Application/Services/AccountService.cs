@@ -28,13 +28,15 @@ namespace eDoxa.Cashier.Api.Application.Services
     public sealed class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly CashierAppSettings _appSettings;
+        private readonly IOptions<CashierAppSettings> _optionsSnapshot;
 
-        public AccountService(IAccountRepository accountRepository, IOptions<CashierAppSettings> options)
+        public AccountService(IAccountRepository accountRepository, IOptionsSnapshot<CashierAppSettings> optionsSnapshot)
         {
             _accountRepository = accountRepository;
-            _appSettings = options.Value;
+            _optionsSnapshot = optionsSnapshot;
         }
+
+        private CashierAppSettings Options => _optionsSnapshot.Value;
 
         public async Task<IAccount> FindAccountAsync(UserId userId)
         {
@@ -371,7 +373,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             bool includeDisabled = false
         )
         {
-            var transactionBundles = _appSettings.TransactionBundles.Where(
+            var transactionBundles = Options.TransactionBundles.Where(
                 transactionBundle => (transactionType == EnumTransactionType.All || transactionType == transactionBundle.Type) &&
                                      (currency == EnumCurrency.All || currency == transactionBundle.Currency.Type) &&
                                      !transactionBundle.Deprecated);

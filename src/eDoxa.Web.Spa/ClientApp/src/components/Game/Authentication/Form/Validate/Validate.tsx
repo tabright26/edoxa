@@ -6,7 +6,7 @@ import { VALIDATE_GAME_AUTHENTICATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { validateGameAuthentication, loadGames } from "store/actions/game";
 import { toastr } from "react-redux-toastr";
-import authorize from "utils/oidc/AuthorizeService";
+import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { throwSubmissionError } from "utils/form/types";
 import { GameOption } from "types";
@@ -45,25 +45,18 @@ const enhance = compose<InnerProps, OutterProps>(
       }
     },
     onSubmitSuccess: (result, dispatch: any, { gameOption }) => {
-      dispatch(loadGames()).then(() => {
-        console.log(window.location.pathname);
-        return authorize
-          .getUser()
-          .then(user => console.log(user))
-          .then(() =>
-            authorize
-              .signIn({
-                returnUrl: window.location.pathname
-              })
-              .then(() => {
-                toastr.success(
-                  "Game credentials linked",
-                  `Your ${gameOption.displayName} credentials have been successfully linked.`
-                );
-                return authorize.getUser().then(x => console.log(x));
-              })
-          );
-      });
+      dispatch(loadGames()).then(() =>
+        authorizeService
+          .signIn({
+            returnUrl: window.location.pathname
+          })
+          .then(() => {
+            toastr.success(
+              "Game credentials linked",
+              `Your ${gameOption.displayName} credentials have been successfully linked.`
+            );
+          })
+      );
     },
     onSubmitFail: (
       error,

@@ -8,11 +8,12 @@ import {
   DropdownItem,
   Form
 } from "reactstrap";
-import authService from "./AuthorizeService";
 import { ApplicationPaths } from "./ApiAuthorizationConstants";
 import { LinkContainer } from "react-router-bootstrap";
+import authorizeService from "utils/oidc/AuthorizeService";
+import { DOXATAG_CLAIM_TYPE, EMAIL_CLAIM_TYPE } from "./types";
 
-export class LoginMenu extends Component {
+class LoginMenu extends Component {
   constructor(props) {
     super(props);
 
@@ -23,18 +24,18 @@ export class LoginMenu extends Component {
   }
 
   componentDidMount() {
-    this._subscription = authService.subscribe(() => this.populateState());
+    this._subscription = authorizeService.subscribe(() => this.populateState());
     this.populateState();
   }
 
   componentWillUnmount() {
-    authService.unsubscribe(this._subscription);
+    authorizeService.unsubscribe(this._subscription);
   }
 
   async populateState() {
     const [isAuthenticated, user] = await Promise.all([
-      authService.isAuthenticated(),
-      authService.getUser()
+      authorizeService.isAuthenticated(),
+      authorizeService.getUser()
     ]);
     this.setState({
       isAuthenticated,
@@ -63,7 +64,7 @@ export class LoginMenu extends Component {
       <Nav className="ml-auto mr-3" navbar>
         <UncontrolledDropdown nav direction="down">
           <DropdownToggle nav caret>
-            {user["doxatag"] ? user["doxatag"] : user["email"]}
+            {user[DOXATAG_CLAIM_TYPE] || user[EMAIL_CLAIM_TYPE]}
           </DropdownToggle>
           <DropdownMenu right style={{ right: 0 }}>
             <Form inline>
@@ -73,16 +74,14 @@ export class LoginMenu extends Component {
                 </Button>
               </LinkContainer>
             </Form>
-            {process.env.NODE_ENV !== "production" ? (
+            {process.env.NODE_ENV !== "production" && (
               <DropdownItem
                 className="border-top"
-                onClick={() =>
-                  authService.getUser().then(user => console.log(user))
-                }
+                onClick={() => console.log(user)}
               >
                 User Info
               </DropdownItem>
-            ) : null}
+            )}
             <LinkContainer to={logoutPath}>
               <DropdownItem>Logout</DropdownItem>
             </LinkContainer>
@@ -112,3 +111,5 @@ export class LoginMenu extends Component {
     );
   }
 }
+
+export default LoginMenu;

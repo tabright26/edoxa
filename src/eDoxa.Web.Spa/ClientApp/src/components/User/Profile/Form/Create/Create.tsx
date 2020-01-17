@@ -22,7 +22,7 @@ import {
   PROFILE_LAST_NAME_REQUIRED,
   PROFILE_LAST_NAME_INVALID,
   PROFILE_GENDER_REQUIRED
-} from "validation";
+} from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface FormData {
@@ -52,10 +52,18 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dd className="col-sm-4 mb-0">
-            <Field name="firstName" label="First Name" component={Input.Text} />
+            <Field
+              name="firstName"
+              placeholder="First Name"
+              component={Input.Text}
+            />
           </dd>
           <dd className="col-sm-4 mb-0">
-            <Field name="lastName" label="Last Name" component={Input.Text} />
+            <Field
+              name="lastName"
+              placeholder="Last Name"
+              component={Input.Text}
+            />
           </dd>
         </dl>
       </dd>

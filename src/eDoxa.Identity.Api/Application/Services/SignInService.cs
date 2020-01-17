@@ -21,7 +21,7 @@ namespace eDoxa.Identity.Api.Application.Services
             UserService userService,
             IHttpContextAccessor contextAccessor,
             CustomUserClaimsPrincipalFactory claimsFactory,
-            IOptions<IdentityOptions> optionsAccessor,
+            IOptionsSnapshot<IdentityOptions> optionsAccessor,
             ILogger<SignInService> logger,
             IAuthenticationSchemeProvider schemes,
             IUserConfirmation<User> confirmation

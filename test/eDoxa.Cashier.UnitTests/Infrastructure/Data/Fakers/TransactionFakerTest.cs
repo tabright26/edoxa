@@ -16,9 +16,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
     public sealed class TransactionFakerTest : UnitTest
     {
-        public TransactionFakerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+  
 
         [Fact]
         public void Generate_SingleNegativeTransaction_ShouldNotBeNull()
@@ -70,6 +68,10 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 
             // Assert
             transactions.Should().HaveCount(10);
+        }
+
+        public TransactionFakerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

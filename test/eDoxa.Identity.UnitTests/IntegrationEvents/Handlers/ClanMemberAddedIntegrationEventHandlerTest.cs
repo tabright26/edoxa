@@ -27,9 +27,6 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class ClanMemberAddedIntegrationEventHandlerTest : UnitTest
     {
-        public ClanMemberAddedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
 
         [Fact]
         public async Task HandleAsync_WhenClanMemberAddedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -79,6 +76,10 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             mockUserService.Verify(userService => userService.FindByIdAsync(It.IsAny<string>()), Times.Once);
             mockUserService.Verify(userService => userService.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()), Times.Once);
             mockLogger.Verify(Times.Once());
+        }
+
+        public ClanMemberAddedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

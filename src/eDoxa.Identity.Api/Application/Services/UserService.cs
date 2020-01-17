@@ -27,7 +27,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
         public UserService(
             UserRepository repository,
-            IOptions<IdentityOptions> optionsAccessor,
+            IOptionsSnapshot<IdentityOptions> optionsAccessor,
             IPasswordHasher<User> passwordHasher,
             IEnumerable<IUserValidator<User>> userValidators,
             IEnumerable<IPasswordValidator<User>> passwordValidators,

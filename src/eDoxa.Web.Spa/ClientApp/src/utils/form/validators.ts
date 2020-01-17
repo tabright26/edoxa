@@ -1,5 +1,4 @@
 import { sentenceCase } from "change-case";
-
 export const DOXATAG_REGEXP = new RegExp(
   "^[a-zA-Z0-9][a-zA-Z0-9_ -]{0,14}[a-zA-Z0-9_-]$"
 );
@@ -57,21 +56,6 @@ export const PASSWORD_REGEXP = new RegExp(
 );
 export const PASSWORD_REQUIRED = sentenceCase("Password is required");
 export const PASSWORD_INVALID = sentenceCase("Password is invalid");
-export const ADDRESS_COUNTRY_REGEXP = new RegExp("^(CA)|(US)$");
-export const ADDRESS_COUNTRY_REQUIRED = sentenceCase("Country is required");
-export const ADDRESS_COUNTRY_INVALID = sentenceCase("Invalid country");
-export const ADDRESS_LINE1_REGEXP = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
-export const ADDRESS_LINE1_REQUIRED = sentenceCase("Main address is required");
-export const ADDRESS_LINE1_INVALID = sentenceCase("Invalid main address");
-export const ADDRESS_LINE2_REGEXP = new RegExp("^[a-zA-Z0-9- .,]{1,}$");
-export const ADDRESS_LINE2_INVALID = sentenceCase("Invalid secondary address");
-export const ADDRESS_CITY_REGEXP = new RegExp("^[a-zA-Z- ]{1,}$");
-export const ADDRESS_CITY_REQUIRED = sentenceCase("City is required");
-export const ADDRESS_CITY_INVALID = sentenceCase("Invalid city");
-export const ADDRESS_STATE_REGEXP = new RegExp("^[a-zA-Z- ]{1,}$");
-export const ADDRESS_STATE_INVALID = sentenceCase("Invalid state");
-export const ADDRESS_POSTAL_CODE_REGEXP = new RegExp("^[0-9A-Z]{5,6}$");
-export const ADDRESS_POSTAL_CODE_INVALID = sentenceCase("Invalid postal code");
 export const PAYMENT_METHOD_CARD_EXP_MONTH_REGEXP = new RegExp(
   "^(01|02|03|04|05|06|07|08|09|10|11|12)$"
 );

@@ -21,9 +21,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
 {
     public sealed class ChallengePayoutStrategyTest : UnitTest
     {
-        public ChallengePayoutStrategyTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+        
 
         [Fact]
         public void GetPayout_WithEntries_ShouldNotBeNull()
@@ -65,6 +63,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
 
             // Assert
             action.Should().Throw<NotSupportedException>();
+        }
+
+        public ChallengePayoutStrategyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

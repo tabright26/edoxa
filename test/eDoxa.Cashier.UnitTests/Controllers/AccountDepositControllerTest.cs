@@ -27,9 +27,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 {
     public sealed class AccountDepositControllerTest : UnitTest
     {
-        public AccountDepositControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+  
 
         [Fact]
         public async Task GetAsync_WithCurrencyAll_ShouldBeOfTypeNotFoundObjectResult()
@@ -145,6 +143,10 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             mockAccountService.Verify(
                 accountService => accountService.FetchTransactionBundlesAsync(It.IsAny<EnumTransactionType>(), It.IsAny<EnumCurrency>(), true),
                 Times.Once);
+        }
+
+        public AccountDepositControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

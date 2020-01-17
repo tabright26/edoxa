@@ -1,57 +1,79 @@
 ﻿// Filename: UpdateAddressRequestValidator.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Text.RegularExpressions;
-
+using eDoxa.Grpc.Protos.Identity.Enums;
+using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.ErrorDescribers;
+using eDoxa.Seedwork.Application.FluentValidation.Extensions;
 
 using FluentValidation;
+using FluentValidation.Results;
+
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Identity.Api.Application.Validators
 {
     public class UpdateAddressRequestValidator : AbstractValidator<UpdateAddressRequest>
     {
-        public UpdateAddressRequestValidator()
+        private readonly IOptions<IdentityApiOptions> _optionsSnapshot;
+
+        public UpdateAddressRequestValidator(IOptionsSnapshot<IdentityApiOptions> optionsSnapshot)
         {
-            this.RuleFor(request => request.Line1)
-                .NotNull()
-                .WithMessage(AddressBookErrorDescriber.Line1Required())
-                .NotEmpty()
-                .WithMessage(AddressBookErrorDescriber.Line1Required())
-                .Matches(new Regex("^[a-zA-Z0-9- .,]{1,}$"))
-                .WithMessage(AddressBookErrorDescriber.Line1Invalid());
+            _optionsSnapshot = optionsSnapshot;
 
-            this.RuleFor(request => request.Line2).Matches(new Regex("^[a-zA-Z0-9- .,]{1,}$")).WithMessage(AddressBookErrorDescriber.Line2Invalid());
-
-            this.RuleFor(request => request.City)
+            this.RuleFor(request => request.CountryIsoCode)
                 .NotNull()
-                .WithMessage(AddressBookErrorDescriber.CityRequired())
                 .NotEmpty()
-                .WithMessage(AddressBookErrorDescriber.CityRequired())
-                .Matches(new Regex("^[a-zA-Z- ]{1,}$"))
-                .WithMessage(AddressBookErrorDescriber.CityInvalid());
+                .IsInEnum()
+                .Must(countryIsoCode => countryIsoCode != EnumCountryIsoCode.None && countryIsoCode != EnumCountryIsoCode.All)
+                .DependentRules(
+                    () =>
+                    {
+                        this.RuleFor(request => request)
+                            .Custom(
+                                (x, context) =>
+                                {
+                                    var fieldsOptions =
+                                        (IdentityApiOptions.Types.AddressOptions.Types.FieldsOptions) context.ParentContext.RootContextData["FieldsOptions"];
 
-            this.RuleFor(request => request.State)
-                .NotNull()
-                .WithMessage(AddressBookErrorDescriber.StateRequired())
-                .NotEmpty()
-                .WithMessage(AddressBookErrorDescriber.StateRequired())
-                .Matches(new Regex("^[a-zA-Z- ]{1,}$"))
-                .WithMessage(AddressBookErrorDescriber.StateInvalid());
+                                    var validatorOptions =
+                                        (IdentityApiOptions.Types.AddressOptions.Types.ValidatorOptions) context.ParentContext.RootContextData[
+                                            "ValidatorOptions"];
 
-            this.RuleFor(request => request.PostalCode)
-                .NotNull()
-                .WithMessage(AddressBookErrorDescriber.PostalCodeRequired())
-                .NotEmpty()
-                .WithMessage(AddressBookErrorDescriber.PostalCodeRequired())
-                .Length(5, 6)
-                .WithMessage(AddressBookErrorDescriber.PostalCodeLength())
-                .Matches(new Regex("^[0-9A-Z]{5,6}$"))
-                .WithMessage(AddressBookErrorDescriber.PostalCodeInvalidError());
+                                    context.ValidateCustomRule(nameof(x.Line1), x.Line1, validatorOptions.Line1);
+
+                                    if (!fieldsOptions.Line2.Excluded)
+                                    {
+                                        context.ValidateCustomRule(nameof(x.Line2), x.Line2, validatorOptions.Line2);
+                                    }
+
+                                    context.ValidateCustomRule(nameof(x.City), x.City, validatorOptions.City);
+
+                                    if (!fieldsOptions.State.Excluded)
+                                    {
+                                        context.ValidateCustomRule(nameof(x.State), x.State, validatorOptions.State);
+                                    }
+
+                                    if (!fieldsOptions.PostalCode.Excluded)
+                                    {
+                                        context.ValidateCustomRule(nameof(x.PostalCode), x.PostalCode, validatorOptions.PostalCode);
+                                    }
+                                });
+                    });
+        }
+
+        protected override bool PreValidate(ValidationContext<UpdateAddressRequest> context, ValidationResult result)
+        {
+            var addressOptions = _optionsSnapshot.Value.TryOverridesAddressOptionsFor(context.InstanceToValidate.CountryIsoCode);
+
+            context.RootContextData.Add("FieldsOptions", addressOptions.Fields);
+
+            context.RootContextData.Add("ValidatorOptions", addressOptions.Validator);
+
+            return base.PreValidate(context, result);
         }
     }
 }

@@ -18,3 +18,21 @@ message DecimalValue {
   // For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
   int32 nanos = 2;
 }
+
+message FieldValidationRule {
+  FieldValidationRuleType type = 1;
+  string message = 2;
+  string value = 3;
+  bool enabled = 4;
+  int32 priority = 5;
+}
+
+enum FieldValidationRuleType {
+  FIELD_VALIDATION_RULE_TYPE_NONE = 0;
+  FIELD_VALIDATION_RULE_TYPE_REQUIRED = 1;
+  FIELD_VALIDATION_RULE_TYPE_REGEX = 2;
+  FIELD_VALIDATION_RULE_TYPE_LENGTH = 3;
+  FIELD_VALIDATION_RULE_TYPE_MIN_LENGTH = 4;
+  FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH = 5;
+  FIELD_VALIDATION_RULE_TYPE_ALL = -1;
+}

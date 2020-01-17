@@ -41,7 +41,7 @@ message DobDto {
 message AddressDto {
   string id = 1;
   EnumAddressType type = 2;
-  EnumCountry country = 3;
+  EnumCountryIsoCode countryIsoCode = 3;
   string line1 = 4;
   google.protobuf.StringValue line2 = 5;
   string city = 6;

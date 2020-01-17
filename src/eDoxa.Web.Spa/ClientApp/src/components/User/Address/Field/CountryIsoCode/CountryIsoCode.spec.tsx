@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Form, reduxForm } from "redux-form";
 import { Provider } from "react-redux";
-import Country from "./Country";
+import Country from "./CountryIsoCode";
 
 it("renders without crashing", () => {
   //Arrange
@@ -14,7 +14,7 @@ it("renders without crashing", () => {
 
   const FormWrapper = () => (
     <Form onSubmit={() => {}}>
-      <Country />
+      <Country placeholder="Country" />
     </Form>
   );
 

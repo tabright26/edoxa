@@ -28,10 +28,6 @@ namespace eDoxa.Identity.UnitTests.Controllers
 {
     public sealed class PasswordForgotControllerTest : UnitTest
     {
-        public PasswordForgotControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
-
         [Fact]
         public async Task PostAsync_ShouldBeBadRequestObjectResult()
         {
@@ -115,6 +111,10 @@ namespace eDoxa.Identity.UnitTests.Controllers
             mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Once);
 
             mockServiceBusPublisher.Verify(serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()), Times.Once);
+        }
+
+        public PasswordForgotControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

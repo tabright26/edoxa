@@ -4,7 +4,7 @@ import { ReactWrapper } from "enzyme";
 import Reset from "./Reset";
 import { configureStore } from "store";
 import Input from "components/Shared/Input";
-import { EMAIL_REQUIRED, EMAIL_INVALID } from "validation";
+import { EMAIL_REQUIRED, EMAIL_INVALID } from "utils/form/validators";
 import { MemoryRouter } from "react-router-dom";
 
 const shallow = global["shallow"];

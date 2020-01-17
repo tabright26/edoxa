@@ -81,7 +81,6 @@ exports[`renders correctly 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
-          placeholder="New password"
           type="password"
           value=""
         />
@@ -108,7 +107,6 @@ exports[`renders correctly 1`] = `
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
-          placeholder="Confirm new password"
           type="password"
           value=""
         />

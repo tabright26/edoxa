@@ -16,12 +16,13 @@ import {
   DOXATAG_MIN_LENGTH_INVALID,
   DOXATAG_MAX_LENGTH_INVALID,
   DOXATAG_INVALID
-} from "validation";
+} from "utils/form/validators";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import produce, { Draft } from "immer";
 import { UserDoxatag } from "types";
+import authorizeService from "utils/oidc/AuthorizeService";
 
 interface FormData {
   name: string;
@@ -47,7 +48,7 @@ const CustomForm: FunctionComponent<Props> = ({
     <Field
       type="text"
       name="name"
-      label="Name"
+      placeholder="Name"
       formGroup={FormGroup}
       component={Input.Text}
     />
@@ -88,7 +89,12 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (result, dispatch, { handleCancel }) => {
+      handleCancel();
+      authorizeService.signIn({
+        returnUrl: window.location.pathname
+      });
+    },
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.name) {

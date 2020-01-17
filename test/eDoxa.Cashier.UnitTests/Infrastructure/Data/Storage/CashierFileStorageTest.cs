@@ -17,9 +17,7 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class CashierFileStorageTest : UnitTest
     {
-        public CashierFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+
 
         [Fact]
         public void GetChallengePayouts_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
@@ -32,6 +30,10 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(55);
+        }
+
+        public CashierFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

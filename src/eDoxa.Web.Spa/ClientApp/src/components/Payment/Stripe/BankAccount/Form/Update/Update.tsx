@@ -42,28 +42,28 @@ const CustomForm: FunctionComponent<Props> = ({
     <Field
       type="text"
       name="currency"
-      label="Currency"
+      placeholder="Currency"
       formGroup={FormGroup}
       component={Input.Text}
     />
     <Field
       type="text"
       name="accountHolderName"
-      label="Account Holder Name"
+      placeholder="Account Holder Name"
       formGroup={FormGroup}
       component={Input.Text}
     />
     <Field
       type="text"
       name="routingNumber"
-      label="Routing Number"
+      placeholder="Routing Number"
       formGroup={FormGroup}
       component={Input.Text}
     />
     <Field
       type="text"
       name="accountNumber"
-      label="Account Number"
+      placeholder="Account Number"
       formGroup={FormGroup}
       component={Input.Text}
     />

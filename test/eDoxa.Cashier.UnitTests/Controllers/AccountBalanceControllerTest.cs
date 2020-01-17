@@ -26,9 +26,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 {
     public sealed class AccountBalanceControllerTest : UnitTest
     {
-        public AccountBalanceControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+
 
         [Fact]
         public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()
@@ -78,6 +76,10 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
 
             mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
+        }
+
+        public AccountBalanceControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

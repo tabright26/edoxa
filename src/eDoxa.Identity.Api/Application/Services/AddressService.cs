@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
@@ -16,18 +17,24 @@ using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
+using Microsoft.Extensions.Options;
+
 namespace eDoxa.Identity.Api.Application.Services
 {
     public sealed class AddressService : IAddressService
     {
         private readonly IAddressRepository _addressRepository;
         private readonly IServiceBusPublisher _serviceBusPublisher;
+        private readonly IOptions<IdentityApiOptions> _optionsSnapshot;
 
-        public AddressService(IAddressRepository addressRepository, IServiceBusPublisher serviceBusPublisher)
+        public AddressService(IAddressRepository addressRepository, IServiceBusPublisher serviceBusPublisher, IOptionsSnapshot<IdentityApiOptions> optionsSnapshot)
         {
             _addressRepository = addressRepository;
             _serviceBusPublisher = serviceBusPublisher;
+            _optionsSnapshot = optionsSnapshot;
         }
+
+        private IdentityApiOptions Options => _optionsSnapshot.Value;
 
         public async Task<Address?> FindUserAddressAsync(User user, AddressId addressId)
         {
@@ -70,6 +77,13 @@ namespace eDoxa.Identity.Api.Application.Services
         )
         {
             var result = new DomainValidationResult();
+
+            var addressBookLimit = Options.Static.AddressBook.Limit;
+
+            if (await _addressRepository.AddressCountAsync(userId) >= addressBookLimit)
+            {
+                result.AddFailedPreconditionError($"You can have a maximum of {addressBookLimit} addresses in your address book");
+            }
 
             if (result.IsValid)
             {

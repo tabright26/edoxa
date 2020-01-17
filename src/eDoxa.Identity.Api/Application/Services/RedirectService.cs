@@ -12,12 +12,14 @@ namespace eDoxa.Identity.Api.Application.Services
 {
     public class RedirectService : IRedirectService
     {
-        public RedirectService(IOptions<IdentityAppSettings> optionsAccessor)
+        private readonly IOptions<IdentityAppSettings> _optionsSnapshot;
+
+        public RedirectService(IOptionsSnapshot<IdentityAppSettings> optionsSnapshot)
         {
-            AppSettings = optionsAccessor.Value;
+            _optionsSnapshot = optionsSnapshot;
         }
 
-        private IdentityAppSettings AppSettings { get; }
+        private IdentityAppSettings AppSettings => _optionsSnapshot.Value;
 
         public string RedirectToWebSpa(string url = "/")
         {

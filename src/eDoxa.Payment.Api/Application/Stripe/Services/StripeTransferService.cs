@@ -18,12 +18,14 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
 {
     public sealed class StripeTransferService : TransferService, IStripeTransferService
     {
-        public StripeTransferService(IOptions<StripeOptions> options)
+        private readonly IOptions<StripeOptions> _optionsSnapshot;
+
+        public StripeTransferService(IOptionsSnapshot<StripeOptions> optionsSnapshot)
         {
-            Options = options.Value.Transfer;
+            _optionsSnapshot = optionsSnapshot;
         }
 
-        private StripeTransferOptions Options { get; }
+        private StripeTransferOptions Options => _optionsSnapshot.Value.Transfer;
 
         public async Task<Transfer> CreateTransferAsync(
             string accountId,

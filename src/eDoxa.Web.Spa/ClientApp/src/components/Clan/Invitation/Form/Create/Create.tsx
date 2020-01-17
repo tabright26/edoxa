@@ -19,7 +19,7 @@ const CreateInvitationForm: FunctionComponent<any> = ({
     <Field
       type="text"
       name="userId"
-      label="DoxaTag"
+      placeholder="DoxaTag"
       formGroup={FormGroup}
       component={Input.Text}
     />
