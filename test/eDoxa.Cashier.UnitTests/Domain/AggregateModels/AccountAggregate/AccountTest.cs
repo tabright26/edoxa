@@ -20,9 +20,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed class AccountTest : UnitTest
     {
-        public AccountTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+ 
 
         public static TheoryData<Currency> ValidCurrencyDataSets =>
             new TheoryData<Currency>
@@ -58,6 +56,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var action = new Action(() => account.GetBalanceFor(currency));
 
             action.Should().Throw<ArgumentException>();
+        }
+
+        public AccountTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

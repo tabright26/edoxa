@@ -1,5 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { Candidature, Invitation, Member, Clan } from "types";
+import { ClanCandidature, ClanInvitation, ClanMember, Clan } from "types";
 
 //------------------------------------------------------------------------------------------------------------
 
@@ -36,7 +36,7 @@ export type LoadClanCandidaturesActionCreator = AxiosActionCreator<
 
 export type LoadClanCandidaturesAction = AxiosAction<
   LoadClanCandidaturesdType,
-  Candidature[]
+  ClanCandidature[]
 >;
 
 export type LoadClanCandidatureType =
@@ -50,7 +50,7 @@ export type LoadClanCandidatureActionCreator = AxiosActionCreator<
 
 export type LoadClanCandidatureAction = AxiosAction<
   LoadClanCandidatureType,
-  Candidature
+  ClanCandidature
 >;
 
 export type SendClanCandidatureType =
@@ -64,7 +64,7 @@ export type SendClanCandidatureActionCreator = AxiosActionCreator<
 
 export type SendClanCandidatureAction = AxiosAction<
   SendClanCandidatureType,
-  Candidature
+  ClanCandidature
 >;
 
 export type AcceptClanCandidatureType =
@@ -78,7 +78,7 @@ export type AcceptClanCandidatureActionCreator = AxiosActionCreator<
 
 export type AcceptClanCandidatureAction = AxiosAction<
   AcceptClanCandidatureType,
-  Candidature
+  ClanCandidature
 >;
 
 export type RefuseClanCandidatureType =
@@ -92,7 +92,7 @@ export type RefuseClanCandidatureActionCreator = AxiosActionCreator<
 
 export type RefuseClanCandidatureAction = AxiosAction<
   RefuseClanCandidatureType,
-  Candidature
+  ClanCandidature
 >;
 
 export type ClanCandidaturesActionCreators =
@@ -143,7 +143,7 @@ export type LoadClanInvitationsActionCreator = AxiosActionCreator<
 
 export type LoadClanInvitationsAction = AxiosAction<
   LoadClanInvitationsdType,
-  Invitation[]
+  ClanInvitation[]
 >;
 
 export type LoadClanInvitationType =
@@ -157,7 +157,7 @@ export type LoadClanInvitationActionCreator = AxiosActionCreator<
 
 export type LoadClanInvitationAction = AxiosAction<
   LoadClanInvitationType,
-  Invitation
+  ClanInvitation
 >;
 
 export type SendClanInvitationType =
@@ -171,7 +171,7 @@ export type SendClanInvitationActionCreator = AxiosActionCreator<
 
 export type SendClanInvitationAction = AxiosAction<
   SendClanInvitationType,
-  Invitation
+  ClanInvitation
 >;
 
 export type AcceptClanInvitationType =
@@ -185,7 +185,7 @@ export type AcceptClanInvitationActionCreator = AxiosActionCreator<
 
 export type AcceptClanInvitationAction = AxiosAction<
   AcceptClanInvitationType,
-  Invitation
+  ClanInvitation
 >;
 
 export type RefuseClanInvitationType =
@@ -199,7 +199,7 @@ export type RefuseClanInvitationActionCreator = AxiosActionCreator<
 
 export type RefuseClanInvitationAction = AxiosAction<
   RefuseClanInvitationType,
-  Invitation
+  ClanInvitation
 >;
 
 export type ClanInvitationsActionCreators =
@@ -323,7 +323,7 @@ export type LoadClanMembersType =
 export type LoadClanMembersActionCreator = AxiosActionCreator<
   LoadClanMembersType
 >;
-export type LoadClanMembersAction = AxiosAction<LoadClanMembersType, Member[]>;
+export type LoadClanMembersAction = AxiosAction<LoadClanMembersType, ClanMember[]>;
 
 export type KickClanMemberType =
   | typeof KICK_CLAN_MEMBER
@@ -332,7 +332,7 @@ export type KickClanMemberType =
 export type KickClanMemberActionCreator = AxiosActionCreator<
   KickClanMemberType
 >;
-export type KickClanMemberAction = AxiosAction<KickClanMemberType, Member>;
+export type KickClanMemberAction = AxiosAction<KickClanMemberType, ClanMember>;
 
 export type ClanMembersActionCreators =
   | LoadClanMembersActionCreator

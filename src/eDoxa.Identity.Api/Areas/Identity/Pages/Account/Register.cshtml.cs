@@ -84,7 +84,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
 
                     var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
-                    await _serviceBusPublisher.PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(user.Id.From<UserId>(), code);
+                    await _serviceBusPublisher.PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(user.Id.ConvertTo<UserId>(), code);
 
                     await _signInService.SignInAsync(user, false);
 

@@ -37,10 +37,18 @@ namespace eDoxa.Games.UnitTests.Controllers
         {
             // Arrange
             var serviceCredential = new Mock<IGameCredentialService>();
+            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<GamesOptions>>();
+
+            mockOptionsSnapshot.Setup(optionsSnapshot => optionsSnapshot.Value)
+                .Returns(
+                    new GamesOptions
+                    {
+                        LeagueOfLegends = new LeagueOfLegendsOptions()
+                    });
 
             serviceCredential.Setup(x => x.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>())).ReturnsAsync(true).Verifiable(); // TODO: Verify.
 
-            var gameOptionsController = new GamesController(serviceCredential.Object, new OptionsWrapper<GamesOptions>(new GamesOptions {LeagueOfLegends = new LeagueOfLegendsOptions()}));
+            var gameOptionsController = new GamesController(serviceCredential.Object, mockOptionsSnapshot.Object);
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 

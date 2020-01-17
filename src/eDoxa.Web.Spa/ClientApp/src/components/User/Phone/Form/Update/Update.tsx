@@ -11,7 +11,7 @@ import { throwSubmissionError } from "utils/form/types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-import { PHONE_REQUIRED, PHONE_INVALID, PHONE_REGEXP } from "validation";
+import { PHONE_REQUIRED, PHONE_INVALID, PHONE_REGEXP } from "utils/form/validators";
 
 interface StateProps {}
 
@@ -36,7 +36,7 @@ const CustomForm: FunctionComponent<Props> = ({
     <Field
       type="text"
       name="number"
-      label="Phone Number"
+      placeholder="Phone Number"
       formGroup={FormGroup}
       component={Input.Text}
     />

@@ -30,11 +30,11 @@ namespace eDoxa.Identity.Infrastructure
                                             IPersistedGrantDbContext,
                                             IUnitOfWork
     {
-        private readonly IOptions<OperationalStoreOptions> _operationalStoreOptions;
+        private readonly IOptions<OperationalStoreOptions> _optionsSnapshot;
 
-        public IdentityDbContext(DbContextOptions<IdentityDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options)
+        public IdentityDbContext(DbContextOptions<IdentityDbContext> options, IOptionsSnapshot<OperationalStoreOptions> optionsSnapshot) : base(options)
         {
-            _operationalStoreOptions = operationalStoreOptions;
+            _optionsSnapshot = optionsSnapshot;
             PersistedGrants = this.Set<PersistedGrant>();
             DeviceFlowCodes = this.Set<DeviceFlowCodes>();
         }
@@ -57,7 +57,7 @@ namespace eDoxa.Identity.Infrastructure
         {
             base.OnModelCreating(builder);
 
-            builder.ConfigurePersistedGrantContext(_operationalStoreOptions.Value);
+            builder.ConfigurePersistedGrantContext(_optionsSnapshot.Value);
 
             builder.ApplyConfiguration(new AddressConfiguration());
 

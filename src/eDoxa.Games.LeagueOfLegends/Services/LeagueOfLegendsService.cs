@@ -15,9 +15,9 @@ namespace eDoxa.Games.LeagueOfLegends.Services
 {
     public sealed class LeagueOfLegendsService : ILeagueOfLegendsService
     {
-        public LeagueOfLegendsService(IOptions<LeagueOfLegendsOptions> options)
+        public LeagueOfLegendsService(IOptionsSnapshot<LeagueOfLegendsOptions> optionsSnapshot)
         {
-            RiotApi = RiotApi.GetInstance(options.Value.ApiKey, 500, 30000);
+            RiotApi = RiotApi.GetInstance(optionsSnapshot.Value.ApiKey, 500, 30000);
         }
 
         private RiotApi RiotApi { get; }

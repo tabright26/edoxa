@@ -1,7 +1,7 @@
 import React, { useState, FunctionComponent, useEffect } from "react";
 import { faPlus, faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import Address from "utils/localize/components/Address";
+import AddressDetails from "components/User/Address/Details";
 import AddressForm from "components/User/Address/Form";
 import UserAddressModal from "components/User/Address/Modal";
 import { compose } from "recompose";
@@ -13,17 +13,13 @@ import { loadUserAddressBook } from "store/actions/identity";
 import { show } from "redux-modal";
 import { CREATE_USER_ADDRESS_MODAL } from "utils/modal/constants";
 
-const AddressItem: FunctionComponent<any> = ({
-  hasMore,
-  position,
-  address
-}) => {
+const AddressItem: FunctionComponent<any> = ({ hasMore, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
   const [deleteFormHidden, hideDeleteForm] = useState(true);
   return (
     <>
       <dl className={`row ${!hasMore && "mb-0"}`}>
-        <dd className="col-sm-3 m-0 text-muted">{`Address ${position}`}</dd>
+        <dd className="col-sm-3 m-0 text-muted">Address</dd>
         {!updateFormHidden ? (
           <dd className="col-sm-6 m-0">
             <AddressForm.Update
@@ -33,7 +29,7 @@ const AddressItem: FunctionComponent<any> = ({
           </dd>
         ) : (
           <dd className="col-sm-5 m-0">
-            <Address address={address} />
+            <AddressDetails address={address} />
             {!deleteFormHidden && (
               <AddressForm.Delete
                 addressId={address.id}
@@ -68,6 +64,7 @@ const AddressItem: FunctionComponent<any> = ({
 
 const AddressBook: FunctionComponent<any> = ({
   className,
+  limit,
   addressBook: { data, error, loading },
   loadAddressBook,
   showCreateUserAddressModal
@@ -82,10 +79,14 @@ const AddressBook: FunctionComponent<any> = ({
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">ADDRESS BOOK</strong>
+        <small className="ml-2 my-auto text-muted">
+          ({data.length}/{limit})
+        </small>
         <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faPlus}
           onClick={() => showCreateUserAddressModal()}
+          disabled={data.length >= limit}
         >
           ADD A NEW ADDRESS
         </Button.Link>
@@ -99,7 +100,6 @@ const AddressBook: FunctionComponent<any> = ({
             <AddressItem
               key={index}
               address={address}
-              position={index + 1}
               hasMore={data.length !== index + 1}
             />
           ))
@@ -111,7 +111,8 @@ const AddressBook: FunctionComponent<any> = ({
 
 const mapStateToProps = (state: RootState) => {
   return {
-    addressBook: state.root.user.addressBook
+    addressBook: state.root.user.addressBook,
+    limit: state.static.identity.data.addressBook.limit
   };
 };
 

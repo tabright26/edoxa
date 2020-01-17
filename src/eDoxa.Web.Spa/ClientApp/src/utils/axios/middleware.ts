@@ -1,6 +1,6 @@
 import axios from "axios";
 import { multiClientMiddleware, IClientsList } from "redux-axios-middleware";
-import authorizeService from "utils/oidc/AuthorizeService";
+import { RootState } from "store/types";
 import {
   REACT_APP_CASHIER_WEB_GATEWAY_URL,
   REACT_APP_CHALLENGES_WEB_GATEWAY_URL
@@ -31,9 +31,10 @@ export const middleware = multiClientMiddleware(clients, {
   interceptors: {
     request: [
       async ({ getState }, config) => {
-        var accessToken = await authorizeService.getAccessToken();
-        if (accessToken) {
-          config.headers["Authorization"] = `Bearer ${accessToken}`;
+        const state: RootState = getState();
+        const user = state.oidc.user;
+        if (user) {
+          config.headers["Authorization"] = `Bearer ${user.access_token}`;
         }
         return config;
       }

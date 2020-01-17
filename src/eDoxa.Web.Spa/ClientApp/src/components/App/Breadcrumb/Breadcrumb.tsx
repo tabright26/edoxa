@@ -1,26 +1,31 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent } from "react";
 import MoneyBreadcrumb from "./Money";
 import TokenBreadcrumb from "./Token";
-import authorizeService from "utils/oidc/AuthorizeService";
 import { Breadcrumb } from "reactstrap";
+import { compose } from "recompose";
+import {
+  withUserIsAuthenticated,
+  HocUserIsAuthenticatedStateProps
+} from "utils/oidc/containers";
 
-const AppBreadcrumb: FunctionComponent = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-  useEffect(() => {
-    authorizeService.isAuthenticated().then(setAuthenticated);
-  }, []);
-  return (
-    authenticated && (
-      <Breadcrumb listClassName="m-0">
-        <li className="breadcrumb-menu">
-          <div className="btn-group" role="group">
-            <MoneyBreadcrumb />
-            <TokenBreadcrumb className="ml-3" />
-          </div>
-        </li>
-      </Breadcrumb>
-    )
+type InnerProps = HocUserIsAuthenticatedStateProps;
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const AppBreadcrumb: FunctionComponent<Props> = ({ isAuthenticated }) =>
+  isAuthenticated && (
+    <Breadcrumb listClassName="m-0">
+      <li className="breadcrumb-menu">
+        <div className="btn-group" role="group">
+          <MoneyBreadcrumb />
+          <TokenBreadcrumb className="ml-3" />
+        </div>
+      </li>
+    </Breadcrumb>
   );
-};
 
-export default AppBreadcrumb;
+const enhance = compose<InnerProps, OutterProps>(withUserIsAuthenticated);
+
+export default enhance(AppBreadcrumb);

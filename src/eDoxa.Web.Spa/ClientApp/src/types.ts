@@ -1,5 +1,3 @@
-import { Country } from "utils/localize/types";
-
 export const GAME_LEAGUE_OF_LEGENDS = "LeagueOfLegends";
 
 export type Game = typeof GAME_LEAGUE_OF_LEGENDS;
@@ -46,6 +44,7 @@ export type TransactionStatus =
   | typeof TRANSACTION_STATUS_SUCCEEDED
   | typeof TRANSACTION_STATUS_FAILED;
 
+export type CountryIsoCode = string;
 export type AddressId = string;
 export type CandidatureId = string;
 export type ChallengeId = string;
@@ -93,6 +92,85 @@ export interface UserTransaction extends Entity<TransactionId> {
   readonly status: TransactionStatus;
 }
 
+export const FIELD_VALIDATION_RULE_TYPE_REQUIRED = "Required";
+export const FIELD_VALIDATION_RULE_TYPE_REGEX = "Regex";
+export const FIELD_VALIDATION_RULE_TYPE_LENGTH = "Length";
+export const FIELD_VALIDATION_RULE_TYPE_MIN_LENGTH = "MinLength";
+export const FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH = "MaxLength";
+
+export type FieldValidationRuleType =
+  | typeof FIELD_VALIDATION_RULE_TYPE_REQUIRED
+  | typeof FIELD_VALIDATION_RULE_TYPE_REGEX
+  | typeof FIELD_VALIDATION_RULE_TYPE_LENGTH
+  | typeof FIELD_VALIDATION_RULE_TYPE_MIN_LENGTH
+  | typeof FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH;
+
+export interface FieldValidationRule {
+  readonly type: FieldValidationRuleType;
+  readonly message: string;
+  readonly value: any;
+  readonly enabled: boolean;
+  readonly order: number;
+}
+
+// Identity
+export interface IdentityStaticOptions {
+  readonly addressBook: AddressBookOptions;
+  readonly countries: CountryOptions[];
+}
+
+export interface AddressBookOptions {
+  readonly limit: number;
+}
+
+export interface CountryOptions {
+  readonly isoCode: CountryIsoCode;
+  readonly name: string;
+  readonly code: string;
+  readonly address: AddressOptions;
+  readonly regions: CountryRegionOptions[];
+}
+
+export interface CountryRegionOptions {
+  readonly name: string;
+  readonly code: string;
+}
+
+export interface AddressOptions {
+  readonly fields: AddressFieldsOptions;
+  readonly validator: AddressValidatorOptions;
+}
+
+export interface AddressFieldsOptions {
+  readonly country: { readonly label: string; readonly placeholder: string };
+  readonly line1: { readonly label: string; readonly placeholder: string };
+  readonly line2: {
+    readonly label: string;
+    readonly placeholder: string;
+    readonly excluded: boolean;
+  };
+  readonly city: { readonly label: string; readonly placeholder: string };
+  readonly state: {
+    readonly label: string;
+    readonly placeholder: string;
+    readonly excluded: boolean;
+  };
+  readonly postalCode: {
+    readonly label: string;
+    readonly placeholder: string;
+    readonly excluded: boolean;
+    readonly mask: string;
+  };
+}
+
+export interface AddressValidatorOptions {
+  readonly line1: FieldValidationRule[];
+  readonly line2: FieldValidationRule[];
+  readonly city: FieldValidationRule[];
+  readonly state: FieldValidationRule[];
+  readonly postalCode: FieldValidationRule[];
+}
+
 export interface UserEmail {
   readonly address: string;
   readonly verified: boolean;
@@ -117,7 +195,7 @@ export interface UserDob {
 }
 
 export interface UserAddress extends Entity<AddressId> {
-  readonly country: Country | string;
+  readonly countryIsoCode: CountryIsoCode;
   readonly line1: string;
   readonly line2?: string;
   readonly city: string;
@@ -136,7 +214,7 @@ export interface Clan extends Entity<ClanId> {
   readonly name: string;
   readonly ownerId: UserId;
   readonly owner?: ClanOwner;
-  readonly members: Member[];
+  readonly members: ClanMember[];
   readonly logo: ClanLogo;
 }
 
@@ -147,20 +225,20 @@ export interface ClanOwner {
   readonly doxatag?: UserDoxatag;
 }
 
-export interface Member extends Entity<MemberId> {
+export interface ClanMember extends Entity<MemberId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
   readonly doxatag?: UserDoxatag;
 }
 
-export interface Candidature extends Entity<CandidatureId> {
+export interface ClanCandidature extends Entity<CandidatureId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
   readonly doxatag?: UserDoxatag;
   readonly clan?: Clan;
 }
 
-export interface Invitation extends Entity<InvitationId> {
+export interface ClanInvitation extends Entity<InvitationId> {
   readonly clanId: ClanId;
   readonly userId: UserId;
   readonly doxatag?: UserDoxatag;

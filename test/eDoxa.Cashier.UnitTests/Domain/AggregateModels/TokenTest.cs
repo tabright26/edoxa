@@ -16,9 +16,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
     public sealed class TokenTest : UnitTest
     {
-        public TokenTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+
 
         [InlineData(50000, 100000, 150000)]
         [InlineData(100000, 50000, 150000)]
@@ -57,6 +55,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 
             // Assert
             token.As<decimal>().Should().Be(result);
+        }
+
+        public TokenTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

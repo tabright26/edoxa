@@ -22,5 +22,7 @@ namespace eDoxa.Identity.Domain.Repositories
         Task<Address?> FindAddressAsync(UserId userId, AddressId addressId);
 
         Task<IReadOnlyCollection<Address>> FetchAddressBookAsync(UserId userId);
+
+        Task<int> AddressCountAsync(UserId userId);
     }
 }

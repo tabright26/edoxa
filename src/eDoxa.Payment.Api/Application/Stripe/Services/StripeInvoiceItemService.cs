@@ -18,12 +18,14 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
 {
     public sealed class StripeInvoiceItemService : InvoiceItemService, IStripeInvoiceItemService
     {
-        public StripeInvoiceItemService(IOptions<StripeOptions> options)
+        private readonly IOptions<StripeOptions> _optionsSnapshot;
+
+        public StripeInvoiceItemService(IOptionsSnapshot<StripeOptions> optionsSnapshot)
         {
-            Options = options.Value.Invoice;
+            _optionsSnapshot = optionsSnapshot;
         }
 
-        private StripeInvoiceOptions Options { get; }
+        private StripeInvoiceOptions Options => _optionsSnapshot.Value.Invoice;
 
         public async Task CreateInvoiceItemAsync(
             TransactionId transactionId,

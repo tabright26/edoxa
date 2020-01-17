@@ -2,11 +2,6 @@
 {
     public class AddressBookErrorDescriber
     {
-        public static string CountryRequired()
-        {
-            return "ErrorMessage";
-        }
-
         public static string CountryInvalid()
         {
             return "Country invalid. Must be Canada or United States";

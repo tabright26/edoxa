@@ -1,6 +1,6 @@
 import React from "react";
 import { Component } from "react";
-import authService from "./AuthorizeService";
+import authorizeService from "./AuthorizeService";
 import { AuthenticationResultStatus } from "./AuthorizeService";
 import {
   QueryParameterNames,
@@ -76,9 +76,9 @@ export class Logout extends Component {
 
   async logout(returnUrl) {
     const state = { returnUrl };
-    const isauthenticated = await authService.isAuthenticated();
+    const isauthenticated = await authorizeService.isAuthenticated();
     if (isauthenticated) {
-      const result = await authService.signOut(state);
+      const result = await authorizeService.signOut(state);
       switch (result.status) {
         case AuthenticationResultStatus.Redirect:
           // We replace the location here so that in case the user hits the back
@@ -101,7 +101,7 @@ export class Logout extends Component {
 
   async processLogoutCallback() {
     const url = window.location.href;
-    const result = await authService.completeSignOut(url);
+    const result = await authorizeService.completeSignOut(url);
     switch (result.status) {
       case AuthenticationResultStatus.Redirect:
         // There should not be any redirects as the only time completeAuthentication finishes
@@ -119,7 +119,7 @@ export class Logout extends Component {
   }
 
   async populateAuthenticationState() {
-    const authenticated = await authService.isAuthenticated();
+    const authenticated = await authorizeService.isAuthenticated();
     this.setState({ isReady: true, authenticated });
   }
 

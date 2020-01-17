@@ -29,9 +29,9 @@ namespace eDoxa.Seedwork.Application.DevTools.Extensions
 
             if (environment.IsDevelopment())
             {
-                var options = endpoints.ServiceProvider.GetRequiredService<IOptions<T>>();
+                var optionsSnapshot = endpoints.ServiceProvider.GetRequiredService<IOptions<T>>();
 
-                var value = options.Value;
+                var value = optionsSnapshot.Value;
 
                 if (apiResource != null && value is IHasApiResourceAppSettings appSettings)
                 {

@@ -7,7 +7,7 @@ import { compose } from "recompose";
 import { Game } from "types";
 import { unlinkGameCredential, loadGames } from "store/actions/game";
 import { throwSubmissionError } from "utils/form/types";
-import authorize from "utils/oidc/AuthorizeService";
+import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface FormData {}
@@ -48,20 +48,12 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch: any) => {
-      dispatch(loadGames()).then(() => {
-        console.log(window.location.pathname);
-        return authorize
-          .getUser()
-          .then(user => console.log(user))
-          .then(() =>
-            authorize
-              .signIn({
-                returnUrl: window.location.pathname
-              })
-              .then(() => authorize.getUser().then(x => console.log(x)))
-          );
-      });
+    onSubmitSuccess: (_result, dispatch: any) => {
+      dispatch(loadGames()).then(() =>
+        authorizeService.signIn({
+          returnUrl: window.location.pathname
+        })
+      );
     }
   })
 );

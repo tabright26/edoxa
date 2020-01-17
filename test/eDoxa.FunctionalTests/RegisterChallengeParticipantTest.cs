@@ -87,7 +87,7 @@ namespace eDoxa.FunctionalTests
                 Country = Country.Canada
             };
 
-            var account = new Account(user.Id.From<UserId>());
+            var account = new Account(user.Id.ConvertTo<UserId>());
 
             var moneyAccount = new MoneyAccountDecorator(account);
 

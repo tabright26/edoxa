@@ -20,10 +20,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed class BalanceTest : UnitTest
     {
-        public BalanceTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
-
+  
         private static IEnumerable<ITransaction> CreateTransactions()
         {
             yield return new TransactionBuilder(TransactionType.Deposit, Money.Ten).Build();
@@ -82,6 +79,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             balance.Available.Should().Be(Token.FiftyThousand);
             balance.Currency.Should().Be(Currency.Token);
             balance.Pending.Should().Be(decimal.Zero);
+        }
+
+        public BalanceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

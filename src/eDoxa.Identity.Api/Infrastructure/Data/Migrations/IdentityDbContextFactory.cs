@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.IO;
 using System.Reflection;
@@ -17,6 +17,8 @@ using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
+using Moq;
+
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     internal sealed class IdentityDbContextFactory : IDesignTimeDbContextFactory<IdentityDbContext>
@@ -29,12 +31,16 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
         public IdentityDbContext CreateDbContext(string[] args)
         {
+            var mock = new Mock<IOptionsSnapshot<OperationalStoreOptions>>();
+
+            mock.Setup(snapshot => snapshot.Value).Returns(new OperationalStoreOptions());
+
             return new IdentityDbContext(
                 new DbContextOptionsBuilder<IdentityDbContext>().UseSqlServer(
                         Configuration.GetSqlServerConnectionString(),
                         builder => builder.MigrationsAssembly(Assembly.GetAssembly(typeof(Startup))!.GetName().Name))
                     .Options,
-                new OptionsWrapper<OperationalStoreOptions>(new OperationalStoreOptions()));
+                mock.Object);
         }
     }
 }

@@ -14,7 +14,6 @@ type Props = InnerProps & OutterProps;
 
 const CustomModal: FunctionComponent<Props> = ({ show, handleHide }) => (
   <Modal
-    size="lg"
     unmountOnClose={false}
     backdrop="static"
     centered
@@ -25,14 +24,7 @@ const CustomModal: FunctionComponent<Props> = ({ show, handleHide }) => (
       {sentenceCase("Add new address")}
     </ModalHeader>
     <ModalBody>
-      <dl className="row mb-0">
-        <dd className="col-sm-2 mb-0 text-muted">
-          {sentenceCase("New address")}
-        </dd>
-        <dd className="col-sm-8 mb-0">
-          <AddressForm.Create handleCancel={handleHide} />
-        </dd>
-      </dl>
+      <AddressForm.Create handleCancel={handleHide} />
     </ModalBody>
   </Modal>
 );

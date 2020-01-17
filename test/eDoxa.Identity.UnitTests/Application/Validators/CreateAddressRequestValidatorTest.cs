@@ -1,12 +1,16 @@
 ﻿// Filename: CreateAddressRequestValidatorTest.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
+
+using System.Linq;
 
 using eDoxa.Grpc.Protos.Identity.Enums;
-using eDoxa.Identity.Api.Application.ErrorDescribers;
+using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Application.Validators;
+using eDoxa.Identity.TestHelper;
+using eDoxa.Identity.TestHelper.Fixtures;
 
 using FluentAssertions;
 
@@ -16,232 +20,310 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Application.Validators
 {
-    public sealed class CreateAddressRequestValidatorTest
+    public sealed class CreateAddressRequestValidatorTest : UnitTest
     {
-        public static TheoryData<EnumCountry> ValidCountries =>
-            new TheoryData<EnumCountry>
+        public CreateAddressRequestValidatorTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
+
+        public static TheoryData<EnumCountryIsoCode> ValidCountries =>
+            new TheoryData<EnumCountryIsoCode>
             {
-                EnumCountry.Canada,
-                EnumCountry.UnitedStates
+                EnumCountryIsoCode.CA,
+                EnumCountryIsoCode.US
             };
 
-        public static TheoryData<EnumCountry, string> InvalidCountries =>
-            new TheoryData<EnumCountry, string>
+        public static TheoryData<EnumCountryIsoCode> InvalidCountries =>
+            new TheoryData<EnumCountryIsoCode>
             {
-                {EnumCountry.None, AddressBookErrorDescriber.CountryInvalid()},
-                {EnumCountry.All, AddressBookErrorDescriber.CountryInvalid()}
+                EnumCountryIsoCode.None,
+                EnumCountryIsoCode.All
             };
 
-        public static TheoryData<string> ValidLine1Address =>
-            new TheoryData<string>
+        public static TheoryData<EnumCountryIsoCode, string> ValidLine1Address =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                "4140 Av. Kindersley, ap 13"
+                {EnumCountryIsoCode.CA, "4140 Av. Kindersley, ap 13"}
             };
 
-        public static TheoryData<string, string> InvalidLine1Address =>
-            new TheoryData<string, string>
+        public static TheoryData<EnumCountryIsoCode, string> InvalidLine1Address =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                {"", AddressBookErrorDescriber.Line1Required()},
-                {"This_is_an_adress", AddressBookErrorDescriber.Line1Invalid()}
+                {EnumCountryIsoCode.CA, ""},
+                {EnumCountryIsoCode.CA, "This_is_an_adress"}
             };
 
-        public static TheoryData<string> ValidLine2Address =>
-            new TheoryData<string>
+        public static TheoryData<EnumCountryIsoCode, string> ValidLine2Address =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                "4140 Av. Kindersley, ap 13"
+                {EnumCountryIsoCode.CA, "4140 Av. Kindersley, ap 13"}
             };
 
-        public static TheoryData<string, string> InvalidLine2Address =>
-            new TheoryData<string, string>
+        public static TheoryData<EnumCountryIsoCode, string> InvalidLine2Address =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                {"This_is_an_adress", AddressBookErrorDescriber.Line2Invalid()}
+                {EnumCountryIsoCode.CA, "This_is_an_adress"}
             };
 
-        public static TheoryData<string> ValidCities =>
-            new TheoryData<string>
+        public static TheoryData<EnumCountryIsoCode, string> ValidCities =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                "City",
-                "City-of Testing"
+                {EnumCountryIsoCode.CA, "City"},
+                {EnumCountryIsoCode.CA, "City-of Testing"}
             };
 
-        public static TheoryData<string, string> InvalidCities =>
-            new TheoryData<string, string>
+        public static TheoryData<EnumCountryIsoCode, string> InvalidCities =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                {"", AddressBookErrorDescriber.CityRequired()},
-                {"123City", AddressBookErrorDescriber.CityInvalid()},
-                {"OK_Test", AddressBookErrorDescriber.CityInvalid()}
+                {EnumCountryIsoCode.CA, ""},
+                {EnumCountryIsoCode.CA, "123City"},
+                {EnumCountryIsoCode.CA, "OK_Test"}
             };
 
-        public static TheoryData<string> ValidStates =>
-            new TheoryData<string>
+        public static TheoryData<EnumCountryIsoCode, string> ValidStates =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                "State",
-                "State-of Testing"
+                {EnumCountryIsoCode.CA, "QC"},
+                {EnumCountryIsoCode.CA, "ON"}
             };
 
-        public static TheoryData<string, string> InvalidStates =>
-            new TheoryData<string, string>
+        public static TheoryData<EnumCountryIsoCode, string> InvalidStates =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                {null, AddressBookErrorDescriber.StateRequired()},
-                {"", AddressBookErrorDescriber.StateRequired()},
-                {"123State", AddressBookErrorDescriber.StateInvalid()},
-                {"OK_Test", AddressBookErrorDescriber.StateInvalid()}
+                {EnumCountryIsoCode.CA, null},
+                {EnumCountryIsoCode.CA, ""},
+                {EnumCountryIsoCode.CA, "123State"},
+                {EnumCountryIsoCode.CA, "OK_Test"}
             };
 
-        public static TheoryData<string> ValidPostalCodes =>
-            new TheoryData<string>
+        public static TheoryData<EnumCountryIsoCode, string> ValidPostalCodes =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                "12345",
-                "H4P1K8"
+                {EnumCountryIsoCode.CA, "H4P 1K8"}
             };
 
-        public static TheoryData<string, string> InvalidPostalCodes =>
-            new TheoryData<string, string>
+        public static TheoryData<EnumCountryIsoCode, string> InvalidPostalCodes =>
+            new TheoryData<EnumCountryIsoCode, string>
             {
-                {null, AddressBookErrorDescriber.PostalCodeRequired()},
-                {null, AddressBookErrorDescriber.PostalCodeRequired()},
-                {"1234", AddressBookErrorDescriber.PostalCodeLength()},
-                {"1234.5", AddressBookErrorDescriber.PostalCodeInvalidError()}
+                {EnumCountryIsoCode.CA, null},
+                {EnumCountryIsoCode.CA, null},
+                {EnumCountryIsoCode.CA, "1234"},
+                {EnumCountryIsoCode.CA, "1234.5"}
             };
 
         [Theory]
         [MemberData(nameof(ValidCountries))]
-        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(EnumCountry country)
+        public void Validate_WhenCountryIsValid_ShouldNotHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Country, country);
+            validator.ShouldNotHaveValidationErrorFor(request => request.CountryIsoCode, countryIsoCode);
         }
 
         [Theory]
         [MemberData(nameof(InvalidCountries))]
-        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(EnumCountry country, string errorMessage)
+        public void Validate_WhenCountryIsInvalid_ShouldHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
             // Act
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Country, country);
-
-            // Assert
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+            validator.ShouldHaveValidationErrorFor(request => request.CountryIsoCode, countryIsoCode);
         }
 
         [Theory]
         [MemberData(nameof(ValidLine1Address))]
-        public void Validate_WhenLine1IsValid_ShouldNotHaveValidationErrorFor(string line1)
+        public void Validate_WhenLine1IsValid_ShouldNotHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string line1)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Line1, line1);
+            validator.ShouldNotHaveValidationErrorFor(
+                request => request.Line1,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    Line1 = line1
+                });
         }
 
         [Theory]
         [MemberData(nameof(InvalidLine1Address))]
-        public void Validate_WhenLine1IsInvalid_ShouldHaveValidationErrorFor(string line1, string errorMessage)
+        public void Validate_WhenLine1IsInvalid_ShouldHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string line1)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var errors = TestOptionsWrapper.Value.GetLine1ErrorsFor(countryIsoCode);
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
-            // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Line1, line1);
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+            // Act
+            var failures = validator.ShouldHaveValidationErrorFor(
+                request => request.Line1,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    Line1 = line1
+                });
+
+            // Assert
+            failures.Select(failure => failure.ErrorMessage).Any(error => errors.Contains(error)).Should().BeTrue();
         }
 
         [Theory]
         [MemberData(nameof(ValidLine2Address))]
-        public void Validate_WhenLine2IsValid_ShouldNotHaveValidationErrorFor(string line2)
+        public void Validate_WhenLine2IsValid_ShouldNotHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string line2)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Line2, line2);
+            validator.ShouldNotHaveValidationErrorFor(
+                request => request.Line2,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    Line2 = line2
+                });
         }
 
         [Theory]
         [MemberData(nameof(InvalidLine2Address))]
-        public void Validate_WhenLine2IsInvalid_ShouldHaveValidationErrorFor(string line2, string errorMessage)
+        public void Validate_WhenLine2IsInvalid_ShouldHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string line2)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var errors = TestOptionsWrapper.Value.GetLine2ErrorsFor(countryIsoCode);
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
-            // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Line2, line2);
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+            // Act
+            var failures = validator.ShouldHaveValidationErrorFor(
+                request => request.Line2,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    Line2 = line2
+                });
+
+            // Assert
+            failures.Select(failure => failure.ErrorMessage).Any(error => errors.Contains(error)).Should().BeTrue();
         }
 
         [Theory]
         [MemberData(nameof(ValidCities))]
-        public void Validate_WhenCityIsValid_ShouldNotHaveValidationErrorFor(string city)
+        public void Validate_WhenCityIsValid_ShouldNotHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string city)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.City, city);
+            validator.ShouldNotHaveValidationErrorFor(
+                request => request.City,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    City = city
+                });
         }
 
         [Theory]
         [MemberData(nameof(InvalidCities))]
-        public void Validate_WhenCityIsInvalid_ShouldHaveValidationErrorFor(string city, string errorMessage)
+        public void Validate_WhenCityIsInvalid_ShouldHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string city)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var errors = TestOptionsWrapper.Value.GetCityErrorsFor(countryIsoCode);
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
-            // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.City, city);
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+            // Act
+            var failures = validator.ShouldHaveValidationErrorFor(
+                request => request.City,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    City = city
+                });
+
+            // Assert
+            failures.Select(failure => failure.ErrorMessage).Any(error => errors.Contains(error)).Should().BeTrue();
         }
 
         [Theory]
         [MemberData(nameof(ValidStates))]
-        public void Validate_WhenStateIsValid_ShouldNotHaveValidationErrorFor(string state)
+        public void Validate_WhenStateIsValid_ShouldNotHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string state)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.State, state);
+            validator.ShouldNotHaveValidationErrorFor(
+                request => request.State,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    State = state
+                });
         }
 
         [Theory]
         [MemberData(nameof(InvalidStates))]
-        public void Validate_WhenStateIsInvalid_ShouldHaveValidationErrorFor(string state, string errorMessage)
+        public void Validate_WhenStateIsInvalid_ShouldHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string state)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var errors = TestOptionsWrapper.Value.GetStateErrorsFor(countryIsoCode);
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
-            // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.State, state);
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+            // Act
+            var failures = validator.ShouldHaveValidationErrorFor(
+                request => request.State,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    State = state
+                });
+
+            // Assert
+            failures.Select(failure => failure.ErrorMessage).Any(error => errors.Contains(error)).Should().BeTrue();
         }
 
         [Theory]
         [MemberData(nameof(ValidPostalCodes))]
-        public void Validate_WhenPostalCodeIsValid_ShouldNotHaveValidationErrorFor(string postalCode)
+        public void Validate_WhenPostalCodeIsValid_ShouldNotHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string postalCode)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
             // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.PostalCode, postalCode);
+            validator.ShouldNotHaveValidationErrorFor(
+                request => request.PostalCode,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    PostalCode = postalCode
+                });
         }
 
         [Theory]
         [MemberData(nameof(InvalidPostalCodes))]
-        public void Validate_WhenPostalCodeIsInvalid_ShouldHaveValidationErrorFor(string postalCode, string errorMessage)
+        public void Validate_WhenPostalCodeIsInvalid_ShouldHaveValidationErrorFor(EnumCountryIsoCode countryIsoCode, string postalCode)
         {
             // Arrange
-            var validator = new CreateAddressRequestValidator();
+            var errors = TestOptionsWrapper.Value.GetPostalCodeErrorsFor(countryIsoCode);
+            var validator = new CreateAddressRequestValidator(TestOptionsWrapper);
 
-            // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.PostalCode, postalCode);
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+            // Act
+            var failures = validator.ShouldHaveValidationErrorFor(
+                request => request.PostalCode,
+                new CreateAddressRequest
+                {
+                    CountryIsoCode = countryIsoCode,
+                    PostalCode = postalCode
+                });
+
+            // Assert
+            failures.Select(failure => failure.ErrorMessage).Any(error => errors.Contains(error)).Should().BeTrue();
         }
     }
 }

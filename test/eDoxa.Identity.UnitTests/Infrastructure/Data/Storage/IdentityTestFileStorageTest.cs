@@ -17,9 +17,7 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class IdentityTestFileStorageTest : UnitTest
     {
-        public IdentityTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+
 
         [Fact]
         public void GetUserClaims_WithTwoRecords_ShouldHaveCountOfTwo()
@@ -71,6 +69,10 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             users.Should().HaveCount(1000);
+        }
+
+        public IdentityTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

@@ -16,9 +16,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
     public sealed class MoneyTest : UnitTest
     {
-        public MoneyTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+  
 
         [InlineData(10, 10, 20)]
         [InlineData(10, 20, 30)]
@@ -56,6 +54,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 
             // Assert
             money.As<decimal>().Should().Be(result);
+        }
+
+        public MoneyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

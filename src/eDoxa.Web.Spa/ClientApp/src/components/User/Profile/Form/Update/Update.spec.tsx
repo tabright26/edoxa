@@ -7,7 +7,7 @@ import Input from "components/Shared/Input";
 import {
   PROFILE_FIRST_NAME_REQUIRED,
   PROFILE_FIRST_NAME_INVALID
-} from "validation";
+} from "utils/form/validators";
 
 const shallow = global["shallow"];
 const mount = global["mount"];

@@ -19,9 +19,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Factories
 {
     public sealed class ChallengePayoutFactoryTest : UnitTest
     {
-        public ChallengePayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+
 
         [Fact]
         public void CreateInstance_WithoutPayoutStrategy_ShouldNotBeNull()
@@ -49,6 +47,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Factories
 
             // Assert
             payoutStrategy.Should().NotBeNull();
+        }
+
+        public ChallengePayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

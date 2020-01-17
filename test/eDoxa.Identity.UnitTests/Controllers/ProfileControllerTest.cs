@@ -32,9 +32,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 {
     public sealed class ProfileControllerTest : UnitTest
     {
-        public ProfileControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+        
 
         [Fact]
         public async Task GetAsync_ShouldBeNoContentResult()
@@ -288,6 +286,10 @@ namespace eDoxa.Identity.UnitTests.Controllers
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.UpdateProfileAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
+        }
+
+        public ProfileControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

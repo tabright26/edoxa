@@ -9,7 +9,7 @@ import {
   PROFILE_FIRST_NAME_INVALID,
   PROFILE_LAST_NAME_REQUIRED,
   PROFILE_LAST_NAME_INVALID
-} from "validation";
+} from "utils/form/validators";
 
 const shallow = global["shallow"];
 const mount = global["mount"];

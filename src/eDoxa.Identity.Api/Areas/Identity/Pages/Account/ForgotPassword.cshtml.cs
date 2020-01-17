@@ -52,7 +52,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                await _serviceBusPublisher.PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(user.Id.From<UserId>(), code);
+                await _serviceBusPublisher.PublishUserPasswordResetTokenGeneratedIntegrationEventAsync(user.Id.ConvertTo<UserId>(), code);
 
                 return this.RedirectToPage("./ForgotPasswordConfirmation");
             }

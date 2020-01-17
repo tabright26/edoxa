@@ -11,7 +11,11 @@ import { middleware as axiosMiddleware } from "utils/axios/middleware";
 import { middleware as signalrMiddleware } from "utils/signalr/middleware";
 import { middleware as loggerMiddleware } from "utils/logger/middleware";
 import { middleware as epicMiddleware } from "utils/observable/middleware";
+
+import { loadUser } from "redux-oidc";
+import { userManager } from "utils/oidc/UserManager";
 import { loadTransactionBundles } from "./actions/cashier";
+import { loadIdentityStaticOptions } from "./actions/static";
 
 // This enables the webpack development tools such as the Hot Module Replacement.
 const composeEnhancers =
@@ -60,6 +64,8 @@ export const configureStore = (initialState: RootState | any = {}) => {
       break;
     }
     default: {
+      loadUser(store, userManager);
+      store.dispatch<any>(loadIdentityStaticOptions());
       store.dispatch<any>(loadTransactionBundles());
       break;
     }

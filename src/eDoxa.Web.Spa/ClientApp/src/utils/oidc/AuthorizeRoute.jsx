@@ -5,7 +5,7 @@ import {
   ApplicationPaths,
   QueryParameterNames
 } from "./ApiAuthorizationConstants";
-import authService from "./AuthorizeService";
+import authorizeService from "./AuthorizeService";
 
 export default class AuthorizeRoute extends Component {
   constructor(props) {
@@ -18,14 +18,14 @@ export default class AuthorizeRoute extends Component {
   }
 
   componentDidMount() {
-    this._subscription = authService.subscribe(() =>
+    this._subscription = authorizeService.subscribe(() =>
       this.authenticationChanged()
     );
     this.populateAuthenticationState();
   }
 
   componentWillUnmount() {
-    authService.unsubscribe(this._subscription);
+    authorizeService.unsubscribe(this._subscription);
   }
 
   render() {
@@ -53,7 +53,7 @@ export default class AuthorizeRoute extends Component {
   }
 
   async populateAuthenticationState() {
-    const authenticated = await authService.isAuthenticated();
+    const authenticated = await authorizeService.isAuthenticated();
     this.setState({ ready: true, authenticated });
   }
 

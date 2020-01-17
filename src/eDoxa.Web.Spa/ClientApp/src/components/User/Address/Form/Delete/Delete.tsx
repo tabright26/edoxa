@@ -28,7 +28,9 @@ const CustomForm: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
-    <Label>Are you sure you want to remove this address?</Label>
+    <Label className="text-muted">
+      Are you sure you want to remove this address?
+    </Label>
     <FormGroup className="mb-0">
       <Button.Save className="mr-2" />
       <Button.Cancel onClick={() => handleCancel()} />

@@ -134,7 +134,7 @@ namespace eDoxa.Identity.Api.Areas.Identity.Pages.Account.Manage
 
             var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
-            await _serviceBusPublisher.PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(user.Id.From<UserId>(), code);
+            await _serviceBusPublisher.PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(user.Id.ConvertTo<UserId>(), code);
 
             StatusMessage = "Verification email sent. Please check your email.";
 

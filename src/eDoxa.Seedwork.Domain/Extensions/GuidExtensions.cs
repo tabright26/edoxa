@@ -10,7 +10,7 @@ namespace eDoxa.Seedwork.Domain.Extensions
 {
     public static class GuidExtensions
     {
-        public static TEntityId From<TEntityId>(this Guid entityId)
+        public static TEntityId ConvertTo<TEntityId>(this Guid entityId)
         where TEntityId : EntityId<TEntityId>, new()
         {
             return EntityId<TEntityId>.FromGuid(entityId);

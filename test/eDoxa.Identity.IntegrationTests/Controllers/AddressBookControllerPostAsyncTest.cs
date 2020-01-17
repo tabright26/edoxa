@@ -23,16 +23,20 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
+using Xunit.Abstractions;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {
     public sealed class AddressBookControllerPostAsyncTest : IntegrationTest
     {
-        public AddressBookControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(
+        private readonly ITestOutputHelper _testOutputHelper;
+
+        public AddressBookControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper, ITestOutputHelper testOutputHelper) : base(
             testHost,
             testData,
             testMapper)
         {
+            _testOutputHelper = testOutputHelper;
         }
 
         private async Task<HttpResponseMessage> ExecuteAsync(CreateAddressRequest request)
@@ -65,22 +69,26 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                     using var response = await this.ExecuteAsync(
                         new CreateAddressRequest
                         {
-                            Country = EnumCountry.Canada,
+                            CountryIsoCode = EnumCountryIsoCode.CA,
                             Line1 = "1234 Test Street",
                             Line2 = null,
                             City = "Toronto",
-                            State = "Ontario",
-                            PostalCode = "A1A1A1"
+                            State = "ON",
+                            PostalCode = "A1A 1A1"
                         });
 
                     // Assert
+                    var message = await response.Content.ReadAsStringAsync();
+
+                    _testOutputHelper.WriteLine(message);
+
                     response.EnsureSuccessStatusCode();
 
                     response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-                    var message = await response.Content.ReadAsStringAsync();
+                    //var message = await response.Content.ReadAsStringAsync();
 
-                    message.Should().NotBeNullOrWhiteSpace();
+                    //message.Should().NotBeNullOrWhiteSpace();
                 });
         }
     }

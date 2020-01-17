@@ -20,7 +20,7 @@ namespace eDoxa.Identity.Api.Application.Profiles
             this.CreateMap<Address, AddressDto>()
                 .ForMember(address => address.Id, config => config.MapFrom(address => address.Id.ToString()))
                 .ForMember(address => address.Type, config => config.MapFrom(address => address.Type.ToEnumOrDefault<EnumAddressType>()))
-                .ForMember(address => address.Country, config => config.MapFrom(address => address.Country.ToEnum<EnumCountry>()))
+                .ForMember(address => address.CountryIsoCode, config => config.MapFrom(address => address.Country.ToEnum<EnumCountryIsoCode>()))
                 .ForMember(address => address.Line1, config => config.MapFrom(address => address.Line1))
                 .ForMember(address => address.Line2, config => config.MapFrom(address => address.Line2))
                 .ForMember(address => address.City, config => config.MapFrom(address => address.City))

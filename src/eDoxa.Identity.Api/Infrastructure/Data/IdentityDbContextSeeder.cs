@@ -26,23 +26,24 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         private readonly IDoxatagService _doxatagService;
         private readonly IUserService _userService;
         private readonly RoleService _roleService;
+        private readonly IOptions<AdminOptions> _optionsSnapshot;
 
         public IdentityDbContextSeeder(
             IDoxatagService doxatagService,
             IUserService userService,
             RoleService roleService,
             IWebHostEnvironment environment,
-            IOptions<AdminOptions> options,
+            IOptionsSnapshot<AdminOptions> optionsSnapshot,
             ILogger<IdentityDbContextSeeder> logger
         ) : base(environment, logger)
         {
-            Options = options.Value;
             _doxatagService = doxatagService;
             _userService = userService;
             _roleService = roleService;
+            _optionsSnapshot = optionsSnapshot;
         }
 
-        public AdminOptions Options { get; }
+        private AdminOptions Options => _optionsSnapshot.Value;
 
         protected override async Task SeedAsync()
         {

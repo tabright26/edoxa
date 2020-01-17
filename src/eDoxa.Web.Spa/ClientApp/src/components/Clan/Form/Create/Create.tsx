@@ -29,7 +29,7 @@ const CustomForm: FunctionComponent<any> = ({
     <Field
       type="text"
       name="name"
-      label="Name"
+      placeholder="Name"
       formGroup={FormGroup}
       component={Input.Text}
     />

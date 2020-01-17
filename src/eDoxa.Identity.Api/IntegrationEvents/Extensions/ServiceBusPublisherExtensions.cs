@@ -55,7 +55,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     Address = user.Email,
                     Verified = user.EmailConfirmed
                 },
-                Country = user.Country.ToEnum<EnumCountry>()
+                CountryIsoCode = user.Country.ToEnum<EnumCountryIsoCode>()
             };
 
             await publisher.PublishAsync(integrationEvent);
@@ -70,7 +70,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                 {
                     Id = address.Id,
                     Type = address.Type.ToEnumOrDefault<EnumAddressType>(),
-                    Country = address.Country.ToEnum<EnumCountry>(),
+                    CountryIsoCode = address.Country.ToEnum<EnumCountryIsoCode>(),
                     Line1 = address.Line1,
                     Line2 = address.Line2,
                     State = address.State,

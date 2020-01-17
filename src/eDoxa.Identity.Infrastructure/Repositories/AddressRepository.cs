@@ -54,5 +54,10 @@ namespace eDoxa.Identity.Infrastructure.Repositories
         {
             return await AddressBook.AsExpandable().SingleOrDefaultAsync(address => address.UserId == userId && address.Id == addressId);
         }
+
+        public async Task<int> AddressCountAsync(UserId userId)
+        {
+            return await AddressBook.AsExpandable().CountAsync(address => address.UserId == userId);
+        }
     }
 }
