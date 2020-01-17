@@ -20,9 +20,8 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed partial class TransactionMetadataTest : UnitTest
     {
-        public TransactionMetadataTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+        
+
 
         [Theory]
         [MemberData(nameof(ValidTransactionMetadataTestData))]
@@ -102,6 +101,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
+        }
+
+        public TransactionMetadataTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

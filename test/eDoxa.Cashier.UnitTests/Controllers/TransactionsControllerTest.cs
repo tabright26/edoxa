@@ -27,9 +27,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 {
     public sealed class TransactionsControllerTest : UnitTest
     {
-        public TransactionsControllerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+     
 
         [Fact]
         public async Task GetAsync_ShouldBeOfTypeNoContentResult()
@@ -97,6 +95,10 @@ namespace eDoxa.Cashier.UnitTests.Controllers
                 Times.Once);
 
             mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
+        }
+
+        public TransactionsControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

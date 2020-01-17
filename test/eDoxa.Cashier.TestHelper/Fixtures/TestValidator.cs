@@ -4,14 +4,14 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Grpc.Protos.Identity.Options;
+using eDoxa.Cashier.Api.Infrastructure;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 using Moq;
 
-namespace eDoxa.Identity.TestHelper.Fixtures
+namespace eDoxa.Cashier.TestHelper.Fixtures
 {
     public sealed class TestValidator
     {
@@ -20,16 +20,16 @@ namespace eDoxa.Identity.TestHelper.Fixtures
             var builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json", false);
             var configuration = builder.Build();
-            Options = configuration.GetSection("Api").Get<IdentityApiOptions>();
+            Options = configuration.Get<CashierAppSettings>();
         }
 
-        private IdentityApiOptions Options { get; }
+        private CashierAppSettings Options { get; }
 
-        public IOptionsSnapshot<IdentityApiOptions> OptionsWrapper
+        public IOptionsSnapshot<CashierAppSettings> OptionsWrapper
         {
             get
             {
-                var mock = new Mock<IOptionsSnapshot<IdentityApiOptions>>();
+                var mock = new Mock<IOptionsSnapshot<CashierAppSettings>>();
 
                 mock.Setup(optionsSnapshot => optionsSnapshot.Value).Returns(Options);
 

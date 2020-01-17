@@ -15,7 +15,6 @@ using eDoxa.Seedwork.Security.Kestrel.Extensions;
 
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
 using Serilog;
 

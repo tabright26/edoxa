@@ -9,6 +9,8 @@ using eDoxa.Challenges.Api.Application;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
+using Moq;
+
 namespace eDoxa.Challenges.TestHelper.Fixtures
 {
     public sealed class TestValidator
@@ -23,6 +25,16 @@ namespace eDoxa.Challenges.TestHelper.Fixtures
 
         public ChallengeOptions Options { get; }
 
-        public OptionsWrapper<ChallengeOptions> OptionsWrapper => new OptionsWrapper<ChallengeOptions>(Options);
+        public IOptionsSnapshot<ChallengeOptions> OptionsWrapper
+        {
+            get
+            {
+                var mock = new Mock<IOptionsSnapshot<ChallengeOptions>>();
+
+                mock.Setup(snapshot => snapshot.Value).Returns(Options);
+
+                return mock.Object;
+            }
+        }
     }
 }

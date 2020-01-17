@@ -18,11 +18,11 @@ namespace eDoxa.Identity.Api.Application.Validators
 {
     public sealed class CreateAddressRequestValidator : AbstractValidator<CreateAddressRequest>
     {
-        private readonly IOptions<IdentityApiOptions> _options;
+        private readonly IOptions<IdentityApiOptions> _optionsSnapshot;
 
-        public CreateAddressRequestValidator(IOptions<IdentityApiOptions> options)
+        public CreateAddressRequestValidator(IOptionsSnapshot<IdentityApiOptions> optionsSnapshot)
         {
-            _options = options;
+            _optionsSnapshot = optionsSnapshot;
 
             this.RuleFor(request => request.CountryIsoCode)
                 .NotNull()
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api.Application.Validators
 
         protected override bool PreValidate(ValidationContext<CreateAddressRequest> context, ValidationResult result)
         {
-            var addressOptions = _options.Value.TryOverridesAddressOptionsFor(context.InstanceToValidate.CountryIsoCode);
+            var addressOptions = _optionsSnapshot.Value.TryOverridesAddressOptionsFor(context.InstanceToValidate.CountryIsoCode);
 
             context.RootContextData.Add("FieldsOptions", addressOptions.Fields);
 

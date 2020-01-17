@@ -16,12 +16,14 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 {
     public sealed class LeagueOfLegendsChallengeScoringAdapter : IChallengeScoringAdapter
     {
-        public LeagueOfLegendsChallengeScoringAdapter(IOptions<LeagueOfLegendsOptions> options)
+        private readonly IOptions<LeagueOfLegendsOptions> _optionsSnapshot;
+
+        public LeagueOfLegendsChallengeScoringAdapter(IOptionsSnapshot<LeagueOfLegendsOptions> optionsSnapshot)
         {
-            Options = options.Value;
+            _optionsSnapshot = optionsSnapshot;
         }
 
-        private LeagueOfLegendsOptions Options { get; }
+        private LeagueOfLegendsOptions Options => _optionsSnapshot.Value;
 
         public Game Game => Game.LeagueOfLegends;
 

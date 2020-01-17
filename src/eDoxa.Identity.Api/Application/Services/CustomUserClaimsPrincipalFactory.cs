@@ -24,25 +24,26 @@ namespace eDoxa.Identity.Api.Application.Services
     public sealed class CustomUserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<User>
     {
         private readonly IDoxatagService _doxatagService;
+        private readonly IOptions<IdentityOptions> _optionsSnapshot;
 
         public CustomUserClaimsPrincipalFactory(
             IUserService userService,
             IRoleService roleService,
             IDoxatagService doxatagService,
-            IOptions<IdentityOptions> optionsAccessor
+            IOptionsSnapshot<IdentityOptions> optionsSnapshot
         )
         {
             _doxatagService = doxatagService;
+            _optionsSnapshot = optionsSnapshot;
             UserService = userService;
             RoleService = roleService;
-            Options = optionsAccessor.Value;
         }
 
         private IUserService UserService { get; }
 
         private IRoleService RoleService { get; }
 
-        private IdentityOptions Options { get; }
+        private IdentityOptions Options => _optionsSnapshot.Value;
 
         private ClaimsIdentity? Identity { get; set; }
 

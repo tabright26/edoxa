@@ -51,7 +51,7 @@ namespace eDoxa.Seedwork.UnitTests.Monitoring
             var provider = services.BuildServiceProvider();
 
             // Act
-            var appSettings = provider.GetService<IOptions<MockAppSettings>>();
+            var appSettings = provider.GetService<IOptionsSnapshot<MockAppSettings>>();
 
             // Assert
             appSettings.Should().NotBeNull();

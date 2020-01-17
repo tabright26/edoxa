@@ -25,16 +25,16 @@ namespace eDoxa.Identity.Api.Application.Services
     {
         private readonly IAddressRepository _addressRepository;
         private readonly IServiceBusPublisher _serviceBusPublisher;
-        private readonly IOptions<IdentityApiOptions> _options;
+        private readonly IOptions<IdentityApiOptions> _optionsSnapshot;
 
-        public AddressService(IAddressRepository addressRepository, IServiceBusPublisher serviceBusPublisher, IOptions<IdentityApiOptions> options)
+        public AddressService(IAddressRepository addressRepository, IServiceBusPublisher serviceBusPublisher, IOptionsSnapshot<IdentityApiOptions> optionsSnapshot)
         {
             _addressRepository = addressRepository;
             _serviceBusPublisher = serviceBusPublisher;
-            _options = options;
+            _optionsSnapshot = optionsSnapshot;
         }
 
-        private IdentityApiOptions Options => _options.Value;
+        private IdentityApiOptions Options => _optionsSnapshot.Value;
 
         public async Task<Address?> FindUserAddressAsync(User user, AddressId addressId)
         {

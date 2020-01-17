@@ -18,9 +18,6 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class CashierTestFileStorageTest : UnitTest
     {
-        public CashierTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
 
         [Fact]
         public void GetChallenges_WithFortyRecords_ShouldHaveCountOfForty()
@@ -59,6 +56,10 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             users.Should().HaveCount(1000);
+        }
+
+        public CashierTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

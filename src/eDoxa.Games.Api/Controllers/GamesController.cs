@@ -27,14 +27,15 @@ namespace eDoxa.Games.Api.Controllers
     public sealed class GamesController : ControllerBase
     {
         private readonly IGameCredentialService _gameCredentialService;
+        private readonly IOptions<GamesOptions> _optionsSnapshot;
 
-        public GamesController(IGameCredentialService gameCredentialService, IOptions<GamesOptions> options)
+        public GamesController(IGameCredentialService gameCredentialService, IOptionsSnapshot<GamesOptions> optionsSnapshot)
         {
             _gameCredentialService = gameCredentialService;
-            Options = options.Value;
+            _optionsSnapshot = optionsSnapshot;
         }
 
-        private GamesOptions Options { get; }
+        private GamesOptions Options => _optionsSnapshot.Value;
 
         [HttpGet]
         [SwaggerOperation("Unlink game credential.")]

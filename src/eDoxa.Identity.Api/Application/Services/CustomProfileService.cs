@@ -17,18 +17,20 @@ namespace eDoxa.Identity.Api.Application.Services
 {
     internal sealed class CustomProfileService : IProfileService
     {
-        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, IUserService userService, IOptions<IdentityOptions> optionsAccessor)
+        private readonly IOptions<IdentityOptions> _optionsSnapshot;
+
+        public CustomProfileService(CustomUserClaimsPrincipalFactory principalFactory, IUserService userService, IOptionsSnapshot<IdentityOptions> optionsSnapshot)
         {
+            _optionsSnapshot = optionsSnapshot;
             PrincipalFactory = principalFactory;
             UserService = userService;
-            Options = optionsAccessor.Value;
         }
 
         private CustomUserClaimsPrincipalFactory PrincipalFactory { get; }
 
         private IUserService UserService { get; }
 
-        private IdentityOptions Options { get; }
+        private IdentityOptions Options => _optionsSnapshot.Value;
 
         public async Task GetProfileDataAsync(ProfileDataRequestContext context)
         {

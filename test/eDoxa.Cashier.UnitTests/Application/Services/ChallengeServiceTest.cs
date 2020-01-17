@@ -30,9 +30,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 {
     public sealed class ChallengeServiceTest : UnitTest
     {
-        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
 
         [Fact]
         public async Task CreateChallengeAsync_ShouldBeOfTypeValidationResult()
@@ -128,6 +125,10 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<Challenge>();
             mockChallengeRepository.Verify(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>()), Times.Once);
+        }
+
+        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }

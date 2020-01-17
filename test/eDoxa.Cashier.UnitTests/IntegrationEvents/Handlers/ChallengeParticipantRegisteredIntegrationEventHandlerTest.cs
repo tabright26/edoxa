@@ -30,9 +30,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class ChallengeParticipantRegisteredIntegrationEventHandlerTest : UnitTest
     {
-        public ChallengeParticipantRegisteredIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
-        {
-        }
+
 
         [Fact]
         public async Task HandleAsync_ChallengeParticipantRegisteredIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -103,6 +101,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 Times.Once);
 
             mockLogger.Verify(Times.Once());
+        }
+
+        public ChallengeParticipantRegisteredIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
         }
     }
 }
