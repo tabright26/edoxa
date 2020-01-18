@@ -113,7 +113,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                 },
                 Participants =
                 {
-                    challenge.Participants.Select(participant => Map(challenge.Id, participant, doxatags))
+                    challenge.Participants.Select(participant => Map(challenge.Id, participant, doxatags)).OrderByDescending(participant => participant.Score?.ToDecimal())
                 }
             };
         }

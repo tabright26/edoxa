@@ -19,31 +19,29 @@ const ChallengeDetails: FunctionComponent<Props> = ({ challenge }) =>
   !challenge ? (
     <Loading />
   ) : (
-    <>
-      <Row>
-        <Col xs={{ size: 10, order: 1 }}>
-          <CardDeck className="mt-4">
-            <ChallengeLogo className="col-2 bg-gray-900" />
-            <Card className="col-10">
-              <CardBody className="d-flex">
-                <ChallengeTimeline />
-                <ChallengeSummary />
-              </CardBody>
-            </Card>
-          </CardDeck>
-        </Col>
-        <Col xs={{ size: 2, order: 2 }}>
-          <ChallengeScoring className="mt-4" />
-        </Col>
-        <Col xs={{ size: 2, order: 4 }}>
-          <ChallengePayout />
-          <ChallengeRegister />
-        </Col>
-        <Col xs={{ size: 10, order: 3 }}>
-          <ChallengeScoreboard />
-        </Col>
-      </Row>
-    </>
+    <Row>
+      <Col xs={{ size: 9, order: 1 }}>
+        <CardDeck className="mt-4">
+          <ChallengeLogo className="col-2 bg-gray-900" />
+          <Card className="col-10">
+            <CardBody className="d-flex">
+              <ChallengeTimeline />
+              <ChallengeSummary />
+            </CardBody>
+          </Card>
+        </CardDeck>
+      </Col>
+      <Col xs={{ size: 3, order: 2 }}>
+        <ChallengeScoring className="mt-4" />
+      </Col>
+      <Col xs={{ size: 3, order: 4 }}>
+        <ChallengePayout />
+        <ChallengeRegister />
+      </Col>
+      <Col xs={{ size: 9, order: 3 }}>
+        <ChallengeScoreboard />
+      </Col>
+    </Row>
   );
 
 export default withChallenge(ChallengeDetails);

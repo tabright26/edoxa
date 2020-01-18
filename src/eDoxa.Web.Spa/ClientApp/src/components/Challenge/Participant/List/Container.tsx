@@ -10,7 +10,9 @@ interface Params {
   readonly challengeId: ChallengeId;
 }
 
-type OwnProps = RouteComponentProps<Params>;
+type OwnProps = RouteComponentProps<Params> & {
+  readonly payoutEntries: number;
+};
 
 interface StateProps {
   readonly participants: ChallengeParticipant[];
@@ -25,6 +27,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     challenge => challenge.id === ownProps.match.params.challengeId
   );
   return {
+    payoutEntries: challenge.payoutEntries,
     participants: challenge.participants
   };
 };
