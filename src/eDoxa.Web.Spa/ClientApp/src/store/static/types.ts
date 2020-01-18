@@ -1,11 +1,11 @@
 import {
   IdentityStaticOptions,
   PaymentStaticOptions,
-  TransactionBundle
+  CashierStaticOptions
 } from "types";
 
 export interface StaticOptionsState {
   readonly identity: IdentityStaticOptions;
   readonly payment: PaymentStaticOptions;
-  readonly transactionBundles: TransactionBundle[];
+  readonly cashier: CashierStaticOptions;
 }

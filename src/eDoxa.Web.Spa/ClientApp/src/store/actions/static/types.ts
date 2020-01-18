@@ -2,7 +2,7 @@ import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 import {
   IdentityStaticOptions,
   PaymentStaticOptions,
-  TransactionBundle
+  CashierStaticOptions
 } from "types";
 
 export const LOAD_IDENTITY_STATIC_OPTIONS = "LOAD_IDENTITY_STATIC_OPTIONS";
@@ -45,32 +45,30 @@ export type LoadPaymentStaticOptionsAction = AxiosAction<
   PaymentStaticOptions
 >;
 
-export const LOAD_TRANSACTION_BUNDLES = "LOAD_TRANSACTION_BUNDLES";
-export const LOAD_TRANSACTION_BUNDLES_SUCCESS =
-  "LOAD_TRANSACTION_BUNDLES_SUCCESS";
-export const LOAD_TRANSACTION_BUNDLES_FAIL = "LOAD_TRANSACTION_BUNDLES_FAIL";
+export const LOAD_CASHIER_STATIC_OPTIONS = "LOAD_CASHIER_STATIC_OPTIONS";
+export const LOAD_CASHIER_STATIC_OPTIONS_SUCCESS =
+  "LOAD_CASHIER_STATIC_OPTIONS_SUCCESS";
+export const LOAD_CASHIER_STATIC_OPTIONS_FAIL =
+  "LOAD_CASHIER_STATIC_OPTIONS_FAIL";
 
-export type LoadTransactionBundlesType =
-  | typeof LOAD_TRANSACTION_BUNDLES
-  | typeof LOAD_TRANSACTION_BUNDLES_SUCCESS
-  | typeof LOAD_TRANSACTION_BUNDLES_FAIL;
-export type LoadTransactionBundlesActionCreator = AxiosActionCreator<
-  LoadTransactionBundlesType
+export type LoadCashierStaticOptionsType =
+  | typeof LOAD_CASHIER_STATIC_OPTIONS
+  | typeof LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
+  | typeof LOAD_CASHIER_STATIC_OPTIONS_FAIL;
+export type LoadCashierStaticOptionsActionCreator = AxiosActionCreator<
+  LoadCashierStaticOptionsType
 >;
-export type LoadTransactionBundlesAction = AxiosAction<
-  LoadTransactionBundlesType,
-  TransactionBundle[]
+export type LoadCashierStaticOptionsAction = AxiosAction<
+  LoadCashierStaticOptionsType,
+  CashierStaticOptions
 >;
-
-export type TransactionBundlesActionCreators = LoadTransactionBundlesActionCreator;
-export type TransactionBundlesActions = LoadTransactionBundlesAction;
 
 export type StaticOptionsActionCreators =
   | LoadIdentityStaticOptionsActionCreator
   | LoadPaymentStaticOptionsActionCreator
-  | LoadTransactionBundlesActionCreator;
+  | LoadCashierStaticOptionsActionCreator;
 
 export type StaticOptionsActions =
   | LoadIdentityStaticOptionsAction
   | LoadPaymentStaticOptionsAction
-  | LoadTransactionBundlesAction;
+  | LoadCashierStaticOptionsAction;

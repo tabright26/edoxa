@@ -6,21 +6,14 @@ import {
   LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS,
   LOAD_PAYMENT_STATIC_OPTIONS_FAIL,
   StaticOptionsActionCreators,
-  TransactionBundlesActionCreators,
-  LOAD_TRANSACTION_BUNDLES,
-  LOAD_TRANSACTION_BUNDLES_SUCCESS,
-  LOAD_TRANSACTION_BUNDLES_FAIL
+  LOAD_CASHIER_STATIC_OPTIONS,
+  LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
+  LOAD_CASHIER_STATIC_OPTIONS_FAIL
 } from "./types";
 import {
   AXIOS_PAYLOAD_CLIENT_DEFAULT,
   AXIOS_PAYLOAD_CLIENT_CASHIER
 } from "utils/axios/types";
-import {
-  TransactionType,
-  TRANSACTION_TYPE_ALL,
-  Currency,
-  CURRENCY_ALL
-} from "types";
 
 export function loadIdentityStaticOptions(): StaticOptionsActionCreators {
   return {
@@ -50,31 +43,24 @@ export function loadPaymentStaticOptions(): StaticOptionsActionCreators {
       client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "GET",
-        url: `payment/api/static/options`
+        url: "payment/api/static/options"
       }
     }
   };
 }
 
-export function loadTransactionBundles(
-  transactionType: TransactionType = TRANSACTION_TYPE_ALL,
-  currency: Currency = CURRENCY_ALL
-): TransactionBundlesActionCreators {
+export function loadCashierStaticOptions(): StaticOptionsActionCreators {
   return {
     types: [
-      LOAD_TRANSACTION_BUNDLES,
-      LOAD_TRANSACTION_BUNDLES_SUCCESS,
-      LOAD_TRANSACTION_BUNDLES_FAIL
+      LOAD_CASHIER_STATIC_OPTIONS,
+      LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
+      LOAD_CASHIER_STATIC_OPTIONS_FAIL
     ],
     payload: {
       client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "GET",
-        url: "/cashier/api/transaction-bundles",
-        params: {
-          transactionType,
-          currency
-        }
+        url: "/cashier/api/static/options"
       }
     }
   };

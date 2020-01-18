@@ -61,6 +61,14 @@ interface Entity<TEntityId> {
   readonly id: TEntityId;
 }
 
+export interface CashierStaticOptions {
+  readonly transaction: TransactionOptions;
+}
+
+export interface TransactionOptions {
+  readonly bundles: TransactionBundle[];
+}
+
 export interface TransactionBundle {
   readonly id: TransactionBundleId;
   readonly currency: {

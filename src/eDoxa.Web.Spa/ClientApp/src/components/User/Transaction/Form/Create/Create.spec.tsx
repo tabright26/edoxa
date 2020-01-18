@@ -6,7 +6,7 @@ import { configureStore } from "store";
 import { CURRENCY_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
 import {
   TransactionBundlesActions,
-  LOAD_TRANSACTION_BUNDLES_SUCCESS
+  LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
 } from "store/actions/static/types";
 
 const shallow = global["shallow"];
@@ -15,7 +15,7 @@ const mount = global["mount"];
 const store = configureStore();
 
 const action: TransactionBundlesActions = {
-  type: LOAD_TRANSACTION_BUNDLES_SUCCESS,
+  type: LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
   error: null,
   meta: null,
   payload: {

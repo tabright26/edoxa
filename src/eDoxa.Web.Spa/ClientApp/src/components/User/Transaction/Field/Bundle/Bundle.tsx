@@ -85,12 +85,14 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   ownProps
 ) => {
   return {
-    transactionBundles: state.static.transactionBundles.filter(
+    transactionBundles: state.static.cashier.transaction.bundles.filter(
       transactionBundle =>
         transactionBundle.type.toLowerCase() ===
           ownProps.transactionType.toLowerCase() &&
         transactionBundle.currency.type.toLowerCase() ===
-          ownProps.currency.toLowerCase()
+          ownProps.currency.toLowerCase() &&
+        !transactionBundle.disabled &&
+        !transactionBundle.deprecated
     )
   };
 };

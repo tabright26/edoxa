@@ -1,8 +1,8 @@
-﻿// Filename: AccountBalanceControllerTest.cs
-// Date Created: 2019-10-06
+﻿// Filename: BalanceControllerTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -24,9 +24,14 @@ using Xunit;
 
 namespace eDoxa.Cashier.UnitTests.Controllers
 {
-    public sealed class AccountBalanceControllerTest : UnitTest
+    public sealed class BalanceControllerTest : UnitTest
     {
-
+        public BalanceControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()
@@ -76,10 +81,6 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
 
             mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
-        }
-
-        public AccountBalanceControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

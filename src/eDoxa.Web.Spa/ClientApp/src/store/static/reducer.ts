@@ -4,14 +4,14 @@ import {
   StaticOptionsActions,
   LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS,
   LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS,
-  LOAD_TRANSACTION_BUNDLES_SUCCESS
+  LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
 } from "store/actions/static/types";
 import { StaticOptionsState } from "./types";
 
 const initialState: StaticOptionsState = {
   identity: null,
   payment: null,
-  transactionBundles: null
+  cashier: null
 };
 
 export const reducer: Reducer<
@@ -28,8 +28,8 @@ export const reducer: Reducer<
         draft.payment = action.payload.data;
         break;
       }
-      case LOAD_TRANSACTION_BUNDLES_SUCCESS: {
-        draft.transactionBundles = action.payload.data;
+      case LOAD_CASHIER_STATIC_OPTIONS_SUCCESS: {
+        draft.cashier = action.payload.data;
         break;
       }
     }

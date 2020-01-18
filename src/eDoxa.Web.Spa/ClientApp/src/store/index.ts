@@ -17,7 +17,7 @@ import { userManager } from "utils/oidc/UserManager";
 import {
   loadIdentityStaticOptions,
   loadPaymentStaticOptions,
-  loadTransactionBundles
+  loadCashierStaticOptions
 } from "./actions/static";
 
 // This enables the webpack development tools such as the Hot Module Replacement.
@@ -70,7 +70,7 @@ export const configureStore = (initialState: RootState | any = {}) => {
       loadUser(store, userManager);
       store.dispatch<any>(loadIdentityStaticOptions());
       store.dispatch<any>(loadPaymentStaticOptions());
-      store.dispatch<any>(loadTransactionBundles());
+      store.dispatch<any>(loadCashierStaticOptions());
       break;
     }
   }
