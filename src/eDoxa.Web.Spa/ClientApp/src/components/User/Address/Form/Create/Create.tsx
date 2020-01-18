@@ -41,7 +41,7 @@ interface StateProps {
 }
 
 interface FormData {
-  country: string;
+  countryIsoCode: string;
   line1: string;
   line2: string;
   city: string;
@@ -64,85 +64,81 @@ const CustomForm: FunctionComponent<Props> = ({
   reset,
   countryIsoCode,
   fieldsOptions: { country, line1, line2, city, state, postalCode }
-}) => {
-  console.log(countryIsoCode);
-  console.log(country, line1, line2, city, state, postalCode);
-  return (
-    <Form onSubmit={handleSubmit}>
-      <ValidationSummary error={error} />
-      <FormField.CountryIsoCode
-        label={country.label}
-        placeholder={country.placeholder}
-        onChange={() => reset()}
-      />
+}) => (
+  <Form onSubmit={handleSubmit}>
+    <ValidationSummary error={error} />
+    <FormField.CountryIsoCode
+      label={country.label}
+      placeholder={country.placeholder}
+      onChange={() => reset()}
+    />
+    <Field
+      type="text"
+      name="line1"
+      label={line1.label}
+      placeholder={line1.placeholder}
+      formGroup={FormGroup}
+      component={Input.Text}
+    />
+    {!line2.excluded && (
       <Field
         type="text"
-        name="line1"
-        label={line1.label}
-        placeholder={line1.placeholder}
+        name="line2"
+        label={line2.label}
+        placeholder={line2.placeholder}
         formGroup={FormGroup}
         component={Input.Text}
       />
-      {!line2.excluded && (
-        <Field
-          type="text"
-          name="line2"
-          label={line2.label}
-          placeholder={line2.placeholder}
-          formGroup={FormGroup}
-          component={Input.Text}
-        />
-      )}
-      <Field
-        type="text"
-        name="city"
-        label={city.label}
-        placeholder={city.placeholder}
-        formGroup={FormGroup}
-        component={Input.Text}
+    )}
+    <Field
+      type="text"
+      name="city"
+      label={city.label}
+      placeholder={city.placeholder}
+      formGroup={FormGroup}
+      component={Input.Text}
+    />
+    <FormGroup row className="my-0">
+      <Col xs="8">
+        {!state.excluded && (
+          <FormField.State
+            label={state.label}
+            placeholder={state.placeholder}
+            countryIsoCode={countryIsoCode}
+          />
+        )}
+      </Col>
+      <Col xs="4">
+        {!postalCode.excluded && (
+          <Field
+            type="text"
+            name="postalCode"
+            label={postalCode.label}
+            placeholder={postalCode.placeholder}
+            formGroup={FormGroup}
+            component={Input.Text}
+            tag={InputMask}
+            mask={postalCode.mask}
+            maskChar={null}
+            formatChars={{
+              "1": "[0-9]",
+              A: "[A-Z]"
+            }}
+          />
+        )}
+      </Col>
+    </FormGroup>
+    <FormGroup className="mb-0">
+      <Button.Save className="mr-2" />
+      <Button.Cancel
+        onClick={() => {
+          handleCancel();
+          reset();
+        }}
       />
-      <FormGroup row className="my-0">
-        <Col xs="8">
-          {!state.excluded && (
-            <FormField.State
-              label={state.label}
-              placeholder={state.placeholder}
-              countryIsoCode={countryIsoCode}
-            />
-          )}
-        </Col>
-        <Col xs="4">
-          {!postalCode.excluded && (
-            <Field
-              type="text"
-              name="postalCode"
-              label={postalCode.label}
-              placeholder={postalCode.placeholder}
-              formGroup={FormGroup}
-              component={Input.Text}
-              tag={InputMask}
-              mask={postalCode.mask}
-              maskChar={null}
-              formatChars={{
-                "1": "[0-9]",
-                A: "[A-Z]"
-              }}
-            />
-          )}
-        </Col>
-      </FormGroup>
-      <FormGroup className="mb-0">
-        <Button.Save className="mr-2" />
-        <Button.Cancel
-          onClick={() => {
-            handleCancel();
-            reset();
-          }}
-        />
-      </FormGroup>
-    </Form>
-  );
-};
+    </FormGroup>
+  </Form>
+);
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   state,
@@ -156,7 +152,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   );
   return {
     initialValues: {
-      country: countryIsoCode,
+      countryIsoCode,
       state: country.regions[0].code
     },
     fieldsOptions: country.address.fields,

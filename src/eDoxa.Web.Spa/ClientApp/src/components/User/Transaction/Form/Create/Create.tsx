@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { USER_ACCOUNT_DEPOSIT_FORM } from "utils/form/constants";
+import { CREATE_USER_TRANSACTION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
@@ -49,7 +49,7 @@ const CustomForm: FunctionComponent<Props> = ({
 
 const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
-    form: USER_ACCOUNT_DEPOSIT_FORM,
+    form: CREATE_USER_TRANSACTION_FORM,
     onSubmit: async (values, dispatch) => {
       try {
         return await new Promise((resolve, reject) => {

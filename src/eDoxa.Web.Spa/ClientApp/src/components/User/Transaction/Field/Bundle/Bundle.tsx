@@ -14,6 +14,9 @@ import { RootState } from "store/types";
 
 interface StateProps {
   transactionBundles: TransactionBundle[];
+  initialValues: {
+    transactionBundleId: number;
+  };
 }
 
 interface OwnProps {
@@ -29,19 +32,21 @@ type InnerProps = StateProps;
 type Props = InnerProps & OutterProps;
 
 const FormFieldTransactionBundle: FunctionComponent<Props> = ({
-  name,
-  transactionBundles
+  transactionBundles,
+  initialValues
 }) => {
   const [transactionBundleId, setTransactionBundleId] = useState<
     TransactionBundleId
   >(null);
   useEffect(() => {
-    setTransactionBundleId(transactionBundles[0].id);
+    if (!transactionBundleId) {
+      setTransactionBundleId(initialValues.transactionBundleId);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [initialValues.transactionBundleId]);
   return (
     <Field
-      name={name}
+      name="transactionBundleId"
       type="radio"
       value={transactionBundleId}
       parse={Number}
@@ -84,16 +89,20 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   state,
   ownProps
 ) => {
+  const bundles = state.static.cashier.transaction.bundles.filter(
+    transactionBundle =>
+      transactionBundle.type.toLowerCase() ===
+        ownProps.transactionType.toLowerCase() &&
+      transactionBundle.currency.type.toLowerCase() ===
+        ownProps.currency.toLowerCase() &&
+      !transactionBundle.disabled &&
+      !transactionBundle.deprecated
+  );
   return {
-    transactionBundles: state.static.cashier.transaction.bundles.filter(
-      transactionBundle =>
-        transactionBundle.type.toLowerCase() ===
-          ownProps.transactionType.toLowerCase() &&
-        transactionBundle.currency.type.toLowerCase() ===
-          ownProps.currency.toLowerCase() &&
-        !transactionBundle.disabled &&
-        !transactionBundle.deprecated
-    )
+    initialValues: {
+      transactionBundleId: bundles[0].id
+    },
+    transactionBundles: bundles
   };
 };
 

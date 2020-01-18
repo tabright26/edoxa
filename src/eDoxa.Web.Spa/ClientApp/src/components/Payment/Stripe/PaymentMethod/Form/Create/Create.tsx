@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Form } from "reactstrap";
-import { reduxForm, FormErrors, InjectedFormProps } from "redux-form";
+import { reduxForm, InjectedFormProps } from "redux-form";
 import {
   injectStripe,
   CardNumberElement,
@@ -21,12 +21,12 @@ import { throwSubmissionError } from "utils/form/types";
 
 interface FormData {}
 
-interface OutterProps {
+type OutterProps = {
   handleCancel: () => void;
-}
+};
 
-type InnerProps = InjectedFormProps<FormData, Props> &
-  ReactStripeElements.InjectedStripeProps;
+type InnerProps = ReactStripeElements.InjectedStripeProps &
+  InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
@@ -63,7 +63,7 @@ const enhance = compose<InnerProps, OutterProps>(
   injectStripe,
   reduxForm<FormData, Props>({
     form: CREATE_STRIPE_PAYMENTMETHOD_FORM,
-    onSubmit: async (values, dispatch: any, { stripe }) =>
+    onSubmit: (_values, dispatch: any, { stripe }) =>
       stripe.createPaymentMethod("card").then(result => {
         if (result.paymentMethod) {
           return dispatch(attachStripePaymentMethod(result.paymentMethod)).then(
@@ -80,11 +80,7 @@ const enhance = compose<InnerProps, OutterProps>(
           return Promise.reject(result.error);
         }
       }),
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
-    validate: () => {
-      const errors: FormErrors<FormData> = {};
-      return errors;
-    }
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel()
   })
 );
 
