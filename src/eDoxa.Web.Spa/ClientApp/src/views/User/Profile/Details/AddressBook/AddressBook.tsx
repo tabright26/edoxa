@@ -112,7 +112,7 @@ const AddressBook: FunctionComponent<any> = ({
 const mapStateToProps = (state: RootState) => {
   return {
     addressBook: state.root.user.addressBook,
-    limit: state.static.identity.data.addressBook.limit
+    limit: state.static.identity.addressBook.limit
   };
 };
 

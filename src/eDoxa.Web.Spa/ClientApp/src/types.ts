@@ -113,6 +113,24 @@ export interface FieldValidationRule {
   readonly order: number;
 }
 
+export interface PaymentStaticOptions {
+  readonly stripe: StripeOptions;
+}
+
+export interface StripeOptions {
+  readonly currencies: CurrenciesOptions;
+  readonly paymentMethods: PaymentMethodsOptions;
+}
+
+export interface CurrenciesOptions {
+  readonly ca: string[];
+  readonly us: string[];
+}
+
+export interface PaymentMethodsOptions {
+  readonly limit: number;
+}
+
 // Identity
 export interface IdentityStaticOptions {
   readonly addressBook: AddressBookOptions;

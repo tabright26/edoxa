@@ -85,7 +85,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   ownProps
 ) => {
   return {
-    transactionBundles: state.static.transactionBundle.data.filter(
+    transactionBundles: state.static.transactionBundles.filter(
       transactionBundle =>
         transactionBundle.type.toLowerCase() ===
           ownProps.transactionType.toLowerCase() &&

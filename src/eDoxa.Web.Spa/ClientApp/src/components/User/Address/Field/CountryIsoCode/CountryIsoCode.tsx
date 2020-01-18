@@ -56,7 +56,7 @@ const mapStateToProps: MapStateToProps<
   RootState
 > = state => {
   return {
-    countries: state.static.identity.data.countries
+    countries: state.static.identity.countries
   };
 };
 

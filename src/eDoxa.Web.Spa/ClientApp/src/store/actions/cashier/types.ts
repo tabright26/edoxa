@@ -1,5 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { Balance, TransactionBundle, UserTransaction } from "types";
+import { Balance, UserTransaction } from "types";
 
 export type UserAccountBalanceActionCreators =
   | LoadUserMoneyAccountBalanceActionCreator
@@ -46,26 +46,6 @@ export type LoadUserTokenAccountBalanceAction = AxiosAction<
 >;
 
 export type UserTokenAccountBalanceActions = LoadUserTokenAccountBalanceAction;
-
-export const LOAD_TRANSACTION_BUNDLES = "LOAD_TRANSACTION_BUNDLES";
-export const LOAD_TRANSACTION_BUNDLES_SUCCESS =
-  "LOAD_TRANSACTION_BUNDLES_SUCCESS";
-export const LOAD_TRANSACTION_BUNDLES_FAIL = "LOAD_TRANSACTION_BUNDLES_FAIL";
-
-export type LoadTransactionBundlesType =
-  | typeof LOAD_TRANSACTION_BUNDLES
-  | typeof LOAD_TRANSACTION_BUNDLES_SUCCESS
-  | typeof LOAD_TRANSACTION_BUNDLES_FAIL;
-export type LoadTransactionBundlesActionCreator = AxiosActionCreator<
-  LoadTransactionBundlesType
->;
-export type LoadTransactionBundlesAction = AxiosAction<
-  LoadTransactionBundlesType,
-  TransactionBundle[]
->;
-
-export type TransactionBundlesActionCreators = LoadTransactionBundlesActionCreator;
-export type TransactionBundlesActions = LoadTransactionBundlesAction;
 
 export const CREATE_USER_TRANSACTION = "CREATE_USER_TRANSACTION";
 export const CREATE_USER_TRANSACTION_SUCCESS =

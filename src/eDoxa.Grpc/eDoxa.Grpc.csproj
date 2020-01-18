@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <None Remove="Protos\identity_options.proto" />
+    <None Remove="Protos\payment_options.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +46,7 @@
     <Protobuf Include="Protos\identity_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\payment_dtos.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\identity_options.proto" GrpcServices="None" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\payment_options.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\cashier_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\challenges_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\clans_integration_events.proto" GrpcServices="None" ProtoRoot="Protos\" />

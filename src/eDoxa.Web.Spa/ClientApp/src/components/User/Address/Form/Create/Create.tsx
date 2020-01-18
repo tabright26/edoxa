@@ -151,7 +151,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   const selector = formValueSelector(CREATE_USER_ADDRESS_FORM);
   const countryIsoCode: string =
     selector(state, "countryIsoCode") || ownProps.country;
-  const country = state.static.identity.data.countries.find(
+  const country = state.static.identity.countries.find(
     country => country.isoCode === countryIsoCode
   );
   return {

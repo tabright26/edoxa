@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,6 +11,7 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Api.Application.Stripe.Extensions;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
@@ -77,11 +78,9 @@ namespace eDoxa.Payment.Api
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
-
-            services.AddStripe(Configuration);
-
             services.AddAppSettings<PaymentAppSettings>(Configuration);
+
+            services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
@@ -162,11 +161,9 @@ namespace eDoxa.Payment.Api
     {
         public void ConfigureTestServices(IServiceCollection services)
         {
-            services.AddOptions();
-
-            services.AddStripe(Configuration);
-
             services.AddAppSettings<PaymentAppSettings>(Configuration);
+
+            services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
 
             services.AddCustomDbContext<PaymentDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
@@ -206,12 +203,13 @@ namespace eDoxa.Payment.Api
             application.UseAuthentication();
             application.UseAuthorization();
 
-            application.UseEndpoints(endpoints =>
-            {
-                endpoints.MapGrpcService<PaymentGrpcService>();
+            application.UseEndpoints(
+                endpoints =>
+                {
+                    endpoints.MapGrpcService<PaymentGrpcService>();
 
-                endpoints.MapControllers();
-            });
+                    endpoints.MapControllers();
+                });
 
             subscriber.UseIntegrationEventSubscriptions();
         }

@@ -1,5 +1,9 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { IdentityStaticOptions } from "types";
+import {
+  IdentityStaticOptions,
+  PaymentStaticOptions,
+  TransactionBundle
+} from "types";
 
 export const LOAD_IDENTITY_STATIC_OPTIONS = "LOAD_IDENTITY_STATIC_OPTIONS";
 export const LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS =
@@ -21,6 +25,52 @@ export type LoadIdentityStaticOptionsAction = AxiosAction<
   IdentityStaticOptions
 >;
 
-export type IdentityStaticOptionsActionCreators = LoadIdentityStaticOptionsActionCreator;
+export const LOAD_PAYMENT_STATIC_OPTIONS = "LOAD_PAYMENT_STATIC_OPTIONS";
+export const LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS =
+  "LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS";
+export const LOAD_PAYMENT_STATIC_OPTIONS_FAIL =
+  "LOAD_PAYMENT_STATIC_OPTIONS_FAIL";
 
-export type IdentityStaticOptionsActions = LoadIdentityStaticOptionsAction;
+export type LoadPaymentStaticOptionsType =
+  | typeof LOAD_PAYMENT_STATIC_OPTIONS
+  | typeof LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS
+  | typeof LOAD_PAYMENT_STATIC_OPTIONS_FAIL;
+
+export type LoadPaymentStaticOptionsActionCreator = AxiosActionCreator<
+  LoadPaymentStaticOptionsType
+>;
+
+export type LoadPaymentStaticOptionsAction = AxiosAction<
+  LoadPaymentStaticOptionsType,
+  PaymentStaticOptions
+>;
+
+export const LOAD_TRANSACTION_BUNDLES = "LOAD_TRANSACTION_BUNDLES";
+export const LOAD_TRANSACTION_BUNDLES_SUCCESS =
+  "LOAD_TRANSACTION_BUNDLES_SUCCESS";
+export const LOAD_TRANSACTION_BUNDLES_FAIL = "LOAD_TRANSACTION_BUNDLES_FAIL";
+
+export type LoadTransactionBundlesType =
+  | typeof LOAD_TRANSACTION_BUNDLES
+  | typeof LOAD_TRANSACTION_BUNDLES_SUCCESS
+  | typeof LOAD_TRANSACTION_BUNDLES_FAIL;
+export type LoadTransactionBundlesActionCreator = AxiosActionCreator<
+  LoadTransactionBundlesType
+>;
+export type LoadTransactionBundlesAction = AxiosAction<
+  LoadTransactionBundlesType,
+  TransactionBundle[]
+>;
+
+export type TransactionBundlesActionCreators = LoadTransactionBundlesActionCreator;
+export type TransactionBundlesActions = LoadTransactionBundlesAction;
+
+export type StaticOptionsActionCreators =
+  | LoadIdentityStaticOptionsActionCreator
+  | LoadPaymentStaticOptionsActionCreator
+  | LoadTransactionBundlesActionCreator;
+
+export type StaticOptionsActions =
+  | LoadIdentityStaticOptionsAction
+  | LoadPaymentStaticOptionsAction
+  | LoadTransactionBundlesAction;

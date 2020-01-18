@@ -6,8 +6,6 @@
 
 using System;
 
-using eDoxa.Seedwork.TestHelper.Fakes;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eDoxa.Seedwork.TestHelper.Extensions

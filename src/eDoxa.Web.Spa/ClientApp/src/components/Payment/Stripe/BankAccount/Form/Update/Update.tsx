@@ -13,6 +13,13 @@ import {
   UPDATE_STRIPE_BANKACCOUNT_FAIL
 } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
+import FormField from "components/Payment/Stripe/BankAccount/Field";
+import {
+  withUserProfileCountry,
+  HocUserProfileCountryStateProps
+} from "utils/oidc/containers";
+import { connect, MapStateToProps } from "react-redux";
+import { RootState } from "store/types";
 
 interface FormData {
   currency: string;
@@ -21,14 +28,22 @@ interface FormData {
   accountNumber: string;
 }
 
-interface OutterProps {
-  country: string;
-  handleCancel: () => void;
-}
-
-type InnerProps = InjectedFormProps<FormData, Props> & {
-  stripe: stripe.Stripe;
+type StateProps = {
+  initialValues: {
+    currency: string;
+  };
 };
+
+type OwnProps = HocUserProfileCountryStateProps;
+
+type OutterProps = OwnProps & {
+  handleCancel: () => void;
+};
+
+type InnerProps = InjectedFormProps<FormData, Props> &
+  StateProps & {
+    stripe: stripe.Stripe;
+  };
 
 type Props = InnerProps & OutterProps;
 
@@ -39,13 +54,7 @@ const CustomForm: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     {error && <FormValidation error={error} />}
-    <Field
-      type="text"
-      name="currency"
-      placeholder="Currency"
-      formGroup={FormGroup}
-      component={Input.Text}
-    />
+    <FormField.Currency />
     <Field
       type="text"
       name="accountHolderName"
@@ -74,7 +83,23 @@ const CustomForm: FunctionComponent<Props> = ({
   </Form>
 );
 
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  state,
+  ownProps
+) => {
+  return {
+    initialValues: {
+      currency:
+        state.static.payment.stripe.currencies[
+          ownProps.country.toLowerCase()
+        ][0]
+    }
+  };
+};
+
 const enhance = compose<InnerProps, OutterProps>(
+  withUserProfileCountry,
+  connect(mapStateToProps),
   injectStripe,
   reduxForm<FormData, Props>({
     form: UPDATE_STRIPE_BANKACCOUNT_FORM,

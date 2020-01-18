@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -18,14 +19,14 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
 {
     public sealed class StripeTransferService : TransferService, IStripeTransferService
     {
-        private readonly IOptions<StripeOptions> _optionsSnapshot;
+        private readonly IOptions<PaymentApiOptions> _optionsSnapshot;
 
-        public StripeTransferService(IOptionsSnapshot<StripeOptions> optionsSnapshot)
+        public StripeTransferService(IOptionsSnapshot<PaymentApiOptions> optionsSnapshot)
         {
             _optionsSnapshot = optionsSnapshot;
         }
 
-        private StripeTransferOptions Options => _optionsSnapshot.Value.Transfer;
+        private PaymentApiOptions Options => _optionsSnapshot.Value;
 
         public async Task<Transfer> CreateTransferAsync(
             string accountId,
@@ -38,7 +39,7 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                 new TransferCreateOptions
                 {
                     Destination = accountId,
-                    Currency = Options.Currency,
+                    Currency = Options.Default.Stripe.Transfer.Currency,
                     Amount = amount,
                     Description = description,
                     Metadata = new Dictionary<string, string>
