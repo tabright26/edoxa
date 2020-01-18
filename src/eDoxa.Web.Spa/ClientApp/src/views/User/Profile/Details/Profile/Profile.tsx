@@ -5,7 +5,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import UserProfileForm from "components/User/Profile/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserProfile } from "store/actions/identity";

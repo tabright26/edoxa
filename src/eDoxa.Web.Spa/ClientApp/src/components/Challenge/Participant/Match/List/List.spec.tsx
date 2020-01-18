@@ -17,9 +17,8 @@ it("renders without crashing", () => {
         entries: 10,
         game: "LeagueOfLegends",
         payoutEntries: 5,
-        entryFee: { currency: "token", amount: 0 },
         participants: [
-          { id: "id1", challengeId: "123", score: 0, matches: [] }
+          { id: "id1", user: null, challengeId: "123", score: 0, matches: [] }
         ],
         timeline: {
           createdAt: 123123123,
@@ -29,6 +28,8 @@ it("renders without crashing", () => {
         },
         scoring: new Map<string, string>(),
         payout: {
+          challengeId: "123",
+          entryFee: { currency: "token", amount: 0 },
           prizePool: { currency: "token", amount: 200000 },
           buckets: []
         }
@@ -53,7 +54,7 @@ it("renders without crashing", () => {
     .create(
       <Provider store={store}>
         <MemoryRouter>
-          <List challengeId="123" matches={participant.matches} />
+          <List participantId="123" matches={participant.matches} />
         </MemoryRouter>
       </Provider>
     )

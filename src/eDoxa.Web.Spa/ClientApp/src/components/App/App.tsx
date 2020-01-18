@@ -5,7 +5,7 @@ import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/config";
 import UserTransactionModal from "components/User/Transaction/Modal";
 import CustomModal from "components/Challenge/Participant/Match/Modal/Score";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";
 import { Elements } from "react-stripe-elements";

@@ -1,5 +1,5 @@
-import Currency from "./Currency";
-import PayoutBucket from "./PayoutBucket";
-import Score from "./Score";
+import { Currency } from "./Currency";
+import { Score } from "./Score";
+import { PayoutBucket } from "./PayoutBucket";
 
 export default { Currency, PayoutBucket, Score };

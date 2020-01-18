@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader } from "reactstrap";
 import { withCandidatures } from "store/root/organization/candidature/container";
 import Item from "./Item/Item";
 import { ClanCandidature } from "types";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 
 const CandidatureList: FunctionComponent<any> = ({ actions, candidatures: { data, loading }, type, isOwner = false }) => (
   <Card>

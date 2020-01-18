@@ -11,7 +11,7 @@ import {
 import Button from "components/Shared/Button";
 import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { attachStripePaymentMethod } from "store/actions/payment";
 import {
   StripePaymentMethodsActions,
@@ -36,7 +36,7 @@ const CreateStripePaymentMethodForm: FunctionComponent<Props> = ({
   handleCancel
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <dl className="row mb-0">
       <dt className="col-sm-4">Card number</dt>
       <dd className="col-sm-8">

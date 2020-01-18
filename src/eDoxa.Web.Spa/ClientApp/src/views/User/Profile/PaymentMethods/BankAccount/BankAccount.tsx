@@ -5,7 +5,7 @@ import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/con
 import BankAccountForm from "components/Payment/Stripe/BankAccount/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import {
   withUserProfileCountry,
   HocUserProfileCountryStateProps

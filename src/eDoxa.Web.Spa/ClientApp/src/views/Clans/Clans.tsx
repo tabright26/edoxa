@@ -6,9 +6,8 @@ import ClanCard from "components/Clan/Card/Card";
 import CandidatureList from "components/Clan/Candidature/List/List";
 import InvitationList from "components/Clan/Invitation/List/List";
 import ClanModal from "components/Clan/Modal";
-import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { compose } from "recompose";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { getClanDashboardPath } from "utils/router/constants";
 import { show } from "redux-modal";
 import { CREATE_CLAN_MODAL } from "utils/modal/constants";
@@ -69,7 +68,7 @@ const ClansIndex: FunctionComponent<any> = ({
   };
 
   return (
-    <ErrorBoundary>
+    <>
       <Row>
         <Col>
           <InvitationList type="user" id={userId} />
@@ -145,7 +144,7 @@ const ClansIndex: FunctionComponent<any> = ({
           ))
         ) : null}
       </Row>
-    </ErrorBoundary>
+    </>
   );
 };
 

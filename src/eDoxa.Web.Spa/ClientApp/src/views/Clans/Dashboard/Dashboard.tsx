@@ -6,7 +6,6 @@ import ClanInfo from "components/Clan/Summary/Summary";
 import CandidatureList from "components/Clan/Candidature/List/List";
 import InvitationList from "components/Clan/Invitation/List/List";
 import Members from "components/Clan/Member/List/List";
-import ErrorBoundary from "components/Shared/ErrorBoundary"
 import { compose } from "recompose";
 
 const ClanDashboardIndex: FunctionComponent<any> = ({
@@ -49,42 +48,44 @@ const ClanDashboardIndex: FunctionComponent<any> = ({
   }, [clan]);
 
   return (
-    <ErrorBoundary>
-      <Row>
-        <Col>
-          {isMember ? (
-            <Card>
-              <CardHeader>{/* {isOwner ? (
+    <Row>
+      <Col>
+        {isMember ? (
+          <Card>
+            <CardHeader>
+              {/* {isOwner ? (
                   <Col>
                     <InvitationWidget clanId={clan.id} />
                   </Col>
-                ) : null} */}</CardHeader>
-              <CardBody>
-                <Row>
-                  <Col>
-                    <Card>
-                      <CardHeader>{/* <ClanLogo clanId={clan.id} userId={userId} isOwner={isOwner} /> */}</CardHeader>
-                      <CardBody>
-                        <ClanInfo clan={clan} />
-                      </CardBody>
-                    </Card>
-                  </Col>
-                  <Col>
-                    <Members clanId={clan.id} userId={userId} isOwner={isOwner} />
-                  </Col>
-                  <Col>
-                    <InvitationList type="clan" id={clan.id} />
-                  </Col>
-                  <Col>
-                    <CandidatureList type="clan" id={clan.id} isOwner={isOwner} />
-                  </Col>
-                </Row>
-              </CardBody>
-            </Card>
-          ) : null}
-        </Col>
-      </Row>
-    </ErrorBoundary>
+                ) : null} */}
+            </CardHeader>
+            <CardBody>
+              <Row>
+                <Col>
+                  <Card>
+                    <CardHeader>
+                      {/* <ClanLogo clanId={clan.id} userId={userId} isOwner={isOwner} /> */}
+                    </CardHeader>
+                    <CardBody>
+                      <ClanInfo clan={clan} />
+                    </CardBody>
+                  </Card>
+                </Col>
+                <Col>
+                  <Members clanId={clan.id} userId={userId} isOwner={isOwner} />
+                </Col>
+                <Col>
+                  <InvitationList type="clan" id={clan.id} />
+                </Col>
+                <Col>
+                  <CandidatureList type="clan" id={clan.id} isOwner={isOwner} />
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
+        ) : null}
+      </Col>
+    </Row>
   );
 };
 

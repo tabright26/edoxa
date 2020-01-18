@@ -5,9 +5,9 @@ import Deposit from "./Create";
 import { configureStore } from "store";
 import { CURRENCY_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
 import {
-  LOAD_TRANSACTION_BUNDLES_SUCCESS,
-  TransactionBundlesActions
-} from "store/actions/cashier/types";
+  TransactionBundlesActions,
+  LOAD_TRANSACTION_BUNDLES_SUCCESS
+} from "store/actions/static/types";
 
 const shallow = global["shallow"];
 const mount = global["mount"];

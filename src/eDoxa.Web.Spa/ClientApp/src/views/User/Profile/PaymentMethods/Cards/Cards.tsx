@@ -8,7 +8,7 @@ import CardExpiration from "components/Payment/Stripe/PaymentMethod/Card/Expirat
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Shared/Button";
 import { compose } from "recompose";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { connect, MapDispatchToProps } from "react-redux";
 import { show } from "redux-modal";
 import {

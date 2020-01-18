@@ -5,7 +5,7 @@ import { Field, reduxForm, FormErrors, InjectedFormProps } from "redux-form";
 import { FormGroup, Form } from "reactstrap";
 import { UPDATE_STRIPE_BANKACCOUNT_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateStripeBankAccount } from "store/actions/payment";
 import { injectStripe } from "react-stripe-elements";
 import {
@@ -53,7 +53,7 @@ const CustomForm: FunctionComponent<Props> = ({
   handleCancel
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <FormField.Currency />
     <Field
       type="text"

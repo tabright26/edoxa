@@ -6,7 +6,7 @@ import AddressForm from "components/User/Address/Form";
 import UserAddressModal from "components/User/Address/Modal";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserAddressBook } from "store/actions/identity";

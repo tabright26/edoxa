@@ -12,7 +12,7 @@ import Input from "components/Shared/Input";
 import FormField from "components/User/Address/Field";
 import { CREATE_USER_ADDRESS_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { createUserAddress } from "store/actions/identity";
 import {
   throwSubmissionError,
@@ -69,7 +69,7 @@ const CustomForm: FunctionComponent<Props> = ({
   console.log(country, line1, line2, city, state, postalCode);
   return (
     <Form onSubmit={handleSubmit}>
-      {error && <FormValidation error={error} />}
+      <ValidationSummary error={error} />
       <FormField.CountryIsoCode
         label={country.label}
         placeholder={country.placeholder}
