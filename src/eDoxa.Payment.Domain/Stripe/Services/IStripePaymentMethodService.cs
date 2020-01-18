@@ -6,17 +6,19 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Seedwork.Domain;
+
 using Stripe;
 
 namespace eDoxa.Payment.Domain.Stripe.Services
 {
     public interface IStripePaymentMethodService
     {
-        Task<StripeList<PaymentMethod>> FetchPaymentMethodsAsync(string customerId, string type);
+        Task<StripeList<PaymentMethod>> FetchPaymentMethodsAsync(string customerId);
 
         Task<PaymentMethod> UpdatePaymentMethodAsync(string paymentMethodId, long expMonth, long expYear);
 
-        Task<PaymentMethod> AttachPaymentMethodAsync(string paymentMethodId, string customerId, bool defaultPaymentMethod = false);
+        Task<IDomainValidationResult> AttachPaymentMethodAsync(string paymentMethodId, string customerId, bool defaultPaymentMethod = false);
 
         Task<PaymentMethod> DetachPaymentMethodAsync(string paymentMethodId);
     }

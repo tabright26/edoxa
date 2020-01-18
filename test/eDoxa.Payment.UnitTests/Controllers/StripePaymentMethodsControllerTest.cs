@@ -1,8 +1,8 @@
 ﻿// Filename: StripePaymentMethodsControllerTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -45,7 +45,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerId").Verifiable();
 
-            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()))
+            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>()))
                 .ReturnsAsync(
                     new StripeList<PaymentMethod>
                     {
@@ -63,16 +63,14 @@ namespace eDoxa.Payment.UnitTests.Controllers
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodController.GetAsync("card");
+            var result = await paymentMethodController.GetAsync();
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
             mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
 
-            mockPaymentMethodService.Verify(
-                paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()),
-                Times.Once);
+            mockPaymentMethodService.Verify(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -95,7 +93,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodController.GetAsync("type");
+            var result = await paymentMethodController.GetAsync();
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -114,7 +112,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             mockCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>())).ReturnsAsync("customerId").Verifiable();
 
-            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()))
+            mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>()))
                 .ReturnsAsync(
                     new StripeList<PaymentMethod>
                     {
@@ -147,16 +145,14 @@ namespace eDoxa.Payment.UnitTests.Controllers
             paymentMethodController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await paymentMethodController.GetAsync("card");
+            var result = await paymentMethodController.GetAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
             mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
 
-            mockPaymentMethodService.Verify(
-                paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()),
-                Times.Once);
+            mockPaymentMethodService.Verify(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -204,19 +200,20 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             mockPaymentMethodService
                 .Setup(paymentMethodService => paymentMethodService.UpdatePaymentMethodAsync(It.IsAny<string>(), It.IsAny<long>(), It.IsAny<long>()))
-                .ReturnsAsync(new PaymentMethod
-                {
-                    Id = "PaymentMethodId",
-                    Type = "card",
-                    Card = new PaymentMethodCard
+                .ReturnsAsync(
+                    new PaymentMethod
                     {
-                        Brand = "Brand",
-                        Country = "CA",
-                        Last4 = "1234",
-                        ExpMonth = 11,
-                        ExpYear = 22
-                    }
-                })
+                        Id = "PaymentMethodId",
+                        Type = "card",
+                        Card = new PaymentMethodCard
+                        {
+                            Brand = "Brand",
+                            Country = "CA",
+                            Last4 = "1234",
+                            ExpMonth = 11,
+                            ExpYear = 22
+                        }
+                    })
                 .Verifiable();
 
             var paymentMethodController = new StripePaymentMethodsController(

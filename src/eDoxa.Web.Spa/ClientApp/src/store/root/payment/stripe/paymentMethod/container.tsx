@@ -2,17 +2,13 @@ import React, { FunctionComponent, useEffect } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { loadStripePaymentMethods } from "store/actions/payment";
 import { RootState } from "store/types";
-import { StripePaymentMethodType } from "types";
 import { StripePaymentMethodsState } from "./types";
-import produce, { Draft } from "immer";
 
 interface StateProps {
   readonly paymentMethods: StripePaymentMethodsState;
 }
 
-interface OwnProps {
-  readonly paymentMethodType: StripePaymentMethodType;
-}
+interface OwnProps {}
 
 export const withStripePaymentMethods = (
   HighOrderComponent: FunctionComponent<any>
@@ -27,26 +23,19 @@ export const withStripePaymentMethods = (
     return <HighOrderComponent {...props} />;
   };
 
-  const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
-    state,
-    ownProps
-  ) => {
+  const mapStateToProps: MapStateToProps<
+    StateProps,
+    OwnProps,
+    RootState
+  > = state => {
     return {
-      paymentMethods: produce(
-        state.root.payment.stripe.paymentMethods,
-        (draft: Draft<StripePaymentMethodsState>) => {
-          draft.data = draft.data.filter(
-            paymentMethod => paymentMethod.type === ownProps.paymentMethodType
-          );
-        }
-      )
+      paymentMethods: state.root.payment.stripe.paymentMethods
     };
   };
 
-  const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
+  const mapDispatchToProps = (dispatch: any) => {
     return {
-      loadStripePaymentMethods: () =>
-        dispatch(loadStripePaymentMethods(ownProps.paymentMethodType))
+      loadStripePaymentMethods: () => dispatch(loadStripePaymentMethods())
     };
   };
 

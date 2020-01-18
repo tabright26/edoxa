@@ -1,12 +1,13 @@
-﻿// Filename: PaymentMethodsControllerGetAsyncTest.cs
-// Date Created: 2019-10-15
+﻿// Filename: StripePaymentMethodsControllerGetAsyncTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Autofac;
@@ -27,8 +28,6 @@ using Moq;
 using Stripe;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Payment.IntegrationTests.Controllers
 {
@@ -130,8 +129,7 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                             mockStripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()))
                                 .ReturnsAsync("customerId");
 
-                            mockStripePaymentMethodService
-                                .Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>(), It.IsAny<string>()))
+                            mockStripePaymentMethodService.Setup(paymentMethodService => paymentMethodService.FetchPaymentMethodsAsync(It.IsAny<string>()))
                                 .ReturnsAsync(
                                     new StripeList<PaymentMethod>
                                     {

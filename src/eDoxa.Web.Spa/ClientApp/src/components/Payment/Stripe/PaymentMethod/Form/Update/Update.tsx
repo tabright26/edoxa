@@ -58,13 +58,13 @@ const CustomForm: FunctionComponent<Props> = ({
       </div>
     </FormGroup>
     <FormSection className="mx-auto" name="card">
-      <Label className="ml-4 mr-2 text-muted">Expiration:</Label>
+      <Label className="d-inline ml-4 mr-2 text-muted">Expiration:</Label>
       <FormField.Month className="d-inline" name="expMonth" width="55px" />
       <span className="d-inline mx-2">/</span>
       <FormField.Year
         className="d-inline"
         name="expYear"
-        width="55px"
+        width="75px"
         min={expYear}
         max={expYear + 20}
         descending={false}

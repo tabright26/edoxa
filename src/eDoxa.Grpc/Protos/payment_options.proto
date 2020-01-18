@@ -31,15 +31,19 @@ message PaymentApiOptions {
 
     message StripeOptions {
       CurrenciesOptions currencies = 1;
-      PaymentMethodsOptions paymentMethods = 2;
+      PaymentMethodOptions paymentMethod = 2;
 
       message CurrenciesOptions {
         repeated string CA = 1;
         repeated string US = 2;
 	  }
 
-      message PaymentMethodsOptions {
-        int32 limit = 1;
+      message PaymentMethodOptions {
+        CardOptions card = 1;
+
+        message CardOptions {
+          int32 limit = 1;
+        }
       }
     }
   }

@@ -119,7 +119,7 @@ export interface PaymentStaticOptions {
 
 export interface StripeOptions {
   readonly currencies: CurrenciesOptions;
-  readonly paymentMethods: PaymentMethodsOptions;
+  readonly paymentMethod: PaymentMethodOptions;
 }
 
 export interface CurrenciesOptions {
@@ -127,7 +127,11 @@ export interface CurrenciesOptions {
   readonly us: string[];
 }
 
-export interface PaymentMethodsOptions {
+export interface PaymentMethodOptions {
+  readonly card: CardOptions;
+}
+
+export interface CardOptions {
   readonly limit: number;
 }
 
@@ -371,10 +375,6 @@ export interface ChallengeParticipantMatchStat {
 }
 
 // Stripe
-export const STRIPE_CARD_TYPE = "card";
-
-export type StripePaymentMethodType = typeof STRIPE_CARD_TYPE;
-
 export type StripePaymentMethodId = string;
 
 export interface StripeCustomer {
@@ -383,7 +383,6 @@ export interface StripeCustomer {
 
 export interface StripePaymentMethod {
   readonly id: StripePaymentMethodId;
-  readonly type: StripePaymentMethodType;
   readonly card: StripeCard;
 }
 
