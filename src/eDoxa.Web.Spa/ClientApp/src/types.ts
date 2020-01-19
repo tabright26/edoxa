@@ -310,7 +310,7 @@ export interface Challenge extends Entity<ChallengeId> {
 }
 
 export const CHALLENGE_STATE_INSCRIPTION = "Inscription";
-export const CHALLENGE_STATE_STARTED = "Started";
+export const CHALLENGE_STATE_STARTED = "InProgress";
 export const CHALLENGE_STATE_ENDED = "Ended";
 export const CHALLENGE_STATE_CLOSED = "Closed";
 

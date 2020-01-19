@@ -11,17 +11,24 @@ import {
   ChallengesActionCreators
 } from "./types";
 
-import { ChallengeId } from "types";
+import { ChallengeId, Game, ChallengeState } from "types";
 import { AXIOS_PAYLOAD_CLIENT_CHALLENGES } from "utils/axios/types";
 
-export function loadChallenges(): ChallengesActionCreators {
+export function loadChallenges(
+  game: Game = null,
+  state: ChallengeState = null
+): ChallengesActionCreators {
   return {
     types: [LOAD_CHALLENGES, LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL],
     payload: {
       client: AXIOS_PAYLOAD_CLIENT_CHALLENGES,
       request: {
         method: "GET",
-        url: "/api/challenges"
+        url: "/api/challenges",
+        params: {
+          game,
+          state
+        }
       }
     }
   };

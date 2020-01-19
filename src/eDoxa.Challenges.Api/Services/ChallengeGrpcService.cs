@@ -46,8 +46,8 @@ namespace eDoxa.Challenges.Api.Services
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
         {
             var challenges = await _challengeQuery.FetchChallengesAsync(
-                request.Game.ToEnumerationOrDefault<Game>(),
-                request.State.ToEnumerationOrDefault<ChallengeState>());
+                request.Game.ToEnumerationOrNull<Game>(),
+                request.State.ToEnumerationOrNull<ChallengeState>());
 
             var response = new FetchChallengesResponse
             {

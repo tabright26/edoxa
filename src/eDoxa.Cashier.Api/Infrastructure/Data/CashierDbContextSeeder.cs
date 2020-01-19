@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -169,91 +169,46 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                 Logger.LogInformation("The admin account already populated.");
             }
 
-            if (!_context.Challenges.Any())
+            var strategy = _challengePayoutFactory.CreateInstance();
+
+            var twoDollars = new EntryFee(2, Currency.Money);
+
+            var threeDollars = new EntryFee(3, Currency.Money);
+
+            var twoDollarsForOneEntries = strategy.GetPayout(PayoutEntries.One, twoDollars);
+
+            var twoDollarsForTwoEntries = strategy.GetPayout(PayoutEntries.Two, twoDollars);
+
+            var twoDollarsForThreeEntries = strategy.GetPayout(PayoutEntries.Three, twoDollars);
+
+            var threeDollarsForOneEntries = strategy.GetPayout(PayoutEntries.One, threeDollars);
+
+            var threeDollarsForTwoEntries = strategy.GetPayout(PayoutEntries.Two, threeDollars);
+
+            var threeDollarsForThreeEntries = strategy.GetPayout(PayoutEntries.Three, threeDollars);
+
+            var challengePayouts = new List<IChallenge>
             {
-                var entryFee = new EntryFee(0, Currency.Token);
+                new Challenge(ChallengeId.Parse("d53b366f-e717-43d4-ac12-6e13d37f5cef"), twoDollars, twoDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("369ae69d-b10d-4d72-84ba-698691646ba6"), twoDollars, twoDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("eb76fa60-700f-4dce-b312-d69897563437"), twoDollars, twoDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("82592581-e6ac-41e0-9c61-773d924f233d"), twoDollars, twoDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("9457ae9a-4e5c-436f-b10f-33134af68439"), twoDollars, twoDollarsForThreeEntries),
+                new Challenge(ChallengeId.Parse("91f6d007-b458-4f1c-9814-755b32059e00"), twoDollars, twoDollarsForThreeEntries),
+                new Challenge(ChallengeId.Parse("4ecb13a4-0742-4140-93b0-27ee582e5cab"), threeDollars, threeDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("fa38f697-2ef3-40e9-a165-d62c3cc750a8"), threeDollars, threeDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("ac6851b4-2cb7-42ab-bf44-fb197d21221b"), threeDollars, threeDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("bb5f6e0c-ada7-47b4-9d24-a3c9ec7df034"), threeDollars, threeDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("6ec217f7-3d6a-41c2-b2eb-4cc8799d2af5"), threeDollars, threeDollarsForThreeEntries),
+                new Challenge(ChallengeId.Parse("7d96b314-8d5b-4393-9257-9c0e2cf7c0f1"), threeDollars, threeDollarsForThreeEntries)
+            };
 
-                var strategy = _challengePayoutFactory.CreateInstance();
-
-                var payoutForTwoEntries = strategy.GetPayout(PayoutEntries.One, entryFee);
-
-                var challengeId1WithTwoEntries = ChallengeId.Parse("675fd61f-50a7-4268-8ed3-790428dd94c6");
-
-                var challenge1WithTwoEntries = new Challenge(challengeId1WithTwoEntries, entryFee, payoutForTwoEntries);
-
-                var challengeId2WithTwoEntries = ChallengeId.Parse("3e7326e7-f2b0-4da6-92fb-60aad19b7aff");
-
-                var challenge2WithTwoEntries = new Challenge(challengeId2WithTwoEntries, entryFee, payoutForTwoEntries);
-
-                var challengeId3WithTwoEntries = ChallengeId.Parse("c653e421-5439-4016-82d7-013a494a3eb0");
-
-                var challenge3WithTwoEntries = new Challenge(challengeId3WithTwoEntries, entryFee, payoutForTwoEntries);
-
-                var challengeId4WithTwoEntries = ChallengeId.Parse("0923e7c5-413b-47ec-a98b-4c97d2534acf");
-
-                var challenge4WithTwoEntries = new Challenge(challengeId4WithTwoEntries, entryFee, payoutForTwoEntries);
-
-                var challengeId5WithTwoEntries = ChallengeId.Parse("92c4c94f-a1f6-485d-b4bb-5555d5974419");
-
-                var challenge5WithTwoEntries = new Challenge(challengeId5WithTwoEntries, entryFee, payoutForTwoEntries);
-
-                var payoutForFourEntries = strategy.GetPayout(PayoutEntries.Two, entryFee);
-
-                var challengeId1WithFourEntries = ChallengeId.Parse("effc77f4-0961-4c3c-873b-b88abb1e97f2");
-
-                var challenge1WithFourEntries = new Challenge(challengeId1WithFourEntries, entryFee, payoutForFourEntries);
-
-                var challengeId2WithFourEntries = ChallengeId.Parse("7e5290e0-f11b-4409-bcb5-211d115e33ee");
-
-                var challenge2WithFourEntries = new Challenge(challengeId2WithFourEntries, entryFee, payoutForFourEntries);
-
-                var challengeId3WithFourEntries = ChallengeId.Parse("fb59ae64-771c-4cd7-b555-ec4bb14c69bf");
-
-                var challenge3WithFourEntries = new Challenge(challengeId3WithFourEntries, entryFee, payoutForFourEntries);
-
-                var challengeId4WithFourEntries = ChallengeId.Parse("086d982a-fff6-493c-9294-eefba208ebd8");
-
-                var challenge4WithFourEntries = new Challenge(challengeId4WithFourEntries, entryFee, payoutForFourEntries);
-
-                var challengeId5WithFourEntries = ChallengeId.Parse("2bd0dfc8-576f-4d5b-851c-5a914e186e2c");
-
-                var challenge5WithFourEntries = new Challenge(challengeId5WithFourEntries, entryFee, payoutForFourEntries);
-
-                var payoutForSixEntries = strategy.GetPayout(PayoutEntries.Three, entryFee);
-
-                var challengeId1WithSixEntries = ChallengeId.Parse("4d15b0c6-d53d-4f75-a2ba-17c713c79677");
-
-                var challenge1WithSixEntries = new Challenge(challengeId1WithSixEntries, entryFee, payoutForSixEntries);
-
-                var challengeId2WithSixEntries = ChallengeId.Parse("a8c93b67-6174-468f-8265-be9ca078bc96");
-
-                var challenge2WithSixEntries = new Challenge(challengeId2WithSixEntries, entryFee, payoutForSixEntries);
-
-                _challengeRepository.Create(
-                    new List<IChallenge>
-                    {
-                        challenge1WithTwoEntries,
-                        challenge2WithTwoEntries,
-                        challenge3WithTwoEntries,
-                        challenge4WithTwoEntries,
-                        challenge5WithTwoEntries,
-                        challenge1WithFourEntries,
-                        challenge2WithFourEntries,
-                        challenge3WithFourEntries,
-                        challenge4WithFourEntries,
-                        challenge5WithFourEntries,
-                        challenge1WithSixEntries,
-                        challenge2WithSixEntries
-                    });
-
-                await _challengeRepository.CommitAsync();
-
-                Logger.LogInformation("The challenge's being populated.");
-            }
-            else
+            foreach (var challengePayout in challengePayouts.Where(challengePayout => _context.Challenges.All(x => x.Id != challengePayout.Id)))
             {
-                Logger.LogInformation("The challenge's already populated.");
+                _challengeRepository.Create(challengePayout);
             }
+
+            await _challengeRepository.CommitAsync();
         }
     }
 }

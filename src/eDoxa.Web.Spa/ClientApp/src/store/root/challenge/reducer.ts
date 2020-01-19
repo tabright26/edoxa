@@ -27,20 +27,30 @@ export const reducer: Reducer<ChallengesState, ChallengesActions> = produce(
         draft.error = null;
         draft.loading = true;
         break;
-      case LOAD_CHALLENGES_SUCCESS:
+      case LOAD_CHALLENGES_SUCCESS: {
         const { status, data } = action.payload;
         switch (status) {
-          case 204:
+          case 204: {
             draft.error = null;
             draft.loading = false;
             break;
-          default:
-            draft.data = data;
+          }
+          default: {
+            data.forEach(challenge => {
+              const index = draft.data.findIndex(x => x.id === challenge.id);
+              if (index === -1) {
+                draft.data.push(challenge);
+              } else {
+                draft.data[index] = challenge;
+              }
+            });
             draft.error = null;
             draft.loading = false;
             break;
+          }
         }
         break;
+      }
       case LOAD_CHALLENGES_FAIL:
         draft.error = action.error;
         draft.loading = false;

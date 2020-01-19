@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeMapper.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                 State = challenge.State,
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
-                Timeline =challenge.Timeline,
+                Timeline = challenge.Timeline,
                 PayoutEntries = payout.Buckets.Sum(bucket => bucket.Size),
                 SynchronizedAt = challenge.SynchronizedAt,
                 Scoring =
@@ -89,7 +89,8 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                 },
                 Participants =
                 {
-                    challenge.Participants.Select(participant => Map(challenge.Id, participant, doxatags)).OrderByDescending(participant => participant.Score?.ToDecimal())
+                    challenge.Participants.Select(participant => Map(challenge.Id, participant, doxatags))
+                        .OrderByDescending(participant => participant.Score?.ToDecimal())
                 }
             };
         }
