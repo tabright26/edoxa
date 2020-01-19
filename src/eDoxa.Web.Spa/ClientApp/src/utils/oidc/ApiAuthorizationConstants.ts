@@ -1,5 +1,5 @@
 import { REACT_APP_AUTHORITY } from "keys";
-import { getUserProfilePath } from "utils/router/constants";
+import { getUserProfilePath } from "utils/coreui/constants";
 
 export const ApplicationName: string = "edoxa";
 

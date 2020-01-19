@@ -8,7 +8,7 @@ import InvitationList from "components/Clan/Invitation/List/List";
 import ClanModal from "components/Clan/Modal";
 import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
-import { getClanDashboardPath } from "utils/router/constants";
+import { getClanDashboardPath } from "utils/coreui/constants";
 import { show } from "redux-modal";
 import { CREATE_CLAN_MODAL } from "utils/modal/constants";
 import { connect } from "react-redux";

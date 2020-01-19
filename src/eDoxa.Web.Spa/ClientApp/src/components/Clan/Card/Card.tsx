@@ -13,7 +13,7 @@ import ClanInfo from "../Summary/Summary";
 import ClanLogo from "../Logo/Logo";
 
 import CandidatureWidget from "components/Clan/Candidature/Widget/Widget";
-import { getClanDetailsPath } from "utils/router/constants";
+import { getClanDetailsPath } from "utils/coreui/constants";
 
 const ClanCard = ({ clan, userId, userClan }) => {
   return (

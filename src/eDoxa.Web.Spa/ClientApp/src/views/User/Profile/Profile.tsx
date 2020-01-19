@@ -18,8 +18,9 @@ import {
   getUserProfilePaymentMethodsPath,
   getUserProfileGamesPath,
   getUserProfileSecurityPath,
-  getUserProfileDetailsPath
-} from "utils/router/constants";
+  getUserProfileDetailsPath,
+  getError404Path
+} from "utils/coreui/constants";
 
 const ProfileOverview: FunctionComponent<RouteComponentProps> = React.lazy(() =>
   import("./Overview/Overview")
@@ -126,6 +127,7 @@ const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
             from={getUserProfilePath()}
             to={getUserProfileOverviewPath()}
           />
+          <Redirect to={getError404Path()} />
         </Switch>
       </Suspense>
     </Col>

@@ -3,7 +3,7 @@ import { Card, CardBody, Row, Col } from "reactstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import ChallengeLogo from "components/Challenge/Logo";
 import ChallengeSummary from "components/Challenge/Summary";
-import { getChallengeDetailsPath } from "utils/router/constants";
+import { getChallengeDetailsPath } from "utils/coreui/constants";
 
 const ChallengeParticipantItem = ({ challenge }) => {
   return (

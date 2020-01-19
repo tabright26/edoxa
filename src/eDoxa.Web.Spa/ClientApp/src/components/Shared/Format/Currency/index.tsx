@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from "react";
 import ReactCurrencyFormat from "react-currency-format";
 import { Currency as CurrencyType } from "types";
-import MoneyIcon from "components/Shared/Icon/Money";
-import TokenIcon from "components/Shared/Icon/Token";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
+import { faGg } from "@fortawesome/free-brands-svg-icons";
 
 interface Props {
   currency: CurrencyType;
@@ -73,7 +74,7 @@ export const Currency: FunctionComponent<Props> = ({
           fixedDecimalScale={true}
           renderText={(value: number) => (
             <CurrencyIconFormat
-              icon={MoneyIcon}
+              icon={props => <FontAwesomeIcon icon={faDollarSign} {...props} />}
               amount={value}
               alignment={alignment}
             />
@@ -89,7 +90,7 @@ export const Currency: FunctionComponent<Props> = ({
           thousandSeparator
           renderText={(value: number) => (
             <CurrencyIconFormat
-              icon={TokenIcon}
+              icon={props => <FontAwesomeIcon icon={faGg} {...props} />}
               amount={value}
               alignment={alignment}
             />

@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { toastr } from "react-redux-toastr";
 import { LinkContainer } from "react-router-bootstrap";
 import { Button } from "reactstrap";
-import { getClanDetailsPath } from "utils/router/constants";
+import { getClanDetailsPath } from "utils/coreui/constants";
 
 const Item = ({ candidature, actions, type, isOwner }) => {
   return (

@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from "react";
-import { Switch } from "react-router-dom";
-import { routes } from "utils/router/routes";
+import { Switch, Redirect } from "react-router-dom";
+import { routes } from "utils/coreui/_routes";
 import Route from "utils/router/components/Route";
 import AuthorizeRoute from "utils/oidc/AuthorizeRoute";
+import { getError404Path } from "utils/coreui/constants";
 
 const Routes: FunctionComponent = () => (
   <Switch>
@@ -15,6 +16,7 @@ const Routes: FunctionComponent = () => (
           <AuthorizeRoute key={index} {...route} />
         )
       )}
+    <Redirect to={getError404Path()} />
   </Switch>
 );
 
