@@ -102,7 +102,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                         participants.ForEach(
                             participant =>
                             {
-                                var matchFaker = new MatchFaker(challenge.Scoring);
+                                var matchFaker = new MatchFaker(challenge.Scoring, synchronizedAt);
 
                                 matchFaker.UseSeed(faker.Random.Int());
 
@@ -191,7 +191,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                         participants.ForEach(
                             participant =>
                             {
-                                var matchFaker = new MatchFaker(scoring);
+                                var matchFaker = new MatchFaker(scoring, synchronizedAt);
 
                                 matchFaker.UseSeed(faker.Random.Int());
 
@@ -249,7 +249,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
 
         private class MatchFaker : Faker<IMatch>
         {
-            public MatchFaker(IScoring scoring)
+            public MatchFaker(IScoring scoring, DateTime synchronizedAt)
             {
                 this.CustomInstantiator(
                     faker =>
@@ -257,9 +257,9 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                         var match = new Match(
                             faker.Game().Uuid(),
                             new UtcNowDateTimeProvider(),
-                            TimeSpan.FromSeconds(3600),
+                            TimeSpan.FromHours(1),
                             scoring.Map(faker.Game().Stats()),
-                            new UtcNowDateTimeProvider());
+                            new DateTimeProvider(synchronizedAt));
 
                         match.SetEntityId(faker.Match().Id());
 

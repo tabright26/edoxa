@@ -512,36 +512,36 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [Fact]
-        public async Task WithdrawalAsync_WithCurrencyToken_ShouldBeOfTypeValidationResultWithErrors()
-        {
-            // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
-            mockOptionsSnapshot.Setup(x => x.Value).Returns(new CashierApiOptions());
-            var account = new Account(new UserId());
+        //[Fact]
+        //public async Task WithdrawalAsync_WithCurrencyToken_ShouldBeOfTypeValidationResultWithErrors()
+        //{
+        //    // Arrange
+        //    var mockAccountRepository = new Mock<IAccountRepository>();
+        //    var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
+        //    mockOptionsSnapshot.Setup(x => x.Value).Returns(new CashierApiOptions());
+        //    var account = new Account(new UserId());
 
-            var metadata = new TransactionMetadata
-            {
-                {"UserId", account.Id.ToString()},
-                {"Email", "gabriel@edoxa.gg"}
-            };
+        //    var metadata = new TransactionMetadata
+        //    {
+        //        {"UserId", account.Id.ToString()},
+        //        {"Email", "gabriel@edoxa.gg"}
+        //    };
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+        //    var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
 
-            // Act
-            var result = await service.CreateTransactionAsync(
-                account,
-                Money.Twenty.Amount,
-                Currency.Money,
-                TransactionType.Withdrawal,
-                metadata);
+        //    // Act
+        //    var result = await service.CreateTransactionAsync(
+        //        account,
+        //        Money.Twenty.Amount,
+        //        Currency.Money,
+        //        TransactionType.Withdrawal,
+        //        metadata);
 
-            // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+        //    // Assert
+        //    result.Should().BeOfType<DomainValidationResult>();
 
-            result.Errors.Should().NotBeEmpty();
-        }
+        //    result.Errors.Should().NotBeEmpty();
+        //}
 
         [Fact]
         public async Task WithdrawalAsync_WithEmptyAccountBalance_ShouldBeOfTypeValidationResultWithErrors()

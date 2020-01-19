@@ -26,7 +26,7 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
             var match = new Match(
                 matchModel.GameUuid,
                 new DateTimeProvider(matchModel.GameStartedAt),
-                TimeSpan.FromSeconds(matchModel.GameDuration),
+                TimeSpan.FromTicks(matchModel.GameDuration),
                 stats,
                 new DateTimeProvider(matchModel.SynchronizedAt));
 

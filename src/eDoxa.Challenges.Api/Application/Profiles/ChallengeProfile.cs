@@ -37,6 +37,12 @@ namespace eDoxa.Challenges.Api.Application.Profiles
 
             this.CreateMap<IMatch, MatchDto>()
                 .ForMember(match => match.Id, config => config.MapFrom(match => match.Id.ToString()))
+                .ForMember(match => match.ChallengeId, config => config.Ignore())
+                .ForMember(match => match.GameUuid, config => config.MapFrom(match => match.GameUuid.ToString()))
+                .ForMember(match => match.GameStartedAt, config => config.MapFrom(match => match.GameStartedAt.ToTimestampUtc()))
+                .ForMember(match => match.GameDuration, config => config.MapFrom(match => match.GameDuration.ToDuration()))
+                .ForMember(match => match.GameEndedAt, config => config.MapFrom(match => match.GameEndedAt.ToTimestampUtc()))
+                .ForMember(match => match.SynchronizedAt, config => config.MapFrom(match => match.SynchronizedAt.ToTimestampUtc()))
                 .ForMember(match => match.Score, config => config.MapFrom<DecimalValue>(match => match.Score.ToDecimal()))
                 .ForMember(match => match.ParticipantId, config => config.Ignore())
                 .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats));
