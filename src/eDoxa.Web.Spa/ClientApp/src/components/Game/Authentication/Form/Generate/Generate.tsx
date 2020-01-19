@@ -10,6 +10,7 @@ import { Game } from "types";
 import { generateGameAuthentication } from "store/actions/game";
 import { throwSubmissionError } from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { connect } from "react-redux";
 
 interface FormData {}
 
@@ -33,7 +34,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
     </FormGroup>
     <FormGroup>
       <Label>Region</Label>
-      <Field name="region" component={Input.Select} disabled={true}>
+      <Field name="region" component={Input.Select} disabled>
         <option value="NA">North America</option>
       </Field>
     </FormGroup>
@@ -41,7 +42,16 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   </Form>
 );
 
+const mapStateToProps = () => {
+  return {
+    initialValues: {
+      region: "NA"
+    }
+  };
+};
+
 const enhance = compose<InnerProps, OutterProps>(
+  connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: GENERATE_GAME_AUTHENTICATION_FORM,
     onSubmit: async (values, dispatch: any, { game }) => {
