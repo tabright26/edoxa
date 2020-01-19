@@ -46,8 +46,8 @@ namespace eDoxa.Challenges.Api.Services
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
         {
             var challenges = await _challengeQuery.FetchChallengesAsync(
-                request.Game.ToEnumerationOrDefault<Game>(),
-                request.State.ToEnumerationOrDefault<ChallengeState>());
+                request.Game.ToEnumerationOrNull<Game>(),
+                request.State.ToEnumerationOrNull<ChallengeState>());
 
             var response = new FetchChallengesResponse
             {
@@ -188,7 +188,14 @@ namespace eDoxa.Challenges.Api.Services
                 challenge,
                 request.GamePlayerId.ParseStringId<PlayerId>(),
                 new UtcNowDateTimeProvider(),
-                scoring => request.Matches.Select(match => new Match(scoring.Map(match.Stats), new GameUuid(match.GameUuid))).ToImmutableHashSet());
+                scoring => request.Matches.Select(
+                        match => new Match(
+                            new GameUuid(match.GameUuid),
+                            new DateTimeProvider(match.GameCreatedAt.ToDateTime()), 
+                            match.GameDuration.ToTimeSpan(),
+                            scoring.Map(match.Stats),
+                            new UtcNowDateTimeProvider()))
+                    .ToImmutableHashSet());
 
             if (result.IsValid)
             {

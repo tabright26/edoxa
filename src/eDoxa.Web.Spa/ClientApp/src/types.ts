@@ -61,6 +61,14 @@ interface Entity<TEntityId> {
   readonly id: TEntityId;
 }
 
+export interface CashierStaticOptions {
+  readonly transaction: TransactionOptions;
+}
+
+export interface TransactionOptions {
+  readonly bundles: TransactionBundle[];
+}
+
 export interface TransactionBundle {
   readonly id: TransactionBundleId;
   readonly currency: {
@@ -111,6 +119,28 @@ export interface FieldValidationRule {
   readonly value: any;
   readonly enabled: boolean;
   readonly order: number;
+}
+
+export interface PaymentStaticOptions {
+  readonly stripe: StripeOptions;
+}
+
+export interface StripeOptions {
+  readonly currencies: CurrenciesOptions;
+  readonly paymentMethod: PaymentMethodOptions;
+}
+
+export interface CurrenciesOptions {
+  readonly ca: string[];
+  readonly us: string[];
+}
+
+export interface PaymentMethodOptions {
+  readonly card: CardOptions;
+}
+
+export interface CardOptions {
+  readonly limit: number;
 }
 
 // Identity
@@ -280,7 +310,7 @@ export interface Challenge extends Entity<ChallengeId> {
 }
 
 export const CHALLENGE_STATE_INSCRIPTION = "Inscription";
-export const CHALLENGE_STATE_STARTED = "Started";
+export const CHALLENGE_STATE_STARTED = "InProgress";
 export const CHALLENGE_STATE_ENDED = "Ended";
 export const CHALLENGE_STATE_CLOSED = "Closed";
 
@@ -339,9 +369,15 @@ export interface ChallengeParticipantUserDoxatag {
 }
 
 export interface ChallengeParticipantMatch extends Entity<MatchId> {
-  readonly score: number;
-  readonly participantId: ParticipantId;
   readonly challengeId: ChallengeId;
+  readonly participantId: ParticipantId;
+  readonly gameUuid: string;
+  readonly gameStartedAt: Date;
+  readonly gameDuration: number;
+  readonly gameEndedAt: Date;
+  readonly synchronizedAt: Date;
+  readonly isBestOf: boolean;
+  readonly score: number;
   readonly stats: ChallengeParticipantMatchStat[];
 }
 
@@ -353,10 +389,6 @@ export interface ChallengeParticipantMatchStat {
 }
 
 // Stripe
-export const STRIPE_CARD_TYPE = "card";
-
-export type StripePaymentMethodType = typeof STRIPE_CARD_TYPE;
-
 export type StripePaymentMethodId = string;
 
 export interface StripeCustomer {
@@ -365,7 +397,6 @@ export interface StripeCustomer {
 
 export interface StripePaymentMethod {
   readonly id: StripePaymentMethodId;
-  readonly type: StripePaymentMethodType;
   readonly card: StripeCard;
 }
 

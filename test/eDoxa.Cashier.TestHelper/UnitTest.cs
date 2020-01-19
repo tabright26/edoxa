@@ -6,8 +6,8 @@
 
 using AutoMapper;
 
-using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Cashier.Options;
 
 using Microsoft.Extensions.Options;
 
@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.TestHelper
 
         protected TestDataFixture TestData { get; }
 
-        protected IOptionsSnapshot<CashierAppSettings> TestValidator { get; }
+        protected IOptionsSnapshot<CashierApiOptions> TestValidator { get; }
 
         protected IMapper TestMapper { get; }
     }

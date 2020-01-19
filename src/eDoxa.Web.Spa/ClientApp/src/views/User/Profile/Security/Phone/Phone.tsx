@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import UserPhoneForm from "components/User/Phone/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { RootState } from "store/types";
 import { loadUserPhone } from "store/actions/identity";
 
@@ -28,10 +28,7 @@ const Phone: FunctionComponent<any> = ({
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">PHONE</strong>
         {data && (
-          <Badge.Verification
-            className="ml-3 my-auto"
-            verified={data.verified}
-          />
+          <Badge.Verified className="ml-3 my-auto" verified={data.verified} />
         )}
         <Button.Link
           className="p-0 ml-auto my-auto"

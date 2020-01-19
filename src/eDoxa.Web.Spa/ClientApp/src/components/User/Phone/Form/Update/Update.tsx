@@ -5,13 +5,17 @@ import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_PHONE_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateUserPhone } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-import { PHONE_REQUIRED, PHONE_INVALID, PHONE_REGEXP } from "utils/form/validators";
+import {
+  PHONE_REQUIRED,
+  PHONE_INVALID,
+  PHONE_REGEXP
+} from "utils/form/validators";
 
 interface StateProps {}
 
@@ -32,7 +36,7 @@ const CustomForm: FunctionComponent<Props> = ({
   handleCancel
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <Field
       type="text"
       name="number"

@@ -3,7 +3,6 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { withClans } from "store/root/organization/clan/container";
 import CandidatureWidget from "components/Clan/Candidature/Widget/Widget";
 import ClanInfo from "components/Clan/Summary/Summary";
-import ErrorBoundary from "components/Shared/ErrorBoundary";
 import { compose } from "recompose";
 
 const ClanDetailsIndex: FunctionComponent<any> = ({
@@ -28,27 +27,23 @@ const ClanDetailsIndex: FunctionComponent<any> = ({
     setClan(data.find(clan => clan.id === clanId));
   }, [clanId, data]);
 
-  return (
-    <ErrorBoundary>
-      {clan ? (
-        <Card>
-          <CardHeader>
-            <ClanInfo clan={clan} />
-          </CardHeader>
-          <CardBody>
-            {!userClan ? (
-              <CandidatureWidget
-                type="user"
-                id={userId}
-                clanId={clanId}
-                userId={userId}
-              />
-            ) : null}
-          </CardBody>
-        </Card>
-      ) : null}
-    </ErrorBoundary>
-  );
+  return clan ? (
+    <Card>
+      <CardHeader>
+        <ClanInfo clan={clan} />
+      </CardHeader>
+      <CardBody>
+        {!userClan ? (
+          <CandidatureWidget
+            type="user"
+            id={userId}
+            clanId={clanId}
+            userId={userId}
+          />
+        ) : null}
+      </CardBody>
+    </Card>
+  ) : null;
 };
 
 const enhance = compose<any, any>(withClans);

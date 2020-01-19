@@ -74,13 +74,15 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <input
-          className="form-control"
+          className="form-control-sm form-control"
+          disabled={false}
           name="password"
           onBlur={[Function]}
           onChange={[Function]}
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
+          placeholder="New password"
           type="password"
           value=""
         />
@@ -100,13 +102,15 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <input
-          className="form-control"
+          className="form-control-sm form-control"
+          disabled={false}
           name="confirmPassword"
           onBlur={[Function]}
           onChange={[Function]}
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
+          placeholder="Confirm new password"
           type="password"
           value=""
         />

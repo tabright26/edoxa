@@ -3,13 +3,13 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.Challenges.Infrastructure;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ChallengesDbContext))]
-    public class ChallengesDbContextModelSnapshot : ModelSnapshot
+    internal class ChallengesDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -52,11 +52,20 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<long>("GameDuration")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("GameStartedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("GameUuid")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("ParticipantId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SynchronizedAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

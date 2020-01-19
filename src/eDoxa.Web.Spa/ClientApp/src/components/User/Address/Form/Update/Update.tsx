@@ -12,7 +12,7 @@ import Button from "components/Shared/Button";
 import FormField from "components/User/Address/Field";
 import { UPDATE_USER_ADDRESS_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateUserAddress } from "store/actions/identity";
 import {
   throwSubmissionError,
@@ -61,7 +61,7 @@ const CustomForm: FunctionComponent<Props> = ({
   fieldsOptions: { country, line1, line2, city, state, postalCode }
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <FormField.CountryIsoCode placeholder={country.label} disabled />
     <Field
       type="text"
@@ -136,7 +136,7 @@ const mapStateToProps: MapStateToProps<StateProps, Props, RootState> = (
   const selector = formValueSelector(UPDATE_USER_ADDRESS_FORM);
   const countryIsoCode =
     selector(state, "countryIsoCode") || address.countryIsoCode;
-  const country = state.static.identity.data.countries.find(
+  const country = state.static.identity.countries.find(
     country => country.isoCode === countryIsoCode
   );
   return {

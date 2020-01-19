@@ -10,7 +10,6 @@ using System.Security.Claims;
 using Autofac;
 
 using eDoxa.Seedwork.TestHelper.Extensions;
-using eDoxa.Seedwork.TestHelper.Fakes;
 using eDoxa.Seedwork.TestHelper.Modules;
 
 using IdentityServer4.AccessTokenValidation;

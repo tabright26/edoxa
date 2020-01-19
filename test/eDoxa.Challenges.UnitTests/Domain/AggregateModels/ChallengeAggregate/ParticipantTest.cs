@@ -1,9 +1,10 @@
 // Filename: ParticipantTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -48,7 +49,12 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
             var gameReference = Faker.Game().Uuid();
             var stats = Faker.Game().Stats();
 
-            var match = new Match(challenge.Scoring.Map(stats), gameReference);
+            var match = new Match(
+                gameReference,
+                new UtcNowDateTimeProvider(),
+                TimeSpan.FromSeconds(3600),
+                challenge.Scoring.Map(stats),
+                new UtcNowDateTimeProvider());
 
             // Act
             participant.Snapshot(

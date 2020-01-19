@@ -2,14 +2,14 @@ import React, { FunctionComponent } from "react";
 import { FormGroup, Form } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
-import { USER_ACCOUNT_DEPOSIT_FORM } from "utils/form/constants";
+import { CREATE_USER_TRANSACTION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { createUserTransaction } from "store/actions/cashier";
 import { Currency, TransactionType, TransactionBundleId } from "types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
-import FormField from "components/Shared/Form/Field";
+import FormField from "components/User/Transaction/Field";
 
 interface FormData {
   transactionBundleId: TransactionBundleId;
@@ -33,8 +33,8 @@ const CustomForm: FunctionComponent<Props> = ({
   transactionType
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
-    <FormField.TransactionBundle
+    <ValidationSummary error={error} />
+    <FormField.Bundle
       name="transactionBundleId"
       transactionType={transactionType}
       currency={currency}
@@ -49,7 +49,7 @@ const CustomForm: FunctionComponent<Props> = ({
 
 const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
-    form: USER_ACCOUNT_DEPOSIT_FORM,
+    form: CREATE_USER_TRANSACTION_FORM,
     onSubmit: async (values, dispatch) => {
       try {
         return await new Promise((resolve, reject) => {

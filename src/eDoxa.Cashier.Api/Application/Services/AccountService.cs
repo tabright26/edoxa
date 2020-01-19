@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
@@ -17,6 +16,7 @@ using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
+using eDoxa.Grpc.Protos.Cashier.Options;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -28,15 +28,15 @@ namespace eDoxa.Cashier.Api.Application.Services
     public sealed class AccountService : IAccountService
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly IOptions<CashierAppSettings> _optionsSnapshot;
+        private readonly IOptions<CashierApiOptions> _optionsSnapshot;
 
-        public AccountService(IAccountRepository accountRepository, IOptionsSnapshot<CashierAppSettings> optionsSnapshot)
+        public AccountService(IAccountRepository accountRepository, IOptionsSnapshot<CashierApiOptions> optionsSnapshot)
         {
             _accountRepository = accountRepository;
             _optionsSnapshot = optionsSnapshot;
         }
 
-        private CashierAppSettings Options => _optionsSnapshot.Value;
+        private CashierApiOptions Options => _optionsSnapshot.Value;
 
         public async Task<IAccount> FindAccountAsync(UserId userId)
         {
@@ -373,7 +373,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             bool includeDisabled = false
         )
         {
-            var transactionBundles = Options.TransactionBundles.Where(
+            var transactionBundles = Options.Static.Transaction.Bundles.Where(
                 transactionBundle => (transactionType == EnumTransactionType.All || transactionType == transactionBundle.Type) &&
                                      (currency == EnumCurrency.All || currency == transactionBundle.Currency.Type) &&
                                      !transactionBundle.Deprecated);

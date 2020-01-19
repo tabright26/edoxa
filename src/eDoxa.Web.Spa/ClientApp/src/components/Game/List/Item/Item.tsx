@@ -19,6 +19,7 @@ const GameListItem: FunctionComponent<Props> = ({
   showUnlinkGameAccountCredentialModal
 }) => {
   const [hover, setHover] = useState(false);
+  const filter = !gameOption.verified ? "grayscale(100%)" : null;
   return (
     <Card
       className="p-0 col-6"
@@ -37,9 +38,9 @@ const GameListItem: FunctionComponent<Props> = ({
     >
       <CardImg
         src={require(`assets/img/arena/games/${gameOption.name.toLowerCase()}/panel.jpg`)}
-        style={hover ? style : { borderRadius: "25px" }}
+        style={hover ? style : { borderRadius: "25px", filter }}
       />
-      <CardImgOverlay className="d-flex">
+      <CardImgOverlay className="d-flex" style={{ filter }}>
         {hover ? (
           gameOption.verified ? (
             <h5 className="m-auto">UNLINK MY GAME ACCOUNT...</h5>

@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Options";
+
+import "cashier_dtos.proto";
+
+package edoxa.services.cashier;
+
+message CashierApiOptions {
+  StaticOptions static = 1;
+  
+  message StaticOptions {
+    TransactionOptions transaction = 1;
+
+    message TransactionOptions {
+      repeated TransactionBundleDto bundles = 1;
+    }
+  }
+}

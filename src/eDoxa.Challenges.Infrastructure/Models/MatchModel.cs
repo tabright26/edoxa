@@ -23,6 +23,12 @@ namespace eDoxa.Challenges.Infrastructure.Models
 
         public string GameUuid { get; set; }
 
+        public DateTime GameStartedAt { get; set; }
+
+        public long GameDuration { get; set; }
+
+        public DateTime SynchronizedAt { get; set; }
+
         public ParticipantModel Participant { get; set; }
 
         public ICollection<StatModel> Stats { get; set; }

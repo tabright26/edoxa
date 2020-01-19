@@ -4,10 +4,14 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { CREATE_CLAN_MODAL } from "utils/modal/constants";
 import ClanForm from "components/Clan/Form";
 import { compose } from "recompose";
+import { connect, DispatchProp } from "react-redux";
+import { destroy } from "redux-form";
+import { CREATE_CLAN_FORM } from "utils/form/constants";
 
-type InnerProps = InjectedProps & {
-  actions: any;
-};
+type InnerProps = DispatchProp &
+  InjectedProps & {
+    actions: any;
+  };
 
 type OutterProps = {};
 
@@ -16,7 +20,8 @@ type Props = InnerProps & OutterProps;
 const CustomModal: FunctionComponent<Props> = ({
   show,
   handleHide,
-  actions
+  actions,
+  dispatch
 }) => (
   <Modal
     unmountOnClose={false}
@@ -25,6 +30,7 @@ const CustomModal: FunctionComponent<Props> = ({
     isOpen={show}
     toggle={handleHide}
     centered
+    onClosed={() => dispatch(destroy(CREATE_CLAN_FORM))}
   >
     <ModalHeader toggle={handleHide}>Create a new clan</ModalHeader>
     <ModalBody>
@@ -44,6 +50,7 @@ const CustomModal: FunctionComponent<Props> = ({
 );
 
 const enhance = compose<InnerProps, OutterProps>(
+  connect(),
   connectModal({ name: CREATE_CLAN_MODAL, destroyOnHide: false })
 );
 

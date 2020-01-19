@@ -3,7 +3,9 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Aggregates";
 
 import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
 
+import "challenges_dtos.proto";
 import "challenges_enums.proto";
 import "games_enums.proto";
 import "cashier_enums.proto";
@@ -30,25 +32,18 @@ message ChallengeAggregate {
   int32 bestOf = 6;
   int32 entries = 7;
   int32 payoutEntries = 8;
-  google.protobuf.Int64Value synchronizedAt = 9;
+  google.protobuf.Timestamp synchronizedAt = 9;
   map<string, float> scoring = 10;
-  TimelineAggregate timeline = 11;
+  ChallengeDto.TimelineDto timeline = 11;
   PayoutAggregate payout = 12;
   repeated ParticipantAggregate participants = 13;
-
-  message TimelineAggregate {
-    int64 createdAt = 1;
-	google.protobuf.Int64Value startedAt = 2;
-	google.protobuf.Int64Value endedAt = 3;
-	google.protobuf.Int64Value closedAt = 4;
-  }
 
   message ParticipantAggregate {
     string id = 1;
     UserAggregate user = 2;
     string challengeId = 3;
     customTypes.DecimalValue score = 4;
-    repeated MatchAggregate matches = 5;
+    repeated MatchDto matches = 5;
 
     message UserAggregate {
       string id = 1;
@@ -58,20 +53,6 @@ message ChallengeAggregate {
         string name = 1;
         int32 code = 2;
       }
-    }
-  }
-
-  message MatchAggregate {
-    string id = 1;
-    string participantId = 2;
-    customTypes.DecimalValue score = 3;
-    repeated StatAggregate stats = 4;
-
-    message StatAggregate {
-	  string name = 1;
-	  double value = 2;
-	  float weighting = 3;
-      customTypes.DecimalValue score = 4;
     }
   }
 

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { CardDeck } from "reactstrap";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { withGames } from "store/root/game/container";
 import { GamesState } from "store/root/game/types";
 import { compose } from "recompose";

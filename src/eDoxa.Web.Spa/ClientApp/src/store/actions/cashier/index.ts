@@ -5,13 +5,9 @@ import {
   LOAD_USER_TOKEN_ACCOUNT_BALANCE,
   LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS,
   LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL,
-  LOAD_TRANSACTION_BUNDLES,
-  LOAD_TRANSACTION_BUNDLES_SUCCESS,
-  LOAD_TRANSACTION_BUNDLES_FAIL,
   LOAD_USER_TRANSACTION_HISTORY,
   LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
   LOAD_USER_TRANSACTION_HISTORY_FAIL,
-  TransactionBundlesActionCreators,
   UserTransactionActionCreators,
   UserAccountBalanceActionCreators,
   CREATE_USER_TRANSACTION,
@@ -24,8 +20,6 @@ import {
   CURRENCY_TOKEN,
   TransactionType,
   TransactionStatus,
-  TRANSACTION_TYPE_ALL,
-  CURRENCY_ALL,
   TransactionBundleId
 } from "types";
 import {
@@ -90,30 +84,6 @@ export function loadUserBalance(
       };
     }
   }
-}
-
-export function loadTransactionBundles(
-  transactionType: TransactionType = TRANSACTION_TYPE_ALL,
-  currency: Currency = CURRENCY_ALL
-): TransactionBundlesActionCreators {
-  return {
-    types: [
-      LOAD_TRANSACTION_BUNDLES,
-      LOAD_TRANSACTION_BUNDLES_SUCCESS,
-      LOAD_TRANSACTION_BUNDLES_FAIL
-    ],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
-      request: {
-        method: "GET",
-        url: "/cashier/api/transaction-bundles",
-        params: {
-          transactionType,
-          currency
-        }
-      }
-    }
-  };
 }
 
 export function loadUserTransactionHistory(

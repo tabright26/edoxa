@@ -123,6 +123,7 @@ namespace eDoxa.FunctionalTests
             yield return new ChallengeMatch(
                 Guid.NewGuid().ToString(),
                 new UtcNowDateTimeProvider(),
+                TimeSpan.FromHours(1),
                 new Dictionary<string, double>
                 {
                     ["StatName1"] = 50,
@@ -135,6 +136,7 @@ namespace eDoxa.FunctionalTests
             yield return new ChallengeMatch(
                 Guid.NewGuid().ToString(),
                 new UtcNowDateTimeProvider(),
+                TimeSpan.FromHours(1),
                 new Dictionary<string, double>
                 {
                     ["StatName1"] = 50,

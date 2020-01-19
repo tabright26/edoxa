@@ -32,7 +32,6 @@ import {
   StripePaymentMethodsActionCreators
 } from "./types";
 
-import { StripePaymentMethodType, STRIPE_CARD_TYPE } from "types";
 import { AXIOS_PAYLOAD_CLIENT_CASHIER } from "utils/axios/types";
 
 export function loadStripeAccount(): StripeAccountActionCreators {
@@ -127,9 +126,7 @@ export function updateStripeCustomerDefaultPaymentMethod(
   };
 }
 
-export function loadStripePaymentMethods(
-  type: StripePaymentMethodType = STRIPE_CARD_TYPE
-): StripePaymentMethodsActionCreators {
+export function loadStripePaymentMethods(): StripePaymentMethodsActionCreators {
   return {
     types: [
       LOAD_STRIPE_PAYMENTMETHODS,
@@ -140,7 +137,7 @@ export function loadStripePaymentMethods(
       client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "GET",
-        url: `/payment/api/stripe/payment-methods?type=${type}`
+        url: "/payment/api/stripe/payment-methods"
       }
     }
   };

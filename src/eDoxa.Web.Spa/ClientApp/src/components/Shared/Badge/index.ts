@@ -1,3 +1,3 @@
-import Verification from "./Verification";
+import { Verified } from "./Verified";
 
-export default { Verification };
+export default { Verified };

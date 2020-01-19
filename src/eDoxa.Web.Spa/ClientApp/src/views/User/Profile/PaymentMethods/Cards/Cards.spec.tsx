@@ -10,7 +10,6 @@ it("renders without crashing", () => {
     data: [
       {
         id: "0",
-        type: "card",
         card: {
           brand: "visa",
           country: "CA",

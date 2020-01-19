@@ -1,8 +1,8 @@
 // Filename: StatTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ using Bogus;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain;
 
 using FluentAssertions;
 
@@ -42,7 +43,8 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
                     [new StatName("StatName5")] = new StatWeighting(-3)
                 };
 
-                var stats = new Dictionary<string, double>  {
+                var stats = new Dictionary<string, double>
+                {
                     ["StatName1"] = faker.Random.Int(0, 40),
                     ["StatName2"] = faker.Random.Int(0, 15),
                     ["StatName3"] = faker.Random.Int(0, 50),
@@ -51,8 +53,11 @@ namespace eDoxa.Challenges.UnitTests.Domain.AggregateModels.ChallengeAggregate
                 };
 
                 var match = new Match(
+                    new GameUuid(Guid.NewGuid()),
+                    new UtcNowDateTimeProvider(),
+                    TimeSpan.FromSeconds(3600),
                     scoring.Map(stats),
-                    new GameUuid(Guid.NewGuid()));
+                    new UtcNowDateTimeProvider());
 
                 foreach (var stat in match.Stats)
                 {

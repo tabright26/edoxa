@@ -15,7 +15,7 @@ import {
 import navigation from "./_nav";
 // routes config
 import Routes from "utils/router/components/Routes";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 
 const Aside = React.lazy(() => import("components/App/Aside"));
 const AppBreadcrumb = React.lazy(() => import("components/App/Breadcrumb"));

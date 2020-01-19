@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Container } from "reactstrap";
 import { AppFooter, AppHeader } from "@coreui/react";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 
 const Footer = React.lazy(() => import("components/App/Footer"));
 const Header = React.lazy(() => import("components/App/Header"));
