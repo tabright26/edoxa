@@ -1,6 +1,6 @@
 import React from "react";
 
-import ChallengeList from "components/Challenge/List/List";
+import ChallengeList from "components/Challenge/List";
 
 const Challenges = () => <ChallengeList />;
 
