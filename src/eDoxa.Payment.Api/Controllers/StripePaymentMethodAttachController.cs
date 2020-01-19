@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using Stripe;
+
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Payment.Api.Controllers
@@ -61,9 +63,16 @@ namespace eDoxa.Payment.Api.Controllers
 
             var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
 
-            var paymentMethod = await _stripePaymentMethodService.AttachPaymentMethodAsync(paymentMethodId, customerId, request.DefaultPaymentMethod);
+            var result = await _stripePaymentMethodService.AttachPaymentMethodAsync(paymentMethodId, customerId, request.DefaultPaymentMethod);
 
-            return this.Ok(_mapper.Map<StripePaymentMethodDto>(paymentMethod));
+            if (result.IsValid)
+            {
+                return this.Ok(_mapper.Map<StripePaymentMethodDto>(result.GetEntityFromMetadata<PaymentMethod>()));
+            }
+
+            result.AddToModelState(ModelState);
+
+            return this.BadRequest(new ValidationProblemDetails(ModelState));
         }
     }
 }

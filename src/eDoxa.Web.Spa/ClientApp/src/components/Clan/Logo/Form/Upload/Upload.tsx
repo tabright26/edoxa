@@ -4,7 +4,7 @@ import { reduxForm } from "redux-form";
 import Button from "components/Shared/Button";
 import { UPLOAD_CLAN_LOGO_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 
 const UploadClanLogoForm: FunctionComponent<any> = ({
   handleSubmit,
@@ -12,7 +12,7 @@ const UploadClanLogoForm: FunctionComponent<any> = ({
   error
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <FormGroup>
       <input type="file" name="Logo" accept="image/png, image/jpeg" />
     </FormGroup>

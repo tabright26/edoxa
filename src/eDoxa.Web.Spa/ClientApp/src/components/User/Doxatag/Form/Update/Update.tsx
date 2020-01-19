@@ -5,7 +5,7 @@ import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { UPDATE_USER_DOXATAG_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { changeUserDoxatag } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import {
@@ -44,7 +44,7 @@ const CustomForm: FunctionComponent<Props> = ({
   handleCancel
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <Field
       type="text"
       name="name"

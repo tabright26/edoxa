@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -53,174 +53,127 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
 
         protected override async Task SeedProductionAsync()
         {
-            if (!_context.Challenges.Any())
+            var scoring = new Scoring(
+                new Dictionary<string, float>
+                {
+                    ["Kills"] = 4.5F,
+                    ["Deaths"] = -4F,
+                    ["Assists"] = 3.5F,
+                    ["TotalDamageDealtToChampions"] = 0.0009F,
+                    ["TotalDamageTaken"] = 0.00125F,
+                    ["TotalMinionsKilled"] = 0.04F,
+                    ["VisionScore"] = 0.38F,
+                    ["Winner"] = 20F
+                });
+
+            var timeline = new ChallengeTimeline(new UtcNowDateTimeProvider(), new ChallengeDuration(TimeSpan.FromDays(1)));
+
+            var challenges = new List<IChallenge>
             {
-                var scoring = new Scoring(
-                    new Dictionary<string, float>
-                    {
-                        ["Kills"] = 4.5F,
-                        ["Deaths"] = -4F,
-                        ["Assists"] = 3.5F,
-                        ["TotalDamageDealtToChampions"] = 0.0009F,
-                        ["TotalDamageTaken"] = 0.00125F,
-                        ["VisionScore"] = 0.38F,
-                        ["TotalMinionsKilled"] = 0.04F,
-                        ["Winner"] = 20F
-                    });
-
-                var timeline = new ChallengeTimeline(new UtcNowDateTimeProvider(), new ChallengeDuration(TimeSpan.FromDays(1)));
-
-                var challengeId1WithTwoEntries = ChallengeId.Parse("675fd61f-50a7-4268-8ed3-790428dd94c6");
-
-                var challenge1WithTwoEntries = new Challenge(
-                    challengeId1WithTwoEntries,
-                    new ChallengeName("FREE CHALLENGE 1 (2)"),
+                new Challenge(
+                    ChallengeId.Parse("d53b366f-e717-43d4-ac12-6e13d37f5cef"),
+                    new ChallengeName("2$ CHALLENGE BEST OF 1 (2)"),
                     Game.LeagueOfLegends,
                     BestOf.One,
                     Entries.Two,
                     timeline,
-                    scoring);
-
-                var challengeId2WithTwoEntries = ChallengeId.Parse("3e7326e7-f2b0-4da6-92fb-60aad19b7aff");
-
-                var challenge2WithTwoEntries = new Challenge(
-                    challengeId2WithTwoEntries,
-                    new ChallengeName("FREE CHALLENGE 2 (2)"),
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("369ae69d-b10d-4d72-84ba-698691646ba6"),
+                    new ChallengeName("3$ CHALLENGE BEST OF 1 (2)"),
                     Game.LeagueOfLegends,
                     BestOf.One,
                     Entries.Two,
                     timeline,
-                    scoring);
-
-                var challengeId3WithTwoEntries = ChallengeId.Parse("c653e421-5439-4016-82d7-013a494a3eb0");
-
-                var challenge3WithTwoEntries = new Challenge(
-                    challengeId3WithTwoEntries,
-                    new ChallengeName("FREE CHALLENGE 3 (2)"),
-                    Game.LeagueOfLegends,
-                    BestOf.One,
-                    Entries.Two,
-                    timeline,
-                    scoring);
-
-                var challengeId4WithTwoEntries = ChallengeId.Parse("0923e7c5-413b-47ec-a98b-4c97d2534acf");
-
-                var challenge4WithTwoEntries = new Challenge(
-                    challengeId4WithTwoEntries,
-                    new ChallengeName("FREE CHALLENGE 4 (2)"),
-                    Game.LeagueOfLegends,
-                    BestOf.One,
-                    Entries.Two,
-                    timeline,
-                    scoring);
-
-                var challengeId5WithTwoEntries = ChallengeId.Parse("92c4c94f-a1f6-485d-b4bb-5555d5974419");
-
-                var challenge5WithTwoEntries = new Challenge(
-                    challengeId5WithTwoEntries,
-                    new ChallengeName("FREE CHALLENGE 5 (2)"),
-                    Game.LeagueOfLegends,
-                    BestOf.One,
-                    Entries.Two,
-                    timeline,
-                    scoring);
-
-                var challengeId1WithFourEntries = ChallengeId.Parse("effc77f4-0961-4c3c-873b-b88abb1e97f2");
-
-                var challenge1WithFourEntries = new Challenge(
-                    challengeId1WithFourEntries,
-                    new ChallengeName("FREE CHALLENGE 1 (4)"),
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("eb76fa60-700f-4dce-b312-d69897563437"),
+                    new ChallengeName("2$ CHALLENGE BEST OF 1 (4)"),
                     Game.LeagueOfLegends,
                     BestOf.One,
                     Entries.Four,
                     timeline,
-                    scoring);
-
-                var challengeId2WithFourEntries = ChallengeId.Parse("7e5290e0-f11b-4409-bcb5-211d115e33ee");
-
-                var challenge2WithFourEntries = new Challenge(
-                    challengeId2WithFourEntries,
-                    new ChallengeName("FREE CHALLENGE 2 (4)"),
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("82592581-e6ac-41e0-9c61-773d924f233d"),
+                    new ChallengeName("3$ CHALLENGE BEST OF 1 (4)"),
                     Game.LeagueOfLegends,
                     BestOf.One,
                     Entries.Four,
                     timeline,
-                    scoring);
-
-                var challengeId3WithFourEntries = ChallengeId.Parse("fb59ae64-771c-4cd7-b555-ec4bb14c69bf");
-
-                var challenge3WithFourEntries = new Challenge(
-                    challengeId3WithFourEntries,
-                    new ChallengeName("FREE CHALLENGE 3 (4)"),
-                    Game.LeagueOfLegends,
-                    BestOf.One,
-                    Entries.Four,
-                    timeline,
-                    scoring);
-
-                var challengeId4WithFourEntries = ChallengeId.Parse("086d982a-fff6-493c-9294-eefba208ebd8");
-
-                var challenge4WithFourEntries = new Challenge(
-                    challengeId4WithFourEntries,
-                    new ChallengeName("FREE CHALLENGE 4 (4)"),
-                    Game.LeagueOfLegends,
-                    BestOf.One,
-                    Entries.Four,
-                    timeline,
-                    scoring);
-
-                var challengeId5WithFourEntries = ChallengeId.Parse("2bd0dfc8-576f-4d5b-851c-5a914e186e2c");
-
-                var challenge5WithFourEntries = new Challenge(
-                    challengeId5WithFourEntries,
-                    new ChallengeName("FREE CHALLENGE 5 (4)"),
-                    Game.LeagueOfLegends,
-                    BestOf.One,
-                    Entries.Four,
-                    timeline,
-                    scoring);
-
-                var challengeId1WithSixEntries = ChallengeId.Parse("4d15b0c6-d53d-4f75-a2ba-17c713c79677");
-
-                var challenge1WithSixEntries = new Challenge(
-                    challengeId1WithSixEntries,
-                    new ChallengeName("FREE CHALLENGE 1 (6)"),
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("9457ae9a-4e5c-436f-b10f-33134af68439"),
+                    new ChallengeName("2$ CHALLENGE BEST OF 1 (6)"),
                     Game.LeagueOfLegends,
                     BestOf.One,
                     Entries.Six,
                     timeline,
-                    scoring);
-
-                var challengeId2WithSixEntries = ChallengeId.Parse("a8c93b67-6174-468f-8265-be9ca078bc96");
-
-                var challenge2WithSixEntries = new Challenge(
-                    challengeId2WithSixEntries,
-                    new ChallengeName("FREE CHALLENGE 2 (6)"),
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("91f6d007-b458-4f1c-9814-755b32059e00"),
+                    new ChallengeName("3$ CHALLENGE BEST OF 1 (6)"),
                     Game.LeagueOfLegends,
                     BestOf.One,
                     Entries.Six,
                     timeline,
-                    scoring);
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("4ecb13a4-0742-4140-93b0-27ee582e5cab"),
+                    new ChallengeName("2$ CHALLENGE BEST OF 3 (2)"),
+                    Game.LeagueOfLegends,
+                    BestOf.Three,
+                    Entries.Two,
+                    timeline,
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("fa38f697-2ef3-40e9-a165-d62c3cc750a8"),
+                    new ChallengeName("3$ CHALLENGE BEST OF 3 (2)"),
+                    Game.LeagueOfLegends,
+                    BestOf.Three,
+                    Entries.Two,
+                    timeline,
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("ac6851b4-2cb7-42ab-bf44-fb197d21221b"),
+                    new ChallengeName("2$ CHALLENGE BEST OF 3 (4)"),
+                    Game.LeagueOfLegends,
+                    BestOf.Three,
+                    Entries.Four,
+                    timeline,
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("bb5f6e0c-ada7-47b4-9d24-a3c9ec7df034"),
+                    new ChallengeName("3$ CHALLENGE BEST OF 3 (4)"),
+                    Game.LeagueOfLegends,
+                    BestOf.Three,
+                    Entries.Four,
+                    timeline,
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("6ec217f7-3d6a-41c2-b2eb-4cc8799d2af5"),
+                    new ChallengeName("2$ CHALLENGE BEST OF 3 (6)"),
+                    Game.LeagueOfLegends,
+                    BestOf.Three,
+                    Entries.Six,
+                    timeline,
+                    scoring),
+                new Challenge(
+                    ChallengeId.Parse("7d96b314-8d5b-4393-9257-9c0e2cf7c0f1"),
+                    new ChallengeName("3$ CHALLENGE BEST OF 3 (6)"),
+                    Game.LeagueOfLegends,
+                    BestOf.Three,
+                    Entries.Six,
+                    timeline,
+                    scoring)
+            };
 
-                _challengeRepository.Create(
-                    new List<IChallenge>
-                    {
-                        challenge1WithTwoEntries,
-                        challenge2WithTwoEntries,
-                        challenge3WithTwoEntries,
-                        challenge4WithTwoEntries,
-                        challenge5WithTwoEntries,
-                        challenge1WithFourEntries,
-                        challenge2WithFourEntries,
-                        challenge3WithFourEntries,
-                        challenge4WithFourEntries,
-                        challenge5WithFourEntries,
-                        challenge1WithSixEntries,
-                        challenge2WithSixEntries
-                    });
-
-                await _challengeRepository.CommitAsync(false);
+            foreach (var challenge in challenges.Where(challenge => _context.Challenges.All(x => x.Id != challenge.Id)))
+            {
+                _challengeRepository.Create(challenge);
             }
+
+            await _challengeRepository.CommitAsync(false);
         }
     }
 }

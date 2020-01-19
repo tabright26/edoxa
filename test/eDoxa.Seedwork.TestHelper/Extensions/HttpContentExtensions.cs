@@ -33,6 +33,7 @@ namespace eDoxa.Seedwork.TestHelper.Extensions
             formatter.SerializerSettings.Converters.Add(new StringEnumConverter());
             formatter.SerializerSettings.Converters.Add(new DecimalValueConverter());
             formatter.SerializerSettings.Converters.Add(new TimestampConverter());
+            formatter.SerializerSettings.Converters.Add(new DurationConverter());
 
             return await httpContent.ReadAsAsync<T>(
                 new List<MediaTypeFormatter>

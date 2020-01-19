@@ -1,9 +1,38 @@
-import { combineReducers } from "redux";
+import { Reducer } from "redux";
+import produce, { Draft } from "immer";
+import {
+  StaticOptionsActions,
+  LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS,
+  LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS,
+  LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
+} from "store/actions/static/types";
+import { StaticOptionsState } from "./types";
 
-import { reducer as identityReducer } from "./identity/reducer";
-import { reducer as transactionBundleReducer } from "./transactionBundle/reducer";
+const initialState: StaticOptionsState = {
+  identity: null,
+  payment: null,
+  cashier: null
+};
 
-export const reducer = combineReducers({
-  identity: identityReducer,
-  transactionBundle: transactionBundleReducer
-});
+export const reducer: Reducer<
+  StaticOptionsState,
+  StaticOptionsActions
+> = produce(
+  (draft: Draft<StaticOptionsState>, action: StaticOptionsActions) => {
+    switch (action.type) {
+      case LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS: {
+        draft.identity = action.payload.data;
+        break;
+      }
+      case LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS: {
+        draft.payment = action.payload.data;
+        break;
+      }
+      case LOAD_CASHIER_STATIC_OPTIONS_SUCCESS: {
+        draft.cashier = action.payload.data;
+        break;
+      }
+    }
+  },
+  initialState
+);

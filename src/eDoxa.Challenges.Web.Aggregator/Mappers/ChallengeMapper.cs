@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeMapper.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,6 @@ using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Grpc.Protos.Identity.Dtos;
 
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
-using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.MatchAggregate.Types;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types.UserAggregate.Types;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.PayoutAggregate.Types;
@@ -43,24 +42,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                 ChallengeId = challengeId,
                 Matches =
                 {
-                    participant.Matches.Select(
-                        match => new MatchAggregate
-                        {
-                            Id = match.Id,
-                            Score = match.Score,
-                            ParticipantId = match.ParticipantId,
-                            Stats =
-                            {
-                                match.Stats.Select(
-                                    stat => new StatAggregate
-                                    {
-                                        Name = stat.Name,
-                                        Value = stat.Value,
-                                        Weighting = stat.Weighting,
-                                        Score = stat.Score
-                                    })
-                            }
-                        })
+                    participant.Matches.OrderBy(match => match.GameStartedAt)
                 }
             };
         }
@@ -75,15 +57,9 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                 State = challenge.State,
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
-                Timeline = new TimelineAggregate
-                {
-                    CreatedAt = challenge.Timeline.CreatedAt.ToDateTimeOffset().ToUnixTimeSeconds(),
-                    StartedAt = challenge.Timeline.StartedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
-                    EndedAt = challenge.Timeline.EndedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
-                    ClosedAt = challenge.Timeline.ClosedAt?.ToDateTimeOffset().ToUnixTimeSeconds()
-                },
+                Timeline = challenge.Timeline,
                 PayoutEntries = payout.Buckets.Sum(bucket => bucket.Size),
-                SynchronizedAt = challenge.SynchronizedAt?.ToDateTimeOffset().ToUnixTimeSeconds(),
+                SynchronizedAt = challenge.SynchronizedAt,
                 Scoring =
                 {
                     challenge.Scoring
@@ -114,6 +90,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                 Participants =
                 {
                     challenge.Participants.Select(participant => Map(challenge.Id, participant, doxatags))
+                        .OrderByDescending(participant => participant.Score?.ToDecimal())
                 }
             };
         }

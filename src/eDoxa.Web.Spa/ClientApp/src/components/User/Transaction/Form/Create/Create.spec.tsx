@@ -5,17 +5,17 @@ import Deposit from "./Create";
 import { configureStore } from "store";
 import { CURRENCY_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
 import {
-  LOAD_TRANSACTION_BUNDLES_SUCCESS,
-  TransactionBundlesActions
-} from "store/actions/cashier/types";
+  StaticOptionsActions,
+  LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
+} from "store/actions/static/types";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
 
 const store = configureStore();
 
-const action: TransactionBundlesActions = {
-  type: LOAD_TRANSACTION_BUNDLES_SUCCESS,
+const action: StaticOptionsActions = {
+  type: LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
   error: null,
   meta: null,
   payload: {
@@ -23,24 +23,28 @@ const action: TransactionBundlesActions = {
     statusText: "Ok",
     headers: {},
     config: {},
-    data: [
-      {
-        id: 1,
-        type: TRANSACTION_TYPE_DEPOSIT,
-        currency: {
-          amount: 10,
-          type: CURRENCY_MONEY
-        },
-        price: {
-          amount: 10,
-          type: CURRENCY_MONEY
-        },
-        description: null,
-        notes: null,
-        disabled: false,
-        deprecated: false
+    data: {
+      transaction: {
+        bundles: [
+          {
+            id: 1,
+            type: TRANSACTION_TYPE_DEPOSIT,
+            currency: {
+              amount: 10,
+              type: CURRENCY_MONEY
+            },
+            price: {
+              amount: 10,
+              type: CURRENCY_MONEY
+            },
+            description: null,
+            notes: null,
+            disabled: false,
+            deprecated: false
+          }
+        ]
       }
-    ]
+    }
   }
 };
 

@@ -36,7 +36,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   state,
   ownProps
 ) => {
-  const country = state.static.identity.data.countries.find(
+  const country = state.static.identity.countries.find(
     country => country.isoCode === ownProps.address.countryIsoCode
   );
   return {

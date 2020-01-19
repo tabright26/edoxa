@@ -8,7 +8,7 @@ import CardExpiration from "components/Payment/Stripe/PaymentMethod/Card/Expirat
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Shared/Button";
 import { compose } from "recompose";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { connect, MapDispatchToProps } from "react-redux";
 import { show } from "redux-modal";
 import {
@@ -16,6 +16,7 @@ import {
   UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
   DELETE_STRIPE_PAYMENTMETHOD_MODAL
 } from "utils/modal/constants";
+import { RootState } from "store/types";
 
 interface OwnProps {}
 
@@ -78,6 +79,7 @@ const StripeCardItem: FunctionComponent<any> = ({
 
 const StripeCards: FunctionComponent<any> = ({
   className,
+  limit,
   showCreateStripePaymentMethodModal,
   showUpdateStripePaymentMethodModal,
   showDeleteStripePaymentMethodModal,
@@ -86,10 +88,14 @@ const StripeCards: FunctionComponent<any> = ({
   <Card className={`card-accent-primary ${className}`}>
     <CardHeader className="d-flex">
       <strong className="text-uppercase my-auto">CARDS</strong>
+      <small className="ml-2 my-auto text-muted">
+        ({data.length}/{limit})
+      </small>
       <Button.Link
         className="p-0 ml-auto my-auto"
         icon={faPlus}
         onClick={() => showCreateStripePaymentMethodModal()}
+        disabled={data.length >= limit}
       >
         ADD A NEW CARD
       </Button.Link>
@@ -116,6 +122,12 @@ const StripeCards: FunctionComponent<any> = ({
   </Card>
 );
 
+const mapStateToProps = (state: RootState) => {
+  return {
+    limit: state.static.payment.stripe.paymentMethod.card.limit
+  };
+};
+
 const mapDispatchToProps: MapDispatchToProps<
   DispatchProps,
   OwnProps
@@ -132,7 +144,7 @@ const mapDispatchToProps: MapDispatchToProps<
 
 const enhance = compose<any, any>(
   withStripePaymentMethods,
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 );
 
 export default enhance(StripeCards);

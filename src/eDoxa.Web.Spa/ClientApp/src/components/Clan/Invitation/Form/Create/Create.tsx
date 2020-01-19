@@ -5,7 +5,7 @@ import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { SEND_INVITATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 
 //TODO: ASK ROY IF WE ARE GONNA KEEP THIS INVITATION FORM, BECAUSE WE ARE SUPPOSE TO USE A SPECIFIC USER PROFILE PAGE WITH AN INVITATION BUTTON.
 
@@ -15,7 +15,7 @@ const CreateInvitationForm: FunctionComponent<any> = ({
   error
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <Field
       type="text"
       name="userId"

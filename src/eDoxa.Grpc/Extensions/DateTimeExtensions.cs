@@ -17,7 +17,7 @@ namespace eDoxa.Grpc.Extensions
             return DateTime.SpecifyKind(dateTime, DateTimeKind.Utc).ToTimestamp();
         }
 
-        public static Timestamp? ToTimestampUtcOrDefault(this DateTime? dateTime)
+        public static Timestamp? ToTimestampUtcOrNull(this DateTime? dateTime)
         {
             return dateTime.HasValue ? DateTime.SpecifyKind(dateTime.Value, DateTimeKind.Utc).ToTimestamp() : null;
         }

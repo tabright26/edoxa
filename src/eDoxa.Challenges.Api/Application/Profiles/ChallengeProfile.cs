@@ -18,6 +18,8 @@ using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Seedwork.Domain.Extensions;
 
+using Google.Protobuf.WellKnownTypes;
+
 using static eDoxa.Grpc.Protos.Challenges.Dtos.ChallengeDto.Types;
 using static eDoxa.Grpc.Protos.Challenges.Dtos.MatchDto.Types;
 
@@ -35,6 +37,12 @@ namespace eDoxa.Challenges.Api.Application.Profiles
 
             this.CreateMap<IMatch, MatchDto>()
                 .ForMember(match => match.Id, config => config.MapFrom(match => match.Id.ToString()))
+                .ForMember(match => match.ChallengeId, config => config.Ignore())
+                .ForMember(match => match.GameUuid, config => config.MapFrom(match => match.GameUuid.ToString()))
+                .ForMember(match => match.GameStartedAt, config => config.MapFrom(match => match.GameStartedAt.ToTimestampUtc()))
+                .ForMember(match => match.GameDuration, config => config.MapFrom(match => match.GameDuration.ToDuration()))
+                .ForMember(match => match.GameEndedAt, config => config.MapFrom(match => match.GameEndedAt.ToTimestampUtc()))
+                .ForMember(match => match.SynchronizedAt, config => config.MapFrom(match => match.SynchronizedAt.ToTimestampUtc()))
                 .ForMember(match => match.Score, config => config.MapFrom<DecimalValue>(match => match.Score.ToDecimal()))
                 .ForMember(match => match.ParticipantId, config => config.Ignore())
                 .ForMember(match => match.Stats, config => config.MapFrom(match => match.Stats));
@@ -45,14 +53,14 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 .ForMember(participant => participant.Score, config => config.Ignore())
                 .ForMember(participant => participant.ChallengeId, config => config.Ignore())
                 .ForMember(participant => participant.GamePlayerId, config => config.MapFrom(participant => participant.PlayerId.ToString()))
-                .ForMember(participant => participant.SynchronizedAt, config => config.MapFrom(participant => participant.SynchronizedAt.ToTimestampUtcOrDefault()))
+                .ForMember(participant => participant.SynchronizedAt, config => config.MapFrom(participant => participant.SynchronizedAt.ToTimestampUtcOrNull()))
                 .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches));
 
             this.CreateMap<ChallengeTimeline, TimelineDto>()
                 .ForMember(timeline => timeline.CreatedAt, config => config.MapFrom(timeline => timeline.CreatedAt.ToTimestampUtc()))
-                .ForMember(timeline => timeline.StartedAt, config => config.MapFrom(timeline => timeline.StartedAt.ToTimestampUtcOrDefault()))
-                .ForMember(timeline => timeline.EndedAt, config => config.MapFrom(timeline => timeline.EndedAt.ToTimestampUtcOrDefault()))
-                .ForMember(timeline => timeline.ClosedAt, config => config.MapFrom(timeline => timeline.ClosedAt.ToTimestampUtcOrDefault()));
+                .ForMember(timeline => timeline.StartedAt, config => config.MapFrom(timeline => timeline.StartedAt.ToTimestampUtcOrNull()))
+                .ForMember(timeline => timeline.EndedAt, config => config.MapFrom(timeline => timeline.EndedAt.ToTimestampUtcOrNull()))
+                .ForMember(timeline => timeline.ClosedAt, config => config.MapFrom(timeline => timeline.ClosedAt.ToTimestampUtcOrNull()));
 
             this.CreateMap<IChallenge, ChallengeDto>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id.ToString()))
@@ -61,7 +69,7 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 .ForMember(challenge => challenge.State, config => config.MapFrom(challenge => challenge.Timeline.State.ToEnum<EnumChallengeState>()))
                 .ForMember(challenge => challenge.BestOf, config => config.MapFrom<int>(challenge => challenge.BestOf))
                 .ForMember(challenge => challenge.Entries, config => config.MapFrom<int>(challenge => challenge.Entries))
-                .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt.ToTimestampUtcOrDefault()))
+                .ForMember(challenge => challenge.SynchronizedAt, config => config.MapFrom(challenge => challenge.SynchronizedAt.ToTimestampUtcOrNull()))
                 .ForMember(challenge => challenge.Timeline, config => config.MapFrom(challenge => challenge.Timeline))
                 .ForMember(challenge => challenge.Scoring, config => config.ConvertUsing(new ScoringConverter(), challenge => challenge.Scoring))
                 .ForMember(challenge => challenge.Participants, config => config.MapFrom(challenge => challenge.Participants))
@@ -78,13 +86,13 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 State = challenge.Timeline.State.ToEnum<EnumChallengeState>(),
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
-                SynchronizedAt = challenge.SynchronizedAt.ToTimestampUtcOrDefault(),
+                SynchronizedAt = challenge.SynchronizedAt.ToTimestampUtcOrNull(),
                 Timeline = new TimelineDto
                 {
                     CreatedAt = challenge.Timeline.CreatedAt.ToTimestampUtc(),
-                    StartedAt = challenge.Timeline.StartedAt.ToTimestampUtcOrDefault(),
-                    EndedAt = challenge.Timeline.EndedAt.ToTimestampUtcOrDefault(),
-                    ClosedAt = challenge.Timeline.ClosedAt.ToTimestampUtcOrDefault()
+                    StartedAt = challenge.Timeline.StartedAt.ToTimestampUtcOrNull(),
+                    EndedAt = challenge.Timeline.EndedAt.ToTimestampUtcOrNull(),
+                    ClosedAt = challenge.Timeline.ClosedAt.ToTimestampUtcOrNull()
                 },
                 Scoring =
                 {
@@ -106,20 +114,26 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 GamePlayerId = participant.PlayerId,
                 ChallengeId = challenge.Id,
                 Score = participant.ComputeScore(challenge.BestOf)?.ToDecimal(),
-                SynchronizedAt = participant.SynchronizedAt.ToTimestampUtcOrDefault(),
+                SynchronizedAt = participant.SynchronizedAt.ToTimestampUtcOrNull(),
                 Matches =
                 {
-                    participant.Matches.Select(match => Map(participant, match))
+                    participant.Matches.Select(match => Map(challenge, participant, match))
                 }
             };
         }
 
-        private static MatchDto Map(Participant participant, IMatch match)
+        private static MatchDto Map(IChallenge challenge, Participant participant, IMatch match)
         {
             return new MatchDto
             {
                 Id = match.Id,
+                ChallengeId = challenge.Id,
                 ParticipantId = participant.Id,
+                GameUuid = match.GameUuid,
+                GameStartedAt = match.GameStartedAt.ToTimestampUtc(),
+                GameDuration = match.GameDuration.ToDuration(),
+                GameEndedAt = match.GameEndedAt.ToTimestampUtc(),
+                SynchronizedAt = match.SynchronizedAt.ToTimestampUtc(),
                 Score = match.Score.ToDecimal(),
                 Stats =
                 {

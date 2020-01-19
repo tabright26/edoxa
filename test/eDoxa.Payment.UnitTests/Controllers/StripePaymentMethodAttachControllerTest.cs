@@ -1,8 +1,8 @@
 ﻿// Filename: StripePaymentMethodAttachControllerTest.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -12,6 +12,7 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Payment.TestHelper.Mocks;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -31,7 +32,7 @@ namespace eDoxa.Payment.UnitTests.Controllers
         public StripePaymentMethodAttachControllerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
-        
+
         [Fact]
         public async Task PostAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
@@ -73,19 +74,21 @@ namespace eDoxa.Payment.UnitTests.Controllers
 
             mockPaymentMethodService
                 .Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
-                .ReturnsAsync(new PaymentMethod
-                {
-                    Id = "PaymentMethodId",
-                    Type = "card",
-                    Card = new PaymentMethodCard
-                    {
-                        Brand = "Brand",
-                        Country = "CA",
-                        Last4 = "1234",
-                        ExpMonth = 11,
-                        ExpYear = 22
-                    }
-                })
+                .ReturnsAsync(
+                    DomainValidationResult.Succeeded(
+                        new PaymentMethod
+                        {
+                            Id = "PaymentMethodId",
+                            Type = "card",
+                            Card = new PaymentMethodCard
+                            {
+                                Brand = "Brand",
+                                Country = "CA",
+                                Last4 = "1234",
+                                ExpMonth = 11,
+                                ExpYear = 22
+                            }
+                        }))
                 .Verifiable();
 
             var paymentMethodAttachController = new StripePaymentMethodAttachController(

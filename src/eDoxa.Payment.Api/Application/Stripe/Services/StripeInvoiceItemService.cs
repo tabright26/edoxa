@@ -5,8 +5,10 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -18,14 +20,14 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
 {
     public sealed class StripeInvoiceItemService : InvoiceItemService, IStripeInvoiceItemService
     {
-        private readonly IOptions<StripeOptions> _optionsSnapshot;
+        private readonly IOptions<PaymentApiOptions> _optionsSnapshot;
 
-        public StripeInvoiceItemService(IOptionsSnapshot<StripeOptions> optionsSnapshot)
+        public StripeInvoiceItemService(IOptionsSnapshot<PaymentApiOptions> optionsSnapshot)
         {
             _optionsSnapshot = optionsSnapshot;
         }
 
-        private StripeInvoiceOptions Options => _optionsSnapshot.Value.Invoice;
+        private PaymentApiOptions Options => _optionsSnapshot.Value;
 
         public async Task CreateInvoiceItemAsync(
             TransactionId transactionId,
@@ -38,10 +40,10 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                 new InvoiceItemCreateOptions
                 {
                     Customer = customerId,
-                    Currency = Options.Currency,
+                    Currency = Options.Default.Stripe.Invoice.Currency,
                     Amount = amount,
                     Description = description,
-                    TaxRates = Options.TaxRates,
+                    TaxRates = Options.Default.Stripe.Invoice.TaxRates.ToList(),
                     Metadata = new Dictionary<string, string>
                     {
                         [nameof(transactionId)] = transactionId.ToString()

@@ -1,5 +1,4 @@
 import React, { Fragment } from "react";
-import { STRIPE_CARD_TYPE } from "types";
 import { Elements } from "react-stripe-elements";
 
 const Cards = React.lazy(() => import("./Cards"));
@@ -11,7 +10,7 @@ const PaymentMethods = () => (
     <Elements>
       <BankAccount className="my-4" />
     </Elements>
-    <Cards className="my-4" paymentMethodType={STRIPE_CARD_TYPE} />
+    <Cards className="my-4" />
   </Fragment>
 );
 

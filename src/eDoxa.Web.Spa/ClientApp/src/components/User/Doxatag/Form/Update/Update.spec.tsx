@@ -41,7 +41,7 @@ describe("<UserDoxatagUpdateForm />", () => {
       const field = wrapper.findFieldByName("name");
 
       expect(field.prop("type")).toBe("text");
-      expect(field.prop("label")).toBe("Name");
+      expect(field.prop("label")).toBe("DoxaTag");
       expect(field.prop("formGroup")).toBe(FormGroup);
       expect(field.prop("component")).toBe(Input.Text);
     });

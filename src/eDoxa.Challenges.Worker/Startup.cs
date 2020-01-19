@@ -98,7 +98,11 @@ namespace eDoxa.Challenges.Worker
                 .AddCircuitBreakerPolicyHandler();
 
             services.AddGrpcClient<ChallengeService.ChallengeServiceClient>(options => options.Address = new Uri($"{AppSettings.Endpoints.ChallengesUrl}:81"))
-                .ConfigureChannel(options => options.Credentials = ChannelCredentials.Insecure)
+                .ConfigureChannel(options =>
+                {
+                    options.Credentials = ChannelCredentials.Insecure;
+                    options.MaxReceiveMessageSize = 1000000000;
+                })
                 .AddRetryPolicyHandler()
                 .AddCircuitBreakerPolicyHandler();
         }

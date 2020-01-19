@@ -1,11 +1,11 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Card } from "reactstrap";
 import TransactionList from "components/User/Transaction/List";
-import Paginate from "components/Shared/Paginate";
+import { Paginate } from "components/Shared/Paginate";
 import { compose } from "recompose";
 import { UserTransactionState } from "store/root/user/transactionHistory/types";
 import { Currency, TransactionType, TransactionStatus } from "types";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserTransactionHistory } from "store/actions/cashier";

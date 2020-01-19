@@ -6,10 +6,8 @@
 
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
 
-using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
@@ -27,9 +25,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
 
         [Required]
         public EndpointsOptions Endpoints { get; set; }
-
-        [Required]
-        public TransactionBundleDto[] TransactionBundles { get; set; } = Array.Empty<TransactionBundleDto>();
     }
 
     public sealed class EndpointsOptions : AuthorityEndpointsOptions

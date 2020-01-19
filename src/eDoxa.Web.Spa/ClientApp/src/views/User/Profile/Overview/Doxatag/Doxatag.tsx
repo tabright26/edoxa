@@ -4,7 +4,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import DoxatagForm from "components/User/Doxatag/Form";
 import { compose } from "recompose";
 import Button from "components/Shared/Button";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserDoxatagHistory } from "store/actions/identity";

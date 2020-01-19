@@ -11,8 +11,8 @@ import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_PROFILE_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormField from "components/Shared/Form/Field";
-import FormValidation from "components/Shared/Form/Validation";
+import FormField from "components/Shared/Field";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateUserProfile } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import { connect, MapStateToProps } from "react-redux";
@@ -44,7 +44,7 @@ const CustomForm: FunctionComponent<Props> = ({
   error
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <dl className="row mb-0">
       <dd className="col-sm-3 text-muted mb-0">Name</dd>
       <dd className="col-sm-9 mb-0">

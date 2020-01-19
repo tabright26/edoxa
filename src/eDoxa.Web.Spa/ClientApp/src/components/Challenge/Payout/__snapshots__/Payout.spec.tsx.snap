@@ -19,10 +19,14 @@ exports[`renders without crashing 1`] = `
   >
     <thead>
       <tr>
-        <th>
+        <th
+          className="align-middle w-50"
+        >
           Position
         </th>
-        <th>
+        <th
+          className="align-middle w-50"
+        >
           Prize
         </th>
       </tr>

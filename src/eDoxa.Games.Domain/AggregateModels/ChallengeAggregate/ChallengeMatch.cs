@@ -13,16 +13,19 @@ namespace eDoxa.Games.Domain.AggregateModels.ChallengeAggregate
 {
     public sealed class ChallengeMatch
     {
-        public ChallengeMatch(string gameUuid, IDateTimeProvider provider, IDictionary<string, double> stats)
+        public ChallengeMatch(string gameUuid, IDateTimeProvider gameCreatedAt, TimeSpan gameDuration, IDictionary<string, double> stats)
         {
             GameUuid = gameUuid;
-            Timestamp = provider.DateTime;
+            GameCreatedAt = gameCreatedAt.DateTime;
+            GameDuration = gameDuration;
             Stats = stats;
         }
 
         public string GameUuid { get; }
 
-        public DateTime Timestamp { get; }
+        public DateTime GameCreatedAt { get; }
+
+        public TimeSpan GameDuration { get; }
 
         public IDictionary<string, double> Stats { get; }
     }

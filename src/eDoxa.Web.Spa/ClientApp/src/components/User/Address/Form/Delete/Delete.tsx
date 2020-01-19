@@ -4,7 +4,7 @@ import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import { DELETE_USER_ADDRESS_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { deleteUserAddress } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
@@ -27,7 +27,7 @@ const CustomForm: FunctionComponent<Props> = ({
   handleCancel
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <Label className="text-muted">
       Are you sure you want to remove this address?
     </Label>

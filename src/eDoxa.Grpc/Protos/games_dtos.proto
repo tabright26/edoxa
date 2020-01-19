@@ -3,6 +3,7 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Games.Dtos";
 
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
 
 import "games_enums.proto";
 
@@ -20,9 +21,10 @@ message ChallengeScoringDto {
 
 message GameMatchDto {
   string gameUuid = 1;
-  google.protobuf.Timestamp timestamp = 2;
-  map<string, double> stats = 3;
-  map<string, string> metadata = 4;
+  google.protobuf.Timestamp gameCreatedAt = 2;
+  google.protobuf.Duration gameDuration = 3;
+  map<string, double> stats = 4;
+  map<string, string> metadata = 5;
 }
 
 message GameCredentialDto {

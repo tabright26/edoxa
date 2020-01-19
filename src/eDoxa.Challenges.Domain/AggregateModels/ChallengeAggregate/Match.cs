@@ -1,8 +1,8 @@
 ﻿// Filename: Match.cs
-// Date Created: 2019-06-25
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -16,13 +16,30 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
     {
         private readonly HashSet<Stat> _stats;
 
-        public Match(IEnumerable<Stat> stats, GameUuid gameUuid)
+        public Match(
+            GameUuid gameUuid,
+            IDateTimeProvider gameStartedAt,
+            TimeSpan gameDuration,
+            IEnumerable<Stat> stats,
+            IDateTimeProvider synchronizedAt
+        )
         {
-            _stats = new HashSet<Stat>(stats);
             GameUuid = gameUuid;
+            GameStartedAt = gameStartedAt.DateTime;
+            GameDuration = gameDuration;
+            SynchronizedAt = synchronizedAt.DateTime;
+            _stats = new HashSet<Stat>(stats);
         }
 
         public GameUuid GameUuid { get; }
+
+        public DateTime GameStartedAt { get; }
+
+        public TimeSpan GameDuration { get; }
+
+        public DateTime GameEndedAt => GameStartedAt + GameDuration;
+
+        public DateTime SynchronizedAt { get; }
 
         public Score Score => new MatchScore(this);
 

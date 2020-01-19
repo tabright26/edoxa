@@ -3,7 +3,7 @@ import { Card, CardBody, CardHeader } from "reactstrap";
 import { withInvitations } from "store/root/organization/invitation/container";
 import Item from "./Item/Item";
 import { ClanInvitation } from "types";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 
 const InvitationList: FunctionComponent<any> = ({ actions, invitations: { data, loading }, type }) => (
   <Card>

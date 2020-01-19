@@ -1,9 +1,10 @@
 ﻿// Filename: MatchTypeConverter.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 
 using AutoMapper;
@@ -11,6 +12,7 @@ using AutoMapper;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Models;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
@@ -21,7 +23,12 @@ namespace eDoxa.Challenges.Infrastructure.Profiles.ConverterTypes
         {
             var stats = context.Mapper.Map<ICollection<Stat>>(matchModel.Stats);
 
-            var match = new Match(stats, matchModel.GameUuid);
+            var match = new Match(
+                matchModel.GameUuid,
+                new DateTimeProvider(matchModel.GameStartedAt),
+                TimeSpan.FromTicks(matchModel.GameDuration),
+                stats,
+                new DateTimeProvider(matchModel.SynchronizedAt));
 
             match.SetEntityId(MatchId.FromGuid(matchModel.Id));
 

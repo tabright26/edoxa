@@ -10,7 +10,7 @@ import {
 } from "reactstrap";
 import { RouteProps } from "utils/router/types";
 import { LinkContainer } from "react-router-bootstrap";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import {
   getUserProfilePath,
   getUserProfileOverviewPath,

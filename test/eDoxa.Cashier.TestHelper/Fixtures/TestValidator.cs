@@ -4,7 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Cashier.Api.Infrastructure;
+using eDoxa.Grpc.Protos.Cashier.Options;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -20,16 +20,16 @@ namespace eDoxa.Cashier.TestHelper.Fixtures
             var builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json", false);
             var configuration = builder.Build();
-            Options = configuration.Get<CashierAppSettings>();
+            Options = configuration.GetSection("Api").Get<CashierApiOptions>();
         }
 
-        private CashierAppSettings Options { get; }
+        private CashierApiOptions Options { get; }
 
-        public IOptionsSnapshot<CashierAppSettings> OptionsWrapper
+        public IOptionsSnapshot<CashierApiOptions> OptionsWrapper
         {
             get
             {
-                var mock = new Mock<IOptionsSnapshot<CashierAppSettings>>();
+                var mock = new Mock<IOptionsSnapshot<CashierApiOptions>>();
 
                 mock.Setup(optionsSnapshot => optionsSnapshot.Value).Returns(Options);
 

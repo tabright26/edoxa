@@ -59,7 +59,8 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
                 matches.Add(
                     new ChallengeMatch(
                         match.GameId.ToString(),
-                        new DateTimeProvider(match.GameCreation.Add(match.GameDuration)),
+                        new DateTimeProvider(match.GameCreation),
+                        match.GameDuration,
                         stats.GetType().GetProperties().ToDictionary(property => property.Name, property => Convert.ToDouble(property.GetValue(stats)))));
             }
 

@@ -53,7 +53,7 @@ namespace eDoxa.Payment.Api.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetAsync([FromQuery] string type)
+        public async Task<IActionResult> GetAsync()
         {
             var userId = HttpContext.GetUserId();
 
@@ -64,7 +64,7 @@ namespace eDoxa.Payment.Api.Controllers
 
             var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
 
-            var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId, type);
+            var paymentMethods = await _stripePaymentMethodService.FetchPaymentMethodsAsync(customerId);
 
             if (!paymentMethods.Any())
             {

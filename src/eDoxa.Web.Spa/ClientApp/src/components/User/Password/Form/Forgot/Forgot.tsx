@@ -5,10 +5,14 @@ import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { FORGOT_USER_PASSWORD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { forgotUserPassword } from "store/actions/identity";
-import { EMAIL_REQUIRED, EMAIL_INVALID, EMAIL_REGEXP } from "utils/form/validators";
+import {
+  EMAIL_REQUIRED,
+  EMAIL_INVALID,
+  EMAIL_REGEXP
+} from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 import { toastr } from "react-redux-toastr";
@@ -25,7 +29,7 @@ type Props = InnerProps & OutterProps;
 
 const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <Field
       type="text"
       name="email"

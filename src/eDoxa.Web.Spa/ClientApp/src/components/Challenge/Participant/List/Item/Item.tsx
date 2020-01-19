@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from "react";
-import { Collapse, Card, Badge, CardHeader } from "reactstrap";
+import { Collapse, Card, Badge, CardHeader, CardBody } from "reactstrap";
 import Format from "components/Shared/Format";
 import { ChallengeParticipant } from "types";
 import ChallengeParticipantMatchList from "components/Challenge/Participant/Match/List";
@@ -7,44 +7,70 @@ import ChallengeParticipantMatchList from "components/Challenge/Participant/Matc
 interface Props {
   participant: ChallengeParticipant;
   position: number;
+  payoutEntries: number;
+  bestOf: number;
 }
 
 const ChallengeParticipantItem: FunctionComponent<Props> = ({
   participant,
-  position
+  position,
+  payoutEntries,
+  bestOf
 }) => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
+  const doxatag = participant.user.doxatag
+    ? participant.user.doxatag.name
+    : "Data unavailable";
   return (
     <>
-      <Card className={`my-2 ${collapse ? "bg-primary" : ""}`} onClick={toggle}>
-        <CardHeader className="p-0 d-flex">
+      <Card className="my-2" onClick={toggle}>
+        <CardBody
+          className={`p-0 d-flex ${
+            collapse ? "bg-primary" : ""
+          } border-0 rounded`}
+        >
           <div
-            className="pl-2 py-2 text-center"
+            className="pl-3 py-2 text-center"
             style={{
-              width: "45px"
+              width: "50px"
             }}
           >
-            <Badge variant="primary">{position}</Badge>
+            <Badge
+              className={`${
+                collapse
+                  ? "bg-gray-700"
+                  : position <= payoutEntries && participant.score
+                  ? "bg-primary"
+                  : "bg-secondary"
+              } w-100`}
+            >
+              {collapse ? <strong>{position}</strong> : position}
+            </Badge>
           </div>
           <div className="px-3 py-2">
-            {participant.user.doxatag
-              ? participant.user.doxatag.name
-              : "Data unavailable"}
+            {collapse ? <strong>{doxatag}</strong> : doxatag}
           </div>
           <div
-            className="bg-primary px-3 py-2 text-center ml-auto"
+            className={`${
+              collapse ? "bg-gray-700" : "bg-primary"
+            } px-3 py-2 text-center ml-auto h-100 rounded-right`}
             style={{
               width: "125px"
             }}
           >
-            <Format.Score score={participant.score} />
+            <Format.Score score={participant.score} bold={collapse} />
           </div>
-        </CardHeader>
+        </CardBody>
       </Card>
       <Collapse isOpen={collapse}>
         <Card>
-          <CardHeader>Matches</CardHeader>
+          <CardHeader className="d-flex">
+            <strong className="text-uppercase my-auto">Match history</strong>
+            <small className="ml-2 my-auto text-muted">
+              ({participant.matches.length}/{bestOf})
+            </small>
+          </CardHeader>
           <ChallengeParticipantMatchList participantId={participant.id} />
         </Card>
       </Collapse>

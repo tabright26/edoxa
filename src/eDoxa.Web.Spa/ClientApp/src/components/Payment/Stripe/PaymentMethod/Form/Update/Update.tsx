@@ -10,8 +10,8 @@ import Button from "components/Shared/Button";
 import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import CardIcon from "components/Payment/Stripe/PaymentMethod/Card/Icon";
 import { compose } from "recompose";
-import FormField from "components/Shared/Form/Field";
-import FormValidation from "components/Shared/Form/Validation";
+import FormField from "components/Shared/Field";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateStripePaymentMethod } from "store/actions/payment";
 import {
   StripePaymentMethodsActions,
@@ -50,7 +50,7 @@ const CustomForm: FunctionComponent<Props> = ({
   error
 }) => (
   <Form onSubmit={handleSubmit} inline className="d-flex">
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <FormGroup>
       <div className="d-flex">
         <CardIcon className="my-auto" brand={brand} size="2x" />
@@ -58,13 +58,13 @@ const CustomForm: FunctionComponent<Props> = ({
       </div>
     </FormGroup>
     <FormSection className="mx-auto" name="card">
-      <Label className="ml-4 mr-2 text-muted">Expiration:</Label>
+      <Label className="d-inline ml-4 mr-2 text-muted">Expiration:</Label>
       <FormField.Month className="d-inline" name="expMonth" width="55px" />
       <span className="d-inline mx-2">/</span>
       <FormField.Year
         className="d-inline"
         name="expYear"
-        width="55px"
+        width="75px"
         min={expYear}
         max={expYear + 20}
         descending={false}

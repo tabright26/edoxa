@@ -5,13 +5,17 @@ import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
 import UserTransactionForm from "components/User/Transaction/Form";
 import { compose } from "recompose";
 import { Currency, TransactionType } from "types";
+import { connect, DispatchProp } from "react-redux";
+import { destroy } from "redux-form";
+import { CREATE_USER_TRANSACTION_FORM } from "utils/form/constants";
 
 type OutterProps = {};
 
-type InnerProps = InjectedProps & {
-  currency: Currency;
-  transactionType: TransactionType;
-};
+type InnerProps = InjectedProps &
+  DispatchProp & {
+    currency: Currency;
+    transactionType: TransactionType;
+  };
 
 type Props = InnerProps & OutterProps;
 
@@ -19,7 +23,8 @@ const CustomModal: FunctionComponent<Props> = ({
   show,
   handleHide,
   currency,
-  transactionType
+  transactionType,
+  dispatch
 }) => (
   <Modal
     unmountOnClose={false}
@@ -28,6 +33,7 @@ const CustomModal: FunctionComponent<Props> = ({
     centered
     isOpen={show}
     toggle={handleHide}
+    onClosed={() => dispatch(destroy(CREATE_USER_TRANSACTION_FORM))}
   >
     <ModalHeader toggle={handleHide}>CREATE TRANSACTION</ModalHeader>
     <ModalBody>
@@ -41,6 +47,7 @@ const CustomModal: FunctionComponent<Props> = ({
 );
 
 const enhance = compose<InnerProps, OutterProps>(
+  connect(),
   connectModal({ name: CREATE_USER_TRANSACTION_MODAL, destroyOnHide: false })
 );
 

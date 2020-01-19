@@ -5,19 +5,32 @@ exports[`renders without crashing 1`] = `
   className="p-0 border border-dark d-flex card-body"
 >
   <div
-    className="pl-2 py-2 text-center"
+    className="pl-3 py-2 text-center"
     style={
       Object {
-        "width": "45px",
+        "width": "50px",
       }
     }
   >
     <span
-      className="badge badge-secondary"
-      variant="light"
+      className="w-100 badge badge-secondary"
     >
       1
     </span>
+  </div>
+  <div
+    className="px-3 py-2"
+    style={
+      Object {
+        "width": "350px",
+      }
+    }
+  >
+    <time
+      dateTime={null}
+    >
+      Invalid date
+    </time>
   </div>
   <div
     className="py-2 text-center mx-auto"
@@ -25,13 +38,12 @@ exports[`renders without crashing 1`] = `
   >
     <span
       className="badge badge-secondary"
-      variant="primary"
     >
       View details
     </span>
   </div>
   <div
-    className="bg-primary px-3 py-2 text-center ml-5"
+    className="bg-secondary px-3 py-2 text-center ml-5"
     style={
       Object {
         "width": "125px",
@@ -39,7 +51,9 @@ exports[`renders without crashing 1`] = `
     }
   >
     <span>
-      20.00
+      <span>
+        20.00
+      </span>
     </span>
   </div>
 </div>

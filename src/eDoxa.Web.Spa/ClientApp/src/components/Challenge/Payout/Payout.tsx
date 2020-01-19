@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Table, Card, CardHeader } from "reactstrap";
-import CurrencyFormat from "components/Shared/Format/Currency";
-import BucketFormat from "components/Shared/Format/PayoutBucket";
+import Format from "components/Shared/Format";
 import { ChallengeId, ChallengePayout } from "types";
 
 interface Props {
@@ -20,8 +19,8 @@ const ArenaChallengePayout: FunctionComponent<Props> = ({ payout }) => {
       <Table striped bordered hover size="sm" variant="dark" className="m-0">
         <thead>
           <tr>
-            <th>Position</th>
-            <th>Prize</th>
+            <th className="align-middle w-50">Position</th>
+            <th className="align-middle w-50">Prize</th>
           </tr>
         </thead>
         <tbody>
@@ -30,8 +29,23 @@ const ArenaChallengePayout: FunctionComponent<Props> = ({ payout }) => {
             nextSize += bucketSize;
             const bucketRender = (
               <tr key={index}>
-                <td className="align-middle">{<BucketFormat prevSize={prevSize} nextSize={nextSize} />}</td>
-                <td className="align-middle">{<CurrencyFormat alignment="center" currency={payout.prizePool.currency} amount={bucket.prize} />}</td>
+                <td className="align-middle w-50">
+                  {
+                    <Format.PayoutBucket
+                      prevSize={prevSize}
+                      nextSize={nextSize}
+                    />
+                  }
+                </td>
+                <td className="align-middle w-50">
+                  {
+                    <Format.Currency
+                      alignment="center"
+                      currency={payout.prizePool.currency}
+                      amount={bucket.prize}
+                    />
+                  }
+                </td>
               </tr>
             );
             prevSize += bucketSize;

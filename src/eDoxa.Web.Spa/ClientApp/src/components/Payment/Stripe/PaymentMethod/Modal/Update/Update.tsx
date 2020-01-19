@@ -5,10 +5,14 @@ import StripePaymentMethodForm from "components/Payment/Stripe/PaymentMethod/For
 import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
 import { StripePaymentMethod } from "types";
+import { connect, DispatchProp } from "react-redux";
+import { destroy } from "redux-form";
+import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 
-type InnerProps = InjectedProps & {
-  paymentMethod: StripePaymentMethod;
-};
+type InnerProps = DispatchProp &
+  InjectedProps & {
+    paymentMethod: StripePaymentMethod;
+  };
 
 type OutterProps = {};
 
@@ -17,7 +21,8 @@ type Props = InnerProps & OutterProps;
 const CustomModal: FunctionComponent<Props> = ({
   show,
   handleHide,
-  paymentMethod
+  paymentMethod,
+  dispatch
 }) => (
   <Modal
     unmountOnClose={false}
@@ -26,6 +31,7 @@ const CustomModal: FunctionComponent<Props> = ({
     size="lg"
     isOpen={show}
     toggle={handleHide}
+    onClosed={() => dispatch(destroy(UPDATE_STRIPE_PAYMENTMETHOD_FORM))}
   >
     <ModalHeader toggle={handleHide}>UPDATE PAYMENT METHOD</ModalHeader>
     <ModalBody>
@@ -38,6 +44,7 @@ const CustomModal: FunctionComponent<Props> = ({
 );
 
 const enhance = compose<InnerProps, OutterProps>(
+  connect(),
   connectModal({
     name: UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
     destroyOnHide: false

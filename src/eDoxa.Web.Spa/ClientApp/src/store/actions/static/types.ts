@@ -1,5 +1,9 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { IdentityStaticOptions } from "types";
+import {
+  IdentityStaticOptions,
+  PaymentStaticOptions,
+  CashierStaticOptions
+} from "types";
 
 export const LOAD_IDENTITY_STATIC_OPTIONS = "LOAD_IDENTITY_STATIC_OPTIONS";
 export const LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS =
@@ -21,6 +25,50 @@ export type LoadIdentityStaticOptionsAction = AxiosAction<
   IdentityStaticOptions
 >;
 
-export type IdentityStaticOptionsActionCreators = LoadIdentityStaticOptionsActionCreator;
+export const LOAD_PAYMENT_STATIC_OPTIONS = "LOAD_PAYMENT_STATIC_OPTIONS";
+export const LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS =
+  "LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS";
+export const LOAD_PAYMENT_STATIC_OPTIONS_FAIL =
+  "LOAD_PAYMENT_STATIC_OPTIONS_FAIL";
 
-export type IdentityStaticOptionsActions = LoadIdentityStaticOptionsAction;
+export type LoadPaymentStaticOptionsType =
+  | typeof LOAD_PAYMENT_STATIC_OPTIONS
+  | typeof LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS
+  | typeof LOAD_PAYMENT_STATIC_OPTIONS_FAIL;
+
+export type LoadPaymentStaticOptionsActionCreator = AxiosActionCreator<
+  LoadPaymentStaticOptionsType
+>;
+
+export type LoadPaymentStaticOptionsAction = AxiosAction<
+  LoadPaymentStaticOptionsType,
+  PaymentStaticOptions
+>;
+
+export const LOAD_CASHIER_STATIC_OPTIONS = "LOAD_CASHIER_STATIC_OPTIONS";
+export const LOAD_CASHIER_STATIC_OPTIONS_SUCCESS =
+  "LOAD_CASHIER_STATIC_OPTIONS_SUCCESS";
+export const LOAD_CASHIER_STATIC_OPTIONS_FAIL =
+  "LOAD_CASHIER_STATIC_OPTIONS_FAIL";
+
+export type LoadCashierStaticOptionsType =
+  | typeof LOAD_CASHIER_STATIC_OPTIONS
+  | typeof LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
+  | typeof LOAD_CASHIER_STATIC_OPTIONS_FAIL;
+export type LoadCashierStaticOptionsActionCreator = AxiosActionCreator<
+  LoadCashierStaticOptionsType
+>;
+export type LoadCashierStaticOptionsAction = AxiosAction<
+  LoadCashierStaticOptionsType,
+  CashierStaticOptions
+>;
+
+export type StaticOptionsActionCreators =
+  | LoadIdentityStaticOptionsActionCreator
+  | LoadPaymentStaticOptionsActionCreator
+  | LoadCashierStaticOptionsActionCreator;
+
+export type StaticOptionsActions =
+  | LoadIdentityStaticOptionsAction
+  | LoadPaymentStaticOptionsAction
+  | LoadCashierStaticOptionsAction;

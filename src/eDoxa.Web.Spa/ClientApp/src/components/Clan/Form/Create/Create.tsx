@@ -5,7 +5,7 @@ import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { CREATE_CLAN_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormValidation from "components/Shared/Form/Validation";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 
 const validate = values => {
   var nameRegExp = new RegExp("^[a-zA-Z0-9- .,]{3,20}$");
@@ -25,7 +25,7 @@ const CustomForm: FunctionComponent<any> = ({
   error
 }) => (
   <Form onSubmit={handleSubmit}>
-    {error && <FormValidation error={error} />}
+    <ValidationSummary error={error} />
     <Field
       type="text"
       name="name"

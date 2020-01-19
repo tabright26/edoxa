@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import Badge from "components/Shared/Badge";
 import { compose } from "recompose";
-import Loading from "components/Shared/Loading";
+import { Loading } from "components/Shared/Loading";
 import { RootState } from "store/types";
 import { loadUserEmail } from "store/actions/identity";
 import { connect } from "react-redux";
@@ -23,10 +23,7 @@ const Email: FunctionComponent<any> = ({
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">EMAIL</strong>
         {data && (
-          <Badge.Verification
-            className="ml-3 my-auto"
-            verified={data.verified}
-          />
+          <Badge.Verified className="ml-3 my-auto" verified={data.verified} />
         )}
       </CardHeader>
       <CardBody>

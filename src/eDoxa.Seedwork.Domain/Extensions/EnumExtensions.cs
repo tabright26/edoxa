@@ -13,12 +13,12 @@ namespace eDoxa.Seedwork.Domain.Extensions
         public static TEnumeration ToEnumeration<TEnumeration>(this Enum @enum)
         where TEnumeration : Enumeration<TEnumeration>, new()
         {
-            var enumeration = @enum.ToEnumerationOrDefault<TEnumeration>();
+            var enumeration = @enum.ToEnumerationOrNull<TEnumeration>();
 
             return enumeration ?? throw new InvalidCastException();
         }
 
-        public static TEnumeration? ToEnumerationOrDefault<TEnumeration>(this Enum @enum)
+        public static TEnumeration? ToEnumerationOrNull<TEnumeration>(this Enum @enum)
         where TEnumeration : Enumeration<TEnumeration>, new()
         {
             var value = (int) Enum.ToObject(@enum.GetType(), @enum);

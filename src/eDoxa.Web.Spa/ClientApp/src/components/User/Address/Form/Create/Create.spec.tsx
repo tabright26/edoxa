@@ -1,3 +1,5 @@
+it("should match the snapshot", () => {});
+
 // import React from "react";
 // import { Provider } from "react-redux";
 // import { ReactWrapper } from "enzyme";

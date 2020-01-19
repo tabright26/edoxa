@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 using Microsoft.AspNetCore.Authentication;
 
-namespace eDoxa.Seedwork.TestHelper.Fakes
+namespace eDoxa.Seedwork.TestHelper
 {
     public sealed class TestAuthenticationOptions : AuthenticationSchemeOptions
     {
