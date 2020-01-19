@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeFaker.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,7 @@ using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
@@ -78,7 +79,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                     };
 
                     var challenge = new Challenge(
-                        ChallengeId.FromGuid(model.Id),
+                        model.Id.ConvertTo<ChallengeId>(),
                         name,
                         game,
                         bestOf,
@@ -253,7 +254,12 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data.Fakers
                 this.CustomInstantiator(
                     faker =>
                     {
-                        var match = new Match(scoring.Map(faker.Game().Stats()), faker.Game().Uuid());
+                        var match = new Match(
+                            faker.Game().Uuid(),
+                            new UtcNowDateTimeProvider(),
+                            TimeSpan.FromSeconds(3600),
+                            scoring.Map(faker.Game().Stats()),
+                            new UtcNowDateTimeProvider());
 
                         match.SetEntityId(faker.Match().Id());
 

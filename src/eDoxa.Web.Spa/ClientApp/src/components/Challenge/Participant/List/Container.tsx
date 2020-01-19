@@ -27,6 +27,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     challenge => challenge.id === ownProps.match.params.challengeId
   );
   return {
+    bestOf: challenge.bestOf,
     payoutEntries: challenge.payoutEntries,
     participants: challenge.participants
   };

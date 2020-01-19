@@ -2,6 +2,8 @@
 
 exports[`renders without crashing 1`] = `
 <span>
-  100.00
+  <span>
+    100.00
+  </span>
 </span>
 `;

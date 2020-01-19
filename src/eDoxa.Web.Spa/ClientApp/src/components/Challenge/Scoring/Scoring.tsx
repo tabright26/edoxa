@@ -18,8 +18,8 @@ const Scoring: FunctionComponent<Props> = ({ scoring, className }) => (
       <tbody>
         {Object.entries(scoring).map((item, index) => (
           <tr key={index}>
-            <td className="pl-3 align-middle">{sentenceCase(item[0])}</td>
-            <td className="pr-3 align-middle text-right">{item[1]}</td>
+            <td className="pl-3 align-middle w-75">{sentenceCase(item[0])}</td>
+            <td className="pr-3 align-middle w-25 text-right">{item[1]}</td>
           </tr>
         ))}
       </tbody>

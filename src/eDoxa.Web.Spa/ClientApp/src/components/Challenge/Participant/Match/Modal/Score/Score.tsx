@@ -23,11 +23,13 @@ const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
     toggle={handleHide}
     centered
   >
-    <ModalHeader toggle={handleHide}>Score Details</ModalHeader>
+    <ModalHeader toggle={handleHide} className="d-flex">
+      <strong className="text-uppercase my-auto">Score Details</strong>
+    </ModalHeader>
     <Table className="mb-0" size="sm" responsive striped dark>
       <thead>
         <tr>
-          <th>Name</th>
+          <th className="pl-3">Name</th>
           <th className="text-center">Value</th>
           <th className="text-center" />
           <th className="text-center">Weighting</th>
@@ -38,7 +40,7 @@ const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
       <tbody>
         {stats.map((stat, index) => (
           <tr key={index}>
-            <td>{sentenceCase(stat.name)}</td>
+            <td className="pl-3">{sentenceCase(stat.name)}</td>
             <td className="text-center">{stat.value}</td>
             <td className="text-center">&#10005;</td>
             <td className="text-center">{stat.weighting}</td>
@@ -49,7 +51,9 @@ const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
           </tr>
         ))}
         <tr>
-          <th colSpan={5}>Score</th>
+          <th colSpan={5} className="pl-3">
+            Score
+          </th>
           <th className="text-center text-primary">
             <Format.Score
               score={stats.reduce(
@@ -61,8 +65,8 @@ const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
         </tr>
       </tbody>
     </Table>
-    <ModalFooter>
-      <Button.Close onClick={handleHide} />
+    <ModalFooter className="d-flex">
+      <Button.Close className="w-25 m-auto" onClick={handleHide} />
     </ModalFooter>
   </Modal>
 );

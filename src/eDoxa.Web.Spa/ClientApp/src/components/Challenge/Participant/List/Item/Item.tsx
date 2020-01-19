@@ -8,12 +8,14 @@ interface Props {
   participant: ChallengeParticipant;
   position: number;
   payoutEntries: number;
+  bestOf: number;
 }
 
 const ChallengeParticipantItem: FunctionComponent<Props> = ({
   participant,
   position,
-  payoutEntries
+  payoutEntries,
+  bestOf
 }) => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
@@ -63,7 +65,12 @@ const ChallengeParticipantItem: FunctionComponent<Props> = ({
       </Card>
       <Collapse isOpen={collapse}>
         <Card>
-          <CardHeader>Matches</CardHeader>
+          <CardHeader className="d-flex">
+            <strong className="text-uppercase my-auto">Match history</strong>
+            <small className="ml-2 my-auto text-muted">
+              ({participant.matches.length}/{bestOf})
+            </small>
+          </CardHeader>
           <ChallengeParticipantMatchList participantId={participant.id} />
         </Card>
       </Collapse>

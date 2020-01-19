@@ -21,6 +21,8 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
+using Google.Protobuf.WellKnownTypes;
+
 using Grpc.Core;
 
 using Microsoft.Extensions.Logging;
@@ -119,7 +121,8 @@ namespace eDoxa.Games.Api.Services
                                 match => new GameMatchDto
                                 {
                                     GameUuid = match.GameUuid,
-                                    Timestamp = match.Timestamp.ToTimestampUtc(),
+                                    GameCreatedAt = match.GameCreatedAt.ToTimestampUtc(),
+                                    GameDuration = match.GameDuration.ToDuration(),
                                     Stats =
                                     {
                                         match.Stats

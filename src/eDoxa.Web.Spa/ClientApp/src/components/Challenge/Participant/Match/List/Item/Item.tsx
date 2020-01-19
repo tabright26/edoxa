@@ -6,6 +6,7 @@ import { ChallengeParticipantMatch } from "types";
 import { MapDispatchToProps, connect } from "react-redux";
 import { show } from "redux-modal";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
+import Moment from "react-moment";
 
 interface OwnProps {
   match: ChallengeParticipantMatch;
@@ -29,31 +30,35 @@ const ChallengeParticipantMatchItem: FunctionComponent<Props> = ({
 }) => (
   <CardBody className="p-0 border border-dark d-flex">
     <div
-      className="pl-2 py-2 text-center"
+      className="pl-3 py-2 text-center"
       style={{
-        width: "45px"
+        width: "50px"
       }}
     >
-      <Badge variant="light">{position}</Badge>
+      <Badge color={match.isBestOf ? "primary" : "secondary"} className="w-100">
+        {position}
+      </Badge>
     </div>
-    {/* <div
+    <div
       className="px-3 py-2"
       style={{
         width: "350px"
       }}
     >
-      <Moment unix format="LLLL">
-        {match.synchronizedAt}
+      <Moment unix format="lll">
+        {match.gameStartedAt}
       </Moment>
-    </div> */}
+    </div>
     <div
       className="py-2 text-center mx-auto"
       onClick={() => showChallengeMatchScoreModal()}
     >
-      <Badge variant="primary">View details</Badge>
+      <Badge color="secondary">View details</Badge>
     </div>
     <div
-      className="bg-primary px-3 py-2 text-center ml-5"
+      className={`${
+        match.isBestOf ? "bg-primary" : "bg-secondary"
+      } px-3 py-2 text-center ml-5`}
       style={{
         width: "125px"
       }}

@@ -8,6 +8,7 @@
 // defined in file 'LICENSE.md', which is part of
 // this source code package.
 
+using System;
 using System.Collections.Generic;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
@@ -19,6 +20,14 @@ namespace eDoxa.Challenges.Domain.AggregateModels
     public interface IMatch : IEntity<MatchId>
     {
         GameUuid GameUuid { get; }
+
+        public DateTime GameStartedAt { get; }
+
+        public TimeSpan GameDuration { get; }
+
+        public DateTime GameEndedAt { get; }
+
+        public DateTime SynchronizedAt { get; }
 
         Score Score { get; }
 

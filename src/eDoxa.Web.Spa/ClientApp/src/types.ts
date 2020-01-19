@@ -369,9 +369,15 @@ export interface ChallengeParticipantUserDoxatag {
 }
 
 export interface ChallengeParticipantMatch extends Entity<MatchId> {
-  readonly score: number;
-  readonly participantId: ParticipantId;
   readonly challengeId: ChallengeId;
+  readonly participantId: ParticipantId;
+  readonly gameUuid: string;
+  readonly gameStartedAt: Date;
+  readonly gameDuration: number;
+  readonly gameEndedAt: Date;
+  readonly synchronizedAt: Date;
+  readonly isBestOf: boolean;
+  readonly score: number;
   readonly stats: ChallengeParticipantMatchStat[];
 }
 
