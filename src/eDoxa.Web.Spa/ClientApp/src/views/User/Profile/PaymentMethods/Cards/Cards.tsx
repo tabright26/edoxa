@@ -3,8 +3,7 @@ import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMethod/container";
 import { StripePaymentMethod } from "types";
-import CardBrandIcon from "components/Payment/Stripe/PaymentMethod/Card/Icon";
-import CardExpiration from "components/Payment/Stripe/PaymentMethod/Card/Expiration";
+import PaymentMethodCard from "components/Payment/Stripe/PaymentMethod/Card";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Button from "components/Shared/Button";
 import { compose } from "recompose";
@@ -40,7 +39,7 @@ const StripeCardItem: FunctionComponent<any> = ({
     <>
       <dl className={`row ${!hasMore && "mb-0"}`}>
         <dd className="col-sm-4 m-0 d-flex">
-          <CardBrandIcon
+          <PaymentMethodCard.Icon
             className="my-auto"
             brand={paymentMethod.card.brand}
             size="2x"
@@ -49,7 +48,7 @@ const StripeCardItem: FunctionComponent<any> = ({
         </dd>
         <dd className="col-sm-2 m-0 d-flex">
           <span className="my-auto mr-2 text-muted">Expiration:</span>
-          <CardExpiration
+          <PaymentMethodCard.Exp
             className="my-auto"
             month={paymentMethod.card.expMonth}
             year={paymentMethod.card.expYear}

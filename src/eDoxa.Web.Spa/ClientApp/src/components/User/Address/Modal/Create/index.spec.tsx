@@ -1,25 +1,27 @@
 import React from "react";
+import Create from ".";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import Aside from ".";
+import { CREATE_USER_ADDRESS_MODAL } from "utils/modal/constants";
 
-it("renders without crashing", () => {
-  //Arrange
+it("renders correctly", () => {
   const store: any = {
-    getState: () => {},
+    getState: () => {
+      return {
+        modal: {
+          name: CREATE_USER_ADDRESS_MODAL
+        }
+      };
+    },
     dispatch: action => {},
     subscribe: () => {}
   };
-
-  //Act
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Aside />
+        <Create />
       </Provider>
     )
     .toJSON();
-
-  //Assert
   expect(tree).toMatchSnapshot();
 });

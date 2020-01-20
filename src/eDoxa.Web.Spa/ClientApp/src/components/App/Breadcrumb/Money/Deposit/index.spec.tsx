@@ -1,14 +1,14 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import Deposit from "./Deposit";
+import Deposit from ".";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
 import { CURRENCY_MONEY } from "types";
-import { TransactionBundlesState } from "store/static/transactionBundle/types";
+import { StaticOptionsState } from "store/static/types";
 
 it("renders without crashing", () => {
   //Arrange
-  const moneyBundles: TransactionBundlesState = {
+  const moneyBundles: StaticOptionsState = {
     data: [],
     loading: false,
     error: null
