@@ -40,7 +40,6 @@ namespace eDoxa.Games.Api.Infrastructure
             // Factories
             builder.RegisterType<GameGameAuthenticationGeneratorFactory>().As<IGameAuthenticationGeneratorFactory>().SingleInstance();
             builder.RegisterType<GameGameAuthenticationValidatorFactory>().As<IGameAuthenticationValidatorFactory>().SingleInstance();
-            builder.RegisterType<ChallengeScoringFactory>().As<IChallengeScoringFactory>().SingleInstance();
             builder.RegisterType<ChallengeMatchesFactory>().As<IChallengeMatchesFactory>().SingleInstance();
 
             // Games

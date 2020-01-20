@@ -14,7 +14,7 @@ using Autofac;
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
-using eDoxa.Games.LeagueOfLegends;
+using eDoxa.Grpc.Protos.Games.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -79,9 +79,7 @@ namespace eDoxa.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
-            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
-
-            services.Configure<LeagueOfLegendsOptions>(Configuration.GetSection("Games:LeagueOfLegends"));
+            services.Configure<GamesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
@@ -163,9 +161,7 @@ namespace eDoxa.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
-            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
-
-            services.Configure<LeagueOfLegendsOptions>(Configuration.GetSection("Games:LeagueOfLegends"));
+            services.Configure<GamesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddCustomDbContext<GamesDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

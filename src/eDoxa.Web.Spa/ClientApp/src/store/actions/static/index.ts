@@ -8,11 +8,18 @@ import {
   StaticOptionsActionCreators,
   LOAD_CASHIER_STATIC_OPTIONS,
   LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
-  LOAD_CASHIER_STATIC_OPTIONS_FAIL
+  LOAD_CASHIER_STATIC_OPTIONS_FAIL,
+  LOAD_GAMES_STATIC_OPTIONS,
+  LOAD_GAMES_STATIC_OPTIONS_SUCCESS,
+  LOAD_GAMES_STATIC_OPTIONS_FAIL,
+  LOAD_CHALLENGES_STATIC_OPTIONS,
+  LOAD_CHALLENGES_STATIC_OPTIONS_SUCCESS,
+  LOAD_CHALLENGES_STATIC_OPTIONS_FAIL
 } from "./types";
 import {
   AXIOS_PAYLOAD_CLIENT_DEFAULT,
-  AXIOS_PAYLOAD_CLIENT_CASHIER
+  AXIOS_PAYLOAD_CLIENT_CASHIER,
+  AXIOS_PAYLOAD_CLIENT_CHALLENGES
 } from "utils/axios/types";
 
 export function loadIdentityStaticOptions(): StaticOptionsActionCreators {
@@ -61,6 +68,40 @@ export function loadCashierStaticOptions(): StaticOptionsActionCreators {
       request: {
         method: "GET",
         url: "/cashier/api/static/options"
+      }
+    }
+  };
+}
+
+export function loadChallengesStaticOptions(): StaticOptionsActionCreators {
+  return {
+    types: [
+      LOAD_CHALLENGES_STATIC_OPTIONS,
+      LOAD_CHALLENGES_STATIC_OPTIONS_SUCCESS,
+      LOAD_CHALLENGES_STATIC_OPTIONS_FAIL
+    ],
+    payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CHALLENGES,
+      request: {
+        method: "GET",
+        url: "/challenges/api/static/options"
+      }
+    }
+  };
+}
+
+export function loadGamesStaticOptions(): StaticOptionsActionCreators {
+  return {
+    types: [
+      LOAD_GAMES_STATIC_OPTIONS,
+      LOAD_GAMES_STATIC_OPTIONS_SUCCESS,
+      LOAD_GAMES_STATIC_OPTIONS_FAIL
+    ],
+    payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CHALLENGES,
+      request: {
+        method: "GET",
+        url: "/games/api/static/options"
       }
     }
   };

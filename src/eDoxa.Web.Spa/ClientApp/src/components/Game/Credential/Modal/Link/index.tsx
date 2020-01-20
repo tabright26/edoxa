@@ -4,20 +4,20 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameAuthenticationFrom from "components/Game/Authentication/Form";
 import { compose } from "recompose";
-import { GameOption } from "types";
+import { GameOptions } from "types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 
-type InnerProps = InjectedProps & { gameOption: GameOption };
+type InnerProps = InjectedProps & { gameOptions: GameOptions };
 
 type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const CustomModal: FunctionComponent<Props> = ({
+const Link: FunctionComponent<Props> = ({
   show,
   handleHide,
-  gameOption
+  gameOptions
 }) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
@@ -29,12 +29,12 @@ const CustomModal: FunctionComponent<Props> = ({
       toggle={handleHide}
     >
       <ModalHeader toggle={handleHide}>
-        <strong>{gameOption.displayName} Authentications</strong>
+        <strong>{gameOptions.displayName} Authentications</strong>
       </ModalHeader>
       <ModalBody>
         {!authenticationFactor ? (
           <GameAuthenticationFrom.Generate
-            game={gameOption.name}
+            game={gameOptions.name}
             setAuthenticationFactor={setAuthenticationFactor}
           />
         ) : (
@@ -50,7 +50,12 @@ const CustomModal: FunctionComponent<Props> = ({
                 />
               </div>
               <div className="my-auto w-50 px-3 text-center">
-                <div className="text-muted">{gameOption.instructions}</div>
+                <div className="text-muted">
+                  {
+                    gameOptions.services.find(x => x.name === "Game")
+                      .instructions
+                  }
+                </div>
                 <FontAwesomeIcon
                   className="mt-2"
                   icon={faArrowRight}
@@ -69,7 +74,7 @@ const CustomModal: FunctionComponent<Props> = ({
             </div>
             <div className="d-flex justify-content-center mt-3">
               <GameAuthenticationFrom.Validate
-                gameOption={gameOption}
+                gameOptions={gameOptions}
                 handleCancel={handleHide}
                 setAuthenticationFactor={setAuthenticationFactor}
               />
@@ -85,4 +90,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: LINK_GAME_CREDENTIAL_MODAL, destroyOnHide: false })
 );
 
-export default enhance(CustomModal);
+export default enhance(Link);

@@ -1,18 +1,21 @@
 ﻿// Filename: StaticOptionsController.cs
-// Date Created: 2020-01-13
+// Date Created: 2020-01-19
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Cashier.Options;
+using eDoxa.Grpc.Protos.Games.Options;
 
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Cashier.Api.Controllers
+using Swashbuckle.AspNetCore.Annotations;
+
+namespace eDoxa.Games.Api.Controllers
 {
     [AllowAnonymous]
     [ApiController]
@@ -22,7 +25,9 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class StaticOptionsController : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromServices] IOptionsSnapshot<CashierApiOptions> snapshot)
+        [SwaggerOperation("Games static options.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(GamesApiOptions.Types.StaticOptions))]
+        public async Task<IActionResult> GetAsync([FromServices] IOptionsSnapshot<GamesApiOptions> snapshot)
         {
             return await Task.FromResult(this.Ok(snapshot.Value.Static));
         }

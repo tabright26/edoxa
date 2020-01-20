@@ -1,34 +1,44 @@
 import React, { FunctionComponent } from "react";
 import { CardDeck } from "reactstrap";
-import { Loading } from "components/Shared/Loading";
-import { withGames } from "store/root/game/container";
-import { GamesState } from "store/root/game/types";
 import { compose } from "recompose";
 import GameListItem from "components/Game/List/Item";
 import GameCredentialModal from "components/Game/Credential/Modal";
+import { GameOptions } from "types";
+import { connect, MapStateToProps } from "react-redux";
+import { RootState } from "store/types";
 
-interface Props {
-  games: GamesState;
-}
+type OwnProps = {};
 
-const List: FunctionComponent<Props> = ({
-  games: { data, error, loading }
-}) => {
-  return loading ? (
-    <Loading />
-  ) : (
-    <>
-      <CardDeck className="my-4">
-        {Object.entries(data).map((game, index) => (
-          <GameListItem key={index} gameOption={game[1]} />
-        ))}
-      </CardDeck>
-      <GameCredentialModal.Link />
-      <GameCredentialModal.Unlink />
-    </>
-  );
+type StateProps = { games: GameOptions[] };
+
+type InnerProps = StateProps;
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
+
+const List: FunctionComponent<Props> = ({ games }) => (
+  <>
+    <CardDeck className="my-4">
+      {games.map((gameOptions, index) => (
+        <GameListItem key={index} gameOptions={gameOptions} />
+      ))}
+    </CardDeck>
+    <GameCredentialModal.Link />
+    <GameCredentialModal.Unlink />
+  </>
+);
+
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  OwnProps,
+  RootState
+> = state => {
+  return {
+    games: state.static.games.games
+  };
 };
 
-const enhance = compose<any, any>(withGames);
+const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps));
 
 export default enhance(List);

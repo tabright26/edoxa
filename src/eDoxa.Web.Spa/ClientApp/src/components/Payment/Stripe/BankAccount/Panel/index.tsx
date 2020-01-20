@@ -27,7 +27,7 @@ type Props = InnerProps & OutterProps;
 const Panel: FunctionComponent<Props> = ({
   className = null,
   country,
-  bankAccount: { data, loading, error },
+  bankAccount: { data, loading },
   hasBankAccount
 }) => {
   const [buttonDisabled, setButtonDisabled] = useState(false);

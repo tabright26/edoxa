@@ -1,47 +1,55 @@
 import React, { FunctionComponent, useState } from "react";
 import { CardImg, CardImgOverlay, Card } from "reactstrap";
-import { GameOption } from "types";
+import { GameOptions } from "types";
 import { connect, MapDispatchToProps } from "react-redux";
 import {
   LINK_GAME_CREDENTIAL_MODAL,
   UNLINK_GAME_CREDENTIAL_MODAL
 } from "utils/modal/constants";
 import { show } from "redux-modal";
+import { compose } from "recompose";
+import {
+  withUserProfileGameIsAuthenticated,
+  HocUserProfileGameIsAuthenticatedStateProps
+} from "utils/oidc/containers";
 
 const style: React.CSSProperties = {
   filter: "brightness(50%)",
   borderRadius: "25px"
 };
 
-interface OwnProps {}
+interface OwnProps {
+  gameOptions: GameOptions;
+}
 
 interface DispatchProps {
-  showLinkGameAccountCredentialModal: (gameOption: GameOption) => any;
-  showUnlinkGameAccountCredentialModal: (gameOption: GameOption) => any;
+  showLinkGameAccountCredentialModal: () => void;
+  showUnlinkGameAccountCredentialModal: () => void;
 }
 
-interface Props {
-  gameOption: GameOption;
-  showLinkGameAccountCredentialModal: (gameOption: GameOption) => any;
-  showUnlinkGameAccountCredentialModal: (gameOption: GameOption) => any;
-}
+type InnerProps = DispatchProps & HocUserProfileGameIsAuthenticatedStateProps;
+
+type OutterProps = OwnProps;
+
+type Props = InnerProps & OutterProps;
 
 const Item: FunctionComponent<Props> = ({
-  gameOption,
+  gameOptions,
   showLinkGameAccountCredentialModal,
-  showUnlinkGameAccountCredentialModal
+  showUnlinkGameAccountCredentialModal,
+  isAuthenticated
 }) => {
   const [hover, setHover] = useState(false);
-  const filter = !gameOption.verified ? "grayscale(100%)" : null;
+  const filter = !isAuthenticated ? "grayscale(100%)" : null;
   return (
     <Card
       className="p-0 col-6"
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       onClick={() =>
-        gameOption.verified
-          ? showUnlinkGameAccountCredentialModal(gameOption)
-          : showLinkGameAccountCredentialModal(gameOption)
+        isAuthenticated
+          ? showUnlinkGameAccountCredentialModal()
+          : showLinkGameAccountCredentialModal()
       }
       style={
         hover
@@ -50,19 +58,19 @@ const Item: FunctionComponent<Props> = ({
       }
     >
       <CardImg
-        src={require(`assets/img/arena/games/${gameOption.name.toLowerCase()}/panel.jpg`)}
+        src={require(`assets/img/arena/games/${gameOptions.name.toLowerCase()}/panel.jpg`)}
         style={hover ? style : { borderRadius: "25px", filter }}
       />
       <CardImgOverlay className="d-flex" style={{ filter }}>
         {hover ? (
-          gameOption.verified ? (
+          isAuthenticated ? (
             <h5 className="m-auto">UNLINK MY GAME ACCOUNT...</h5>
           ) : (
             <h5 className="m-auto">LINK MY GAME ACCOUNT...</h5>
           )
         ) : (
           <img
-            src={require(`assets/img/arena/games/${gameOption.name.toLowerCase()}/large.png`)}
+            src={require(`assets/img/arena/games/${gameOptions.name.toLowerCase()}/large.png`)}
             alt="leagueoflegends"
             className="m-auto"
           />
@@ -77,11 +85,22 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
   ownProps
 ) => {
   return {
-    showLinkGameAccountCredentialModal: (gameOption: GameOption) =>
-      dispatch(show(LINK_GAME_CREDENTIAL_MODAL, { gameOption })),
-    showUnlinkGameAccountCredentialModal: (gameOption: GameOption) =>
-      dispatch(show(UNLINK_GAME_CREDENTIAL_MODAL, { gameOption }))
+    showLinkGameAccountCredentialModal: () =>
+      dispatch(
+        show(LINK_GAME_CREDENTIAL_MODAL, { gameOptions: ownProps.gameOptions })
+      ),
+    showUnlinkGameAccountCredentialModal: () =>
+      dispatch(
+        show(UNLINK_GAME_CREDENTIAL_MODAL, {
+          gameOptions: ownProps.gameOptions
+        })
+      )
   };
 };
 
-export default connect(null, mapDispatchToProps)(Item);
+const enhance = compose<InnerProps, OutterProps>(
+  withUserProfileGameIsAuthenticated,
+  connect(null, mapDispatchToProps)
+);
+
+export default enhance(Item);

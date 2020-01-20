@@ -4,20 +4,20 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import { UNLINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameCredentialFrom from "components/Game/Credential/Form";
 import { compose } from "recompose";
-import { GameOption } from "types";
+import { GameOptions } from "types";
 
 type InnerProps = InjectedProps & {
-  gameOption: GameOption;
+  gameOptions: GameOptions;
 };
 
 type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const CustomModal: FunctionComponent<Props> = ({
+const Unlink: FunctionComponent<Props> = ({
   show,
   handleHide,
-  gameOption
+  gameOptions
 }) => (
   <Modal
     unmountOnClose={false}
@@ -27,12 +27,12 @@ const CustomModal: FunctionComponent<Props> = ({
     toggle={handleHide}
   >
     <ModalHeader toggle={handleHide}>
-      <strong>Unlink your {gameOption.displayName} credential?</strong>
+      <strong>Unlink your {gameOptions.displayName} credential?</strong>
     </ModalHeader>
     <ModalBody>
       <p>You can unlink your credential once a month.</p>
       <GameCredentialFrom.Unlink
-        game={gameOption.name}
+        game={gameOptions.name}
         handleCancel={handleHide}
       />
     </ModalBody>
@@ -43,4 +43,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: UNLINK_GAME_CREDENTIAL_MODAL, destroyOnHide: false })
 );
 
-export default enhance(CustomModal);
+export default enhance(Unlink);

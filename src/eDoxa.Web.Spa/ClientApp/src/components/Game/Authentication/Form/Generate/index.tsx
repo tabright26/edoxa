@@ -25,7 +25,7 @@ type InnerProps = InjectedFormProps<FormData, Props> & {
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Generate: FunctionComponent<Props> = ({ handleSubmit, error }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <FormGroup>
@@ -70,4 +70,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Generate);

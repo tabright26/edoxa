@@ -61,6 +61,12 @@ interface Entity<TEntityId> {
   readonly id: TEntityId;
 }
 
+export interface ChallengesStaticOptions {}
+
+export interface GamesStaticOptions {
+  readonly games: GameOptions[];
+}
+
 export interface CashierStaticOptions {
   readonly transaction: TransactionOptions;
 }
@@ -276,17 +282,19 @@ export interface ClanInvitation extends Entity<InvitationId> {
 }
 
 // Game
-export type Games = Map<Game, GameOption>;
+export type GameServiceName = "Game" | "Challenge" | "Tournament";
 
-export type GameServiceName = "manager" | "challenge" | "tournament";
-
-export interface GameOption {
+export interface GameOptions {
   readonly name: Game;
   readonly displayName: string;
-  readonly displayed: boolean;
+  readonly disabled: boolean;
+  readonly services: GameServiceOptions[];
+}
+
+export interface GameServiceOptions {
+  readonly name: GameServiceName;
+  readonly disabled: boolean;
   readonly instructions: string;
-  readonly verified: boolean;
-  readonly services: Map<GameServiceName, boolean>;
 }
 
 export interface GameCredential {

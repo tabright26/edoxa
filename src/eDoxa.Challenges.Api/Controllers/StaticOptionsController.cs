@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Cashier.Api.Controllers
+namespace eDoxa.Challenges.Api.Controllers
 {
     [AllowAnonymous]
     [ApiController]

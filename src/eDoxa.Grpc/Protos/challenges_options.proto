@@ -1,0 +1,12 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Options";
+
+package edoxa.services.challenges;
+
+message ChallengesApiOptions {
+  StaticOptions static = 1;
+  
+  message StaticOptions {
+  }
+}

@@ -4,17 +4,17 @@ import { reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import { VALIDATE_GAME_AUTHENTICATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import { validateGameAuthentication, loadGames } from "store/actions/game";
+import { validateGameAuthentication } from "store/actions/game";
 import { toastr } from "react-redux-toastr";
 import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { throwSubmissionError } from "utils/form/types";
-import { GameOption } from "types";
+import { GameOptions } from "types";
 
 interface FormData {}
 
 interface OutterProps {
-  gameOption: GameOption;
+  gameOptions: GameOptions;
   handleCancel: () => any;
   setAuthenticationFactor: (data: any) => any;
 }
@@ -23,7 +23,7 @@ type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({ handleSubmit }) => (
+const Validate: FunctionComponent<Props> = ({ handleSubmit }) => (
   <Form className="w-100" onSubmit={handleSubmit}>
     <div className="mx-auto w-25">
       <Button.Submit block>Validate</Button.Submit>
@@ -34,7 +34,7 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit }) => (
 const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
     form: VALIDATE_GAME_AUTHENTICATION_FORM,
-    onSubmit: async (values, dispatch: any, { gameOption }) => {
+    onSubmit: async (_values, dispatch: any, { gameOptions: gameOption }) => {
       try {
         return await new Promise((resolve, reject) => {
           const meta: AxiosActionCreatorMeta = { resolve, reject };
@@ -44,24 +44,22 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch: any, { gameOption }) => {
-      dispatch(loadGames()).then(() =>
-        authorizeService
-          .signIn({
-            returnUrl: window.location.pathname
-          })
-          .then(() => {
-            toastr.success(
-              "Game credentials linked",
-              `Your ${gameOption.displayName} credentials have been successfully linked.`
-            );
-          })
-      );
+    onSubmitSuccess: (_result, _dispatch, { gameOptions }) => {
+      authorizeService
+        .signIn({
+          returnUrl: window.location.pathname
+        })
+        .then(() => {
+          toastr.success(
+            "Game credentials linked",
+            `Your ${gameOptions.displayName} credentials have been successfully linked.`
+          );
+        });
     },
     onSubmitFail: (
-      error,
-      dispatch,
-      submitError,
+      _error,
+      _dispatch,
+      _submitError,
       { setAuthenticationFactor }
     ) => {
       toastr.error("Error", "Validating game authentication failed.");
@@ -70,4 +68,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Validate);
