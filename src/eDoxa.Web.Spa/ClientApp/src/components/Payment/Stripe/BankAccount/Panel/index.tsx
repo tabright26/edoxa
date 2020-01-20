@@ -11,6 +11,7 @@ import {
   HocUserProfileCountryStateProps
 } from "utils/oidc/containers";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
+import { Elements } from "react-stripe-elements";
 
 type InnerProps = HocUserProfileCountryStateProps & {
   bankAccount: StripeBankAccountState;
@@ -23,7 +24,7 @@ type OutterProps = {
 
 type Props = InnerProps & OutterProps;
 
-const BankAccount: FunctionComponent<Props> = ({
+const Panel: FunctionComponent<Props> = ({
   className = null,
   country,
   bankAccount: { data, loading, error },
@@ -52,10 +53,12 @@ const BankAccount: FunctionComponent<Props> = ({
             <dd className="col-sm-3 text-muted mb-0">Bank account</dd>
             <dd className="col-sm-5 mb-0">
               {disabled && (
-                <BankAccountForm.Update
-                  country={country}
-                  handleCancel={() => setButtonDisabled(false)}
-                />
+                <Elements>
+                  <BankAccountForm.Update
+                    country={country}
+                    handleCancel={() => setButtonDisabled(false)}
+                  />
+                </Elements>
               )}
               {!disabled && <span>XXXXX-{data.last4}</span>}
             </dd>
@@ -71,4 +74,4 @@ const enhance = compose<InnerProps, OutterProps>(
   withStripeBankAccount
 );
 
-export default enhance(BankAccount);
+export default enhance(Panel);

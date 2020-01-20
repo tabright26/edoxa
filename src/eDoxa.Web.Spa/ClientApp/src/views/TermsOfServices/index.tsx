@@ -1,20 +1,20 @@
 import "./index.scss";
 import React, { useEffect, FunctionComponent } from "react";
 import { Container, Card, CardBody } from "reactstrap";
-import { withLocalize } from "react-localize-redux";
+import { withLocalize, LocalizeContextProps } from "react-localize-redux";
 import { compose } from "recompose";
 //import locale from "./locale.json";
 
 // https://ryandrewjohnson.github.io/react-localize-redux-docs/
-const TermsOfServices: FunctionComponent<any> = ({ addTranslationForLanguage }) => {
+const TermsOfServices: FunctionComponent<LocalizeContextProps> = () => {
   useEffect(() => {
     //addTranslationForLanguage(locale, "en");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Container>
-      <Card className="mt-4">
-        <CardBody className="text-justify p-5">
+      <Card className="mt-4 text-justify">
+        <CardBody className="p-5">
           <h1>Terms of Services</h1>
           <section>
             <article>

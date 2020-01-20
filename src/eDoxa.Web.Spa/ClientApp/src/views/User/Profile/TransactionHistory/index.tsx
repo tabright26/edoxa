@@ -1,11 +1,11 @@
-import React, { Fragment } from "react";
-import FilteredTransactions from "./FilteredTransactions";
+import React, { FunctionComponent } from "react";
+import TransactionPanel from "components/User/Transaction/Panel";
 
-const TransactionHistory = () => (
-  <Fragment>
+const TransactionHistory: FunctionComponent = () => (
+  <>
     <h5 className="text-uppercase my-4">TRANSACTION HISTORY</h5>
-    <FilteredTransactions currency={null} type={null} status={null} />
-  </Fragment>
+    <TransactionPanel currency={null} type={null} status={null} />
+  </>
 );
 
 export default TransactionHistory;

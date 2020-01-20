@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
-import ArenaChallengeDetails from "components/Challenge/Details";
+import ChallengeDetails from "components/Challenge/Details";
 
-const ChallengeDetails = props => <ArenaChallengeDetails {...props} />;
+const Details: FunctionComponent = props => <ChallengeDetails {...props} />;
 
-export default ChallengeDetails;
+export default Details;

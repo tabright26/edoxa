@@ -1,17 +1,13 @@
-import React, { Fragment } from "react";
-import { Elements } from "react-stripe-elements";
+import React, { FunctionComponent } from "react";
+import BankAccountPanel from "components/Payment/Stripe/BankAccount/Panel";
+import PaymentMethodCardPanel from "components/Payment/Stripe/PaymentMethod/Card/Panel";
 
-const Cards = React.lazy(() => import("./Cards"));
-const BankAccount = React.lazy(() => import("./BankAccount"));
-
-const PaymentMethods = () => (
-  <Fragment>
+const PaymentMethods: FunctionComponent = () => (
+  <>
     <h5 className="text-uppercase my-4">PAYMENT METHODS</h5>
-    <Elements>
-      <BankAccount className="my-4" />
-    </Elements>
-    <Cards className="my-4" />
-  </Fragment>
+    <BankAccountPanel className="my-4" />
+    <PaymentMethodCardPanel className="my-4" />
+  </>
 );
 
 export default PaymentMethods;

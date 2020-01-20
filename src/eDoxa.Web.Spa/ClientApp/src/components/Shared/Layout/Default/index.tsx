@@ -22,7 +22,7 @@ const AppBreadcrumb = React.lazy(() => import("components/App/Breadcrumb"));
 const Footer = React.lazy(() => import("components/App/Footer"));
 const Header = React.lazy(() => import("components/App/Header"));
 
-export const Default: FunctionComponent<any> = ({ ...props }) => {
+export const Default: FunctionComponent = () => {
   return (
     <div className="app">
       <AppHeader fixed>
@@ -35,7 +35,7 @@ export const Default: FunctionComponent<any> = ({ ...props }) => {
           <AppSidebarHeader />
           <AppSidebarForm />
           <Suspense fallback={<Loading />}>
-            <AppSidebarNav navConfig={navigation} {...props} />
+            <AppSidebarNav navConfig={navigation} />
           </Suspense>
           <AppSidebarFooter />
           <AppSidebarMinimizer />

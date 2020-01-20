@@ -1,14 +1,14 @@
-import React from "react";
-import ProfileCard from "components/User/Profile/Card";
-import EmailCard from "components/User/Email/Card";
-import AddressBookCard from "components/User/Address/List";
+import React, { FunctionComponent } from "react";
+import ProfilePanel from "components/User/Profile/Panel";
+import EmailPanel from "components/User/Email/Panel";
+import AddressPanel from "components/User/Address/List";
 
-const ProfileDetails = () => (
+const ProfileDetails: FunctionComponent = () => (
   <>
     <h5 className="text-uppercase my-4">PROFILE DETAILS</h5>
-    <ProfileCard className="my-4" />
-    <EmailCard className="my-4" />
-    <AddressBookCard className="my-4" />
+    <ProfilePanel className="my-4" />
+    <EmailPanel className="my-4" />
+    <AddressPanel className="my-4" />
   </>
 );
 

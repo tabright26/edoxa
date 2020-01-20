@@ -5,10 +5,10 @@ exports[`renders without crashing 1`] = `
   className="container"
 >
   <div
-    className="mt-4 card"
+    className="mt-4 text-justify card"
   >
     <div
-      className="text-justify p-5 card-body"
+      className="p-5 card-body"
     >
       <h1>
         Terms of Services

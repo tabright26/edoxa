@@ -1,5 +1,7 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 
-const Home = () => <h1 className="text-uppercase">HOME PAGE</h1>;
+const Home: FunctionComponent = () => (
+  <h1 className="text-uppercase">HOME PAGE</h1>
+);
 
 export default Home;

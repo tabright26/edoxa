@@ -100,7 +100,7 @@ it("renders without crashing", () => {
     .create(
       <Provider store={store}>
         <MemoryRouter>
-          <Details match={{ params: { challengeId: "123" } }} />
+          <Details />
         </MemoryRouter>
       </Provider>
     )

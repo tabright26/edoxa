@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { Container, Card, CardBody } from "reactstrap";
 
-const FAQ = () => (
+const FAQ: FunctionComponent = () => (
   <Container>
     <Card className="mt-4">
       <CardBody className="text-justify p-5">

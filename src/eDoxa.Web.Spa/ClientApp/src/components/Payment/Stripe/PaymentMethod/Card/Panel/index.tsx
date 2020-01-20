@@ -76,7 +76,7 @@ const StripeCardItem: FunctionComponent<any> = ({
   );
 };
 
-const StripeCards: FunctionComponent<any> = ({
+const Panel: FunctionComponent<any> = ({
   className,
   limit,
   showCreateStripePaymentMethodModal,
@@ -146,4 +146,4 @@ const enhance = compose<any, any>(
   connect(mapStateToProps, mapDispatchToProps)
 );
 
-export default enhance(StripeCards);
+export default enhance(Panel);

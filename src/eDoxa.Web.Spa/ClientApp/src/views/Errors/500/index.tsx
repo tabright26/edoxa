@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import {
   Button,
   Col,
@@ -10,7 +10,7 @@ import {
   Row
 } from "reactstrap";
 
-const Error500 = () => (
+const Error500: FunctionComponent = () => (
   <div className="app flex-row align-items-center">
     <Container>
       <Row className="justify-content-center">

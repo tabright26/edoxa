@@ -41,7 +41,7 @@ const ProfileTransactionHistory: FunctionComponent<RouteComponentProps> = React.
   () => import("./TransactionHistory")
 );
 
-const Profile: FunctionComponent<RouteComponentProps> = ({ match }) => (
+const Profile: FunctionComponent = () => (
   <Row>
     <Col xs="12" sm="12" md="4" lg="3" xl="2">
       <Card className="mt-4">

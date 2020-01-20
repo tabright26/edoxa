@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { Col, Container, Row } from "reactstrap";
 
-const Error401 = () => (
+const Error401: FunctionComponent = () => (
   <div className="app flex-row align-items-center">
     <Container>
       <Row className="justify-content-center">

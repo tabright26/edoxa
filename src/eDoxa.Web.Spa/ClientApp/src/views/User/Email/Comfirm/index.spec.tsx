@@ -26,7 +26,7 @@ it("renders correctly", () => {
     .create(
       <Provider store={store}>
         <MemoryRouter>
-          <Confirm location={{ search: "?code=test" }} />
+          <Confirm />
         </MemoryRouter>
       </Provider>
     )

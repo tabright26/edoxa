@@ -1,6 +1,6 @@
 import "./index.scss";
-import React, { Suspense, FunctionComponent } from "react";
-import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/history";
 import UserTransactionModal from "components/User/Transaction/Modal";
@@ -21,37 +21,20 @@ import {
   getPasswordResetPath
 } from "utils/coreui/constants";
 
-const ApiAuthorizationRoutes: FunctionComponent<RouteComponentProps> = React.lazy(
-  () => import("utils/oidc/ApiAuthorizationRoutes")
+const ApiAuthorizationRoutes = React.lazy(() =>
+  import("utils/oidc/ApiAuthorizationRoutes")
 );
-const ErrorPage401: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("views/Errors/401")
-);
-const ErrorPage403: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("views/Errors/403")
-);
-const ErrorPage404: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("views/Errors/404")
-);
-const ErrorPage500: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("views/Errors/500")
-);
-const EmailConfirm: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("views/User/Email/Comfirm")
-);
-const PasswordForgot: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("views/User/Password/Forgot")
-);
-const PasswordReset: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("views/User/Password/Reset")
-);
-
-const DefaultLayout: FunctionComponent<any> = React.lazy(() =>
+const ErrorPage401 = React.lazy(() => import("views/Errors/401"));
+const ErrorPage403 = React.lazy(() => import("views/Errors/403"));
+const ErrorPage404 = React.lazy(() => import("views/Errors/404"));
+const ErrorPage500 = React.lazy(() => import("views/Errors/500"));
+const EmailConfirm = React.lazy(() => import("views/User/Email/Comfirm"));
+const PasswordForgot = React.lazy(() => import("views/User/Password/Forgot"));
+const PasswordReset = React.lazy(() => import("views/User/Password/Reset"));
+const DefaultLayout = React.lazy(() =>
   import("components/Shared/Layout/Default")
 );
-const NoneLayout: FunctionComponent<any> = React.lazy(() =>
-  import("components/Shared/Layout/None")
-);
+const NoneLayout = React.lazy(() => import("components/Shared/Layout/None"));
 
 const App = () => (
   <>
@@ -67,40 +50,40 @@ const App = () => (
         <Switch>
           <Route<any>
             path={ApplicationPaths.ApiAuthorizationPrefix}
-            component={props => <ApiAuthorizationRoutes {...props} />}
+            component={() => <ApiAuthorizationRoutes />}
           />
           <Route<RouteProps>
             exact
             path={getError401Path()}
             name="Error 401"
-            render={props => <ErrorPage401 {...props} />}
+            render={() => <ErrorPage401 />}
           />
           <Route<RouteProps>
             exact
             path={getError403Path()}
             name="Error 403"
-            render={props => <ErrorPage403 {...props} />}
+            render={() => <ErrorPage403 />}
           />
           <Route<RouteProps>
             exact
             path={getError404Path()}
             name="Error 404"
-            render={props => <ErrorPage404 {...props} />}
+            render={() => <ErrorPage404 />}
           />
           <Route<RouteProps>
             exact
             path={getError500Path()}
             name="Error 500"
-            render={props => <ErrorPage500 {...props} />}
+            render={() => <ErrorPage500 />}
           />
           <Route<RouteProps>
             exact
             path={getEmailConfirmPath()}
             name="Confirm Email"
-            render={props => (
+            render={() => (
               <Suspense fallback={<Loading />}>
                 <NoneLayout>
-                  <EmailConfirm {...props} />
+                  <EmailConfirm />
                 </NoneLayout>
               </Suspense>
             )}
@@ -109,10 +92,10 @@ const App = () => (
             exact
             path={getPasswordForgotPath()}
             name="Forgot Password"
-            render={props => (
+            render={() => (
               <Suspense fallback={<Loading />}>
                 <NoneLayout>
-                  <PasswordForgot {...props} />
+                  <PasswordForgot />
                 </NoneLayout>
               </Suspense>
             )}
@@ -121,10 +104,10 @@ const App = () => (
             exact
             path={getPasswordResetPath()}
             name="Reset Password"
-            render={props => (
+            render={() => (
               <Suspense fallback={<Loading />}>
                 <NoneLayout>
-                  <PasswordReset {...props} />
+                  <PasswordReset />
                 </NoneLayout>
               </Suspense>
             )}
@@ -132,7 +115,7 @@ const App = () => (
           <Route<RouteProps>
             path={getHomePath()}
             name="Home"
-            render={props => <DefaultLayout {...props} />}
+            render={() => <DefaultLayout />}
           />
           <Redirect to={getError404Path()} />
         </Switch>
