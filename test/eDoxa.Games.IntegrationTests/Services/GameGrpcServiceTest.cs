@@ -1,5 +1,5 @@
 ﻿// Filename: GameGrpcServiceTest.cs
-// Date Created: 2020-01-11
+// Date Created: 2020-01-06
 //
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -10,11 +10,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
+using eDoxa.Games.Domain.Factories;
 using eDoxa.Games.Domain.Repositories;
-using eDoxa.Games.Domain.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
+using eDoxa.Grpc.Protos.Challenges.Enums;
 using eDoxa.Grpc.Protos.Games.Dtos;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Grpc.Protos.Games.Requests;
@@ -33,15 +34,16 @@ using Grpc.Core;
 
 using IdentityModel;
 
-using Microsoft.ApplicationInsights;
-using Microsoft.AspNetCore.Mvc;
-
 using Xunit;
 
 namespace eDoxa.Games.IntegrationTests.Services
 {
     public sealed class GameGrpcServiceTest : IntegrationTest // TODO: INTEGRATION TESTS
     {
+        public GameGrpcServiceTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
+        {
+        }
+
         public static TheoryData<string, DateTime, DateTime, int> Senarios = new TheoryData<string, DateTime, DateTime, int>
         {
             {
@@ -84,10 +86,6 @@ namespace eDoxa.Games.IntegrationTests.Services
             }
         };
 
-        public GameGrpcServiceTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
-        {
-        }
-
         [Theory]
         [MemberData(nameof(Senarios))]
         public async Task FetchChallengeMatches(
@@ -127,23 +125,82 @@ namespace eDoxa.Games.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task FindPlayerGameCredential_ShouldThrowRpcException()
+        public async Task FetchChallengeMatches_ShouldBeOfTypeFetchChallengeMatchesResponse()
         {
             // Arrange
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var userId = new UserId();
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
 
             host.Server.CleanupDbContext();
 
-            var request = new FindPlayerGameCredentialRequest()
+            var request = new FetchChallengeMatchesRequest
             {
-                Game = EnumGame.LeagueOfLegends
+                Game = EnumGame.LeagueOfLegends,
+                EndedAt = DateTime.UtcNow.ToTimestamp(),
+                StartedAt = (DateTime.UtcNow - TimeSpan.FromDays(1)).ToTimestamp(),
+                Participants =
+                {
+                    new ParticipantDto
+                    {
+                        ChallengeId = new ChallengeId(),
+                        GamePlayerId = "testID1",
+                        Id = new Guid().ToString(),
+                        Score = 10,
+                        SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
+                        UserId = new UserId()
+                    },
+                    new ParticipantDto
+                    {
+                        ChallengeId = new ChallengeId(),
+                        GamePlayerId = "testID2",
+                        Id = new Guid().ToString(),
+                        Score = 20,
+                        SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
+                        UserId = new UserId()
+                    },
+                    new ParticipantDto
+                    {
+                    ChallengeId = new ChallengeId(),
+                    GamePlayerId = "testID3",
+                    Id = new Guid().ToString(),
+                    Score = 50,
+                    SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
+                    UserId = new UserId()
+                }
+                }
             };
 
             var client = new GameService.GameServiceClient(host.CreateChannel());
 
-            // Act Assert
-            var func = new Func<Task>(async () => await client.FindPlayerGameCredentialAsync(request));
-            func.Should().Throw<RpcException>();
+            // Act
+            var response = client.FetchChallengeMatches(request);
+
+            //Assert
+            response.Should().BeOfType<AsyncServerStreamingCall<FetchChallengeMatchesResponse>>();
+        }
+
+        [Fact]
+        public async Task FetchChallengeScoring_ShouldBeOfTypeFetchChallengeScoringResponse()
+        {
+            // Arrange
+            var userId = new UserId();
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+
+            host.Server.CleanupDbContext();
+
+            var request = new FetchChallengeScoringRequest
+            {
+                Game = EnumGame.LeagueOfLegends,
+                ChallengeType = EnumChallengeType.All
+            };
+
+            var client = new GameService.GameServiceClient(host.CreateChannel());
+
+            // Act
+            var response = await client.FetchChallengeScoringAsync(request);
+
+            //Assert
+            response.Should().BeOfType<FetchChallengeScoringResponse>();
         }
 
         [Fact]
@@ -171,7 +228,7 @@ namespace eDoxa.Games.IntegrationTests.Services
                     await credentialRepository.UnitOfWork.CommitAsync();
                 });
 
-            var request = new FindPlayerGameCredentialRequest()
+            var request = new FindPlayerGameCredentialRequest
             {
                 Game = EnumGame.LeagueOfLegends
             };
@@ -185,5 +242,24 @@ namespace eDoxa.Games.IntegrationTests.Services
             response.Should().BeOfType<FindPlayerGameCredentialResponse>();
         }
 
+        [Fact]
+        public async Task FindPlayerGameCredential_ShouldThrowRpcException()
+        {
+            // Arrange
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+
+            host.Server.CleanupDbContext();
+
+            var request = new FindPlayerGameCredentialRequest
+            {
+                Game = EnumGame.LeagueOfLegends
+            };
+
+            var client = new GameService.GameServiceClient(host.CreateChannel());
+
+            // Act Assert
+            var func = new Func<Task>(async () => await client.FindPlayerGameCredentialAsync(request));
+            func.Should().Throw<RpcException>();
+        }
     }
 }
