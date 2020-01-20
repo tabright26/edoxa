@@ -1,5 +1,5 @@
 import React from "react";
-import Delete from "./Unlink";
+import Delete from ".";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 

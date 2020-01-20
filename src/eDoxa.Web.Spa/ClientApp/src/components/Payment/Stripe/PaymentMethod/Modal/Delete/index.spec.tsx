@@ -1,5 +1,5 @@
 import React from "react";
-import Delete from "./Delete";
+import Delete from ".";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import { DELETE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";

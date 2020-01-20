@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import Header from "./Header";
+import Header from ".";
 
 it("renders without crashing", () => {
   //Arrange

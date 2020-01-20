@@ -17,14 +17,14 @@ import {
 //const Home = React.lazy(() => import("views/Home/Home"));
 const TermsOfServices = React.lazy(() => import("views/TermsOfServices"));
 const FAQ = React.lazy(() => import("views/FAQ"));
-const NewsFeeds = React.lazy(() => import("views/NewsFeeds/NewsFeeds"));
+const NewsFeeds = React.lazy(() => import("views/NewsFeeds"));
 const Profile = React.lazy(() => import("views/User/Profile"));
-const Challenges = React.lazy(() => import("views/Challenges/Challenges"));
-const ChallengeDetails = React.lazy(() => import("views/Challenges/Details/Details"));
-const ChallengeHistory = React.lazy(() => import("views/Challenges/History/History"));
-const Clans = React.lazy(() => import("views/Clans/Clans"));
-const ClanDashboard = React.lazy(() => import("views/Clans/Dashboard/Dashboard"));
-const ClanDetails = React.lazy(() => import("views/Clans/Details/Details"));
+const Challenges = React.lazy(() => import("views/Challenges"));
+const ChallengeDetails = React.lazy(() => import("views/Challenges/Details"));
+const ChallengeHistory = React.lazy(() => import("views/Challenges/History"));
+const Clans = React.lazy(() => import("views/Clans"));
+const ClanDashboard = React.lazy(() => import("views/Clans/Dashboard"));
+const ClanDetails = React.lazy(() => import("views/Clans/Details"));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 export const routes: RouteConfig[] = [

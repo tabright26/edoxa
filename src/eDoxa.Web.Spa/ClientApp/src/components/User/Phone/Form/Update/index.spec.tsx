@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
-import Update from "./Update";
+import Update from ".";
 import { configureStore } from "store";
 import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";

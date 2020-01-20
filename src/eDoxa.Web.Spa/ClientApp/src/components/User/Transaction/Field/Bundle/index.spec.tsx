@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Form, reduxForm } from "redux-form";
 import { Provider } from "react-redux";
-import TransactionBundle from "./Bundle";
+import TransactionBundle from ".";
 import {
   CURRENCY_TOKEN,
   CURRENCY_MONEY,

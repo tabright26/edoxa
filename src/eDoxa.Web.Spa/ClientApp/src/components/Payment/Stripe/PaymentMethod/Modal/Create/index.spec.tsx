@@ -1,5 +1,5 @@
 import React from "react";
-import Create from "./Create";
+import Create from ".";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";

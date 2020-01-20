@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import Buy from "./Buy";
+import Buy from ".";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
 import { CURRENCY_TOKEN } from "types";
 import { TransactionBundlesState } from "store/static/transactionBundle/types";

@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import Withdrawal from "./Withdrawal";
+import Withdrawal from ".";
 import { StripeAccountState } from "store/root/payment/stripe/account/types";
 import { TransactionBundlesState } from "store/static/transactionBundle/types";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import Update from "./Update";
+import Update from ".";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";

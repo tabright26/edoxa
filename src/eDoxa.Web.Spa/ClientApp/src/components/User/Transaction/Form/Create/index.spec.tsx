@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
-import Deposit from "./Create";
+import Deposit from ".";
 import { configureStore } from "store";
 import { CURRENCY_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
 import {

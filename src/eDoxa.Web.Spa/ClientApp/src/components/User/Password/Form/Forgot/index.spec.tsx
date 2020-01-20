@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
-import Forgot from "./Forgot";
+import Forgot from ".";
 import { configureStore } from "store";
 import Input from "components/Shared/Input";
 import { EMAIL_REQUIRED, EMAIL_INVALID } from "utils/form/validators";

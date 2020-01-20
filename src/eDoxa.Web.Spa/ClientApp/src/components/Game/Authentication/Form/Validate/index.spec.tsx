@@ -1,5 +1,5 @@
 import React from "react";
-import Validate from "./Validate";
+import Validate from ".";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 

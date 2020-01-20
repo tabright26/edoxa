@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { MemoryRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import Footer from "./Footer";
+import Footer from ".";
 
 it("renders without crashing", () => {
   //Arrange
