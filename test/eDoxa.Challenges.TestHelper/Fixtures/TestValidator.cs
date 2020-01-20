@@ -5,6 +5,7 @@
 // Copyright © 2019, eDoxa. All rights reserved.
 
 using eDoxa.Challenges.Api.Application;
+using eDoxa.Grpc.Protos.Challenges.Options;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -20,16 +21,16 @@ namespace eDoxa.Challenges.TestHelper.Fixtures
             var builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json", false);
             var configuration = builder.Build();
-            Options = configuration.GetSection("Challenge").Get<ChallengeOptions>();
+            Options = configuration.GetSection("Api").Get<ChallengesApiOptions>();
         }
 
-        public ChallengeOptions Options { get; }
+        public ChallengesApiOptions Options { get; }
 
-        public IOptionsSnapshot<ChallengeOptions> OptionsWrapper
+        public IOptionsSnapshot<ChallengesApiOptions> OptionsWrapper
         {
             get
             {
-                var mock = new Mock<IOptionsSnapshot<ChallengeOptions>>();
+                var mock = new Mock<IOptionsSnapshot<ChallengesApiOptions>>();
 
                 mock.Setup(snapshot => snapshot.Value).Returns(Options);
 

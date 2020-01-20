@@ -2,11 +2,53 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Options";
 
+import "custom_types.proto";
+import "games_enums.proto";
+
 package edoxa.services.challenges;
 
 message ChallengesApiOptions {
   StaticOptions static = 1;
-  
+
   message StaticOptions {
+    ChallengeOptions challenge = 1;
+    
+    message ChallengeOptions {
+      NameOptions name = 1;
+      GameOptions game = 2;
+      BestOfOptions bestOf = 3;
+      EntriesOptions entries = 4;
+      DurationOptions duration = 5;
+        
+      message NameOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated customTypes.FieldValidationRule validators = 3;
+	  }
+      message GameOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated games.EnumGame values = 3;
+        repeated customTypes.FieldValidationRule validators = 4;
+	  }
+      message BestOfOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated int32 values = 3;
+        repeated customTypes.FieldValidationRule validators = 4;
+	  }
+      message EntriesOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated int32 values = 3;
+        repeated customTypes.FieldValidationRule validators = 4;
+	  }
+      message DurationOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated int32 values = 3;
+        repeated customTypes.FieldValidationRule validators = 4;
+	  }
+    }
   }
 }

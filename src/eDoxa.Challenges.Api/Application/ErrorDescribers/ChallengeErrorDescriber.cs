@@ -4,7 +4,7 @@
     {
         public static string NameInvalid()
         {
-            return "The property name is invalid.";
+            return "Name is invalid";
         }
 
         public static string GameInvalid()

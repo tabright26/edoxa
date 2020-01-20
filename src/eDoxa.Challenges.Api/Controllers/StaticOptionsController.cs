@@ -6,7 +6,7 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Cashier.Options;
+using eDoxa.Grpc.Protos.Challenges.Options;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.Api.Controllers
     public sealed class StaticOptionsController : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromServices] IOptionsSnapshot<CashierApiOptions> snapshot)
+        public async Task<IActionResult> GetAsync([FromServices] IOptionsSnapshot<ChallengesApiOptions> snapshot)
         {
             return await Task.FromResult(this.Ok(snapshot.Value.Static));
         }
