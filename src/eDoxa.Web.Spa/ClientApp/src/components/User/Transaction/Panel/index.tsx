@@ -33,7 +33,7 @@ type OutterProps = OwnProps;
 type Props = InnerProps & OutterProps;
 
 const FilteredTransactions: FunctionComponent<Props> = ({
-  transactionHistory: { data, error, loading },
+  transactionHistory: { data, loading },
   loadUserTransactionHistory
 }) => {
   useEffect((): void => {

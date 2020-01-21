@@ -45,11 +45,11 @@ namespace eDoxa.Clans.Infrastructure
 
         public DbSet<Division> Divisions => this.Set<Division>();
 
-        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        public async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
             await this.SaveChangesAsync(cancellationToken);
 
-            if (dispatchDomainEvents)
+            if (publishDomainEvents)
             {
                 var entities = ChangeTracker.Entries<IEntity>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents.Any()).ToList();
 

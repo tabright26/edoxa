@@ -32,7 +32,6 @@ using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
@@ -78,7 +77,7 @@ namespace eDoxa.FunctionalTests
             mockServiceBusPubliser.Setup(serviceBusPubliser => serviceBusPubliser.PublishAsync(It.IsAny<ChallengeParticipantRegisteredIntegrationEvent>()))
                 .Verifiable();
 
-            var user = new User
+            var user = new Identity.Domain.AggregateModels.UserAggregate.User
             {
                 Id = Guid.NewGuid(),
                 Email = "test@edoxa.gg",

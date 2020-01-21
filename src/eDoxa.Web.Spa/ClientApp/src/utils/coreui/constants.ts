@@ -72,6 +72,10 @@ export function getUserProfilePaymentMethodsPath(): string {
   return getUserProfilePath() + "/payment-methods";
 }
 
+export function getUserProfilePromotionalCodePath(): string {
+  return getUserProfilePath() + "/promotional-code";
+}
+
 export function getUserProfileGamesPath(): string {
   return getUserProfilePath() + "/games";
 }

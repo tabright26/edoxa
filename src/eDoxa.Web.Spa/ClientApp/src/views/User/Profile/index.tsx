@@ -1,5 +1,5 @@
 import React, { Suspense, FunctionComponent } from "react";
-import { Route, Switch, Redirect, RouteComponentProps } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -12,33 +12,24 @@ import { RouteProps } from "utils/router/types";
 import { LinkContainer } from "react-router-bootstrap";
 import { Loading } from "components/Shared/Loading";
 import {
-  getUserProfilePath,
   getUserProfileOverviewPath,
   getUserProfileTransactionHistoryPath,
   getUserProfilePaymentMethodsPath,
   getUserProfileGamesPath,
   getUserProfileSecurityPath,
   getUserProfileDetailsPath,
-  getError404Path
+  getError404Path,
+  getUserProfilePromotionalCodePath
 } from "utils/coreui/constants";
 
-const ProfileOverview: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("./Overview")
-);
-const ProfileDetails: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("./Details")
-);
-const ProfileSecurity: FunctionComponent<RouteComponentProps> = React.lazy(() =>
-  import("./Security")
-);
-const ProfileConnections: FunctionComponent<RouteComponentProps> = React.lazy(
-  () => import("./Games")
-);
-const ProfilePaymentMethods: FunctionComponent<RouteComponentProps> = React.lazy(
-  () => import("./PaymentMethods")
-);
-const ProfileTransactionHistory: FunctionComponent<RouteComponentProps> = React.lazy(
-  () => import("./TransactionHistory")
+const ProfileOverview = React.lazy(() => import("./Overview"));
+const ProfileDetails = React.lazy(() => import("./Details"));
+const ProfileSecurity = React.lazy(() => import("./Security"));
+const ProfileConnections = React.lazy(() => import("./Games"));
+const ProfilePromotionalCode = React.lazy(() => import("./PromotionalCode"));
+const ProfilePaymentMethods = React.lazy(() => import("./PaymentMethods"));
+const ProfileTransactionHistory = React.lazy(() =>
+  import("./TransactionHistory")
 );
 
 const Profile: FunctionComponent = () => (
@@ -71,6 +62,9 @@ const Profile: FunctionComponent = () => (
           <LinkContainer to={getUserProfileTransactionHistoryPath()}>
             <ListGroupItem>Transaction History</ListGroupItem>
           </LinkContainer>
+          <LinkContainer to={getUserProfilePromotionalCodePath()}>
+            <ListGroupItem>Promotional Code</ListGroupItem>
+          </LinkContainer>
         </ListGroup>
       </Card>
       <Card>
@@ -91,41 +85,43 @@ const Profile: FunctionComponent = () => (
             path={getUserProfileOverviewPath()}
             exact
             name="Profile Overview"
-            render={props => <ProfileOverview {...props} />}
+            component={ProfileOverview}
           />
           <Route<RouteProps>
             path={getUserProfileDetailsPath()}
             exact
             name="Profile Details"
-            render={props => <ProfileDetails {...props} />}
+            component={ProfileDetails}
           />
           <Route<RouteProps>
             path={getUserProfileSecurityPath()}
             exact
             name="Security"
-            render={props => <ProfileSecurity {...props} />}
+            component={ProfileSecurity}
           />
           <Route<RouteProps>
             path={getUserProfileGamesPath()}
             exact
             name="Connections"
-            render={props => <ProfileConnections {...props} />}
+            component={ProfileConnections}
           />
           <Route<RouteProps>
             path={getUserProfilePaymentMethodsPath()}
             exact
             name="Payment Methods"
-            render={props => <ProfilePaymentMethods {...props} />}
+            component={ProfilePaymentMethods}
           />
           <Route<RouteProps>
             path={getUserProfileTransactionHistoryPath()}
             exact
             name="Transaction History"
-            render={props => <ProfileTransactionHistory {...props} />}
+            component={ProfileTransactionHistory}
           />
-          <Redirect
-            from={getUserProfilePath()}
-            to={getUserProfileOverviewPath()}
+          <Route<RouteProps>
+            path={getUserProfilePromotionalCodePath()}
+            exact
+            name="Promotional Code"
+            component={ProfilePromotionalCode}
           />
           <Redirect to={getError404Path()} />
         </Switch>

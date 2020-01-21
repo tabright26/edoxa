@@ -38,11 +38,11 @@ namespace eDoxa.Games.Infrastructure
 
         public DbSet<Credential> Credentials => this.Set<Credential>();
 
-        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        public async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
             await this.SaveChangesAsync(cancellationToken);
 
-            if (dispatchDomainEvents)
+            if (publishDomainEvents)
             {
                 var entities = ChangeTracker.Entries<IEntity>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents.Any()).ToList();
 

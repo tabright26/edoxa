@@ -32,6 +32,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<CashierDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 
             // Repositories
+            builder.RegisterType<PromotionRepository>().As<IPromotionRepository>().InstancePerLifetimeScope();
             builder.RegisterType<ChallengeRepository>().As<IChallengeRepository>().InstancePerLifetimeScope();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>().InstancePerLifetimeScope();
 
@@ -41,6 +42,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<TransactionQuery>().As<ITransactionQuery>().InstancePerLifetimeScope();
 
             // Services
+            builder.RegisterType<PromotionService>().As<IPromotionService>().InstancePerLifetimeScope();
             builder.RegisterType<ChallengeService>().As<IChallengeService>().InstancePerLifetimeScope();
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
 

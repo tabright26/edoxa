@@ -48,7 +48,7 @@ namespace eDoxa.Identity.Infrastructure
             return this.SaveChangesAsync();
         }
 
-        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        public async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
             await this.SaveChangesAsync(cancellationToken);
         }

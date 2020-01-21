@@ -68,3 +68,7 @@ message TransactionBundleDto {
   bool disabled = 7;
   bool deprecated = 8;
 }
+
+message PromotionDto {
+  string promotionalCode = 1;
+}

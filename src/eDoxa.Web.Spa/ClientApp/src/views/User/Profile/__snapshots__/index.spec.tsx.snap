@@ -70,6 +70,13 @@ exports[`renders without crashing 1`] = `
         >
           Transaction History
         </li>
+        <li
+          className="list-group-item"
+          href="/user/profile/promotional-code"
+          onClick={[Function]}
+        >
+          Promotional Code
+        </li>
       </ul>
     </div>
     <div

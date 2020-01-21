@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionModelConfiguration.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.Ignore(challenge => challenge.DomainEvents);
 
-            builder.Property(transaction => transaction.Id).IsRequired().ValueGeneratedNever();;
+            builder.Property(transaction => transaction.Id).IsRequired().ValueGeneratedNever();
 
             builder.Property(transaction => transaction.Timestamp).IsRequired();
 

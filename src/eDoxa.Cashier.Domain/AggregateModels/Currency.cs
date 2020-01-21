@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         {
         }
 
-        public ICurrency Format(decimal amount)
+        public ICurrency From(decimal amount)
         {
             if (this == Money)
             {

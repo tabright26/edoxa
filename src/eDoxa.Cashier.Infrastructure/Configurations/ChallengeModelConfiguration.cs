@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeModelConfiguration.cs
-// Date Created: 2019-07-11
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 {
     internal sealed class ChallengeModelConfiguration : IEntityTypeConfiguration<ChallengeModel>
     {
-        public void Configure( EntityTypeBuilder<ChallengeModel> builder)
+        public void Configure(EntityTypeBuilder<ChallengeModel> builder)
         {
             builder.ToTable("Challenge");
 
@@ -36,8 +36,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                     challengeStats.Property<Guid>("Id").ValueGeneratedOnAdd();
 
                     challengeStats.HasKey("ChallengeId", "Id");
-                }
-            );
+                });
 
             builder.HasKey(challenge => challenge.Id);
         }

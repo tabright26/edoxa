@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Challenges.Api.Application;
 using eDoxa.Grpc.Protos.Challenges.Options;
 
 using Microsoft.Extensions.Configuration;
