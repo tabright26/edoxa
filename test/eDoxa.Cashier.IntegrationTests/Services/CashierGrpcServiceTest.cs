@@ -35,7 +35,7 @@ using Xunit;
 
 namespace eDoxa.Cashier.IntegrationTests.Services
 {
-    public sealed class CashierGrpcServiceTest : IntegrationTest // TODO: INTEGRATION TESTS
+    public sealed class CashierGrpcServiceTest : IntegrationTest
     {
         public CashierGrpcServiceTest(
             TestHostFixture testHost,
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
             var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
             host.Server.CleanupDbContext();
@@ -81,13 +81,13 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task CreateChallengePayout_ShouldThrowRpcExceptionInvalid()
+        public void CreateChallengePayout_ShouldThrowFailedPreconditionRpcException()
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var claims = new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email) };
 
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
 
@@ -115,7 +115,7 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
             var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
 
@@ -152,13 +152,13 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task CreateTransaction_ShouldThrowRpcExceptionAccountNotFound()
+        public void CreateTransaction_ShouldThrowNotFoundRpcException()
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var claims = new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email) };
 
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
 
@@ -183,13 +183,13 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task CreateTransaction_ShouldThrowRpcExceptionInvalid()
+        public void CreateTransaction_ShouldThrowFailedPreconditionRpcException()
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var claims = new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email) };
 
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
 
@@ -218,7 +218,7 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
             var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
 
@@ -250,7 +250,7 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
             var challengeId = new ChallengeId();
 
@@ -285,11 +285,11 @@ namespace eDoxa.Cashier.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task FindChallengePayout_ShouldThrowRpcExceptionChallengeNotFound()
+        public async Task FindChallengePayout_ShouldThrowNotFoundRpcException()
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
             var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
