@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate
 
             _recipients.Add(recipient);
 
-            this.AddDomainEvent(new PromotionRedeemedDomainEvent(recipient));
+            this.AddDomainEvent(new PromotionRedeemedDomainEvent(recipient.User.Id, Id, Currency, Amount));
         }
 
         private bool CanRedeem(PromotionRecipient recipient)

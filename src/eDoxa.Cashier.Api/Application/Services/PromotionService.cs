@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!await _promotionRepository.IsPromotionalCodeAvailableAsync(promotionalCode))
             {
-                result.AddFailedPreconditionError("Promotional code isn't available.");
+                result.AddFailedPreconditionError("The promotional code isn't available");
             }
 
             if (result.IsValid)
@@ -76,24 +76,19 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             var recipient = new PromotionRecipient(user, redeemedAt);
 
-            if (promotion.IsCanceled())
-            {
-                result.AddFailedPreconditionError("The promotion is canceled.");
-            }
-
             if (promotion.IsExpired())
             {
-                result.AddFailedPreconditionError("The promotion is expired.");
+                result.AddFailedPreconditionError("The promotional code is expired");
             }
 
             if (!promotion.IsActive())
             {
-                result.AddFailedPreconditionError("The promotion isn't active.");
+                result.AddFailedPreconditionError("The promotional code is invalid");
             }
 
             if (promotion.IsRedeemBy(recipient))
             {
-                result.AddFailedPreconditionError("The promotion is redeemed.");
+                result.AddFailedPreconditionError("The promotional code is already redeemed");
             }
 
             if (result.IsValid)
@@ -114,12 +109,12 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (promotion.IsCanceled())
             {
-                result.AddFailedPreconditionError("The promotion is canceled.");
+                result.AddFailedPreconditionError("The promotional code is canceled");
             }
 
             if (promotion.IsExpired())
             {
-                result.AddFailedPreconditionError("The promotion is expired.");
+                result.AddFailedPreconditionError("The promotional code is expired");
             }
 
             if (result.IsValid)

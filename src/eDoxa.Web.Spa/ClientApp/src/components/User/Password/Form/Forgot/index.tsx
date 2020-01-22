@@ -64,10 +64,9 @@ const enhance = compose<InnerProps, OutterProps>(
       setTimeout(function() {
         toastr.success(
           "Email sent",
-          "We have sent you a link to reset your password by email.",
-          { timeOut: 7500 }
+          "We have sent you a link to reset your password by email."
         );
-      }, 2500);
+      }, 1500);
     },
     validate: values => {
       const errors: FormErrors<FormData> = {};

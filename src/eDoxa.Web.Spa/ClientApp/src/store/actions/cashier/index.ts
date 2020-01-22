@@ -13,9 +13,9 @@ import {
   CREATE_USER_TRANSACTION,
   CREATE_USER_TRANSACTION_SUCCESS,
   CREATE_USER_TRANSACTION_FAIL,
-  REDEEM_PROMOTIONAL_CODE,
-  REDEEM_PROMOTIONAL_CODE_SUCCESS,
-  REDEEM_PROMOTIONAL_CODE_FAIL
+  REDEEM_PROMOTION,
+  REDEEM_PROMOTION_SUCCESS,
+  REDEEM_PROMOTION_FAIL
 } from "./types";
 import {
   Currency,
@@ -55,21 +55,21 @@ export function createUserTransaction(
   };
 }
 
-export function redeemPromotionalCode(
-  code: string,
+export function redeemPromotion(
+  promotionalCode: string,
   meta: AxiosActionCreatorMeta
 ): UserTransactionActionCreators {
   return {
     types: [
-      REDEEM_PROMOTIONAL_CODE,
-      REDEEM_PROMOTIONAL_CODE_SUCCESS,
-      REDEEM_PROMOTIONAL_CODE_FAIL
+      REDEEM_PROMOTION,
+      REDEEM_PROMOTION_SUCCESS,
+      REDEEM_PROMOTION_FAIL
     ],
     payload: {
       client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
         method: "POST",
-        url: `/cashier/api/promotional-codes/${code}`
+        url: `/cashier/api/promotions/${promotionalCode}`
       }
     },
     meta

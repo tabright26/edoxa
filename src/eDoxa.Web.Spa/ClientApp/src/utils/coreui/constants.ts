@@ -4,8 +4,8 @@ export function getHomePath(): string {
   return "/";
 }
 
-function getErrorPath(code: number): string {
-  return `/errors/${code}`;
+function getErrorPath(httpCode: number): string {
+  return `/errors/${httpCode}`;
 }
 
 export function getError401Path(): string {

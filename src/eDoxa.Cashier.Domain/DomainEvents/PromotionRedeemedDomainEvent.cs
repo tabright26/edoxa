@@ -4,18 +4,34 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.DomainEvents
 {
     public sealed class PromotionRedeemedDomainEvent : IDomainEvent
     {
-        public PromotionRedeemedDomainEvent(PromotionRecipient recipient)
+        public PromotionRedeemedDomainEvent(
+            UserId userId,
+            PromotionId promotionId,
+            Currency currency,
+            decimal amount
+        )
         {
-            Recipient = recipient;
+            UserId = userId;
+            PromotionId = promotionId;
+            Currency = currency;
+            Amount = amount;
         }
 
-        public PromotionRecipient Recipient { get; }
+        public UserId UserId { get; }
+
+        public PromotionId PromotionId { get; }
+
+        public Currency Currency { get; }
+
+        public decimal Amount { get; }
     }
 }

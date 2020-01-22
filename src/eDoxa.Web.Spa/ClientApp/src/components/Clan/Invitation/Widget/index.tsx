@@ -1,6 +1,5 @@
 import React from "react";
 import { toastr } from "react-redux-toastr";
-import { Col } from "reactstrap";
 
 import InvitationForm from "../Form";
 

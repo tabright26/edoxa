@@ -172,10 +172,12 @@ namespace eDoxa.Cashier.Api.Application.Services
             CancellationToken cancellationToken = default
         )
         {
-            var result = TryGetCurrency(currency, amount, out var value);
+            var result = new DomainValidationResult();
 
             if (result.IsValid)
             {
+                var value = currency.From(amount);
+
                 if (value is Money money)
                 {
                     return await this.CreateTransactionAsync(
@@ -197,7 +199,7 @@ namespace eDoxa.Cashier.Api.Application.Services
                 }
             }
 
-            return DomainValidationResult.Failure("Invalid currency.");
+            return result;
         }
 
         public async Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId)
@@ -446,6 +448,15 @@ namespace eDoxa.Cashier.Api.Application.Services
                     cancellationToken);
             }
 
+            if (type == TransactionType.Promotion)
+            {
+                return await this.CreatePromotionTransactionAsync(
+                    account,
+                    money,
+                    metadata,
+                    cancellationToken);
+            }
+
             return DomainValidationResult.Failure("Unsupported transaction type for money currency.");
         }
 
@@ -494,7 +505,8 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (transactionBundles.All(withdrawal => new decimal(withdrawal.Currency.Amount) != money.Amount))
             {
-                result.AddFailedPreconditionError($"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
+                result.AddFailedPreconditionError(
+                    $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.HaveSufficientMoney(money))
@@ -557,7 +569,8 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != token.Amount))
             {
-                result.AddFailedPreconditionError($"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
+                result.AddFailedPreconditionError(
+                    $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
             }
 
             if (!account.IsDepositAvailable())
@@ -625,29 +638,62 @@ namespace eDoxa.Cashier.Api.Application.Services
                     cancellationToken);
             }
 
+            if (type == TransactionType.Promotion)
+            {
+                return await this.CreatePromotionTransactionAsync(
+                    account,
+                    token,
+                    metadata,
+                    cancellationToken);
+            }
+
             return DomainValidationResult.Failure("Unsupported transaction type for token currency.");
         }
 
-        // TODO: Need to be refactored.
-        private static DomainValidationResult TryGetCurrency(Currency currency, decimal amount, out ICurrency? result)
+        private async Task<IDomainValidationResult> CreatePromotionTransactionAsync(
+            ITokenAccount account,
+            Token token,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
         {
-            result = null;
+            var result = new DomainValidationResult();
 
-            if (currency == Currency.Money)
+            if (result.IsValid)
             {
-                // TODO: Validation.
+                var transaction = account.Promotion(token, metadata);
 
-                result = new Money(amount);
+                transaction.MarkAsSucceeded();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
             }
 
-            if (currency == Currency.Token)
-            {
-                // TODO: Validation.
+            return result;
+        }
 
-                result = new Token(amount);
+        private async Task<IDomainValidationResult> CreatePromotionTransactionAsync(
+            IMoneyAccount account,
+            Money money,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (result.IsValid)
+            {
+                var transaction = account.Promotion(money, metadata);
+
+                transaction.MarkAsSucceeded();
+
+                await _accountRepository.CommitAsync(cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
             }
 
-            return new DomainValidationResult();
+            return result;
         }
     }
 }

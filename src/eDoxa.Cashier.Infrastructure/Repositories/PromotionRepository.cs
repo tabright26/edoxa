@@ -196,12 +196,12 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             };
         }
 
-        private static PromotionRecipientModel ToModel(PromotionRecipient promotionRecipient)
+        private static PromotionRecipientModel ToModel(PromotionRecipient recipient)
         {
             return new PromotionRecipientModel
             {
-                UserId = promotionRecipient.User.Id,
-                RedeemedAt = promotionRecipient.RedeemedAt
+                UserId = recipient.User.Id,
+                RedeemedAt = recipient.RedeemedAt
             };
         }
     }

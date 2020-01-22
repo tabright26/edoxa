@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import PromotionalCodeForm from "components/Cashier/PromotionalCode/Form";
+import PromotionForm from "components/Cashier/Promotion/Form";
 
 interface Props {
   className?: string;
@@ -13,9 +13,9 @@ const Panel: FunctionComponent<Props> = ({ className = null }) => (
     </CardHeader>
     <CardBody>
       <dl className="row mb-0">
-        <dd className="col-sm-3 mb-0 text-muted">Code</dd>
+        <dd className="col-sm-3 mb-0 text-muted">Promotional code</dd>
         <dd className="col-sm-5 mb-0">
-          <PromotionalCodeForm.Redeem />
+          <PromotionForm.Redeem />
         </dd>
       </dl>
     </CardBody>

@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Api.Controllers
     [Authorize]
     [ApiVersion("1.0")]
     [Route("api/promotions")]
-    [ApiExplorerSettings(GroupName = "Promotional Codes")]
+    [ApiExplorerSettings(GroupName = "Promotions")]
     public sealed class PromotionController : ControllerBase
     {
         private readonly IPromotionService _promotionService;
