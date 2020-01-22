@@ -4,7 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>eDoxa.Cashier.IntegrationTests</AssemblyName>
     <RootNamespace>eDoxa.Cashier.IntegrationTests</RootNamespace>
-    <Nullable>Enable</Nullable>
+    <Nullable>Disable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
