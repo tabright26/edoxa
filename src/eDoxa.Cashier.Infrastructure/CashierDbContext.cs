@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Infrastructure
         {
             await this.SaveChangesAsync(cancellationToken);
 
-            var entities = ChangeTracker.Entries<IEntityModel>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents.Any()).ToList();
+            var entities = ChangeTracker.Entries<IEntityModel>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents?.Any() ?? false).ToList();
 
             if (publishDomainEvents)
             {

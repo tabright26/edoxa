@@ -26,7 +26,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 {
     public sealed partial class PromotionRepository
     {
-        private readonly IDictionary<Promotion, PromotionModel> _materializedObjects = new Dictionary<Promotion, PromotionModel>();
+        private readonly IDictionary<Promotion, PromotionModel> _maps = new Dictionary<Promotion, PromotionModel>();
         private readonly CashierDbContext _context;
 
         public PromotionRepository(CashierDbContext context)
@@ -48,11 +48,12 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         private async Task<PromotionModel?> FindPromotionModelOrNullAsync(string promotionalCode)
         {
-            var promotions = from promotion in Promotions.AsExpandable()
-                             where promotion.PromotionalCode == promotionalCode && !promotion.CanceledAt.HasValue
+            var promotions = from promotion in await Promotions.AsExpandable().ToListAsync()
+                             where string.Equals(promotion.PromotionalCode, promotionalCode, StringComparison.OrdinalIgnoreCase)
+                             orderby promotion.ExpiredAt descending
                              select promotion;
 
-            return await promotions.SingleOrDefaultAsync();
+            return promotions.FirstOrDefault();
         }
     }
 
@@ -64,7 +65,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
             Promotions.Add(promotionModel);
 
-            _materializedObjects[promotion] = promotionModel;
+            _maps[promotion] = promotionModel;
         }
 
         public async Task<IReadOnlyCollection<Promotion>> FetchPromotionsAsync()
@@ -77,7 +78,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             {
                 var promotion = FromModel(promotionModel);
 
-                _materializedObjects[promotion] = promotionModel;
+                _maps[promotion] = promotionModel;
 
                 return promotion;
             }
@@ -85,7 +86,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<Promotion?> FindPromotionOrNullAsync(string promotionalCode)
         {
-            if (_materializedObjects.TryGetValue(x => x.PromotionalCode == promotionalCode && !x.CanceledAt.HasValue, out var promotion))
+            var promotion = _maps.Keys.Where(x => string.Equals(x.PromotionalCode, promotionalCode, StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(x => x.ExpiredAt)
+                .FirstOrDefault();
+
+            if (promotion != null)
             {
                 return promotion;
             }
@@ -99,14 +104,25 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
             promotion = FromModel(promotionModel);
 
-            _materializedObjects[promotion] = promotionModel;
+            _maps[promotion] = promotionModel;
 
             return promotion;
         }
 
+        public async Task<bool> IsPromotionalCodeAvailableAsync(string promotionalCode)
+        {
+            var promotions = from promotion in await Promotions.AsExpandable().ToListAsync()
+                             where string.Equals(promotion.PromotionalCode, promotionalCode, StringComparison.OrdinalIgnoreCase) &&
+                                   !Promotion.IsCanceled(promotion.CanceledAt) &&
+                                   !Promotion.IsExpired(promotion.ExpiredAt)
+                             select promotion;
+
+            return !promotions.Any();
+        }
+
         public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
         {
-            foreach (var (promotion, promotionModel) in _materializedObjects)
+            foreach (var (promotion, promotionModel) in _maps)
             {
                 this.CopyChanges(promotion, promotionModel);
             }

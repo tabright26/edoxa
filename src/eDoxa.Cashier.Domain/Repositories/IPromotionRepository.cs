@@ -20,6 +20,8 @@ namespace eDoxa.Cashier.Domain.Repositories
 
         Task<Promotion?> FindPromotionOrNullAsync(string promotionalCode);
 
+        Task<bool> IsPromotionalCodeAvailableAsync(string promotionalCode);
+
         Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default);
     }
 }

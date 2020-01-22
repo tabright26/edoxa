@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.Api.Application.Services
         }
 
         public async Task<IDomainValidationResult> CreatePromotionAsync(
-            string code,
+            string promotionalCode,
             ICurrency currency,
             TimeSpan duration,
             DateTime expiredAt
@@ -45,10 +45,15 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
+            if (!await _promotionRepository.IsPromotionalCodeAvailableAsync(promotionalCode))
+            {
+                result.AddFailedPreconditionError("Promotional code isn't available.");
+            }
+
             if (result.IsValid)
             {
                 var promotion = new Promotion(
-                    code,
+                    promotionalCode,
                     currency,
                     duration,
                     new DateTimeProvider(expiredAt));
@@ -67,12 +72,32 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
+            var user = new User(userId);
+
+            var recipient = new PromotionRecipient(user, redeemedAt);
+
+            if (promotion.IsCanceled())
+            {
+                result.AddFailedPreconditionError("The promotion is canceled.");
+            }
+
+            if (promotion.IsExpired())
+            {
+                result.AddFailedPreconditionError("The promotion is expired.");
+            }
+
+            if (!promotion.IsActive())
+            {
+                result.AddFailedPreconditionError("The promotion isn't active.");
+            }
+
+            if (promotion.IsRedeemBy(recipient))
+            {
+                result.AddFailedPreconditionError("The promotion is redeemed.");
+            }
+
             if (result.IsValid)
             {
-                var user = new User(userId);
-
-                var recipient = new PromotionRecipient(user, redeemedAt);
-
                 promotion.Redeem(recipient);
 
                 await _promotionRepository.CommitAsync();
@@ -86,6 +111,16 @@ namespace eDoxa.Cashier.Api.Application.Services
         public async Task<IDomainValidationResult> CancelPromotionAsync(Promotion promotion, IDateTimeProvider canceledAt)
         {
             var result = new DomainValidationResult();
+
+            if (promotion.IsCanceled())
+            {
+                result.AddFailedPreconditionError("The promotion is canceled.");
+            }
+
+            if (promotion.IsExpired())
+            {
+                result.AddFailedPreconditionError("The promotion is expired.");
+            }
 
             if (result.IsValid)
             {
