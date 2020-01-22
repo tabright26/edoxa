@@ -10,10 +10,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
-using eDoxa.Grpc.Protos.Games.Enums;
-using eDoxa.Grpc.Protos.Games.Requests;
-using eDoxa.Grpc.Protos.Games.Responses;
-using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
@@ -21,7 +17,6 @@ using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
@@ -32,8 +27,6 @@ using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 using IdentityModel;
-
-using Stripe;
 
 using Xunit;
 
@@ -50,11 +43,11 @@ namespace eDoxa.Payment.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new Claim[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            host.Server.CleanupDbContext();
 
             host.Server.CleanupDbContext();
 
@@ -98,12 +91,10 @@ namespace eDoxa.Payment.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new Claim[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
-
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -136,16 +127,14 @@ namespace eDoxa.Payment.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task Deposit_ShouldThrowRpcExceptionWithInternalStatus()
+        public void Deposit_ShouldThrowRpcExceptionWithInternalStatus()
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new Claim[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-
+            var claims = new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email) };
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
-
             host.Server.CleanupDbContext();
 
             var request = new DepositRequest
@@ -169,18 +158,15 @@ namespace eDoxa.Payment.IntegrationTests.Services
             func.Should().Throw<RpcException>();
         }
 
-
         [Fact]
         public async Task Withdrawal_ShouldBeOfTypeWithdrawalResponse()
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new Claim[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
-
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -192,7 +178,11 @@ namespace eDoxa.Payment.IntegrationTests.Services
                     await customerService.CreateCustomerAsync(userId, email);
                     var customerId = await customerService.GetCustomerIdAsync(userId);
 
-                    await accountService.CreateAccountAsync(userId, email, Country.Canada, customerId);
+                    await accountService.CreateAccountAsync(
+                        userId,
+                        email,
+                        Country.Canada,
+                        customerId);
                 });
 
             var request = new WithdrawalRequest
@@ -223,12 +213,10 @@ namespace eDoxa.Payment.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new Claim[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
-
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -240,7 +228,11 @@ namespace eDoxa.Payment.IntegrationTests.Services
                     await customerService.CreateCustomerAsync(userId, email);
                     var customerId = await customerService.GetCustomerIdAsync(userId);
 
-                    await accountService.CreateAccountAsync(userId, email, Country.Canada, customerId);
+                    await accountService.CreateAccountAsync(
+                        userId,
+                        email,
+                        Country.Canada,
+                        customerId);
                 });
 
             var request = new WithdrawalRequest
@@ -265,16 +257,14 @@ namespace eDoxa.Payment.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task Withdrawal_ShouldThrowRpcExceptionWithInternalStatus()
+        public void Withdrawal_ShouldThrowRpcExceptionWithInternalStatus()
         {
             // Arrange
             var userId = new UserId();
-            var email = "test@edoxa.gg";
+            const string email = "test@edoxa.gg";
 
-            var claims = new Claim[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
-
             host.Server.CleanupDbContext();
 
             var request = new WithdrawalRequest
@@ -299,4 +289,3 @@ namespace eDoxa.Payment.IntegrationTests.Services
         }
     }
 }
-
