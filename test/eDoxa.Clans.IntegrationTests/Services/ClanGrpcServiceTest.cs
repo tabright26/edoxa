@@ -34,7 +34,7 @@ using Xunit;
 
 namespace eDoxa.Clans.IntegrationTests.Services
 {
-    public sealed class ClanGrpcServiceTest : IntegrationTest // TODO: INTEGRATION TESTS
+    public sealed class ClanGrpcServiceTest : IntegrationTest
     {
         public ClanGrpcServiceTest(TestHostFixture testHost, TestMapperFixture testMapper) : base(testHost, testMapper)
         {
@@ -45,9 +45,10 @@ namespace eDoxa.Clans.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
+            const string email = "test@edoxa.gg";
 
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
-
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
