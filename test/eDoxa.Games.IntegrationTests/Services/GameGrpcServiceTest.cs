@@ -10,7 +10,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Games.Domain.Factories;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -38,7 +37,7 @@ using Xunit;
 
 namespace eDoxa.Games.IntegrationTests.Services
 {
-    public sealed class GameGrpcServiceTest : IntegrationTest // TODO: INTEGRATION TESTS
+    public sealed class GameGrpcServiceTest : IntegrationTest
     {
         public GameGrpcServiceTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper) : base(testHost, testData, testMapper)
         {
@@ -86,7 +85,7 @@ namespace eDoxa.Games.IntegrationTests.Services
             }
         };
 
-        [Theory]
+        [Theory(Skip = "Real api calls")]
         [MemberData(nameof(Senarios))]
         public async Task FetchChallengeMatches(
             string playerId,
@@ -95,7 +94,13 @@ namespace eDoxa.Games.IntegrationTests.Services
             int count
         )
         {
-            TestHost.Server.CleanupDbContext();
+            // Arrange
+            var userId = new UserId();
+            const string email = "test@edoxa.gg";
+
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            host.Server.CleanupDbContext();
 
             var client = new GameService.GameServiceClient(TestHost.CreateChannel());
 
@@ -125,12 +130,14 @@ namespace eDoxa.Games.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task FetchChallengeMatches_ShouldBeOfTypeFetchChallengeMatchesResponse()
+        public void FetchChallengeMatches_ShouldBeOfTypeFetchChallengeMatchesResponse()
         {
             // Arrange
             var userId = new UserId();
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            const string email = "test@edoxa.gg";
 
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
             host.Server.CleanupDbContext();
 
             var request = new FetchChallengeMatchesRequest
@@ -160,13 +167,13 @@ namespace eDoxa.Games.IntegrationTests.Services
                     },
                     new ParticipantDto
                     {
-                    ChallengeId = new ChallengeId(),
-                    GamePlayerId = "testID3",
-                    Id = new Guid().ToString(),
-                    Score = 50,
-                    SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
-                    UserId = new UserId()
-                }
+                        ChallengeId = new ChallengeId(),
+                        GamePlayerId = "testID3",
+                        Id = new Guid().ToString(),
+                        Score = 50,
+                        SynchronizedAt = DateTime.UtcNow.ToTimestamp(),
+                        UserId = new UserId()
+                    }
                 }
             };
 
@@ -184,8 +191,10 @@ namespace eDoxa.Games.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            const string email = "test@edoxa.gg";
 
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
             host.Server.CleanupDbContext();
 
             var request = new FetchChallengeScoringRequest
@@ -208,8 +217,10 @@ namespace eDoxa.Games.IntegrationTests.Services
         {
             // Arrange
             var userId = new UserId();
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
+            const string email = "test@edoxa.gg";
 
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -243,11 +254,14 @@ namespace eDoxa.Games.IntegrationTests.Services
         }
 
         [Fact]
-        public async Task FindPlayerGameCredential_ShouldThrowRpcException()
+        public void FindPlayerGameCredential_ShouldThrowNotFoundRpcException()
         {
             // Arrange
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            var userId = new UserId();
+            const string email = "test@edoxa.gg";
 
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
             host.Server.CleanupDbContext();
 
             var request = new FindPlayerGameCredentialRequest
