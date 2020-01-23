@@ -2,6 +2,9 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Requests";
 
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
 import "cashier_dtos.proto";
 import "cashier_enums.proto";
 import "custom_types.proto";
@@ -36,4 +39,12 @@ message CreateTransactionRequest {
 
 message CreateTransactionAggregatorRequest {
   int32 bundle = 1;
+}
+
+message CreatePromotionRequest {
+  string promotionalCode = 1;
+  customTypes.DecimalValue amount = 2;
+  EnumCurrency currency = 3;
+  google.protobuf.Duration duration = 4;
+  google.protobuf.Timestamp expiredAt = 5;
 }

@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengePayoutStrategyTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +21,12 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
 {
     public sealed class ChallengePayoutStrategyTest : UnitTest
     {
-        
+        public ChallengePayoutStrategyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public void GetPayout_WithEntries_ShouldNotBeNull()
@@ -63,10 +68,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
 
             // Assert
             action.Should().Throw<NotSupportedException>();
-        }
-
-        public ChallengePayoutStrategyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

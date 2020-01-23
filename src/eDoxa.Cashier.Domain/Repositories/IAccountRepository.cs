@@ -26,6 +26,6 @@ namespace eDoxa.Cashier.Domain.Repositories
 
         Task<bool> AccountExistsAsync(UserId userId);
 
-        Task CommitAsync(CancellationToken cancellationToken = default);
+        Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default);
     }
 }

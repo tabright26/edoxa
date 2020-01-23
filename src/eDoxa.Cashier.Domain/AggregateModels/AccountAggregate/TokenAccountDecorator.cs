@@ -80,6 +80,17 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
+        public ITransaction Promotion(Token amount, TransactionMetadata? metadata = null)
+        {
+            var builder = new TransactionBuilder(TransactionType.Promotion, amount).WithMetadata(metadata);
+
+            var transaction = builder.Build();
+
+            this.CreateTransaction(transaction);
+
+            return transaction;
+        }
+
         public bool IsDepositAvailable()
         {
             return !(LastDeposit.HasValue && LastDeposit.Value.AddDays(1) >= DateTime.UtcNow);

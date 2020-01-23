@@ -6,10 +6,12 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
+using AutoMapper;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,10 +28,12 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class BalanceController : ControllerBase
     {
         private readonly IAccountQuery _accountQuery;
+        private readonly IMapper _mapper;
 
-        public BalanceController(IAccountQuery accountQuery)
+        public BalanceController(IAccountQuery accountQuery, IMapper mapper)
         {
             _accountQuery = accountQuery;
+            _mapper = mapper;
         }
 
         [HttpGet("{currency}", Name = "Test")]
@@ -38,14 +42,16 @@ namespace eDoxa.Cashier.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByCurrencyAsync(Currency currency)
         {
-            var response = await _accountQuery.FindUserBalanceResponseAsync(currency);
+            var userId = HttpContext.GetUserId();
+
+            var response = await _accountQuery.FindUserBalanceAsync(userId, currency);
 
             if (response == null)
             {
                 return this.NotFound($"Account balance for currency {currency} not found.");
             }
 
-            return this.Ok(response);
+            return this.Ok(_mapper.Map<BalanceDto>(response));
         }
     }
 }

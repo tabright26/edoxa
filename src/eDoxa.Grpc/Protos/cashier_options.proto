@@ -3,6 +3,7 @@
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Options";
 
 import "cashier_dtos.proto";
+import "custom_types.proto";
 
 package edoxa.services.cashier;
 
@@ -11,6 +12,31 @@ message CashierApiOptions {
   
   message StaticOptions {
     TransactionOptions transaction = 1;
+    PromotionOptions promotion = 2;
+
+    message PromotionOptions {
+      PromotionalCodeOptions promotionalCode = 1;
+      CurrencyOptions currency = 2;
+      DurationOptions duration = 3;
+
+      message PromotionalCodeOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated customTypes.FieldValidationRule validators = 3;
+	  }
+      message CurrencyOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated string values = 3;
+        repeated customTypes.FieldValidationRule validators = 4;
+	  }
+      message DurationOptions {
+        string label = 1;
+        string placeholder = 2;
+        repeated int64 values = 3;
+        repeated customTypes.FieldValidationRule validators = 4;
+	  }
+    }
 
     message TransactionOptions {
       repeated TransactionBundleDto bundles = 1;

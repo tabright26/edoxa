@@ -35,7 +35,7 @@ describe("stripe actions", () => {
       LOAD_STRIPE_PAYMENTMETHODS_FAIL
     ];
     const expectedMethod = "GET";
-    const expectedUrl = "/payment/api/stripe/payment-method";
+    const expectedUrl = "/payment/api/stripe/payment-methods";
 
     const actionCreator = loadStripePaymentMethods();
 

@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionBuilder.cs
-// Date Created: 2019-12-06
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -111,6 +111,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 {
                     return new TransactionDescription($"{money}");
                 }
+
+                if (TransactionType.Promotion == type)
+                {
+                    return new TransactionDescription($"{money}");
+                }
             }
 
             if (currency is Token token)
@@ -134,6 +139,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 {
                     return new TransactionDescription($"{token} tokens.");
                 }
+
+                if (TransactionType.Promotion == type)
+                {
+                    return new TransactionDescription($"{token} tokens.");
+                }
             }
 
             throw InvalidOperationException(type, currency);
@@ -143,7 +153,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         {
             if (currency is Money money)
             {
-                if (TransactionType.Deposit == type || TransactionType.Payout == type)
+                if (TransactionType.Deposit == type || TransactionType.Payout == type || TransactionType.Promotion == type)
                 {
                     return money;
                 }
@@ -156,7 +166,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             if (currency is Token token)
             {
-                if (TransactionType.Deposit == type || TransactionType.Payout == type || TransactionType.Reward == type)
+                if (TransactionType.Deposit == type || TransactionType.Payout == type || TransactionType.Reward == type || TransactionType.Promotion == type)
                 {
                     return token;
                 }

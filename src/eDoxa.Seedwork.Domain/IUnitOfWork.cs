@@ -12,6 +12,6 @@ namespace eDoxa.Seedwork.Domain
 {
     public interface IUnitOfWork : IDisposable
     {
-        Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default);
+        Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default);
     }
 }

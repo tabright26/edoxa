@@ -42,11 +42,11 @@ namespace eDoxa.Challenges.Infrastructure
 
         public DbSet<MatchModel> Matches => this.Set<MatchModel>();
 
-        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        public async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
             await this.SaveChangesAsync(cancellationToken);
 
-            if (dispatchDomainEvents)
+            if (publishDomainEvents)
             {
                 var entities = ChangeTracker.Entries<IEntityModel>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents.Any()).ToList();
 

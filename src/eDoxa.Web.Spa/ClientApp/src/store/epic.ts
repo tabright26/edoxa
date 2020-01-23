@@ -3,7 +3,9 @@ import { NEVER } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import {
   CREATE_USER_TRANSACTION_SUCCESS,
-  CREATE_USER_TRANSACTION_FAIL
+  CREATE_USER_TRANSACTION_FAIL,
+  REDEEM_PROMOTION_FAIL,
+  REDEEM_PROMOTION_SUCCESS
 } from "store/actions/cashier/types";
 import {
   CREATE_USER_ADDRESS_SUCCESS,
@@ -57,7 +59,8 @@ const formSuccessEpic = (action$: any): any =>
       CREATE_USER_TRANSACTION_SUCCESS,
       VALIDATE_GAME_AUTHENTICATION_SUCCESS,
       GENERATE_GAME_AUTHENTICATION_SUCCESS,
-      UNLINK_GAME_CREDENTIAL_SUCCESS
+      UNLINK_GAME_CREDENTIAL_SUCCESS,
+      REDEEM_PROMOTION_SUCCESS
     ),
     switchMap((action: any): any => {
       const { resolve } = action.meta.previousAction.meta;
@@ -83,7 +86,8 @@ const formFailEpic = (action$: any) =>
       CREATE_USER_TRANSACTION_FAIL,
       VALIDATE_GAME_AUTHENTICATION_FAIL,
       GENERATE_GAME_AUTHENTICATION_FAIL,
-      UNLINK_GAME_CREDENTIAL_FAIL
+      UNLINK_GAME_CREDENTIAL_FAIL,
+      REDEEM_PROMOTION_FAIL
     ),
     switchMap((action: any) => {
       const { reject } = action.meta.previousAction.meta;

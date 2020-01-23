@@ -11,11 +11,11 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.Application;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Grpc.Protos.Challenges.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -80,7 +80,7 @@ namespace eDoxa.Challenges.Api
         {
             services.AddAppSettings<ChallengesAppSettings>(Configuration);
 
-            services.Configure<ChallengeOptions>(Configuration.GetSection("Challenge"));
+            services.Configure<ChallengesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
@@ -161,7 +161,7 @@ namespace eDoxa.Challenges.Api
         {
             services.AddAppSettings<ChallengesAppSettings>(Configuration);
 
-            services.Configure<ChallengeOptions>(Configuration.GetSection("Challenge"));
+            services.Configure<ChallengesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddCustomDbContext<ChallengesDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

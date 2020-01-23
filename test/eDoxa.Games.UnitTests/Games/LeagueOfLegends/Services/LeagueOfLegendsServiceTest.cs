@@ -4,10 +4,11 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.LeagueOfLegends.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
+using eDoxa.Grpc.Protos.Games.Options;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -29,13 +30,19 @@ namespace eDoxa.Games.UnitTests.Games.LeagueOfLegends.Services
         public void Constructor()
         {
             //Arrange
-            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<LeagueOfLegendsOptions>>();
+            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<GamesApiOptions>>();
 
             mockOptionsSnapshot.Setup(optionsSnapshot => optionsSnapshot.Value)
                 .Returns(
-                    new LeagueOfLegendsOptions
+                    new GamesApiOptions
                     {
-                        ApiKey = "testKey"
+                        Configuration = new GamesApiOptions.Types.ConfigurationOptions
+                        {
+                            ApiKeys =
+                            {
+                                {Game.LeagueOfLegends.Name, "ApiKey"}
+                            }
+                        }
                     });
 
             var leagueService = new LeagueOfLegendsService(mockOptionsSnapshot.Object);

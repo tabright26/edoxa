@@ -37,11 +37,11 @@ namespace eDoxa.Notifications.Infrastructure
 
         public DbSet<User> Users => this.Set<User>();
 
-        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        public async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
             await this.SaveChangesAsync(cancellationToken);
 
-            if (dispatchDomainEvents)
+            if (publishDomainEvents)
             {
                 var entities = ChangeTracker.Entries<IEntity>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents.Any()).ToList();
 

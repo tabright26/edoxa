@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+Array [
+  <span
+    className={null}
+  >
+    01
+  </span>,
+  <span
+    className={null}
+  >
+    /
+  </span>,
+  <span
+    className={null}
+  >
+    30
+  </span>,
+]
+`;

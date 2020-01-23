@@ -1,7 +1,4 @@
 import {
-  LOAD_GAMES,
-  LOAD_GAMES_SUCCESS,
-  LOAD_GAMES_FAIL,
   GENERATE_GAME_AUTHENTICATION,
   GENERATE_GAME_AUTHENTICATION_SUCCESS,
   GENERATE_GAME_AUTHENTICATION_FAIL,
@@ -11,7 +8,6 @@ import {
   UNLINK_GAME_CREDENTIAL,
   UNLINK_GAME_CREDENTIAL_SUCCESS,
   UNLINK_GAME_CREDENTIAL_FAIL,
-  GamesActionCreators,
   GameAuthenticationActionCreators,
   GameCredentialActionCreators
 } from "./types";
@@ -21,19 +17,6 @@ import {
   AXIOS_PAYLOAD_CLIENT_DEFAULT,
   AxiosActionCreatorMeta
 } from "utils/axios/types";
-
-export function loadGames(): GamesActionCreators {
-  return {
-    types: [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
-      request: {
-        method: "GET",
-        url: `games/api/games`
-      }
-    }
-  };
-}
 
 export function generateGameAuthentication(
   game: Game,

@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionType.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.ComponentModel;
 
@@ -18,6 +18,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         public static readonly TransactionType Charge = new TransactionType(1 << 2, nameof(Charge));
         public static readonly TransactionType Payout = new TransactionType(1 << 3, nameof(Payout));
         public static readonly TransactionType Withdrawal = new TransactionType(1 << 4, nameof(Withdrawal));
+        public static readonly TransactionType Promotion = new TransactionType(1 << 5, nameof(Promotion));
 
         public TransactionType()
         {

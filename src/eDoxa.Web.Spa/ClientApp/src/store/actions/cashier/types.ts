@@ -82,9 +82,27 @@ export type LoadUserTransactionHistoryAction = AxiosAction<
   UserTransaction[]
 >;
 
+export const REDEEM_PROMOTION = "REDEEM_PROMOTION";
+export const REDEEM_PROMOTION_SUCCESS = "REDEEM_PROMOTION_SUCCESS";
+export const REDEEM_PROMOTION_FAIL = "REDEEM_PROMOTION_FAIL";
+
+export type RedeemPromotionType =
+  | typeof REDEEM_PROMOTION
+  | typeof REDEEM_PROMOTION_SUCCESS
+  | typeof REDEEM_PROMOTION_FAIL;
+export type RedeemPromotionActionCreator = AxiosActionCreator<
+  RedeemPromotionType
+>;
+export type RedeemPromotionAction = AxiosAction<
+  RedeemPromotionType,
+  UserTransaction
+>;
+
 export type UserTransactionActionCreators =
   | LoadUserTransactionHistoryActionCreator
-  | CreateUserTransactionActionCreator;
+  | CreateUserTransactionActionCreator
+  | RedeemPromotionActionCreator;
 export type UserTransactionActions =
   | LoadUserTransactionHistoryAction
-  | CreateUserTransactionAction;
+  | CreateUserTransactionAction
+  | RedeemPromotionAction;

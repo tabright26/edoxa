@@ -20,6 +20,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         ITransaction Reward(Token amount, TransactionMetadata? metadata = null);
 
+        ITransaction Promotion(Token amount, TransactionMetadata? metadata = null);
+
         bool IsDepositAvailable();
 
         bool HaveSufficientMoney(Token token);

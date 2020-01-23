@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Grpc.Protos.Games.Options";
+
+import "games_enums.proto";
+import "games_dtos.proto";
+
+package edoxa.services.games;
+
+message GamesApiOptions {
+  StaticOptions static = 1;
+  ConfigurationOptions configuration = 2;
+  
+  message StaticOptions {
+    repeated GameOptions games = 1;
+
+    message GameOptions {
+      EnumGame name = 1;
+      string displayName = 2;
+      bool disabled = 3;
+      ChallengeScoringDto scoring = 4;
+      repeated ServiceOptions services = 5;
+     
+      message ServiceOptions {
+        string name = 1;
+        bool disabled = 2;
+        string instructions = 3;
+      }
+	}
+  }
+
+  message ConfigurationOptions {
+    map<string, string> apiKeys = 1;
+  }
+}

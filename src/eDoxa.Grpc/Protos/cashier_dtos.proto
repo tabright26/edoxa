@@ -68,3 +68,12 @@ message TransactionBundleDto {
   bool disabled = 7;
   bool deprecated = 8;
 }
+
+message PromotionDto {
+  string promotionalCode = 1;
+  EnumCurrency currency = 2;
+  customTypes.DecimalValue amount = 3;
+  bool expired = 4;
+  bool canceled = 5;
+  bool active = 6;
+}

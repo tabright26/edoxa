@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeServiceTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading;
@@ -30,6 +30,12 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 {
     public sealed class ChallengeServiceTest : UnitTest
     {
+        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task CreateChallengeAsync_ShouldBeOfTypeValidationResult()
@@ -42,7 +48,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             mockChallengeRepository.Setup(repository => repository.Create(It.IsAny<Challenge>())).Verifiable();
 
-            mockChallengeRepository.Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+            mockChallengeRepository.Setup(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
 
             var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
 
@@ -66,7 +72,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             mockChallengeRepository.Verify(repository => repository.Create(It.IsAny<Challenge>()), Times.Once);
 
-            mockChallengeRepository.Verify(repository => repository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockChallengeRepository.Verify(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -125,10 +131,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<Challenge>();
             mockChallengeRepository.Verify(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>()), Times.Once);
-        }
-
-        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

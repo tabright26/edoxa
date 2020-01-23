@@ -1,8 +1,8 @@
 ﻿// Filename: AccountModelConfiguration.cs
-// Date Created: 2019-07-05
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Infrastructure.Models;
 
@@ -13,11 +13,11 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 {
     internal sealed class AccountModelConfiguration : IEntityTypeConfiguration<AccountModel>
     {
-        public void Configure( EntityTypeBuilder<AccountModel> builder)
+        public void Configure(EntityTypeBuilder<AccountModel> builder)
         {
             builder.ToTable("Account");
 
-            builder.Ignore(challenge => challenge.DomainEvents);
+            builder.Ignore(account => account.DomainEvents);
 
             builder.Property(account => account.Id).IsRequired().ValueGeneratedNever();
 

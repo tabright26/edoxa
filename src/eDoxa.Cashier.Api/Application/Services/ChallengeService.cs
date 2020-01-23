@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 _challengeRepository.Create(challenge);
 
-                await _challengeRepository.CommitAsync(cancellationToken);
+                await _challengeRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(challenge);
             }
