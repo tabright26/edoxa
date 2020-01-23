@@ -1,10 +1,11 @@
 ﻿// Filename: IdentityGrpcServiceTest.cs
-// Date Created: 2020-01-13
-//
+// Date Created: 2020-01-17
+// 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,12 +13,13 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Grpc.Protos.Identity.Responses;
 using eDoxa.Grpc.Protos.Identity.Services;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
 using FluentAssertions;
@@ -40,11 +42,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public async Task AddUserClaim_ShouldAlreadyExists()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -52,44 +55,40 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
-
-                    var userTest = await userService.FindByIdAsync(userId);
+                    result.Succeeded.Should().BeTrue();
                 });
 
             var request = new AddUserClaimRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = "sub",
-                    Value = userId
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
             // Act
-            var result = await client.AddUserClaimAsync(request);
+            var response = await client.AddUserClaimAsync(request);
 
             // Assert
-            result.Should().BeOfType<AddUserClaimResponse>();
+            response.Should().BeOfType<AddUserClaimResponse>();
         }
 
         [Fact]
         public async Task AddUserClaim_ShouldBeOfTypeAddUserClaimResponse()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -97,52 +96,50 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
-
-                    var userTest = await userService.FindByIdAsync(userId);
+                    result.Succeeded.Should().BeTrue();
                 });
 
             var request = new AddUserClaimRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = "sub",
-                    Value = userId
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
             // Act
-            var result = await client.AddUserClaimAsync(request);
+            var response = await client.AddUserClaimAsync(request);
 
             // Assert
-            result.Should().BeOfType<AddUserClaimResponse>();
+            response.Should().BeOfType<AddUserClaimResponse>();
         }
 
         [Fact]
         public void AddUserClaim_ShouldThrowFailedPreconditionRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
-
-            var request = new AddUserClaimRequest();
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
-            // Act Assert
+            var request = new AddUserClaimRequest();
+
+            // Act
             var func = new Func<Task>(async () => await client.AddUserClaimAsync(request));
+
+            // Assert
             func.Should().Throw<RpcException>();
         }
 
@@ -150,11 +147,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public void AddUserClaim_ShouldThrowNotFoundRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             var request = new AddUserClaimRequest
@@ -162,15 +160,17 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = "email",
-                    Value = "test@edoxa.gg"
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
-            // Act Assert
+            // Act
             var func = new Func<Task>(async () => await client.AddUserClaimAsync(request));
+
+            // Assert
             func.Should().Throw<RpcException>();
         }
 
@@ -178,11 +178,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public async Task AddUserToRole_ShouldAlreadyExists()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -190,40 +191,60 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
+                    result.Succeeded.Should().BeTrue();
+                });
 
-                    var userTest = await userService.FindByIdAsync(userId);
+            await host.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var roleService = scope.GetRequiredService<IRoleService>();
+
+                    var result = await roleService.CreateAsync(
+                        new Role
+                        {
+                            Name = AppRoles.Admin
+                        });
+
+                    result.Succeeded.Should().BeTrue();
+                });
+
+            await host.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var userService = scope.GetRequiredService<IUserService>();
+
+                    var result = await userService.AddToRoleAsync(await userService.FindByIdAsync(user.Id.ToString()), AppRoles.Admin);
+
+                    result.Succeeded.Should().BeTrue();
                 });
 
             var request = new AddUserToRoleRequest
             {
-                UserId = userId,
-                RoleName = "test"
+                UserId = user.Id.ToString(),
+                RoleName = AppRoles.Admin
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
             // Act
-            var result = await client.AddUserToRoleAsync(request);
+            var func = new Func<Task>(async () => await client.AddUserToRoleAsync(request));
 
             // Assert
-            result.Should().BeOfType<AddUserToRoleResponse>();
+            func.Should().Throw<RpcException>();
         }
 
         [Fact]
         public async Task AddUserToRole_ShouldBeOfTypeAddUserToRoleResponse()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -231,29 +252,38 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
+                    result.Succeeded.Should().BeTrue();
+                });
 
-                    var userTest = await userService.FindByIdAsync(userId);
+            await host.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var roleService = scope.GetRequiredService<IRoleService>();
+
+                    var result = await roleService.CreateAsync(
+                        new Role
+                        {
+                            Name = AppRoles.Admin
+                        });
+
+                    result.Succeeded.Should().BeTrue();
                 });
 
             var request = new AddUserToRoleRequest
             {
-                UserId = userId,
-                RoleName = "test"
+                UserId = user.Id.ToString(),
+                RoleName = AppRoles.Admin
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
             // Act
-            var result = await client.AddUserToRoleAsync(request);
+            var response = await client.AddUserToRoleAsync(request);
 
             // Assert
-            result.Should().BeOfType<AddUserToRoleResponse>();
+            response.Should().BeOfType<AddUserToRoleResponse>();
         }
 
         [Fact]
@@ -308,11 +338,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public async Task RemoveUserClaim_ShouldBeOfTypeRemoveUserClaimResponse()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -320,60 +351,70 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
+                    result.Succeeded.Should().BeTrue();
 
-                    var userTest = await userService.FindByIdAsync(userId);
+                    await userService.AddClaimAsync(user, new Claim(CustomClaimTypes.StripeAccount, "accountId"));
                 });
 
             var request = new RemoveUserClaimRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = "sub",
-                    Value = userId
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
             // Act
-            var result = await client.RemoveUserClaimAsync(request);
+            var reponse = await client.RemoveUserClaimAsync(request);
 
             // Assert
-            result.Should().BeOfType<RemoveUserClaimResponse>();
+            reponse.Should().BeOfType<RemoveUserClaimResponse>();
         }
 
         [Fact]
-        public void RemoveUserClaim_ShouldThrowFailedPreconditionRpcException()
+        public async Task RemoveUserClaim_ShouldThrowFailedPreconditionRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
+
+            await host.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var userService = scope.GetRequiredService<IUserService>();
+
+                    var result = await userService.CreateAsync(user, "Pass@word1");
+
+                    result.Succeeded.Should().BeTrue();
+                });
 
             var request = new RemoveUserClaimRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = "sub",
-                    Value = userId
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
-            // Act Assert
+            // Act
             var func = new Func<Task>(async () => await client.RemoveUserClaimAsync(request));
+
+            // Assert
             func.Should().Throw<RpcException>();
         }
 
@@ -381,55 +422,30 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public void RemoveUserClaim_WithInvalidClaim_ShouldThrowNotFoundRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             var request = new RemoveUserClaimRequest
             {
-                UserId = new UserId(),
+                UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = "email",
-                    Value = "test@edoxa.gg"
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
-            // Act Assert
+            // Act
             var func = new Func<Task>(async () => await client.RemoveUserClaimAsync(request));
-            func.Should().Throw<RpcException>();
-        }
 
-        [Fact]
-        public void RemoveUserClaim_WithUserNull_ShouldThrowNotFoundRpcException()
-        {
-            // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
-
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
-            host.Server.CleanupDbContext();
-
-            var request = new RemoveUserClaimRequest
-            {
-                UserId = new UserId(),
-                Claim = new UserClaimDto
-                {
-                    Type = "email",
-                    Value = "test@edoxa.gg"
-                }
-            };
-
-            var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
-
-            // Act Assert
-            var func = new Func<Task>(async () => await client.RemoveUserClaimAsync(request));
+            // Assert
             func.Should().Throw<RpcException>();
         }
 
@@ -437,11 +453,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public async Task RemoveUserFromRole_ShouldBeOfTypeRemoveUserFromRoleResponse()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -449,44 +466,65 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
-                    var userTest = await userService.FindByIdAsync(userId);
+                    result.Succeeded.Should().BeTrue();
+                });
+
+            await host.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var roleService = scope.GetRequiredService<IRoleService>();
+
+                    var result = await roleService.CreateAsync(
+                        new Role
+                        {
+                            Name = AppRoles.Admin
+                        });
+
+                    result.Succeeded.Should().BeTrue();
+                });
+
+            await host.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var userService = scope.GetRequiredService<IUserService>();
+
+                    var result = await userService.AddToRoleAsync(await userService.FindByIdAsync(user.Id.ToString()), AppRoles.Admin);
+
+                    result.Succeeded.Should().BeTrue();
                 });
 
             var request = new RemoveUserFromRoleRequest
             {
-                UserId = userId,
-                RoleName = "test"
+                UserId = user.Id.ToString(),
+                RoleName = AppRoles.Admin
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
             // Act
-            var result = await client.RemoveUserFromRoleAsync(request);
+            var response = await client.RemoveUserFromRoleAsync(request);
 
             // Assert
-            result.Should().BeOfType<RemoveUserFromRoleResponse>();
+            response.Should().BeOfType<RemoveUserFromRoleResponse>();
         }
 
         [Fact]
         public void RemoveUserFromRole_ShouldThrowFailedPreconditionRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             var request = new RemoveUserFromRoleRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 RoleName = "test"
             };
 
@@ -501,11 +539,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public async Task RemoveUserFromRole_WithInvalidRole_ShouldThrowNotFoundRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -513,18 +552,14 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
-                    var userTest = await userService.FindByIdAsync(userId);
+                    result.Succeeded.Should().BeTrue();
                 });
 
             var request = new RemoveUserFromRoleRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 RoleName = "test"
             };
 
@@ -539,16 +574,17 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public void RemoveUserFromRole_WithUserNull_ShouldThrowNotFoundRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             var request = new RemoveUserFromRoleRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 RoleName = "test"
             };
 
@@ -563,11 +599,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public async Task ReplaceUserClaim_ShouldBeOfTypeReplaceUserClaimResponse()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             await host.Server.UsingScopeAsync(
@@ -575,44 +612,50 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var user = new User
-                    {
-                        Id = userId
-                    };
+                    var result = await userService.CreateAsync(user, "Pass@word1");
 
-                    await userService.CreateAsync(user, "test_123");
+                    result.Succeeded.Should().BeTrue();
+                });
 
-                    var userTest = await userService.FindByIdAsync(userId);
+            await host.Server.UsingScopeAsync(
+                async scope =>
+                {
+                    var userService = scope.GetRequiredService<IUserService>();
+
+                    var result = await userService.AddClaimAsync(await userService.FindByIdAsync(user.Id.ToString()), new Claim(CustomClaimTypes.StripeAccount, "accountId"));
+
+                    result.Succeeded.Should().BeTrue();
                 });
 
             var request = new ReplaceUserClaimRequest
             {
-                UserId = userId,
+                UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = "sub",
-                    Value = userId
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "stripeAccountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
             // Act
-            var result = await client.ReplaceUserClaimAsync(request);
+            var response = await client.ReplaceUserClaimAsync(request);
 
             // Assert
-            result.Should().BeOfType<ReplaceUserClaimResponse>();
+            response.Should().BeOfType<ReplaceUserClaimResponse>();
         }
 
         [Fact]
         public void ReplaceUserClaim_ShouldThrowFailedPreconditionRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             var request = new ReplaceUserClaimRequest
@@ -620,15 +663,17 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = "email",
-                    Value = "test@edoxa.gg"
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
             var client = new IdentityService.IdentityServiceClient(host.CreateChannel());
 
-            // Act Assert
+            // Act
             var func = new Func<Task>(async () => await client.ReplaceUserClaimAsync(request));
+
+            // Assert
             func.Should().Throw<RpcException>();
         }
 
@@ -636,11 +681,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public void ReplaceUserClaim_WithInvalidClaim_ShouldThrowNotFoundRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             var request = new ReplaceUserClaimRequest
@@ -648,8 +694,8 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = "email",
-                    Value = "test@edoxa.gg"
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 
@@ -664,11 +710,12 @@ namespace eDoxa.Identity.IntegrationTests.Services
         public void ReplaceUserClaim_WithUserNull_ShouldThrowNotFoundRpcException()
         {
             // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+            var users = TestData.FileStorage.GetUsers();
 
-            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+            var user = users.First();
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, user.Id.ToString()));
+
             host.Server.CleanupDbContext();
 
             var request = new ReplaceUserClaimRequest
@@ -676,8 +723,8 @@ namespace eDoxa.Identity.IntegrationTests.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = "email",
-                    Value = "test@edoxa.gg"
+                    Type = CustomClaimTypes.StripeAccount,
+                    Value = "accountId"
                 }
             };
 

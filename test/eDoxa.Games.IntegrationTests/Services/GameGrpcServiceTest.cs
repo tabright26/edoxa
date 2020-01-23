@@ -197,7 +197,7 @@ namespace eDoxa.Games.IntegrationTests.Services
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
             host.Server.CleanupDbContext();
 
-            var request = new FetchChallengeScoringRequest
+            var request = new FindChallengeScoringRequest
             {
                 Game = EnumGame.LeagueOfLegends,
                 ChallengeType = EnumChallengeType.All
@@ -206,10 +206,10 @@ namespace eDoxa.Games.IntegrationTests.Services
             var client = new GameService.GameServiceClient(host.CreateChannel());
 
             // Act
-            var response = await client.FetchChallengeScoringAsync(request);
+            var response = await client.FindChallengeScoringAsync(request);
 
             //Assert
-            response.Should().BeOfType<FetchChallengeScoringResponse>();
+            response.Should().BeOfType<FindChallengeScoringResponse>();
         }
 
         [Fact]
