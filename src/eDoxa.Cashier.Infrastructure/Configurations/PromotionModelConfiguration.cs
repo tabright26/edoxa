@@ -21,9 +21,17 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
 
             builder.Property(promotion => promotion.Id).IsRequired().ValueGeneratedNever();
 
-            builder.Property(promotion => promotion.Amount).HasColumnType("decimal(10, 2)").IsRequired();
+            builder.Property(promotion => promotion.PromotionalCode).IsRequired();
+
+            builder.Property(promotion => promotion.Amount).IsRequired().HasColumnType("decimal(10, 2)");
 
             builder.Property(promotion => promotion.Currency).IsRequired();
+
+            builder.Property(promotion => promotion.Duration).IsRequired();
+
+            builder.Property(promotion => promotion.ExpiredAt).IsRequired();
+
+            builder.Property(promotion => promotion.CanceledAt).IsRequired(false);
 
             builder.OwnsMany(
                 promotion => promotion.Recipients,
@@ -31,11 +39,20 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 {
                     promotionRecipients.ToTable("PromotionRecipient");
 
-                    promotionRecipients.WithOwner().HasForeignKey("PromotionId");
+                    promotionRecipients.WithOwner().HasForeignKey(promotionRecipient => promotionRecipient.PromotionId);
 
-                    promotionRecipients.Property(promotionRecipient => promotionRecipient.UserId).ValueGeneratedNever();
+                    promotionRecipients.Property(promotionRecipient => promotionRecipient.PromotionId).IsRequired();
 
-                    promotionRecipients.HasKey("PromotionId", "UserId");
+                    promotionRecipients.Property(promotionRecipient => promotionRecipient.UserId).IsRequired().ValueGeneratedNever();
+
+                    promotionRecipients.Property(promotionRecipient => promotionRecipient.RedeemedAt).IsRequired();
+
+                    promotionRecipients.HasKey(
+                        promotionRecipient => new
+                        {
+                            promotionRecipient.PromotionId,
+                            promotionRecipient.UserId
+                        });
                 });
 
             builder.HasKey(promotion => promotion.Id);

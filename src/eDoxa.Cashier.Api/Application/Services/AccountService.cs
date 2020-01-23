@@ -137,7 +137,7 @@ namespace eDoxa.Cashier.Api.Application.Services
                     }
                 }
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(payoutPrizes);
             }
@@ -226,7 +226,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsSucceeded();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -253,7 +253,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsFailed();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -280,7 +280,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsCanceled();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -307,7 +307,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsSucceeded();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -334,7 +334,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsFailed();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -361,7 +361,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsCanceled();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -485,7 +485,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var transaction = account.Deposit(money);
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -523,7 +523,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var transaction = account.Withdrawal(money);
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -549,7 +549,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var transaction = account.Charge(money, metadata);
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -582,7 +582,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var transaction = account.Deposit(token);
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -608,7 +608,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             {
                 var transaction = account.Charge(token, metadata);
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -665,7 +665,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsSucceeded();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }
@@ -688,7 +688,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 transaction.MarkAsSucceeded();
 
-                await _accountRepository.CommitAsync(cancellationToken);
+                await _accountRepository.CommitAsync(true, cancellationToken);
 
                 result.AddEntityToMetadata(transaction);
             }

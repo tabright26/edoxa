@@ -1,8 +1,10 @@
-﻿// Filename: MetadataItemModel.cs
-// Date Created: 2019-11-08
+﻿// Filename: TransactionMetadataModel.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
+
+using System;
 
 #nullable disable
 
@@ -13,6 +15,10 @@ namespace eDoxa.Cashier.Infrastructure.Models
     /// </remarks>
     public class TransactionMetadataModel
     {
+        public Guid Id { get; set; }
+
+        public Guid TransactionId { get; set; }
+
         public string Key { get; set; }
 
         public string Value { get; set; }

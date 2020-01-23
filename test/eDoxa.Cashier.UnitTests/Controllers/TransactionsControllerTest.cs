@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionsControllerTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -14,6 +14,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
@@ -27,7 +28,12 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 {
     public sealed class TransactionsControllerTest : UnitTest
     {
-     
+        public TransactionsControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task GetAsync_ShouldBeOfTypeNoContentResult()
@@ -38,15 +44,14 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             mockTransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FetchUserTransactionsAsync(
+                        It.IsAny<UserId>(),
                         It.IsAny<Currency>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()))
                 .ReturnsAsync(new Collection<ITransaction>())
                 .Verifiable();
 
-            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
-
-            var controller = new TransactionsController(mockTransactionQuery.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -55,11 +60,12 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             result.Should().BeOfType<NoContentResult>();
 
             mockTransactionQuery.Verify(
-                transactionQuery =>
-                    transactionQuery.FetchUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
+                transactionQuery => transactionQuery.FetchUserTransactionsAsync(
+                    It.IsAny<UserId>(),
+                    It.IsAny<Currency>(),
+                    It.IsAny<TransactionType>(),
+                    It.IsAny<TransactionStatus>()),
                 Times.Once);
-
-            mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
         }
 
         [Fact]
@@ -73,15 +79,14 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             mockTransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FetchUserTransactionsAsync(
+                        It.IsAny<UserId>(),
                         It.IsAny<Currency>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()))
                 .ReturnsAsync(faker.FakeTransactions(5, TransactionFaker.PositiveTransaction))
                 .Verifiable();
 
-            mockTransactionQuery.SetupGet(transactionQuery => transactionQuery.Mapper).Returns(TestMapper);
-
-            var controller = new TransactionsController(mockTransactionQuery.Object);
+            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync();
@@ -90,15 +95,12 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             result.Should().BeOfType<OkObjectResult>();
 
             mockTransactionQuery.Verify(
-                transactionQuery =>
-                    transactionQuery.FetchUserTransactionsAsync(It.IsAny<Currency>(), It.IsAny<TransactionType>(), It.IsAny<TransactionStatus>()),
+                transactionQuery => transactionQuery.FetchUserTransactionsAsync(
+                    It.IsAny<UserId>(),
+                    It.IsAny<Currency>(),
+                    It.IsAny<TransactionType>(),
+                    It.IsAny<TransactionStatus>()),
                 Times.Once);
-
-            mockTransactionQuery.VerifyGet(transactionQuery => transactionQuery.Mapper, Times.Once);
-        }
-
-        public TransactionsControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

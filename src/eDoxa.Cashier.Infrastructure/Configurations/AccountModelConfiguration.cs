@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable("Account");
 
-            builder.Ignore(challenge => challenge.DomainEvents);
+            builder.Ignore(account => account.DomainEvents);
 
             builder.Property(account => account.Id).IsRequired().ValueGeneratedNever();
 

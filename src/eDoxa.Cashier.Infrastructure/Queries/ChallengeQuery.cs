@@ -1,19 +1,17 @@
 ﻿// Filename: ChallengeQuery.cs
-// Date Created: 2019-07-11
+// Date Created: 2020-01-22
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Queries;
-using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.Infrastructure.Extensions;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -21,21 +19,18 @@ using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Cashier.Api.Infrastructure.Queries
+namespace eDoxa.Cashier.Infrastructure.Queries
 {
     public sealed partial class ChallengeQuery
     {
-        public ChallengeQuery(CashierDbContext context, IMapper mapper)
+        public ChallengeQuery(CashierDbContext context)
         {
-            Challenges = context.Challenges.AsNoTracking();
-            Mapper = mapper;
+            Challenges = context.Set<ChallengePayoutModel>().AsNoTracking();
         }
 
-        private IQueryable<ChallengeModel> Challenges { get; }
+        private IQueryable<ChallengePayoutModel> Challenges { get; }
 
-        public IMapper Mapper { get; }
-
-        private async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync()
+        private async Task<IReadOnlyCollection<ChallengePayoutModel>> FetchChallengeModelsAsync()
         {
             var challenges = from challenge in Challenges.AsExpandable()
                              select challenge;
@@ -43,10 +38,10 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
             return await challenges.ToListAsync();
         }
 
-        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
+        private async Task<ChallengePayoutModel?> FindChallengeModelAsync(Guid challengeId)
         {
             var challenges = from challenge in Challenges.AsExpandable()
-                             where challenge.Id == challengeId
+                             where challenge.ChallengeId == challengeId
                              select challenge;
 
             return await challenges.SingleOrDefaultAsync();
@@ -59,14 +54,14 @@ namespace eDoxa.Cashier.Api.Infrastructure.Queries
         {
             var challengeModels = await this.FetchChallengeModelsAsync();
 
-            return Mapper.Map<IReadOnlyCollection<IChallenge>>(challengeModels);
+            return challengeModels.Select(model => model.ToEntity()).ToList();
         }
 
-        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
         {
             var challengeModel = await this.FindChallengeModelAsync(challengeId);
 
-            return Mapper.Map<IChallenge>(challengeModel);
+            return challengeModel?.ToEntity();
         }
     }
 }

@@ -2,20 +2,20 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Infrastructure.Extensions;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure;
 
 using LinqKit;
 
@@ -23,27 +23,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Infrastructure.Repositories
 {
-    public sealed partial class AccountRepository
+    public sealed partial class AccountRepository : Repository<IAccount, AccountModel>
     {
-        private readonly IDictionary<Guid, IAccount> _materializedIds = new Dictionary<Guid, IAccount>();
-        private readonly IDictionary<IAccount, AccountModel> _materializedObjects = new Dictionary<IAccount, AccountModel>();
-        private readonly CashierDbContext _context;
-        private readonly IMapper _mapper;
-
-        public AccountRepository(CashierDbContext context, IMapper mapper)
+        public AccountRepository(CashierDbContext context)
         {
-            _context = context;
-            _mapper = mapper;
+            UnitOfWork = context;
+            Accounts = context.Set<AccountModel>();
         }
+
+        private IUnitOfWork UnitOfWork { get; }
+
+        private DbSet<AccountModel> Accounts { get; }
 
         private async Task<bool> AccountModelExistsAsync(Guid userId)
         {
-            return await _context.Accounts.AsExpandable().AnyAsync(account => account.Id == userId);
+            return await Accounts.AsExpandable().AnyAsync(account => account.Id == userId);
         }
 
         private async Task<AccountModel?> FindUserAccountModelAsync(Guid userId)
         {
-            var accountModels = from account in _context.Accounts.Include(account => account.Transactions).AsExpandable()
+            var accountModels = from account in Accounts.Include(account => account.Transactions).AsExpandable()
                                 where account.Id == userId
                                 select account;
 
@@ -55,11 +54,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
     {
         public void Create(IAccount account)
         {
-            var accountModel = _mapper.Map<AccountModel>(account);
+            var accountModel = account.ToModel();
 
-            _context.Accounts.Add(accountModel);
+            Accounts.Add(accountModel);
 
-            _materializedObjects[account] = accountModel;
+            Mappings[account] = accountModel;
         }
 
         public async Task<IAccount> FindAccountAsync(UserId userId)
@@ -74,7 +73,9 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<IAccount?> FindAccountOrNullAsync(UserId userId)
         {
-            if (_materializedIds.TryGetValue(userId, out var account))
+            var account = Mappings.Keys.SingleOrDefault(x => x.Id == userId);
+
+            if (account != null)
             {
                 return account;
             }
@@ -86,28 +87,21 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
                 return null;
             }
 
-            account = _mapper.Map<IAccount>(accountModel);
+            account = accountModel.ToEntity();
 
-            _materializedObjects[account] = accountModel;
-
-            _materializedIds[userId] = account;
+            Mappings[account] = accountModel;
 
             return account;
         }
 
-        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        public override async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
-            foreach (var (account, accountModel) in _materializedObjects)
+            foreach (var (account, accountModel) in Mappings)
             {
                 this.CopyChanges(account, accountModel);
             }
 
-            await _context.SaveChangesAsync(cancellationToken);
-
-            foreach (var (account, accountModel) in _materializedObjects)
-            {
-                _materializedIds[accountModel.Id] = account;
-            }
+            await UnitOfWork.CommitAsync(publishDomainEvents, cancellationToken);
         }
 
         private void CopyChanges(IAccount account, AccountModel accountModel)
@@ -124,7 +118,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
             var transactions =
                 account.Transactions.Where(transaction => accountModel.Transactions.All(transactionModel => transactionModel.Id != transaction.Id));
 
-            foreach (var transaction in _mapper.Map<ICollection<TransactionModel>>(transactions))
+            foreach (var transaction in transactions.Select(transaction => transaction.ToModel()))
             {
                 accountModel.Transactions.Add(transaction);
             }

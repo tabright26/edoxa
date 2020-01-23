@@ -14,11 +14,13 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using static eDoxa.Cashier.Api.Infrastructure.Data.Storage.FileStorage;
@@ -47,9 +49,13 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             _context = context;
         }
 
+        private DbSet<AccountModel> Accounts => _context.Set<AccountModel>();
+
+        private DbSet<ChallengePayoutModel> ChallengePayouts => _context.Set<ChallengePayoutModel>();
+
         protected override async Task SeedDevelopmentAsync()
         {
-            if (!_context.Accounts.Any())
+            if (!Accounts.Any())
             {
                 var adminAccount = new Account(UserId.FromGuid(AppAdmin.Id));
 
@@ -130,7 +136,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                 Logger.LogInformation("The user's account already populated.");
             }
 
-            if (!_context.Challenges.Any())
+            if (!ChallengePayouts.Any())
             {
                 _challengeRepository.Create(Challenges);
 
@@ -146,7 +152,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
         protected override async Task SeedProductionAsync()
         {
-            if (!_context.Accounts.Any(account => account.Id == UserId.FromGuid(AppAdmin.Id)))
+            if (!Accounts.Any(account => account.Id == UserId.FromGuid(AppAdmin.Id)))
             {
                 var account = new Account(UserId.FromGuid(AppAdmin.Id));
 
@@ -203,7 +209,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                 new Challenge(ChallengeId.Parse("7d96b314-8d5b-4393-9257-9c0e2cf7c0f1"), threeDollars, threeDollarsForThreeEntries)
             };
 
-            foreach (var challengePayout in challengePayouts.Where(challengePayout => _context.Challenges.All(x => x.Id != challengePayout.Id)))
+            foreach (var challengePayout in challengePayouts.Where(challengePayout => ChallengePayouts.All(x => x.ChallengeId != challengePayout.Id)))
             {
                 _challengeRepository.Create(challengePayout);
             }

@@ -4,15 +4,12 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Infrastructure.Configurations;
-using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Infrastructure.MediatR.Extensions;
-using eDoxa.Seedwork.Infrastructure.SqlServer;
 
 using MediatR;
 
@@ -36,39 +33,11 @@ namespace eDoxa.Cashier.Infrastructure
 
         private IMediator Mediator { get; }
 
-        public DbSet<AccountModel> Accounts => this.Set<AccountModel>();
-
-        public DbSet<TransactionModel> Transactions => this.Set<TransactionModel>();
-
-        public DbSet<ChallengeModel> Challenges => this.Set<ChallengeModel>();
-
         public async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
             await this.SaveChangesAsync(cancellationToken);
 
-            var entities = ChangeTracker.Entries<IEntityModel>().Select(entry => entry.Entity).Where(entity => entity.DomainEvents?.Any() ?? false).ToList();
-
-            if (publishDomainEvents)
-            {
-                var domainEvents = entities.SelectMany(entity => entity.DomainEvents).ToList();
-
-                foreach (var entity in entities)
-                {
-                    entity.DomainEvents.Clear();
-                }
-
-                foreach (var domainEvent in domainEvents)
-                {
-                    await Mediator.PublishDomainEventAsync(domainEvent);
-                }
-            }
-            else
-            {
-                foreach (var entity in entities)
-                {
-                    entity.DomainEvents.Clear();
-                }
-            }
+            await Mediator.PublishDomainEventsAsync(this, publishDomainEvents);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -77,7 +46,7 @@ namespace eDoxa.Cashier.Infrastructure
             builder.ApplyConfiguration(new PromotionModelConfiguration());
             builder.ApplyConfiguration(new AccountModelConfiguration());
             builder.ApplyConfiguration(new TransactionModelConfiguration());
-            builder.ApplyConfiguration(new ChallengeModelConfiguration());
+            builder.ApplyConfiguration(new ChallengePayoutModelConfiguration());
         }
     }
 }

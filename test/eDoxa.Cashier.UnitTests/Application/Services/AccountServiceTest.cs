@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             mockAccountRepository.Setup(accountRepository => accountRepository.Create(It.IsAny<Account>())).Verifiable();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -61,7 +61,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             mockAccountRepository.Verify(accountRepository => accountRepository.Create(It.IsAny<Account>()), Times.Once);
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -77,7 +77,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             transaction.MarkAsSucceeded();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -95,7 +95,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -134,7 +134,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             transaction.MarkAsSucceeded();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -152,7 +152,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -301,7 +301,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var account = new Account(new UserId());
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -317,7 +317,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
+            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact]
@@ -382,7 +382,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             //tokenAccount.Deposit(Token.OneMillion);
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -398,7 +398,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
+            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact]
@@ -486,7 +486,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             transaction.MarkAsSucceeded();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()))
+            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -509,7 +509,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once());
+            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         //[Fact]

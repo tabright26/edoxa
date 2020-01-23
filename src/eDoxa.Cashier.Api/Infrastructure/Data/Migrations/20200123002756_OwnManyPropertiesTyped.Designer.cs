@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eDoxa.Cashier.Infrastructure;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    internal class CashierDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200123002756_OwnManyPropertiesTyped")]
+    partial class OwnManyPropertiesTyped
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,7 +34,6 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnName("ChallengeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("EntryFeeAmount")

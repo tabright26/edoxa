@@ -7,9 +7,11 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data
@@ -25,13 +27,17 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             _context = context;
         }
 
+        private DbSet<AccountModel> Accounts => _context.Set<AccountModel>();
+
+        private DbSet<ChallengePayoutModel> ChallengePayouts => _context.Set<ChallengePayoutModel>();
+
         public async Task CleanupAsync()
         {
             if (!_environment.IsProduction())
             {
-                _context.Accounts.RemoveRange(_context.Accounts);
+                Accounts.RemoveRange(Accounts);
 
-                _context.Challenges.RemoveRange(_context.Challenges);
+                ChallengePayouts.RemoveRange(ChallengePayouts);
 
                 await _context.SaveChangesAsync();
             }

@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             mockChallengeRepository.Setup(repository => repository.Create(It.IsAny<Challenge>())).Verifiable();
 
-            mockChallengeRepository.Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+            mockChallengeRepository.Setup(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
 
             var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
 
@@ -66,7 +66,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             mockChallengeRepository.Verify(repository => repository.Create(It.IsAny<Challenge>()), Times.Once);
 
-            mockChallengeRepository.Verify(repository => repository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockChallengeRepository.Verify(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
