@@ -12,6 +12,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Cashier.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -39,7 +40,17 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Arrange
             var mockAccountQuery = new Mock<IAccountQuery>();
 
-            var controller = new BalanceController(mockAccountQuery.Object, TestMapper);
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<Currency>())).ReturnsAsync((Balance) null);
+
+            var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
             var result = await controller.GetByCurrencyAsync(Currency.Money);
@@ -58,11 +69,19 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 
             var account = new Account(new UserId());
 
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
             mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<Currency>()))
                 .ReturnsAsync(account.GetBalanceFor(Currency.Money))
                 .Verifiable();
 
-            var controller = new BalanceController(mockAccountQuery.Object, TestMapper);
+            var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
             var result = await controller.GetByCurrencyAsync(Currency.Money);

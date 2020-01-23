@@ -14,6 +14,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Cashier.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -51,7 +52,15 @@ namespace eDoxa.Cashier.UnitTests.Controllers
                 .ReturnsAsync(new Collection<ITransaction>())
                 .Verifiable();
 
-            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper);
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
             var result = await controller.GetAsync();
@@ -74,6 +83,8 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Arrange
             var faker = TestData.FakerFactory.CreateTransactionFaker(null);
 
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
             var mockTransactionQuery = new Mock<ITransactionQuery>();
 
             mockTransactionQuery
@@ -86,7 +97,13 @@ namespace eDoxa.Cashier.UnitTests.Controllers
                 .ReturnsAsync(faker.FakeTransactions(5, TransactionFaker.PositiveTransaction))
                 .Verifiable();
 
-            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper);
+            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
             var result = await controller.GetAsync();
