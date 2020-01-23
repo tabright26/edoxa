@@ -44,7 +44,7 @@ namespace eDoxa.Challenges.IntegrationTests.Controllers
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, Game.LeagueOfLegends, ChallengeState.Ended);
+            var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(null, Game.LeagueOfLegends, ChallengeState.Inscription);
             var challenge = challengeFaker.FakeChallenge();
 
             var factory = TestHost.WithClaimsFromDefaultAuthentication();

@@ -1,14 +1,22 @@
 ﻿// Filename: WebApplicationFactoryExtensions.cs
-// Date Created: 2019-12-19
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
+
+using System.Security.Claims;
+
+using Autofac;
 
 using eDoxa.Seedwork.Application.DelegatingHandlers;
+using eDoxa.Seedwork.TestHelper.Modules;
 
 using Grpc.Net.Client;
 
+using IdentityServer4.AccessTokenValidation;
+
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 
 namespace eDoxa.Seedwork.TestHelper.Extensions
 {
@@ -28,6 +36,54 @@ namespace eDoxa.Seedwork.TestHelper.Extensions
                 new GrpcChannelOptions
                 {
                     HttpClient = httpClient
+                });
+        }
+
+        public static WebApplicationFactory<TStartup> WithClaimsFromDefaultAuthentication<TStartup>(
+            this WebApplicationFactory<TStartup> factory,
+            params Claim[] claims
+        )
+        where TStartup : class
+        {
+            return factory.WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestServices(
+                        services =>
+                        {
+                            services.AddTestAuthentication(
+                                options =>
+                                {
+                                    options.Claims = claims;
+                                    options.AuthenticationScheme = nameof(TestAuthenticationHandler);
+                                });
+                        });
+
+                    builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
+                });
+        }
+
+        public static WebApplicationFactory<TStartup> WithClaimsFromBearerAuthentication<TStartup>(
+            this WebApplicationFactory<TStartup> factory,
+            params Claim[] claims
+        )
+        where TStartup : class
+        {
+            return factory.WithWebHostBuilder(
+                builder =>
+                {
+                    builder.ConfigureTestServices(
+                        services =>
+                        {
+                            services.AddTestAuthentication(
+                                options =>
+                                {
+                                    options.Claims = claims;
+                                    options.AuthenticationScheme = IdentityServerAuthenticationDefaults.AuthenticationScheme;
+                                });
+                        });
+
+                    builder.ConfigureTestContainer<ContainerBuilder>(container => container.RegisterModule(new MockHttpContextAccessorModule(claims)));
                 });
         }
     }
