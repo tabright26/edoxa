@@ -5,12 +5,9 @@ import { Loading } from "components/Shared/Loading";
 import { compose } from "recompose";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { Challenge } from "types";
+import { Challenge, UserId } from "types";
 import produce, { Draft } from "immer";
-import {
-  HocUserProfileUserIdStateProps,
-  withUserProfileUserId
-} from "utils/oidc/containers";
+import { HocUserProfileUserIdStateProps } from "utils/oidc/containers";
 
 type OwnProps = HocUserProfileUserIdStateProps & { history?: boolean };
 
@@ -18,7 +15,7 @@ type StateProps = { challenges: Challenge[]; loading: boolean };
 
 type InnerProps = StateProps;
 
-type OutterProps = { history?: boolean };
+type OutterProps = { userId?: UserId };
 
 type Props = InnerProps & OutterProps;
 
@@ -40,28 +37,21 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   ownProps
 ) => {
   const { data, loading } = state.root.challenge;
-  if (ownProps.history) {
-    return {
-      challenges: produce(data, (draft: Draft<Challenge[]>) =>
+  const challenges = ownProps.userId
+    ? produce(data, (draft: Draft<Challenge[]>) =>
         draft.filter(challenge =>
           challenge.participants.some(
             participant => participant.user.id === ownProps.userId
           )
         )
-      ),
-      loading
-    };
-  } else {
-    return {
-      challenges: data,
-      loading
-    };
-  }
+      )
+    : data;
+  return {
+    challenges,
+    loading
+  };
 };
 
-const enhance = compose<InnerProps, OutterProps>(
-  withUserProfileUserId,
-  connect(mapStateToProps)
-);
+const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps));
 
 export default enhance(List);

@@ -3,19 +3,24 @@ import { compose } from "recompose";
 import { connect, MapDispatchToProps } from "react-redux";
 import { loadChallengeHistory } from "store/actions/challenge";
 import ChallengeList from "components/Challenge/List";
+import {
+  withUserProfileUserId,
+  HocUserProfileUserIdStateProps
+} from "utils/oidc/containers";
 
-type OwnProps = {};
+type OwnProps = HocUserProfileUserIdStateProps;
 
 type DispatchProps = { loadChallengeHistory: () => void };
 
-type InnerProps = DispatchProps;
+type InnerProps = DispatchProps & OwnProps;
 
-type OutterProps = OwnProps;
+type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
 const ProfileChallengeHistory: FunctionComponent<Props> = ({
-  loadChallengeHistory
+  loadChallengeHistory,
+  userId
 }) => {
   useEffect((): void => {
     loadChallengeHistory();
@@ -24,7 +29,7 @@ const ProfileChallengeHistory: FunctionComponent<Props> = ({
   return (
     <>
       <h5 className="text-uppercase my-4">CHALLENGE HISTORY</h5>
-      <ChallengeList history />
+      <ChallengeList userId={userId} />
     </>
   );
 };
@@ -38,6 +43,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
 };
 
 const enhance = compose<InnerProps, OutterProps>(
+  withUserProfileUserId,
   connect(null, mapDispatchToProps)
 );
 
