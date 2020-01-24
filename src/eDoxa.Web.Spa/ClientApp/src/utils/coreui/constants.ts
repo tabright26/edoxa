@@ -80,6 +80,10 @@ export function getUserProfileGamesPath(): string {
   return getUserProfilePath() + "/games";
 }
 
+export function getUserProfileChallengeHistoryPath(): string {
+  return getUserProfilePath() + "/challenge-history";
+}
+
 export function getChallengesPath(): string {
   return "/challenges";
 }

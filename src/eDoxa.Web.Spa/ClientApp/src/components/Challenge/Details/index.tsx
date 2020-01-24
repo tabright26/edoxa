@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { Row, Col, CardDeck, Card, CardBody } from "reactstrap";
 import ChallengeLogo from "components/Challenge/Logo";
 import ChallengeSummary from "components/Challenge/Summary";
@@ -7,17 +7,37 @@ import ChallengeScoring from "components/Challenge/Scoring";
 import ChallengePayout from "components/Challenge/Payout";
 import ChallengeTimeline from "components/Challenge/Timeline";
 import Register from "components/Challenge/Register";
-import { withChallenge } from "store/root/challenge/container";
 import { Loading } from "components/Shared/Loading";
-import { Challenge } from "types";
+import { Challenge, ChallengeId } from "types";
 import GameCredentialModal from "components/Game/Credential/Modal";
+import { compose } from "recompose";
+import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
+import { RootState } from "store/types";
+import { loadChallenge } from "store/actions/challenge";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 
-interface Props {
-  challenge: Challenge;
-}
+type Params = {
+  readonly challengeId?: ChallengeId;
+};
 
-const Details: FunctionComponent<Props> = ({ challenge }) =>
-  !challenge ? (
+type OwnProps = RouteComponentProps<Params> & Params;
+
+type StateProps = { challenge: Challenge };
+
+type DispatchProps = { loadChallenge: () => void };
+
+type InnerProps = StateProps & DispatchProps;
+
+type OutterProps = Params;
+
+type Props = InnerProps & OutterProps;
+
+const Details: FunctionComponent<Props> = ({ challenge, loadChallenge }) => {
+  useEffect((): void => {
+    loadChallenge();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  return !challenge ? (
     <Loading />
   ) : (
     <>
@@ -48,5 +68,44 @@ const Details: FunctionComponent<Props> = ({ challenge }) =>
       </Row>
     </>
   );
+};
 
-export default withChallenge(Details);
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  state,
+  ownProps
+) => {
+  const { data, loading } = state.root.challenge;
+  return {
+    challenge: data.find(
+      challenge =>
+        challenge.id ===
+        (ownProps.match
+          ? ownProps.match.params.challengeId
+          : ownProps.challengeId)
+    ),
+    loading
+  };
+};
+
+const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
+  dispatch: any,
+  ownProps
+) => {
+  return {
+    loadChallenge: () =>
+      dispatch(
+        loadChallenge(
+          ownProps.match
+            ? ownProps.match.params.challengeId
+            : ownProps.challengeId
+        )
+      )
+  };
+};
+
+const enhance = compose<InnerProps, OutterProps>(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+);
+
+export default enhance(Details);

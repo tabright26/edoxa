@@ -5,6 +5,10 @@ export const LOAD_CHALLENGES = "LOAD_CHALLENGES";
 export const LOAD_CHALLENGES_SUCCESS = "LOAD_CHALLENGES_SUCCESS";
 export const LOAD_CHALLENGES_FAIL = "LOAD_CHALLENGES_FAIL";
 
+export const LOAD_CHALLENGE_HISTORY = "LOAD_CHALLENGE_HISTORY";
+export const LOAD_CHALLENGE_HISTORY_SUCCESS = "LOAD_CHALLENGE_HISTORY_SUCCESS";
+export const LOAD_CHALLENGE_HISTORY_FAIL = "LOAD_CHALLENGE_HISTORY_FAIL";
+
 export const LOAD_CHALLENGE = "LOAD_CHALLENGE";
 export const LOAD_CHALLENGE_SUCCESS = "LOAD_CHALLENGE_SUCCESS";
 export const LOAD_CHALLENGE_FAIL = "LOAD_CHALLENGE_FAIL";
@@ -23,6 +27,18 @@ export type LoadChallengesActionCreator = AxiosActionCreator<
   LoadChallengesType
 >;
 export type LoadChallengesAction = AxiosAction<LoadChallengesType, Challenge[]>;
+
+export type LoadChallengeHistoryType =
+  | typeof LOAD_CHALLENGE_HISTORY
+  | typeof LOAD_CHALLENGE_HISTORY_SUCCESS
+  | typeof LOAD_CHALLENGE_HISTORY_FAIL;
+export type LoadChallengeHistoryActionCreator = AxiosActionCreator<
+  LoadChallengeHistoryType
+>;
+export type LoadChallengeHistoryAction = AxiosAction<
+  LoadChallengeHistoryType,
+  Challenge[]
+>;
 
 export type LoadChallengeType =
   | typeof LOAD_CHALLENGE
@@ -46,8 +62,10 @@ export type RegisterChallengeParticipantAction = AxiosAction<
 export type ChallengesActionCreators =
   | LoadChallengesActionCreator
   | LoadChallengeActionCreator
+  | LoadChallengeHistoryActionCreator
   | RegisterChallengeParticipantActionCreator;
 export type ChallengesActions =
   | LoadChallengesAction
   | LoadChallengeAction
+  | LoadChallengeHistoryAction
   | RegisterChallengeParticipantAction;

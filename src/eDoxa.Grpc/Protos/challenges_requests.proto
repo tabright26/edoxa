@@ -8,6 +8,11 @@ import "games_enums.proto";
 
 package edoxa.services.challenges;
 
+message FetchChallengeHistoryRequest {
+  games.EnumGame game = 1;
+  EnumChallengeState state = 2;
+}
+
 message FetchChallengesRequest {
   games.EnumGame game = 1;
   EnumChallengeState state = 2;

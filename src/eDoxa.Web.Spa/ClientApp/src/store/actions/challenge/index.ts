@@ -8,7 +8,10 @@ import {
   REGISTER_CHALLENGE_PARTICIPANT,
   REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
   REGISTER_CHALLENGE_PARTICIPANT_FAIL,
-  ChallengesActionCreators
+  ChallengesActionCreators,
+  LOAD_CHALLENGE_HISTORY,
+  LOAD_CHALLENGE_HISTORY_SUCCESS,
+  LOAD_CHALLENGE_HISTORY_FAIL
 } from "./types";
 
 import { ChallengeId, Game, ChallengeState } from "types";
@@ -44,6 +47,30 @@ export function loadChallenge(
       request: {
         method: "GET",
         url: `/api/challenges/${challengeId}`
+      }
+    }
+  };
+}
+
+export function loadChallengeHistory(
+  game: Game = null,
+  state: ChallengeState = null
+): ChallengesActionCreators {
+  return {
+    types: [
+      LOAD_CHALLENGE_HISTORY,
+      LOAD_CHALLENGE_HISTORY_SUCCESS,
+      LOAD_CHALLENGE_HISTORY_FAIL
+    ],
+    payload: {
+      client: AXIOS_PAYLOAD_CLIENT_CHALLENGES,
+      request: {
+        method: "GET",
+        url: "/api/challenge-history",
+        params: {
+          game,
+          state
+        }
       }
     }
   };

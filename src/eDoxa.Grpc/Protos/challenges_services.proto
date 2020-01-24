@@ -8,6 +8,7 @@ import "challenges_responses.proto";
 package edoxa.services.challenges;
 
 service ChallengeService {
+  rpc FetchChallengeHistory(FetchChallengeHistoryRequest) returns (FetchChallengeHistoryResponse);
   rpc FetchChallenges(FetchChallengesRequest) returns (FetchChallengesResponse);
   rpc FindChallenge(FindChallengeRequest) returns (FindChallengeResponse);
   rpc CreateChallenge(CreateChallengeRequest) returns (CreateChallengeResponse);

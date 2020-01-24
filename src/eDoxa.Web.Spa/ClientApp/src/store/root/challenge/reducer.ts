@@ -8,7 +8,10 @@ import {
   REGISTER_CHALLENGE_PARTICIPANT,
   REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
   REGISTER_CHALLENGE_PARTICIPANT_FAIL,
-  ChallengesActions
+  ChallengesActions,
+  LOAD_CHALLENGE_HISTORY,
+  LOAD_CHALLENGE_HISTORY_SUCCESS,
+  LOAD_CHALLENGE_HISTORY_FAIL
 } from "store/actions/challenge/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
@@ -52,6 +55,38 @@ export const reducer: Reducer<ChallengesState, ChallengesActions> = produce(
         break;
       }
       case LOAD_CHALLENGES_FAIL:
+        draft.error = action.error;
+        draft.loading = false;
+        break;
+      case LOAD_CHALLENGE_HISTORY:
+        draft.error = null;
+        draft.loading = true;
+        break;
+      case LOAD_CHALLENGE_HISTORY_SUCCESS: {
+        const { status, data } = action.payload;
+        switch (status) {
+          case 204: {
+            draft.error = null;
+            draft.loading = false;
+            break;
+          }
+          default: {
+            data.forEach(challenge => {
+              const index = draft.data.findIndex(x => x.id === challenge.id);
+              if (index === -1) {
+                draft.data.push(challenge);
+              } else {
+                draft.data[index] = challenge;
+              }
+            });
+            draft.error = null;
+            draft.loading = false;
+            break;
+          }
+        }
+        break;
+      }
+      case LOAD_CHALLENGE_HISTORY_FAIL:
         draft.error = action.error;
         draft.loading = false;
         break;

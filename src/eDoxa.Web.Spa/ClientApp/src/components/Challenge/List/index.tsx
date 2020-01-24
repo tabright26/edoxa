@@ -1,45 +1,67 @@
 import React, { FunctionComponent } from "react";
-import { Row, Col, Card, CardImg, CardImgOverlay } from "reactstrap";
-import { withChallenges } from "store/root/challenge/container";
+import { Row, Col } from "reactstrap";
 import ChallengeItem from "./Item";
 import { Loading } from "components/Shared/Loading";
-import { ChallengesState } from "store/root/challenge/types";
-import banner from "assets/img/arena/games/leagueoflegends/banner.jpg";
-import large from "assets/img/arena/games/leagueoflegends/large.png";
+import { compose } from "recompose";
+import { connect, MapStateToProps } from "react-redux";
+import { RootState } from "store/types";
+import { Challenge } from "types";
+import produce, { Draft } from "immer";
+import {
+  HocUserProfileUserIdStateProps,
+  withUserProfileUserId
+} from "utils/oidc/containers";
 
-type Props = {
-  challenges: ChallengesState;
-};
+type OwnProps = HocUserProfileUserIdStateProps & { history?: boolean };
 
-const List: FunctionComponent<Props> = ({ challenges: { data, loading } }) =>
+type StateProps = { challenges: Challenge[]; loading: boolean };
+
+type InnerProps = StateProps;
+
+type OutterProps = { history?: boolean };
+
+type Props = InnerProps & OutterProps;
+
+const List: FunctionComponent<Props> = ({ challenges, loading }) =>
   loading ? (
     <Loading />
   ) : (
-    <>
-      <Row>
-        <Col>
-          <Card className="my-4">
-            <CardImg src={banner} height="200" />
-            <CardImgOverlay className="d-flex">
-              <img
-                className="m-auto"
-                alt="leagueoflegends"
-                src={large}
-                width={320}
-                height={125}
-              />
-            </CardImgOverlay>
-          </Card>
+    <Row>
+      {challenges.map((challenge, index) => (
+        <Col key={index} xs="12" sm="12" md="12" lg="12">
+          <ChallengeItem challenge={challenge} />
         </Col>
-      </Row>
-      <Row>
-        {data.map((challenge, index) => (
-          <Col key={index} xs="12" sm="12" md="12" lg="12">
-            <ChallengeItem challenge={challenge} />
-          </Col>
-        ))}
-      </Row>
-    </>
+      ))}
+    </Row>
   );
 
-export default withChallenges(List);
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  state,
+  ownProps
+) => {
+  const { data, loading } = state.root.challenge;
+  if (ownProps.history) {
+    return {
+      challenges: produce(data, (draft: Draft<Challenge[]>) =>
+        draft.filter(challenge =>
+          challenge.participants.some(
+            participant => participant.user.id === ownProps.userId
+          )
+        )
+      ),
+      loading
+    };
+  } else {
+    return {
+      challenges: data,
+      loading
+    };
+  }
+};
+
+const enhance = compose<InnerProps, OutterProps>(
+  withUserProfileUserId,
+  connect(mapStateToProps)
+);
+
+export default enhance(List);

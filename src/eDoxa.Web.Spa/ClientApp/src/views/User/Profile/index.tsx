@@ -19,7 +19,8 @@ import {
   getUserProfileSecurityPath,
   getUserProfileDetailsPath,
   getError404Path,
-  getUserProfilePromotionalCodePath
+  getUserProfilePromotionalCodePath,
+  getUserProfileChallengeHistoryPath
 } from "utils/coreui/constants";
 
 const ProfileOverview = React.lazy(() => import("./Overview"));
@@ -31,6 +32,7 @@ const ProfilePaymentMethods = React.lazy(() => import("./PaymentMethods"));
 const ProfileTransactionHistory = React.lazy(() =>
   import("./TransactionHistory")
 );
+const ProfileChallengeHistory = React.lazy(() => import("./ChallengeHistory"));
 
 const Profile: FunctionComponent = () => (
   <Row>
@@ -74,6 +76,16 @@ const Profile: FunctionComponent = () => (
         <ListGroup flush>
           <LinkContainer to={getUserProfileGamesPath()}>
             <ListGroupItem>Games</ListGroupItem>
+          </LinkContainer>
+        </ListGroup>
+      </Card>
+      <Card>
+        <CardHeader>
+          <strong>Arena</strong>
+        </CardHeader>
+        <ListGroup flush>
+          <LinkContainer to={getUserProfileChallengeHistoryPath()}>
+            <ListGroupItem>Challenge History</ListGroupItem>
           </LinkContainer>
         </ListGroup>
       </Card>
@@ -122,6 +134,12 @@ const Profile: FunctionComponent = () => (
             exact
             name="Promotional Code"
             component={ProfilePromotionalCode}
+          />
+          <Route<RouteProps>
+            path={getUserProfileChallengeHistoryPath()}
+            exact
+            name="Challenge History"
+            component={ProfileChallengeHistory}
           />
           <Redirect to={getError404Path()} />
         </Switch>

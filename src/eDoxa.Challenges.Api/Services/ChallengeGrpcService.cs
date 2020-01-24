@@ -43,6 +43,28 @@ namespace eDoxa.Challenges.Api.Services
             _serviceBusPublisher = serviceBusPublisher;
         }
 
+        public override async Task<FetchChallengeHistoryResponse> FetchChallengeHistory(FetchChallengeHistoryRequest request, ServerCallContext context)
+        {
+            var httpContext = context.GetHttpContext();
+
+            var userId = httpContext.GetUserId();
+
+            var challenges = await _challengeQuery.FetchUserChallengeHistoryAsync(
+                userId,
+                request.Game.ToEnumerationOrNull<Game>(),
+                request.State.ToEnumerationOrNull<ChallengeState>());
+
+            var response = new FetchChallengeHistoryResponse
+            {
+                Challenges =
+                {
+                    challenges.Select(ChallengeProfile.Map)
+                }
+            };
+
+            return context.Ok(response);
+        }
+
         public override async Task<FetchChallengesResponse> FetchChallenges(FetchChallengesRequest request, ServerCallContext context)
         {
             var challenges = await _challengeQuery.FetchChallengesAsync(
@@ -191,7 +213,7 @@ namespace eDoxa.Challenges.Api.Services
                 scoring => request.Matches.Select(
                         match => new Match(
                             new GameUuid(match.GameUuid),
-                            new DateTimeProvider(match.GameCreatedAt.ToDateTime()), 
+                            new DateTimeProvider(match.GameCreatedAt.ToDateTime()),
                             match.GameDuration.ToTimeSpan(),
                             scoring.Map(match.Stats),
                             new UtcNowDateTimeProvider()))
