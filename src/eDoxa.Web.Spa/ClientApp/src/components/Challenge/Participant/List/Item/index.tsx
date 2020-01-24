@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Collapse, Card, Badge, CardHeader, CardBody } from "reactstrap";
 import Format from "components/Shared/Format";
 import { ChallengeParticipant } from "types";
-import ChallengeParticipantMatchList from "components/Challenge/Participant/Match/List";
+import List from "components/Challenge/Participant/Match/List";
 
 interface Props {
   participant: ChallengeParticipant;
@@ -11,7 +11,7 @@ interface Props {
   bestOf: number;
 }
 
-const ChallengeParticipantItem: FunctionComponent<Props> = ({
+const Item: FunctionComponent<Props> = ({
   participant,
   position,
   payoutEntries,
@@ -71,11 +71,11 @@ const ChallengeParticipantItem: FunctionComponent<Props> = ({
               ({participant.matches.length}/{bestOf})
             </small>
           </CardHeader>
-          <ChallengeParticipantMatchList participantId={participant.id} />
+          <List participantId={participant.id} />
         </Card>
       </Collapse>
     </>
   );
 };
 
-export default ChallengeParticipantItem;
+export default Item;

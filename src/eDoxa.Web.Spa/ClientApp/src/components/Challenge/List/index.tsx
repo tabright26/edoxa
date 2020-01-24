@@ -7,14 +7,12 @@ import { ChallengesState } from "store/root/challenge/types";
 import banner from "assets/img/arena/games/leagueoflegends/banner.jpg";
 import large from "assets/img/arena/games/leagueoflegends/large.png";
 
-interface Props {
+type Props = {
   challenges: ChallengesState;
-}
+};
 
-const ChallengeList: FunctionComponent<Props> = ({
-  challenges: { data, error, loading }
-}) => {
-  return loading ? (
+const List: FunctionComponent<Props> = ({ challenges: { data, loading } }) =>
+  loading ? (
     <Loading />
   ) : (
     <>
@@ -43,6 +41,5 @@ const ChallengeList: FunctionComponent<Props> = ({
       </Row>
     </>
   );
-};
 
-export default withChallenges(ChallengeList);
+export default withChallenges(List);

@@ -2,47 +2,41 @@ import React, { FunctionComponent } from "react";
 import { Card } from "reactstrap";
 import ChallengeForm from "components/Challenge/Form";
 import {
-  HocUserIsAuthenticatedStateProps,
-  withUserIsAuthenticated,
   HocUserProfileUserIdStateProps,
   withUserProfileUserId
 } from "utils/oidc/containers";
 import { compose } from "recompose";
-import { ChallengeId, UserId, CHALLENGE_STATE_INSCRIPTION } from "types";
+import { ChallengeId, CHALLENGE_STATE_INSCRIPTION } from "types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
 
-interface Params {
-  readonly challengeId: ChallengeId;
-}
+type Params = {
+  readonly challengeId?: ChallengeId;
+};
 
-interface OwnProps extends RouteComponentProps<Params> {
-  readonly userId: UserId;
-}
+type OwnProps = RouteComponentProps<Params> &
+  Params &
+  HocUserProfileUserIdStateProps;
 
-interface StateProps {
+type StateProps = {
   readonly canRegister: boolean;
-}
+};
 
-type InnerProps = HocUserIsAuthenticatedStateProps &
-  HocUserProfileUserIdStateProps &
-  StateProps;
+type InnerProps = OwnProps & StateProps;
 
-type OutterProps = {
+type OutterProps = Params & {
   readonly className?: string;
 };
 
 type Props = InnerProps & OutterProps;
 
-const ChallengeRegister: FunctionComponent<Props> = ({
+const Register: FunctionComponent<Props> = ({
   className,
   userId,
-  isAuthenticated,
   canRegister
 }) =>
-  canRegister &&
-  isAuthenticated && (
+  canRegister && (
     <Card className={className}>
       <ChallengeForm.Register userId={userId} />
     </Card>
@@ -54,7 +48,11 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
 ) => {
   const { data } = state.root.challenge;
   const challenge = data.find(
-    challenge => challenge.id === ownProps.match.params.challengeId
+    challenge =>
+      challenge.id ===
+      (ownProps.match
+        ? ownProps.match.params.challengeId
+        : ownProps.challengeId)
   );
   return {
     canRegister:
@@ -67,9 +65,8 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
 
 const enhance = compose<InnerProps, OutterProps>(
   withRouter,
-  withUserIsAuthenticated,
   withUserProfileUserId,
   connect(mapStateToProps)
 );
 
-export default enhance(ChallengeRegister);
+export default enhance(Register);

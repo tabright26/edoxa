@@ -7,21 +7,21 @@ import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "recompose";
 
-interface Params {
-  readonly challengeId: ChallengeId;
-}
+type Params = {
+  readonly challengeId?: ChallengeId;
+};
 
-type OwnProps = RouteComponentProps<Params>;
+type OwnProps = RouteComponentProps<Params> & Params;
 
-interface StateProps {
+type StateProps = {
   readonly scoring: ChallengeScoring;
-}
+};
 
-interface Props {
-  readonly challengeId: ChallengeId;
-  readonly scoring: ChallengeScoring;
-  readonly className?: string;
-}
+type InnerProps = OwnProps & StateProps;
+
+type OutterProps = Params & { readonly className?: string };
+
+type Props = InnerProps & OutterProps;
 
 const Scoring: FunctionComponent<Props> = ({ scoring, className }) => (
   <Card className={className}>
@@ -47,13 +47,20 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
 ) => {
   const { data } = state.root.challenge;
   const challenge = data.find(
-    challenge => challenge.id === ownProps.match.params.challengeId
+    challenge =>
+      challenge.id ===
+      (ownProps.match
+        ? ownProps.match.params.challengeId
+        : ownProps.challengeId)
   );
   return {
     scoring: challenge.scoring
   };
 };
 
-const enhance = compose<any, any>(withRouter, connect(mapStateToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  withRouter,
+  connect(mapStateToProps)
+);
 
 export default enhance(Scoring);

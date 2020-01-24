@@ -8,14 +8,14 @@ import { show } from "redux-modal";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
 import Moment from "react-moment";
 
-interface OwnProps {
+type OwnProps = {
   match: ChallengeParticipantMatch;
   position: number;
-}
+};
 
-interface DispatchProps {
+type DispatchProps = {
   showChallengeMatchScoreModal: () => void;
-}
+};
 
 type InnerProps = DispatchProps;
 
@@ -23,7 +23,7 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const ChallengeParticipantMatchItem: FunctionComponent<Props> = ({
+const Item: FunctionComponent<Props> = ({
   match,
   position,
   showChallengeMatchScoreModal
@@ -84,4 +84,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connect(null, mapDispatchToProps)
 );
 
-export default enhance(ChallengeParticipantMatchItem);
+export default enhance(Item);

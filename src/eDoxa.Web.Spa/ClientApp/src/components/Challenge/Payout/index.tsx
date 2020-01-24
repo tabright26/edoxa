@@ -7,22 +7,23 @@ import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { compose } from "recompose";
 
-interface Params {
-  readonly challengeId: ChallengeId;
-}
+type Params = {
+  readonly challengeId?: ChallengeId;
+};
 
-type OwnProps = RouteComponentProps<Params>;
+type OwnProps = RouteComponentProps<Params> & Params;
 
-interface StateProps {
+type StateProps = {
   readonly payout: ChallengePayout;
-}
+};
 
-interface Props {
-  readonly challengeId: ChallengeId;
-  readonly payout: ChallengePayout;
-}
+type InnerProps = OwnProps & StateProps;
 
-const ArenaChallengePayout: FunctionComponent<Props> = ({ payout }) => {
+type OutterProps = Params;
+
+type Props = InnerProps & OutterProps;
+
+const Payout: FunctionComponent<Props> = ({ payout }) => {
   let prevSize = 1;
   let nextSize = 0;
   return (
@@ -73,13 +74,20 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
 ) => {
   const { data } = state.root.challenge;
   const challenge = data.find(
-    challenge => challenge.id === ownProps.match.params.challengeId
+    challenge =>
+      challenge.id ===
+      (ownProps.match
+        ? ownProps.match.params.challengeId
+        : ownProps.challengeId)
   );
   return {
     payout: challenge.payout
   };
 };
 
-const enhance = compose<any, any>(withRouter, connect(mapStateToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  withRouter,
+  connect(mapStateToProps)
+);
 
-export default enhance(ArenaChallengePayout);
+export default enhance(Payout);

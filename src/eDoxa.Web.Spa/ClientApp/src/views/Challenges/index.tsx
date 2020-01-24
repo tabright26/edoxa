@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 
-import ChallengeList from "components/Challenge/List";
+import List from "components/Challenge/List";
 
-const Challenges: FunctionComponent = () => <ChallengeList />;
+const Challenges: FunctionComponent = () => <List />;
 
 export default Challenges;

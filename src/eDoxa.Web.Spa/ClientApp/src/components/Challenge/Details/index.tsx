@@ -2,11 +2,11 @@ import React, { FunctionComponent } from "react";
 import { Row, Col, CardDeck, Card, CardBody } from "reactstrap";
 import ChallengeLogo from "components/Challenge/Logo";
 import ChallengeSummary from "components/Challenge/Summary";
-import ChallengeScoreboard from "components/Challenge/Scoreboard";
+import Scoreboard from "components/Challenge/Scoreboard";
 import ChallengeScoring from "components/Challenge/Scoring";
 import ChallengePayout from "components/Challenge/Payout";
 import ChallengeTimeline from "components/Challenge/Timeline";
-import ChallengeRegister from "components/Challenge/Register";
+import Register from "components/Challenge/Register";
 import { withChallenge } from "store/root/challenge/container";
 import { Loading } from "components/Shared/Loading";
 import { Challenge } from "types";
@@ -15,7 +15,7 @@ interface Props {
   challenge: Challenge;
 }
 
-const ChallengeDetails: FunctionComponent<Props> = ({ challenge }) =>
+const Details: FunctionComponent<Props> = ({ challenge }) =>
   !challenge ? (
     <Loading />
   ) : (
@@ -36,12 +36,12 @@ const ChallengeDetails: FunctionComponent<Props> = ({ challenge }) =>
       </Col>
       <Col xs={{ size: 3, order: 4 }}>
         <ChallengePayout />
-        <ChallengeRegister />
+        <Register />
       </Col>
       <Col xs={{ size: 9, order: 3 }}>
-        <ChallengeScoreboard />
+        <Scoreboard />
       </Col>
     </Row>
   );
 
-export default withChallenge(ChallengeDetails);
+export default withChallenge(Details);

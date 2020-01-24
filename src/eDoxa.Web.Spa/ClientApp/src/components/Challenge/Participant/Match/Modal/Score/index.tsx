@@ -14,7 +14,7 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const CustomModal: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
+const Score: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
   <Modal
     size="lg"
     unmountOnClose={false}
@@ -75,4 +75,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: CHALLENGE_MATCH_SCORE_MODAL, destroyOnHide: false })
 );
 
-export default enhance(CustomModal);
+export default enhance(Score);

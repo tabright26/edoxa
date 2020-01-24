@@ -13,18 +13,18 @@ import { toastr } from "react-redux-toastr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { ChallengeId, UserId } from "types";
 
-interface FormData {}
-
-interface OutterProps {
-  userId: UserId;
-}
+type FormData = {};
 
 type InnerProps = InjectedFormProps<FormData, Props> &
   RouteComponentProps<{ challengeId: ChallengeId }>;
 
+type OutterProps = {
+  userId: UserId;
+};
+
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({ handleSubmit }) => (
+const Register: FunctionComponent<Props> = ({ handleSubmit }) => (
   <Form onSubmit={handleSubmit} className="h-100">
     <Button.Submit
       color="primary"
@@ -59,4 +59,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Register);

@@ -1,28 +1,27 @@
 import React, { FunctionComponent } from "react";
-import ChallengeTimelineItem from "./Item";
+import Item from "./Item";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ChallengeId, ChallengeTimeline } from "types";
 import { compose } from "recompose";
 
-const style = { width: "150px" };
-
-interface Params {
+type Params = {
   readonly challengeId: ChallengeId;
-}
+};
 
 type OwnProps = RouteComponentProps<Params>;
 
-interface StateProps {
+type StateProps = {
   readonly state: string;
   readonly timeline: ChallengeTimeline;
-}
+};
 
-interface Props {
-  readonly state: string;
-  readonly timeline: ChallengeTimeline;
-}
+type InnerProps = OwnProps & StateProps;
+
+type OutterProps = {};
+
+type Props = InnerProps & OutterProps;
 
 const Timeline: FunctionComponent<Props> = ({ state, timeline }) => (
   <div
@@ -31,25 +30,28 @@ const Timeline: FunctionComponent<Props> = ({ state, timeline }) => (
       right: "50px"
     }}
   >
-    <span className="btn bg-gray-900 mt-2 btn-sm rounded-0" style={style}>
+    <span
+      className="btn bg-gray-900 mt-2 btn-sm rounded-0"
+      style={{ width: "150px" }}
+    >
       <strong className="text-uppercase">Timeline</strong>
     </span>
-    <ChallengeTimelineItem
+    <Item
       currentState={state}
       state="Inscription"
       unixTimeSeconds={timeline.createdAt}
     />
-    <ChallengeTimelineItem
+    <Item
       currentState={state}
       state="Started"
       unixTimeSeconds={timeline.startedAt}
     />
-    <ChallengeTimelineItem
+    <Item
       currentState={state}
       state="Ended"
       unixTimeSeconds={timeline.endedAt}
     />
-    <ChallengeTimelineItem
+    <Item
       currentState={state}
       state="Closed"
       unixTimeSeconds={timeline.closedAt}
@@ -71,6 +73,9 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   };
 };
 
-const enhance = compose<any, any>(withRouter, connect(mapStateToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  withRouter,
+  connect(mapStateToProps)
+);
 
 export default enhance(Timeline);

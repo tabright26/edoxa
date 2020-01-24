@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent } from "react";
 import { CardTitle, Row, Col, Badge, Progress } from "reactstrap";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
@@ -7,15 +7,13 @@ import { ChallengeId, Game, ChallengeEntryFee, ChallengeState } from "types";
 import { compose } from "recompose";
 import Format from "components/Shared/Format";
 
-interface Params {
-  readonly challengeId: ChallengeId;
-}
-
-interface OwnProps extends RouteComponentProps<Params> {
+type Params = {
   readonly challengeId?: ChallengeId;
-}
+};
 
-interface StateProps {
+type OwnProps = RouteComponentProps<Params> & Params;
+
+type StateProps = {
   readonly name: string;
   readonly game: Game;
   readonly state: ChallengeState;
@@ -24,9 +22,15 @@ interface StateProps {
   readonly entryFee: ChallengeEntryFee;
   readonly payoutEntries: number;
   readonly participantCount: number;
-}
+};
 
-const ArenaChallengeSpecification = ({
+type InnerProps = OwnProps & StateProps;
+
+type OutterProps = Params;
+
+type Props = InnerProps & OutterProps;
+
+const Summary: FunctionComponent<Props> = ({
   name,
   game,
   state,
@@ -124,6 +128,9 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   };
 };
 
-const enhance = compose<any, any>(withRouter, connect(mapStateToProps));
+const enhance = compose<InnerProps, OutterProps>(
+  withRouter,
+  connect(mapStateToProps)
+);
 
-export default enhance(ArenaChallengeSpecification);
+export default enhance(Summary);

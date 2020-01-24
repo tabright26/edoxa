@@ -1,16 +1,16 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardHeader } from "reactstrap";
-import ChallengeParticipantList from "components/Challenge/Participant/List";
+import List from "components/Challenge/Participant/List";
 
-const ChallengeScoreboard: FunctionComponent = () => (
+const Scoreboard: FunctionComponent = () => (
   <>
     <Card className="my-4 text-center">
       <CardHeader className="bg-gray-900">
         <strong className="text-uppercase">Scoreboard</strong>
       </CardHeader>
     </Card>
-    <ChallengeParticipantList />
+    <List />
   </>
 );
 
-export default ChallengeScoreboard;
+export default Scoreboard;
