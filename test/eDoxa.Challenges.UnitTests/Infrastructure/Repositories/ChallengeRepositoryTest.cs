@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, TestMapper);
+                var repository = new ChallengeRepository(context);
 
                 repository.Create(fakeChallenges);
 
@@ -45,7 +45,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, TestMapper);
+                var repository = new ChallengeRepository(context);
 
                 //Act
                 var challenges = await repository.FetchChallengesAsync();
@@ -67,7 +67,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, TestMapper);
+                var repository = new ChallengeRepository(context);
 
                 repository.Create(fakeChallenge);
 
@@ -76,7 +76,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Repositories
 
             using (var context = factory.CreateContext())
             {
-                var repository = new ChallengeRepository(context, TestMapper);
+                var repository = new ChallengeRepository(context);
 
                 //Act
                 var challenge = await repository.FindChallengeOrNullAsync(fakeChallenge.Id);

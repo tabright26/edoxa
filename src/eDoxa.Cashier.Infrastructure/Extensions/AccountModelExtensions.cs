@@ -17,7 +17,11 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
     {
         public static IAccount ToEntity(this AccountModel model)
         {
-            return new Account(model.Id.ConvertTo<UserId>(), model.Transactions.Select(transaction => transaction.ToEntity()));
+            var account = new Account(model.Id.ConvertTo<UserId>(), model.Transactions.Select(transaction => transaction.ToEntity()));
+
+            account.ClearDomainEvents();
+
+            return account;
         }
     }
 }

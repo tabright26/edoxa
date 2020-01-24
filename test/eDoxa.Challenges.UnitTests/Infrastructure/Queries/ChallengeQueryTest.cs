@@ -1,11 +1,10 @@
 ﻿// Filename: ChallengeQueryTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Infrastructure.Queries;
@@ -18,26 +17,14 @@ using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper;
 
-using IdentityModel;
-
-using Microsoft.AspNetCore.Http;
-
-using Moq;
-
 using Xunit;
 
 namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 {
     public sealed class ChallengeQueryTest : UnitTest
     {
-        private readonly Mock<IHttpContextAccessor> _mockHttpContextAccessor;
-
-        public ChallengeQueryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
-            testData,
-            testMapper,
-            validator)
+        public ChallengeQueryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
         {
-            _mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
         }
 
         public static TheoryData<Game, ChallengeState> DataQueryParameters
@@ -64,14 +51,11 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             var challenge = challengeFaker.FakeChallenge();
 
-            _mockHttpContextAccessor.Setup(accessor => accessor.HttpContext.User.Claims)
-                .Returns(new[] {new Claim(JwtClaimTypes.Subject, challenge.Participants.First().UserId.ToString())});
-
             using var factory = new InMemoryDbContextFactory<ChallengesDbContext>();
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, TestMapper);
+                var challengeRepository = new ChallengeRepository(context);
 
                 challengeRepository.Create(challenge);
 
@@ -80,10 +64,10 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeQuery = new ChallengeQuery(context, TestMapper, _mockHttpContextAccessor.Object);
+                var challengeQuery = new ChallengeQuery(context);
 
                 //Act
-                var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(game, state);
+                var challenges = await challengeQuery.FetchUserChallengeHistoryAsync(challenge.Participants.First().UserId, game, state);
 
                 //Assert
                 challenges.Single().Should().Be(challenge);
@@ -103,7 +87,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, TestMapper);
+                var challengeRepository = new ChallengeRepository(context);
 
                 challengeRepository.Create(fakeChallenges);
 
@@ -112,7 +96,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeQuery = new ChallengeQuery(context, TestMapper, _mockHttpContextAccessor.Object);
+                var challengeQuery = new ChallengeQuery(context);
 
                 //Act
                 var challenges = await challengeQuery.FetchChallengesAsync(game, state);
@@ -135,7 +119,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, TestMapper);
+                var challengeRepository = new ChallengeRepository(context);
 
                 challengeRepository.Create(challenge);
 
@@ -144,7 +128,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeQuery = new ChallengeQuery(context, TestMapper, _mockHttpContextAccessor.Object);
+                var challengeQuery = new ChallengeQuery(context);
 
                 //Act
                 var challengeAsync = await challengeQuery.FindChallengeAsync(challenge.Id);

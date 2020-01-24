@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -20,8 +18,6 @@ namespace eDoxa.Challenges.Domain.Queries
 {
     public interface IParticipantQuery
     {
-        IMapper Mapper { get; }
-
         Task<IReadOnlyCollection<Participant>> FetchChallengeParticipantsAsync(ChallengeId challengeId);
 
         Task<Participant?> FindParticipantAsync(ParticipantId participantId);

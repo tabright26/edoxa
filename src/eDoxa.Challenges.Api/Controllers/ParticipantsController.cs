@@ -6,7 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
+using AutoMapper;
+
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
@@ -25,11 +26,13 @@ namespace eDoxa.Challenges.Api.Controllers
     [ApiExplorerSettings(GroupName = "Participant")]
     public class ParticipantsController : ControllerBase
     {
-        private readonly IParticipantQuery _query;
+        private readonly IParticipantQuery _participantQuery;
+        private readonly IMapper _mapper;
 
-        public ParticipantsController(IParticipantQuery query)
+        public ParticipantsController(IParticipantQuery participantQuery, IMapper mapper)
         {
-            _query = query;
+            _participantQuery = participantQuery;
+            _mapper = mapper;
         }
 
         [HttpGet("{participantId}")]
@@ -38,14 +41,14 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
         {
-            var response = await _query.FindParticipantResponseAsync(participantId);
+            var participant = await _participantQuery.FindParticipantAsync(participantId);
 
-            if (response == null)
+            if (participant == null)
             {
                 return this.NotFound("Participant not found.");
             }
 
-            return this.Ok(response);
+            return this.Ok(_mapper.Map<ParticipantDto>(participant));
         }
     }
 }

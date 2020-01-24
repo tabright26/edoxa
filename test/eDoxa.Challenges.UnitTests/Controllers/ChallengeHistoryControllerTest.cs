@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeHistoryControllerTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -13,6 +13,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
+using eDoxa.Challenges.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -27,7 +28,10 @@ namespace eDoxa.Challenges.UnitTests.Controllers
 {
     public sealed class ChallengeHistoryControllerTest : UnitTest
     {
-        public ChallengeHistoryControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
+        public ChallengeHistoryControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
+            testData,
+            testMapper,
+            validator)
         {
         }
 
@@ -35,15 +39,21 @@ namespace eDoxa.Challenges.UnitTests.Controllers
         public async Task GetAsync_ShouldBeNoContentResult()
         {
             // Arrange
+            var mockHttpContextAccessor = new MockHttpContextAccessor(); 
+
             var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-            mockChallengeQuery.Setup(queries => queries.FetchUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            mockChallengeQuery.Setup(queries => queries.FetchUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(new Collection<IChallenge>())
                 .Verifiable();
 
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
-
-            var controller = new ChallengeHistoryController(mockChallengeQuery.Object);
+            var controller = new ChallengeHistoryController(mockChallengeQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
             var result = await controller.GetAsync();
@@ -52,29 +62,34 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             result.Should().BeOfType<NoContentResult>();
 
             mockChallengeQuery.Verify(
-                challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
+                challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()),
                 Times.Once);
-
-            mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
         }
 
         [Fact]
         public async Task GetAsync_ShouldBeOkObjectResult()
         {
             // Arrange
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(48392992, Game.LeagueOfLegends);
 
             var challenges = challengeFaker.FakeChallenges(2);
 
             var mockChallengeQuery = new Mock<IChallengeQuery>();
 
-            mockChallengeQuery.Setup(challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()))
+            mockChallengeQuery
+                .Setup(challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()))
                 .ReturnsAsync(challenges)
                 .Verifiable();
 
-            mockChallengeQuery.SetupGet(challengeQuery => challengeQuery.Mapper).Returns(TestMapper).Verifiable();
-
-            var controller = new ChallengeHistoryController(mockChallengeQuery.Object);
+            var controller = new ChallengeHistoryController(mockChallengeQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
             var result = await controller.GetAsync();
@@ -83,10 +98,8 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             result.Should().BeOfType<OkObjectResult>();
 
             mockChallengeQuery.Verify(
-                challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<Game>(), It.IsAny<ChallengeState>()),
+                challengeQuery => challengeQuery.FetchUserChallengeHistoryAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<ChallengeState>()),
                 Times.Once);
-
-            mockChallengeQuery.VerifyGet(challengeQuery => challengeQuery.Mapper, Times.Once);
         }
     }
 }

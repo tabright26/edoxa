@@ -35,6 +35,8 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
                 promotion.Cancel(new DateTimeProvider(promotionModel.CanceledAt.Value));
             }
 
+            promotion.ClearDomainEvents();
+
             return promotion;
         }
     }

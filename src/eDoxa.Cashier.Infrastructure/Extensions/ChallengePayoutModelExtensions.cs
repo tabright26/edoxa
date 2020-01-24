@@ -21,7 +21,11 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
 
             var payout = new Payout(new Buckets(model.Buckets.Select(bucket => bucket.ToEntity())));
 
-            return new Challenge(ChallengeId.FromGuid(model.ChallengeId), entryFee, payout);
+            var challenge = new Challenge(ChallengeId.FromGuid(model.ChallengeId), entryFee, payout);
+
+            challenge.ClearDomainEvents();
+
+            return challenge;
         }
     }
 }

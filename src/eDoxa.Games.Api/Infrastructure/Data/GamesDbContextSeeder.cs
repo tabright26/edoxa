@@ -1,10 +1,8 @@
 ﻿// Filename: GamesDbContextSeeder.cs
-// Date Created: 2019-10-26
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Threading.Tasks;
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Games.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
@@ -16,25 +14,11 @@ namespace eDoxa.Games.Api.Infrastructure.Data
 {
     internal sealed class GamesDbContextSeeder : DbContextSeeder
     {
-        private readonly GamesDbContext _context;
-
-        public GamesDbContextSeeder(GamesDbContext context, IWebHostEnvironment environment, ILogger<GamesDbContextSeeder> logger) : base(environment, logger)
+        public GamesDbContextSeeder(GamesDbContext context, IWebHostEnvironment environment, ILogger<GamesDbContextSeeder> logger) : base(
+            context,
+            environment,
+            logger)
         {
-            _context = context;
-        }
-
-        protected override Task SeedDevelopmentAsync()
-        {
-            //if (!_context.Challenges.Any())
-            //{
-            //    var challenges = FileStorage.Challenges;
-
-            //    _challengeRepository.Create(challenges);
-
-            //    await _challengeRepository.CommitAsync();
-            //}
-
-            return Task.CompletedTask;
         }
     }
 }

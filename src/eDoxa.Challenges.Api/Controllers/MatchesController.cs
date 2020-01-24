@@ -6,7 +6,8 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
+using AutoMapper;
+
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
@@ -26,10 +27,12 @@ namespace eDoxa.Challenges.Api.Controllers
     public class MatchesController : ControllerBase
     {
         private readonly IMatchQuery _matchQuery;
+        private readonly IMapper _mapper;
 
-        public MatchesController(IMatchQuery matchQuery)
+        public MatchesController(IMatchQuery matchQuery, IMapper mapper)
         {
             _matchQuery = matchQuery;
+            _mapper = mapper;
         }
 
         [HttpGet("{matchId}")]
@@ -38,14 +41,14 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> GetByIdAsync(MatchId matchId)
         {
-            var response = await _matchQuery.FindMatchResponseAsync(matchId);
+            var match = await _matchQuery.FindMatchAsync(matchId);
 
-            if (response == null)
+            if (match == null)
             {
                 return this.NotFound("Match not found.");
             }
 
-            return this.Ok(response);
+            return this.Ok(_mapper.Map<MatchDto>(match));
         }
     }
 }

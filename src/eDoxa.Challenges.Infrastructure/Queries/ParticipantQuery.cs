@@ -1,19 +1,18 @@
 ﻿// Filename: ParticipantQuery.cs
-// Date Created: 2019-10-06
+// Date Created: 2020-01-23
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Extensions;
 using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -25,15 +24,12 @@ namespace eDoxa.Challenges.Api.Infrastructure.Queries
 {
     public sealed partial class ParticipantQuery
     {
-        public ParticipantQuery(ChallengesDbContext context, IMapper mapper)
+        public ParticipantQuery(ChallengesDbContext context)
         {
-            Mapper = mapper;
-            Participants = context.Participants.AsNoTracking();
+            Participants = context.Set<ParticipantModel>().AsNoTracking();
         }
 
         private IQueryable<ParticipantModel> Participants { get; }
-
-        public IMapper Mapper { get; }
 
         private async Task<IReadOnlyCollection<ParticipantModel>> FetchChallengeParticipantModelsAsync(Guid challengeId)
         {
@@ -62,16 +58,16 @@ namespace eDoxa.Challenges.Api.Infrastructure.Queries
     {
         public async Task<IReadOnlyCollection<Participant>> FetchChallengeParticipantsAsync(ChallengeId challengeId)
         {
-            var participantModels = await this.FetchChallengeParticipantModelsAsync(challengeId);
+            var participants = await this.FetchChallengeParticipantModelsAsync(challengeId);
 
-            return Mapper.Map<IReadOnlyCollection<Participant>>(participantModels);
+            return participants.Select(participant => participant.ToEntity()).ToList();
         }
 
         public async Task<Participant?> FindParticipantAsync(ParticipantId participantId)
         {
-            var participantModel = await this.FindParticipantModelAsync(participantId);
+            var participant = await this.FindParticipantModelAsync(participantId);
 
-            return Mapper.Map<Participant>(participantModel);
+            return participant.ToEntity();
         }
     }
 }

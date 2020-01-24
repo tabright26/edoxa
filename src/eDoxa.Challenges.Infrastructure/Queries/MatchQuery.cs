@@ -1,19 +1,18 @@
 ﻿// Filename: MatchQuery.cs
-// Date Created: 2019-10-06
+// Date Created: 2020-01-23
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Extensions;
 using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -25,15 +24,12 @@ namespace eDoxa.Challenges.Api.Infrastructure.Queries
 {
     public sealed partial class MatchQuery
     {
-        public MatchQuery(ChallengesDbContext context, IMapper mapper)
+        public MatchQuery(ChallengesDbContext context)
         {
-            Mapper = mapper;
-            Matches = context.Matches.AsNoTracking();
+            Matches = context.Set<MatchModel>().AsNoTracking();
         }
 
         private IQueryable<MatchModel> Matches { get; }
-
-        public IMapper Mapper { get; }
 
         private async Task<IReadOnlyCollection<MatchModel>> FetchParticipantMatchModelsAsync(Guid participantId)
         {
@@ -58,16 +54,16 @@ namespace eDoxa.Challenges.Api.Infrastructure.Queries
     {
         public async Task<IReadOnlyCollection<IMatch>> FetchParticipantMatchesAsync(ParticipantId participantId)
         {
-            var matchModels = await this.FetchParticipantMatchModelsAsync(participantId);
+            var matches = await this.FetchParticipantMatchModelsAsync(participantId);
 
-            return Mapper.Map<IReadOnlyCollection<IMatch>>(matchModels);
+            return matches.Select(match => match.ToEntity()).ToList();
         }
 
         public async Task<IMatch?> FindMatchAsync(MatchId matchId)
         {
-            var matchModel = await this.FindMatchModelAsync(matchId);
+            var match = await this.FindMatchModelAsync(matchId);
 
-            return Mapper.Map<IMatch>(matchModel);
+            return match.ToEntity();
         }
     }
 }

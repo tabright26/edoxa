@@ -4,13 +4,16 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
+using AutoMapper;
+
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
+using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Authorization;
@@ -28,10 +31,12 @@ namespace eDoxa.Challenges.Api.Controllers
     public sealed class ChallengeHistoryController : ControllerBase
     {
         private readonly IChallengeQuery _challengeQuery;
+        private readonly IMapper _mapper;
 
-        public ChallengeHistoryController(IChallengeQuery challengeQuery)
+        public ChallengeHistoryController(IChallengeQuery challengeQuery, IMapper mapper)
         {
             _challengeQuery = challengeQuery;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -40,14 +45,16 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(Game? game = null, ChallengeState? state = null)
         {
-            var responses = await _challengeQuery.FetchUserChallengeHistoryResponsesAsync(game, state);
+            var userId = HttpContext.GetUserId();
 
-            if (!responses.Any())
+            var challenges = await _challengeQuery.FetchUserChallengeHistoryAsync(userId, game, state);
+
+            if (!challenges.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(responses);
+            return this.Ok(_mapper.Map<IReadOnlyCollection<ChallengeDto>>(challenges));
         }
     }
 }

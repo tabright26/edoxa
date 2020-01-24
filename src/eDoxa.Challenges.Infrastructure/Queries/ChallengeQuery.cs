@@ -1,45 +1,36 @@
 ﻿// Filename: ChallengeQuery.cs
-// Date Created: 2019-10-06
+// Date Created: 2020-01-23
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Extensions;
 using eDoxa.Challenges.Infrastructure.Models;
-using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using LinqKit;
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Queries
 {
     public sealed partial class ChallengeQuery
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public ChallengeQuery(ChallengesDbContext challengesDbContext, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+        public ChallengeQuery(ChallengesDbContext context)
         {
-            Mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
-            Challenges = challengesDbContext.Challenges.AsNoTracking();
+            Challenges = context.Set<ChallengeModel>().AsNoTracking();
         }
 
         private IQueryable<ChallengeModel> Challenges { get; }
-
-        public IMapper Mapper { get; }
 
         private async Task<IReadOnlyCollection<ChallengeModel>> FetchUserChallengeHistoryAsync(Guid userId, int? game = null, int? state = null)
         {
@@ -81,30 +72,23 @@ namespace eDoxa.Challenges.Api.Infrastructure.Queries
     {
         public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, Game? game = null, ChallengeState? state = null)
         {
-            var challengeModels = await this.FetchUserChallengeHistoryAsync(userId, game?.Value, state?.Value);
+            var challenges = await this.FetchUserChallengeHistoryAsync(userId, game?.Value, state?.Value);
 
-            return Mapper.Map<IReadOnlyCollection<IChallenge>>(challengeModels);
-        }
-
-        public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(Game? game = null, ChallengeState? state = null)
-        {
-            var userId = _httpContextAccessor.GetUserId();
-
-            return await this.FetchUserChallengeHistoryAsync(userId, game, state);
+            return challenges.Select(challenge => challenge.ToEntity()).ToList();
         }
 
         public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null)
         {
-            var challengeModels = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);
+            var challenges = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);
 
-            return Mapper.Map<IReadOnlyCollection<IChallenge>>(challengeModels);
+            return challenges.Select(challenge => challenge.ToEntity()).ToList();
         }
 
         public async Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId)
         {
-            var challengeModel = await this.FindChallengeModelAsync(challengeId);
+            var challenge = await this.FindChallengeModelAsync(challengeId);
 
-            return Mapper.Map<IChallenge>(challengeModel);
+            return challenge?.ToEntity();
         }
     }
 }

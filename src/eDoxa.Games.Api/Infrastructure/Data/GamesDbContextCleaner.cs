@@ -1,38 +1,34 @@
 ﻿// Filename: GamesDbContextCleaner.cs
-// Date Created: 2019-10-26
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Games.Api.Infrastructure.Data
 {
-    internal sealed class GamesDbContextCleaner : IDbContextCleaner
+    internal sealed class GamesDbContextCleaner : DbContextCleaner
     {
-        private readonly GamesDbContext _context;
-        private readonly IWebHostEnvironment _environment;
-
-        public GamesDbContextCleaner(GamesDbContext context, IWebHostEnvironment environment)
+        public GamesDbContextCleaner(GamesDbContext context, IWebHostEnvironment environment, ILogger<GamesDbContextCleaner> logger) : base(
+            context,
+            environment,
+            logger)
         {
-            _context = context;
-            _environment = environment;
+            Credentials = context.Set<Credential>();
         }
 
-        public async Task CleanupAsync()
-        {
-            if (!_environment.IsProduction())
-            {
-                //_context.Challenges.RemoveRange(_context.Challenges);
+        private DbSet<Credential> Credentials { get; }
 
-                await _context.SaveChangesAsync();
-            }
+        protected override void Cleanup()
+        {
+            Credentials.RemoveRange(Credentials);
         }
     }
 }

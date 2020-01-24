@@ -101,7 +101,7 @@ namespace eDoxa.Cashier.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(CashierDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 

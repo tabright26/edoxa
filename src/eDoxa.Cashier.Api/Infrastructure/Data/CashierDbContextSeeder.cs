@@ -12,8 +12,8 @@ using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.Infrastructure.Extensions;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
@@ -29,33 +29,27 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 {
     internal sealed class CashierDbContextSeeder : DbContextSeeder
     {
-        private readonly CashierDbContext _context;
-        private readonly IAccountRepository _accountRepository;
-        private readonly IChallengeRepository _challengeRepository;
         private readonly IChallengePayoutFactory _challengePayoutFactory;
 
         public CashierDbContextSeeder(
             CashierDbContext context,
-            IAccountRepository accountRepository,
-            IChallengeRepository challengeRepository,
+            IChallengePayoutFactory challengePayoutFactory,
             IWebHostEnvironment environment,
-            ILogger<CashierDbContextSeeder> logger,
-            IChallengePayoutFactory challengePayoutFactory
-        ) : base(environment, logger)
+            ILogger<CashierDbContextSeeder> logger
+        ) : base(context, environment, logger)
         {
-            _accountRepository = accountRepository;
-            _challengeRepository = challengeRepository;
             _challengePayoutFactory = challengePayoutFactory;
-            _context = context;
+            Accounts = context.Set<AccountModel>();
+            ChallengePayouts = context.Set<ChallengePayoutModel>();
         }
 
-        private DbSet<AccountModel> Accounts => _context.Set<AccountModel>();
+        private DbSet<AccountModel> Accounts { get; }
 
-        private DbSet<ChallengePayoutModel> ChallengePayouts => _context.Set<ChallengePayoutModel>();
+        private DbSet<ChallengePayoutModel> ChallengePayouts { get; }
 
         protected override async Task SeedDevelopmentAsync()
         {
-            if (!Accounts.Any())
+            if (!await Accounts.AnyAsync())
             {
                 var adminAccount = new Account(UserId.FromGuid(AppAdmin.Id));
 
@@ -117,17 +111,17 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                         tokenAccount.Charge(Token.OneHundredThousand).MarkAsSucceeded(); // 200000
 
-                        _accountRepository.Create(adminAccount);
+                        Accounts.Add(adminAccount.ToModel());
                     }
                     else
                     {
                         var account = new Account(userId);
 
-                        _accountRepository.Create(account);
+                        Accounts.Add(account.ToModel());
                     }
                 }
 
-                await _accountRepository.CommitAsync();
+                await this.CommitAsync();
 
                 Logger.LogInformation("The user's account being populated.");
             }
@@ -136,11 +130,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                 Logger.LogInformation("The user's account already populated.");
             }
 
-            if (!ChallengePayouts.Any())
+            if (!await ChallengePayouts.AnyAsync())
             {
-                _challengeRepository.Create(Challenges);
+                ChallengePayouts.AddRange(Challenges.Select(challengePayout => challengePayout.ToModel()));
 
-                await _challengeRepository.CommitAsync();
+                await this.CommitAsync();
 
                 Logger.LogInformation("The challenge's being populated.");
             }
@@ -152,7 +146,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
         protected override async Task SeedProductionAsync()
         {
-            if (!Accounts.Any(account => account.Id == UserId.FromGuid(AppAdmin.Id)))
+            if (!await Accounts.AnyAsync(account => account.Id == UserId.FromGuid(AppAdmin.Id)))
             {
                 var account = new Account(UserId.FromGuid(AppAdmin.Id));
 
@@ -164,9 +158,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
                 tokenAccount.Deposit(Token.FiveMillions).MarkAsSucceeded();
 
-                _accountRepository.Create(account);
+                Accounts.Add(account.ToModel());
 
-                await _accountRepository.CommitAsync();
+                await this.CommitAsync();
 
                 Logger.LogInformation("The admin account being populated.");
             }
@@ -209,12 +203,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
                 new Challenge(ChallengeId.Parse("7d96b314-8d5b-4393-9257-9c0e2cf7c0f1"), threeDollars, threeDollarsForThreeEntries)
             };
 
-            foreach (var challengePayout in challengePayouts.Where(challengePayout => ChallengePayouts.All(x => x.ChallengeId != challengePayout.Id)))
-            {
-                _challengeRepository.Create(challengePayout);
-            }
+            ChallengePayouts.AddRange(
+                challengePayouts.Where(challengePayout => ChallengePayouts.All(x => x.ChallengeId != challengePayout.Id))
+                    .Select(challengePayout => challengePayout.ToModel()));
 
-            await _challengeRepository.CommitAsync();
+            await this.CommitAsync();
         }
     }
 }

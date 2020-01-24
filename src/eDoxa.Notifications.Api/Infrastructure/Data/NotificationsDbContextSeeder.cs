@@ -2,43 +2,42 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Notifications.Api.Infrastructure.Data.Storage;
+using eDoxa.Notifications.Domain.AggregateModels.UserAggregate;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Notifications.Api.Infrastructure.Data
 {
     internal sealed class NotificationsDbContextSeeder : DbContextSeeder
     {
-        private readonly NotificationsDbContext _context;
-
         public NotificationsDbContextSeeder(
             NotificationsDbContext context,
             IWebHostEnvironment environment,
             ILogger<NotificationsDbContextSeeder> logger
-        ) : base(environment, logger)
+        ) : base(context, environment, logger)
         {
-            _context = context;
+            Users = context.Set<User>();
         }
+
+        private DbSet<User> Users { get; }
 
         protected override async Task SeedDevelopmentAsync()
         {
-            if (!_context.Users.Any())
+            if (!Users.Any())
             {
-                foreach (var user in FileStorage.Users)
-                {
-                    _context.Users.Add(user);
-                }
+                Users.AddRange(FileStorage.Users);
 
-                await _context.SaveChangesAsync();
+                await this.CommitAsync();
 
                 Logger.LogInformation("The users being populated.");
             }

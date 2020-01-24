@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, TestMapper);
+                var challengeRepository = new ChallengeRepository(context);
 
                 challengeRepository.Create(challenge);
 
@@ -65,7 +65,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var participantQuery = new ParticipantQuery(context, TestMapper);
+                var participantQuery = new ParticipantQuery(context);
 
                 //Act
                 var participants = await participantQuery.FetchChallengeParticipantsAsync(challenge.Id);
@@ -88,7 +88,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, TestMapper);
+                var challengeRepository = new ChallengeRepository(context);
 
                 challengeRepository.Create(challenge);
 
@@ -97,7 +97,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var participantQuery = new ParticipantQuery(context, TestMapper);
+                var participantQuery = new ParticipantQuery(context);
 
                 foreach (var participant in challenge.Participants)
                 {

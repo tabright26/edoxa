@@ -32,33 +32,6 @@ namespace eDoxa.Challenges.UnitTests.Controllers
         {
         }
 
-        //[Fact]
-        //public async Task GetAsync_ShouldBeBadRequestObjectResult()
-        //{
-        //    // Arrange
-        //    var mockMatchQuery = new Mock<IMatchQuery>();
-
-        //    mockMatchQuery.Setup(matchQuery => matchQuery.FetchParticipantMatchesAsync(It.IsAny<ParticipantId>()))
-        //        .ReturnsAsync(new Collection<IMatch>())
-        //        .Verifiable();
-
-        //    mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
-
-        //    var controller = new ParticipantMatchesController(mockMatchQuery.Object);
-
-        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
-
-        //    // Act
-        //    var result = await controller.GetAsync(new ParticipantId());
-
-        //    // Assert
-        //    result.Should().BeOfType<BadRequestObjectResult>();
-
-        //    mockMatchQuery.Verify(matchQuery => matchQuery.FetchParticipantMatchesAsync(It.IsAny<ParticipantId>()), Times.Never);
-
-        //    mockMatchQuery.VerifyGet(matchQuery => matchQuery.Mapper, Times.Never);
-        //}
-
         [Fact]
         public async Task GetAsync_ShouldBeNoContentResult()
         {
@@ -69,9 +42,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
                 .ReturnsAsync(new Collection<IMatch>())
                 .Verifiable();
 
-            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
-
-            var controller = new ParticipantMatchesController(mockMatchQuery.Object);
+            var controller = new ParticipantMatchesController(mockMatchQuery.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync(new ParticipantId());
@@ -80,8 +51,6 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             result.Should().BeOfType<NoContentResult>();
 
             mockMatchQuery.Verify(matchQuery => matchQuery.FetchParticipantMatchesAsync(It.IsAny<ParticipantId>()), Times.Once);
-
-            mockMatchQuery.VerifyGet(matchQuery => matchQuery.Mapper, Times.Once);
         }
 
         [Fact]
@@ -102,9 +71,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
 
             mockMatchQuery.Setup(matchQuery => matchQuery.FetchParticipantMatchesAsync(It.IsAny<ParticipantId>())).ReturnsAsync(matches).Verifiable();
 
-            mockMatchQuery.SetupGet(matchQuery => matchQuery.Mapper).Returns(TestMapper).Verifiable();
-
-            var controller = new ParticipantMatchesController(mockMatchQuery.Object);
+            var controller = new ParticipantMatchesController(mockMatchQuery.Object, TestMapper);
 
             // Act
             var result = await controller.GetAsync(new ParticipantId());
@@ -113,8 +80,6 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             result.Should().BeOfType<OkObjectResult>();
 
             mockMatchQuery.Verify(matchQuery => matchQuery.FetchParticipantMatchesAsync(It.IsAny<ParticipantId>()), Times.Once);
-
-            mockMatchQuery.VerifyGet(matchQuery => matchQuery.Mapper, Times.Once);
         }
     }
 }

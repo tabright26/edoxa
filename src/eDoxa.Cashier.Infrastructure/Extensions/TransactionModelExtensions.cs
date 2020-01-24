@@ -38,6 +38,8 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
                 transaction.MarkAsFailed();
             }
 
+            transaction.ClearDomainEvents();
+
             return transaction;
         }
     }

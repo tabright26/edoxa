@@ -4,10 +4,12 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
+using AutoMapper;
+
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
@@ -27,10 +29,12 @@ namespace eDoxa.Challenges.Api.Controllers
     public class ParticipantMatchesController : ControllerBase
     {
         private readonly IMatchQuery _matchQuery;
+        private readonly IMapper _mapper;
 
-        public ParticipantMatchesController(IMatchQuery matchQuery)
+        public ParticipantMatchesController(IMatchQuery matchQuery, IMapper mapper)
         {
             _matchQuery = matchQuery;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -39,14 +43,14 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> GetAsync(ParticipantId participantId)
         {
-            var responses = await _matchQuery.FetchParticipantMatchResponsesAsync(participantId);
+            var matches = await _matchQuery.FetchParticipantMatchesAsync(participantId);
 
-            if (!responses.Any())
+            if (!matches.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(responses);
+            return this.Ok(_mapper.Map<IReadOnlyCollection<MatchDto>>(matches));
         }
     }
 }

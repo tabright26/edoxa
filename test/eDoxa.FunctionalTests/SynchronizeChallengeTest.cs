@@ -309,7 +309,7 @@ namespace eDoxa.FunctionalTests
                 Times.Exactly(4));
         }
 
-        [Fact]
+        [Fact(Skip = "League of Legends API")]
         public async Task Success2()
         {
             // Arrange
