@@ -10,10 +10,10 @@ export const Submit: FunctionComponent<any> = ({
   ...attributes
 }) => (
   <Button
+    {...attributes}
     className={className}
     style={style}
     color={color}
-    {...attributes}
     type={type}
   >
     {children}

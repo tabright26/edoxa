@@ -2,7 +2,7 @@ import React, { FunctionComponent } from "react";
 import { connect, MapStateToProps } from "react-redux";
 import { COUNTRY_CLAIM_TYPE, SUB_CLAIM_TYPE } from "utils/oidc/types";
 import { RootState } from "store/types";
-import { UserId, GameOptions } from "types";
+import { UserId, Game } from "types";
 import { camelCase } from "change-case";
 
 export interface HocUserProfileUserIdStateProps {
@@ -37,7 +37,7 @@ export const withUserProfileGameIsAuthenticated = (
   WrappedComponent: FunctionComponent
 ) => {
   interface OwnProps {
-    gameOptions: GameOptions;
+    readonly game: Game;
   }
 
   const EnhancedComponent: FunctionComponent<HocUserProfileGameIsAuthenticatedStateProps> = props => {
@@ -51,7 +51,7 @@ export const withUserProfileGameIsAuthenticated = (
   > = (state, ownProps) => {
     return {
       isAuthenticated: !!state.oidc.user.profile[
-        `games:${camelCase(ownProps.gameOptions.name)}`
+        `games:${camelCase(ownProps.game)}`
       ]
     };
   };

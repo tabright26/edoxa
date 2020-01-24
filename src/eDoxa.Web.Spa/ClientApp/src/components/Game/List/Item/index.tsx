@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from "react";
 import { CardImg, CardImgOverlay, Card } from "reactstrap";
-import { GameOptions } from "types";
-import { connect, MapDispatchToProps } from "react-redux";
+import { GameOptions, Game } from "types";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import {
   LINK_GAME_CREDENTIAL_MODAL,
   UNLINK_GAME_CREDENTIAL_MODAL
@@ -12,6 +12,7 @@ import {
   withUserProfileGameIsAuthenticated,
   HocUserProfileGameIsAuthenticatedStateProps
 } from "utils/oidc/containers";
+import { RootState } from "store/types";
 
 const style: React.CSSProperties = {
   filter: "brightness(50%)",
@@ -22,12 +23,18 @@ interface OwnProps {
   gameOptions: GameOptions;
 }
 
+type StateProps = {
+  game: Game;
+};
+
 interface DispatchProps {
   showLinkGameAccountCredentialModal: () => void;
   showUnlinkGameAccountCredentialModal: () => void;
 }
 
-type InnerProps = DispatchProps & HocUserProfileGameIsAuthenticatedStateProps;
+type InnerProps = StateProps &
+  DispatchProps &
+  HocUserProfileGameIsAuthenticatedStateProps;
 
 type OutterProps = OwnProps;
 
@@ -80,6 +87,15 @@ const Item: FunctionComponent<Props> = ({
   );
 };
 
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
+  _state,
+  ownProps
+) => {
+  return {
+    game: ownProps.gameOptions.name
+  };
+};
+
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
   dispatch,
   ownProps
@@ -99,8 +115,8 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
 };
 
 const enhance = compose<InnerProps, OutterProps>(
-  withUserProfileGameIsAuthenticated,
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
+  withUserProfileGameIsAuthenticated
 );
 
 export default enhance(Item);
