@@ -26,7 +26,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
         delay={{ show: 0, hide: 250 }}
         toggle={() => setOpen(!open)}
       >
-        <PopoverHeader>TOKEN</PopoverHeader>
+        <PopoverHeader>TOKEN BALANCE</PopoverHeader>
         <PopoverBody>
           <dl className="row mb-0">
             <dt className="col-6">Available</dt>

@@ -10,13 +10,13 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const BuyButton: FunctionComponent<Props> = ({ hasDefaultPaymentMethod }) => (
+const Buy: FunctionComponent<Props> = ({ hasDefaultPaymentMethod }) => (
   <UserTransactionButton.Create
     transactionType={TRANSACTION_TYPE_DEPOSIT}
     currency={CURRENCY_TOKEN}
     disabled={!hasDefaultPaymentMethod}
   >
-    Buy Token
+    Buy
   </UserTransactionButton.Create>
 );
 
@@ -24,4 +24,4 @@ const enhance = compose<InnerProps, OutterProps>(
   withStripeCustomerHasDefaultPaymentMethod
 );
 
-export default enhance(BuyButton);
+export default enhance(Buy);
