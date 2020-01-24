@@ -3,9 +3,17 @@ import { CardTitle, Row, Col, Badge, Progress } from "reactstrap";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import { ChallengeId, Game, ChallengeEntryFee, ChallengeState } from "types";
+import {
+  ChallengeId,
+  Game,
+  ChallengeEntryFee,
+  ChallengeState,
+  ChallengePayoutPrizePool
+} from "types";
 import { compose } from "recompose";
 import Format from "components/Shared/Format";
+import moment from "moment";
+import Moment from "react-moment";
 
 type Params = {
   readonly challengeId?: ChallengeId;
@@ -19,8 +27,9 @@ type StateProps = {
   readonly state: ChallengeState;
   readonly bestOf: number;
   readonly entries: number;
+  readonly prizePool: ChallengePayoutPrizePool;
   readonly entryFee: ChallengeEntryFee;
-  readonly payoutEntries: number;
+  readonly duration: number;
   readonly participantCount: number;
 };
 
@@ -37,7 +46,8 @@ const Summary: FunctionComponent<Props> = ({
   bestOf,
   entries,
   entryFee,
-  payoutEntries,
+  prizePool,
+  duration,
   participantCount
 }) => (
   <Row>
@@ -70,11 +80,17 @@ const Summary: FunctionComponent<Props> = ({
                 {state}
               </Badge>
             </dt>
+            <dd className="col-5 text-muted">Duration</dd>
+            <dt className="col-7 text-right">
+              <Badge color="dark" pill className="w-100">
+                <span>{moment.duration(duration, "seconds").humanize()}</span>
+              </Badge>
+            </dt>
           </dl>
         </Col>
         <Col>
           <dl className="row mb-0">
-            <dd className="col-5 text-muted">Entries</dd>
+            <dd className="col-5 text-muted">Participants</dd>
             <dt className="col-7 text-right">
               <Progress
                 color="dark"
@@ -85,10 +101,14 @@ const Summary: FunctionComponent<Props> = ({
                 {`${participantCount}/${entries}`}
               </Progress>
             </dt>
-            <dd className="col-5 text-muted">Payout entries</dd>
+            <dd className="col-5 text-muted">Prize pool</dd>
             <dt className="col-7 text-right">
               <Badge color="dark" pill className="w-100">
-                {payoutEntries}
+                <Format.Currency
+                  alignment="center"
+                  currency={prizePool.currency}
+                  amount={prizePool.amount}
+                />
               </Badge>
             </dt>
             <dd className="col-5 text-muted">Best of</dd>
@@ -124,6 +144,8 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     entries: challenge.entries,
     entryFee: challenge.payout.entryFee,
     payoutEntries: challenge.payoutEntries,
+    prizePool: challenge.payout.prizePool,
+    duration: challenge.timeline.endedAt - challenge.timeline.startedAt,
     participantCount: challenge.participants.length
   };
 };
