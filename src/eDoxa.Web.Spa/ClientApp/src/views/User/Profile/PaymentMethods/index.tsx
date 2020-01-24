@@ -5,8 +5,8 @@ import PaymentMethodCardPanel from "components/Payment/Stripe/PaymentMethod/Card
 const PaymentMethods: FunctionComponent = () => (
   <>
     <h5 className="text-uppercase my-4">PAYMENT METHODS</h5>
-    <BankAccountPanel className="my-4" />
     <PaymentMethodCardPanel className="my-4" />
+    <BankAccountPanel className="my-4" />
   </>
 );
 
