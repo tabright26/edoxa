@@ -128,6 +128,11 @@ export class AuthorizeService {
   async signOut(state) {
     await this.ensureUserManagerInitialized();
     try {
+      if (this._popUpDisabled) {
+        throw new Error(
+          "Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+        );
+      }
       await this.userManager.signoutPopup(
         this.createArguments(LoginMode.PopUp)
       );

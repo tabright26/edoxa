@@ -13,7 +13,6 @@ import {
 import { compose } from "recompose";
 import Format from "components/Shared/Format";
 import moment from "moment";
-import Moment from "react-moment";
 
 type Params = {
   readonly challengeId?: ChallengeId;
