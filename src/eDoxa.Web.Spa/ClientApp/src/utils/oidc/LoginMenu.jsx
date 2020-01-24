@@ -61,15 +61,25 @@ class LoginMenu extends Component {
 
   authenticatedView(user, profilePath, logoutPath) {
     return (
-      <Nav className="ml-auto mr-3" navbar>
+      <Nav className="bg-gray-900 px-3 h-100" navbar>
         <UncontrolledDropdown nav direction="down">
-          <DropdownToggle nav caret>
+          <DropdownToggle nav caret className="text-center">
             {user[DOXATAG_CLAIM_TYPE] || user[EMAIL_CLAIM_TYPE]}
           </DropdownToggle>
-          <DropdownMenu right style={{ right: 0 }}>
+          <DropdownMenu
+            right
+            style={{
+              width: 301,
+              top: 35,
+              right: -16,
+              borderBottomRightRadius: 0,
+              borderTopRightRadius: 0,
+              borderTopLeftRadius: 0
+            }}
+          >
             <Form inline>
               <LinkContainer to={profilePath}>
-                <Button block size="sm" color="primary" className="m-3">
+                <Button block color="primary" className="m-3">
                   Profile
                 </Button>
               </LinkContainer>

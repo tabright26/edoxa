@@ -18,13 +18,12 @@ import Routes from "utils/router/components/Routes";
 import { Loading } from "components/Shared/Loading";
 
 const Aside = React.lazy(() => import("components/App/Aside"));
-const AppBreadcrumb = React.lazy(() => import("components/App/Breadcrumb"));
 const Footer = React.lazy(() => import("components/App/Footer"));
 const Header = React.lazy(() => import("components/App/Header"));
 
 export const Default: FunctionComponent = () => {
   return (
-    <div className="app">
+    <div className="app" style={{ marginTop: -1 }}>
       <AppHeader fixed>
         <Suspense fallback={<Loading />}>
           <Header />
@@ -41,7 +40,6 @@ export const Default: FunctionComponent = () => {
           <AppSidebarMinimizer />
         </AppSidebar>
         <main className="main">
-          <AppBreadcrumb />
           <Container fluid>
             <Suspense fallback={<Loading />}>
               <Routes />

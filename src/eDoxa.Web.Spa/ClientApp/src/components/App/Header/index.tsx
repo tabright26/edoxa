@@ -9,6 +9,7 @@ import LoginMenu from "utils/oidc/LoginMenu";
 import logo from "assets/img/brand/logo.png";
 import sygnet from "assets/img/brand/sygnet.png";
 import { getHomePath } from "utils/coreui/constants";
+import AppNav from "components/App/Nav";
 
 const Header: FunctionComponent = () => {
   return (
@@ -21,18 +22,7 @@ const Header: FunctionComponent = () => {
         />
       </LinkContainer>
       <AppSidebarToggler className="d-md-down-none" display="lg" hidden />
-      {/* <Nav className="d-md-down-none" navbar>
-        <NavItem className="px-3">
-          <LinkContainer to="/marketplace">
-            <NavLink className="nav-link">Marketplace</NavLink>
-          </LinkContainer>
-        </NavItem>
-        <NavItem className="px-3">
-          <LinkContainer to="/news-feeds">
-            <NavLink className="nav-link">News Feeds</NavLink>
-          </LinkContainer>
-        </NavItem>
-      </Nav> */}
+      <AppNav />
       <LoginMenu />
       <AppAsideToggler className="d-md-down-none" hidden />
     </Fragment>
