@@ -12,7 +12,7 @@ import {
   AppSidebarNav
 } from "@coreui/react";
 // sidebar nav config
-import navigation from "utils/coreui/_nav";
+import navConfig from "utils/coreui/_nav";
 // routes config
 import Routes from "utils/router/components/Routes";
 import { Loading } from "components/Shared/Loading";
@@ -34,7 +34,7 @@ export const Default: FunctionComponent = () => {
           <AppSidebarHeader />
           <AppSidebarForm />
           <Suspense fallback={<Loading />}>
-            <AppSidebarNav navConfig={navigation} />
+            <AppSidebarNav navConfig={navConfig} />
           </Suspense>
           <AppSidebarFooter />
           <AppSidebarMinimizer />

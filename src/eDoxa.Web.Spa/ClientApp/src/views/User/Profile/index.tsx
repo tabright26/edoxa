@@ -55,6 +55,16 @@ const Profile: FunctionComponent = () => (
       </Card>
       <Card>
         <CardHeader>
+          <strong>Arena</strong>
+        </CardHeader>
+        <ListGroup flush>
+          <LinkContainer to={getUserProfileChallengeHistoryPath()}>
+            <ListGroupItem>Challenge History</ListGroupItem>
+          </LinkContainer>
+        </ListGroup>
+      </Card>
+      <Card>
+        <CardHeader>
           <strong>Cashier</strong>
         </CardHeader>
         <ListGroup flush>
@@ -76,16 +86,6 @@ const Profile: FunctionComponent = () => (
         <ListGroup flush>
           <LinkContainer to={getUserProfileGamesPath()}>
             <ListGroupItem>Games</ListGroupItem>
-          </LinkContainer>
-        </ListGroup>
-      </Card>
-      <Card>
-        <CardHeader>
-          <strong>Arena</strong>
-        </CardHeader>
-        <ListGroup flush>
-          <LinkContainer to={getUserProfileChallengeHistoryPath()}>
-            <ListGroupItem>Challenge History</ListGroupItem>
           </LinkContainer>
         </ListGroup>
       </Card>

@@ -12,6 +12,13 @@ import { ApplicationPaths } from "./ApiAuthorizationConstants";
 import { LinkContainer } from "react-router-bootstrap";
 import authorizeService from "utils/oidc/AuthorizeService";
 import { DOXATAG_CLAIM_TYPE, EMAIL_CLAIM_TYPE } from "./types";
+import {
+  getUserProfileTransactionHistoryPath,
+  getUserProfileChallengeHistoryPath,
+  getUserProfilePaymentMethodsPath,
+  getUserProfileGamesPath,
+  getUserProfilePromotionalCodePath
+} from "utils/coreui/constants";
 
 class LoginMenu extends Component {
   constructor(props) {
@@ -84,6 +91,30 @@ class LoginMenu extends Component {
                 </Button>
               </LinkContainer>
             </Form>
+            <DropdownItem
+              className="border border-left-0 border-right-0"
+              header
+            >
+              Arena
+            </DropdownItem>
+            <LinkContainer to={getUserProfileChallengeHistoryPath()}>
+              <DropdownItem>Challenge History</DropdownItem>
+            </LinkContainer>
+            <DropdownItem header>Cashier</DropdownItem>
+            <LinkContainer to={getUserProfilePaymentMethodsPath()}>
+              <DropdownItem>Payment Methods</DropdownItem>
+            </LinkContainer>
+            <LinkContainer to={getUserProfileTransactionHistoryPath()}>
+              <DropdownItem>Transaction History</DropdownItem>
+            </LinkContainer>
+            <LinkContainer to={getUserProfilePromotionalCodePath()}>
+              <DropdownItem>Promotional Code</DropdownItem>
+            </LinkContainer>
+            <DropdownItem header>Connections</DropdownItem>
+            <LinkContainer to={getUserProfileGamesPath()}>
+              <DropdownItem>Games</DropdownItem>
+            </LinkContainer>
+            <DropdownItem header />
             {process.env.NODE_ENV !== "production" && (
               <DropdownItem
                 className="border-top"

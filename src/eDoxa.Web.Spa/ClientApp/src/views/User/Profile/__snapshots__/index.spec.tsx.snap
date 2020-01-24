@@ -50,6 +50,28 @@ exports[`renders without crashing 1`] = `
         className="card-header"
       >
         <strong>
+          Arena
+        </strong>
+      </div>
+      <ul
+        className="list-group list-group-flush"
+      >
+        <li
+          className="list-group-item"
+          href="/user/profile/challenge-history"
+          onClick={[Function]}
+        >
+          Challenge History
+        </li>
+      </ul>
+    </div>
+    <div
+      className="card"
+    >
+      <div
+        className="card-header"
+      >
+        <strong>
           Cashier
         </strong>
       </div>
@@ -98,28 +120,6 @@ exports[`renders without crashing 1`] = `
           onClick={[Function]}
         >
           Games
-        </li>
-      </ul>
-    </div>
-    <div
-      className="card"
-    >
-      <div
-        className="card-header"
-      >
-        <strong>
-          Arena
-        </strong>
-      </div>
-      <ul
-        className="list-group list-group-flush"
-      >
-        <li
-          className="list-group-item"
-          href="/user/profile/challenge-history"
-          onClick={[Function]}
-        >
-          Challenge History
         </li>
       </ul>
     </div>
