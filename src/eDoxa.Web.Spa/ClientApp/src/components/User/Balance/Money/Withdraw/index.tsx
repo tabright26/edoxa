@@ -11,16 +11,16 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const WithdrawalButton: FunctionComponent<Props> = ({ account: { data } }) => (
+const Withdraw: FunctionComponent<Props> = ({ account: { data } }) => (
   <UserTransactionButton.Create
     transactionType={TRANSACTION_TYPE_WITHDRAWAL}
     currency={CURRENCY_MONEY}
     disabled={data === null ? true : !data.enabled}
   >
-    Withdrawal Money
+    Withdraw
   </UserTransactionButton.Create>
 );
 
 const enhance = compose<InnerProps, OutterProps>(withStripeAccount);
 
-export default enhance(WithdrawalButton);
+export default enhance(Withdraw);

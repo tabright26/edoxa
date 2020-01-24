@@ -8,6 +8,6 @@ exports[`renders without crashing 1`] = `
   onClick={[Function]}
   type="button"
 >
-  Deposit Money
+  Deposit
 </button>
 `;

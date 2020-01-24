@@ -17,10 +17,10 @@ interface OutterProps {
 
 type Props = InnerProps & OutterProps;
 
-const UserAccountBalance: FunctionComponent<Props> = ({ currency, balance: { data, error, loading }, attribute, alignment = "justify" }) => (
+const Balance: FunctionComponent<Props> = ({ currency, balance: { data, error, loading }, attribute, alignment = "justify" }) => (
   <Format.Currency currency={currency} amount={data[attribute]} alignment={alignment} />
 );
 
 const enhance = compose<InnerProps, OutterProps>(withUserAccountBalance);
 
-export default enhance(UserAccountBalance);
+export default enhance(Balance);

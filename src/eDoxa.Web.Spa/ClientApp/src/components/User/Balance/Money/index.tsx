@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import Balance from "components/User/Balance";
 import DepositMoney from "./Deposit";
-import WithdrawalMoney from "./Withdrawal";
+import WithdrawMoney from "./Withdraw";
 import { CURRENCY_MONEY } from "types";
 
 const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
@@ -27,7 +27,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
         delay={{ show: 0, hide: 250 }}
         toggle={() => setOpen(!open)}
       >
-        <PopoverHeader>MONEY</PopoverHeader>
+        <PopoverHeader className="text-uppercase">MONEY BALANCE</PopoverHeader>
         <PopoverBody>
           <dl className="row mb-0">
             <dt className="col-6">Available</dt>
@@ -48,7 +48,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
             </dd>
           </dl>
           <DepositMoney />
-          <WithdrawalMoney />
+          <WithdrawMoney />
         </PopoverBody>
       </Popover>
     </div>
