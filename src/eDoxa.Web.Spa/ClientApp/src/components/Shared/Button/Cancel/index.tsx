@@ -4,14 +4,15 @@ import { Button } from "reactstrap";
 export const Cancel: FunctionComponent<any> = ({
   className,
   onClick,
-  width = "75px"
+  width = "75px",
+  size = "sm"
 }) => (
   <Button
     className={className}
     style={{ width }}
     color="primary"
     outline
-    size="sm"
+    size={size}
     type="button"
     onClick={onClick}
   >

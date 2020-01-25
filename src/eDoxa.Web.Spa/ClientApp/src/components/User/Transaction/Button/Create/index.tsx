@@ -13,6 +13,7 @@ interface DispatchProps {
 interface OwnProps {
   currency: Currency;
   transactionType: TransactionType;
+  title: string;
 }
 
 type InnerProps = DispatchProps;
@@ -48,7 +49,8 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
       dispatch(
         show(CREATE_USER_TRANSACTION_MODAL, {
           currency: ownProps.currency,
-          transactionType: ownProps.transactionType
+          transactionType: ownProps.transactionType,
+          title: ownProps.title
         })
       )
   };

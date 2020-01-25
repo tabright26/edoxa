@@ -25,7 +25,7 @@ type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({
+const Create: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
@@ -41,8 +41,8 @@ const CustomForm: FunctionComponent<Props> = ({
     />
     <hr className="border-secondary" />
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel onClick={() => handleCancel()} />
+      <Button.Submit className="mr-2">Confirm</Button.Submit>
+      <Button.Cancel size={null} onClick={() => handleCancel()} />
     </FormGroup>
   </Form>
 );
@@ -64,4 +64,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Create);

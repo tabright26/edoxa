@@ -15,15 +15,17 @@ type InnerProps = InjectedProps &
   DispatchProp & {
     currency: Currency;
     transactionType: TransactionType;
+    title: string;
   };
 
 type Props = InnerProps & OutterProps;
 
-const CustomModal: FunctionComponent<Props> = ({
+const Create: FunctionComponent<Props> = ({
   show,
   handleHide,
   currency,
   transactionType,
+  title,
   dispatch
 }) => (
   <Modal
@@ -35,7 +37,9 @@ const CustomModal: FunctionComponent<Props> = ({
     toggle={handleHide}
     onClosed={() => dispatch(destroy(CREATE_USER_TRANSACTION_FORM))}
   >
-    <ModalHeader toggle={handleHide}>CREATE TRANSACTION</ModalHeader>
+    <ModalHeader toggle={handleHide} className="text-uppercase">
+      {title}
+    </ModalHeader>
     <ModalBody>
       <UserTransactionForm.Create
         transactionType={transactionType}
@@ -51,4 +55,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connectModal({ name: CREATE_USER_TRANSACTION_MODAL, destroyOnHide: false })
 );
 
-export default enhance(CustomModal);
+export default enhance(Create);

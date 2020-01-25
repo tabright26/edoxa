@@ -14,6 +14,7 @@ const Deposit: FunctionComponent<Props> = ({ hasDefaultPaymentMethod }) => (
   <UserTransactionButton.Create
     transactionType={TRANSACTION_TYPE_DEPOSIT}
     currency={CURRENCY_MONEY}
+    title="DEPOSIT (MONEY)"
     disabled={!hasDefaultPaymentMethod}
   >
     Deposit
