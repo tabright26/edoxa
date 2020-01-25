@@ -1,9 +1,7 @@
 import React, { useState, FunctionComponent, useEffect } from "react";
 import { Card, CardHeader, CardBody } from "reactstrap";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import DoxatagForm from "components/User/Doxatag/Form";
 import { compose } from "recompose";
-import Button from "components/Shared/Button";
 import { Loading } from "components/Shared/Loading";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
@@ -13,7 +11,7 @@ import { UserDoxatag } from "types";
 
 const Doxatag: FunctionComponent<any> = ({
   className,
-  doxatag: { data, error, loading },
+  doxatag: { data, loading },
   loadUserDoxatagHistory
 }) => {
   useEffect((): void => {
@@ -28,14 +26,14 @@ const Doxatag: FunctionComponent<any> = ({
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">DOXATAG</strong>
-        <Button.Link
+        {/* <Button.Link
           className="p-0 ml-auto my-auto"
           icon={faEdit}
           disabled={disabled}
           onClick={() => setButtonDisabled(true)}
         >
           UPDATE
-        </Button.Link>
+        </Button.Link> */}
       </CardHeader>
       <CardBody>
         {loading ? (
