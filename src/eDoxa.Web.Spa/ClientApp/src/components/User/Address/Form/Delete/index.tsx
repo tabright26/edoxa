@@ -28,11 +28,9 @@ const CustomForm: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
-    <Label className="text-muted">
-      Are you sure you want to remove this address?
-    </Label>
+    <Label className="text-muted">Do you want to remove your address?</Label>
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
+      <Button.Submit className="mr-2">Remove</Button.Submit>
       <Button.Cancel onClick={() => handleCancel()} />
     </FormGroup>
   </Form>
