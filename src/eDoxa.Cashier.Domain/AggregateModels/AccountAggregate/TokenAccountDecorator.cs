@@ -11,6 +11,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TokenAccountDecorator : AccountDecorator, ITokenAccount
     {
+        public static readonly TimeSpan DepositInterval = TimeSpan.FromDays(1);
+
         public TokenAccountDecorator(IAccount account) : base(account)
         {
         }
@@ -93,7 +95,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public bool IsDepositAvailable()
         {
-            return !(LastDeposit.HasValue && LastDeposit.Value.AddDays(1) >= DateTime.UtcNow);
+            return !(LastDeposit.HasValue && LastDeposit.Value.Add(DepositInterval) >= DateTime.UtcNow);
         }
 
         public bool HaveSufficientMoney(Token token)

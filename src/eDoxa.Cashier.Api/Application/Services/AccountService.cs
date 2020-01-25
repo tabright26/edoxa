@@ -478,7 +478,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.IsDepositAvailable())
             {
-                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+                result.AddFailedPreconditionError($"Deposit is unavailable until {account.LastDeposit?.Add(MoneyAccountDecorator.DepositInterval)}. For security reason we limit the number of financial transaction that can be done in {MoneyAccountDecorator.DepositInterval.TotalHours} hours.");
             }
 
             if (result.IsValid)
@@ -516,7 +516,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.IsWithdrawalAvailable())
             {
-                result.AddFailedPreconditionError($"Withdrawal unavailable until {account.LastWithdraw?.AddDays(7)}");
+                result.AddFailedPreconditionError($"Withdrawal unavailable until {account.LastWithdraw?.Add(MoneyAccountDecorator.WithdrawalInterval)}.");
             }
 
             if (result.IsValid)
@@ -575,7 +575,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.IsDepositAvailable())
             {
-                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.AddDays(1)}");
+                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.Add(TokenAccountDecorator.DepositInterval)}.");
             }
 
             if (result.IsValid)
