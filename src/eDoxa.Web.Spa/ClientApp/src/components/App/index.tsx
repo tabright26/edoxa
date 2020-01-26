@@ -35,6 +35,8 @@ const DefaultLayout = React.lazy(() =>
   import("components/Shared/Layout/Default")
 );
 const NoneLayout = React.lazy(() => import("components/Shared/Layout/None"));
+const Login = React.lazy(() => import("views/Login"));
+const Logout = React.lazy(() => import("views/Logout"));
 
 const App = () => (
   <>
@@ -75,6 +77,18 @@ const App = () => (
             path={getError500Path()}
             name="Error 500"
             render={() => <ErrorPage500 />}
+          />
+          <Route<RouteProps>
+            exact
+            path="/login"
+            name="Login"
+            render={() => <Login />}
+          />
+          <Route<RouteProps>
+            exact
+            path="/logout"
+            name="Logout"
+            render={() => <Logout />}
           />
           <Route<RouteProps>
             exact

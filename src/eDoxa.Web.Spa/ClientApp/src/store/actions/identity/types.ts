@@ -17,6 +17,45 @@ export const DELETE_USER_ADDRESS = "DELETE_USER_ADDRESS";
 export const DELETE_USER_ADDRESS_SUCCESS = "DELETE_USER_ADDRESS_SUCCESS";
 export const DELETE_USER_ADDRESS_FAIL = "DELETE_USER_ADDRESS_FAIL";
 
+export const LOGIN_USER_ACCOUNT = "LOGIN_USER_ACCOUNT";
+export const LOGIN_USER_ACCOUNT_SUCCESS = "LOGIN_USER_ACCOUNT_SUCCESS";
+export const LOGIN_USER_ACCOUNT_FAIL = "LOGIN_USER_ACCOUNT_FAIL";
+
+export const LOGOUT_USER_ACCOUNT = "LOGOUT_USER_ACCOUNT";
+export const LOGOUT_USER_ACCOUNT_SUCCESS = "LOGOUT_USER_ACCOUNT_SUCCESS";
+export const LOGOUT_USER_ACCOUNT_FAIL = "LOGOUT_USER_ACCOUNT_FAIL";
+
+export type LoginUserAccountType =
+  | typeof LOGIN_USER_ACCOUNT
+  | typeof LOGIN_USER_ACCOUNT_SUCCESS
+  | typeof LOGIN_USER_ACCOUNT_FAIL;
+export type LoginUserAccountActionCreator = AxiosActionCreator<
+  LoginUserAccountType
+>;
+export type LoginUserAccountAction = AxiosAction<
+  LoginUserAccountType,
+  { returnUrl: string }
+>;
+
+export type LogoutUserAccountType =
+  | typeof LOGOUT_USER_ACCOUNT
+  | typeof LOGOUT_USER_ACCOUNT_SUCCESS
+  | typeof LOGOUT_USER_ACCOUNT_FAIL;
+export type LogoutUserAccountActionCreator = AxiosActionCreator<
+  LogoutUserAccountType
+>;
+export type LogoutUserAccountAction = AxiosAction<
+  LogoutUserAccountType,
+  { signOutIFrameUrl: string; postLogoutRedirectUri: string }
+>;
+
+export type UserAccountActionCreators =
+  | LoginUserAccountActionCreator
+  | LogoutUserAccountActionCreator;
+export type UserAccountActions =
+  | LoginUserAccountAction
+  | LogoutUserAccountAction;
+
 export type LoadUserAddressBookType =
   | typeof LOAD_USER_ADDRESSBOOK
   | typeof LOAD_USER_ADDRESSBOOK_SUCCESS

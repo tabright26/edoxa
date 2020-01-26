@@ -49,7 +49,14 @@ import {
   UserAddressBookActionCreators,
   UserPhoneActionCreators,
   UserEmailActionCreators,
-  UserPasswordActionCreators
+  UserPasswordActionCreators,
+  LOGIN_USER_ACCOUNT,
+  LOGIN_USER_ACCOUNT_SUCCESS,
+  LOGIN_USER_ACCOUNT_FAIL,
+  UserAccountActionCreators,
+  LOGOUT_USER_ACCOUNT,
+  LOGOUT_USER_ACCOUNT_SUCCESS,
+  LOGOUT_USER_ACCOUNT_FAIL
 } from "./types";
 
 import { AddressId } from "types";
@@ -276,6 +283,53 @@ export function updateUserProfile(
       }
     },
     meta
+  };
+}
+
+export function loginUserAccount(
+  data: any,
+  meta: AxiosActionCreatorMeta
+): UserAccountActionCreators {
+  return {
+    types: [
+      LOGIN_USER_ACCOUNT,
+      LOGIN_USER_ACCOUNT_SUCCESS,
+      LOGIN_USER_ACCOUNT_FAIL
+    ],
+    payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
+      request: {
+        method: "POST",
+        url: "/identity/api/login",
+        data,
+        withCredentials: true,
+        responseType: "text"
+      }
+    },
+    meta
+  };
+}
+
+export function logoutUserAccount(
+  logoutId: string | string[]
+): UserAccountActionCreators {
+  return {
+    types: [
+      LOGOUT_USER_ACCOUNT,
+      LOGOUT_USER_ACCOUNT_SUCCESS,
+      LOGOUT_USER_ACCOUNT_FAIL
+    ],
+    payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
+      request: {
+        method: "GET",
+        url: "/identity/api/logout",
+        params: {
+          logoutId
+        },
+        withCredentials: true
+      }
+    }
   };
 }
 

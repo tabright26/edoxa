@@ -141,9 +141,11 @@ export class AuthorizeService {
     } catch (popupSignOutError) {
       console.log("Popup signout error: ", popupSignOutError);
       try {
+        console.log(state);
         const signOutRequest = await this.userManager.createSignoutRequest(
           this.createArguments(LoginMode.Redirect, state)
         );
+        console.log(signOutRequest);
         return this.redirect(signOutRequest.url);
       } catch (redirectSignOutError) {
         console.log("Redirect signout error: ", redirectSignOutError);

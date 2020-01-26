@@ -63,6 +63,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -204,9 +205,9 @@ namespace eDoxa.Identity.Api
                         options.Events.RaiseSuccessEvents = true;
                         options.Events.RaiseFailureEvents = true;
                         options.Events.RaiseErrorEvents = true;
-                        options.UserInteraction.LoginUrl = "/Account/Login";
+                        options.UserInteraction.LoginUrl = $"{AppSettings.WebSpaUrl}/login";
                         options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
-                        options.UserInteraction.LogoutUrl = "/Account/Logout";
+                        options.UserInteraction.LogoutUrl = $"{AppSettings.WebSpaUrl}/logout";
                     })
                 .AddApiAuthorization<User, IdentityDbContext>(
                     options =>
@@ -223,6 +224,12 @@ namespace eDoxa.Identity.Api
                 .AddProfileService<CustomProfileService>();
 
             services.AddTransient<IProfileService, CustomProfileService>();
+            var cors = new DefaultCorsPolicyService(new LoggerFactory().CreateLogger<DefaultCorsPolicyService>())
+            {
+                AllowAll = true
+            };
+            services.AddSingleton<ICorsPolicyService>(cors);
+            services.AddTransient<IReturnUrlParser, Application.Services.ReturnUrlParser>();
 
             //services.AddAuthentication().AddIdentityServerJwt();
 

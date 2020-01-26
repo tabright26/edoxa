@@ -9,6 +9,13 @@ import "identity_enums.proto";
 
 package edoxa.services.identity;
 
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+  bool rememberMe = 3;
+  string returnUrl = 4;
+}
+
 message ChangeDoxatagRequest {
   string name = 1;
 }
