@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import Format from "components/Shared/Format";
-import { withUserAccountBalance } from "store/root/user/account/balance/container";
+import { withUserAccountBalance } from "store/root/user/balance/container";
 import { compose } from "recompose";
-import { UserBalanceState } from "store/root/user/account/balance/types";
+import { UserBalanceState } from "store/root/user/balance/types";
 import { Currency } from "types";
 
 interface InnerProps {

@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Balance from ".";
-import { UserBalanceState } from "store/root/user/account/balance/types";
+import { UserBalanceState } from "store/root/user/balance/types";
 import { CURRENCY_MONEY, CURRENCY_TOKEN } from "types";
 
 it("renders without crashing", () => {

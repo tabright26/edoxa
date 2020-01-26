@@ -41,6 +41,14 @@ export const TRANSACTION_STATUS_PENDING = "Pending";
 export const TRANSACTION_STATUS_SUCCEEDED = "Succeeded";
 export const TRANSACTION_STATUS_FAILED = "Failed";
 
+export interface LogoutToken {
+  readonly logoutId?: string;
+  readonly clientName?: string;
+  readonly postLogoutRedirectUri?: string;
+  readonly signOutIFrameUrl?: string;
+  readonly showSignoutPrompt: boolean;
+}
+
 export type TransactionStatus =
   | typeof TRANSACTION_STATUS_PENDING
   | typeof TRANSACTION_STATUS_SUCCEEDED

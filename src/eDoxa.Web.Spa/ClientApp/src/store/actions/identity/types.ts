@@ -1,5 +1,11 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { UserAddress, UserDoxatag, UserEmail, UserProfile } from "types";
+import {
+  UserAddress,
+  UserDoxatag,
+  UserEmail,
+  UserProfile,
+  LogoutToken
+} from "types";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
 export const LOAD_USER_ADDRESSBOOK_SUCCESS = "LOAD_USER_ADDRESSBOOK_SUCCESS";
@@ -32,10 +38,7 @@ export type LoginUserAccountType =
 export type LoginUserAccountActionCreator = AxiosActionCreator<
   LoginUserAccountType
 >;
-export type LoginUserAccountAction = AxiosAction<
-  LoginUserAccountType,
-  { returnUrl: string }
->;
+export type LoginUserAccountAction = AxiosAction<LoginUserAccountType, string>;
 
 export type LogoutUserAccountType =
   | typeof LOGOUT_USER_ACCOUNT
@@ -46,7 +49,7 @@ export type LogoutUserAccountActionCreator = AxiosActionCreator<
 >;
 export type LogoutUserAccountAction = AxiosAction<
   LogoutUserAccountType,
-  { signOutIFrameUrl: string; postLogoutRedirectUri: string }
+  LogoutToken
 >;
 
 export type UserAccountActionCreators =

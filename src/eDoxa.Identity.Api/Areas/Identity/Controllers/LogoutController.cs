@@ -6,11 +6,11 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Identity.Domain.Services;
 
 using IdentityServer4.Services;
 
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eDoxa.Identity.Api.Areas.Identity.Controllers
@@ -35,28 +35,23 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
         {
             var context = await _interactionService.GetLogoutContextAsync(logoutId);
 
-            var showSignoutPrompt = context?.ShowSignoutPrompt != false;
-
             await _interactionService.RevokeTokensForCurrentSessionAsync();
 
-            if (User?.Identity.IsAuthenticated == true)
+            if (User?.Identity.IsAuthenticated ?? false)
             {
                 await _signInService.SignOutAsync();
-
-                //// delete local authentication cookie
-                //await HttpContext.SignOutAsync();
             }
 
-            // no external signout supported for now (see \Quickstart\Account\AccountController.cs TriggerExternalSignout)
-            return this.Ok(
-                new
-                {
-                    showSignoutPrompt,
-                    ClientName = string.IsNullOrEmpty(context?.ClientName) ? context?.ClientId : context?.ClientName,
-                    context?.PostLogoutRedirectUri,
-                    context?.SignOutIFrameUrl,
-                    logoutId
-                });
+            var token = new LogoutTokenDto
+            {
+                LogoutId = logoutId,
+                ClientName = context?.ClientName ?? context?.ClientId,
+                PostLogoutRedirectUri = context?.PostLogoutRedirectUri,
+                SignOutIFrameUrl = context?.SignOutIFrameUrl,
+                ShowSignoutPrompt = context?.ShowSignoutPrompt ?? false
+            };
+
+            return this.Ok(token);
         }
     }
 }

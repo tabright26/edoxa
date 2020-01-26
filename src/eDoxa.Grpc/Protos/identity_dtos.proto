@@ -9,6 +9,14 @@ import "identity_enums.proto";
 
 package edoxa.services.identity;
 
+message LogoutTokenDto {
+  google.protobuf.StringValue logoutId = 1;
+  google.protobuf.StringValue clientName = 2;
+  google.protobuf.StringValue postLogoutRedirectUri = 3;
+  google.protobuf.StringValue signOutIFrameUrl = 4;
+  bool showSignoutPrompt = 5;
+}
+
 message UserClaimDto {
   string type = 1;
   string value = 2;

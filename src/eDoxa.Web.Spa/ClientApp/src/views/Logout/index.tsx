@@ -1,55 +1,81 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { connect, MapDispatchToProps, DispatchProp } from "react-redux";
+import { connect, MapDispatchToProps, MapStateToProps } from "react-redux";
 import { logoutUserAccount } from "store/actions/identity";
-import { RouteComponentProps, withRouter } from "react-router-dom";
+import { RouteComponentProps, withRouter, Redirect } from "react-router-dom";
 import { compose } from "recompose";
 import queryString from "query-string";
-import { LogoutUserAccountAction } from "store/actions/identity/types";
-import { push } from "connected-react-router";
+import { RootState } from "store/types";
+import { LogoutToken } from "types";
+import { getHomePath } from "utils/coreui/constants";
+import { Loading } from "components/Shared/Loading";
+
+type StateProps = {
+  token: LogoutToken;
+};
 
 type DispatchProps = {
-  logoutUserAccount: () => Promise<LogoutUserAccountAction>;
+  logoutUserAccount: () => void;
 };
 
 type OwnProps = RouteComponentProps;
 
-type InnerProps = DispatchProp & DispatchProps & OwnProps;
+type InnerProps = StateProps & DispatchProps & OwnProps;
 
 type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const Logout: FunctionComponent<Props> = ({ dispatch, logoutUserAccount }) => {
+const Logout: FunctionComponent<Props> = ({ token, logoutUserAccount }) => {
   useEffect((): void => {
     logoutUserAccount();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  return <></>;
+  if (token) {
+    return (
+      <>
+        {token.signOutIFrameUrl && (
+          <iframe
+            title="signout"
+            className="signout"
+            src={token.signOutIFrameUrl}
+            width={0}
+            height={0}
+          />
+        )}
+        {token.postLogoutRedirectUri ? (
+          <Redirect to={token.postLogoutRedirectUri} />
+        ) : (
+          <Redirect to={getHomePath()} />
+        )}
+      </>
+    );
+  }
+  return <Loading />;
+};
+
+const mapStateToProps: MapStateToProps<
+  StateProps,
+  OwnProps,
+  RootState
+> = state => {
+  return {
+    token: state.root.user.account.logout.token
+  };
 };
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
   dispatch: any,
   ownProps
 ) => {
-  console.log(ownProps);
   const { logoutId } = queryString.parse(ownProps.location.search);
   return {
-    logoutUserAccount: () =>
-      dispatch(logoutUserAccount(logoutId)).then(action => {
-        var iframe: any = document.createElement("iframe");
-        iframe.width = 0;
-        iframe.height = 0;
-        iframe.class = "signout";
-        iframe.src = action.payload.data.signOutIFrameUrl;
-        document.getElementById("logout_iframe").appendChild(iframe);
-      })
-    // .then(() => dispatch(push("/")))
+    logoutUserAccount: () => dispatch(logoutUserAccount(logoutId))
   };
 };
 
 const enhance = compose<InnerProps, OutterProps>(
   withRouter,
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 );
 
 export default enhance(Logout);

@@ -52,9 +52,9 @@ namespace eDoxa.Identity.Api.Areas.Identity.Controllers
 
                     if (result.Succeeded)
                     {
-                        var claimPrincipal = await _signInService.CreateUserPrincipalAsync(user);
+                        //var claimPrincipal = await _signInService.CreateUserPrincipalAsync(user);
 
-                        await HttpContext.SignInAsync(claimPrincipal);
+                        //await HttpContext.SignInAsync(claimPrincipal);
 
                         return this.Ok(request.ReturnUrl);
                     }

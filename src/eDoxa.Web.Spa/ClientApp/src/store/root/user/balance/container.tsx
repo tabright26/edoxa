@@ -30,7 +30,7 @@ export const withUserAccountBalance = (
     RootState
   > = (state, ownProps) => {
     return {
-      balance: state.root.user.account.balance[ownProps.currency]
+      balance: state.root.user.balance[ownProps.currency]
     };
   };
 
@@ -39,8 +39,7 @@ export const withUserAccountBalance = (
     ownProps: UserAccountBalanceOwnProps
   ) => {
     return {
-      loadUserAccountBalance: () =>
-        dispatch(loadUserBalance(ownProps.currency))
+      loadUserAccountBalance: () => dispatch(loadUserBalance(ownProps.currency))
     };
   };
 

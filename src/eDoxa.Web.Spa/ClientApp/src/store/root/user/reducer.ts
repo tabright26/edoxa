@@ -7,6 +7,7 @@ import { reducer as accountReducer } from "./account/reducer";
 import { reducer as phoneReducer } from "./phone/reducer";
 import { reducer as emailReducer } from "./email/reducer";
 import { reducer as transactionHistoryReducer } from "./transactionHistory/reducer";
+import { reducer as balanceReducer } from "./balance/reducer";
 
 export const reducer = combineReducers({
   email: emailReducer,
@@ -15,5 +16,6 @@ export const reducer = combineReducers({
   profile: profileReducer,
   doxatagHistory: doxatagHistoryReducer,
   addressBook: addressBookReducer,
-  transactionHistory: transactionHistoryReducer
+  transactionHistory: transactionHistoryReducer,
+  balance: balanceReducer
 });
