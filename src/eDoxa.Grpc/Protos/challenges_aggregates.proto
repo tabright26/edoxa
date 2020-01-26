@@ -2,7 +2,6 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Challenges.Aggregates";
 
-import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
 import "challenges_dtos.proto";

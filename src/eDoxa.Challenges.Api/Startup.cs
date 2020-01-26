@@ -17,7 +17,6 @@ using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Grpc.Protos.Challenges.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -97,7 +96,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -143,8 +142,6 @@ namespace eDoxa.Challenges.Api
                     endpoints.MapGrpcService<ChallengeGrpcService>();
 
                     endpoints.MapControllers();
-
-                    endpoints.MapConfigurationRoute<ChallengesAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
                 });

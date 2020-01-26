@@ -1,3 +1,4 @@
+import publicIp from "public-ip";
 import {
   LOAD_USER_ADDRESSBOOK,
   LOAD_USER_ADDRESSBOOK_SUCCESS,
@@ -56,7 +57,10 @@ import {
   UserAccountActionCreators,
   LOGOUT_USER_ACCOUNT,
   LOGOUT_USER_ACCOUNT_SUCCESS,
-  LOGOUT_USER_ACCOUNT_FAIL
+  LOGOUT_USER_ACCOUNT_FAIL,
+  REGISTER_USER_ACCOUNT,
+  REGISTER_USER_ACCOUNT_SUCCESS,
+  REGISTER_USER_ACCOUNT_FAIL
 } from "./types";
 
 import { AddressId } from "types";
@@ -64,6 +68,7 @@ import {
   AxiosActionCreatorMeta,
   AXIOS_PAYLOAD_CLIENT_DEFAULT
 } from "utils/axios/types";
+import { Dispatch } from "react";
 
 export function loadUserAddressBook(): UserAddressBookActionCreators {
   return {
@@ -284,6 +289,38 @@ export function updateUserProfile(
     },
     meta
   };
+}
+
+export function registerUserAccount(data: any, meta: AxiosActionCreatorMeta) {
+  return async (dispatch: Dispatch<any>) => {
+    const ipAddress = await publicIp.v4({
+      fallbackUrls: ["https://ifconfig.co/ip"]
+    });
+    data.ipAddress = ipAddress;
+    dispatch(registerUserAccount(data, meta));
+  };
+  function registerUserAccount(
+    data: any,
+    meta: AxiosActionCreatorMeta
+  ): UserAccountActionCreators {
+    return {
+      types: [
+        REGISTER_USER_ACCOUNT,
+        REGISTER_USER_ACCOUNT_SUCCESS,
+        REGISTER_USER_ACCOUNT_FAIL
+      ],
+      payload: {
+        client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
+        request: {
+          method: "POST",
+          url: "/identity/api/register",
+          data,
+          withCredentials: true
+        }
+      },
+      meta
+    };
+  }
 }
 
 export function loginUserAccount(

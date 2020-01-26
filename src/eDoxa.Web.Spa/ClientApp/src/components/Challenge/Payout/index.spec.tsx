@@ -1,21 +1,26 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import Payout from ".";
-import { ChallengePayout } from "types";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 
 it("renders without crashing", () => {
   // Arrange
-  const payout: ChallengePayout = {
-    prizePool: {
-      currency: "money",
-      amount: 0
-    },
-    buckets: []
+  const store: any = {
+    getState: () => {},
+    dispatch: action => {},
+    subscribe: () => {}
   };
 
   //Act
   const tree = renderer
-    .create(<Payout challengeId="123" payout={payout} />)
+    .create(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Payout challengeId="123" />
+        </MemoryRouter>
+      </Provider>
+    )
     .toJSON();
 
   //Assert

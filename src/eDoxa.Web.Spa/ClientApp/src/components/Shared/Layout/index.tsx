@@ -1,5 +1,6 @@
 import { Default } from "./Default";
 import { None } from "./None";
 import { Partial } from "./Partial";
+import { Background } from "./Background";
 
-export { Default, None, Partial };
+export default { Default, None, Partial, Background };

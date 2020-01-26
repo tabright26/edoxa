@@ -15,7 +15,6 @@ using eDoxa.Notifications.Api.Infrastructure;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -96,7 +95,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -140,8 +139,6 @@ namespace eDoxa.Notifications.Api
                 endpoints =>
                 {
                     endpoints.MapControllers();
-
-                    endpoints.MapConfigurationRoute<NotificationsAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
                 });

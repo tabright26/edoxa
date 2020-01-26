@@ -7,6 +7,7 @@ export const Submit: FunctionComponent<any> = ({
   type = "submit",
   color = "primary",
   style,
+  block = false,
   ...attributes
 }) => (
   <Button
@@ -15,6 +16,7 @@ export const Submit: FunctionComponent<any> = ({
     style={style}
     color={color}
     type={type}
+    block={block}
   >
     {children}
   </Button>

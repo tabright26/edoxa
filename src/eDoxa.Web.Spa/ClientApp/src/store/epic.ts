@@ -15,7 +15,9 @@ import {
   DELETE_USER_ADDRESS_FAIL,
   UPDATE_USER_ADDRESS_FAIL,
   LOGIN_USER_ACCOUNT_SUCCESS,
-  LOGIN_USER_ACCOUNT_FAIL
+  LOGIN_USER_ACCOUNT_FAIL,
+  REGISTER_USER_ACCOUNT_SUCCESS,
+  REGISTER_USER_ACCOUNT_FAIL
 } from "store/actions/identity/types";
 import {
   CHANGE_USER_DOXATAG_SUCCESS,
@@ -63,7 +65,8 @@ const formSuccessEpic = (action$: any): any =>
       GENERATE_GAME_AUTHENTICATION_SUCCESS,
       UNLINK_GAME_CREDENTIAL_SUCCESS,
       REDEEM_PROMOTION_SUCCESS,
-      LOGIN_USER_ACCOUNT_SUCCESS
+      LOGIN_USER_ACCOUNT_SUCCESS,
+      REGISTER_USER_ACCOUNT_SUCCESS
     ),
     switchMap((action: any): any => {
       const { resolve } = action.meta.previousAction.meta;
@@ -91,7 +94,8 @@ const formFailEpic = (action$: any) =>
       GENERATE_GAME_AUTHENTICATION_FAIL,
       UNLINK_GAME_CREDENTIAL_FAIL,
       REDEEM_PROMOTION_FAIL,
-      LOGIN_USER_ACCOUNT_FAIL
+      LOGIN_USER_ACCOUNT_FAIL,
+      REGISTER_USER_ACCOUNT_FAIL
     ),
     switchMap((action: any) => {
       const { reject } = action.meta.previousAction.meta;

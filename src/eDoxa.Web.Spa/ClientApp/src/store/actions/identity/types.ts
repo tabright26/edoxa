@@ -31,6 +31,19 @@ export const LOGOUT_USER_ACCOUNT = "LOGOUT_USER_ACCOUNT";
 export const LOGOUT_USER_ACCOUNT_SUCCESS = "LOGOUT_USER_ACCOUNT_SUCCESS";
 export const LOGOUT_USER_ACCOUNT_FAIL = "LOGOUT_USER_ACCOUNT_FAIL";
 
+export const REGISTER_USER_ACCOUNT = "REGISTER_USER_ACCOUNT";
+export const REGISTER_USER_ACCOUNT_SUCCESS = "REGISTER_USER_ACCOUNT_SUCCESS";
+export const REGISTER_USER_ACCOUNT_FAIL = "REGISTER_USER_ACCOUNT_FAIL";
+
+export type RegisterUserAccountType =
+  | typeof REGISTER_USER_ACCOUNT
+  | typeof REGISTER_USER_ACCOUNT_SUCCESS
+  | typeof REGISTER_USER_ACCOUNT_FAIL;
+export type RegisterUserAccountActionCreator = AxiosActionCreator<
+  RegisterUserAccountType
+>;
+export type RegisterUserAccountAction = AxiosAction<RegisterUserAccountType>;
+
 export type LoginUserAccountType =
   | typeof LOGIN_USER_ACCOUNT
   | typeof LOGIN_USER_ACCOUNT_SUCCESS
@@ -51,11 +64,12 @@ export type LogoutUserAccountAction = AxiosAction<
   LogoutUserAccountType,
   LogoutToken
 >;
-
 export type UserAccountActionCreators =
+  | RegisterUserAccountActionCreator
   | LoginUserAccountActionCreator
   | LogoutUserAccountActionCreator;
 export type UserAccountActions =
+  | RegisterUserAccountAction
   | LoginUserAccountAction
   | LogoutUserAccountAction;
 

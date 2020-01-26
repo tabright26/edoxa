@@ -8,10 +8,10 @@ using Autofac;
 
 using eDoxa.Challenges.Api.Application.Services;
 using eDoxa.Challenges.Api.Infrastructure.Data;
-using eDoxa.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
+using eDoxa.Challenges.Infrastructure.Queries;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 

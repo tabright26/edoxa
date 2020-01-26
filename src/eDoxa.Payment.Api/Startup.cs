@@ -19,7 +19,6 @@ using eDoxa.Payment.Api.Services;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -100,7 +99,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomProblemDetails(options => options.MapStripeException());
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -146,8 +145,6 @@ namespace eDoxa.Payment.Api
                     endpoints.MapGrpcService<PaymentGrpcService>();
 
                     endpoints.MapControllers();
-
-                    endpoints.MapConfigurationRoute<PaymentAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
                 });

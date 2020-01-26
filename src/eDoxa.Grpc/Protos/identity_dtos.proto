@@ -15,6 +15,7 @@ message LogoutTokenDto {
   google.protobuf.StringValue postLogoutRedirectUri = 3;
   google.protobuf.StringValue signOutIFrameUrl = 4;
   bool showSignoutPrompt = 5;
+  bool automaticRedirectAfterSignOut = 6;
 }
 
 message UserClaimDto {

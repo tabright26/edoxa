@@ -17,7 +17,8 @@ import {
   getUserProfileChallengeHistoryPath,
   getUserProfilePaymentMethodsPath,
   getUserProfileGamesPath,
-  getUserProfilePromotionalCodePath
+  getUserProfilePromotionalCodePath,
+  getRegisterPath
 } from "utils/coreui/constants";
 
 class LoginMenu extends Component {
@@ -53,9 +54,8 @@ class LoginMenu extends Component {
   render() {
     const { isAuthenticated, user } = this.state;
     if (!isAuthenticated) {
-      const registerPath = `${ApplicationPaths.Register}`;
       const loginPath = `${ApplicationPaths.Login}`;
-      return this.anonymousView(registerPath, loginPath);
+      return this.anonymousView(loginPath);
     } else {
       const profilePath = `${ApplicationPaths.Profile}`;
       const logoutPath = {
@@ -132,7 +132,7 @@ class LoginMenu extends Component {
     );
   }
 
-  anonymousView(registerPath, loginPath) {
+  anonymousView(loginPath) {
     return (
       <Nav className="ml-auto mr-3" navbar>
         <LinkContainer to={loginPath}>
@@ -145,7 +145,13 @@ class LoginMenu extends Component {
             Login
           </Button>
         </LinkContainer>
-        <Button href={registerPath} size="sm" tag="a" color="primary" outline>
+        <Button
+          href={getRegisterPath()}
+          size="sm"
+          tag="a"
+          color="primary"
+          outline
+        >
           Register
         </Button>
       </Nav>

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
@@ -72,8 +71,6 @@ namespace eDoxa.Web.Spa
             application.UseEndpoints(
                 endpoints =>
                 {
-                    endpoints.MapConfigurationRoute<WebSpaAppSettings>();
-
                     endpoints.MapCustomHealthChecks();
                 });
 

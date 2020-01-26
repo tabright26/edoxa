@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
-using eDoxa.Challenges.Infrastructure;
 using eDoxa.Challenges.Infrastructure.Extensions;
 using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Domain.Misc;
@@ -20,7 +19,7 @@ using LinqKit;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Challenges.Api.Infrastructure.Queries
+namespace eDoxa.Challenges.Infrastructure.Queries
 {
     public sealed partial class ParticipantQuery
     {

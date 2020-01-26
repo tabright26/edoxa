@@ -51,6 +51,7 @@ const Login: FunctionComponent<Props> = ({ handleSubmit, error }) => (
         type="text"
         name="email"
         placeholder="Email"
+        size={null}
         //autoComplete="email"
         component={Input.Text}
       />
@@ -65,6 +66,7 @@ const Login: FunctionComponent<Props> = ({ handleSubmit, error }) => (
         type="password"
         name="password"
         placeholder="Password"
+        size={null}
         //autoComplete="current-password"
         component={Input.Password}
       />

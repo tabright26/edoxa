@@ -16,7 +16,6 @@ using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
 using eDoxa.Grpc.Protos.Games.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -99,7 +98,7 @@ namespace eDoxa.Games.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -145,8 +144,6 @@ namespace eDoxa.Games.Api
                     endpoints.MapGrpcService<GameGrpcService>();
 
                     endpoints.MapControllers();
-
-                    endpoints.MapConfigurationRoute<GamesAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
                 });

@@ -7,9 +7,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Queries;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;

@@ -24,6 +24,10 @@ export function getError500Path(): string {
   return getErrorPath(500);
 }
 
+export function getRegisterPath(): string {
+  return "/register";
+}
+
 export function getEmailConfirmPath(): string {
   return "/email/confirm";
 }

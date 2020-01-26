@@ -15,7 +15,6 @@ using eDoxa.Clans.Api.Infrastructure;
 using eDoxa.Clans.Api.Services;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -95,7 +94,7 @@ namespace eDoxa.Clans.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -141,8 +140,6 @@ namespace eDoxa.Clans.Api
                     endpoints.MapGrpcService<ClanGrpcService>();
 
                     endpoints.MapControllers();
-
-                    endpoints.MapConfigurationRoute<ClansAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
                 });
