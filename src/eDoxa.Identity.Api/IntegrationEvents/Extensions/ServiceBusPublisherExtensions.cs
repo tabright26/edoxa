@@ -38,24 +38,25 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
         {
             var integrationEvent = new UserEmailConfirmationTokenGeneratedIntegrationEvent
             {
-                UserId = userId.ToString(),
+                UserId = userId,
                 Code = code
             };
 
             await publisher.PublishAsync(integrationEvent);
         }
 
-        public static async Task PublishUserCreatedIntegrationEventAsync(this IServiceBusPublisher publisher, User user)
+        public static async Task PublishUserCreatedIntegrationEventAsync(this IServiceBusPublisher publisher, User user, string ip)
         {
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                UserId = user.Id.ToString(),
+                UserId = user.Id.ConvertTo<UserId>(),
                 Email = new EmailDto
                 {
                     Address = user.Email,
                     Verified = user.EmailConfirmed
                 },
-                CountryIsoCode = user.Country.ToEnum<EnumCountryIsoCode>()
+                Country = user.Country.ToEnum<EnumCountryIsoCode>(),
+                Ip = ip
             };
 
             await publisher.PublishAsync(integrationEvent);

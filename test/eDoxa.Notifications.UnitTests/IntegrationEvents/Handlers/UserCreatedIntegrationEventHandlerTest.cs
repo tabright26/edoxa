@@ -50,13 +50,14 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                CountryIsoCode = EnumCountryIsoCode.CA,
+                UserId = new UserId(),
                 Email = new EmailDto
                 {
                     Address = "test@email.com",
                     Verified = true
                 },
-                UserId = new UserId()
+                Country = EnumCountryIsoCode.CA,
+                Ip = "10.10.10.10"
             };
 
             // Act

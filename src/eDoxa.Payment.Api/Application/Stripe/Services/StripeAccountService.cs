@@ -76,6 +76,7 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
             UserId userId,
             string email,
             Country country,
+            string ip,
             string customerId
         )
         {
@@ -84,19 +85,19 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                 {
                     Type = "custom",
                     BusinessType = "individual",
-                    Country = country.TwoDigitIso,
+                    Country = country.Name,
                     Individual = new PersonCreateOptions
                     {
                         Email = email,
                         Metadata = new Dictionary<string, string>
                         {
-                            [nameof(userId)] = userId.ToString()
+                            [nameof(userId)] = userId
                         }
                     },
-                    TosAcceptance = new AccountTosAcceptanceOptions // FRANCIS: Must be provided by login form.
+                    TosAcceptance = new AccountTosAcceptanceOptions
                     {
                         Date = DateTime.UtcNow,
-                        Ip = "10.10.10.10"
+                        Ip = ip
                     },
                     RequestedCapabilities = new List<string>
                     {

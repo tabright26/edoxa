@@ -43,6 +43,12 @@ export type RegisterUserAccountActionCreator = AxiosActionCreator<
   RegisterUserAccountType
 >;
 export type RegisterUserAccountAction = AxiosAction<RegisterUserAccountType>;
+export type RegisterUserAccountRequest = {
+  email: string;
+  password: string;
+  country: string;
+  ip: string;
+};
 
 export type LoginUserAccountType =
   | typeof LOGIN_USER_ACCOUNT
@@ -64,10 +70,6 @@ export type LogoutUserAccountAction = AxiosAction<
   LogoutUserAccountType,
   LogoutToken
 >;
-export type UserAccountActionCreators =
-  | RegisterUserAccountActionCreator
-  | LoginUserAccountActionCreator
-  | LogoutUserAccountActionCreator;
 export type UserAccountActions =
   | RegisterUserAccountAction
   | LoginUserAccountAction

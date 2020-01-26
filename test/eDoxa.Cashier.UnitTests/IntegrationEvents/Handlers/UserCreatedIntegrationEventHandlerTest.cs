@@ -45,12 +45,13 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                UserId = Guid.NewGuid().ToString(),
+                UserId = new UserId(),
                 Email = new EmailDto
                 {
                     Address = "noreply@edoxa.gg"
                 },
-                CountryIsoCode = EnumCountryIsoCode.CA
+                Country = EnumCountryIsoCode.CA,
+                Ip = "10.10.10.10"
             };
 
             // Act

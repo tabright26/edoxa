@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Requests;
@@ -39,10 +38,10 @@ namespace eDoxa.Identity.Api.Controllers
             var result = await _userService.CreateAsync(
                 new User
                 {
-                    Id = Guid.NewGuid(),
+                    Id = new UserId(),
                     Email = request.Email,
                     UserName = request.Email,
-                    Country = Country.Canada
+                    Country = request.Country.ToEnumeration<Country>()
                 },
                 request.Password);
 
@@ -50,13 +49,11 @@ namespace eDoxa.Identity.Api.Controllers
             {
                 var user = await _userService.FindByEmailAsync(request.Email);
 
-                await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(user);
+                await _serviceBusPublisher.PublishUserCreatedIntegrationEventAsync(user, request.Ip);
 
                 var code = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
                 await _serviceBusPublisher.PublishUserEmailConfirmationTokenGeneratedIntegrationEventAsync(user.Id.ConvertTo<UserId>(), code);
-
-                //await _signInService.SignInAsync(user, false);
 
                 return this.Ok();
             }

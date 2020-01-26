@@ -50,6 +50,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                         It.IsAny<UserId>(),
                         It.IsAny<string>(),
                         It.IsAny<Country>(),
+                        It.IsAny<string>(),
                         It.IsAny<string>()))
                 .ReturnsAsync("AccountId")
                 .Verifiable();
@@ -66,12 +67,13 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                UserId = Guid.NewGuid().ToString(),
+                UserId = new UserId(),
                 Email = new EmailDto
                 {
                     Address = "gabriel@edoxa.gg"
                 },
-                CountryIsoCode = EnumCountryIsoCode.CA
+                Country = EnumCountryIsoCode.CA,
+                Ip = "10.10.10.10"
             };
 
             // Act
@@ -86,6 +88,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<UserId>(),
                     It.IsAny<string>(),
                     It.IsAny<Country>(),
+                    It.IsAny<string>(),
                     It.IsAny<string>()),
                 Times.Once);
 

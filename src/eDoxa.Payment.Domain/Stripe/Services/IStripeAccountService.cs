@@ -23,6 +23,7 @@ namespace eDoxa.Payment.Domain.Stripe.Services
             UserId userId,
             string email,
             Country country,
+            string ip,
             string customerId
         );
 

@@ -54,13 +54,16 @@ import {
   LOGIN_USER_ACCOUNT,
   LOGIN_USER_ACCOUNT_SUCCESS,
   LOGIN_USER_ACCOUNT_FAIL,
-  UserAccountActionCreators,
   LOGOUT_USER_ACCOUNT,
   LOGOUT_USER_ACCOUNT_SUCCESS,
   LOGOUT_USER_ACCOUNT_FAIL,
   REGISTER_USER_ACCOUNT,
   REGISTER_USER_ACCOUNT_SUCCESS,
-  REGISTER_USER_ACCOUNT_FAIL
+  REGISTER_USER_ACCOUNT_FAIL,
+  RegisterUserAccountRequest,
+  RegisterUserAccountActionCreator,
+  LoginUserAccountActionCreator,
+  LogoutUserAccountActionCreator
 } from "./types";
 
 import { AddressId } from "types";
@@ -292,17 +295,21 @@ export function updateUserProfile(
 }
 
 export function registerUserAccount(data: any, meta: AxiosActionCreatorMeta) {
-  return async (dispatch: Dispatch<any>) => {
-    const ipAddress = await publicIp.v4({
-      fallbackUrls: ["https://ifconfig.co/ip"]
-    });
-    data.ipAddress = ipAddress;
-    dispatch(registerUserAccount(data, meta));
+  return async (dispatch: Dispatch<RegisterUserAccountActionCreator>) => {
+    const request: RegisterUserAccountRequest = {
+      email: data.email,
+      password: data.password,
+      country: data.countryIsoCode,
+      ip: await publicIp.v4({
+        fallbackUrls: ["https://ifconfig.co/ip"]
+      })
+    };
+    dispatch(registerUserAccount(request, meta));
   };
   function registerUserAccount(
-    data: any,
+    request: RegisterUserAccountRequest,
     meta: AxiosActionCreatorMeta
-  ): UserAccountActionCreators {
+  ): RegisterUserAccountActionCreator {
     return {
       types: [
         REGISTER_USER_ACCOUNT,
@@ -314,7 +321,7 @@ export function registerUserAccount(data: any, meta: AxiosActionCreatorMeta) {
         request: {
           method: "POST",
           url: "/identity/api/register",
-          data,
+          data: request,
           withCredentials: true
         }
       },
@@ -326,7 +333,7 @@ export function registerUserAccount(data: any, meta: AxiosActionCreatorMeta) {
 export function loginUserAccount(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserAccountActionCreators {
+): LoginUserAccountActionCreator {
   return {
     types: [
       LOGIN_USER_ACCOUNT,
@@ -349,7 +356,7 @@ export function loginUserAccount(
 
 export function logoutUserAccount(
   logoutId: string | string[]
-): UserAccountActionCreators {
+): LogoutUserAccountActionCreator {
   return {
     types: [
       LOGOUT_USER_ACCOUNT,
