@@ -14,9 +14,9 @@ using Autofac;
 
 using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Api.Grpc.Services;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
-using eDoxa.Identity.Api.Services;
 using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;

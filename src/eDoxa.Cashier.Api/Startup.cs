@@ -11,9 +11,9 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Cashier.Api.Grpc.Services;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
-using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Grpc.Protos.Cashier.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;

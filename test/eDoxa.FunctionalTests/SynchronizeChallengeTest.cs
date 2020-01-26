@@ -18,7 +18,7 @@ using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Worker.Application.RecurringJobs;
 using eDoxa.FunctionalTests.TestHelper.Services.Challenges;
 using eDoxa.FunctionalTests.TestHelper.Services.Games;
-using eDoxa.Games.Api.Services;
+using eDoxa.Games.Api.Grpc.Services;
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Games.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;

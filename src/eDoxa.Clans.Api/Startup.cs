@@ -11,8 +11,8 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Clans.Api.Grpc.Services;
 using eDoxa.Clans.Api.Infrastructure;
-using eDoxa.Clans.Api.Services;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
