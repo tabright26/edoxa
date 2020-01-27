@@ -1,6 +1,6 @@
 ﻿// Filename: UserEmailChangedIntegrationEventHandlerTest.cs
 // Date Created: 2019-12-26
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -23,13 +23,13 @@ using Xunit;
 
 namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserEmailChangedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS
+    public sealed class UserEmailChangedIntegrationEventHandlerTest : UnitTest
     {
         public UserEmailChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
 
-        [Fact(Skip = "Must be updated.")]
+        [Fact]
         public async Task HandleAsync_WhenUserEmailChangedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -45,6 +45,10 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             mockUserService.Setup(userService => userService.UpdateUserAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(new DomainValidationResult())
+                .Verifiable();
+
+            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
+                .Returns(Task.CompletedTask)
                 .Verifiable();
 
             var handler = new UserEmailChangedIntegrationEventHandler(mockUserService.Object, mockLogger.Object);
@@ -66,7 +70,8 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             mockUserService.Verify(userService => userService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockUserService.Verify(userService => userService.FindUserAsync(It.IsAny<UserId>()), Times.Once);
             mockUserService.Verify(userService => userService.UpdateUserAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
-            mockLogger.Verify(Times.Once());
+            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+            mockLogger.Verify(Times.Never());
         }
     }
 }
