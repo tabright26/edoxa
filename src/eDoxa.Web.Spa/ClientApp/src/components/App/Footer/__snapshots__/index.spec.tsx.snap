@@ -12,12 +12,11 @@ exports[`renders without crashing 1`] = `
   >
     |
   </span>
-  <span
-    className=""
+  <a
     href="/terms-of-services"
     onClick={[Function]}
   >
     Terms of Services
-  </span>
+  </a>
 </div>
 `;

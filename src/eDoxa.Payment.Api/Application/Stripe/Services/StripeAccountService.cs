@@ -1,8 +1,8 @@
 ﻿// Filename: StripeAccountService.cs
-// Date Created: 2019-12-15
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -77,7 +77,10 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
             string email,
             Country country,
             string ip,
-            string customerId
+            string customerId,
+            int day,
+            int month,
+            int year
         )
         {
             var account = await this.CreateAsync(
@@ -88,6 +91,12 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                     Country = country.Name,
                     Individual = new PersonCreateOptions
                     {
+                        Dob = new DobOptions
+                        {
+                            Day = day,
+                            Month = month,
+                            Year = year
+                        },
                         Email = email,
                         Metadata = new Dictionary<string, string>
                         {

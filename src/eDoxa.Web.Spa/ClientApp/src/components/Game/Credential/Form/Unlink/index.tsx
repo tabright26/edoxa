@@ -12,13 +12,13 @@ import { AxiosActionCreatorMeta } from "utils/axios/types";
 
 interface FormData {}
 
-interface OutterProps {
-  game: Game;
-  handleCancel: () => void;
-}
-
 type InnerProps = InjectedFormProps<FormData, Props> & {
   stripe: stripe.Stripe;
+};
+
+type OutterProps = {
+  game: Game;
+  handleCancel: () => void;
 };
 
 type Props = InnerProps & OutterProps;
@@ -35,7 +35,7 @@ const Unlink: FunctionComponent<Props> = ({ handleSubmit, handleCancel }) => (
 const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
     form: UNLINK_GAME_CREDENTIAL_FORM,
-    onSubmit: async (_values, dispatch: any, { game }) => {
+    onSubmit: async (_values, dispatch, { game }) => {
       try {
         return await new Promise((resolve, reject) => {
           const meta: AxiosActionCreatorMeta = { resolve, reject };

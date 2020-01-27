@@ -49,7 +49,10 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     integrationEvent.Email.Address,
                     integrationEvent.Country.ToEnumeration<Country>(),
                     integrationEvent.Ip,
-                    customerId);
+                    customerId,
+                    integrationEvent.Dob.Day,
+                    integrationEvent.Dob.Month,
+                    integrationEvent.Dob.Year);
 
                 var result = await _stripeService.CreateAsync(userId, customerId, accountId);
 

@@ -67,11 +67,13 @@ const CustomForm: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
-    <FormField.CountryIsoCode
-      label={country.label}
-      placeholder={country.placeholder}
-      onChange={() => reset()}
-    />
+    <FormGroup>
+      <FormField.CountryIsoCode
+        label={country.label}
+        placeholder={country.placeholder}
+        onChange={() => reset()}
+      />
+    </FormGroup>
     <Field
       type="text"
       name="line1"

@@ -12,6 +12,7 @@ message UserCreatedIntegrationEvent {
   EmailDto email = 2;
   EnumCountryIsoCode country = 3;
   string ip = 4;
+  DobDto dob = 5;
 }
 
 message UserProfileChangedIntegrationEvent {

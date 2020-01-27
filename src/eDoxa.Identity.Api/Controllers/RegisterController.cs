@@ -41,7 +41,8 @@ namespace eDoxa.Identity.Api.Controllers
                     Id = new UserId(),
                     Email = request.Email,
                     UserName = request.Email,
-                    Country = request.Country.ToEnumeration<Country>()
+                    Country = request.Country.ToEnumeration<Country>(),
+                    Dob = new UserDob(request.Dob.Year, request.Dob.Month, request.Dob.Day)
                 },
                 request.Password);
 

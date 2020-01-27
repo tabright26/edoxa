@@ -18,14 +18,12 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
         public UserProfile(
             string firstName,
             string lastName,
-            Gender gender,
-            UserDob dob
+            Gender gender
         ) : this()
         {
             FirstName = firstName;
             LastName = lastName;
             Gender = gender;
-            Dob = dob;
         }
 
         private UserProfile()
@@ -39,14 +37,11 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 
         public Gender Gender { get; private set; }
 
-        public UserDob Dob { get; private set; }
-
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return FirstName;
             yield return LastName;
             yield return Gender;
-            yield return Dob;
         }
 
         public override string ToString()

@@ -58,14 +58,3 @@ export type RegisterChallengeParticipantAction = AxiosAction<
   RegisterChallengeParticipantType,
   ChallengeParticipant
 >;
-
-export type ChallengesActionCreators =
-  | LoadChallengesActionCreator
-  | LoadChallengeActionCreator
-  | LoadChallengeHistoryActionCreator
-  | RegisterChallengeParticipantActionCreator;
-export type ChallengesActions =
-  | LoadChallengesAction
-  | LoadChallengeAction
-  | LoadChallengeHistoryAction
-  | RegisterChallengeParticipantAction;

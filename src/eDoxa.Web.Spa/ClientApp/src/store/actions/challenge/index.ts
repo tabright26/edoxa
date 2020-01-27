@@ -8,19 +8,21 @@ import {
   REGISTER_CHALLENGE_PARTICIPANT,
   REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
   REGISTER_CHALLENGE_PARTICIPANT_FAIL,
-  ChallengesActionCreators,
   LOAD_CHALLENGE_HISTORY,
   LOAD_CHALLENGE_HISTORY_SUCCESS,
-  LOAD_CHALLENGE_HISTORY_FAIL
+  LOAD_CHALLENGE_HISTORY_FAIL,
+  LoadChallengesActionCreator,
+  LoadChallengeActionCreator,
+  LoadChallengeHistoryActionCreator,
+  RegisterChallengeParticipantActionCreator
 } from "./types";
-
-import { ChallengeId, Game, ChallengeState } from "types";
 import { AXIOS_PAYLOAD_CLIENT_CHALLENGES } from "utils/axios/types";
+import { ChallengeId, Game, ChallengeState } from "types";
 
 export function loadChallenges(
   game: Game = null,
   state: ChallengeState = null
-): ChallengesActionCreators {
+): LoadChallengesActionCreator {
   return {
     types: [LOAD_CHALLENGES, LOAD_CHALLENGES_SUCCESS, LOAD_CHALLENGES_FAIL],
     payload: {
@@ -39,7 +41,7 @@ export function loadChallenges(
 
 export function loadChallenge(
   challengeId: ChallengeId
-): ChallengesActionCreators {
+): LoadChallengeActionCreator {
   return {
     types: [LOAD_CHALLENGE, LOAD_CHALLENGE_SUCCESS, LOAD_CHALLENGE_FAIL],
     payload: {
@@ -55,7 +57,7 @@ export function loadChallenge(
 export function loadChallengeHistory(
   game: Game = null,
   state: ChallengeState = null
-): ChallengesActionCreators {
+): LoadChallengeHistoryActionCreator {
   return {
     types: [
       LOAD_CHALLENGE_HISTORY,
@@ -78,7 +80,7 @@ export function loadChallengeHistory(
 
 export function registerChallengeParticipant(
   challengeId: ChallengeId
-): ChallengesActionCreators {
+): RegisterChallengeParticipantActionCreator {
   return {
     types: [
       REGISTER_CHALLENGE_PARTICIPANT,

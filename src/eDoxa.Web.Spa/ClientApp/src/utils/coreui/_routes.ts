@@ -5,7 +5,7 @@ import {
   getTermsOfServicesPath, 
   getFaqPath,
   getNewsFeedsPath,
-  getUserProfilePath,
+  getProfilePath,
   getChallengesPath,
   getChallengeDetailsPath,
   getChallengeHistoryPath,
@@ -38,5 +38,5 @@ export const routes: RouteConfig[] = [
   { path: getClansPath(), name: "Clans", component: Clans, exact: true, allowAnonymous: false, disabled: false, scopes: [] },
   { path: getClanDetailsPath(), name: "Clan Details", component: ClanDetails, exact: true, allowAnonymous: false, disabled: false, scopes: [] },
   { path: getClanDashboardPath(), name: "Clan Dashboard", component: ClanDashboard, exact: true, allowAnonymous: false, disabled: false, scopes: [] },
-  { path: getUserProfilePath(), name: "User Profile Overview", component: Profile, exact: false, allowAnonymous: false, disabled: false, scopes: [] }
+  { path: getProfilePath(), name: "User Profile Overview", component: Profile, exact: false, allowAnonymous: false, disabled: false, scopes: [] }
 ];

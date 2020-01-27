@@ -22,16 +22,16 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Api.Services
 {
-    public class ReturnUrlParser : IReturnUrlParser
+    public class CustomReturnUrlParser : IReturnUrlParser
     {
         private readonly IAuthorizeRequestValidator _validator;
         private readonly IUserSession _userSession;
         private readonly ILogger _logger;
         private readonly IOptionsSnapshot<IdentityAppSettings> _options;
 
-        public ReturnUrlParser(IAuthorizeRequestValidator validator, IUserSession userSession, ILogger<ReturnUrlParser> logger, IOptionsSnapshot<IdentityAppSettings> options)
+        public CustomReturnUrlParser(IAuthorizeRequestValidator validator, IUserSession userSession, ILogger<CustomReturnUrlParser> logger, IOptionsSnapshot<IdentityAppSettings> options)
         {
             _validator = validator;
             _userSession = userSession;

@@ -9,6 +9,11 @@ using System.Collections.Generic;
 
 using eDoxa.Seedwork.Domain;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
+using PascalCaseNamingConvention = AutoMapper.PascalCaseNamingConvention;
+
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class UserDob : ValueObject
@@ -37,7 +42,10 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 
         public override string ToString()
         {
-            return new DateTime(Year, Month, Day).ToString("yy-MM-dddd");
+            return JsonConvert.SerializeObject(this, Formatting.None, new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            });
         }
 
         protected override IEnumerable<object> GetAtomicValues()

@@ -10,14 +10,14 @@ using eDoxa.Identity.Infrastructure;
 namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(IdentityDbContext))]
-    [Migration("20191129024352_InitialCreate")]
+    [Migration("20200127041047_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.1")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -396,6 +396,35 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("eDoxa.Identity.Domain.AggregateModels.UserAggregate.User", b =>
                 {
+                    b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserDob", "Dob", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Day")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Month")
+                                .HasColumnType("int");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Year")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId")
+                                .IsUnique();
+
+                            b1.ToTable("UserDob");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsOne("eDoxa.Identity.Domain.AggregateModels.UserAggregate.UserProfile", "Profile", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -425,35 +454,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
-
-                            b1.OwnsOne("eDoxa.Seedwork.Domain.Miscs.Dob", "Dob", b2 =>
-                                {
-                                    b2.Property<Guid>("Id")
-                                        .ValueGeneratedOnAdd()
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Day")
-                                        .HasColumnType("int");
-
-                                    b2.Property<int>("Month")
-                                        .HasColumnType("int");
-
-                                    b2.Property<Guid>("UserId")
-                                        .HasColumnType("uniqueidentifier");
-
-                                    b2.Property<int>("Year")
-                                        .HasColumnType("int");
-
-                                    b2.HasKey("Id");
-
-                                    b2.HasIndex("UserId")
-                                        .IsUnique();
-
-                                    b2.ToTable("UserDob");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("UserId");
-                                });
                         });
                 });
 

@@ -53,18 +53,32 @@ import {
   UPLOAD_CLAN_LOGO,
   UPLOAD_CLAN_LOGO_SUCCESS,
   UPLOAD_CLAN_LOGO_FAIL,
-  ClansActionCreators,
-  ClanCandidaturesActionCreators,
-  ClanInvitationsActionCreators,
-  ClanMembersActionCreators,
-  ClanLogosActionCreators
+  LoadClanCandidaturesActionCreator,
+  LoadClanCandidatureActionCreator,
+  SendClanCandidatureActionCreator,
+  AcceptClanCandidatureActionCreator,
+  DeclineClanCandidatureActionCreator,
+  LoadClansActionCreator,
+  LoadClanActionCreator,
+  CreateClanActionCreator,
+  LeaveClanActionCreator,
+  LoadClanInvitationsActionCreator,
+  LoadClanInvitationActionCreator,
+  SendClanInvitationActionCreator,
+  AcceptClanInvitationActionCreator,
+  DeclineClanInvitationActionCreator,
+  DownloadClanLogoActionCreator,
+  UploadClanLogoActionCreator,
+  LoadClanMembersActionCreator,
+  KickClanMemberActionCreator
 } from "./types";
 import { AXIOS_PAYLOAD_CLIENT_DEFAULT } from "utils/axios/types";
+import { ClanId, UserId, InvitationId, MemberId } from "types";
 
 export function loadClanCandidatures(
   type: string,
   id: string
-): ClanCandidaturesActionCreators {
+): LoadClanCandidaturesActionCreator {
   return {
     types: [
       LOAD_CLAN_CANDIDATURES,
@@ -83,7 +97,7 @@ export function loadClanCandidatures(
 
 export function loadClanCandidature(
   candidatureId: string
-): ClanCandidaturesActionCreators {
+): LoadClanCandidatureActionCreator {
   return {
     types: [
       LOAD_CLAN_CANDIDATURE,
@@ -103,7 +117,7 @@ export function loadClanCandidature(
 export function sendClanCandidature(
   clanId: string,
   userId: string
-): ClanCandidaturesActionCreators {
+): SendClanCandidatureActionCreator {
   return {
     types: [
       SEND_CLAN_CANDIDATURE,
@@ -126,7 +140,7 @@ export function sendClanCandidature(
 
 export function acceptClanCandidature(
   candidatureId: string
-): ClanCandidaturesActionCreators {
+): AcceptClanCandidatureActionCreator {
   return {
     types: [
       ACCEPT_CLAN_CANDIDATURE,
@@ -145,7 +159,7 @@ export function acceptClanCandidature(
 
 export function declineClanCandidature(
   candidatureId: string
-): ClanCandidaturesActionCreators {
+): DeclineClanCandidatureActionCreator {
   return {
     types: [
       DECLINE_CLAN_CANDIDATURE,
@@ -162,7 +176,7 @@ export function declineClanCandidature(
   };
 }
 
-export function loadClans(): ClansActionCreators {
+export function loadClans(): LoadClansActionCreator {
   return {
     types: [LOAD_CLANS, LOAD_CLANS_SUCCESS, LOAD_CLANS_FAIL],
     payload: {
@@ -175,7 +189,7 @@ export function loadClans(): ClansActionCreators {
   };
 }
 
-export function loadClan(clanId: string): ClansActionCreators {
+export function loadClan(clanId: string): LoadClanActionCreator {
   return {
     types: [LOAD_CLAN, LOAD_CLAN_SUCCESS, LOAD_CLAN_FAIL],
     payload: {
@@ -188,7 +202,7 @@ export function loadClan(clanId: string): ClansActionCreators {
   };
 }
 
-export function createClan(data: any): ClansActionCreators {
+export function createClan(data: any): CreateClanActionCreator {
   return {
     types: [CREATE_CLAN, CREATE_CLAN_SUCCESS, CREATE_CLAN_FAIL],
     payload: {
@@ -202,7 +216,7 @@ export function createClan(data: any): ClansActionCreators {
   };
 }
 
-export function leaveClan(clanId: string): ClansActionCreators {
+export function leaveClan(clanId: string): LeaveClanActionCreator {
   return {
     types: [LEAVE_CLAN, LEAVE_CLAN_SUCCESS, LEAVE_CLAN_FAIL],
     payload: {
@@ -218,7 +232,7 @@ export function leaveClan(clanId: string): ClansActionCreators {
 export function loadClanInvitations(
   type: string,
   id: string
-): ClanInvitationsActionCreators {
+): LoadClanInvitationsActionCreator {
   return {
     types: [
       LOAD_CLAN_INVITATIONS,
@@ -236,8 +250,8 @@ export function loadClanInvitations(
 }
 
 export function loadClanInvitation(
-  invitationId: string
-): ClanInvitationsActionCreators {
+  invitationId: InvitationId
+): LoadClanInvitationActionCreator {
   return {
     types: [
       LOAD_CLAN_INVITATION,
@@ -255,9 +269,9 @@ export function loadClanInvitation(
 }
 
 export function sendClanInvitation(
-  clanId,
-  userId
-): ClanInvitationsActionCreators {
+  clanId: ClanId,
+  userId: UserId
+): SendClanInvitationActionCreator {
   return {
     types: [
       SEND_CLAN_INVITATION,
@@ -279,8 +293,8 @@ export function sendClanInvitation(
 }
 
 export function acceptClanInvitation(
-  invitationId: string
-): ClanInvitationsActionCreators {
+  invitationId: InvitationId
+): AcceptClanInvitationActionCreator {
   return {
     types: [
       ACCEPT_CLAN_INVITATION,
@@ -298,8 +312,8 @@ export function acceptClanInvitation(
 }
 
 export function declineClanInvitation(
-  invitationId: string
-): ClanInvitationsActionCreators {
+  invitationId: InvitationId
+): DeclineClanInvitationActionCreator {
   return {
     types: [
       DECLINE_CLAN_INVITATION,
@@ -316,7 +330,9 @@ export function declineClanInvitation(
   };
 }
 
-export function downloadClanLogo(clanId: string): ClanLogosActionCreators {
+export function downloadClanLogo(
+  clanId: ClanId
+): DownloadClanLogoActionCreator {
   return {
     types: [
       DOWNLOAD_CLAN_LOGO,
@@ -334,9 +350,9 @@ export function downloadClanLogo(clanId: string): ClanLogosActionCreators {
 }
 
 export function uploadClanLogo(
-  clanId: string,
+  clanId: ClanId,
   data: any
-): ClanLogosActionCreators {
+): UploadClanLogoActionCreator {
   return {
     types: [UPLOAD_CLAN_LOGO, UPLOAD_CLAN_LOGO_SUCCESS, UPLOAD_CLAN_LOGO_FAIL],
     payload: {
@@ -350,7 +366,7 @@ export function uploadClanLogo(
   };
 }
 
-export function loadClanMembers(clanId: string): ClanMembersActionCreators {
+export function loadClanMembers(clanId: ClanId): LoadClanMembersActionCreator {
   return {
     types: [
       LOAD_CLAN_MEMBERS,
@@ -368,9 +384,9 @@ export function loadClanMembers(clanId: string): ClanMembersActionCreators {
 }
 
 export function kickClanMember(
-  clanId: string,
-  memberId: string
-): ClanMembersActionCreators {
+  clanId: ClanId,
+  memberId: MemberId
+): KickClanMemberActionCreator {
   return {
     types: [KICK_CLAN_MEMBER, KICK_CLAN_MEMBER_SUCCESS, KICK_CLAN_MEMBER_FAIL],
     payload: {

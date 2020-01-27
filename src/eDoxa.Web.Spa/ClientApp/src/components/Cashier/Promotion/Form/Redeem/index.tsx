@@ -85,13 +85,8 @@ const enhance = compose<InnerProps, OutterProps>(
         )
       );
     },
-    validate: (values, { promotionOptions }) => {
+    validate: () => {
       const errors: FormErrors<FormData> = {};
-      // for (let [key, value] of Object.entries(promotionOptions)) {
-      //   if (!promotionOptions[key].excluded) {
-      //     errors[key] = getFieldValidationRuleMessage(value, values[key]);
-      //   }
-      // }
       return errors;
     }
   })

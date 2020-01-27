@@ -45,12 +45,6 @@ import {
   CONFIRM_USER_EMAIL,
   CONFIRM_USER_EMAIL_SUCCESS,
   CONFIRM_USER_EMAIL_FAIL,
-  UserProfileActionCreators,
-  UserDoxatagHistoryActionCreators,
-  UserAddressBookActionCreators,
-  UserPhoneActionCreators,
-  UserEmailActionCreators,
-  UserPasswordActionCreators,
   LOGIN_USER_ACCOUNT,
   LOGIN_USER_ACCOUNT_SUCCESS,
   LOGIN_USER_ACCOUNT_FAIL,
@@ -63,7 +57,22 @@ import {
   RegisterUserAccountRequest,
   RegisterUserAccountActionCreator,
   LoginUserAccountActionCreator,
-  LogoutUserAccountActionCreator
+  LogoutUserAccountActionCreator,
+  LoadUserAddressBookActionCreator,
+  CreateUserAddressActionCreator,
+  UpdateUserAddressActionCreator,
+  DeleteUserAddressActionCreator,
+  LoadUserDoxatagHistoryActionCreator,
+  ChangeUserDoxatagActionCreator,
+  LoadUserEmailActionCreator,
+  ConfirmUserEmailActionCreator,
+  LoadUserProfileActionCreator,
+  CreateUserProfileActionCreator,
+  UpdateUserProfileActionCreator,
+  ForgotUserPasswordActionCreator,
+  ResetUserPasswordActionCreator,
+  LoadUserPhoneActionCreator,
+  UpdateUserPhoneActionCreator
 } from "./types";
 
 import { AddressId } from "types";
@@ -72,8 +81,9 @@ import {
   AXIOS_PAYLOAD_CLIENT_DEFAULT
 } from "utils/axios/types";
 import { Dispatch } from "react";
+import { RegisterUserAccountFormData } from "components/User/Account/Form/Register";
 
-export function loadUserAddressBook(): UserAddressBookActionCreators {
+export function loadUserAddressBook(): LoadUserAddressBookActionCreator {
   return {
     types: [
       LOAD_USER_ADDRESSBOOK,
@@ -93,7 +103,7 @@ export function loadUserAddressBook(): UserAddressBookActionCreators {
 export function createUserAddress(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserAddressBookActionCreators {
+): CreateUserAddressActionCreator {
   return {
     types: [
       CREATE_USER_ADDRESS,
@@ -116,7 +126,7 @@ export function updateUserAddress(
   addressId: AddressId,
   data: any,
   meta: AxiosActionCreatorMeta
-): UserAddressBookActionCreators {
+): UpdateUserAddressActionCreator {
   return {
     types: [
       UPDATE_USER_ADDRESS,
@@ -138,7 +148,7 @@ export function updateUserAddress(
 export function deleteUserAddress(
   addressId: AddressId,
   meta: AxiosActionCreatorMeta
-): UserAddressBookActionCreators {
+): DeleteUserAddressActionCreator {
   return {
     types: [
       DELETE_USER_ADDRESS,
@@ -156,7 +166,7 @@ export function deleteUserAddress(
   };
 }
 
-export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
+export function loadUserDoxatagHistory(): LoadUserDoxatagHistoryActionCreator {
   return {
     types: [
       LOAD_USER_DOXATAGHISTORY,
@@ -176,7 +186,7 @@ export function loadUserDoxatagHistory(): UserDoxatagHistoryActionCreators {
 export function changeUserDoxatag(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserDoxatagHistoryActionCreators {
+): ChangeUserDoxatagActionCreator {
   return {
     types: [
       CHANGE_USER_DOXATAG,
@@ -195,7 +205,7 @@ export function changeUserDoxatag(
   };
 }
 
-export function loadUserEmail(): UserEmailActionCreators {
+export function loadUserEmail(): LoadUserEmailActionCreator {
   return {
     types: [LOAD_USER_EMAIL, LOAD_USER_EMAIL_SUCCESS, LOAD_USER_EMAIL_FAIL],
     payload: {
@@ -211,7 +221,7 @@ export function loadUserEmail(): UserEmailActionCreators {
 export function confirmUserEmail(
   userId: string,
   code: string
-): UserEmailActionCreators {
+): ConfirmUserEmailActionCreator {
   return {
     types: [
       CONFIRM_USER_EMAIL,
@@ -232,7 +242,7 @@ export function confirmUserEmail(
   };
 }
 
-export function loadUserProfile(): UserProfileActionCreators {
+export function loadUserProfile(): LoadUserProfileActionCreator {
   return {
     types: [
       LOAD_USER_PROFILE,
@@ -252,7 +262,7 @@ export function loadUserProfile(): UserProfileActionCreators {
 export function createUserProfile(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserProfileActionCreators | any {
+): CreateUserProfileActionCreator {
   return {
     types: [
       CREATE_USER_PROFILE,
@@ -260,6 +270,7 @@ export function createUserProfile(
       CREATE_USER_PROFILE_FAIL
     ],
     payload: {
+      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
         url: "/identity/api/profile",
@@ -273,7 +284,7 @@ export function createUserProfile(
 export function updateUserProfile(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserProfileActionCreators {
+): UpdateUserProfileActionCreator {
   return {
     types: [
       UPDATE_USER_PROFILE,
@@ -285,32 +296,33 @@ export function updateUserProfile(
       request: {
         method: "PUT",
         url: "/identity/api/profile",
-        data: {
-          firstName: data.firstName
-        }
+        data
       }
     },
     meta
   };
 }
 
-export function registerUserAccount(data: any, meta: AxiosActionCreatorMeta) {
+export function registerUserAccount(
+  data: RegisterUserAccountFormData,
+  meta: AxiosActionCreatorMeta
+) {
   return async (dispatch: Dispatch<RegisterUserAccountActionCreator>) => {
+    const dob: number[] = data.dob.split("/").map(x => Number(x));
     const request: RegisterUserAccountRequest = {
       email: data.email,
       password: data.password,
       country: data.countryIsoCode,
+      dob: {
+        month: dob[0],
+        day: dob[1],
+        year: dob[2]
+      },
       ip: await publicIp.v4({
         fallbackUrls: ["https://ifconfig.co/ip"]
       })
     };
-    dispatch(registerUserAccount(request, meta));
-  };
-  function registerUserAccount(
-    request: RegisterUserAccountRequest,
-    meta: AxiosActionCreatorMeta
-  ): RegisterUserAccountActionCreator {
-    return {
+    const actionCreator: RegisterUserAccountActionCreator = {
       types: [
         REGISTER_USER_ACCOUNT,
         REGISTER_USER_ACCOUNT_SUCCESS,
@@ -327,7 +339,8 @@ export function registerUserAccount(data: any, meta: AxiosActionCreatorMeta) {
       },
       meta
     };
-  }
+    dispatch(actionCreator);
+  };
 }
 
 export function loginUserAccount(
@@ -380,7 +393,7 @@ export function logoutUserAccount(
 export function forgotUserPassword(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserPasswordActionCreators {
+): ForgotUserPasswordActionCreator {
   return {
     types: [
       FORGOT_USER_PASSWORD,
@@ -402,7 +415,7 @@ export function forgotUserPassword(
 export function resetUserPassword(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserPasswordActionCreators {
+): ResetUserPasswordActionCreator {
   return {
     types: [
       RESET_USER_PASSWORD,
@@ -421,7 +434,7 @@ export function resetUserPassword(
   };
 }
 
-export function loadUserPhone(): UserPhoneActionCreators {
+export function loadUserPhone(): LoadUserPhoneActionCreator {
   return {
     types: [LOAD_USER_PHONE, LOAD_USER_PHONE_SUCCESS, LOAD_USER_PHONE_FAIL],
     payload: {
@@ -437,7 +450,7 @@ export function loadUserPhone(): UserPhoneActionCreators {
 export function updateUserPhone(
   data: any,
   meta: AxiosActionCreatorMeta
-): UserPhoneActionCreators {
+): UpdateUserPhoneActionCreator {
   return {
     types: [
       UPDATE_USER_PHONE,

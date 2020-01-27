@@ -8,20 +8,21 @@ import {
   DropdownItem,
   Form
 } from "reactstrap";
-import { ApplicationPaths } from "./ApiAuthorizationConstants";
+import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 import { LinkContainer } from "react-router-bootstrap";
 import authorizeService from "utils/oidc/AuthorizeService";
-import { DOXATAG_CLAIM_TYPE, EMAIL_CLAIM_TYPE } from "./types";
+import { DOXATAG_CLAIM_TYPE, EMAIL_CLAIM_TYPE } from "utils/oidc/types";
 import {
-  getUserProfileTransactionHistoryPath,
-  getUserProfileChallengeHistoryPath,
-  getUserProfilePaymentMethodsPath,
-  getUserProfileGamesPath,
-  getUserProfilePromotionalCodePath,
-  getRegisterPath
+  getProfileTransactionHistoryPath,
+  getProfileChallengeHistoryPath,
+  getProfilePaymentMethodsPath,
+  getProfileGamesPath,
+  getProfilePromotionalCodePath,
+  getAccountRegisterPath
 } from "utils/coreui/constants";
 
-class LoginMenu extends Component {
+class AppDropdown extends Component<any, any> {
+  _subscription: number;
   constructor(props) {
     super(props);
 
@@ -97,21 +98,21 @@ class LoginMenu extends Component {
             >
               Arena
             </DropdownItem>
-            <LinkContainer to={getUserProfileChallengeHistoryPath()}>
+            <LinkContainer to={getProfileChallengeHistoryPath()}>
               <DropdownItem>Challenge History</DropdownItem>
             </LinkContainer>
             <DropdownItem header>Cashier</DropdownItem>
-            <LinkContainer to={getUserProfilePaymentMethodsPath()}>
+            <LinkContainer to={getProfilePaymentMethodsPath()}>
               <DropdownItem>Payment Methods</DropdownItem>
             </LinkContainer>
-            <LinkContainer to={getUserProfileTransactionHistoryPath()}>
+            <LinkContainer to={getProfileTransactionHistoryPath()}>
               <DropdownItem>Transaction History</DropdownItem>
             </LinkContainer>
-            <LinkContainer to={getUserProfilePromotionalCodePath()}>
+            <LinkContainer to={getProfilePromotionalCodePath()}>
               <DropdownItem>Promotional Code</DropdownItem>
             </LinkContainer>
             <DropdownItem header>Connections</DropdownItem>
-            <LinkContainer to={getUserProfileGamesPath()}>
+            <LinkContainer to={getProfileGamesPath()}>
               <DropdownItem>Games</DropdownItem>
             </LinkContainer>
             <DropdownItem header />
@@ -146,7 +147,7 @@ class LoginMenu extends Component {
           </Button>
         </LinkContainer>
         <Button
-          href={getRegisterPath()}
+          href={getAccountRegisterPath()}
           size="sm"
           tag="a"
           color="primary"
@@ -159,4 +160,4 @@ class LoginMenu extends Component {
   }
 }
 
-export default LoginMenu;
+export default AppDropdown;

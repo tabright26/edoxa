@@ -1,12 +1,12 @@
 import {
   LOAD_STRIPE_ACCOUNT,
   LOAD_STRIPE_ACCOUNT_SUCCESS,
-  LOAD_STRIPE_ACCOUNT_FAIL,
-  StripeAccountActions
+  LOAD_STRIPE_ACCOUNT_FAIL
 } from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { StripeAccountState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: StripeAccountState = {
   data: null,
@@ -14,11 +14,8 @@ export const initialState: StripeAccountState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  StripeAccountState,
-  StripeAccountActions
-> = produce(
-  (draft: Draft<StripeAccountState>, action: StripeAccountActions) => {
+export const reducer: Reducer<StripeAccountState, RootActions> = produce(
+  (draft: Draft<StripeAccountState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_STRIPE_ACCOUNT:
         draft.error = null;

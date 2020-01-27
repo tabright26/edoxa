@@ -13,11 +13,9 @@ import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { attachStripePaymentMethod } from "store/actions/payment";
-import {
-  StripePaymentMethodsActions,
-  ATTACH_STRIPE_PAYMENTMETHOD_FAIL
-} from "store/actions/payment/types";
+import { ATTACH_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
+import { RootActions } from "store/types";
 
 interface FormData {}
 
@@ -67,7 +65,7 @@ const enhance = compose<InnerProps, OutterProps>(
       stripe.createPaymentMethod("card").then(result => {
         if (result.paymentMethod) {
           return dispatch(attachStripePaymentMethod(result.paymentMethod)).then(
-            (action: StripePaymentMethodsActions) => {
+            (action: RootActions) => {
               switch (action.type) {
                 case ATTACH_STRIPE_PAYMENTMETHOD_FAIL: {
                   throwSubmissionError(action.error);

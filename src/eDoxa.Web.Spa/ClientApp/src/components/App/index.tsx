@@ -19,7 +19,9 @@ import {
   getEmailConfirmPath,
   getPasswordForgotPath,
   getPasswordResetPath,
-  getRegisterPath
+  getAccountRegisterPath,
+  getAccountLogoutPath,
+  getAccountLoginPath
 } from "utils/coreui/constants";
 
 const ApiAuthorizationRoutes = React.lazy(() =>
@@ -30,7 +32,9 @@ const ErrorPage403 = React.lazy(() => import("views/Errors/403"));
 const ErrorPage404 = React.lazy(() => import("views/Errors/404"));
 const ErrorPage500 = React.lazy(() => import("views/Errors/500"));
 const EmailConfirm = React.lazy(() => import("views/Account/Email/Comfirm"));
-const PasswordForgot = React.lazy(() => import("views/Account/Password/Forgot"));
+const PasswordForgot = React.lazy(() =>
+  import("views/Account/Password/Forgot")
+);
 const PasswordReset = React.lazy(() => import("views/Account/Password/Reset"));
 const DefaultLayout = React.lazy(() =>
   import("components/Shared/Layout/Default")
@@ -82,19 +86,19 @@ const App = () => (
           />
           <Route<RouteProps>
             exact
-            path="/login"
+            path={getAccountLoginPath()}
             name="Login"
             render={() => <Login />}
           />
           <Route<RouteProps>
             exact
-            path="/logout"
+            path={getAccountLogoutPath()}
             name="Logout"
             render={() => <Logout />}
           />
           <Route<RouteProps>
             exact
-            path={getRegisterPath()}
+            path={getAccountRegisterPath()}
             name="Register"
             render={() => <Register />}
           />

@@ -62,7 +62,9 @@ const CustomForm: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
-    <FormField.CountryIsoCode placeholder={country.label} disabled />
+    <FormGroup>
+      <FormField.CountryIsoCode placeholder={country.label} disabled />
+    </FormGroup>
     <Field
       type="text"
       name="line1"

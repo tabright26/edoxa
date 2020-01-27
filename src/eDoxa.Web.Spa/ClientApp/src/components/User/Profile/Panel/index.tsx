@@ -1,5 +1,4 @@
 import React, { useState, FunctionComponent, useEffect } from "react";
-import Moment from "react-moment";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardHeader, CardBody } from "reactstrap";
 import UserProfileForm from "components/User/Profile/Form";
@@ -9,12 +8,16 @@ import { Loading } from "components/Shared/Loading";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
 import { loadUserProfile } from "store/actions/identity";
+import { withUserProfileDob } from "utils/oidc/containers";
+import Moment from "react-moment";
 
 const Profile: FunctionComponent<any> = ({
   className,
-  profile: { data, loading, error },
-  loadUserProfile
+  profile: { data, loading },
+  loadUserProfile,
+  dob
 }) => {
+  console.log(dob);
   useEffect((): void => {
     if (data === null) {
       loadUserProfile();
@@ -48,17 +51,12 @@ const Profile: FunctionComponent<any> = ({
             <dd className="col-sm-9">
               {data.firstName} {data.lastName}
             </dd>
-            <dd className="col-sm-3 text-muted">Date of birth</dd>
-            <dd className="col-sm-9">
-              {data.dob && (
-                <Moment
-                  date={[data.dob.year, data.dob.month - 1, data.dob.day]}
-                  format="ll"
-                />
-              )}
+            <dd className="col-sm-3 text-muted">Gender</dd>
+            <dd className="col-sm-9">{data.gender}</dd>
+            <dd className="col-sm-3 mb-0 text-muted">Date of birth</dd>
+            <dd className="col-sm-9 mb-0">
+              <Moment date={[dob.year, dob.month - 1, dob.day]} format="ll" />
             </dd>
-            <dd className="col-sm-3 text-muted mb-0">Gender</dd>
-            <dd className="col-sm-9 mb-0">{data.gender}</dd>
           </dl>
         ) : (
           <UserProfileForm.Update
@@ -76,12 +74,15 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = dispatch => {
   return {
     loadUserProfile: () => dispatch(loadUserProfile())
   };
 };
 
-const enhance = compose<any, any>(connect(mapStateToProps, mapDispatchToProps));
+const enhance = compose<any, any>(
+  withUserProfileDob,
+  connect(mapStateToProps, mapDispatchToProps)
+);
 
 export default enhance(Profile);

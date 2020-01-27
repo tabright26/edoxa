@@ -10,7 +10,7 @@ import {
   CardImg
 } from "reactstrap";
 import UserAccountForm from "components/User/Account/Form";
-import { getRegisterPath, getHomePath } from "utils/coreui/constants";
+import { getAccountRegisterPath, getHomePath } from "utils/coreui/constants";
 import { LinkContainer } from "react-router-bootstrap";
 import Layout from "components/Shared/Layout";
 import logo from "assets/img/brand/logo.png";
@@ -47,7 +47,7 @@ const Login: FunctionComponent = () => (
                     sed do eiusmod tempor incididunt ut labore et dolore magna
                     aliqua.
                   </p>
-                  <LinkContainer to={getRegisterPath()}>
+                  <LinkContainer to={getAccountRegisterPath()}>
                     <Button
                       color="primary"
                       className="mt-3"

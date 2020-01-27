@@ -34,7 +34,7 @@ const Validate: FunctionComponent<Props> = ({ handleSubmit }) => (
 const enhance = compose<InnerProps, OutterProps>(
   reduxForm<FormData, Props>({
     form: VALIDATE_GAME_AUTHENTICATION_FORM,
-    onSubmit: async (_values, dispatch: any, { gameOptions: gameOption }) => {
+    onSubmit: async (_values, dispatch, { gameOptions: gameOption }) => {
       try {
         return await new Promise((resolve, reject) => {
           const meta: AxiosActionCreatorMeta = { resolve, reject };

@@ -12,15 +12,15 @@ import { RouteProps } from "utils/router/types";
 import { LinkContainer } from "react-router-bootstrap";
 import { Loading } from "components/Shared/Loading";
 import {
-  getUserProfileOverviewPath,
-  getUserProfileTransactionHistoryPath,
-  getUserProfilePaymentMethodsPath,
-  getUserProfileGamesPath,
-  getUserProfileSecurityPath,
-  getUserProfileDetailsPath,
+  getProfileOverviewPath,
+  getProfileTransactionHistoryPath,
+  getProfilePaymentMethodsPath,
+  getProfileGamesPath,
+  getProfileSecurityPath,
+  getProfileDetailsPath,
   getError404Path,
-  getUserProfilePromotionalCodePath,
-  getUserProfileChallengeHistoryPath
+  getProfilePromotionalCodePath,
+  getProfileChallengeHistoryPath
 } from "utils/coreui/constants";
 
 const ProfileOverview = React.lazy(() => import("./Overview"));
@@ -42,13 +42,13 @@ const Profile: FunctionComponent = () => (
           <strong>Profile</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={getUserProfileOverviewPath()}>
+          <LinkContainer to={getProfileOverviewPath()}>
             <ListGroupItem>Overview</ListGroupItem>
           </LinkContainer>
-          <LinkContainer to={getUserProfileDetailsPath()}>
+          <LinkContainer to={getProfileDetailsPath()}>
             <ListGroupItem>Details</ListGroupItem>
           </LinkContainer>
-          <LinkContainer to={getUserProfileSecurityPath()}>
+          <LinkContainer to={getProfileSecurityPath()}>
             <ListGroupItem>Security</ListGroupItem>
           </LinkContainer>
         </ListGroup>
@@ -58,7 +58,7 @@ const Profile: FunctionComponent = () => (
           <strong>Arena</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={getUserProfileChallengeHistoryPath()}>
+          <LinkContainer to={getProfileChallengeHistoryPath()}>
             <ListGroupItem>Challenge History</ListGroupItem>
           </LinkContainer>
         </ListGroup>
@@ -68,13 +68,13 @@ const Profile: FunctionComponent = () => (
           <strong>Cashier</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={getUserProfilePaymentMethodsPath()}>
+          <LinkContainer to={getProfilePaymentMethodsPath()}>
             <ListGroupItem>Payment Methods</ListGroupItem>
           </LinkContainer>
-          <LinkContainer to={getUserProfileTransactionHistoryPath()}>
+          <LinkContainer to={getProfileTransactionHistoryPath()}>
             <ListGroupItem>Transaction History</ListGroupItem>
           </LinkContainer>
-          <LinkContainer to={getUserProfilePromotionalCodePath()}>
+          <LinkContainer to={getProfilePromotionalCodePath()}>
             <ListGroupItem>Promotional Code</ListGroupItem>
           </LinkContainer>
         </ListGroup>
@@ -84,7 +84,7 @@ const Profile: FunctionComponent = () => (
           <strong>Connections</strong>
         </CardHeader>
         <ListGroup flush>
-          <LinkContainer to={getUserProfileGamesPath()}>
+          <LinkContainer to={getProfileGamesPath()}>
             <ListGroupItem>Games</ListGroupItem>
           </LinkContainer>
         </ListGroup>
@@ -94,49 +94,49 @@ const Profile: FunctionComponent = () => (
       <Suspense fallback={<Loading />}>
         <Switch>
           <Route<RouteProps>
-            path={getUserProfileOverviewPath()}
+            path={getProfileOverviewPath()}
             exact
             name="Profile Overview"
             component={ProfileOverview}
           />
           <Route<RouteProps>
-            path={getUserProfileDetailsPath()}
+            path={getProfileDetailsPath()}
             exact
             name="Profile Details"
             component={ProfileDetails}
           />
           <Route<RouteProps>
-            path={getUserProfileSecurityPath()}
+            path={getProfileSecurityPath()}
             exact
             name="Security"
             component={ProfileSecurity}
           />
           <Route<RouteProps>
-            path={getUserProfileGamesPath()}
+            path={getProfileGamesPath()}
             exact
             name="Connections"
             component={ProfileConnections}
           />
           <Route<RouteProps>
-            path={getUserProfilePaymentMethodsPath()}
+            path={getProfilePaymentMethodsPath()}
             exact
             name="Payment Methods"
             component={ProfilePaymentMethods}
           />
           <Route<RouteProps>
-            path={getUserProfileTransactionHistoryPath()}
+            path={getProfileTransactionHistoryPath()}
             exact
             name="Transaction History"
             component={ProfileTransactionHistory}
           />
           <Route<RouteProps>
-            path={getUserProfilePromotionalCodePath()}
+            path={getProfilePromotionalCodePath()}
             exact
             name="Promotional Code"
             component={ProfilePromotionalCode}
           />
           <Route<RouteProps>
-            path={getUserProfileChallengeHistoryPath()}
+            path={getProfileChallengeHistoryPath()}
             exact
             name="Challenge History"
             component={ProfileChallengeHistory}

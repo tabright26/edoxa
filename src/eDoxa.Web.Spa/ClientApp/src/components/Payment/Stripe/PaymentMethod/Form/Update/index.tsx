@@ -13,12 +13,9 @@ import { compose } from "recompose";
 import FormField from "components/Shared/Field";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateStripePaymentMethod } from "store/actions/payment";
-import {
-  StripePaymentMethodsActions,
-  UPDATE_STRIPE_PAYMENTMETHOD_FAIL
-} from "store/actions/payment/types";
+import { UPDATE_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
-import { RootState } from "store/types";
+import { RootState, RootActions } from "store/types";
 import { connect, MapStateToProps } from "react-redux";
 import { BrandProp } from "components/Payment/Stripe/PaymentMethod/Card/Icon";
 
@@ -98,7 +95,7 @@ const enhance = compose<InnerProps, OutterProps>(
           values.card.expMonth,
           values.card.expYear
         )
-      ).then((action: StripePaymentMethodsActions) => {
+      ).then((action: RootActions) => {
         switch (action.type) {
           case UPDATE_STRIPE_PAYMENTMETHOD_FAIL: {
             throwSubmissionError(action.error);
@@ -106,8 +103,8 @@ const enhance = compose<InnerProps, OutterProps>(
           }
         }
       }),
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
-    validate: values => {
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
+    validate: () => {
       const errors: FormErrors<FormData> = {};
       // if (!values.card.expMonth) {
       //   errors.card = CC_MONTH_REQUIRED;

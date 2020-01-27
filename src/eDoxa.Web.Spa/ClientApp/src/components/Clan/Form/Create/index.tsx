@@ -7,18 +7,6 @@ import { CREATE_CLAN_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 
-const validate = values => {
-  var nameRegExp = new RegExp("^[a-zA-Z0-9- .,]{3,20}$");
-  const errors: any = {};
-  if (!values.name) {
-    errors.name = "Name is required";
-  } else if (!nameRegExp.test(values.name)) {
-    errors.name =
-      "Invalid format. Must between 3-20 characters and alphanumeric. Hyphens, spaces, dot and coma allowed.";
-  }
-  return errors;
-};
-
 const CustomForm: FunctionComponent<any> = ({
   handleSubmit,
   handleCancel,
@@ -43,7 +31,17 @@ const CustomForm: FunctionComponent<any> = ({
 const enhance = compose<any, any>(
   reduxForm<any, { handleCancel: () => any }, string>({
     form: CREATE_CLAN_FORM,
-    validate
+    validate: values => {
+      var nameRegExp = new RegExp("^[a-zA-Z0-9- .,]{3,20}$");
+      const errors: any = {};
+      if (!values.name) {
+        errors.name = "Name is required";
+      } else if (!nameRegExp.test(values.name)) {
+        errors.name =
+          "Invalid format. Must between 3-20 characters and alphanumeric. Hyphens, spaces, dot and coma allowed.";
+      }
+      return errors;
+    }
   })
 );
 

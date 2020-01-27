@@ -6,11 +6,9 @@ import { DELETE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { detachStripePaymentMethod } from "store/actions/payment";
-import {
-  StripePaymentMethodsActions,
-  DETACH_STRIPE_PAYMENTMETHOD_FAIL
-} from "store/actions/payment/types";
+import { DETACH_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
+import { RootActions } from "store/types";
 
 interface FormData {}
 
@@ -45,7 +43,7 @@ const enhance = compose<InnerProps, OutterProps>(
     form: DELETE_STRIPE_PAYMENTMETHOD_FORM,
     onSubmit: async (_values, dispatch: any, { paymentMethodId }) =>
       await dispatch(detachStripePaymentMethod(paymentMethodId)).then(
-        (action: StripePaymentMethodsActions) => {
+        (action: RootActions) => {
           switch (action.type) {
             case DETACH_STRIPE_PAYMENTMETHOD_FAIL: {
               throwSubmissionError(action.error);

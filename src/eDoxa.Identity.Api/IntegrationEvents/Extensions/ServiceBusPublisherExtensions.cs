@@ -56,7 +56,13 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                     Verified = user.EmailConfirmed
                 },
                 Country = user.Country.ToEnum<EnumCountryIsoCode>(),
-                Ip = ip
+                Ip = ip,
+                Dob = new DobDto
+                {
+                    Day = user.Dob.Day,
+                    Month = user.Dob.Month,
+                    Year = user.Dob.Year
+                }
             };
 
             await publisher.PublishAsync(integrationEvent);
@@ -107,13 +113,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
                 {
                     FirstName = profile.FirstName,
                     LastName = profile.LastName,
-                    Gender = profile.Gender.ToEnum<EnumGender>(),
-                    Dob = new DobDto
-                    {
-                        Day = profile.Dob.Day,
-                        Month = profile.Dob.Month,
-                        Year = profile.Dob.Year
-                    }
+                    Gender = profile.Gender.ToEnum<EnumGender>()
                 }
             };
 

@@ -10,12 +10,12 @@ import {
   DELETE_USER_ADDRESS_FAIL,
   UPDATE_USER_ADDRESS,
   UPDATE_USER_ADDRESS_SUCCESS,
-  UPDATE_USER_ADDRESS_FAIL,
-  UserAddressBookActions
+  UPDATE_USER_ADDRESS_FAIL
 } from "store/actions/identity/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserAddressBookState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: UserAddressBookState = {
   data: [],
@@ -23,11 +23,8 @@ export const initialState: UserAddressBookState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  UserAddressBookState,
-  UserAddressBookActions
-> = produce(
-  (draft: Draft<UserAddressBookState>, action: UserAddressBookActions) => {
+export const reducer: Reducer<UserAddressBookState, RootActions> = produce(
+  (draft: Draft<UserAddressBookState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_ADDRESSBOOK: {
         draft.error = null;

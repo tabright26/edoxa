@@ -14,6 +14,7 @@ message RegisterRequest {
   string password = 2;
   EnumCountryIsoCode country = 3;
   string ip = 4;
+  DobDto dob = 5;
 }
 
 message LoginRequest {
@@ -44,7 +45,6 @@ message CreateProfileRequest {
   string firstName = 1;
   string lastName = 2;
   EnumGender gender = 3;
-  DobDto dob = 4;
 }
 
 message ForgotPasswordRequest {

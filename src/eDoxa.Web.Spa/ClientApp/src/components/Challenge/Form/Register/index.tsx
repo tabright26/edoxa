@@ -5,10 +5,6 @@ import Button from "components/Shared/Button";
 import { REGISTER_CHALLENGE_PARTICIPANT_FROM } from "utils/form/constants";
 import { compose } from "recompose";
 import { registerChallengeParticipant } from "store/actions/challenge";
-import {
-  ChallengesActions,
-  REGISTER_CHALLENGE_PARTICIPANT_FAIL
-} from "store/actions/challenge/types";
 import { toastr } from "react-redux-toastr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { ChallengeId, UserId } from "types";
@@ -40,22 +36,15 @@ const enhance = compose<InnerProps, OutterProps>(
   withRouter,
   reduxForm<FormData, Props>({
     form: REGISTER_CHALLENGE_PARTICIPANT_FROM,
-    onSubmit: async (_values, dispatch: any, { match }) =>
-      await dispatch(
-        registerChallengeParticipant(match.params.challengeId)
-      ).then((action: ChallengesActions) => {
-        switch (action.type) {
-          case REGISTER_CHALLENGE_PARTICIPANT_FAIL: {
-            return toastr.error(
-              "ERROR",
-              "An error occurred while registering as a challenge participant."
-            );
-          }
-          default: {
-            return Promise.resolve();
-          }
-        }
-      })
+    onSubmit: (_values, dispatch, { match }) => {
+      dispatch(registerChallengeParticipant(match.params.challengeId));
+    },
+    onSubmitFail: () => {
+      toastr.error(
+        "ERROR",
+        "An error occurred while registering as a challenge participant."
+      );
+    }
   })
 );
 

@@ -54,7 +54,7 @@ namespace eDoxa.Identity.Domain.Services
 
         Task<UserProfile?> GetProfileAsync(User user);
 
-        Task<UserDob?> GetDobAsync(User user);
+        Task<UserDob> GetDobAsync(User user);
 
         Task<string?> GetFirstNameAsync(User user);
 
@@ -242,10 +242,7 @@ namespace eDoxa.Identity.Domain.Services
             User user,
             string firstName,
             string lastName,
-            Gender gender,
-            int dobYear,
-            int dobMonth,
-            int dobDay
+            Gender gender
         );
 
         Task<IDomainValidationResult> UpdateProfileAsync(User user, string firstName);

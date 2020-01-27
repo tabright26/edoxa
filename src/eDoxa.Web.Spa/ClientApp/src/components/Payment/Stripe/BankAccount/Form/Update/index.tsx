@@ -8,10 +8,7 @@ import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateStripeBankAccount } from "store/actions/payment";
 import { injectStripe } from "react-stripe-elements";
-import {
-  StripeBankAccountActions,
-  UPDATE_STRIPE_BANKACCOUNT_FAIL
-} from "store/actions/payment/types";
+import { UPDATE_STRIPE_BANKACCOUNT_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
 import FormField from "components/Payment/Stripe/BankAccount/Field";
 import {
@@ -19,7 +16,7 @@ import {
   HocUserProfileCountryStateProps
 } from "utils/oidc/containers";
 import { connect, MapStateToProps } from "react-redux";
-import { RootState } from "store/types";
+import { RootState, RootActions } from "store/types";
 
 interface FormData {
   currency: string;
@@ -115,7 +112,7 @@ const enhance = compose<InnerProps, OutterProps>(
       return await stripe.createToken("bank_account", options).then(result => {
         if (result.token) {
           return dispatch(updateStripeBankAccount(result.token)).then(
-            (action: StripeBankAccountActions) => {
+            (action: RootActions) => {
               switch (action.type) {
                 case UPDATE_STRIPE_BANKACCOUNT_FAIL: {
                   throwSubmissionError(action.error);
@@ -129,7 +126,7 @@ const enhance = compose<InnerProps, OutterProps>(
         }
       });
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
     validate: () => {
       const errors: FormErrors<FormData> = {};
       return errors;

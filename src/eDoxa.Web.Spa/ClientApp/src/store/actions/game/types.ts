@@ -34,13 +34,6 @@ export type ValidateGameAuthenticationAction = AxiosAction<
   ValidateGameAuthenticationType
 >;
 
-export type GameAuthenticationActionCreators =
-  | ValidateGameAuthenticationActionCreator
-  | GenerateGameAuthenticationActionCreator;
-export type GameAuthenticationActions =
-  | ValidateGameAuthenticationAction
-  | GenerateGameAuthenticationAction;
-
 export const UNLINK_GAME_CREDENTIAL = "UNLINK_GAME_CREDENTIAL";
 export const UNLINK_GAME_CREDENTIAL_SUCCESS = "UNLINK_GAME_CREDENTIAL_SUCCESS";
 export const UNLINK_GAME_CREDENTIAL_FAIL = "UNLINK_GAME_CREDENTIAL_FAIL";
@@ -53,6 +46,3 @@ export type UnlinkGameCredentialActionCreator = AxiosActionCreator<
   UnlinkGameCredentialType
 >;
 export type UnlinkGameCredentialAction = AxiosAction<UnlinkGameCredentialType>;
-
-export type GameCredentialActionCreators = UnlinkGameCredentialActionCreator;
-export type GameCredentialActions = UnlinkGameCredentialAction;

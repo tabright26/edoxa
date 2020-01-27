@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
@@ -51,7 +50,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                         It.IsAny<string>(),
                         It.IsAny<Country>(),
                         It.IsAny<string>(),
-                        It.IsAny<string>()))
+                        It.IsAny<string>(),
+                        It.IsAny<int>(),
+                        It.IsAny<int>(),
+                        It.IsAny<int>()))
                 .ReturnsAsync("AccountId")
                 .Verifiable();
 
@@ -89,7 +91,10 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<string>(),
                     It.IsAny<Country>(),
                     It.IsAny<string>(),
-                    It.IsAny<string>()),
+                    It.IsAny<string>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>()),
                 Times.Once);
 
             mockStripeService.Verify(referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);

@@ -4,7 +4,8 @@ import {
   Form,
   InputGroup,
   InputGroupAddon,
-  InputGroupText
+  InputGroupText,
+  Col
 } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
@@ -18,21 +19,26 @@ import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 import UserAddressField from "components/User/Address/Field";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFlag } from "@fortawesome/free-solid-svg-icons";
+import { faFlag, faBirthdayCake } from "@fortawesome/free-solid-svg-icons";
 import { RootState } from "store/types";
 import { connect, MapStateToProps } from "react-redux";
+import InputMask from "react-input-mask";
+import { getTermsOfServicesPath } from "utils/coreui/constants";
+import { Link } from "react-router-dom";
 
 type StateProps = {};
 
 type OwnProps = {};
 
-interface FormData {
+export interface RegisterUserAccountFormData {
   email: string;
   password: string;
   countryIsoCode: string;
+  dob: string;
 }
 
-type InnerProps = StateProps & InjectedFormProps<FormData, Props>;
+type InnerProps = StateProps &
+  InjectedFormProps<RegisterUserAccountFormData, Props>;
 
 type OutterProps = OwnProps;
 
@@ -68,44 +74,82 @@ const Register: FunctionComponent<Props> = ({ handleSubmit, error }) => (
         component={Input.Text}
       />
     </InputGroup>
-    <InputGroup className="mb-3">
-      <InputGroupAddon addonType="prepend">
-        <InputGroupText>
-          <i className="icon-lock"></i>
-        </InputGroupText>
-      </InputGroupAddon>
-      <Field
-        type="password"
-        name="password"
-        placeholder="Password"
-        size={null}
-        //autoComplete="password"
-        component={Input.Password}
-      />
-    </InputGroup>
-    <InputGroup className="mb-4">
-      <InputGroupAddon addonType="prepend">
-        <InputGroupText>
-          <i className="icon-lock"></i>
-        </InputGroupText>
-      </InputGroupAddon>
-      <Field
-        type="password"
-        name="newPassword"
-        placeholder="Repeat password"
-        size={null}
-        //autoComplete="new-password"
-        component={Input.Password}
-      />
-    </InputGroup>
-    <InputGroup className="mb-4">
-      <InputGroupAddon addonType="prepend">
-        <InputGroupText>
-          <FontAwesomeIcon icon={faFlag} />
-        </InputGroupText>
-      </InputGroupAddon>
-      <UserAddressField.CountryIsoCode placeholder="Country" />
-    </InputGroup>
+    <FormGroup row className="mb-3">
+      <Col sm={6}>
+        <InputGroup>
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="icon-lock"></i>
+            </InputGroupText>
+          </InputGroupAddon>
+          <Field
+            type="password"
+            name="password"
+            placeholder="Password"
+            size={null}
+            //autoComplete="password"
+            component={Input.Password}
+          />
+        </InputGroup>
+      </Col>
+      <Col sm={6}>
+        <InputGroup>
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <i className="icon-lock"></i>
+            </InputGroupText>
+          </InputGroupAddon>
+          <Field
+            type="password"
+            name="newPassword"
+            placeholder="Repeat password"
+            size={null}
+            //autoComplete="new-password"
+            component={Input.Password}
+          />
+        </InputGroup>
+      </Col>
+    </FormGroup>
+    <hr className="border-secondary" />
+    <FormGroup row className="mb-4">
+      <Col sm={6}>
+        <InputGroup>
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <FontAwesomeIcon icon={faBirthdayCake} />
+            </InputGroupText>
+          </InputGroupAddon>
+          <Field
+            type="text"
+            name="dob"
+            component={Input.Text}
+            placeholder="MM/DD/YYYY"
+            tag={InputMask}
+            mask="11/11/1111"
+            maskChar={null}
+            size={null}
+            formatChars={{
+              "1": "[0-9]",
+              A: "[A-Z]"
+            }}
+          />
+        </InputGroup>
+      </Col>
+      <Col sm={6}>
+        <InputGroup>
+          <InputGroupAddon addonType="prepend">
+            <InputGroupText>
+              <FontAwesomeIcon icon={faFlag} />
+            </InputGroupText>
+          </InputGroupAddon>
+          <UserAddressField.CountryIsoCode size={null} placeholder="Country" />
+        </InputGroup>
+      </Col>
+    </FormGroup>
+    <p className="mb-3">
+      By clicking this button, you agree to the{" "}
+      <Link to={getTermsOfServicesPath()}>terms of services</Link>.
+    </p>
     <FormGroup className="mb-0">
       <Button.Submit block>Create Account</Button.Submit>
     </FormGroup>
@@ -126,7 +170,7 @@ const mapStateToProps: MapStateToProps<
 
 const enhance = compose<InnerProps, OutterProps>(
   connect(mapStateToProps),
-  reduxForm<FormData, Props>({
+  reduxForm<RegisterUserAccountFormData, Props>({
     form: REGISTER_USER_ACCOUNT_FORM,
     onSubmit: async (values, dispatch) => {
       try {
@@ -142,7 +186,7 @@ const enhance = compose<InnerProps, OutterProps>(
       dispatch(push("/authentication/login"));
     },
     validate: () => {
-      const errors: FormErrors<FormData> = {};
+      const errors: FormErrors<RegisterUserAccountFormData> = {};
       //   for (let [key, value] of Object.entries(validatorOptions)) {
       //     if (!fieldsOptions[key].excluded) {
       //       errors[key] = getFieldValidationRuleMessage(value, values[key]);

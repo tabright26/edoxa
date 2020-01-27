@@ -1,5 +1,5 @@
 import { REACT_APP_AUTHORITY } from "keys";
-import { getUserProfileOverviewPath } from "utils/coreui/constants";
+import { getProfileOverviewPath } from "utils/coreui/constants";
 
 export const ApplicationName: string = "edoxa";
 
@@ -67,10 +67,10 @@ export const ApplicationPaths: ApplicationPaths = {
   LoginFailed: `${prefix}/${LoginActions.LoginFailed}`,
   LoginCallback: `${prefix}/${LoginActions.LoginCallback}`,
   Register: `${REACT_APP_AUTHORITY}/Identity/Account/Register`,
-  Profile: getUserProfileOverviewPath(),
+  Profile: getProfileOverviewPath(),
   LogOut: `${prefix}/${LogoutActions.Logout}`,
   LoggedOut: `${prefix}/${LogoutActions.LoggedOut}`,
   LogOutCallback: `${prefix}/${LogoutActions.LogoutCallback}`,
   IdentityRegisterPath: "/Identity/Account/Register",
-  IdentityManagePath: getUserProfileOverviewPath()
+  IdentityManagePath: getProfileOverviewPath()
 };

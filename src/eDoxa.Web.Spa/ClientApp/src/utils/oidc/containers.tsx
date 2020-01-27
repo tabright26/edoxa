@@ -1,9 +1,37 @@
 import React, { FunctionComponent } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { COUNTRY_CLAIM_TYPE, SUB_CLAIM_TYPE } from "utils/oidc/types";
+import {
+  COUNTRY_CLAIM_TYPE,
+  SUB_CLAIM_TYPE,
+  BIRTHDATE_CLAIM_TYPE
+} from "utils/oidc/types";
 import { RootState } from "store/types";
-import { UserId, Game } from "types";
+import { UserId, Game, UserDob } from "types";
 import { camelCase } from "change-case";
+
+export interface HocUserProfileDobStateProps {
+  dob: UserDob;
+}
+
+export const withUserProfileDob = (WrappedComponent: FunctionComponent) => {
+  interface OwnProps {}
+
+  const EnhancedComponent: FunctionComponent<HocUserProfileDobStateProps> = props => {
+    return <WrappedComponent {...props} />;
+  };
+
+  const mapStateToProps: MapStateToProps<
+    HocUserProfileDobStateProps,
+    OwnProps,
+    RootState
+  > = state => {
+    return {
+      dob: JSON.parse(state.oidc.user.profile[BIRTHDATE_CLAIM_TYPE])
+    };
+  };
+
+  return connect(mapStateToProps)(EnhancedComponent);
+};
 
 export interface HocUserProfileUserIdStateProps {
   userId: UserId;

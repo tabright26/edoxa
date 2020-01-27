@@ -73,5 +73,4 @@ message ProfileDto {
   string firstName = 2;
   string lastName = 3;
   EnumGender gender = 4;
-  DobDto dob = 5;
 }

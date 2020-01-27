@@ -6,14 +6,16 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+
 using eDoxa.Identity.Domain.Services;
+
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Api.Services
 {
     internal sealed class CustomProfileService : IProfileService
     {

@@ -11,13 +11,13 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "DeviceCodes",
                 columns: table => new
                 {
-                    UserCode = table.Column<string>(maxLength: 200),
-                    DeviceCode = table.Column<string>(maxLength: 200),
+                    UserCode = table.Column<string>(maxLength: 200, nullable: false),
+                    DeviceCode = table.Column<string>(maxLength: 200, nullable: false),
                     SubjectId = table.Column<string>(maxLength: 200, nullable: true),
-                    ClientId = table.Column<string>(maxLength: 200),
-                    CreationTime = table.Column<DateTime>(),
-                    Expiration = table.Column<DateTime>(),
-                    Data = table.Column<string>(maxLength: 50000)
+                    ClientId = table.Column<string>(maxLength: 200, nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
+                    Expiration = table.Column<DateTime>(nullable: false),
+                    Data = table.Column<string>(maxLength: 50000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -28,13 +28,13 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "PersistedGrants",
                 columns: table => new
                 {
-                    Key = table.Column<string>(maxLength: 200),
-                    Type = table.Column<string>(maxLength: 50),
+                    Key = table.Column<string>(maxLength: 200, nullable: false),
+                    Type = table.Column<string>(maxLength: 50, nullable: false),
                     SubjectId = table.Column<string>(maxLength: 200, nullable: true),
-                    ClientId = table.Column<string>(maxLength: 200),
-                    CreationTime = table.Column<DateTime>(),
+                    ClientId = table.Column<string>(maxLength: 200, nullable: false),
+                    CreationTime = table.Column<DateTime>(nullable: false),
                     Expiration = table.Column<DateTime>(nullable: true),
-                    Data = table.Column<string>(maxLength: 50000)
+                    Data = table.Column<string>(maxLength: 50000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +45,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "Role",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
@@ -59,22 +59,22 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
+                    Id = table.Column<Guid>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    Email = table.Column<string>(maxLength: 256),
-                    NormalizedEmail = table.Column<string>(maxLength: 256),
-                    EmailConfirmed = table.Column<bool>(),
+                    Email = table.Column<string>(maxLength: 256, nullable: false),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: false),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(nullable: true),
                     SecurityStamp = table.Column<string>(nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(),
-                    TwoFactorEnabled = table.Column<bool>(),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    LockoutEnabled = table.Column<bool>(),
-                    AccessFailedCount = table.Column<int>(),
-                    Country = table.Column<string>()
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Country = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -85,9 +85,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "RoleClaim",
                 columns: table => new
                 {
-                    Id = table.Column<int>()
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<Guid>(),
+                    RoleId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -106,15 +106,15 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "Address",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
+                    Id = table.Column<Guid>(nullable: false),
                     Type = table.Column<int>(nullable: true),
-                    Country = table.Column<string>(),
-                    Line1 = table.Column<string>(),
+                    Country = table.Column<string>(nullable: false),
+                    Line1 = table.Column<string>(nullable: false),
                     Line2 = table.Column<string>(nullable: true),
-                    City = table.Column<string>(),
+                    City = table.Column<string>(nullable: false),
                     State = table.Column<string>(nullable: true),
                     PostalCode = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>()
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -131,11 +131,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "Doxatag",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    UserId = table.Column<Guid>(),
-                    Name = table.Column<string>(),
-                    Code = table.Column<int>(),
-                    Timestamp = table.Column<long>()
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Code = table.Column<int>(nullable: false),
+                    Timestamp = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -152,9 +152,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "UserClaim",
                 columns: table => new
                 {
-                    Id = table.Column<int>()
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<Guid>(),
+                    UserId = table.Column<Guid>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -170,13 +170,34 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserDob",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    Year = table.Column<int>(nullable: false),
+                    Month = table.Column<int>(nullable: false),
+                    Day = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDob", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserDob_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserLogin",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(),
-                    ProviderKey = table.Column<string>(),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<Guid>()
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,11 +214,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "UserProfile",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(),
-                    FirstName = table.Column<string>(),
-                    LastName = table.Column<string>(),
-                    Gender = table.Column<int>(),
-                    UserId = table.Column<Guid>()
+                    Id = table.Column<Guid>(nullable: false),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Gender = table.Column<int>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,8 +235,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "UserRole",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(),
-                    RoleId = table.Column<Guid>()
+                    UserId = table.Column<Guid>(nullable: false),
+                    RoleId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -238,9 +259,9 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "UserToken",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(),
-                    LoginProvider = table.Column<string>(),
-                    Name = table.Column<string>(),
+                    UserId = table.Column<Guid>(nullable: false),
+                    LoginProvider = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -250,27 +271,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                         name: "FK_UserToken_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserDob",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(),
-                    Year = table.Column<int>(),
-                    Month = table.Column<int>(),
-                    Day = table.Column<int>(),
-                    UserId = table.Column<Guid>()
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserDob", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserDob_UserProfile_UserId",
-                        column: x => x.UserId,
-                        principalTable: "UserProfile",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -385,13 +385,13 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Migrations
                 name: "UserLogin");
 
             migrationBuilder.DropTable(
+                name: "UserProfile");
+
+            migrationBuilder.DropTable(
                 name: "UserRole");
 
             migrationBuilder.DropTable(
                 name: "UserToken");
-
-            migrationBuilder.DropTable(
-                name: "UserProfile");
 
             migrationBuilder.DropTable(
                 name: "Role");

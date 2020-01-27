@@ -15,7 +15,7 @@ import Item from "components/User/Address/List/Item";
 const AddressBook: FunctionComponent<any> = ({
   className,
   limit,
-  addressBook: { data, error, loading },
+  addressBook: { data, loading },
   loadAddressBook,
   showCreateUserAddressModal
 }) => {
@@ -66,7 +66,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     loadAddressBook: () => dispatch(loadUserAddressBook()),
     showCreateUserAddressModal: () => dispatch(show(CREATE_USER_ADDRESS_MODAL))

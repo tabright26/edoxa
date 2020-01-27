@@ -8,8 +8,9 @@ import {
   UNLINK_GAME_CREDENTIAL,
   UNLINK_GAME_CREDENTIAL_SUCCESS,
   UNLINK_GAME_CREDENTIAL_FAIL,
-  GameAuthenticationActionCreators,
-  GameCredentialActionCreators
+  GenerateGameAuthenticationActionCreator,
+  ValidateGameAuthenticationActionCreator,
+  UnlinkGameCredentialActionCreator
 } from "./types";
 
 import { Game } from "types";
@@ -22,7 +23,7 @@ export function generateGameAuthentication(
   game: Game,
   data: any,
   meta: AxiosActionCreatorMeta
-): GameAuthenticationActionCreators {
+): GenerateGameAuthenticationActionCreator {
   return {
     types: [
       GENERATE_GAME_AUTHENTICATION,
@@ -44,7 +45,7 @@ export function generateGameAuthentication(
 export function validateGameAuthentication(
   game: Game,
   meta: AxiosActionCreatorMeta
-): GameAuthenticationActionCreators {
+): ValidateGameAuthenticationActionCreator {
   return {
     types: [
       VALIDATE_GAME_AUTHENTICATION,
@@ -65,7 +66,7 @@ export function validateGameAuthentication(
 export function unlinkGameCredential(
   game: Game,
   meta: AxiosActionCreatorMeta
-): GameCredentialActionCreators {
+): UnlinkGameCredentialActionCreator {
   return {
     types: [
       UNLINK_GAME_CREDENTIAL,

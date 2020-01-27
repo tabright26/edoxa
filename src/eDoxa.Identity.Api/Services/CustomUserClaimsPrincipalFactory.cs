@@ -19,7 +19,7 @@ using Microsoft.Extensions.Options;
 
 using Claim = System.Security.Claims.Claim;
 
-namespace eDoxa.Identity.Api.Application.Services
+namespace eDoxa.Identity.Api.Services
 {
     public sealed class CustomUserClaimsPrincipalFactory : IUserClaimsPrincipalFactory<User>
     {
