@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
-import { FormGroup, Form } from "reactstrap";
+import { FormGroup, Form, Button } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
-import Button from "components/Shared/Button";
 import { UNLINK_GAME_CREDENTIAL_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { Game } from "types";
@@ -26,8 +25,12 @@ type Props = InnerProps & OutterProps;
 const Unlink: FunctionComponent<Props> = ({ handleSubmit, handleCancel }) => (
   <Form onSubmit={handleSubmit}>
     <FormGroup className="mb-0">
-      <Button.Yes type="submit" className="mr-2" />
-      <Button.No onClick={() => handleCancel()} />
+    <Button type="submit" size="sm" color="primary" className="mr-2">
+        Yes
+      </Button>
+      <Button onClick={() => handleCancel()} size="sm">
+        No
+      </Button>
     </FormGroup>
   </Form>
 );

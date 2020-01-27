@@ -34,7 +34,8 @@ type Props = InnerProps & OutterProps;
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   handleCancel,
-  error
+  error,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -71,8 +72,10 @@ const CustomForm: FunctionComponent<Props> = ({
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
-        <Button.Save className="mt-3 mr-2" />
-        <Button.Cancel className="mt-3" onClick={() => handleCancel()} />
+        <Button.Submit loading={submitting} className="mr-2" size="sm">
+          Save
+        </Button.Submit>
+        <Button.Cancel onClick={handleCancel} />
       </dd>
     </dl>
   </Form>

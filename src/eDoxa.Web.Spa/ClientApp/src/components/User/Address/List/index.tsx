@@ -1,9 +1,8 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Card, CardHeader, CardBody } from "reactstrap";
+import { Card, CardHeader, CardBody, Button } from "reactstrap";
 import UserAddressModal from "components/User/Address/Modal";
 import { compose } from "recompose";
-import Button from "components/Shared/Button";
 import { Loading } from "components/Shared/Loading";
 import { connect } from "react-redux";
 import { RootState } from "store/types";
@@ -11,6 +10,7 @@ import { loadUserAddressBook } from "store/actions/identity";
 import { show } from "redux-modal";
 import { CREATE_USER_ADDRESS_MODAL } from "utils/modal/constants";
 import Item from "components/User/Address/List/Item";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const AddressBook: FunctionComponent<any> = ({
   className,
@@ -32,14 +32,17 @@ const AddressBook: FunctionComponent<any> = ({
         <small className="ml-2 my-auto text-muted">
           ({data.length}/{limit})
         </small>
-        <Button.Link
+        <Button
           className="p-0 ml-auto my-auto"
-          icon={faPlus}
+          color="link"
+          size="sm"
           onClick={() => showCreateUserAddressModal()}
           disabled={data.length >= limit}
         >
-          ADD A NEW ADDRESS
-        </Button.Link>
+          <small className="text-uppercase">
+            <FontAwesomeIcon icon={faPlus} /> ADD A NEW ADDRESS
+          </small>
+        </Button>
         <UserAddressModal.Create />
       </CardHeader>
       <CardBody>
@@ -66,7 +69,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     loadAddressBook: () => dispatch(loadUserAddressBook()),
     showCreateUserAddressModal: () => dispatch(show(CREATE_USER_ADDRESS_MODAL))

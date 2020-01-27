@@ -44,7 +44,8 @@ const Update: FunctionComponent<Props> = ({
   initialValues: {
     card: { brand, last4, expYear }
   },
-  error
+  error,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit} inline className="d-flex">
     <ValidationSummary error={error} />
@@ -67,7 +68,9 @@ const Update: FunctionComponent<Props> = ({
         descending={false}
       />
     </FormSection>
-    <Button.Save />
+    <Button.Submit loading={submitting} size="sm">
+      Save
+    </Button.Submit>
   </Form>
 );
 

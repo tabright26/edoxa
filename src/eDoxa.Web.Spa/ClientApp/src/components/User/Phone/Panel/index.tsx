@@ -1,14 +1,14 @@
 import React, { useState, FunctionComponent, useEffect } from "react";
-import { Card, CardHeader, CardBody } from "reactstrap";
+import { Card, CardHeader, CardBody, Button } from "reactstrap";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Badge";
 import { connect } from "react-redux";
 import UserPhoneForm from "components/User/Phone/Form";
 import { compose } from "recompose";
-import Button from "components/Shared/Button";
 import { Loading } from "components/Shared/Loading";
 import { RootState } from "store/types";
 import { loadUserPhone } from "store/actions/identity";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Phone: FunctionComponent<any> = ({
   className,
@@ -30,14 +30,17 @@ const Phone: FunctionComponent<any> = ({
         {data && (
           <Badge.Verified className="ml-3 my-auto" verified={data.verified} />
         )}
-        <Button.Link
+        <Button
           className="p-0 ml-auto my-auto"
-          icon={faEdit}
+          color="link"
+          size="sm"
           disabled={disabled}
           onClick={() => setButtonDisabled(true)}
         >
-          UPDATE
-        </Button.Link>
+          <small className="text-uppercase">
+            <FontAwesomeIcon icon={faEdit} /> UPDATE
+          </small>
+        </Button>
       </CardHeader>
       <CardBody>
         {loading ? (
@@ -66,7 +69,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
   return {
     loadUserPhone: () => dispatch(loadUserPhone())
   };

@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { FormGroup, Form } from "reactstrap";
+import { FormGroup, Form, Button as BsButton } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
@@ -16,6 +16,7 @@ import {
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 import { toastr } from "react-redux-toastr";
+import { LinkContainer } from "react-router-bootstrap";
 
 interface FormData {
   email: string;
@@ -27,7 +28,11 @@ type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const CustomForm: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <Field
@@ -38,10 +43,14 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       component={Input.Text}
     />
     <FormGroup className="mb-0 d-flex">
-      <Button.Submit className="w-25">Send</Button.Submit>
-      <Button.Link className="ml-auto my-auto" to="/authentication/login">
-        Return to login page
-      </Button.Link>
+      <Button.Submit loading={submitting} className="w-25">
+        Send
+      </Button.Submit>
+      <LinkContainer to="/authentication/login">
+        <BsButton className="ml-auto my-auto" color="link" size="sm">
+          Return to login page
+        </BsButton>
+      </LinkContainer>
     </FormGroup>
   </Form>
 );

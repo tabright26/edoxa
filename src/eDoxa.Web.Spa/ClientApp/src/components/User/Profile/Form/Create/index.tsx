@@ -43,7 +43,11 @@ type OutterProps = OwnProps & {
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Create: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <dl className="row mb-0">
@@ -78,7 +82,9 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
-        <Button.Save />
+        <Button.Submit loading={submitting} size="sm">
+          Save
+        </Button.Submit>
       </dd>
     </dl>
   </Form>
@@ -132,4 +138,4 @@ const enhance = compose<InnerProps, OutterProps>(
   })
 );
 
-export default enhance(CustomForm);
+export default enhance(Create);

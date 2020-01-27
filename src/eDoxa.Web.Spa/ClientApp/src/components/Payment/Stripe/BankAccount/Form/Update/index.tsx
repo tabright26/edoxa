@@ -47,7 +47,8 @@ type Props = InnerProps & OutterProps;
 const Update: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  handleCancel
+  handleCancel,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -74,8 +75,10 @@ const Update: FunctionComponent<Props> = ({
       component={Input.Text}
     />
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel onClick={() => handleCancel()} />
+      <Button.Submit loading={submitting} className="mr-2" size="sm">
+        Save
+      </Button.Submit>
+      <Button.Cancel onClick={handleCancel} />
     </FormGroup>
   </Form>
 );

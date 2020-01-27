@@ -20,12 +20,13 @@ type OutterProps = {
 
 type Props = InnerProps & OutterProps;
 
-const Register: FunctionComponent<Props> = ({ handleSubmit }) => (
+const Register: FunctionComponent<Props> = ({ handleSubmit, submitting }) => (
   <Form onSubmit={handleSubmit} className="h-100">
     <Button.Submit
       color="primary"
       size="lg"
       className="text-uppercase h-100 w-100"
+      loading={submitting}
     >
       REGISTER
     </Button.Submit>

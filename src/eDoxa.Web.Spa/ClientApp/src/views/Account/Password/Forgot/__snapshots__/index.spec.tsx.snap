@@ -44,6 +44,7 @@ exports[`renders correctly 1`] = `
         <button
           aria-label={null}
           className="w-25 btn btn-primary"
+          disabled={null}
           onClick={[Function]}
           type="submit"
         >
@@ -55,7 +56,6 @@ exports[`renders correctly 1`] = `
           href="/authentication/login"
           onClick={[Function]}
         >
-           
           Return to login page
         </a>
       </div>

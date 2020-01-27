@@ -18,7 +18,8 @@ import {
   getProfilePaymentMethodsPath,
   getProfileGamesPath,
   getProfilePromotionalCodePath,
-  getAccountRegisterPath
+  getAccountRegisterPath,
+  getProfileOverviewPath
 } from "utils/coreui/constants";
 
 class AppDropdown extends Component<any, any> {
@@ -58,16 +59,15 @@ class AppDropdown extends Component<any, any> {
       const loginPath = `${ApplicationPaths.Login}`;
       return this.anonymousView(loginPath);
     } else {
-      const profilePath = `${ApplicationPaths.Profile}`;
       const logoutPath = {
         pathname: `${ApplicationPaths.LogOut}`,
         state: { local: true }
       };
-      return this.authenticatedView(user, profilePath, logoutPath);
+      return this.authenticatedView(user, logoutPath);
     }
   }
 
-  authenticatedView(user, profilePath, logoutPath) {
+  authenticatedView(user, logoutPath) {
     return (
       <Nav className="bg-gray-900 px-3 h-100" navbar>
         <UncontrolledDropdown nav direction="down">
@@ -86,7 +86,7 @@ class AppDropdown extends Component<any, any> {
             }}
           >
             <Form inline>
-              <LinkContainer to={profilePath}>
+              <LinkContainer to={getProfileOverviewPath()}>
                 <Button block color="primary" className="m-3">
                   Profile
                 </Button>
@@ -137,24 +137,15 @@ class AppDropdown extends Component<any, any> {
     return (
       <Nav className="ml-auto mr-3" navbar>
         <LinkContainer to={loginPath}>
-          <Button
-            size="sm"
-            color="link"
-            style={{ textDecoration: "none" }}
-            className="mr-2"
-          >
+          <Button size="sm" color="link" className="mr-2">
             Login
           </Button>
         </LinkContainer>
-        <Button
-          href={getAccountRegisterPath()}
-          size="sm"
-          tag="a"
-          color="primary"
-          outline
-        >
-          Register
-        </Button>
+        <LinkContainer to={getAccountRegisterPath()}>
+          <Button size="sm" color="primary" outline>
+            Register
+          </Button>
+        </LinkContainer>
       </Nav>
     );
   }

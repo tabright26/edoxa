@@ -1,10 +1,9 @@
 import React, { useState, FunctionComponent } from "react";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { Card, CardBody, CardHeader } from "reactstrap";
+import { Card, CardBody, CardHeader, Button } from "reactstrap";
 import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
 import BankAccountForm from "components/Payment/Stripe/BankAccount/Form";
 import { compose } from "recompose";
-import Button from "components/Shared/Button";
 import { Loading } from "components/Shared/Loading";
 import {
   withUserProfileCountry,
@@ -12,6 +11,7 @@ import {
 } from "utils/oidc/containers";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
 import { Elements } from "react-stripe-elements";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type InnerProps = HocUserProfileCountryStateProps & {
   bankAccount: StripeBankAccountState;
@@ -36,14 +36,17 @@ const Panel: FunctionComponent<Props> = ({
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">BANK ACCOUNT</strong>
-        <Button.Link
+        <Button
           className="p-0 ml-auto my-auto"
-          icon={faEdit}
           disabled={disabled}
+          color="link"
+          size="sm"
           onClick={() => setButtonDisabled(true)}
         >
-          UPDATE
-        </Button.Link>
+          <small className="text-uppercase">
+            <FontAwesomeIcon icon={faEdit} /> UPDATE
+          </small>
+        </Button>
       </CardHeader>
       <CardBody>
         {loading ? (

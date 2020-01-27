@@ -25,7 +25,11 @@ type OutterProps = {
 
 type Props = InnerProps & OutterProps;
 
-const Generate: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Generate: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <FormGroup>
@@ -38,7 +42,9 @@ const Generate: FunctionComponent<Props> = ({ handleSubmit, error }) => (
         <option value="NA">North America</option>
       </Field>
     </FormGroup>
-    <Button.Submit className="w-25">Search</Button.Submit>
+    <Button.Submit loading={submitting} className="w-25">
+      Search
+    </Button.Submit>
   </Form>
 );
 

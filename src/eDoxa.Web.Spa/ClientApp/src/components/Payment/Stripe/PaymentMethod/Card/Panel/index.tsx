@@ -1,11 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { Card, CardHeader, CardBody } from "reactstrap";
+import { Card, CardHeader, CardBody, Button } from "reactstrap";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { withStripePaymentMethods } from "store/root/payment/stripe/paymentMethod/container";
 import { StripePaymentMethod } from "types";
 import PaymentMethodCard from "components/Payment/Stripe/PaymentMethod/Card";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Button from "components/Shared/Button";
 import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
 import { connect, MapDispatchToProps } from "react-redux";
@@ -16,6 +15,7 @@ import {
   DELETE_STRIPE_PAYMENTMETHOD_MODAL
 } from "utils/modal/constants";
 import { RootState } from "store/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface OwnProps {}
 
@@ -55,20 +55,26 @@ const StripeCardItem: FunctionComponent<any> = ({
           />
         </dd>
         <dd className="col-sm-6 mb-0 d-flex">
-          <Button.Link
+          <Button
             className="p-0 ml-auto my-auto"
-            icon={faTimes}
+            color="link"
+            size="sm"
             onClick={() => showDeleteStripePaymentMethodModal(paymentMethod)}
           >
-            REMOVE
-          </Button.Link>
-          <Button.Link
+            <small className="text-uppercase">
+              <FontAwesomeIcon icon={faTimes} /> REMOVE
+            </small>
+          </Button>
+          <Button
             className="p-0 ml-auto my-auto"
-            icon={faEdit}
+            color="link"
+            size="sm"
             onClick={() => showUpdateStripePaymentMethodModal(paymentMethod)}
           >
-            UPDATE
-          </Button.Link>
+            <small className="text-uppercase">
+              <FontAwesomeIcon icon={faEdit} /> UPDATE
+            </small>
+          </Button>
         </dd>
       </dl>
       {hasMore && <hr className="border-secondary" />}
@@ -90,14 +96,17 @@ const Panel: FunctionComponent<any> = ({
       <small className="ml-2 my-auto text-muted">
         ({data.length}/{limit})
       </small>
-      <Button.Link
+      <Button
         className="p-0 ml-auto my-auto"
-        icon={faPlus}
+        color="link"
+        size="sm"
         onClick={() => showCreateStripePaymentMethodModal()}
         disabled={data.length >= limit}
       >
-        ADD A NEW CARD
-      </Button.Link>
+        <small className="text-uppercase">
+          <FontAwesomeIcon icon={faPlus} /> ADD A NEW CARD
+        </small>
+      </Button>
     </CardHeader>
     <CardBody>
       {loading ? (

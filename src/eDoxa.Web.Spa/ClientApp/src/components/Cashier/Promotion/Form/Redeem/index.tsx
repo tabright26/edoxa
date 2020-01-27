@@ -32,7 +32,11 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const Redeem: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Redeem: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <Field
@@ -43,7 +47,9 @@ const Redeem: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       component={Input.Text}
     />
     <FormGroup className="mb-0">
-      <Button.Submit size="sm">Redeem</Button.Submit>
+      <Button.Submit loading={submitting} size="sm">
+        Redeem
+      </Button.Submit>
     </FormGroup>
   </Form>
 );

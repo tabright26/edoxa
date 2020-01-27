@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Card } from "reactstrap";
+import { Card, Button } from "reactstrap";
 import ChallengeForm from "components/Challenge/Form";
 import {
   HocUserProfileUserIdStateProps,
@@ -15,13 +15,8 @@ import {
   GameOptions
 } from "types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import {
-  MapStateToProps,
-  connect,
-  DispatchProp
-} from "react-redux";
+import { MapStateToProps, connect, DispatchProp } from "react-redux";
 import { RootState } from "store/types";
-import Button from "components/Shared/Button";
 import { show } from "redux-modal";
 import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 
@@ -69,11 +64,10 @@ const Register: FunctionComponent<Props> = ({
       <ChallengeForm.Register userId={userId} />
     </Card>
   ) : (
-    <Button.Submit
-      type="button"
+    <Button
       color="primary"
       size="lg"
-      className="text-uppercase w-100"
+      className="w-100 text-uppercase"
       onClick={() =>
         dispatch(
           show(LINK_GAME_CREDENTIAL_MODAL, {
@@ -83,7 +77,7 @@ const Register: FunctionComponent<Props> = ({
       }
     >
       Link
-    </Button.Submit>
+    </Button>
   ));
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (

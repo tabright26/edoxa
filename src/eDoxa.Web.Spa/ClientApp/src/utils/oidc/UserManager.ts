@@ -1,5 +1,5 @@
 import { UserManagerSettings, WebStorageStateStore } from "oidc-client";
-import { ApplicationPaths, ApplicationName } from "./ApiAuthorizationConstants";
+import { ApplicationPaths } from "./ApiAuthorizationConstants";
 import { REACT_APP_WEB_SPA, REACT_APP_AUTHORITY } from "keys";
 import { createUserManager } from "redux-oidc";
 
@@ -17,7 +17,7 @@ const options: UserManagerSettings = {
   includeIdTokenInSilentRenew: true,
   loadUserInfo: true,
   userStore: new WebStorageStateStore({
-    prefix: ApplicationName
+    prefix: "edoxa-"
   })
 };
 

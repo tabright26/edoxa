@@ -24,14 +24,17 @@ type Props = InnerProps & OutterProps;
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  handleCancel
+  handleCancel,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <Label className="text-muted">Do you want to remove your address?</Label>
     <FormGroup className="mb-0">
-      <Button.Submit className="mr-2">Remove</Button.Submit>
-      <Button.Cancel onClick={() => handleCancel()} />
+      <Button.Submit loading={submitting} size="sm" className="mr-2">
+        Remove
+      </Button.Submit>
+      <Button.Cancel onClick={handleCancel} />
     </FormGroup>
   </Form>
 );

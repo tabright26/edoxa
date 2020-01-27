@@ -10,7 +10,8 @@ import { ValidationSummary } from "components/Shared/ValidationSummary";
 const CustomForm: FunctionComponent<any> = ({
   handleSubmit,
   handleCancel,
-  error
+  error,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -22,7 +23,9 @@ const CustomForm: FunctionComponent<any> = ({
       component={Input.Text}
     />
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
+      <Button.Submit loading={submitting} size="sm" className="mr-2">
+        Save
+      </Button.Submit>
       <Button.Cancel onClick={handleCancel} />
     </FormGroup>
   </Form>

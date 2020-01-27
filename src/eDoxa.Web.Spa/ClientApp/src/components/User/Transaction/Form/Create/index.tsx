@@ -30,7 +30,8 @@ const Create: FunctionComponent<Props> = ({
   error,
   handleCancel,
   currency,
-  transactionType
+  transactionType,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -41,8 +42,10 @@ const Create: FunctionComponent<Props> = ({
     />
     <hr className="border-secondary" />
     <FormGroup className="mb-0">
-      <Button.Submit className="mr-2">Confirm</Button.Submit>
-      <Button.Cancel size={null} onClick={() => handleCancel()} />
+      <Button.Submit loading={submitting} className="mr-2">
+        Confirm
+      </Button.Submit>
+      <Button.Cancel onClick={handleCancel} />
     </FormGroup>
   </Form>
 );

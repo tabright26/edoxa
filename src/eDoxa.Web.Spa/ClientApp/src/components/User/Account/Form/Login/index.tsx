@@ -5,7 +5,8 @@ import {
   InputGroupAddon,
   InputGroupText,
   Row,
-  Col
+  Col,
+  Button as BsButton
 } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
@@ -20,6 +21,8 @@ import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
 import queryString from "query-string";
 import { withRouter, RouteComponentProps } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import { getPasswordForgotPath } from "utils/coreui/constants";
 
 interface StateProps {}
 
@@ -76,9 +79,11 @@ const Login: FunctionComponent<Props> = ({ handleSubmit, error }) => (
         <Button.Submit className="px-4">Login</Button.Submit>
       </Col>
       <Col xs="6" className="text-right">
-        <Button.Link to="/password/forgot" className="px-0">
-          Forgot password?
-        </Button.Link>
+        <LinkContainer to={getPasswordForgotPath()}>
+          <BsButton color="link" size="sm" className="px-0">
+            Forgot password?
+          </BsButton>
+        </LinkContainer>
       </Col>
     </Row>
   </Form>

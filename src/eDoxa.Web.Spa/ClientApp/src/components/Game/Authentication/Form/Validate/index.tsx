@@ -23,10 +23,12 @@ type InnerProps = InjectedFormProps<FormData, Props>;
 
 type Props = InnerProps & OutterProps;
 
-const Validate: FunctionComponent<Props> = ({ handleSubmit }) => (
+const Validate: FunctionComponent<Props> = ({ handleSubmit, submitting }) => (
   <Form className="w-100" onSubmit={handleSubmit}>
     <div className="mx-auto w-25">
-      <Button.Submit block>Validate</Button.Submit>
+      <Button.Submit loading={submitting} block>
+        Validate
+      </Button.Submit>
     </div>
   </Form>
 );

@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
-import { Label, FormGroup, Form } from "reactstrap";
+import { Label, FormGroup, Form, Button } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
-import Button from "components/Shared/Button";
 import { DELETE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
@@ -32,8 +31,12 @@ const Delete: FunctionComponent<Props> = ({
       Are you sure you want to delete this payment method?
     </Label>
     <FormGroup className="mb-0">
-      <Button.Yes type="submit" className="mr-2" />
-      <Button.No onClick={() => handleCancel()} />
+      <Button type="submit" size="sm" color="primary" className="mr-2">
+        Yes
+      </Button>
+      <Button onClick={() => handleCancel()} size="sm">
+        No
+      </Button>
     </FormGroup>
   </Form>
 );

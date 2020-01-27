@@ -44,7 +44,11 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const Register: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Register: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     {/* <InputGroup className="mb-3">
@@ -151,7 +155,9 @@ const Register: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       <Link to={getTermsOfServicesPath()}>terms of services</Link>.
     </p>
     <FormGroup className="mb-0">
-      <Button.Submit block>Create Account</Button.Submit>
+      <Button.Submit loading={submitting} block>
+        Create Account
+      </Button.Submit>
     </FormGroup>
   </Form>
 );

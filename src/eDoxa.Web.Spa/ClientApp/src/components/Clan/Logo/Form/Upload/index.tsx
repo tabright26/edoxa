@@ -8,8 +8,8 @@ import { ValidationSummary } from "components/Shared/ValidationSummary";
 
 const UploadClanLogoForm: FunctionComponent<any> = ({
   handleSubmit,
-  handleCancel,
-  error
+  error,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -17,7 +17,9 @@ const UploadClanLogoForm: FunctionComponent<any> = ({
       <input type="file" name="Logo" accept="image/png, image/jpeg" />
     </FormGroup>
     <FormGroup className="mb-0">
-      <Button.Save />
+      <Button.Submit loading={submitting} size="sm">
+        Save
+      </Button.Submit>
     </FormGroup>
   </Form>
 );
