@@ -199,6 +199,7 @@ services:
       - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
       - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
       - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
+      - REACT_APP_GA_TRACKING_CODE=UA-156686275-1
       - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}

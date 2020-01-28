@@ -10,6 +10,7 @@ import { RouteProps } from "utils/router/types";
 import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";
 import { Elements } from "react-stripe-elements";
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
+import { initializeReactGA } from "utils/ga";
 import {
   getError401Path,
   getError403Path,
@@ -22,6 +23,8 @@ import {
   getRegisterPath
 } from "utils/coreui/constants";
 
+initializeReactGA();
+
 const ApiAuthorizationRoutes = React.lazy(() =>
   import("utils/oidc/ApiAuthorizationRoutes")
 );
@@ -30,7 +33,9 @@ const ErrorPage403 = React.lazy(() => import("views/Errors/403"));
 const ErrorPage404 = React.lazy(() => import("views/Errors/404"));
 const ErrorPage500 = React.lazy(() => import("views/Errors/500"));
 const EmailConfirm = React.lazy(() => import("views/Account/Email/Comfirm"));
-const PasswordForgot = React.lazy(() => import("views/Account/Password/Forgot"));
+const PasswordForgot = React.lazy(() =>
+  import("views/Account/Password/Forgot")
+);
 const PasswordReset = React.lazy(() => import("views/Account/Password/Reset"));
 const DefaultLayout = React.lazy(() =>
   import("components/Shared/Layout/Default")
