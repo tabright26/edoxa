@@ -3,8 +3,8 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { Card, CardBody, CardHeader } from "reactstrap";
 import { withStripeBankAccount } from "store/root/payment/stripe/bankAccount/container";
 import BankAccountForm from "components/Payment/Stripe/BankAccount/Form";
-import { compose } from "recompose";
 import Button from "components/Shared/Button";
+import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
 import {
   withUserProfileCountry,
@@ -40,7 +40,9 @@ const Panel: FunctionComponent<Props> = ({
           <Button.Link
             className="p-0 ml-auto my-auto"
             icon={faEdit}
+            size="sm"
             disabled={disabled}
+            uppercase
             onClick={() => setButtonDisabled(true)}
           >
             UPDATE

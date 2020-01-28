@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { FormGroup, Form, Button as BsButton } from "reactstrap";
+import { FormGroup, Form } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
@@ -47,9 +47,9 @@ const CustomForm: FunctionComponent<Props> = ({
         Send
       </Button.Submit>
       <LinkContainer to="/authentication/login">
-        <BsButton className="ml-auto my-auto" color="link" size="sm">
+        <Button.Link className="ml-auto my-auto" size="sm">
           Return to login page
-        </BsButton>
+        </Button.Link>
       </LinkContainer>
     </FormGroup>
   </Form>

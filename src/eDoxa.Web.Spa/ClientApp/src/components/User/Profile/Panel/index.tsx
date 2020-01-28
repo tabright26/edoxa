@@ -1,6 +1,6 @@
 import React, { useState, FunctionComponent, useEffect } from "react";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
-import { Card, CardHeader, CardBody, Button } from "reactstrap";
+import { Card, CardHeader, CardBody } from "reactstrap";
 import UserProfileForm from "components/User/Profile/Form";
 import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
@@ -9,7 +9,7 @@ import { RootState } from "store/types";
 import { loadUserProfile } from "store/actions/identity";
 import { withUserProfileDob } from "utils/oidc/containers";
 import Moment from "react-moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "components/Shared/Button";
 
 const Profile: FunctionComponent<any> = ({
   className,
@@ -28,17 +28,16 @@ const Profile: FunctionComponent<any> = ({
     <Card className={`card-accent-primary ${className}`}>
       <CardHeader className="d-flex">
         <strong className="text-uppercase my-auto">PERSONAL INFORMATION</strong>
-        <Button
+        <Button.Link
           className="p-0 ml-auto my-auto"
-          color="link"
+          icon={faEdit}
           size="sm"
+          uppercase
           disabled={buttonDisabled || !data}
           onClick={() => setButtonDisabled(true)}
         >
-          <small className="text-uppercase">
-            <FontAwesomeIcon icon={faEdit} /> UPDATE
-          </small>
-        </Button>
+          UPDATE
+        </Button.Link>
       </CardHeader>
       <CardBody>
         {loading ? (

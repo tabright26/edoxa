@@ -50,14 +50,20 @@ exports[`renders correctly 1`] = `
         >
           Send
         </button>
-        <a
+        <button
           aria-label={null}
           className="ml-auto my-auto btn btn-link btn-sm"
-          href="/authentication/login"
+          disabled={null}
           onClick={[Function]}
+          type="button"
         >
-          Return to login page
-        </a>
+          <small
+            className="null"
+          >
+             
+            Return to login page
+          </small>
+        </button>
       </div>
     </form>
   </div>

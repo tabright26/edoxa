@@ -1,5 +1,5 @@
 import React, { useState, FunctionComponent, useEffect } from "react";
-import { Card, CardHeader, CardBody, Button } from "reactstrap";
+import { Card, CardHeader, CardBody } from "reactstrap";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import Badge from "components/Shared/Badge";
 import { connect } from "react-redux";
@@ -8,11 +8,11 @@ import { compose } from "recompose";
 import { Loading } from "components/Shared/Loading";
 import { RootState } from "store/types";
 import { loadUserPhone } from "store/actions/identity";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "components/Shared/Button";
 
 const Phone: FunctionComponent<any> = ({
   className,
-  phone: { data, error, loading },
+  phone: { data, loading },
   loadUserPhone
 }) => {
   useEffect((): void => {
@@ -30,17 +30,16 @@ const Phone: FunctionComponent<any> = ({
         {data && (
           <Badge.Verified className="ml-3 my-auto" verified={data.verified} />
         )}
-        <Button
+        <Button.Link
           className="p-0 ml-auto my-auto"
-          color="link"
+          icon={faEdit}
           size="sm"
+          uppercase
           disabled={disabled}
           onClick={() => setButtonDisabled(true)}
         >
-          <small className="text-uppercase">
-            <FontAwesomeIcon icon={faEdit} /> UPDATE
-          </small>
-        </Button>
+          UPDATE
+        </Button.Link>
       </CardHeader>
       <CardBody>
         {loading ? (

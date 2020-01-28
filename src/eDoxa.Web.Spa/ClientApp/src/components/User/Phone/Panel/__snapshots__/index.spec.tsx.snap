@@ -46,7 +46,8 @@ exports[`renders without crashing 1`] = `
             style={Object {}}
           />
         </svg>
-         UPDATE
+         
+        UPDATE
       </small>
     </button>
   </div>

@@ -5,8 +5,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   Row,
-  Col,
-  Button as BsButton
+  Col
 } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
@@ -80,9 +79,9 @@ const Login: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       </Col>
       <Col xs="6" className="text-right">
         <LinkContainer to={getPasswordForgotPath()}>
-          <BsButton color="link" size="sm" className="px-0">
+          <Button.Link className="px-0" size="sm">
             Forgot password?
-          </BsButton>
+          </Button.Link>
         </LinkContainer>
       </Col>
     </Row>
