@@ -1,16 +1,13 @@
 import React, { FunctionComponent } from "react";
-import { Label, FormGroup, Form } from "reactstrap";
+import { Label, FormGroup, Form, Button } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
-import Button from "components/Shared/Button";
 import { DELETE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { detachStripePaymentMethod } from "store/actions/payment";
-import {
-  StripePaymentMethodsActions,
-  DETACH_STRIPE_PAYMENTMETHOD_FAIL
-} from "store/actions/payment/types";
+import { DETACH_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
+import { RootActions } from "store/types";
 
 interface FormData {}
 
@@ -34,8 +31,12 @@ const Delete: FunctionComponent<Props> = ({
       Are you sure you want to delete this payment method?
     </Label>
     <FormGroup className="mb-0">
-      <Button.Yes type="submit" className="mr-2" />
-      <Button.No onClick={() => handleCancel()} />
+      <Button type="submit" size="sm" color="primary" className="mr-2">
+        Yes
+      </Button>
+      <Button onClick={() => handleCancel()} size="sm">
+        No
+      </Button>
     </FormGroup>
   </Form>
 );
@@ -45,7 +46,7 @@ const enhance = compose<InnerProps, OutterProps>(
     form: DELETE_STRIPE_PAYMENTMETHOD_FORM,
     onSubmit: async (_values, dispatch: any, { paymentMethodId }) =>
       await dispatch(detachStripePaymentMethod(paymentMethodId)).then(
-        (action: StripePaymentMethodsActions) => {
+        (action: RootActions) => {
           switch (action.type) {
             case DETACH_STRIPE_PAYMENTMETHOD_FAIL: {
               throwSubmissionError(action.error);

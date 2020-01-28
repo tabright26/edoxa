@@ -30,12 +30,8 @@ exports[`renders correctly 1`] = `
     <button
       aria-label={null}
       className="mr-2 btn btn-primary btn-sm"
+      disabled={null}
       onClick={[Function]}
-      style={
-        Object {
-          "width": "75px",
-        }
-      }
       type="submit"
     >
       Save
@@ -44,12 +40,6 @@ exports[`renders correctly 1`] = `
       aria-label={null}
       className="btn btn-outline-primary btn-sm"
       onClick={[Function]}
-      style={
-        Object {
-          "width": "75px",
-        }
-      }
-      type="button"
     >
       Cancel
     </button>

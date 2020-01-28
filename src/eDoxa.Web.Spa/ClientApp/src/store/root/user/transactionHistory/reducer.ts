@@ -2,7 +2,6 @@ import {
   LOAD_USER_TRANSACTION_HISTORY,
   LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
   LOAD_USER_TRANSACTION_HISTORY_FAIL,
-  UserTransactionActions,
   CREATE_USER_TRANSACTION,
   CREATE_USER_TRANSACTION_SUCCESS,
   CREATE_USER_TRANSACTION_FAIL
@@ -10,6 +9,7 @@ import {
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserTransactionState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: UserTransactionState = {
   data: [],
@@ -17,14 +17,8 @@ export const initialState: UserTransactionState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  UserTransactionState,
-  UserTransactionActions
-> = produce(
-  (
-    draft: Draft<UserTransactionState>,
-    action: UserTransactionActions
-  ) => {
+export const reducer: Reducer<UserTransactionState, RootActions> = produce(
+  (draft: Draft<UserTransactionState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_TRANSACTION_HISTORY: {
         draft.error = null;

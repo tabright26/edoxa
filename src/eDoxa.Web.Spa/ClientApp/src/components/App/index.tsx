@@ -20,7 +20,9 @@ import {
   getEmailConfirmPath,
   getPasswordForgotPath,
   getPasswordResetPath,
-  getRegisterPath
+  getAccountRegisterPath,
+  getAccountLogoutPath,
+  getAccountLoginPath
 } from "utils/coreui/constants";
 
 initializeReactGA();
@@ -87,19 +89,19 @@ const App = () => (
           />
           <Route<RouteProps>
             exact
-            path="/login"
+            path={getAccountLoginPath()}
             name="Login"
             render={() => <Login />}
           />
           <Route<RouteProps>
             exact
-            path="/logout"
+            path={getAccountLogoutPath()}
             name="Logout"
             render={() => <Logout />}
           />
           <Route<RouteProps>
             exact
-            path={getRegisterPath()}
+            path={getAccountRegisterPath()}
             name="Register"
             render={() => <Register />}
           />

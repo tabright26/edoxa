@@ -5,7 +5,7 @@ import {
   AppSidebarToggler,
   AppAsideToggler
 } from "@coreui/react";
-import LoginMenu from "utils/oidc/LoginMenu";
+import AppDropdown from "components/App/Dropdown";
 import logo from "assets/img/brand/logo.png";
 import sygnet from "assets/img/brand/sygnet.png";
 import { getHomePath } from "utils/coreui/constants";
@@ -23,7 +23,7 @@ const Header: FunctionComponent = () => {
       </LinkContainer>
       <AppSidebarToggler className="d-md-down-none" display="lg" hidden />
       <AppNav />
-      <LoginMenu />
+      <AppDropdown />
       <AppAsideToggler className="d-md-down-none" hidden />
     </Fragment>
   );

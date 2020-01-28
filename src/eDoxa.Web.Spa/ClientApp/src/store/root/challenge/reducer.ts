@@ -8,7 +8,6 @@ import {
   REGISTER_CHALLENGE_PARTICIPANT,
   REGISTER_CHALLENGE_PARTICIPANT_SUCCESS,
   REGISTER_CHALLENGE_PARTICIPANT_FAIL,
-  ChallengesActions,
   LOAD_CHALLENGE_HISTORY,
   LOAD_CHALLENGE_HISTORY_SUCCESS,
   LOAD_CHALLENGE_HISTORY_FAIL
@@ -16,6 +15,7 @@ import {
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { ChallengesState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: ChallengesState = {
   data: [],
@@ -23,8 +23,8 @@ export const initialState: ChallengesState = {
   loading: false
 };
 
-export const reducer: Reducer<ChallengesState, ChallengesActions> = produce(
-  (draft: Draft<ChallengesState>, action: ChallengesActions) => {
+export const reducer: Reducer<ChallengesState, RootActions> = produce(
+  (draft: Draft<ChallengesState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_CHALLENGES:
         draft.error = null;

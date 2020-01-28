@@ -30,11 +30,6 @@ Array [
         className="p-0 ml-auto my-auto btn btn-link btn-sm"
         disabled={false}
         onClick={[Function]}
-        style={
-          Object {
-            "textDecoration": "none",
-          }
-        }
         type="button"
       >
         <small
@@ -57,8 +52,7 @@ Array [
               style={Object {}}
             />
           </svg>
-           
-          UPDATE
+           UPDATE
         </small>
       </button>
     </div>

@@ -5,11 +5,12 @@ import { compose } from "recompose";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { CountryOptions } from "types";
-import { FormGroup, Label } from "reactstrap";
+import { Label } from "reactstrap";
 
 interface OwnProps {
   label?: string;
   placeholder: string;
+  size?: string;
   disabled?: boolean;
   onChange?: (event: SyntheticEvent) => void;
 }
@@ -29,13 +30,15 @@ const CountryField: FunctionComponent<Props> = ({
   disabled = false,
   label = null,
   placeholder,
+  size = null,
   onChange = null
 }) => (
-  <FormGroup>
+  <>
     {label && <Label>{label}</Label>}
     <Field
       name="countryIsoCode"
       type="select"
+      size={size}
       placeholder={placeholder}
       component={Input.Select}
       disabled={disabled}
@@ -47,7 +50,7 @@ const CountryField: FunctionComponent<Props> = ({
         </option>
       ))}
     </Field>
-  </FormGroup>
+  </>
 );
 
 const mapStateToProps: MapStateToProps<

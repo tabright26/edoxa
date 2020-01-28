@@ -5,11 +5,11 @@ import {
   LOAD_CLAN_MEMBERS_SUCCESS,
   KICK_CLAN_MEMBER,
   KICK_CLAN_MEMBER_FAIL,
-  KICK_CLAN_MEMBER_SUCCESS,
-  ClanMembersActions
+  KICK_CLAN_MEMBER_SUCCESS
 } from "store/actions/clan/types";
 import produce, { Draft } from "immer";
 import { ClanMembersState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: ClanMembersState = {
   data: [],
@@ -17,8 +17,8 @@ export const initialState: ClanMembersState = {
   loading: false
 };
 
-export const reducer: Reducer<ClanMembersState, ClanMembersActions> = produce(
-  (draft: Draft<ClanMembersState>, action: ClanMembersActions) => {
+export const reducer: Reducer<ClanMembersState, RootActions> = produce(
+  (draft: Draft<ClanMembersState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_CLAN_MEMBERS:
         draft.error = null;

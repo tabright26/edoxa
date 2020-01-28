@@ -9,7 +9,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Domain.Services;
@@ -69,15 +68,9 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
             using var response = await this.ExecuteAsync(
                 new CreateProfileRequest
                 {
-                    FirstName = "Bod",
-                    LastName = "Bod",
-                    Gender = EnumGender.Male,
-                    Dob = new DobDto
-                    {
-                        Day = 1,
-                        Month = 1,
-                        Year = 2000
-                    }
+                    FirstName = "FirstName",
+                    LastName = "LastName",
+                    Gender = EnumGender.Male
                 });
 
             // Assert

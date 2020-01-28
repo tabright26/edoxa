@@ -14,18 +14,22 @@ import { connect } from "react-redux";
 
 interface FormData {}
 
-interface OutterProps {
-  game: Game;
-  setAuthenticationFactor: (data: any) => any;
-}
-
 type InnerProps = InjectedFormProps<FormData, Props> & {
   stripe: stripe.Stripe;
 };
 
+type OutterProps = {
+  game: Game;
+  setAuthenticationFactor: (data: any) => any;
+};
+
 type Props = InnerProps & OutterProps;
 
-const Generate: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Generate: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <FormGroup>
@@ -38,7 +42,9 @@ const Generate: FunctionComponent<Props> = ({ handleSubmit, error }) => (
         <option value="NA">North America</option>
       </Field>
     </FormGroup>
-    <Button.Submit className="w-25">Search</Button.Submit>
+    <Button.Submit loading={submitting} className="w-25">
+      Search
+    </Button.Submit>
   </Form>
 );
 
@@ -54,7 +60,7 @@ const enhance = compose<InnerProps, OutterProps>(
   connect(mapStateToProps),
   reduxForm<FormData, Props>({
     form: GENERATE_GAME_AUTHENTICATION_FORM,
-    onSubmit: async (values, dispatch: any, { game }) => {
+    onSubmit: async (values, dispatch, { game }) => {
       try {
         return await new Promise((resolve, reject) => {
           const meta: AxiosActionCreatorMeta = { resolve, reject };
@@ -64,7 +70,7 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { setAuthenticationFactor }) => {
+    onSubmitSuccess: (result, _dispatch, { setAuthenticationFactor }) => {
       setAuthenticationFactor(result.data);
     }
   })

@@ -1,10 +1,6 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 import { Balance, UserTransaction } from "types";
 
-export type UserAccountBalanceActionCreators =
-  | LoadUserMoneyAccountBalanceActionCreator
-  | LoadUserTokenAccountBalanceActionCreator;
-
 export const LOAD_USER_MONEY_ACCOUNT_BALANCE =
   "LOAD_USER_MONEY_ACCOUNT_BALANCE";
 export const LOAD_USER_MONEY_ACCOUNT_BALANCE_SUCCESS =
@@ -24,8 +20,6 @@ export type LoadUserMoneyAccountBalanceAction = AxiosAction<
   Balance
 >;
 
-export type UserMoneyAccountBalanceActions = LoadUserMoneyAccountBalanceAction;
-
 export const LOAD_USER_TOKEN_ACCOUNT_BALANCE =
   "LOAD_USER_TOKEN_ACCOUNT_BALANCE";
 export const LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS =
@@ -44,9 +38,6 @@ export type LoadUserTokenAccountBalanceAction = AxiosAction<
   LoadUserTokenAccountBalanceType,
   Balance
 >;
-
-export type UserTokenAccountBalanceActions = LoadUserTokenAccountBalanceAction;
-
 export const CREATE_USER_TRANSACTION = "CREATE_USER_TRANSACTION";
 export const CREATE_USER_TRANSACTION_SUCCESS =
   "CREATE_USER_TRANSACTION_SUCCESS";
@@ -97,12 +88,3 @@ export type RedeemPromotionAction = AxiosAction<
   RedeemPromotionType,
   UserTransaction
 >;
-
-export type UserTransactionActionCreators =
-  | LoadUserTransactionHistoryActionCreator
-  | CreateUserTransactionActionCreator
-  | RedeemPromotionActionCreator;
-export type UserTransactionActions =
-  | LoadUserTransactionHistoryAction
-  | CreateUserTransactionAction
-  | RedeemPromotionAction;

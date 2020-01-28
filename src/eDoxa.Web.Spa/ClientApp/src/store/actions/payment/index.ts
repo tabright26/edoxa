@@ -26,15 +26,20 @@ import {
   UPDATE_STRIPE_PAYMENTMETHOD,
   UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS,
   UPDATE_STRIPE_PAYMENTMETHOD_FAIL,
-  StripeAccountActionCreators,
-  StripeBankAccountActionCreators,
-  StripeCustomerActionCreators,
-  StripePaymentMethodsActionCreators
+  LoadStripeAccountActionCreator,
+  LoadStripeBankAccountActionCreator,
+  UpdateStripeBankAccountActionCreator,
+  LoadStripeCustomerActionCreator,
+  UpdateStripeCustomerDefaultPaymentMethodActionCreator,
+  LoadStripePaymentMethodsActionCreator,
+  UpdateStripePaymentMethodActionCreator,
+  AttachStripePaymentMethodActionCreator,
+  DetachStripePaymentMethodActionCreator
 } from "./types";
 
 import { AXIOS_PAYLOAD_CLIENT_CASHIER } from "utils/axios/types";
 
-export function loadStripeAccount(): StripeAccountActionCreators {
+export function loadStripeAccount(): LoadStripeAccountActionCreator {
   return {
     types: [
       LOAD_STRIPE_ACCOUNT,
@@ -51,7 +56,7 @@ export function loadStripeAccount(): StripeAccountActionCreators {
   };
 }
 
-export function loadStripeBankAccount(): StripeBankAccountActionCreators {
+export function loadStripeBankAccount(): LoadStripeBankAccountActionCreator {
   return {
     types: [
       LOAD_STRIPE_BANKACCOUNT,
@@ -70,7 +75,7 @@ export function loadStripeBankAccount(): StripeBankAccountActionCreators {
 
 export function updateStripeBankAccount(
   token: stripe.Token
-): StripeBankAccountActionCreators {
+): UpdateStripeBankAccountActionCreator {
   return {
     types: [
       UPDATE_STRIPE_BANKACCOUNT,
@@ -90,7 +95,7 @@ export function updateStripeBankAccount(
   };
 }
 
-export function loadStripeCustomer(): StripeCustomerActionCreators {
+export function loadStripeCustomer(): LoadStripeCustomerActionCreator {
   return {
     types: [
       LOAD_STRIPE_CUSTOMER,
@@ -109,7 +114,7 @@ export function loadStripeCustomer(): StripeCustomerActionCreators {
 
 export function updateStripeCustomerDefaultPaymentMethod(
   paymentMethodId
-): StripeCustomerActionCreators {
+): UpdateStripeCustomerDefaultPaymentMethodActionCreator {
   return {
     types: [
       UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD,
@@ -126,7 +131,7 @@ export function updateStripeCustomerDefaultPaymentMethod(
   };
 }
 
-export function loadStripePaymentMethods(): StripePaymentMethodsActionCreators {
+export function loadStripePaymentMethods(): LoadStripePaymentMethodsActionCreator {
   return {
     types: [
       LOAD_STRIPE_PAYMENTMETHODS,
@@ -147,7 +152,7 @@ export function updateStripePaymentMethod(
   paymentMethodId: string,
   expMonth: number,
   expYear: number
-): StripePaymentMethodsActionCreators {
+): UpdateStripePaymentMethodActionCreator {
   return {
     types: [
       UPDATE_STRIPE_PAYMENTMETHOD,
@@ -171,7 +176,7 @@ export function updateStripePaymentMethod(
 export function attachStripePaymentMethod(
   paymentMethod: stripe.paymentMethod.PaymentMethod,
   defaultPaymentMethod: boolean = false
-): StripePaymentMethodsActionCreators {
+): AttachStripePaymentMethodActionCreator {
   return {
     types: [
       ATTACH_STRIPE_PAYMENTMETHOD,
@@ -193,7 +198,7 @@ export function attachStripePaymentMethod(
 
 export function detachStripePaymentMethod(
   paymentMethodId: string
-): StripePaymentMethodsActionCreators {
+): DetachStripePaymentMethodActionCreator {
   return {
     types: [
       DETACH_STRIPE_PAYMENTMETHOD,

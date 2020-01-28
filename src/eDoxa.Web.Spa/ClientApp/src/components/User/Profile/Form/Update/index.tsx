@@ -1,17 +1,10 @@
 import React, { FunctionComponent } from "react";
-import { Form, FormGroup } from "reactstrap";
-import {
-  Field,
-  reduxForm,
-  FormSection,
-  InjectedFormProps,
-  FormErrors
-} from "redux-form";
+import { Form } from "reactstrap";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
 import { UPDATE_USER_PROFILE_FORM } from "utils/form/constants";
 import { compose } from "recompose";
-import FormField from "components/Shared/Field";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateUserProfile } from "store/actions/identity";
 import { throwSubmissionError } from "utils/form/types";
@@ -24,24 +17,25 @@ import {
 } from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 
-interface StateProps {}
-
 interface FormData {
   firstName: string;
 }
 
-interface OutterProps {
-  handleCancel: () => void;
-}
+type StateProps = {};
 
 type InnerProps = InjectedFormProps<FormData, Props> & StateProps;
+
+type OutterProps = {
+  handleCancel: () => void;
+};
 
 type Props = InnerProps & OutterProps;
 
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   handleCancel,
-  error
+  error,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -66,20 +60,8 @@ const CustomForm: FunctionComponent<Props> = ({
           </dd>
         </dl>
       </dd>
-      <dd className="col-sm-3 text-muted mb-0">Date of birth</dd>
-      <dd className="col-sm-9 mb-0">
-        <FormGroup>
-          <FormSection name="dob">
-            <FormField.Month className="d-inline" width="60px" disabled />
-            <span className="d-inline mx-2">/</span>
-            <FormField.Day className="d-inline" width="60px" disabled />
-            <span className="d-inline mx-2">/</span>
-            <FormField.Year className="d-inline" width="75px" disabled />
-          </FormSection>
-        </FormGroup>
-      </dd>
       <dd className="col-sm-3 mb-0 text-muted">Gender</dd>
-      <dd className="col-sm-3 mb-0">
+      <dd className="col-sm-6 mb-0">
         <Field
           name="gender"
           placeholder="Gender"
@@ -87,11 +69,13 @@ const CustomForm: FunctionComponent<Props> = ({
           disabled
         />
       </dd>
-      <dd className="col-sm-6 mb-0"></dd>
+      <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
-        <Button.Save className="mt-3 mr-2" />
-        <Button.Cancel className="mt-3" onClick={() => handleCancel()} />
+        <Button.Submit loading={submitting} className="mr-2" size="sm">
+          Save
+        </Button.Submit>
+        <Button.Cancel onClick={handleCancel} />
       </dd>
     </dl>
   </Form>

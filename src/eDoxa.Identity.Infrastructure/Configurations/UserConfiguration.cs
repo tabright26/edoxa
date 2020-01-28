@@ -29,6 +29,25 @@ namespace eDoxa.Identity.Infrastructure.Configurations
             builder.Property(user => user.Country).HasConversion(country => country.Name, name => Country.FromName(name)).IsRequired();
 
             builder.OwnsOne(
+                user => user!.Dob,
+                userDob =>
+                {
+                    userDob.WithOwner().HasForeignKey("UserId");
+
+                    userDob.Property<Guid>("Id").ValueGeneratedOnAdd();
+
+                    userDob.Property(dob => dob.Year).IsRequired();
+
+                    userDob.Property(dob => dob.Month).IsRequired();
+
+                    userDob.Property(dob => dob.Day).IsRequired();
+
+                    userDob.HasKey("Id");
+
+                    userDob.ToTable("UserDob");
+                });
+
+            builder.OwnsOne(
                 user => user.Profile,
                 userProfile =>
                 {
@@ -41,25 +60,6 @@ namespace eDoxa.Identity.Infrastructure.Configurations
                     userProfile.Property(profile => profile!.LastName).IsRequired();
 
                     userProfile.Property(profile => profile!.Gender).HasConversion(gender => gender.Value, value => Gender.FromValue(value)).IsRequired();
-
-                    userProfile.OwnsOne(
-                        profile => profile!.Dob,
-                        userDob =>
-                        {
-                            userDob.WithOwner().HasForeignKey("UserId");
-
-                            userDob.Property<Guid>("Id").ValueGeneratedOnAdd();
-
-                            userDob.Property(dob => dob.Year).IsRequired();
-
-                            userDob.Property(dob => dob.Month).IsRequired();
-
-                            userDob.Property(dob => dob.Day).IsRequired();
-
-                            userDob.HasKey("Id");
-
-                            userDob.ToTable("UserDob");
-                        });
 
                     userProfile.HasKey("Id");
 

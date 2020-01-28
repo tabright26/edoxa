@@ -5,11 +5,11 @@ import {
   LOAD_USER_PHONE_FAIL,
   UPDATE_USER_PHONE,
   UPDATE_USER_PHONE_SUCCESS,
-  UPDATE_USER_PHONE_FAIL,
-  UserPhoneActions
+  UPDATE_USER_PHONE_FAIL
 } from "store/actions/identity/types";
 import produce, { Draft } from "immer";
 import { UserPhoneState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: UserPhoneState = {
   data: null,
@@ -17,8 +17,8 @@ export const initialState: UserPhoneState = {
   loading: true
 };
 
-export const reducer: Reducer<UserPhoneState, UserPhoneActions> = produce(
-  (draft: Draft<UserPhoneState>, action: UserPhoneActions) => {
+export const reducer: Reducer<UserPhoneState, RootActions> = produce(
+  (draft: Draft<UserPhoneState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_PHONE: {
         draft.error = null;

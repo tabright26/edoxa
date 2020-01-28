@@ -45,7 +45,11 @@ type InnerProps = InjectedFormProps<FormData, Props> &
 
 type Props = InnerProps & OutterProps;
 
-const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const CustomForm: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <Field type="hidden" name="code" component={Input.Text} />
@@ -87,7 +91,9 @@ const CustomForm: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       />
     </InputGroup>
     <FormGroup className="mb-0">
-      <Button.Submit block>Reset</Button.Submit>
+      <Button.Submit loading={submitting} block>
+        Reset
+      </Button.Submit>
     </FormGroup>
   </Form>
 );

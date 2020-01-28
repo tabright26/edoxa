@@ -76,7 +76,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = dispatch => {
   return {
     loadUserDoxatagHistory: () => dispatch(loadUserDoxatagHistory())
   };

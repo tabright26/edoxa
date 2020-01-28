@@ -12,7 +12,8 @@ import { ValidationSummary } from "components/Shared/ValidationSummary";
 const CreateInvitationForm: FunctionComponent<any> = ({
   handleSubmit,
   initialValues: { clanId },
-  error
+  error,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -31,7 +32,9 @@ const CreateInvitationForm: FunctionComponent<any> = ({
       component={Input.Text}
     />
     <FormGroup className="mb-0">
-      <Button.Save />
+      <Button.Submit loading={submitting} size="sm">
+        Save
+      </Button.Submit>
     </FormGroup>
   </Form>
 );

@@ -58,11 +58,14 @@ const CustomForm: FunctionComponent<Props> = ({
   handleCancel,
   countryIsoCode,
   reset,
-  fieldsOptions: { country, line1, line2, city, state, postalCode }
+  fieldsOptions: { country, line1, line2, city, state, postalCode },
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
-    <FormField.CountryIsoCode placeholder={country.label} disabled />
+    <FormGroup>
+      <FormField.CountryIsoCode placeholder={country.label} disabled />
+    </FormGroup>
     <Field
       type="text"
       name="line1"
@@ -115,7 +118,9 @@ const CustomForm: FunctionComponent<Props> = ({
       </Col>
     </FormGroup>
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
+      <Button.Submit loading={submitting} className="mr-2" size="sm">
+        Save
+      </Button.Submit>
       <Button.Cancel
         onClick={() => {
           handleCancel();

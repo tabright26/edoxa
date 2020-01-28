@@ -5,11 +5,11 @@ import {
   DOWNLOAD_CLAN_LOGO_FAIL,
   UPLOAD_CLAN_LOGO,
   UPLOAD_CLAN_LOGO_FAIL,
-  UPLOAD_CLAN_LOGO_SUCCESS,
-  ClanLogosActions
+  UPLOAD_CLAN_LOGO_SUCCESS
 } from "store/actions/clan/types";
 import produce, { Draft } from "immer";
 import { ClanLogosState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: ClanLogosState = {
   data: [],
@@ -17,8 +17,8 @@ export const initialState: ClanLogosState = {
   loading: false
 };
 
-export const reducer: Reducer<ClanLogosState, ClanLogosActions> = produce(
-  (draft: Draft<ClanLogosState>, action: ClanLogosActions) => {
+export const reducer: Reducer<ClanLogosState, RootActions> = produce(
+  (draft: Draft<ClanLogosState>, action: RootActions) => {
     switch (action.type) {
       case DOWNLOAD_CLAN_LOGO:
         draft.error = null;

@@ -121,6 +121,7 @@ exports[`renders correctly 1`] = `
         <button
           aria-label={null}
           className="btn btn-primary btn-block"
+          disabled={null}
           onClick={[Function]}
           type="submit"
         >

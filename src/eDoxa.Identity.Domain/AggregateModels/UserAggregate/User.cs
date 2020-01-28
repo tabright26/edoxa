@@ -22,6 +22,8 @@ namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 #nullable restore
         public Country Country { get; set; }
 
+        public UserDob Dob { get; set; }
+
         public UserProfile? Profile { get; set; }
 
         public void Create(UserProfile profile)

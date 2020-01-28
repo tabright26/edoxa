@@ -8,6 +8,7 @@ exports[`renders correctly 1`] = `
   <button
     aria-label={null}
     className="text-uppercase h-100 w-100 btn btn-primary btn-lg"
+    disabled={null}
     onClick={[Function]}
     type="submit"
   >

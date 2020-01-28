@@ -1,12 +1,12 @@
 import {
   LOAD_USER_TOKEN_ACCOUNT_BALANCE,
   LOAD_USER_TOKEN_ACCOUNT_BALANCE_SUCCESS,
-  LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL,
-  UserTokenAccountBalanceActions
+  LOAD_USER_TOKEN_ACCOUNT_BALANCE_FAIL
 } from "store/actions/cashier/types";
 import { UserBalanceState } from "../types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
+import { RootActions } from "store/types";
 
 export const initialState: UserBalanceState = {
   data: {
@@ -17,14 +17,8 @@ export const initialState: UserBalanceState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  UserBalanceState,
-  UserTokenAccountBalanceActions
-> = produce(
-  (
-    draft: Draft<UserBalanceState>,
-    action: UserTokenAccountBalanceActions
-  ) => {
+export const reducer: Reducer<UserBalanceState, RootActions> = produce(
+  (draft: Draft<UserBalanceState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_TOKEN_ACCOUNT_BALANCE:
         draft.error = null;

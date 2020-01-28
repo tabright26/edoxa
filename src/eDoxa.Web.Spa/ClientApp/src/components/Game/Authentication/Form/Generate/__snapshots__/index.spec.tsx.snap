@@ -53,6 +53,7 @@ exports[`renders correctly 1`] = `
   <button
     aria-label={null}
     className="w-25 btn btn-primary"
+    disabled={null}
     onClick={[Function]}
     type="submit"
   >

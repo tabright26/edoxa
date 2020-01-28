@@ -13,11 +13,9 @@ import { CREATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { attachStripePaymentMethod } from "store/actions/payment";
-import {
-  StripePaymentMethodsActions,
-  ATTACH_STRIPE_PAYMENTMETHOD_FAIL
-} from "store/actions/payment/types";
+import { ATTACH_STRIPE_PAYMENTMETHOD_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
+import { RootActions } from "store/types";
 
 interface FormData {}
 
@@ -33,7 +31,8 @@ type Props = InnerProps & OutterProps;
 const Create: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  handleCancel
+  handleCancel,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -52,8 +51,10 @@ const Create: FunctionComponent<Props> = ({
       </dd>
       <dt className="col-sm-4 mb-0"></dt>
       <dd className="col-sm-8 mb-0">
-        <Button.Save className="mr-2" />
-        <Button.Cancel onClick={() => handleCancel()} />
+        <Button.Submit loading={submitting} className="mr-2" size="sm">
+          Save
+        </Button.Submit>
+        <Button.Cancel onClick={handleCancel} />
       </dd>
     </dl>
   </Form>
@@ -67,7 +68,7 @@ const enhance = compose<InnerProps, OutterProps>(
       stripe.createPaymentMethod("card").then(result => {
         if (result.paymentMethod) {
           return dispatch(attachStripePaymentMethod(result.paymentMethod)).then(
-            (action: StripePaymentMethodsActions) => {
+            (action: RootActions) => {
               switch (action.type) {
                 case ATTACH_STRIPE_PAYMENTMETHOD_FAIL: {
                   throwSubmissionError(action.error);

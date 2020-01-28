@@ -24,8 +24,20 @@ export function getError500Path(): string {
   return getErrorPath(500);
 }
 
-export function getRegisterPath(): string {
-  return "/register";
+function getAccountPath(): string {
+  return "/account";
+}
+
+export function getAccountRegisterPath(): string {
+  return getAccountPath() + "/register";
+}
+
+export function getAccountLogoutPath(): string {
+  return getAccountPath() + "/logout";
+}
+
+export function getAccountLoginPath(): string {
+  return getAccountPath() + "/login";
 }
 
 export function getEmailConfirmPath(): string {
@@ -52,40 +64,40 @@ export function getNewsFeedsPath(): string {
   return "/news-feeds";
 }
 
-export function getUserProfilePath(): string {
-  return "/user/profile";
+export function getProfilePath(): string {
+  return "/profile";
 }
 
-export function getUserProfileOverviewPath(): string {
-  return getUserProfilePath() + "/overview";
+export function getProfileOverviewPath(): string {
+  return getProfilePath() + "/overview";
 }
 
-export function getUserProfileDetailsPath(): string {
-  return getUserProfilePath() + "/details";
+export function getProfileDetailsPath(): string {
+  return getProfilePath() + "/details";
 }
 
-export function getUserProfileSecurityPath(): string {
-  return getUserProfilePath() + "/security";
+export function getProfileSecurityPath(): string {
+  return getProfilePath() + "/security";
 }
 
-export function getUserProfileTransactionHistoryPath(): string {
-  return getUserProfilePath() + "/transaction-history";
+export function getProfileTransactionHistoryPath(): string {
+  return getProfilePath() + "/transaction-history";
 }
 
-export function getUserProfilePaymentMethodsPath(): string {
-  return getUserProfilePath() + "/payment-methods";
+export function getProfilePaymentMethodsPath(): string {
+  return getProfilePath() + "/payment-methods";
 }
 
-export function getUserProfilePromotionalCodePath(): string {
-  return getUserProfilePath() + "/promotional-code";
+export function getProfilePromotionalCodePath(): string {
+  return getProfilePath() + "/promotional-code";
 }
 
-export function getUserProfileGamesPath(): string {
-  return getUserProfilePath() + "/games";
+export function getProfileGamesPath(): string {
+  return getProfilePath() + "/games";
 }
 
-export function getUserProfileChallengeHistoryPath(): string {
-  return getUserProfilePath() + "/challenge-history";
+export function getProfileChallengeHistoryPath(): string {
+  return getProfilePath() + "/challenge-history";
 }
 
 export function getChallengesPath(): string {

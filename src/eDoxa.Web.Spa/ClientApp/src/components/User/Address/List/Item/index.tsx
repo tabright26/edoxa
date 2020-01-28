@@ -2,7 +2,8 @@ import React, { useState, FunctionComponent } from "react";
 import { faEdit, faTimes } from "@fortawesome/free-solid-svg-icons";
 import AddressDetails from "components/User/Address/Details";
 import AddressForm from "components/User/Address/Form";
-import Button from "components/Shared/Button";
+import { Button } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const AddressItem: FunctionComponent<any> = ({ hasMore, address }) => {
   const [updateFormHidden, hideUpdateForm] = useState(true);
@@ -31,20 +32,26 @@ const AddressItem: FunctionComponent<any> = ({ hasMore, address }) => {
         )}
         {deleteFormHidden && updateFormHidden && (
           <dd className="col-sm-4 mb-0 d-flex">
-            <Button.Link
+            <Button
               className="p-0 ml-auto"
-              icon={faTimes}
+              color="link"
+              size="sm"
               onClick={() => hideDeleteForm(false)}
             >
-              REMOVE
-            </Button.Link>
-            <Button.Link
+              <small className="text-uppercase">
+                <FontAwesomeIcon icon={faTimes} /> REMOVE
+              </small>
+            </Button>
+            <Button
               className="p-0 ml-auto"
-              icon={faEdit}
+              color="link"
+              size="sm"
               onClick={() => hideUpdateForm(false)}
             >
-              UPDATE
-            </Button.Link>
+              <small className="text-uppercase">
+                <FontAwesomeIcon icon={faEdit} /> UPDATE
+              </small>
+            </Button>
           </dd>
         )}
       </dl>

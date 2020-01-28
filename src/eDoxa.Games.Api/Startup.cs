@@ -11,8 +11,8 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Games.Api.Grpc.Services;
 using eDoxa.Games.Api.Infrastructure;
-using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
 using eDoxa.Grpc.Protos.Games.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;

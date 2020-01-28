@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { connectModal, InjectedProps } from "redux-modal";
-import { Modal, ModalFooter, ModalHeader, Table } from "reactstrap";
-import Button from "components/Shared/Button";
+import { Modal, ModalFooter, ModalHeader, Table, Button } from "reactstrap";
 import Format from "components/Shared/Format";
 import { CHALLENGE_MATCH_SCORE_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
@@ -66,7 +65,9 @@ const Score: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
       </tbody>
     </Table>
     <ModalFooter className="d-flex">
-      <Button.Close className="w-25 m-auto" onClick={handleHide} />
+      <Button className="w-25 m-auto" color="primary" onClick={handleHide}>
+        Close
+      </Button>
     </ModalFooter>
   </Modal>
 );

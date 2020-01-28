@@ -4,7 +4,8 @@ import {
   UserDoxatag,
   UserEmail,
   UserProfile,
-  LogoutToken
+  LogoutToken,
+  UserDob
 } from "types";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
@@ -43,6 +44,13 @@ export type RegisterUserAccountActionCreator = AxiosActionCreator<
   RegisterUserAccountType
 >;
 export type RegisterUserAccountAction = AxiosAction<RegisterUserAccountType>;
+export type RegisterUserAccountRequest = {
+  email: string;
+  password: string;
+  country: string;
+  ip: string;
+  dob: UserDob;
+};
 
 export type LoginUserAccountType =
   | typeof LOGIN_USER_ACCOUNT
@@ -64,14 +72,6 @@ export type LogoutUserAccountAction = AxiosAction<
   LogoutUserAccountType,
   LogoutToken
 >;
-export type UserAccountActionCreators =
-  | RegisterUserAccountActionCreator
-  | LoginUserAccountActionCreator
-  | LogoutUserAccountActionCreator;
-export type UserAccountActions =
-  | RegisterUserAccountAction
-  | LoginUserAccountAction
-  | LogoutUserAccountAction;
 
 export type LoadUserAddressBookType =
   | typeof LOAD_USER_ADDRESSBOOK
@@ -121,17 +121,6 @@ export type DeleteUserAddressAction = AxiosAction<
   UserAddress
 >;
 
-export type UserAddressBookActionCreators =
-  | LoadUserAddressBookActionCreator
-  | CreateUserAddressActionCreator
-  | UpdateUserAddressActionCreator
-  | DeleteUserAddressActionCreator;
-export type UserAddressBookActions =
-  | LoadUserAddressBookAction
-  | CreateUserAddressAction
-  | UpdateUserAddressAction
-  | DeleteUserAddressAction;
-
 export const LOAD_USER_DOXATAGHISTORY = "LOAD_USER_DOXATAGHISTORY";
 export const LOAD_USER_DOXATAGHISTORY_SUCCESS =
   "LOAD_USER_DOXATAGHISTORY_SUCCESS";
@@ -165,13 +154,6 @@ export type ChangeUserDoxatagAction = AxiosAction<
   UserDoxatag
 >;
 
-export type UserDoxatagHistoryActionCreators =
-  | LoadUserDoxatagHistoryActionCreator
-  | ChangeUserDoxatagActionCreator;
-export type UserDoxatagHistoryActions =
-  | LoadUserDoxatagHistoryAction
-  | ChangeUserDoxatagAction;
-
 export const LOAD_USER_EMAIL = "LOAD_USER_EMAIL";
 export const LOAD_USER_EMAIL_SUCCESS = "LOAD_USER_EMAIL_SUCCESS";
 export const LOAD_USER_EMAIL_FAIL = "LOAD_USER_EMAIL_FAIL";
@@ -198,11 +180,6 @@ export type ConfirmUserEmailAction = AxiosAction<
   ConfirmUserEmailType,
   UserEmail
 >;
-
-export type UserEmailActionCreators =
-  | LoadUserEmailActionCreator
-  | ConfirmUserEmailActionCreator;
-export type UserEmailActions = LoadUserEmailAction | ConfirmUserEmailAction;
 
 export const LOAD_USER_PROFILE = "LOAD_USER_PROFILE";
 export const LOAD_USER_PROFILE_SUCCESS = "LOAD_USER_PROFILE_SUCCESS";
@@ -252,15 +229,6 @@ export type UpdateUserProfileAction = AxiosAction<
   UserProfile
 >;
 
-export type UserProfileActionCreators =
-  | LoadUserProfileActionCreator
-  | CreateUserProfileActionCreator
-  | UpdateUserProfileActionCreator;
-export type UserProfileActions =
-  | LoadUserProfileAction
-  | CreateUserProfileAction
-  | UpdateUserProfileAction;
-
 export const FORGOT_USER_PASSWORD = "FORGOT_USER_PASSWORD";
 export const FORGOT_USER_PASSWORD_SUCCESS = "FORGOT_USER_PASSWORD_SUCCESS";
 export const FORGOT_USER_PASSWORD_FAIL = "FORGOT_USER_PASSWORD_FAIL";
@@ -287,13 +255,6 @@ export type ResetUserPasswordActionCreator = AxiosActionCreator<
 >;
 export type ResetUserPasswordAction = AxiosAction<ResetUserPasswordType>;
 
-export type UserPasswordActionCreators =
-  | ForgotUserPasswordActionCreator
-  | ResetUserPasswordActionCreator;
-export type UserPasswordActions =
-  | ForgotUserPasswordAction
-  | ResetUserPasswordAction;
-
 export const LOAD_USER_PHONE = "LOAD_USER_PHONE";
 export const LOAD_USER_PHONE_SUCCESS = "LOAD_USER_PHONE_SUCCESS";
 export const LOAD_USER_PHONE_FAIL = "LOAD_USER_PHONE_FAIL";
@@ -308,7 +269,6 @@ export type LoadUserPhoneType =
   | typeof LOAD_USER_PHONE_FAIL;
 export type LoadUserPhoneActionCreator = AxiosActionCreator<LoadUserPhoneType>;
 export type LoadUserPhoneAction = AxiosAction<LoadUserPhoneType>;
-
 export type UpdateUserPhoneType =
   | typeof UPDATE_USER_PHONE
   | typeof UPDATE_USER_PHONE_SUCCESS
@@ -317,8 +277,3 @@ export type UpdateUserPhoneActionCreator = AxiosActionCreator<
   UpdateUserPhoneType
 >;
 export type UpdateUserPhoneAction = AxiosAction<UpdateUserPhoneType>;
-
-export type UserPhoneActionCreators =
-  | LoadUserPhoneActionCreator
-  | UpdateUserPhoneActionCreator;
-export type UserPhoneActions = LoadUserPhoneAction | UpdateUserPhoneAction;

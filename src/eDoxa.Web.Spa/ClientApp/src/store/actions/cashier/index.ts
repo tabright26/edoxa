@@ -8,14 +8,17 @@ import {
   LOAD_USER_TRANSACTION_HISTORY,
   LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
   LOAD_USER_TRANSACTION_HISTORY_FAIL,
-  UserTransactionActionCreators,
-  UserAccountBalanceActionCreators,
   CREATE_USER_TRANSACTION,
   CREATE_USER_TRANSACTION_SUCCESS,
   CREATE_USER_TRANSACTION_FAIL,
   REDEEM_PROMOTION,
   REDEEM_PROMOTION_SUCCESS,
-  REDEEM_PROMOTION_FAIL
+  REDEEM_PROMOTION_FAIL,
+  CreateUserTransactionActionCreator,
+  RedeemPromotionActionCreator,
+  LoadUserMoneyAccountBalanceActionCreator,
+  LoadUserTokenAccountBalanceActionCreator,
+  LoadUserTransactionHistoryActionCreator
 } from "./types";
 import {
   Currency,
@@ -34,7 +37,7 @@ import {
 export function createUserTransaction(
   transactionBundleId: TransactionBundleId,
   meta: AxiosActionCreatorMeta
-): UserTransactionActionCreators {
+): CreateUserTransactionActionCreator {
   return {
     types: [
       CREATE_USER_TRANSACTION,
@@ -58,13 +61,9 @@ export function createUserTransaction(
 export function redeemPromotion(
   promotionalCode: string,
   meta: AxiosActionCreatorMeta
-): UserTransactionActionCreators {
+): RedeemPromotionActionCreator {
   return {
-    types: [
-      REDEEM_PROMOTION,
-      REDEEM_PROMOTION_SUCCESS,
-      REDEEM_PROMOTION_FAIL
-    ],
+    types: [REDEEM_PROMOTION, REDEEM_PROMOTION_SUCCESS, REDEEM_PROMOTION_FAIL],
     payload: {
       client: AXIOS_PAYLOAD_CLIENT_CASHIER,
       request: {
@@ -78,7 +77,9 @@ export function redeemPromotion(
 
 export function loadUserBalance(
   currency: Currency
-): UserAccountBalanceActionCreators {
+):
+  | LoadUserMoneyAccountBalanceActionCreator
+  | LoadUserTokenAccountBalanceActionCreator {
   const payload: AxiosPayload = {
     client: AXIOS_PAYLOAD_CLIENT_CASHIER,
     request: {
@@ -114,7 +115,7 @@ export function loadUserTransactionHistory(
   currency: Currency | null = null,
   type: TransactionType | null = null,
   status: TransactionStatus | null = null
-): UserTransactionActionCreators {
+): LoadUserTransactionHistoryActionCreator {
   return {
     types: [
       LOAD_USER_TRANSACTION_HISTORY,

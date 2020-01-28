@@ -13,9 +13,9 @@ using Autofac;
 
 using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Api.Application.Stripe.Extensions;
+using eDoxa.Payment.Api.Grpc.Services;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
-using eDoxa.Payment.Api.Services;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;

@@ -24,11 +24,6 @@ exports[`renders without crashing 1`] = `
       className="p-0 ml-auto my-auto btn btn-link btn-sm"
       disabled={false}
       onClick={[Function]}
-      style={
-        Object {
-          "textDecoration": "none",
-        }
-      }
       type="button"
     >
       <small
@@ -51,8 +46,7 @@ exports[`renders without crashing 1`] = `
             style={Object {}}
           />
         </svg>
-         
-        UPDATE
+         UPDATE
       </small>
     </button>
   </div>

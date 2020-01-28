@@ -32,7 +32,11 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const Redeem: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Redeem: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  submitting
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <Field
@@ -43,7 +47,9 @@ const Redeem: FunctionComponent<Props> = ({ handleSubmit, error }) => (
       component={Input.Text}
     />
     <FormGroup className="mb-0">
-      <Button.Submit size="sm">Redeem</Button.Submit>
+      <Button.Submit loading={submitting} size="sm">
+        Redeem
+      </Button.Submit>
     </FormGroup>
   </Form>
 );
@@ -85,13 +91,8 @@ const enhance = compose<InnerProps, OutterProps>(
         )
       );
     },
-    validate: (values, { promotionOptions }) => {
+    validate: () => {
       const errors: FormErrors<FormData> = {};
-      // for (let [key, value] of Object.entries(promotionOptions)) {
-      //   if (!promotionOptions[key].excluded) {
-      //     errors[key] = getFieldValidationRuleMessage(value, values[key]);
-      //   }
-      // }
       return errors;
     }
   })

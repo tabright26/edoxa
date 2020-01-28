@@ -10,12 +10,12 @@ import {
   DETACH_STRIPE_PAYMENTMETHOD_FAIL,
   UPDATE_STRIPE_PAYMENTMETHOD,
   UPDATE_STRIPE_PAYMENTMETHOD_SUCCESS,
-  UPDATE_STRIPE_PAYMENTMETHOD_FAIL,
-  StripePaymentMethodsActions
+  UPDATE_STRIPE_PAYMENTMETHOD_FAIL
 } from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { StripePaymentMethodsState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: StripePaymentMethodsState = {
   data: [],
@@ -23,14 +23,8 @@ export const initialState: StripePaymentMethodsState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  StripePaymentMethodsState,
-  StripePaymentMethodsActions
-> = produce(
-  (
-    draft: Draft<StripePaymentMethodsState>,
-    action: StripePaymentMethodsActions
-  ) => {
+export const reducer: Reducer<StripePaymentMethodsState, RootActions> = produce(
+  (draft: Draft<StripePaymentMethodsState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_STRIPE_PAYMENTMETHODS:
         draft.error = null;

@@ -22,21 +22,21 @@ exports[`renders without crashing 1`] = `
       >
         <li
           className="list-group-item"
-          href="/user/profile/overview"
+          href="/profile/overview"
           onClick={[Function]}
         >
           Overview
         </li>
         <li
           className="list-group-item"
-          href="/user/profile/details"
+          href="/profile/details"
           onClick={[Function]}
         >
           Details
         </li>
         <li
           className="list-group-item"
-          href="/user/profile/security"
+          href="/profile/security"
           onClick={[Function]}
         >
           Security
@@ -58,7 +58,7 @@ exports[`renders without crashing 1`] = `
       >
         <li
           className="list-group-item"
-          href="/user/profile/challenge-history"
+          href="/profile/challenge-history"
           onClick={[Function]}
         >
           Challenge History
@@ -80,21 +80,21 @@ exports[`renders without crashing 1`] = `
       >
         <li
           className="list-group-item"
-          href="/user/profile/payment-methods"
+          href="/profile/payment-methods"
           onClick={[Function]}
         >
           Payment Methods
         </li>
         <li
           className="list-group-item"
-          href="/user/profile/transaction-history"
+          href="/profile/transaction-history"
           onClick={[Function]}
         >
           Transaction History
         </li>
         <li
           className="list-group-item"
-          href="/user/profile/promotional-code"
+          href="/profile/promotional-code"
           onClick={[Function]}
         >
           Promotional Code
@@ -116,7 +116,7 @@ exports[`renders without crashing 1`] = `
       >
         <li
           className="list-group-item"
-          href="/user/profile/games"
+          href="/profile/games"
           onClick={[Function]}
         >
           Games

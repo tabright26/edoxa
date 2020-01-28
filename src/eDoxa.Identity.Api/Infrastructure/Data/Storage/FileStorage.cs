@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Immutable;
@@ -159,22 +159,20 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                                 Email = default(string),
                                 Phone = default(string),
                                 BirthDate = default(long),
-                                Gender = default(int)
+                                Gender = default(int),
+                                Country = default(string)
                             })
                         .Select(
                             record => new User
                             {
                                 Id = record.Id,
                                 UserName = record.Email,
-                                Country = Country.Canada, // FRANCIS: Should be inside users.csv
+                                Country = Country.FromName(record.Country),
+                                Dob = new UserDob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date),
                                 Email = record.Email,
                                 PhoneNumber = record.Phone,
                                 SecurityStamp = Guid.NewGuid().ToString("N"),
-                                Profile = new UserProfile(
-                                    record.FirstName,
-                                    record.LastName,
-                                    Gender.FromValue(record.Gender),
-                                    new UserDob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date))
+                                Profile = new UserProfile(record.FirstName, record.LastName, Gender.FromValue(record.Gender))
                             })
                         .ToImmutableHashSet();
                 });

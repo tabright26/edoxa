@@ -4,12 +4,12 @@ import {
   LOAD_USER_DOXATAGHISTORY_FAIL,
   CHANGE_USER_DOXATAG,
   CHANGE_USER_DOXATAG_SUCCESS,
-  CHANGE_USER_DOXATAG_FAIL,
-  UserDoxatagHistoryActions
+  CHANGE_USER_DOXATAG_FAIL
 } from "store/actions/identity/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserDoxatagHistoryState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: UserDoxatagHistoryState = {
   data: [],
@@ -17,14 +17,8 @@ export const initialState: UserDoxatagHistoryState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  UserDoxatagHistoryState,
-  UserDoxatagHistoryActions
-> = produce(
-  (
-    draft: Draft<UserDoxatagHistoryState>,
-    action: UserDoxatagHistoryActions
-  ) => {
+export const reducer: Reducer<UserDoxatagHistoryState, RootActions> = produce(
+  (draft: Draft<UserDoxatagHistoryState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_DOXATAGHISTORY: {
         draft.error = null;

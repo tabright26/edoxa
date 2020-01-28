@@ -72,10 +72,7 @@ namespace eDoxa.Identity.Api.Controllers
                 user,
                 request.FirstName,
                 request.LastName,
-                request.Gender.ToEnumeration<Gender>(),
-                request.Dob.Year,
-                request.Dob.Month,
-                request.Dob.Day);
+                request.Gender.ToEnumeration<Gender>());
 
             if (result.IsValid)
             {

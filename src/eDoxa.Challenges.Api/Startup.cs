@@ -11,9 +11,9 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Challenges.Api.Grpc.Services;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
-using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Grpc.Protos.Challenges.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;

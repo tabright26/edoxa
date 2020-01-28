@@ -165,30 +165,5 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
-
-        [Theory]
-        [MemberData(nameof(ValidDob))]
-        public void Validate_WhenDobIsValid_ShouldNotHaveValidationErrorFor(DobDto dob)
-        {
-            // Arrange
-            var validator = new CreateProfileRequestValidator();
-
-            // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Dob, dob);
-        }
-
-        //[Theory]
-        //[MemberData(nameof(InvalidDob))]
-        //public void Validate_WhenDobIsInvalid_ShouldHaveValidationErrorFor(DobRequest dob, string errorMessage)
-        //{
-        //    // Arrange
-        //    var validator = new InformationsPostRequestValidator();
-
-        //    // Act
-        //    var failures = validator.ShouldHaveValidationErrorFor(request => request.Dob, dob);
-
-        //    // Assert
-        //    failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        //}
     }
 }

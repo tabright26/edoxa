@@ -48,7 +48,7 @@ const mapStateToProps = (state: RootState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch) => {
   return {
     loadUserEmail: () => dispatch(loadUserEmail())
   };

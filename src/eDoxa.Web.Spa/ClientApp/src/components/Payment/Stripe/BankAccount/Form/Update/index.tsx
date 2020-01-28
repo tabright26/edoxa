@@ -8,10 +8,7 @@ import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { updateStripeBankAccount } from "store/actions/payment";
 import { injectStripe } from "react-stripe-elements";
-import {
-  StripeBankAccountActions,
-  UPDATE_STRIPE_BANKACCOUNT_FAIL
-} from "store/actions/payment/types";
+import { UPDATE_STRIPE_BANKACCOUNT_FAIL } from "store/actions/payment/types";
 import { throwSubmissionError } from "utils/form/types";
 import FormField from "components/Payment/Stripe/BankAccount/Field";
 import {
@@ -19,7 +16,7 @@ import {
   HocUserProfileCountryStateProps
 } from "utils/oidc/containers";
 import { connect, MapStateToProps } from "react-redux";
-import { RootState } from "store/types";
+import { RootState, RootActions } from "store/types";
 
 interface FormData {
   currency: string;
@@ -50,7 +47,8 @@ type Props = InnerProps & OutterProps;
 const Update: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  handleCancel
+  handleCancel,
+  submitting
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
@@ -77,8 +75,10 @@ const Update: FunctionComponent<Props> = ({
       component={Input.Text}
     />
     <FormGroup className="mb-0">
-      <Button.Save className="mr-2" />
-      <Button.Cancel onClick={() => handleCancel()} />
+      <Button.Submit loading={submitting} className="mr-2" size="sm">
+        Save
+      </Button.Submit>
+      <Button.Cancel onClick={handleCancel} />
     </FormGroup>
   </Form>
 );
@@ -115,7 +115,7 @@ const enhance = compose<InnerProps, OutterProps>(
       return await stripe.createToken("bank_account", options).then(result => {
         if (result.token) {
           return dispatch(updateStripeBankAccount(result.token)).then(
-            (action: StripeBankAccountActions) => {
+            (action: RootActions) => {
               switch (action.type) {
                 case UPDATE_STRIPE_BANKACCOUNT_FAIL: {
                   throwSubmissionError(action.error);
@@ -129,7 +129,7 @@ const enhance = compose<InnerProps, OutterProps>(
         }
       });
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel(),
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
     validate: () => {
       const errors: FormErrors<FormData> = {};
       return errors;

@@ -4,12 +4,12 @@ import {
   LOAD_STRIPE_CUSTOMER_FAIL,
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD,
   UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_SUCCESS,
-  UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL,
-  StripeCustomerActions
+  UPDATE_STRIPE_CUSTOMER_DEFAULT_PAYMENTMETHOD_FAIL
 } from "store/actions/payment/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { StripeCustomerState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: StripeCustomerState = {
   data: null,
@@ -17,11 +17,8 @@ export const initialState: StripeCustomerState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  StripeCustomerState,
-  StripeCustomerActions
-> = produce(
-  (draft: Draft<StripeCustomerState>, action: StripeCustomerActions) => {
+export const reducer: Reducer<StripeCustomerState, RootActions> = produce(
+  (draft: Draft<StripeCustomerState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_STRIPE_CUSTOMER:
         draft.error = null;

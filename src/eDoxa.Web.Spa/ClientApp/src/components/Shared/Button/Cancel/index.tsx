@@ -1,19 +1,20 @@
 import React, { FunctionComponent } from "react";
 import { Button } from "reactstrap";
 
-export const Cancel: FunctionComponent<any> = ({
-  className,
-  onClick,
-  width = "75px",
-  size = "sm"
+interface Props {
+  className?: string;
+  onClick?: () => void;
+}
+
+export const Cancel: FunctionComponent<Props> = ({
+  className = null,
+  onClick = null
 }) => (
   <Button
     className={className}
-    style={{ width }}
     color="primary"
+    size="sm"
     outline
-    size={size}
-    type="button"
     onClick={onClick}
   >
     Cancel

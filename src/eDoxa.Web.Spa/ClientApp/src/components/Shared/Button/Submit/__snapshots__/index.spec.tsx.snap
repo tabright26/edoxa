@@ -4,6 +4,7 @@ exports[`renders without crashing 1`] = `
 <button
   aria-label={null}
   className="btn btn-primary"
+  disabled={null}
   onClick={[Function]}
   type="submit"
 />
