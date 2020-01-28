@@ -34,7 +34,7 @@ namespace eDoxa.Games.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task DeleteByGameAsync_ShouldBeOfTypeBadRequestObjectResult()
+        public async Task UnlinkCredentialAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
             var mockCredentialService = new Mock<IGameCredentialService>();
@@ -67,7 +67,7 @@ namespace eDoxa.Games.UnitTests.Controllers
             authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await authFactorController.DeleteAsync(Game.LeagueOfLegends);
+            var result = await authFactorController.UnlinkCredentialAsync(Game.LeagueOfLegends);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -78,7 +78,7 @@ namespace eDoxa.Games.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task DeleteByGameAsync_ShouldBeOfTypeNotFoundObjectResult()
+        public async Task UnlinkCredentialAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
             var mockCredentialService = new Mock<IGameCredentialService>();
@@ -94,7 +94,7 @@ namespace eDoxa.Games.UnitTests.Controllers
             authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await authFactorController.DeleteAsync(Game.LeagueOfLegends);
+            var result = await authFactorController.UnlinkCredentialAsync(Game.LeagueOfLegends);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -103,7 +103,7 @@ namespace eDoxa.Games.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task DeleteByGameAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task UnlinkCredentialAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var mockCredentialService = new Mock<IGameCredentialService>();
@@ -133,7 +133,7 @@ namespace eDoxa.Games.UnitTests.Controllers
             authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await authFactorController.DeleteAsync(Game.LeagueOfLegends);
+            var result = await authFactorController.UnlinkCredentialAsync(Game.LeagueOfLegends);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

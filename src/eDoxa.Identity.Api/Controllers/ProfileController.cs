@@ -45,7 +45,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerOperation("Find user's profile.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ProfileDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> FetchProfileAsync()
         {
             var user = await _userService.GetUserAsync(User);
 
@@ -64,7 +64,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "The user's profile has been created.", Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] CreateProfileRequest request)
+        public async Task<IActionResult> CreateProfileAsync([FromBody] CreateProfileRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 
@@ -89,7 +89,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "The user's profile has been updated.", Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PutAsync([FromBody] UpdateProfileRequest request)
+        public async Task<IActionResult> UpdateProfileAsync([FromBody] UpdateProfileRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 

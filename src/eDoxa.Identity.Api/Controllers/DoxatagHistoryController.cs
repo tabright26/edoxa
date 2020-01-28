@@ -47,7 +47,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerOperation("Find user's Doxatag history.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(DoxatagDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> FetchDoxatagHistoryAsync()
         {
             var user = await _userService.GetUserAsync(User);
 
@@ -65,7 +65,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerOperation("Create new user's Doxatag.")]
         [SwaggerResponse(StatusCodes.Status200OK, "The user's Doxatag has been created.", Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] ChangeDoxatagRequest request)
+        public async Task<IActionResult> ChangeDoxatagAsync([FromBody] ChangeDoxatagRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 

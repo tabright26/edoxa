@@ -49,11 +49,11 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerOperation("Find user's address book.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> FetchAddressBookAsync()
         {
             var user = await _userService.GetUserAsync(User);
 
-            var addressBook = await _addressService.GetAddressBookAsync(user);
+            var addressBook = await _addressService.FetchAddressBookAsync(user);
 
             if (!addressBook.Any())
             {
@@ -67,7 +67,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerOperation("Add user's address.")]
         [SwaggerResponse(StatusCodes.Status200OK, "The user's address has been added.", typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] CreateAddressRequest request)
+        public async Task<IActionResult> AddAddressAsync([FromBody] CreateAddressRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 
@@ -95,7 +95,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, "The user's address has been updated.", typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PutAsync(AddressId addressId, [FromBody] UpdateAddressRequest request)
+        public async Task<IActionResult> UpdateAddressAsync(AddressId addressId, [FromBody] UpdateAddressRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 
@@ -129,7 +129,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(AddressDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> DeleteAsync(AddressId addressId)
+        public async Task<IActionResult> RemoveAddressAsync(AddressId addressId)
         {
             var user = await _userService.GetUserAsync(User);
 

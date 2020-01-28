@@ -75,7 +75,13 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     Address = "gabriel@edoxa.gg"
                 },
                 Country = EnumCountryIsoCode.CA,
-                Ip = "10.10.10.10"
+                Ip = "10.10.10.10",
+                Dob = new DobDto
+                {
+                    Day = 1,
+                    Month = 1,
+                    Year = 2000
+                }
             };
 
             // Act

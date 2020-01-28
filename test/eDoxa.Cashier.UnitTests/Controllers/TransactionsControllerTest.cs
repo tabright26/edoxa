@@ -37,7 +37,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeOfTypeNoContentResult()
+        public async Task FetchUserTransactionsAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
             var mockTransactionQuery = new Mock<ITransactionQuery>();
@@ -63,7 +63,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             };
 
             // Act
-            var result = await controller.GetAsync();
+            var result = await controller.FetchUserTransactionsAsync();
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -78,7 +78,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task FetchUserTransactionsAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var faker = TestData.FakerFactory.CreateTransactionFaker(null);
@@ -106,7 +106,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             };
 
             // Act
-            var result = await controller.GetAsync();
+            var result = await controller.FetchUserTransactionsAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

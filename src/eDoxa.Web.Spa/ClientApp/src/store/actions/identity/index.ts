@@ -332,7 +332,7 @@ export function registerUserAccount(
         client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
         request: {
           method: "POST",
-          url: "/identity/api/register",
+          url: "/identity/api/account/register",
           data: request,
           withCredentials: true
         }
@@ -357,7 +357,7 @@ export function loginUserAccount(
       client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "POST",
-        url: "/identity/api/login",
+        url: "/identity/api/account/login",
         data,
         withCredentials: true,
         responseType: "text"
@@ -380,7 +380,7 @@ export function logoutUserAccount(
       client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
       request: {
         method: "GET",
-        url: "/identity/api/logout",
+        url: "/identity/api/account/logout",
         params: {
           logoutId
         },

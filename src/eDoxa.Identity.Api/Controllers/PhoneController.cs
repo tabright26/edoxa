@@ -42,7 +42,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerOperation("Find user's phone.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> FindPhoneAsync()
         {
             var user = await _userService.GetUserAsync(User);
 
@@ -60,7 +60,7 @@ namespace eDoxa.Identity.Api.Controllers
         [SwaggerOperation("Udpate user's phone.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(PhoneDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync([FromBody] ChangePhoneRequest request)
+        public async Task<IActionResult> ChangePhoneAsync([FromBody] ChangePhoneRequest request)
         {
             var user = await _userService.GetUserAsync(User);
 

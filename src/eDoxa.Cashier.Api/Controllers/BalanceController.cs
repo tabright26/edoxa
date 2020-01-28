@@ -40,7 +40,7 @@ namespace eDoxa.Cashier.Api.Controllers
         [SwaggerOperation("Get account balance by currency.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetByCurrencyAsync(Currency currency)
+        public async Task<IActionResult> FindUserBalanceAsync(Currency currency)
         {
             var userId = HttpContext.GetUserId();
 

@@ -36,7 +36,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeNoContentResult()
+        public async Task FetchParticipantMatchesAsync_ShouldBeNoContentResult()
         {
             // Arrange
             var mockMatchQuery = new Mock<IMatchQuery>();
@@ -48,7 +48,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             var controller = new ParticipantMatchesController(mockMatchQuery.Object, TestMapper);
 
             // Act
-            var result = await controller.GetAsync(new ParticipantId());
+            var result = await controller.FetchParticipantMatchesAsync(new ParticipantId());
 
             // Assert
             result.Should().BeOfType<NoContentResult>();
@@ -57,7 +57,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeOkObjectResult()
+        public async Task FetchParticipantMatchesAsync_ShouldBeOkObjectResult()
         {
             // Arrange
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(95632852, Game.LeagueOfLegends, ChallengeState.InProgress);
@@ -77,7 +77,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             var controller = new ParticipantMatchesController(mockMatchQuery.Object, TestMapper);
 
             // Act
-            var result = await controller.GetAsync(new ParticipantId());
+            var result = await controller.FetchParticipantMatchesAsync(new ParticipantId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

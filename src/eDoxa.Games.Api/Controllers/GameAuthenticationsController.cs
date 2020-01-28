@@ -42,7 +42,7 @@ namespace eDoxa.Games.Api.Controllers
         [SwaggerOperation("Generate game authentication.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(object))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync(Game game, [FromBody] object request)
+        public async Task<IActionResult> GenerateAuthenticationAsync(Game game, [FromBody] object request)
         {
             var userId = HttpContext.GetUserId();
 
@@ -64,7 +64,7 @@ namespace eDoxa.Games.Api.Controllers
         [SwaggerOperation("Validate game authentication.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(GameCredentialDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PutAsync(Game game)
+        public async Task<IActionResult> LinkCredentialAsync(Game game)
         {
             var userId = HttpContext.GetUserId();
 

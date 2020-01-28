@@ -1,8 +1,8 @@
 ﻿// Filename: ParticipantMatchesController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +41,7 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerOperation("Find the matches of a participant.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MatchDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync(ParticipantId participantId)
+        public async Task<IActionResult> FetchParticipantMatchesAsync(ParticipantId participantId)
         {
             var matches = await _matchQuery.FetchParticipantMatchesAsync(participantId);
 

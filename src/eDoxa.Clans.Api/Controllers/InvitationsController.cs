@@ -1,8 +1,8 @@
 ﻿// Filename: InvitationsController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +45,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
-        public async Task<IActionResult> GetAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
+        public async Task<IActionResult> FetchInvitationsAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
         {
             if (clanId == null && userId == null)
             {
@@ -81,7 +81,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Get invitation by id.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(InvitationDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetByIdAsync(InvitationId invitationId)
+        public async Task<IActionResult> FindInvitationAsync(InvitationId invitationId)
         {
             var invitation = await _invitationService.FindInvitationAsync(invitationId);
 
@@ -97,11 +97,11 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Create invitation from a clan to a user.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync(SendInvitationRequest request)
+        public async Task<IActionResult> SendInvitationAsync(SendInvitationRequest request)
         {
             var ownerId = HttpContext.GetUserId();
 
-            var result = await _invitationService.SendInvitationAsync(request.ClanId.ParseEntityId<ClanId>(),  request.UserId.ParseEntityId<UserId>(), ownerId);
+            var result = await _invitationService.SendInvitationAsync(request.ClanId.ParseEntityId<ClanId>(), request.UserId.ParseEntityId<UserId>(), ownerId);
 
             if (result.IsValid)
             {
@@ -118,7 +118,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostByIdAsync(InvitationId invitationId)
+        public async Task<IActionResult> AcceptInvitationAsync(InvitationId invitationId)
         {
             var userId = HttpContext.GetUserId();
 
@@ -146,7 +146,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> DeleteByIdAsync(InvitationId invitationId)
+        public async Task<IActionResult> DeclineInvitationAsync(InvitationId invitationId)
         {
             var userId = HttpContext.GetUserId();
 

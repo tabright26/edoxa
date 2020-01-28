@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()
+        public async Task FindUserBalanceAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
             var mockAccountQuery = new Mock<IAccountQuery>();
@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             };
 
             // Act
-            var result = await controller.GetByCurrencyAsync(Currency.Money);
+            var result = await controller.FindUserBalanceAsync(Currency.Money);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -62,7 +62,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetByCurrencyAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task FindUserBalanceAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var mockAccountQuery = new Mock<IAccountQuery>();
@@ -84,7 +84,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             };
 
             // Act
-            var result = await controller.GetByCurrencyAsync(Currency.Money);
+            var result = await controller.FindUserBalanceAsync(Currency.Money);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeParticipantsController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> GetAsync(ChallengeId challengeId)
+        public async Task<IActionResult> FetchChallengeParticipantsAsync(ChallengeId challengeId)
         {
             var participants = await _participantQuery.FetchChallengeParticipantsAsync(challengeId);
 

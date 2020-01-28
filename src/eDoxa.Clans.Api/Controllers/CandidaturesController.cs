@@ -1,8 +1,8 @@
 ﻿// Filename: CandidaturesController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -45,7 +45,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(string))]
-        public async Task<IActionResult> GetAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
+        public async Task<IActionResult> FetchCandidaturesAsync([FromQuery] ClanId? clanId = null, [FromQuery] UserId? userId = null)
         {
             // TODO: Use ValidationProblemDetails to handle bad request.
             if (clanId == null && userId == null)
@@ -82,7 +82,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Get a specific candidature from the Id.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(CandidatureDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetByIdAsync(CandidatureId candidatureId)
+        public async Task<IActionResult> FindCandidatureAsync(CandidatureId candidatureId)
         {
             var candidature = await _candidatureService.FindCandidatureAsync(candidatureId);
 
@@ -98,7 +98,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Create candidature from a user to a clan.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync(SendCandidatureRequest request)
+        public async Task<IActionResult> SendCandidatureAsync(SendCandidatureRequest request)
         {
             var userId = HttpContext.GetUserId();
 
@@ -119,7 +119,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostByIdAsync(CandidatureId candidatureId)
+        public async Task<IActionResult> AcceptCandidatureAsync(CandidatureId candidatureId)
         {
             var ownerId = HttpContext.GetUserId();
 
@@ -147,7 +147,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> DeleteByIdAsync(CandidatureId candidatureId)
+        public async Task<IActionResult> DeclineCandidatureAsync(CandidatureId candidatureId)
         {
             var ownerId = HttpContext.GetUserId();
 

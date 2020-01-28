@@ -1,8 +1,8 @@
 ﻿// Filename: ParticipantsController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -39,7 +39,7 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerOperation("Find a participant.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetByIdAsync(ParticipantId participantId)
+        public async Task<IActionResult> FindParticipantAsync(ParticipantId participantId)
         {
             var participant = await _participantQuery.FindParticipantAsync(participantId);
 
