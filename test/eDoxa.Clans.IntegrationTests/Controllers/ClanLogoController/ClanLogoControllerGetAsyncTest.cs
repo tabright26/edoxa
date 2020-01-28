@@ -1,12 +1,13 @@
-﻿// Filename: ClanMembersControllerDeleteAsyncTest.cs
-// Date Created: 2019-10-02
-//
+﻿// Filename: ClanLogoControllerGetAsyncTest.cs
+// Date Created: 2019-11-25
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
@@ -23,8 +24,6 @@ using IdentityModel;
 
 using Xunit;
 
-using Claim = System.Security.Claims.Claim;
-
 namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
 {
     public sealed class ClanLogoControllerGetAsyncTest : IntegrationTest
@@ -38,22 +37,6 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
         private async Task<HttpResponseMessage> ExecuteAsync(ClanId clanId)
         {
             return await _httpClient.GetAsync($"api/clans/{clanId}/logo");
-        }
-
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeNotFoundClan()
-        {
-            // Arrange
-            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
-            _httpClient = factory.CreateClient();
-            var testServer = factory.Server;
-            testServer.CleanupDbContext();
-
-            // Act
-            using var response = await this.ExecuteAsync(new ClanId());
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
         [Fact]
@@ -85,6 +68,22 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
         }
 
         [Fact]
+        public async Task ShouldBeHttpStatusCodeNotFoundClan()
+        {
+            // Arrange
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, new UserId().ToString()));
+            _httpClient = factory.CreateClient();
+            var testServer = factory.Server;
+            testServer.CleanupDbContext();
+
+            // Act
+            using var response = await this.ExecuteAsync(new ClanId());
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
@@ -103,13 +102,12 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
-                    
+
                     await clanRepository.UploadLogoAsync(clan.Id, stream, "testImage");
                 });
 
             // Act
             using var response = await this.ExecuteAsync(clan.Id);
-
 
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);

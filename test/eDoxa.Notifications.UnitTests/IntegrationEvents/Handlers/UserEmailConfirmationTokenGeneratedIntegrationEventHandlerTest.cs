@@ -1,6 +1,6 @@
 ﻿// Filename: UserEmailConfirmationTokenGeneratedIntegrationEventHandlerTest.cs
 // Date Created: 2019-12-26
-//
+// 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 

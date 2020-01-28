@@ -32,6 +32,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class UserDepositFailedIntegrationEventHandlerTest : UnitTest
     {
+        public UserDepositFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_WhenUserDepositFailedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -87,10 +93,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 Times.Once);
 
             mockLogger.Verify(Times.Once());
-        }
-
-        public UserDepositFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

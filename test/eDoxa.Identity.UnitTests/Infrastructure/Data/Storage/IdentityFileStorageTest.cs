@@ -1,8 +1,8 @@
 ﻿// Filename: IdentityFileStorageTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
@@ -15,6 +15,12 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class IdentityFileStorageTest : UnitTest
     {
+        public IdentityFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public void GetRoleClaims_WithOneRecord_ShouldHaveCountOfOne()
@@ -40,10 +46,6 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             roles.Should().HaveCount(1);
-        }
-
-        public IdentityFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

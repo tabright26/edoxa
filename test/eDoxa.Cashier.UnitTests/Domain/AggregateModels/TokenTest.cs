@@ -1,8 +1,8 @@
 ﻿// Filename: TokenTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.TestHelper;
@@ -16,7 +16,9 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
     public sealed class TokenTest : UnitTest
     {
-
+        public TokenTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
+        }
 
         [InlineData(50000, 100000, 150000)]
         [InlineData(100000, 50000, 150000)]
@@ -55,10 +57,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 
             // Assert
             token.As<decimal>().Should().Be(result);
-        }
-
-        public TokenTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

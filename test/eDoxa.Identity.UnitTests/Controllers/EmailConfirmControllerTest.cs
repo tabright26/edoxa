@@ -1,8 +1,8 @@
 ﻿// Filename: EmailConfirmControllerTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading.Tasks;
@@ -24,8 +24,15 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Controllers
 {
-    public sealed class EmailConfirmControllerTest: UnitTest
+    public sealed class EmailConfirmControllerTest : UnitTest
     {
+        public EmailConfirmControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
+
         [Fact]
         public async Task GetAsync_ShouldBeNotFoundObjectResult()
         {
@@ -109,10 +116,6 @@ namespace eDoxa.Identity.UnitTests.Controllers
             mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
-        }
-
-        public EmailConfirmControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

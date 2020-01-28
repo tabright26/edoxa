@@ -1,8 +1,8 @@
-﻿// Filename: GameCredentialsControllerDeleteByGameAsyncTest.cs
-// Date Created: 2019-11-20
+﻿// Filename: GameCredentialsControllerDeleteAsyncTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Net;

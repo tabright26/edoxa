@@ -1,8 +1,8 @@
-﻿// Filename: ClanPostRequestValidatorTest.cs
-// Date Created: 2019-10-02
-//
+﻿// Filename: ChallengePostRequestValidatorTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Challenges.Api.Application.ErrorDescribers;
 using eDoxa.Challenges.Api.Application.Validators;
@@ -19,7 +19,10 @@ namespace eDoxa.Challenges.UnitTests.Application.Validators
 {
     public sealed class ChallengePostRequestValidatorTest : UnitTest
     {
-        public ChallengePostRequestValidatorTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
+        public ChallengePostRequestValidatorTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
+            testData,
+            testMapper,
+            validator)
         {
         }
 
@@ -34,9 +37,8 @@ namespace eDoxa.Challenges.UnitTests.Application.Validators
         public static TheoryData<string, string> InvalidChallengesName =>
             new TheoryData<string, string>
             {
-                { "", ChallengeErrorDescriber.NameInvalid()}
+                {"", ChallengeErrorDescriber.NameInvalid()}
             };
-
 
         [Theory]
         [MemberData(nameof(ValidChallengesName))]

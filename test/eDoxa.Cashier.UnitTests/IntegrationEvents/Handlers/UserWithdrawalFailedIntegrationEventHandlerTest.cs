@@ -32,7 +32,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class UserWithdrawalFailedIntegrationEventHandlerTest : UnitTest
     {
-
+        public UserWithdrawalFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_WhenUserWithdrawalFailedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -88,10 +93,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 Times.Once);
 
             mockLogger.Verify(Times.Once());
-        }
-
-        public UserWithdrawalFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

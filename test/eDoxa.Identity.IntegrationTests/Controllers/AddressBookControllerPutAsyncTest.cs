@@ -1,13 +1,14 @@
 ﻿// Filename: AddressBookControllerPutAsyncTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Enums;
@@ -24,8 +25,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Identity.IntegrationTests.Controllers
 {

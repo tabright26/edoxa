@@ -1,11 +1,12 @@
-﻿// Filename: ClansControllerGetAsyncTest.cs
-// Date Created: 2019-10-02
-//
+﻿// Filename: ClanDivisionsControllerGetAsyncTest.cs
+// Date Created: 2019-11-25
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
@@ -22,8 +23,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
 {

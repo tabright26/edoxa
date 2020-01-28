@@ -1,8 +1,8 @@
 ﻿// Filename: MockHttpContextAccessor.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Security.Claims;

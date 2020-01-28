@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,10 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed class BalanceTest : UnitTest
     {
-  
+        public BalanceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
+        }
+
         private static IEnumerable<ITransaction> CreateTransactions()
         {
             yield return new TransactionBuilder(TransactionType.Deposit, Money.Ten).Build();
@@ -79,10 +82,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             balance.Available.Should().Be(Token.FiftyThousand);
             balance.Currency.Should().Be(Currency.Token);
             balance.Pending.Should().Be(decimal.Zero);
-        }
-
-        public BalanceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿// Filename: AccountTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -20,7 +20,9 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed class AccountTest : UnitTest
     {
- 
+        public AccountTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
+        }
 
         public static TheoryData<Currency> ValidCurrencyDataSets =>
             new TheoryData<Currency>
@@ -56,10 +58,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var action = new Action(() => account.GetBalanceFor(currency));
 
             action.Should().Throw<ArgumentException>();
-        }
-
-        public AccountTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

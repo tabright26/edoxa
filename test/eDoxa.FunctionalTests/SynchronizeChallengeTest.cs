@@ -41,8 +41,6 @@ using Moq;
 
 using Xunit;
 
-using Scoring = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Scoring;
-
 namespace eDoxa.FunctionalTests
 {
     public sealed class SynchronizeChallengeTest
@@ -351,7 +349,9 @@ namespace eDoxa.FunctionalTests
                 BestOf.One,
                 Entries.Two,
                 new ChallengeTimeline(createdAt, ChallengeDuration.OneDay),
-                new Scoring(findChallengeScoringResponse.Scoring.Items.OrderBy(scoring => scoring.Order).ToDictionary(scoring => scoring.StatName, scoring => scoring.StatWeighting)));
+                new Scoring(
+                    findChallengeScoringResponse.Scoring.Items.OrderBy(scoring => scoring.Order)
+                        .ToDictionary(scoring => scoring.StatName, scoring => scoring.StatWeighting)));
 
             var participant = new Participant(
                 new ParticipantId(),

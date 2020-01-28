@@ -1,8 +1,8 @@
-﻿// Filename: InformationsPostRequestValidatorTest.cs
-// Date Created: 2019-10-06
+﻿// Filename: CreateProfileRequestValidatorTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;

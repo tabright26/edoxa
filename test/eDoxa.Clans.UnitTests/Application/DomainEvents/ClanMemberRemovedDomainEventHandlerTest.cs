@@ -1,8 +1,8 @@
-﻿// Filename: CandidatureAcceptedDomainEventHandler.cs
-// Date Created: 2019-10-01
-//
+﻿// Filename: ClanMemberRemovedDomainEventHandlerTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -39,9 +39,7 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
 
             var mockServiceBus = new Mock<IServiceBusPublisher>();
 
-            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<ClanMemberRemovedIntegrationEvent>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<ClanMemberRemovedIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
             var domainEventHandler = new ClanMemberRemovedDomainEventHandler(mockClanService.Object, mockServiceBus.Object);
 

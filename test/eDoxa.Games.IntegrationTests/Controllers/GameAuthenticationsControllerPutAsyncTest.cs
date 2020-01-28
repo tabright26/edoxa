@@ -1,8 +1,8 @@
-﻿// Filename: GameCredentialsControllerPostByGameAsyncTest.cs
-// Date Created: 2019-11-20
+﻿// Filename: GameAuthenticationsControllerPutAsyncTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Net;
@@ -47,7 +47,11 @@ namespace eDoxa.Games.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync(Game game)
         {
-            return await _httpClient.PutAsJsonAsync($"api/games/{game}/authentications", new {});
+            return await _httpClient.PutAsJsonAsync(
+                $"api/games/{game}/authentications",
+                new
+                {
+                });
         }
 
         [Fact]

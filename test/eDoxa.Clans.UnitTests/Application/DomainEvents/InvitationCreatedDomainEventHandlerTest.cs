@@ -1,8 +1,8 @@
-﻿// Filename: CandidatureAcceptedDomainEventHandler.cs
-// Date Created: 2019-10-01
-//
+﻿// Filename: InvitationCreatedDomainEventHandlerTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,13 +36,9 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
             var mockClanService = new Mock<IClanService>();
             var mockServiceBus = new Mock<IServiceBusPublisher>();
 
-            mockClanService.Setup(service => service.FindClanAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new Clan("test", new UserId()))
-                .Verifiable();
+            mockClanService.Setup(service => service.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(new Clan("test", new UserId())).Verifiable();
 
-            mockServiceBus.Setup(bus => bus.PublishAsync(It.IsAny<ClanInvitationSentIntegrationEvent>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            mockServiceBus.Setup(bus => bus.PublishAsync(It.IsAny<ClanInvitationSentIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
 
             var domainEventHandler = new InvitationCreatedDomainEventHandler(mockClanService.Object, mockServiceBus.Object);
             var invitation = new Invitation(new UserId(), new ClanId());

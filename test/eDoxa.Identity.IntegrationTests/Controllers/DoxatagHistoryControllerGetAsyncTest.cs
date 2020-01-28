@@ -1,8 +1,8 @@
 ﻿// Filename: DoxatagHistoryControllerGetAsyncTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Net;
@@ -88,7 +88,7 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                     var userManager = scope.GetRequiredService<IUserService>();
 
                     await userManager.CreateAsync(user);
-                    
+
                     var doxatagService = scope.GetRequiredService<IDoxatagService>();
 
                     var result = await doxatagService.ChangeDoxatagAsync(user, doxatagName);

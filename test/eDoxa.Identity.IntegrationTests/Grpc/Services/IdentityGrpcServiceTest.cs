@@ -1,5 +1,5 @@
 ﻿// Filename: IdentityGrpcServiceTest.cs
-// Date Created: 2020-01-17
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -622,7 +622,9 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 {
                     var userService = scope.GetRequiredService<IUserService>();
 
-                    var result = await userService.AddClaimAsync(await userService.FindByIdAsync(user.Id.ToString()), new Claim(CustomClaimTypes.StripeAccount, "accountId"));
+                    var result = await userService.AddClaimAsync(
+                        await userService.FindByIdAsync(user.Id.ToString()),
+                        new Claim(CustomClaimTypes.StripeAccount, "accountId"));
 
                     result.Succeeded.Should().BeTrue();
                 });

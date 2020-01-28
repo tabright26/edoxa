@@ -1,8 +1,8 @@
 ﻿// Filename: PasswordResetControllerTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading.Tasks;
@@ -27,7 +27,12 @@ namespace eDoxa.Identity.UnitTests.Controllers
 {
     public sealed class PasswordResetControllerTest : UnitTest
     {
-
+        public PasswordResetControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task PostAsync_ShouldBeBadRequestObjectResult()
@@ -142,10 +147,6 @@ namespace eDoxa.Identity.UnitTests.Controllers
             mockUserManager.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
-        }
-
-        public PasswordResetControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

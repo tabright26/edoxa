@@ -1,8 +1,8 @@
-﻿// Filename: CandidatureAcceptedDomainEventHandler.cs
-// Date Created: 2019-10-01
-//
+﻿// Filename: CandidatureAcceptedDomainEventHandlerTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,8 +18,6 @@ using eDoxa.Seedwork.Domain.Misc;
 using Moq;
 
 using Xunit;
-
-using IMemberInfo = eDoxa.Clans.Domain.Models.IMemberInfo;
 
 namespace eDoxa.Clans.UnitTests.Application.DomainEvents
 {

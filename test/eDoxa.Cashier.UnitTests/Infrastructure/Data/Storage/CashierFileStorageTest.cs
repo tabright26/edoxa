@@ -1,8 +1,8 @@
 ﻿// Filename: CashierFileStorageTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 
@@ -17,7 +17,12 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class CashierFileStorageTest : UnitTest
     {
-
+        public CashierFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public void GetChallengePayouts_WithFiftySixRecords_ShouldHaveCountOfFiftySix()
@@ -30,10 +35,6 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(55);
-        }
-
-        public CashierFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿// Filename: StripePaymentMethodsControllerPutAsyncTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
@@ -153,19 +153,20 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
                                         It.IsAny<string>(),
                                         It.IsAny<long>(),
                                         It.IsAny<long>()))
-                                .ReturnsAsync(new PaymentMethod
-                                {
-                                    Id = "PaymentMethodId",
-                                    Type = "card",
-                                    Card = new PaymentMethodCard
+                                .ReturnsAsync(
+                                    new PaymentMethod
                                     {
-                                        Brand = "Brand",
-                                        Country = "CA",
-                                        Last4 = "1234",
-                                        ExpMonth = 11,
-                                        ExpYear = 22
-                                    }
-                                });
+                                        Id = "PaymentMethodId",
+                                        Type = "card",
+                                        Card = new PaymentMethodCard
+                                        {
+                                            Brand = "Brand",
+                                            Country = "CA",
+                                            Last4 = "1234",
+                                            ExpMonth = 11,
+                                            ExpYear = 22
+                                        }
+                                    });
 
                             container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                             container.RegisterInstance(mockStripeCustomerService.Object).As<IStripeCustomerService>().SingleInstance();

@@ -1,12 +1,13 @@
 ﻿// Filename: ClanLogoControllerPostAsyncTest.cs
-// Date Created: 2019-10-07
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Domain.Models;
@@ -22,8 +23,6 @@ using FluentAssertions;
 using IdentityModel;
 
 using Xunit;
-
-using Claim = System.Security.Claims.Claim;
 
 namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
 {
@@ -63,7 +62,6 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     clanRepository.Create(clan);
                     await clanRepository.UnitOfWork.CommitAsync();
-
                 });
 
             var file = File.OpenRead(Path.Combine(Directory.GetCurrentDirectory(), "Setup/edoxa.png"));
@@ -129,7 +127,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
             using var response = await this.ExecuteAsync(clan.Id, file);
 
             // Assert
-            await testServer.UsingScopeAsync(async scope =>
+            await testServer.UsingScopeAsync(
+                async scope =>
                 {
                     var clanRepository = scope.GetRequiredService<IClanRepository>();
                     var dbData = await clanRepository.DownloadLogoAsync(clan.Id);
@@ -148,8 +147,6 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanLogoController
 
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-
         }
     }
 }

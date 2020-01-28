@@ -1,8 +1,8 @@
 ﻿// Filename: GameAuthenticationsControllerPostAsyncTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
@@ -43,7 +43,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Game game, LeagueOfLegendsRequest request )
+        private async Task<HttpResponseMessage> ExecuteAsync(Game game, LeagueOfLegendsRequest request)
         {
             return await _httpClient.PostAsJsonAsync($"api/games/{game}/authentications", request);
         }
@@ -111,12 +111,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers
                                 .ReturnsAsync(new DomainValidationResult())
                                 .Verifiable();
 
-                            mockAuthFactorService
-                                .Setup(
-                                    authFactorService =>
-                                        authFactorService.FindAuthenticationAsync(
-                                            It.IsAny<UserId>(),
-                                            It.IsAny<Game>()))
+                            mockAuthFactorService.Setup(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                                 .ReturnsAsync(authFactor)
                                 .Verifiable();
 

@@ -1,8 +1,8 @@
-﻿// Filename: PersonalInfoPutRequestValidatorTest.cs
-// Date Created: 2019-09-16
+﻿// Filename: UpdateProfileRequestValidatorTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Identity.Api.Application.Validators;
 

@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionMetadataTest.cs
-// Date Created: 2019-12-04
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -20,8 +20,12 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed partial class TransactionMetadataTest : UnitTest
     {
-        
-
+        public TransactionMetadataTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Theory]
         [MemberData(nameof(ValidTransactionMetadataTestData))]
@@ -101,10 +105,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 
             // Assert
             action.Should().Throw<InvalidOperationException>();
-        }
-
-        public TransactionMetadataTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

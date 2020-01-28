@@ -1,8 +1,8 @@
-﻿// Filename: InformationsControllerPutAsyncTest.cs
-// Date Created: 2019-09-16
+﻿// Filename: ProfileControllerPutAsyncTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Net;
@@ -62,10 +62,11 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
                 });
 
             // Act
-            using var response = await this.ExecuteAsync(new UpdateProfileRequest
-            {
-                FirstName = "Bob"
-            });
+            using var response = await this.ExecuteAsync(
+                new UpdateProfileRequest
+                {
+                    FirstName = "Bob"
+                });
 
             // Assert
             response.EnsureSuccessStatusCode();

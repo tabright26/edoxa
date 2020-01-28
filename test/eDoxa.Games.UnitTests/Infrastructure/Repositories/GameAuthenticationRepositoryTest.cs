@@ -1,8 +1,8 @@
-﻿// Filename: AuthFactorRepositoryTest.cs
-// Date Created: 2019-11-01
+﻿// Filename: GameAuthenticationRepositoryTest.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;

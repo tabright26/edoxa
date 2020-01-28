@@ -1,8 +1,8 @@
 ﻿// Filename: StripeBankAccountControllerPostAsyncTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
@@ -140,15 +140,16 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
 
                             mockStripeExternalAccountService
                                 .Setup(externalAccountService => externalAccountService.UpdateBankAccountAsync(It.IsAny<string>(), It.IsAny<string>()))
-                                .ReturnsAsync(new BankAccount
-                                {
-                                    BankName = "BankName",
-                                    Country = "CA",
-                                    Currency = "CAD",
-                                    Last4 = "1234",
-                                    Status = "pending",
-                                    DefaultForCurrency = true
-                                });
+                                .ReturnsAsync(
+                                    new BankAccount
+                                    {
+                                        BankName = "BankName",
+                                        Country = "CA",
+                                        Currency = "CAD",
+                                        Last4 = "1234",
+                                        Status = "pending",
+                                        DefaultForCurrency = true
+                                    });
 
                             container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
                             container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();

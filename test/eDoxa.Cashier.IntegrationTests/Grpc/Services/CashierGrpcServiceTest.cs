@@ -1,6 +1,6 @@
 ﻿// Filename: CashierGrpcServiceTest.cs
-// Date Created: 2020-01-13
-//
+// Date Created: 2020-01-28
+// 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -87,7 +87,7 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
             var userId = new UserId();
             const string email = "test@edoxa.gg";
 
-            var claims = new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email) };
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
 
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
 
@@ -152,44 +152,13 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
         }
 
         [Fact]
-        public void CreateTransaction_ShouldThrowNotFoundRpcException()
-        {
-            // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
-
-            var claims = new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email) };
-
-            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
-
-            host.Server.CleanupDbContext();
-
-            var request = new CreateTransactionRequest
-            {
-                Bundle = 0,
-                Custom = new CreateTransactionRequest.Types.CustomTransaction
-                {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
-                    Type = EnumTransactionType.Deposit
-                }
-            };
-
-            var client = new CashierService.CashierServiceClient(host.CreateChannel());
-
-            // Act Assert
-            var func = new Func<Task>(async () => await client.CreateTransactionAsync(request));
-            func.Should().Throw<RpcException>();
-        }
-
-        [Fact]
         public void CreateTransaction_ShouldThrowFailedPreconditionRpcException()
         {
             // Arrange
             var userId = new UserId();
             const string email = "test@edoxa.gg";
 
-            var claims = new[] { new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email) };
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
 
             var host = TestHost.WithClaimsFromBearerAuthentication(claims);
 
@@ -203,6 +172,37 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
                     Amount = 20,
                     Currency = EnumCurrency.Money,
                     Type = EnumTransactionType.Charge
+                }
+            };
+
+            var client = new CashierService.CashierServiceClient(host.CreateChannel());
+
+            // Act Assert
+            var func = new Func<Task>(async () => await client.CreateTransactionAsync(request));
+            func.Should().Throw<RpcException>();
+        }
+
+        [Fact]
+        public void CreateTransaction_ShouldThrowNotFoundRpcException()
+        {
+            // Arrange
+            var userId = new UserId();
+            const string email = "test@edoxa.gg";
+
+            var claims = new[] {new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email)};
+
+            var host = TestHost.WithClaimsFromBearerAuthentication(claims);
+
+            host.Server.CleanupDbContext();
+
+            var request = new CreateTransactionRequest
+            {
+                Bundle = 0,
+                Custom = new CreateTransactionRequest.Types.CustomTransaction
+                {
+                    Amount = 20,
+                    Currency = EnumCurrency.Money,
+                    Type = EnumTransactionType.Deposit
                 }
             };
 

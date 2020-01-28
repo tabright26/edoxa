@@ -25,6 +25,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest
     {
+        public UserCreatedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_WhenUserCreatedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -59,10 +65,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             // Assert
             mockAccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()), Times.Once);
-        }
-
-        public UserCreatedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

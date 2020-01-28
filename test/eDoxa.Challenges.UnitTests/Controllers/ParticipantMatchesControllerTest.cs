@@ -1,8 +1,8 @@
 ﻿// Filename: ParticipantMatchesControllerTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -28,7 +28,10 @@ namespace eDoxa.Challenges.UnitTests.Controllers
 {
     public sealed class ParticipantMatchesControllerTest : UnitTest
     {
-        public ParticipantMatchesControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
+        public ParticipantMatchesControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
+            testData,
+            testMapper,
+            validator)
         {
         }
 

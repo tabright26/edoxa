@@ -1,11 +1,12 @@
-﻿// Filename: BankAccountControllerGetAsyncTest.cs
-// Date Created: 2019-10-11
-//
+﻿// Filename: StripeBankAccountControllerGetAsyncTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using Autofac;
@@ -28,8 +29,6 @@ using Stripe;
 
 using Xunit;
 
-using Claim = System.Security.Claims.Claim;
-
 namespace eDoxa.Payment.IntegrationTests.Controllers
 {
     public sealed class StripeBankAccountControllerGetAsyncTest : IntegrationTest
@@ -42,49 +41,41 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
 
         private async Task<HttpResponseMessage> ExecuteAsync()
         {
-            return await _httpClient.GetAsync($"api/stripe/bank-account");
+            return await _httpClient.GetAsync("api/stripe/bank-account");
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeOk()
+        public async Task ShouldBeHttpStatusCodeBadRequest()
         {
             // Arrange
             var userId = new UserId();
+
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
-                .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    var mockStripeReferenceService = new Mock<IStripeService>();
-                    var mockStripeAccountService = new Mock<IStripeAccountService>();
-                    var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
-
-                    mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
-
-                    mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("acct_123eqwqw12");
-
-                    mockStripeExternalAccountService.Setup(externalAccountService => externalAccountService.FindBankAccountAsync(It.IsAny<string>()))
-                        .ReturnsAsync(new BankAccount
+                .WithWebHostBuilder(
+                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
                         {
-                            BankName = "BankName",
-                            Country = "CA",
-                            Currency = "CAD",
-                            Last4 = "1234",
-                            Status = "pending",
-                            DefaultForCurrency = true
-                        });
+                            var mockStripeReferenceService = new Mock<IStripeService>();
+                            var mockStripeAccountService = new Mock<IStripeAccountService>();
+                            var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
-                    container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
-                    container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
-                }));
+                            mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+
+                            mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()))
+                                .ThrowsAsync(new StripeException(HttpStatusCode.BadRequest, new StripeError(), string.Empty));
+
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
+                            container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
+                            container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
+                        }));
+
             _httpClient = factory.CreateClient();
 
             // Act
             using var response = await this.ExecuteAsync();
 
             // Assert
-            response.EnsureSuccessStatusCode();
-            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         [Fact]
@@ -92,20 +83,23 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
         {
             // Arrange
             var userId = new UserId();
+
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
-                .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    var mockStripeReferenceService = new Mock<IStripeService>();
-                    var mockStripeAccountService = new Mock<IStripeAccountService>();
-                    var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
+                .WithWebHostBuilder(
+                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            var mockStripeReferenceService = new Mock<IStripeService>();
+                            var mockStripeAccountService = new Mock<IStripeAccountService>();
+                            var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false);
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
-                    container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
-                    container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
-                }));
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
+                            container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
+                            container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
+                        }));
+
             _httpClient = factory.CreateClient();
 
             // Act
@@ -116,33 +110,50 @@ namespace eDoxa.Payment.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeBadRequest()
+        public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
             var userId = new UserId();
+
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
-                .WithWebHostBuilder(builder => builder.ConfigureTestContainer<ContainerBuilder>(
-                container =>
-                {
-                    var mockStripeReferenceService = new Mock<IStripeService>();
-                    var mockStripeAccountService = new Mock<IStripeAccountService>();
-                    var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
+                .WithWebHostBuilder(
+                    builder => builder.ConfigureTestContainer<ContainerBuilder>(
+                        container =>
+                        {
+                            var mockStripeReferenceService = new Mock<IStripeService>();
+                            var mockStripeAccountService = new Mock<IStripeAccountService>();
+                            var mockStripeExternalAccountService = new Mock<IStripeExternalAccountService>();
 
-                    mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+                            mockStripeReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
-                    mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ThrowsAsync(new StripeException(HttpStatusCode.BadRequest, new StripeError(), string.Empty));
+                            mockStripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()))
+                                .ReturnsAsync("acct_123eqwqw12");
 
-                    container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
-                    container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
-                    container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
-                }));
+                            mockStripeExternalAccountService.Setup(externalAccountService => externalAccountService.FindBankAccountAsync(It.IsAny<string>()))
+                                .ReturnsAsync(
+                                    new BankAccount
+                                    {
+                                        BankName = "BankName",
+                                        Country = "CA",
+                                        Currency = "CAD",
+                                        Last4 = "1234",
+                                        Status = "pending",
+                                        DefaultForCurrency = true
+                                    });
+
+                            container.RegisterInstance(mockStripeReferenceService.Object).As<IStripeService>().SingleInstance();
+                            container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>().SingleInstance();
+                            container.RegisterInstance(mockStripeExternalAccountService.Object).As<IStripeExternalAccountService>().SingleInstance();
+                        }));
+
             _httpClient = factory.CreateClient();
 
             // Act
             using var response = await this.ExecuteAsync();
 
             // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            response.EnsureSuccessStatusCode();
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
 }

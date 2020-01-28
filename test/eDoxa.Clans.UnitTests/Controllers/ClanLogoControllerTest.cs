@@ -1,8 +1,8 @@
 // Filename: ClanLogoControllerTest.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;

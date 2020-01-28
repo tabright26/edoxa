@@ -1,8 +1,8 @@
 ﻿// Filename: StripePaymentMethodDetachControllerTest.cs
-// Date Created: 2019-10-15
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -66,19 +66,20 @@ namespace eDoxa.Payment.UnitTests.Controllers
             mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
             mockPaymentMethodService.Setup(paymentMethodService => paymentMethodService.DetachPaymentMethodAsync(It.IsAny<string>()))
-                .ReturnsAsync(new PaymentMethod
-                {
-                    Id = "PaymentMethodId",
-                    Type = "card",
-                    Card = new PaymentMethodCard
+                .ReturnsAsync(
+                    new PaymentMethod
                     {
-                        Brand = "Brand",
-                        Country = "CA",
-                        Last4 = "1234",
-                        ExpMonth = 11,
-                        ExpYear = 22
-                    }
-                })
+                        Id = "PaymentMethodId",
+                        Type = "card",
+                        Card = new PaymentMethodCard
+                        {
+                            Brand = "Brand",
+                            Country = "CA",
+                            Last4 = "1234",
+                            ExpMonth = 11,
+                            ExpYear = 22
+                        }
+                    })
                 .Verifiable();
 
             var paymentMethodDetachController = new StripePaymentMethodDetachController(

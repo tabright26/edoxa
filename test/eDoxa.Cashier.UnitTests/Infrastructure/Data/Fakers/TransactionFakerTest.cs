@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionFakerTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.TestHelper;
@@ -16,7 +16,12 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 {
     public sealed class TransactionFakerTest : UnitTest
     {
-  
+        public TransactionFakerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public void Generate_SingleNegativeTransaction_ShouldNotBeNull()
@@ -68,10 +73,6 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Fakers
 
             // Assert
             transactions.Should().HaveCount(10);
-        }
-
-        public TransactionFakerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

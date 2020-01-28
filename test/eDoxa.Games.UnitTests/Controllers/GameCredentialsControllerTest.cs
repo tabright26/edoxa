@@ -1,8 +1,8 @@
-﻿// Filename: GameCredentialControllerTest.cs
-// Date Created: 2019-11-01
-//
+﻿// Filename: GameCredentialsControllerTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -34,76 +34,6 @@ namespace eDoxa.Games.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task DeleteByGameAsync_ShouldBeOfTypeOkObjectResult()
-        {
-            // Arrange
-            var mockCredentialService = new Mock<IGameCredentialService>();
-
-            var mockMapper = new Mock<IMapper>();
-
-            var userId = new UserId();
-
-            var credential = new Credential(
-                userId,
-                Game.LeagueOfLegends,
-                new PlayerId(),
-                new UtcNowDateTimeProvider());
-
-            mockCredentialService
-                .Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .ReturnsAsync(credential)
-                .Verifiable();
-
-            mockCredentialService
-                .Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()))
-                .ReturnsAsync(new DomainValidationResult())
-                .Verifiable();
-
-            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await authFactorController.DeleteAsync(Game.LeagueOfLegends);
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            mockCredentialService.Verify(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
-
-            mockCredentialService.Verify(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteByGameAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var mockCredentialService = new Mock<IGameCredentialService>();
-
-            var mockMapper = new Mock<IMapper>();
-
-            mockCredentialService
-                .Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .Verifiable();
-
-            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
-
-            // Act
-            var result = await authFactorController.DeleteAsync(Game.LeagueOfLegends);
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            mockCredentialService.Verify(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
-        }
-
-        [Fact]
         public async Task DeleteByGameAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
@@ -122,13 +52,11 @@ namespace eDoxa.Games.UnitTests.Controllers
             var validation = new DomainValidationResult();
             validation.AddInvalidArgumentError("test", "test error");
 
-            mockCredentialService
-                .Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(credential)
                 .Verifiable();
 
-            mockCredentialService
-                .Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()))
+            mockCredentialService.Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()))
                 .ReturnsAsync(validation)
                 .Verifiable();
 
@@ -148,6 +76,71 @@ namespace eDoxa.Games.UnitTests.Controllers
 
             mockCredentialService.Verify(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()), Times.Once);
         }
+
+        [Fact]
+        public async Task DeleteByGameAsync_ShouldBeOfTypeNotFoundObjectResult()
+        {
+            // Arrange
+            var mockCredentialService = new Mock<IGameCredentialService>();
+
+            var mockMapper = new Mock<IMapper>();
+
+            mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>())).Verifiable();
+
+            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await authFactorController.DeleteAsync(Game.LeagueOfLegends);
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+
+            mockCredentialService.Verify(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteByGameAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var mockCredentialService = new Mock<IGameCredentialService>();
+
+            var mockMapper = new Mock<IMapper>();
+
+            var userId = new UserId();
+
+            var credential = new Credential(
+                userId,
+                Game.LeagueOfLegends,
+                new PlayerId(),
+                new UtcNowDateTimeProvider());
+
+            mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+                .ReturnsAsync(credential)
+                .Verifiable();
+
+            mockCredentialService.Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()))
+                .ReturnsAsync(new DomainValidationResult())
+                .Verifiable();
+
+            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
+
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+
+            // Act
+            var result = await authFactorController.DeleteAsync(Game.LeagueOfLegends);
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            mockCredentialService.Verify(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+
+            mockCredentialService.Verify(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()), Times.Once);
+        }
     }
 }
-

@@ -1,8 +1,8 @@
-﻿// Filename: AuthFactorGeneratorFactoryTest.cs
-// Date Created: 2019-11-20
+﻿// Filename: GameAuthenticationGeneratorFactoryTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace eDoxa.Games.UnitTests.Application.Factories
             var mockAuthenticationGeneratorAdapter = new Mock<IAuthenticationGeneratorAdapter>();
 
             mockAuthenticationGeneratorAdapter.SetupGet(authenticationGeneratorAdapter => authenticationGeneratorAdapter.Game).Returns(game);
-            
+
             var authenticationGeneratorFactory = new GameGameAuthenticationGeneratorFactory(new[] {mockAuthenticationGeneratorAdapter.Object});
 
             // Act
@@ -61,7 +61,7 @@ namespace eDoxa.Games.UnitTests.Application.Factories
             var authFactorGeneratorFactory = new GameGameAuthenticationGeneratorFactory(mockAuthFactorGeneratorAdapter.Object);
 
             // Act
-            var action = new Action(() =>authFactorGeneratorFactory.CreateInstance(Game.LeagueOfLegends) ); 
+            var action = new Action(() => authFactorGeneratorFactory.CreateInstance(Game.LeagueOfLegends));
 
             // Assert
             action.Should().Throw<InvalidOperationException>();

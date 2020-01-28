@@ -1,8 +1,8 @@
-// Filename: ClanTest.cs
-// Date Created: 2019-10-02
-//
+// Filename: DivisionTest.cs
+// Date Created: 2019-11-25
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -22,59 +22,6 @@ namespace eDoxa.Clans.UnitTests.Domain.Models
     {
         public DivisionTest(TestMapperFixture testMapper) : base(testMapper)
         {
-        }
-
-        [Fact]
-        public void Contructor_Tests()
-        {
-            // Arrange
-            var ownerId = new UserId();
-            var clanId = new ClanId();
-
-            var name = "test";
-            var description = "division";
-
-            // Act
-            var division = new Division(clanId, name, description);
-
-            // Assert
-            division.Id.Should().BeOfType(typeof(DivisionId));
-
-            division.Name.Should().Be(name);
-            division.Name.Should().NotBeNull();
-
-            division.Description.Should().Be(description);
-            division.Description.Should().NotBeNull();
-
-            division.Members.Should().BeOfType(typeof(HashSet<Member>));
-            division.Members.Should().HaveCount(0);
-            division.Members.Should().NotBeNull();
-        }
-
-        [Fact]
-        public void HasMember_WithMemberId_ShouldBeFalse()
-        {
-            // Arrange
-            var division = new Division(new ClanId(), "test", "division");
-
-            // Act Assert
-            division.HasMember(new MemberId()).Should().BeFalse();
-        }
-
-        [Fact]
-        public void HasMember_WithMemberId_ShouldBeTrue()
-        {
-            // Arrange
-            var clanId = new ClanId();
-
-            var division = new Division(clanId, "test", "division");
-
-            division.AddMember(new Member(clanId, new UserId()));
-
-            var memberId = division.Members.SingleOrDefault()?.Id;
-
-            // Act Assert
-            division.HasMember(memberId).Should().BeTrue();
         }
 
         [InlineData(15)]
@@ -144,6 +91,59 @@ namespace eDoxa.Clans.UnitTests.Domain.Models
 
             division.Description.Should().Be(description);
             division.Description.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void Contructor_Tests()
+        {
+            // Arrange
+            var ownerId = new UserId();
+            var clanId = new ClanId();
+
+            var name = "test";
+            var description = "division";
+
+            // Act
+            var division = new Division(clanId, name, description);
+
+            // Assert
+            division.Id.Should().BeOfType(typeof(DivisionId));
+
+            division.Name.Should().Be(name);
+            division.Name.Should().NotBeNull();
+
+            division.Description.Should().Be(description);
+            division.Description.Should().NotBeNull();
+
+            division.Members.Should().BeOfType(typeof(HashSet<Member>));
+            division.Members.Should().HaveCount(0);
+            division.Members.Should().NotBeNull();
+        }
+
+        [Fact]
+        public void HasMember_WithMemberId_ShouldBeFalse()
+        {
+            // Arrange
+            var division = new Division(new ClanId(), "test", "division");
+
+            // Act Assert
+            division.HasMember(new MemberId()).Should().BeFalse();
+        }
+
+        [Fact]
+        public void HasMember_WithMemberId_ShouldBeTrue()
+        {
+            // Arrange
+            var clanId = new ClanId();
+
+            var division = new Division(clanId, "test", "division");
+
+            division.AddMember(new Member(clanId, new UserId()));
+
+            var memberId = division.Members.SingleOrDefault()?.Id;
+
+            // Act Assert
+            division.HasMember(memberId).Should().BeTrue();
         }
     }
 }

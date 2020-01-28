@@ -1,5 +1,5 @@
 ﻿// Filename: RegisterChallengeParticipantFailedIntegrationEventHandlerTest.cs
-// Date Created: 2020-01-11
+// Date Created: 2020-01-17
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -30,6 +30,13 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class RegisterChallengeParticipantFailedIntegrationEventHandlerTest : UnitTest
     {
+        public RegisterChallengeParticipantFailedIntegrationEventHandlerTest(
+            TestDataFixture testData,
+            TestMapperFixture testMapper,
+            TestValidator testValidator
+        ) : base(testData, testMapper, testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_RegisterChallengeParticipantFailedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -100,10 +107,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 Times.Once);
 
             mockLogger.Verify(Times.Once());
-        }
-
-        public RegisterChallengeParticipantFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿// Filename: AddressBookControllerPostAsyncTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Net;
@@ -29,15 +29,17 @@ namespace eDoxa.Identity.IntegrationTests.Controllers
 {
     public sealed class AddressBookControllerPostAsyncTest : IntegrationTest
     {
-        private readonly ITestOutputHelper _testOutputHelper;
-
-        public AddressBookControllerPostAsyncTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper, ITestOutputHelper testOutputHelper) : base(
-            testHost,
-            testData,
-            testMapper)
+        public AddressBookControllerPostAsyncTest(
+            TestHostFixture testHost,
+            TestDataFixture testData,
+            TestMapperFixture testMapper,
+            ITestOutputHelper testOutputHelper
+        ) : base(testHost, testData, testMapper)
         {
             _testOutputHelper = testOutputHelper;
         }
+
+        private readonly ITestOutputHelper _testOutputHelper;
 
         private async Task<HttpResponseMessage> ExecuteAsync(CreateAddressRequest request)
         {

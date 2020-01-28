@@ -28,7 +28,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class ChallengeSynchronizedIntegrationEventHandlerTest : UnitTest
     {
-        
+        public ChallengeSynchronizedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_ChallengeSynchronizedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -83,10 +88,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             mockServiceBus.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<ChallengeClosedIntegrationEvent>()), Times.Once);
 
             mockLogger.Verify(Times.Once());
-        }
-
-        public ChallengeSynchronizedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

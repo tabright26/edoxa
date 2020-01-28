@@ -1,6 +1,6 @@
 ﻿// Filename: ClanGrpcServiceTest.cs
-// Date Created: 2020-01-11
-//
+// Date Created: 2020-01-28
+// 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 

@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionMetadataTestData.cs
-// Date Created: 2019-12-04
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Seedwork.Domain.Misc;

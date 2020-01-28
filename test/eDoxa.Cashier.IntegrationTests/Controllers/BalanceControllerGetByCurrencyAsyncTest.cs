@@ -1,8 +1,8 @@
-﻿// Filename: AccountBalanceControllerGetByCurrencyAsyncTest.cs
-// Date Created: 2019-11-25
+﻿// Filename: BalanceControllerGetByCurrencyAsyncTest.cs
+// Date Created: 2020-01-11
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Net;
 using System.Security.Claims;
@@ -115,7 +115,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers
             // Assert
             response.EnsureSuccessStatusCode();
             response.StatusCode.Should().Be(HttpStatusCode.OK);
-            
+
             var balanceDto = await response.Content.ReadAsJsonAsync<BalanceDto>();
 
             balanceDto.Should().NotBeNull();

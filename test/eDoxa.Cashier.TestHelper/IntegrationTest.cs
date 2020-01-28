@@ -1,8 +1,8 @@
 ﻿// Filename: IntegrationTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Net.Http;
@@ -20,7 +20,12 @@ namespace eDoxa.Cashier.TestHelper
 {
     public abstract class IntegrationTest : IClassFixture<TestHostFixture>, IClassFixture<TestDataFixture>, IClassFixture<TestMapperFixture>
     {
-        protected IntegrationTest(TestHostFixture testHost, TestDataFixture testData, TestMapperFixture testMapper, Func<HttpClient, LinkGenerator, object, Task<HttpResponseMessage>>? executeAsync = null)
+        protected IntegrationTest(
+            TestHostFixture testHost,
+            TestDataFixture testData,
+            TestMapperFixture testMapper,
+            Func<HttpClient, LinkGenerator, object, Task<HttpResponseMessage>>? executeAsync = null
+        )
         {
             TestHost = testHost;
             TestData = testData;

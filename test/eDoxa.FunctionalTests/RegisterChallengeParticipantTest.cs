@@ -1,8 +1,8 @@
 ﻿// Filename: RegisterChallengeParticipantTest.cs
-// Date Created: 2019-12-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -53,6 +53,7 @@ using Challenge = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Cha
 using ChallengePayout = eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate.Challenge;
 using IChallengePayoutRepository = eDoxa.Cashier.Domain.Repositories.IChallengeRepository;
 using IChallengeRepository = eDoxa.Challenges.Domain.Repositories.IChallengeRepository;
+using User = eDoxa.Identity.Domain.AggregateModels.UserAggregate.User;
 
 namespace eDoxa.FunctionalTests
 {
@@ -77,7 +78,7 @@ namespace eDoxa.FunctionalTests
             mockServiceBusPubliser.Setup(serviceBusPubliser => serviceBusPubliser.PublishAsync(It.IsAny<ChallengeParticipantRegisteredIntegrationEvent>()))
                 .Verifiable();
 
-            var user = new Identity.Domain.AggregateModels.UserAggregate.User
+            var user = new User
             {
                 Id = Guid.NewGuid(),
                 Email = "test@edoxa.gg",
@@ -137,15 +138,16 @@ namespace eDoxa.FunctionalTests
 
             var gameServiceClient = new GameService.GameServiceClient(gamesHost.CreateChannel());
 
-            using var challengesHost = new ChallengesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id)).WithWebHostBuilder(
-                builder =>
-                {
-                    builder.ConfigureTestContainer<ContainerBuilder>(
-                        container =>
-                        {
-                            container.RegisterInstance(mockServiceBusPubliser.Object).As<IServiceBusPublisher>().SingleInstance();
-                        });
-                });
+            using var challengesHost = new ChallengesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id))
+                .WithWebHostBuilder(
+                    builder =>
+                    {
+                        builder.ConfigureTestContainer<ContainerBuilder>(
+                            container =>
+                            {
+                                container.RegisterInstance(mockServiceBusPubliser.Object).As<IServiceBusPublisher>().SingleInstance();
+                            });
+                    });
 
             challengesHost.Server.CleanupDbContext();
 
@@ -211,7 +213,8 @@ namespace eDoxa.FunctionalTests
 
             var identityServiceClient = new IdentityService.IdentityServiceClient(identityHost.CreateChannel());
 
-            using var challengesAggregatorHost = new ChallengesWebAggregatorHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id))
+            using var challengesAggregatorHost = new ChallengesWebAggregatorHostFactory()
+                .WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id))
                 .WithWebHostBuilder(
                     builder =>
                     {
@@ -240,7 +243,9 @@ namespace eDoxa.FunctionalTests
             // Assert
             response.EnsureSuccessStatusCode();
 
-            mockServiceBusPubliser.Verify(serviceBusPubliser => serviceBusPubliser.PublishAsync(It.IsAny<ChallengeParticipantRegisteredIntegrationEvent>()), Times.Once);
+            mockServiceBusPubliser.Verify(
+                serviceBusPubliser => serviceBusPubliser.PublishAsync(It.IsAny<ChallengeParticipantRegisteredIntegrationEvent>()),
+                Times.Once);
         }
     }
 }

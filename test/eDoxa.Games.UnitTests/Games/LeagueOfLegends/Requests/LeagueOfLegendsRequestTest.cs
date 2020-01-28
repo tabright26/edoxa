@@ -1,8 +1,8 @@
 ﻿// Filename: LeagueOfLegendsRequestTest.cs
-// Date Created: 2019-11-01
-//
+// Date Created: 2020-01-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;

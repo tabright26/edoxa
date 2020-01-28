@@ -1,8 +1,8 @@
 ﻿// Filename: GameAuthenticationsControllerTest.cs
-// Date Created: 2019-11-11
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -48,10 +48,7 @@ namespace eDoxa.Games.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
-            mockAuthFactorService
-                .Setup(
-                    authFactorService =>
-                        authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            mockAuthFactorService.Setup(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(
                     new LeagueOfLegendsGameAuthentication(
                         PlayerId.Parse("playerId"),
@@ -77,9 +74,7 @@ namespace eDoxa.Games.UnitTests.Controllers
                 authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()),
                 Times.Once);
 
-            mockAuthFactorService.Verify(
-                authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
-                Times.Once);
+            mockAuthFactorService.Verify(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
