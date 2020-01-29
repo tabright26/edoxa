@@ -10,12 +10,19 @@ import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserTransactionState } from "./types";
 import { RootActions } from "store/types";
+import { UserTransaction } from "types";
 
 export const initialState: UserTransactionState = {
   data: [],
   error: null,
   loading: false
 };
+
+function compare(left: UserTransaction, right: UserTransaction): number {
+  if (left.timestamp > right.timestamp) return -1;
+  if (left.timestamp < right.timestamp) return 1;
+  return 0;
+}
 
 export const reducer: Reducer<UserTransactionState, RootActions> = produce(
   (draft: Draft<UserTransactionState>, action: RootActions) => {
@@ -34,7 +41,7 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
             break;
           }
           default: {
-            draft.data = data;
+            draft.data = data.sort(compare);
             draft.error = null;
             draft.loading = false;
             break;
