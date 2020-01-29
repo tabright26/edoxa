@@ -15,7 +15,6 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types;
 using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.ParticipantAggregate.Types.UserAggregate.Types;
-using static eDoxa.Grpc.Protos.Challenges.Aggregates.ChallengeAggregate.Types.PayoutAggregate.Types;
 
 namespace eDoxa.Challenges.Web.Aggregator.Mappers
 {
@@ -58,35 +57,12 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                 BestOf = challenge.BestOf,
                 Entries = challenge.Entries,
                 Timeline = challenge.Timeline,
-                PayoutEntries = payout.Buckets.Sum(bucket => bucket.Size),
                 SynchronizedAt = challenge.SynchronizedAt,
                 Scoring =
                 {
                     challenge.Scoring
                 },
-                Payout = new PayoutAggregate
-                {
-                    ChallengeId = challenge.Id,
-                    EntryFee = new EntryFeeAggregate
-                    {
-                        Amount = payout.EntryFee.Amount,
-                        Currency = payout.EntryFee.Currency
-                    },
-                    PrizePool = new PrizePoolAggregate
-                    {
-                        Currency = payout.PrizePool.Currency,
-                        Amount = payout.PrizePool.Amount
-                    },
-                    Buckets =
-                    {
-                        payout.Buckets.Select(
-                            bucket => new BucketAggregate
-                            {
-                                Prize = bucket.Prize,
-                                Size = bucket.Size
-                            })
-                    }
-                },
+                Payout = payout,
                 Participants =
                 {
                     challenge.Participants.Select(participant => Map(challenge.Id, participant, doxatags))

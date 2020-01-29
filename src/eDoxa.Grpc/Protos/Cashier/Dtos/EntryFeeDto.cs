@@ -1,5 +1,5 @@
 ﻿// Filename: EntryFeeAggregate.cs
-// Date Created: 2020-01-28
+// Date Created: 2020-01-29
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -7,11 +7,11 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace eDoxa.Grpc.Protos.Challenges.Aggregates
+namespace eDoxa.Grpc.Protos.Cashier.Dtos
 {
-    public partial class EntryFeeAggregate : IComparable<EntryFeeAggregate>
+    public partial class EntryFeeDto : IComparable<EntryFeeDto>
     {
-        public int CompareTo([AllowNull] EntryFeeAggregate other)
+        public int CompareTo([AllowNull] EntryFeeDto other)
         {
             if (Currency == other.Currency)
             {

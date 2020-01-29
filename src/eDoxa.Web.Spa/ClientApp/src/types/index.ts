@@ -322,7 +322,6 @@ export interface Challenge extends Entity<ChallengeId> {
   readonly state: ChallengeState;
   readonly bestOf: number;
   readonly entries: number;
-  readonly payoutEntries: number;
   readonly synchronizedAt?: number;
   readonly timeline: ChallengeTimeline;
   readonly scoring: ChallengeScoring;
@@ -342,14 +341,14 @@ export type ChallengeState =
   | typeof CHALLENGE_STATE_CLOSED;
 
 export interface ChallengeTimeline {
+  readonly duration: number;
   readonly createdAt: number;
   readonly startedAt?: number;
   readonly endedAt?: number;
   readonly closedAt?: number;
-  readonly duration: number;
 }
 
-export interface ChallengeEntryFee {
+export interface EntryFee {
   readonly currency: Currency;
   readonly amount: number;
 }
@@ -358,12 +357,13 @@ export type ChallengeScoring = Map<string, string>;
 
 export interface ChallengePayout {
   readonly challengeId: ChallengeId;
-  readonly entryFee: ChallengeEntryFee;
-  readonly prizePool: ChallengePayoutPrizePool;
+  readonly entries: number;
+  readonly entryFee: EntryFee;
+  readonly prizePool: PrizePool;
   readonly buckets: ChallengePayoutBucket[];
 }
 
-export interface ChallengePayoutPrizePool {
+export interface PrizePool {
   readonly currency: Currency;
   readonly amount: number;
 }

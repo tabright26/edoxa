@@ -1,5 +1,5 @@
 ﻿// Filename: PrizePoolAggregate.cs
-// Date Created: 2020-01-28
+// Date Created: 2020-01-29
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -7,11 +7,11 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace eDoxa.Grpc.Protos.Challenges.Aggregates
+namespace eDoxa.Grpc.Protos.Cashier.Dtos
 {
-    public partial class PrizePoolAggregate : IComparable<PrizePoolAggregate>
+    public partial class PrizePoolDto : IComparable<PrizePoolDto>
     {
-        public int CompareTo([AllowNull] PrizePoolAggregate other)
+        public int CompareTo([AllowNull] PrizePoolDto other)
         {
             if (Currency == other.Currency)
             {

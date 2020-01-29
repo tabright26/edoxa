@@ -59,7 +59,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
   );
   return {
     bestOf: challenge.bestOf,
-    payoutEntries: challenge.payoutEntries,
+    payoutEntries: challenge.payout.entries,
     participants: challenge.participants
   };
 };

@@ -12,19 +12,20 @@ package edoxa.services.cashier;
 
 message ChallengePayoutDto {
   string challengeId = 1;
-  EntryFeeDto entryFee = 2;
-  PrizePoolDto prizePool = 3;
-  repeated BucketDto buckets = 4;
-  
-  message PrizePoolDto {
-    EnumCurrency currency = 1;
-    customTypes.DecimalValue amount = 2;
-  }
+  int32 entries = 2;
+  EntryFeeDto entryFee = 3;
+  PrizePoolDto prizePool = 4;
+  repeated ChallengePayoutBucketDto buckets = 5;
+}
 
-  message BucketDto {
-    int32 size = 1;
-    customTypes.DecimalValue prize = 2;
-  }
+message ChallengePayoutBucketDto {
+  int32 size = 1;
+  customTypes.DecimalValue prize = 2;
+}
+
+message PrizePoolDto {
+  EnumCurrency currency = 1;
+  customTypes.DecimalValue amount = 2;
 }
 
 message EntryFeeDto {
