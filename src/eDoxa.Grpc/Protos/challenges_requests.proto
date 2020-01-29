@@ -11,11 +11,13 @@ package edoxa.services.challenges;
 message FetchChallengeHistoryRequest {
   games.EnumGame game = 1;
   EnumChallengeState state = 2;
+  bool includeMatches = 3;
 }
 
 message FetchChallengesRequest {
   games.EnumGame game = 1;
   EnumChallengeState state = 2;
+  bool includeMatches = 3;
 }
 
 message FindChallengeRequest {

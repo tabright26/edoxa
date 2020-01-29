@@ -42,7 +42,7 @@ const ProfileChallengeHistory: FunctionComponent<Props> = ({
           </Card>
         </Col>
       </Row>
-      <ChallengeList />
+      <ChallengeList xs="12" sm="12" md="12" lg="6" />
     </>
   );
 };

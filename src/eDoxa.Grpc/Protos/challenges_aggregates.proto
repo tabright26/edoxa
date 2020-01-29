@@ -60,17 +60,17 @@ message ChallengeAggregate {
     EntryFeeAggregate entryFee = 2;
     PrizePoolAggregate prizePool = 3;
     repeated BucketAggregate buckets = 4;
-  
-    message PrizePoolAggregate {
-      cashier.EnumCurrency currency = 1;
-      customTypes.DecimalValue amount = 2;
-    }
 
     message BucketAggregate {
       int32 size = 1;
       customTypes.DecimalValue prize = 2;
     }
   }
+}
+
+message PrizePoolAggregate {
+  cashier.EnumCurrency currency = 1;
+  customTypes.DecimalValue amount = 2;
 }
 
 message EntryFeeAggregate {

@@ -1,5 +1,5 @@
 ﻿// Filename: ChallengeGrpcService.cs
-// Date Created: 2019-12-26
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -52,7 +52,8 @@ namespace eDoxa.Challenges.Api.Grpc.Services
             var challenges = await _challengeQuery.FetchUserChallengeHistoryAsync(
                 userId,
                 request.Game.ToEnumerationOrNull<Game>(),
-                request.State.ToEnumerationOrNull<ChallengeState>());
+                request.State.ToEnumerationOrNull<ChallengeState>(),
+                request.IncludeMatches);
 
             var response = new FetchChallengeHistoryResponse
             {
@@ -69,7 +70,8 @@ namespace eDoxa.Challenges.Api.Grpc.Services
         {
             var challenges = await _challengeQuery.FetchChallengesAsync(
                 request.Game.ToEnumerationOrNull<Game>(),
-                request.State.ToEnumerationOrNull<ChallengeState>());
+                request.State.ToEnumerationOrNull<ChallengeState>(),
+                request.IncludeMatches);
 
             var response = new FetchChallengesResponse
             {

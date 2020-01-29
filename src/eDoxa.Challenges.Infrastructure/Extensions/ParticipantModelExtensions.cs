@@ -23,7 +23,7 @@ namespace eDoxa.Challenges.Infrastructure.Extensions
                 PlayerId.Parse(model.PlayerId),
                 new DateTimeProvider(model.RegisteredAt));
 
-            if (model.SynchronizedAt.HasValue)
+            if (model.SynchronizedAt.HasValue && model.Matches != null)
             {
                 participant.Snapshot(model.Matches.Select(match => match.ToEntity()), new DateTimeProvider(model.SynchronizedAt.Value));
             }

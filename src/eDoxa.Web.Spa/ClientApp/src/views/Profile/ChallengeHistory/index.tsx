@@ -29,7 +29,7 @@ const ProfileChallengeHistory: FunctionComponent<Props> = ({
   return (
     <>
       <h5 className="text-uppercase my-4">CHALLENGE HISTORY</h5>
-      <ChallengeList userId={userId} />
+      <ChallengeList userId={userId} xs="12" sm="12" md="12" lg="12" />
     </>
   );
 };

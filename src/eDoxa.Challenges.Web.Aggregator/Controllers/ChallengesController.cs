@@ -58,7 +58,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
         [SwaggerOperation("Fetch challenges.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ChallengeAggregate[]))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> FetchChallengesAsync(EnumGame game = EnumGame.None, EnumChallengeState state = EnumChallengeState.None)
+        public async Task<IActionResult> FetchChallengesAsync(EnumGame game = EnumGame.None, EnumChallengeState state = EnumChallengeState.None, bool includeMatches = false)
         {
             var fetchDoxatagsResponse = await _identityServiceClient.FetchDoxatagsAsync(new FetchDoxatagsRequest());
 
@@ -67,7 +67,8 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             var fetchChallengesResponse = await _challengesServiceClient.FetchChallengesAsync(new FetchChallengesRequest
             {
                 Game = game,
-                State = state
+                State = state,
+                IncludeMatches = includeMatches
             });
 
             return this.Ok(ChallengeMapper.Map(fetchChallengesResponse.Challenges, fetchChallengePayoutsResponse.Payouts, fetchDoxatagsResponse.Doxatags));

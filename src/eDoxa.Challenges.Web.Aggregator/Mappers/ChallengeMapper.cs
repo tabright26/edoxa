@@ -105,7 +105,13 @@ namespace eDoxa.Challenges.Web.Aggregator.Mappers
                                   let challengePayout = payouts.Single(payout => payout.ChallengeId == challenge.Id)
                                   select Map(challenge, challengePayout, doxatags);
 
-            return challengeModels.ToList();
+            return challengeModels.OrderBy(challenge => challenge.State)
+                .ThenByDescending(challenge => challenge.Entries)
+                .ThenByDescending(challenge => challenge.Participants.Count)
+                .ThenBy(challenge => challenge.Payout.EntryFee)
+                .ThenByDescending(challenge => challenge.Payout.PrizePool)
+                .ThenBy(challenge => challenge.Name)
+                .ToList();
         }
     }
 }

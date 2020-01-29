@@ -19,9 +19,9 @@ namespace eDoxa.Challenges.Domain.Queries
 {
     public interface IChallengeQuery
     {
-        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, Game? game = null, ChallengeState? state = null);
+        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, Game? game = null, ChallengeState? state = null, bool includeMatches = true);
 
-        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null);
+        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null, bool includeMatches = true);
 
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
     }

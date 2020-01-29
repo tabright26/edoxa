@@ -31,11 +31,16 @@ namespace eDoxa.Challenges.Infrastructure.Queries
 
         private IQueryable<ChallengeModel> Challenges { get; }
 
-        private async Task<IReadOnlyCollection<ChallengeModel>> FetchUserChallengeHistoryAsync(Guid userId, int? game = null, int? state = null)
+        private async Task<IReadOnlyCollection<ChallengeModel>> FetchUserChallengeHistoryAsync(
+            Guid userId,
+            int? game = null,
+            int? state = null,
+            bool includeMatches = true
+        )
         {
-            var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
-                                 .ThenInclude(participant => participant.Matches)
-                                 .AsExpandable()
+            var challenges = from challenge in includeMatches
+                                 ? Challenges.Include(challenge => challenge.Participants).ThenInclude(participant => participant.Matches).AsExpandable()
+                                 : Challenges.Include(challenge => challenge.Participants).AsExpandable()
                              where challenge.Participants.Any(participant => participant.UserId == userId) &&
                                    (game == null || challenge.Game == game) &&
                                    (state == null || challenge.State == state)
@@ -44,11 +49,11 @@ namespace eDoxa.Challenges.Infrastructure.Queries
             return await challenges.ToListAsync();
         }
 
-        private async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync(int? game = null, int? state = null)
+        private async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync(int? game = null, int? state = null, bool includeMatches = true)
         {
-            var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
-                                 .ThenInclude(participant => participant.Matches)
-                                 .AsExpandable()
+            var challenges = from challenge in includeMatches
+                                 ? Challenges.Include(challenge => challenge.Participants).ThenInclude(participant => participant.Matches).AsExpandable()
+                                 : Challenges.Include(challenge => challenge.Participants).AsExpandable()
                              where (game == null || challenge.Game == game) && (state == null || challenge.State == state)
                              select challenge;
 
@@ -69,16 +74,25 @@ namespace eDoxa.Challenges.Infrastructure.Queries
 
     public sealed partial class ChallengeQuery : IChallengeQuery
     {
-        public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, Game? game = null, ChallengeState? state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(
+            UserId userId,
+            Game? game = null,
+            ChallengeState? state = null,
+            bool includeMatches = true
+        )
         {
-            var challenges = await this.FetchUserChallengeHistoryAsync(userId, game?.Value, state?.Value);
+            var challenges = await this.FetchUserChallengeHistoryAsync(
+                userId,
+                game?.Value,
+                state?.Value,
+                includeMatches);
 
             return challenges.Select(challenge => challenge.ToEntity()).ToList();
         }
 
-        public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null)
+        public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null, bool includeMatches = true)
         {
-            var challenges = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);
+            var challenges = await this.FetchChallengeModelsAsync(game?.Value, state?.Value, includeMatches);
 
             return challenges.Select(challenge => challenge.ToEntity()).ToList();
         }

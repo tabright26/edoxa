@@ -15,17 +15,30 @@ type StateProps = { challenges: Challenge[]; loading: boolean };
 
 type InnerProps = StateProps;
 
-type OutterProps = { userId?: UserId };
+type OutterProps = {
+  userId?: UserId;
+  xs: string;
+  sm: string;
+  md: string;
+  lg: string;
+};
 
 type Props = InnerProps & OutterProps;
 
-const List: FunctionComponent<Props> = ({ challenges, loading }) =>
+const List: FunctionComponent<Props> = ({
+  challenges,
+  loading,
+  xs,
+  sm,
+  md,
+  lg
+}) =>
   loading ? (
     <Loading />
   ) : (
     <Row>
       {challenges.map((challenge, index) => (
-        <Col key={index} xs="12" sm="12" md="12" lg="12">
+        <Col key={index} xs={xs} sm={sm} md={md} lg={lg}>
           <ChallengeItem challenge={challenge} />
         </Col>
       ))}
