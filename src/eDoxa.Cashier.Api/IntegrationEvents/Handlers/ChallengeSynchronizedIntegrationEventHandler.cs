@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Handlers
             {
                 var challenge = await _challengeService.FindChallengeAsync(challengeId);
 
-                var scoreboard = new Scoreboard(
+                var scoreboard = new ChallengeScoreboard(
                     challenge.Payout,
                     integrationEvent.Scoreboard.ToDictionary(participant => participant.UserId.ParseEntityId<UserId>(), participant => participant.Score?.ToDecimal()));
 

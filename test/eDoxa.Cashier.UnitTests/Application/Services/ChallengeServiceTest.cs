@@ -52,15 +52,15 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(Prize.None, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(
-                new List<Bucket>
+            var buckets = new ChallengePayoutBuckets(
+                new List<ChallengePayoutBucket>
                 {
                     bucket
                 });
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
             var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, Currency.Token));
@@ -84,21 +84,21 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var mockChallengePayoutStrategy = new Mock<IChallengePayoutStrategy>();
 
-            mockChallengePayoutStrategy.Setup(payout => payout.GetPayout(It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>())).Verifiable();
+            mockChallengePayoutStrategy.Setup(payout => payout.GetPayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>())).Verifiable();
 
             mockChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(mockChallengePayoutStrategy.Object).Verifiable();
 
             var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(Prize.None, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(
-                new List<Bucket>
+            var buckets = new ChallengePayoutBuckets(
+                new List<ChallengePayoutBucket>
                 {
                     bucket
                 });
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
             var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, Currency.Token));
@@ -107,7 +107,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
-            mockChallengePayoutStrategy.Verify(payout => payout.GetPayout(It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);
+            mockChallengePayoutStrategy.Verify(payout => payout.GetPayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);
             mockChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
         }
 

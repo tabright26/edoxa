@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
@@ -43,7 +44,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var factory = new ChallengePayoutFactory();
             var strategy = factory.CreateInstance();
-            var payout = strategy.GetPayout(PayoutEntries.Five, MoneyEntryFee.Fifty);
+            var payout = strategy.GetPayout(ChallengePayoutEntries.Five, MoneyEntryFee.Fifty);
 
             var challenge = new Challenge(challengeId, MoneyEntryFee.Fifty, payout);
 
@@ -57,7 +58,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             mockChallengeService.Setup(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.ProcessChallengePayoutAsync(It.IsAny<Scoreboard>(), It.IsAny<CancellationToken>()))
+            mockAccountService.Setup(accountService => accountService.ProcessChallengePayoutAsync(It.IsAny<ChallengeScoreboard>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(DomainValidationResult.Succeeded(new PayoutPrizes()))
                 .Verifiable();
 
@@ -82,7 +83,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             mockChallengeService.Verify(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
             mockAccountService.Verify(
-                accountService => accountService.ProcessChallengePayoutAsync(It.IsAny<Scoreboard>(), It.IsAny<CancellationToken>()),
+                accountService => accountService.ProcessChallengePayoutAsync(It.IsAny<ChallengeScoreboard>(), It.IsAny<CancellationToken>()),
                 Times.Once);
 
             mockServiceBus.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<ChallengeClosedIntegrationEvent>()), Times.Once);

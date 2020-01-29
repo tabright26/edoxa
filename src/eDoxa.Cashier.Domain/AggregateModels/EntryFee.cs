@@ -7,9 +7,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 
+using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed class TokenEntryFee : EntryFee
     {

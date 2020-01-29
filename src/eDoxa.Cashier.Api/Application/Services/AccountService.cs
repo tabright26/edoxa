@@ -84,7 +84,7 @@ namespace eDoxa.Cashier.Api.Application.Services
         }
 
         // TODO: Need to be refactored.
-        public async Task<IDomainValidationResult> ProcessChallengePayoutAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default)
+        public async Task<IDomainValidationResult> ProcessChallengePayoutAsync(ChallengeScoreboard scoreboard, CancellationToken cancellationToken = default)
         {
             var result = new DomainValidationResult();
 

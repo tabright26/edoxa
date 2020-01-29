@@ -10,16 +10,16 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class Payout : ValueObject, IPayout
+    public sealed class ChallengePayout : ValueObject, IChallengePayout
     {
-        public Payout(IBuckets buckets)
+        public ChallengePayout(IChallengePayoutBuckets buckets)
         {
             Buckets = buckets;
         }
 
-        public IBuckets Buckets { get; }
+        public IChallengePayoutBuckets Buckets { get; }
 
-        public PayoutEntries Entries => new PayoutEntries(Buckets);
+        public ChallengePayoutEntries Entries => new ChallengePayoutEntries(Buckets);
 
         public PrizePool PrizePool => new PrizePool(Buckets);
 

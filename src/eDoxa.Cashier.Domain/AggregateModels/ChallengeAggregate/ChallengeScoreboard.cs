@@ -11,9 +11,9 @@ using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class Scoreboard : Dictionary<UserId, decimal?>
+    public sealed class ChallengeScoreboard : Dictionary<UserId, decimal?>
     {
-        public Scoreboard(IPayout payout, IDictionary<UserId, decimal?> scoreboard) : base(scoreboard)
+        public ChallengeScoreboard(IChallengePayout payout, IDictionary<UserId, decimal?> scoreboard) : base(scoreboard)
         {
             Ladders = payout.Buckets;
             PayoutCurrency = payout.PrizePool.Currency;
@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
             Losers = new List<UserId>(scoreboard.OrderByDescending(item => item.Value).Select(item => item.Key).Skip(payout.Entries));
         }
 
-        public IBuckets Ladders { get; }
+        public IChallengePayoutBuckets Ladders { get; }
 
         public Currency PayoutCurrency { get; }
 

@@ -12,19 +12,19 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public class PayoutLevel : ValueObject
     {
-        public PayoutLevel(BucketSize bucketSize, decimal weighting)
+        public PayoutLevel(ChallengePayoutBucketSize size, decimal weighting)
         {
-            BucketSize = bucketSize;
+            Size = size;
             Weighting = weighting;
         }
 
-        public int BucketSize { get; }
+        public int Size { get; }
 
         public decimal Weighting { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
-            yield return BucketSize;
+            yield return Size;
             yield return Weighting;
         }
 

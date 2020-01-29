@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 
 using eDoxa.Cashier.Api.Infrastructure.Data.Storage;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Strategies;
 
@@ -17,7 +18,7 @@ namespace eDoxa.Cashier.Api.Application.Strategies
 {
     public sealed class ChallengePayoutStrategy : IChallengePayoutStrategy
     {
-        public IPayout GetPayout(PayoutEntries entries, EntryFee entryFee)
+        public IChallengePayout GetPayout(ChallengePayoutEntries entries, EntryFee entryFee)
         {
             var payoutLookup = FileStorage.ChallengePayouts;
 
@@ -30,10 +31,10 @@ namespace eDoxa.Cashier.Api.Application.Strategies
 
             var prize = entryFee.GetLowestPrize();
 
-            var buckets = new Buckets(
-                payoutLevels.Select(payoutLevel => new Bucket(prize.ApplyWeighting(payoutLevel.Weighting), new BucketSize(payoutLevel.BucketSize))));
+            var buckets = new ChallengePayoutBuckets(
+                payoutLevels.Select(payoutLevel => new ChallengePayoutBucket(prize.ApplyWeighting(payoutLevel.Weighting), new ChallengePayoutBucketSize(payoutLevel.Size))));
 
-            return new Payout(buckets);
+            return new ChallengePayout(buckets);
         }
     }
 }

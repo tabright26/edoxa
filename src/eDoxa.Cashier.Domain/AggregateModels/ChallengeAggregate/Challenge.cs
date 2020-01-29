@@ -13,7 +13,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Challenge : Entity<ChallengeId>, IChallenge
     {
-        public Challenge(ChallengeId challengeId, EntryFee entryFee, IPayout payout)
+        public Challenge(ChallengeId challengeId, EntryFee entryFee, IChallengePayout payout)
         {
             this.SetEntityId(challengeId);
             EntryFee = entryFee;
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
         public EntryFee EntryFee { get; }
 
-        public IPayout Payout { get; }
+        public IChallengePayout Payout { get; }
     }
 
     public partial class Challenge : IEquatable<IChallenge?>

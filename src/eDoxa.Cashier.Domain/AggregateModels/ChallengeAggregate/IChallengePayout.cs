@@ -1,4 +1,4 @@
-﻿// Filename: IndividualBucket.cs
+﻿// Filename: IPayout.cs
 // Date Created: 2019-07-10
 // 
 // ================================================
@@ -6,10 +6,12 @@
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class IndividualBucket : Bucket
+    public interface IChallengePayout
     {
-        internal IndividualBucket(Prize prize) : base(prize, BucketSize.Individual)
-        {
-        }
+        ChallengePayoutEntries Entries { get; }
+
+        PrizePool PrizePool { get; }
+
+        IChallengePayoutBuckets Buckets { get; }
     }
 }

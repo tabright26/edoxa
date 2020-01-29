@@ -11,6 +11,7 @@ using Bogus;
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Abstractions;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers.Extensions;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
@@ -37,7 +38,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
                 {
                     var entryFee = MoneyEntryFee.Five;
 
-                    var payout = new ChallengePayoutFactory().CreateInstance().GetPayout(PayoutEntries.Ten, entryFee);
+                    var payout = new ChallengePayoutFactory().CreateInstance().GetPayout(ChallengePayoutEntries.Ten, entryFee);
 
                     return new Challenge(faker.Challenge().Id(), entryFee, payout);
                 });

@@ -29,9 +29,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
             return ChallengeId.FromGuid(Faker.Random.Guid());
         }
 
-        public PayoutEntries PayoutEntries()
+        public ChallengePayoutEntries PayoutEntries()
         {
-            return Faker.PickRandom(ValueObject.GetValues<PayoutEntries>());
+            return Faker.PickRandom(ValueObject.GetValues<ChallengePayoutEntries>());
         }
 
         public EntryFee EntryFee(Currency? entryFeeCurrency = null)

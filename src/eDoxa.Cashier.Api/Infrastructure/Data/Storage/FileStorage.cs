@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                             {
                                 var payoutStrategy = new ChallengePayoutFactory().CreateInstance();
 
-                                var payoutEntries = new PayoutEntries(record.PayoutEntries);
+                                var payoutEntries = new ChallengePayoutEntries(record.PayoutEntries);
 
                                 var currency = Currency.FromValue(record.EntryFeeCurrency)!;
 
@@ -57,8 +57,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                         .ToImmutableHashSet();
                 });
 
-        private static Lazy<ILookup<PayoutEntries, PayoutLevel>> LazyChallengePayouts =>
-            new Lazy<ILookup<PayoutEntries, PayoutLevel>>(
+        private static Lazy<ILookup<ChallengePayoutEntries, PayoutLevel>> LazyChallengePayouts =>
+            new Lazy<ILookup<ChallengePayoutEntries, PayoutLevel>>(
                 () =>
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
@@ -75,8 +75,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                                 PrizeFactor = default(decimal)
                             })
                         .ToLookup(
-                            record => new PayoutEntries(record.PayoutEntries),
-                            record => new PayoutLevel(new BucketSize(record.BucketSize), record.PrizeFactor));
+                            record => new ChallengePayoutEntries(record.PayoutEntries),
+                            record => new PayoutLevel(new ChallengePayoutBucketSize(record.BucketSize), record.PrizeFactor));
                 });
 
         private static Lazy<IImmutableSet<UserId>> LazyUsers =>
@@ -100,7 +100,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 
         public static IImmutableSet<UserId> Users => LazyUsers.Value;
 
-        public static ILookup<PayoutEntries, PayoutLevel> ChallengePayouts => LazyChallengePayouts.Value;
+        public static ILookup<ChallengePayoutEntries, PayoutLevel> ChallengePayouts => LazyChallengePayouts.Value;
 
         public static IImmutableSet<IChallenge> Challenges => LazyChallenges.Value;
 
@@ -109,7 +109,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
             return LazyUsers.Value;
         }
 
-        public ILookup<PayoutEntries, PayoutLevel> GetChallengePayouts()
+        public ILookup<ChallengePayoutEntries, PayoutLevel> GetChallengePayouts()
         {
             return LazyChallengePayouts.Value;
         }

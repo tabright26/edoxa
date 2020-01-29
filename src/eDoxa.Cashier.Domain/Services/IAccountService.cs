@@ -50,7 +50,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> ProcessChallengePayoutAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default);
+        Task<IDomainValidationResult> ProcessChallengePayoutAsync(ChallengeScoreboard scoreboard, CancellationToken cancellationToken = default);
 
         Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId);
 

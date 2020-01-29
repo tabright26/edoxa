@@ -34,15 +34,15 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
             // Arrange
             var payoutStrategy = new ChallengePayoutStrategy();
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(Prize.None, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(
-                new List<Bucket>
+            var buckets = new ChallengePayoutBuckets(
+                new List<ChallengePayoutBucket>
                 {
                     bucket
                 });
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
             var payout = payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token));
@@ -57,14 +57,14 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
             // Arrange
             var payoutStrategy = new ChallengePayoutStrategy();
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(Prize.None, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(new List<Bucket>());
+            var buckets = new ChallengePayoutBuckets(new List<ChallengePayoutBucket>());
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
-            var action = new Func<IPayout>(() => payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token)));
+            var action = new Func<IChallengePayout>(() => payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token)));
 
             // Assert
             action.Should().Throw<NotSupportedException>();

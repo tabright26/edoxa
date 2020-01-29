@@ -1,8 +1,8 @@
-﻿// Filename: Bucket.cs
-// Date Created: 2019-07-10
+﻿// Filename: ChallengePayoutBucket.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
@@ -10,9 +10,9 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
-    public class Bucket : ValueObject
+    public class ChallengePayoutBucket : ValueObject
     {
-        public Bucket(Prize prize, BucketSize size)
+        public ChallengePayoutBucket(Prize prize, ChallengePayoutBucketSize size)
         {
             Size = size;
             Prize = prize;
@@ -20,7 +20,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 
         public Prize Prize { get; }
 
-        public BucketSize Size { get; }
+        public ChallengePayoutBucketSize Size { get; }
 
         public override string ToString()
         {
@@ -33,16 +33,16 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
             yield return Size;
         }
 
-        public IBuckets AsIndividualBuckets()
+        public IChallengePayoutBuckets AsIndividualBuckets()
         {
-            var buckets = new List<IndividualBucket>();
+            var buckets = new List<ChallengePayoutBucket>();
 
             for (var index = 0; index < Size; index++)
             {
-                buckets.Add(new IndividualBucket(Prize));
+                buckets.Add(new ChallengePayoutBucket(Prize, ChallengePayoutBucketSize.Individual));
             }
 
-            return new Buckets(buckets);
+            return new ChallengePayoutBuckets(buckets);
         }
     }
 }

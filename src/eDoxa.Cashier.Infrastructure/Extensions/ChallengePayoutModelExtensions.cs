@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
         {
             var entryFee = new EntryFee(model.EntryFeeAmount, Currency.FromValue(model.EntryFeeCurrency));
 
-            var payout = new Payout(new Buckets(model.Buckets.Select(bucket => bucket.ToEntity())));
+            var payout = new ChallengePayout(new ChallengePayoutBuckets(model.Buckets.Select(bucket => bucket.ToEntity())));
 
             var challenge = new Challenge(ChallengeId.FromGuid(model.ChallengeId), entryFee, payout);
 

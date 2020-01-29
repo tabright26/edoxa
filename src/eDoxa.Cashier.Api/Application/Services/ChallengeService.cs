@@ -7,6 +7,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
@@ -34,7 +35,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
         public async Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId challengeId,
-            PayoutEntries payoutEntries,
+            ChallengePayoutEntries payoutEntries,
             EntryFee entryFee,
             CancellationToken cancellationToken = default
         )

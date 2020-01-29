@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
+using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 
-namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
+namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public sealed class PrizePool : ValueObject
     {
-        public PrizePool(IBuckets buckets)
+        public PrizePool(IChallengePayoutBuckets buckets)
         {
             Amount = buckets.SelectMany(bucket => bucket.AsIndividualBuckets()).Sum(bucket => bucket.Prize.Amount);
             Currency = buckets.First().Prize.Currency;

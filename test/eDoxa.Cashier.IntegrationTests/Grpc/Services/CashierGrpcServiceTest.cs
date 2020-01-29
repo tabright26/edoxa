@@ -267,7 +267,7 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
                     var challengeService = scope.GetRequiredService<IChallengeService>();
 
                     await accountService.CreateAccountAsync(userId);
-                    await challengeService.CreateChallengeAsync(challengeId, PayoutEntries.Fifteen, new EntryFee(20, Currency.Money));
+                    await challengeService.CreateChallengeAsync(challengeId, ChallengePayoutEntries.Fifteen, new EntryFee(20, Currency.Money));
                 });
 
             var request = new FindChallengePayoutRequest

@@ -175,17 +175,17 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
             var threeDollars = new EntryFee(3, Currency.Money);
 
-            var twoDollarsForOneEntries = strategy.GetPayout(PayoutEntries.One, twoDollars);
+            var twoDollarsForOneEntries = strategy.GetPayout(ChallengePayoutEntries.One, twoDollars);
 
-            var twoDollarsForTwoEntries = strategy.GetPayout(PayoutEntries.Two, twoDollars);
+            var twoDollarsForTwoEntries = strategy.GetPayout(ChallengePayoutEntries.Two, twoDollars);
 
-            var twoDollarsForThreeEntries = strategy.GetPayout(PayoutEntries.Three, twoDollars);
+            var twoDollarsForThreeEntries = strategy.GetPayout(ChallengePayoutEntries.Three, twoDollars);
 
-            var threeDollarsForOneEntries = strategy.GetPayout(PayoutEntries.One, threeDollars);
+            var threeDollarsForOneEntries = strategy.GetPayout(ChallengePayoutEntries.One, threeDollars);
 
-            var threeDollarsForTwoEntries = strategy.GetPayout(PayoutEntries.Two, threeDollars);
+            var threeDollarsForTwoEntries = strategy.GetPayout(ChallengePayoutEntries.Two, threeDollars);
 
-            var threeDollarsForThreeEntries = strategy.GetPayout(PayoutEntries.Three, threeDollars);
+            var threeDollarsForThreeEntries = strategy.GetPayout(ChallengePayoutEntries.Three, threeDollars);
 
             var challengePayouts = new List<IChallenge>
             {

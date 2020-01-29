@@ -1,15 +1,14 @@
 ﻿// Filename: IBuckets.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
-    public interface IBuckets : IReadOnlyList<Bucket>
+    public interface IChallengePayoutBuckets : IReadOnlyList<ChallengePayoutBucket>
     {
-        Prize PrizeAtOrDefault(int index);
     }
 }

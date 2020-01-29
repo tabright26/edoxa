@@ -13,6 +13,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
     {
         EntryFee EntryFee { get; }
 
-        IPayout Payout { get; }
+        IChallengePayout Payout { get; }
     }
 }

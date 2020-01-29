@@ -6,6 +6,7 @@
 
 using AutoMapper;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
@@ -24,7 +25,7 @@ namespace eDoxa.Cashier.Api.Application.Profiles
                 .ForMember(challenge => challenge.PrizePool, config => config.MapFrom(challenge => challenge.Payout.PrizePool))
                 .ForMember(challenge => challenge.Buckets, config => config.MapFrom(challenge => challenge.Payout.Buckets));
 
-            this.CreateMap<Bucket, ChallengePayoutDto.Types.BucketDto>()
+            this.CreateMap<ChallengePayoutBucket, ChallengePayoutDto.Types.BucketDto>()
                 .ForMember(bucket => bucket.Size, config => config.MapFrom<int>(bucket => bucket.Size))
                 .ForMember(bucket => bucket.Prize, config => config.MapFrom<DecimalValue>(bucket => bucket.Prize.Amount));
 

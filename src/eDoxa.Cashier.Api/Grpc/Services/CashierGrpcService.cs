@@ -148,7 +148,7 @@ namespace eDoxa.Cashier.Api.Grpc.Services
 
             var result = await _challengeService.CreateChallengeAsync(
                 challengeId,
-                new PayoutEntries(request.PayoutEntries),
+                new ChallengePayoutEntries(request.PayoutEntries),
                 new EntryFee(request.EntryFee.Amount, request.EntryFee.Currency.ToEnumeration<Currency>()));
 
             if (result.IsValid)
