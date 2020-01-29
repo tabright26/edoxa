@@ -8,6 +8,31 @@ import {
 import { RootState } from "store/types";
 import { UserId, Game, UserDob } from "types";
 import { camelCase } from "change-case";
+import { User } from "oidc-client";
+
+export interface HocUserStateProps {
+  user: User;
+}
+
+export const withUser = (WrappedComponent: FunctionComponent) => {
+  interface OwnProps {}
+
+  const EnhancedComponent: FunctionComponent<HocUserStateProps> = props => {
+    return <WrappedComponent {...props} />;
+  };
+
+  const mapStateToProps: MapStateToProps<
+    HocUserStateProps,
+    OwnProps,
+    RootState
+  > = state => {
+    return {
+      user: state.oidc.user
+    };
+  };
+
+  return connect(mapStateToProps)(EnhancedComponent);
+};
 
 export interface HocUserProfileDobStateProps {
   dob: UserDob;

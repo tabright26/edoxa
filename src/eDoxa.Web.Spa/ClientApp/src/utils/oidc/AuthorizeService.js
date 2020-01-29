@@ -25,12 +25,6 @@ export class AuthorizeService {
     return user && user.profile;
   }
 
-  async getAccessToken() {
-    await this.ensureUserManagerInitialized();
-    const user = await this.userManager.getUser();
-    return user && user.access_token;
-  }
-
   // We try to authenticate the user in three different ways:
   // 1) We try to see if we can authenticate the user silently. This happens
   //    when the user is already logged in on the IdP and is done using a hidden iframe

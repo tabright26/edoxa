@@ -6,7 +6,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-import { REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY } from "keys";
+import {
+  REACT_APP_FACEBOOK_MCC_APP_ID,
+  REACT_APP_FACEBOOK_MCC_PAGE_ID,
+  REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY
+} from "keys";
 import { Provider } from "react-redux";
 import { configureStore } from "./store";
 import ReduxToastr from "react-redux-toastr";
@@ -15,6 +19,7 @@ import { LocalizeProvider } from "react-localize-redux";
 import { initialize } from "utils/localize/initialize";
 import { OidcProvider } from "redux-oidc";
 import { userManager } from "utils/oidc/UserManager";
+import MessengerCustomerChat from "react-messenger-customer-chat";
 
 const store = configureStore();
 
@@ -27,6 +32,12 @@ ReactDOM.render(
         </StripeProvider>
       </LocalizeProvider>
     </OidcProvider>
+    <MessengerCustomerChat
+      pageId={REACT_APP_FACEBOOK_MCC_PAGE_ID}
+      appId={REACT_APP_FACEBOOK_MCC_APP_ID}
+      version="5.0"
+      xfbml
+    />
     <ReduxToastr
       timeOut={7500}
       newestOnTop={false}

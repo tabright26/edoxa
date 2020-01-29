@@ -4,10 +4,14 @@ import { Route, Redirect } from "react-router-dom";
 import {
   ApplicationPaths,
   QueryParameterNames
-} from "./ApiAuthorizationConstants";
-import authorizeService from "./AuthorizeService";
+} from "utils/oidc/ApiAuthorizationConstants";
+import authorizeService from "utils/oidc/AuthorizeService";
+import { compose } from "recompose";
+import { withUser } from "utils/oidc/containers";
+import { Loading } from "components/Shared/Loading";
 
-export default class AuthorizeRoute extends Component {
+class ComponentEnhancer extends Component<any, any> {
+  _subscription: any;
   constructor(props) {
     super(props);
 
@@ -34,19 +38,20 @@ export default class AuthorizeRoute extends Component {
       QueryParameterNames.ReturnUrl
     }=${encodeURI(window.location.href)}`;
     if (!ready) {
-      return <div></div>;
+      return <Loading />;
     } else {
-      const { component: Component, ...rest } = this.props;
+      const { component: Component, user, ...rest } = this.props;
       return (
         <Route
           {...rest}
-          render={props => {
-            if (authenticated) {
-              return <Component {...props} />;
-            } else {
-              return <Redirect to={redirectUrl} />;
-            }
-          }}
+          render={() =>
+            authenticated &&
+            parseInt((Date.now() / 1000).toString()) < user.expires_at ? (
+              <Component />
+            ) : (
+              <Redirect to={redirectUrl} />
+            )
+          }
         />
       );
     }
@@ -62,3 +67,7 @@ export default class AuthorizeRoute extends Component {
     await this.populateAuthenticationState();
   }
 }
+
+const enhance = compose(withUser);
+
+export const Authorize = enhance(ComponentEnhancer);
