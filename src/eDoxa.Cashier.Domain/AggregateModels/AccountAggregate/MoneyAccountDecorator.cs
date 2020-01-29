@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     public sealed class MoneyAccountDecorator : AccountDecorator, IMoneyAccount
     {
         public static readonly TimeSpan DepositInterval = TimeSpan.FromDays(1);
-        public static readonly TimeSpan WithdrawalInterval = TimeSpan.FromDays(7);
+        public static readonly TimeSpan WithdrawalInterval = TimeSpan.FromDays(1);
 
         public MoneyAccountDecorator(IAccount account) : base(account)
         {
