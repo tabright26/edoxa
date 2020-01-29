@@ -1,9 +1,10 @@
 // Filename: ChallengeProfile.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
 using System.Linq;
 
 using AutoMapper;
@@ -53,14 +54,17 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                 .ForMember(participant => participant.Score, config => config.Ignore())
                 .ForMember(participant => participant.ChallengeId, config => config.Ignore())
                 .ForMember(participant => participant.GamePlayerId, config => config.MapFrom(participant => participant.PlayerId.ToString()))
-                .ForMember(participant => participant.SynchronizedAt, config => config.MapFrom(participant => participant.SynchronizedAt.ToTimestampUtcOrNull()))
+                .ForMember(
+                    participant => participant.SynchronizedAt,
+                    config => config.MapFrom(participant => participant.SynchronizedAt.ToTimestampUtcOrNull()))
                 .ForMember(participant => participant.Matches, config => config.MapFrom(participant => participant.Matches));
 
             this.CreateMap<ChallengeTimeline, TimelineDto>()
                 .ForMember(timeline => timeline.CreatedAt, config => config.MapFrom(timeline => timeline.CreatedAt.ToTimestampUtc()))
                 .ForMember(timeline => timeline.StartedAt, config => config.MapFrom(timeline => timeline.StartedAt.ToTimestampUtcOrNull()))
                 .ForMember(timeline => timeline.EndedAt, config => config.MapFrom(timeline => timeline.EndedAt.ToTimestampUtcOrNull()))
-                .ForMember(timeline => timeline.ClosedAt, config => config.MapFrom(timeline => timeline.ClosedAt.ToTimestampUtcOrNull()));
+                .ForMember(timeline => timeline.ClosedAt, config => config.MapFrom(timeline => timeline.ClosedAt.ToTimestampUtcOrNull()))
+                .ForMember(timeline => timeline.Duration, config => config.MapFrom(timeline => TimeSpan.FromTicks(timeline.Duration.Ticks).ToDuration()));
 
             this.CreateMap<IChallenge, ChallengeDto>()
                 .ForMember(challenge => challenge.Id, config => config.MapFrom(challenge => challenge.Id.ToString()))
@@ -92,7 +96,8 @@ namespace eDoxa.Challenges.Api.Application.Profiles
                     CreatedAt = challenge.Timeline.CreatedAt.ToTimestampUtc(),
                     StartedAt = challenge.Timeline.StartedAt.ToTimestampUtcOrNull(),
                     EndedAt = challenge.Timeline.EndedAt.ToTimestampUtcOrNull(),
-                    ClosedAt = challenge.Timeline.ClosedAt.ToTimestampUtcOrNull()
+                    ClosedAt = challenge.Timeline.ClosedAt.ToTimestampUtcOrNull(),
+                    Duration = TimeSpan.FromTicks(challenge.Timeline.Duration.Ticks).ToDuration()
                 },
                 Scoring =
                 {

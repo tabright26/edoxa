@@ -346,6 +346,7 @@ export interface ChallengeTimeline {
   readonly startedAt?: number;
   readonly endedAt?: number;
   readonly closedAt?: number;
+  readonly duration: number;
 }
 
 export interface ChallengeEntryFee {

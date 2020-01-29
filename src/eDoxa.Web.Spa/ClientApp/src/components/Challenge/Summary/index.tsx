@@ -135,6 +135,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
         ? ownProps.match.params.challengeId
         : ownProps.challengeId)
   );
+  console.log(challenge);
   return {
     name: challenge.name,
     game: challenge.game,
@@ -144,7 +145,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     entryFee: challenge.payout.entryFee,
     payoutEntries: challenge.payoutEntries,
     prizePool: challenge.payout.prizePool,
-    duration: challenge.timeline.endedAt - challenge.timeline.startedAt,
+    duration: challenge.timeline.duration,
     participantCount: challenge.participants.length
   };
 };
