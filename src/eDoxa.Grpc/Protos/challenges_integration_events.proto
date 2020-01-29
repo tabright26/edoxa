@@ -18,3 +18,7 @@ message ChallengeSynchronizedIntegrationEvent {
 message RegisterChallengeParticipantFailedIntegrationEvent {
   ParticipantDto participant = 1;
 }
+
+message ChallengeStartedntegrationEvent {
+  ChallengeDto challenge = 1;
+}
