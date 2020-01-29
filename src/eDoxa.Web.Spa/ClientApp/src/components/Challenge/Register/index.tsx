@@ -60,14 +60,11 @@ const Register: FunctionComponent<Props> = ({
 }) =>
   canRegister &&
   (isAuthenticated ? (
-    <Card className={className}>
-      <ChallengeForm.Register userId={userId} />
-    </Card>
+    <ChallengeForm.Register className={className} userId={userId} />
   ) : (
     <Button
       color="primary"
-      size="lg"
-      className="w-100 text-uppercase"
+      className={className}
       onClick={() =>
         dispatch(
           show(LINK_GAME_CREDENTIAL_MODAL, {
