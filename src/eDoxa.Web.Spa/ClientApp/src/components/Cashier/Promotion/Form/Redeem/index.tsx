@@ -35,10 +35,11 @@ type Props = InnerProps & OutterProps;
 const Redeem: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field
       type="text"
       name="promotionalCode"

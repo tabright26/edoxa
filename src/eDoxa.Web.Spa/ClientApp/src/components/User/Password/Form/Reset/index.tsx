@@ -48,10 +48,11 @@ type Props = InnerProps & OutterProps;
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field type="hidden" name="code" component={Input.Text} />
     <InputGroup size="sm" className="mb-3">
       <InputGroupAddon addonType="prepend">

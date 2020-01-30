@@ -25,7 +25,6 @@ const Update: FunctionComponent<Props> = ({
   dispatch
 }) => (
   <Modal
-    unmountOnClose={false}
     backdrop="static"
     centered
     size="lg"

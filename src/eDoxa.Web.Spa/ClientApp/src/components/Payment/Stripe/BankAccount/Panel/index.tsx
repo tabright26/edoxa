@@ -48,7 +48,7 @@ const Panel: FunctionComponent<Props> = ({
             UPDATE
           </Button.Link>
         </div>
-        <div className="d-block mt-1 text-muted">
+        <div className="d-block mt-2 text-muted">
           You can withdraw money from your eDoxa cashier and to deposit the
           winnings to your bank account. Enjoy the fruits of your passion!
         </div>

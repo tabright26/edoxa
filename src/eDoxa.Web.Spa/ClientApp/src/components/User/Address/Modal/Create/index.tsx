@@ -20,7 +20,6 @@ const CustomModal: FunctionComponent<Props> = ({
   dispatch
 }) => (
   <Modal
-    unmountOnClose={false}
     backdrop="static"
     centered
     isOpen={show}

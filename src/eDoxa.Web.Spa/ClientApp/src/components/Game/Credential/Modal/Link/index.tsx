@@ -18,7 +18,7 @@ const Link: FunctionComponent<Props> = ({ show, handleHide, gameOptions }) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
     <Modal
-      unmountOnClose={false}
+      
       backdrop="static"
       centered
       isOpen={show}

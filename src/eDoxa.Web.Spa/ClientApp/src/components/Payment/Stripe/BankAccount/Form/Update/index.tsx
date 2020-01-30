@@ -48,10 +48,11 @@ const Update: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormField.Currency />
     <Field
       type="text"

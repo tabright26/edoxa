@@ -45,10 +45,11 @@ const Update: FunctionComponent<Props> = ({
     card: { brand, last4, expYear }
   },
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit} inline className="d-flex">
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
       <div className="d-flex">
         <PaymentMethodCard.Icon className="my-auto" brand={brand} size="2x" />

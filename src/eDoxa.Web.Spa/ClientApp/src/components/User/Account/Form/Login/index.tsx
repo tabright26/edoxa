@@ -39,9 +39,9 @@ type InnerProps = InjectedFormProps<FormData, Props> &
 
 type Props = InnerProps & OutterProps;
 
-const Login: FunctionComponent<Props> = ({ handleSubmit, error }) => (
+const Login: FunctionComponent<Props> = ({ handleSubmit, error, anyTouched }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field type="hidden" name="returnUrl" component={Input.Text} />
     <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">

@@ -35,7 +35,7 @@ import {
 } from "utils/axios/types";
 
 export function createUserTransaction(
-  transactionBundleId: TransactionBundleId,
+  bundleId: TransactionBundleId,
   meta: AxiosActionCreatorMeta
 ): CreateUserTransactionActionCreator {
   return {
@@ -50,7 +50,7 @@ export function createUserTransaction(
         method: "POST",
         url: "/api/transactions",
         data: {
-          bundle: transactionBundleId
+          bundle: bundleId
         }
       }
     },

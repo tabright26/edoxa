@@ -20,7 +20,7 @@ const Unlink: FunctionComponent<Props> = ({
   gameOptions
 }) => (
   <Modal
-    unmountOnClose={false}
+    
     backdrop="static"
     centered
     isOpen={show}

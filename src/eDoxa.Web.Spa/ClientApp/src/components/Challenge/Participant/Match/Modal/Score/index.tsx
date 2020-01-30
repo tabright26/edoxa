@@ -16,7 +16,7 @@ type Props = InnerProps & OutterProps;
 const Score: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
   <Modal
     size="lg"
-    unmountOnClose={false}
+    
     backdrop="static"
     isOpen={show}
     toggle={handleHide}

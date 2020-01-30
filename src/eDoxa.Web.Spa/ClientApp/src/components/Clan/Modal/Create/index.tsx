@@ -24,7 +24,6 @@ const CustomModal: FunctionComponent<Props> = ({
   dispatch
 }) => (
   <Modal
-    unmountOnClose={false}
     backdrop="static"
     size="lg"
     isOpen={show}
@@ -32,7 +31,10 @@ const CustomModal: FunctionComponent<Props> = ({
     centered
     onClosed={() => dispatch(destroy(CREATE_CLAN_FORM))}
   >
-    <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
+    <ModalHeader
+      className="text-uppercase my-auto bg-gray-900"
+      toggle={handleHide}
+    >
       Create a new clan
     </ModalHeader>
     <ModalBody>

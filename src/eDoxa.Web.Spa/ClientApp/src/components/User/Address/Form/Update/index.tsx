@@ -59,10 +59,11 @@ const CustomForm: FunctionComponent<Props> = ({
   countryIsoCode,
   reset,
   fieldsOptions: { country, line1, line2, city, state, postalCode },
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
       <FormField.CountryIsoCode placeholder={country.label} disabled />
     </FormGroup>

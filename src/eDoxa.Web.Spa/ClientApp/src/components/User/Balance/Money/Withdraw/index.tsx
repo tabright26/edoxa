@@ -15,8 +15,9 @@ const Withdraw: FunctionComponent<Props> = ({ account: { data } }) => (
   <UserTransactionButton.Create
     transactionType={TRANSACTION_TYPE_WITHDRAWAL}
     currency={CURRENCY_MONEY}
-    title="WITHDRAL (MONEY)"
     disabled={data === null ? true : !data.enabled}
+    title="WITHDRAL (MONEY)"
+    description="We withdraw the money from your cashier and deposit it in your bank account for your personal usage."
   >
     Withdraw
   </UserTransactionButton.Create>

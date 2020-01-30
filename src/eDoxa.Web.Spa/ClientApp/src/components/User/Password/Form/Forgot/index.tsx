@@ -31,10 +31,11 @@ type Props = InnerProps & OutterProps;
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field
       type="text"
       name="email"

@@ -17,7 +17,7 @@ interface OutterProps {
 
 type Props = InnerProps & OutterProps;
 
-const Balance: FunctionComponent<Props> = ({ currency, balance: { data, error, loading }, attribute, alignment = "justify" }) => (
+const Balance: FunctionComponent<Props> = ({ currency, balance: { data }, attribute, alignment = "justify" }) => (
   <Format.Currency currency={currency} amount={data[attribute]} alignment={alignment} />
 );
 

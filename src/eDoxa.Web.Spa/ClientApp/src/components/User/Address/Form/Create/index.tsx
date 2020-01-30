@@ -64,10 +64,11 @@ const CustomForm: FunctionComponent<Props> = ({
   reset,
   countryIsoCode,
   fieldsOptions: { country, line1, line2, city, state, postalCode },
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
       <FormField.CountryIsoCode
         label={country.label}

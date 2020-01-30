@@ -47,10 +47,11 @@ type Props = InnerProps & OutterProps;
 const Register: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     {/* <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
         <InputGroupText>

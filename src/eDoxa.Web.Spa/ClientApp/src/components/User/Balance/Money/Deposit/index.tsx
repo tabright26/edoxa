@@ -15,6 +15,7 @@ const Deposit: FunctionComponent<Props> = ({ hasDefaultPaymentMethod }) => (
     transactionType={TRANSACTION_TYPE_DEPOSIT}
     currency={CURRENCY_MONEY}
     title="DEPOSIT (MONEY)"
+    description="The money will be deposited in your account in order to pay for paid Challenges."
     disabled={!hasDefaultPaymentMethod}
   >
     Deposit

@@ -32,10 +32,11 @@ const Create: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <dl className="row mb-0">
       <dt className="col-sm-4">Card number</dt>
       <dd className="col-sm-8">

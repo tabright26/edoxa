@@ -28,10 +28,11 @@ type Props = InnerProps & OutterProps;
 const Generate: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
       <Label>Summoner name</Label>
       <Field name="summonerName" component={Input.Text} />

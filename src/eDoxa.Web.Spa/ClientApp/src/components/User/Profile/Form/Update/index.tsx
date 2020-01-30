@@ -35,10 +35,11 @@ const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   handleCancel,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <dl className="row mb-0">
       <dd className="col-sm-3 mb-0 text-muted">Name</dd>
       <dd className="col-sm-9 mb-0">

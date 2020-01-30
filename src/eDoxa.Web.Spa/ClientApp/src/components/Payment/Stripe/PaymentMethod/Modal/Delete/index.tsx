@@ -25,14 +25,16 @@ const Delete: FunctionComponent<Props> = ({
   dispatch
 }) => (
   <Modal
-    unmountOnClose={false}
     backdrop="static"
     centered
     isOpen={show}
     toggle={handleHide}
     onClosed={() => dispatch(destroy(DELETE_STRIPE_PAYMENTMETHOD_FORM))}
   >
-    <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
+    <ModalHeader
+      className="text-uppercase my-auto bg-gray-900"
+      toggle={handleHide}
+    >
       DELETE PAYMENT METHOD
     </ModalHeader>
     <ModalBody>

@@ -32,7 +32,7 @@ Array [
     </div>
   </div>,
   <ul
-    className="pagination"
+    className="pagination undefined"
   >
     <li
       className="page-item disabled"

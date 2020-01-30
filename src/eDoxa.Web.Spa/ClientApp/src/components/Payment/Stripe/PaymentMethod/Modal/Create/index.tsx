@@ -24,7 +24,6 @@ const Create: FunctionComponent<Props> = ({
   elements
 }) => (
   <Modal
-    unmountOnClose={false}
     backdrop="static"
     centered
     isOpen={show}
@@ -36,7 +35,10 @@ const Create: FunctionComponent<Props> = ({
       elements.getElement("cardCvc").clear();
     }}
   >
-    <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
+    <ModalHeader
+      className="text-uppercase my-auto bg-gray-900"
+      toggle={handleHide}
+    >
       ADD NEW PAYMENT METHOD
     </ModalHeader>
     <ModalBody>

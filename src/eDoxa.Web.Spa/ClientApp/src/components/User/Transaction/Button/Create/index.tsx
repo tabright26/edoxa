@@ -14,6 +14,7 @@ interface OwnProps {
   currency: Currency;
   transactionType: TransactionType;
   title: string;
+  description: string;
 }
 
 type InnerProps = DispatchProps;
@@ -24,7 +25,7 @@ type OutterProps = OwnProps & {
 
 type Props = InnerProps & OutterProps;
 
-const CreateTransactionButton: FunctionComponent<Props> = ({
+const Create: FunctionComponent<Props> = ({
   showModal,
   disabled,
   children
@@ -50,7 +51,8 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
         show(CREATE_USER_TRANSACTION_MODAL, {
           currency: ownProps.currency,
           transactionType: ownProps.transactionType,
-          title: ownProps.title
+          title: ownProps.title,
+          description: ownProps.description
         })
       )
   };
@@ -60,4 +62,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connect(null, mapDispatchToProps)
 );
 
-export default enhance(CreateTransactionButton);
+export default enhance(Create);
