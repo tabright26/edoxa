@@ -18,11 +18,8 @@ export const initialState: UserTransactionState = {
   loading: false
 };
 
-function compare(left: UserTransaction, right: UserTransaction): number {
-  if (left.timestamp > right.timestamp) return -1;
-  if (left.timestamp < right.timestamp) return 1;
-  return 0;
-}
+const compare = (left: UserTransaction, right: UserTransaction) =>
+  right.timestamp - left.timestamp;
 
 export const reducer: Reducer<UserTransactionState, RootActions> = produce(
   (draft: Draft<UserTransactionState>, action: RootActions) => {
@@ -41,7 +38,15 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
             break;
           }
           default: {
-            draft.data = data.sort(compare);
+            data.forEach(transaction => {
+              const index = draft.data.findIndex(x => x.id === transaction.id);
+              if (index === -1) {
+                draft.data.push(transaction);
+              } else {
+                draft.data[index] = transaction;
+              }
+            });
+            draft.data.sort(compare);
             draft.error = null;
             draft.loading = false;
             break;
@@ -61,6 +66,7 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
       }
       case CREATE_USER_TRANSACTION_SUCCESS: {
         draft.data.push(action.payload.data);
+        draft.data.sort(compare);
         draft.error = null;
         draft.loading = false;
         break;

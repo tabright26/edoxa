@@ -19,31 +19,28 @@ const TransactionList: FunctionComponent<Props> = ({ transactions }) => (
       </tr>
     </thead>
     <tbody>
-      {transactions
-        .slice()
-        .sort((left, right) => (left.timestamp < right.timestamp ? -1 : 1))
-        .map((transaction, index) => (
-          <tr key={index}>
-            <td className="my-auto">
-              <Moment unix format="lll">
-                {transaction.timestamp}
-              </Moment>
-            </td>
-            <td className="my-auto">
-              <Badge color="primary">{transaction.status}</Badge>
-            </td>
-            <td className="my-auto">{transaction.type}</td>
-            <td className="my-auto">
-              <Badge className="bg-gray-900 w-100">
-                <Format.Currency
-                  currency={transaction.currency}
-                  amount={transaction.amount}
-                  alignment="justify"
-                />
-              </Badge>
-            </td>
-          </tr>
-        ))}
+      {transactions.map((transaction, index) => (
+        <tr key={index}>
+          <td className="my-auto">
+            <Moment unix format="lll">
+              {transaction.timestamp}
+            </Moment>
+          </td>
+          <td className="my-auto">
+            <Badge color="primary">{transaction.status}</Badge>
+          </td>
+          <td className="my-auto">{transaction.type}</td>
+          <td className="my-auto">
+            <Badge className="bg-gray-900 w-100">
+              <Format.Currency
+                currency={transaction.currency}
+                amount={transaction.amount}
+                alignment="justify"
+              />
+            </Badge>
+          </td>
+        </tr>
+      ))}
     </tbody>
   </Table>
 );
