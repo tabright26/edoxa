@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
-import FilteredTransactions from ".";
+import Panel from ".";
 import { UserTransactionState } from "store/root/user/transactionHistory/types";
 import {
   TRANSACTION_STATUS_SUCCEEDED,
@@ -64,7 +64,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <FilteredTransactions />
+        <Panel />
       </Provider>
     )
     .toJSON();

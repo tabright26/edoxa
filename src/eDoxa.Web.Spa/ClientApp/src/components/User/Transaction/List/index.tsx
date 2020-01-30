@@ -8,7 +8,7 @@ interface Props {
   transactions: UserTransaction[];
 }
 
-const TransactionList: FunctionComponent<Props> = ({ transactions }) => (
+const List: FunctionComponent<Props> = ({ transactions }) => (
   <Table className="mb-0" responsive striped hover dark>
     <thead>
       <tr>
@@ -45,4 +45,4 @@ const TransactionList: FunctionComponent<Props> = ({ transactions }) => (
   </Table>
 );
 
-export default TransactionList;
+export default List;
