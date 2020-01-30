@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import ReactPaginate from "react-paginate";
 
 interface Props {
+  className?: string;
   pageSize?: number;
   totalItems: number;
   onPageChange: (currentPage: number, pageSize: number) => void;
@@ -10,7 +11,8 @@ interface Props {
 export const Paginate: FunctionComponent<Props> = ({
   pageSize = 5,
   totalItems,
-  onPageChange
+  onPageChange,
+  className
 }) => {
   const pageCount: number = Math.ceil(totalItems / pageSize);
   return (
@@ -21,7 +23,7 @@ export const Paginate: FunctionComponent<Props> = ({
       onPageChange={(selectedItem: { selected: number }) =>
         onPageChange(selectedItem.selected, pageSize)
       }
-      containerClassName="pagination"
+      containerClassName={`pagination ${className}`}
       pageClassName="page-item"
       pageLinkClassName="page-link"
       disabledClassName="disabled"

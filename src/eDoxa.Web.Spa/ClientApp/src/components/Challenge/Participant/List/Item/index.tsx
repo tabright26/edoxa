@@ -3,19 +3,25 @@ import { Collapse, Card, Badge, CardHeader, CardBody } from "reactstrap";
 import Format from "components/Shared/Format";
 import { ChallengeParticipant } from "types";
 import List from "components/Challenge/Participant/Match/List";
+import { compose } from "recompose";
+import {
+  withUserProfileUserId,
+  HocUserProfileUserIdStateProps
+} from "utils/oidc/containers";
 
-interface Props {
+type Props = HocUserProfileUserIdStateProps & {
   participant: ChallengeParticipant;
   position: number;
   payoutEntries: number;
   bestOf: number;
-}
+};
 
 const Item: FunctionComponent<Props> = ({
   participant,
   position,
   payoutEntries,
-  bestOf
+  bestOf,
+  userId
 }) => {
   const [collapse, setCollapse] = useState(false);
   const toggle = () => setCollapse(!collapse);
@@ -48,8 +54,15 @@ const Item: FunctionComponent<Props> = ({
               {collapse ? <strong>{position}</strong> : position}
             </Badge>
           </div>
-          <div className="px-3 py-2">
-            {collapse ? <strong>{doxatag}</strong> : doxatag}
+          <div
+            className={`px-3 py-2 ${participant.user.id === userId &&
+              "text-primary"}`}
+          >
+            {collapse ? (
+              <strong className="text-light">{doxatag}</strong>
+            ) : (
+              doxatag
+            )}
           </div>
           <div
             className={`${
@@ -78,4 +91,6 @@ const Item: FunctionComponent<Props> = ({
   );
 };
 
-export default Item;
+const enhance = compose<any, any>(withUserProfileUserId);
+
+export default enhance(Item);

@@ -33,7 +33,12 @@ const Update: FunctionComponent<Props> = ({
     toggle={handleHide}
     onClosed={() => dispatch(destroy(UPDATE_STRIPE_PAYMENTMETHOD_FORM))}
   >
-    <ModalHeader toggle={handleHide}>UPDATE PAYMENT METHOD</ModalHeader>
+    <ModalHeader
+      className="text-uppercase my-auto bg-gray-900"
+      toggle={handleHide}
+    >
+      UPDATE PAYMENT METHOD
+    </ModalHeader>
     <ModalBody>
       <StripePaymentMethodForm.Update
         paymentMethodId={paymentMethod.id}

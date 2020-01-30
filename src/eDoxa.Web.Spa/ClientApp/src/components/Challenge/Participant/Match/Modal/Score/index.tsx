@@ -22,8 +22,11 @@ const Score: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
     toggle={handleHide}
     centered
   >
-    <ModalHeader toggle={handleHide} className="d-flex">
-      <strong className="text-uppercase my-auto">Score Details</strong>
+    <ModalHeader
+      toggle={handleHide}
+      className="text-uppercase my-auto bg-gray-900"
+    >
+      Score Details
     </ModalHeader>
     <Table className="mb-0" size="sm" responsive striped dark>
       <thead>

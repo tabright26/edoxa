@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Card, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import ChallengeForm from "components/Challenge/Form";
 import {
   HocUserProfileUserIdStateProps,

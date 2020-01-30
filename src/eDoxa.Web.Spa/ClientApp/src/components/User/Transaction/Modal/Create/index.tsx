@@ -37,7 +37,10 @@ const Create: FunctionComponent<Props> = ({
     toggle={handleHide}
     onClosed={() => dispatch(destroy(CREATE_USER_TRANSACTION_FORM))}
   >
-    <ModalHeader toggle={handleHide} className="text-uppercase">
+    <ModalHeader
+      toggle={handleHide}
+      className="text-uppercase my-auto bg-gray-900"
+    >
       {title}
     </ModalHeader>
     <ModalBody>

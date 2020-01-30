@@ -14,11 +14,7 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const Link: FunctionComponent<Props> = ({
-  show,
-  handleHide,
-  gameOptions
-}) => {
+const Link: FunctionComponent<Props> = ({ show, handleHide, gameOptions }) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
     <Modal
@@ -28,7 +24,7 @@ const Link: FunctionComponent<Props> = ({
       isOpen={show}
       toggle={handleHide}
     >
-      <ModalHeader toggle={handleHide}>
+      <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
         <strong>{gameOptions.displayName} Authentications</strong>
       </ModalHeader>
       <ModalBody>

@@ -36,7 +36,9 @@ const Create: FunctionComponent<Props> = ({
       elements.getElement("cardCvc").clear();
     }}
   >
-    <ModalHeader toggle={handleHide}>ADD NEW PAYMENT METHOD</ModalHeader>
+    <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
+      ADD NEW PAYMENT METHOD
+    </ModalHeader>
     <ModalBody>
       <StripePaymentMethodForm.Create handleCancel={() => handleHide()} />
     </ModalBody>

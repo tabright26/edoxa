@@ -32,7 +32,9 @@ const Delete: FunctionComponent<Props> = ({
     toggle={handleHide}
     onClosed={() => dispatch(destroy(DELETE_STRIPE_PAYMENTMETHOD_FORM))}
   >
-    <ModalHeader toggle={handleHide}>DELETE PAYMENT METHOD</ModalHeader>
+    <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
+      DELETE PAYMENT METHOD
+    </ModalHeader>
     <ModalBody>
       <StripePaymentMethodForm.Delete
         paymentMethodId={paymentMethod.id}

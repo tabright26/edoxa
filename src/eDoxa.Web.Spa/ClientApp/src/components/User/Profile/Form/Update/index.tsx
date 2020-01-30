@@ -40,7 +40,7 @@ const CustomForm: FunctionComponent<Props> = ({
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <dl className="row mb-0">
-      <dd className="col-sm-3 text-muted mb-0">Name</dd>
+      <dd className="col-sm-3 mb-0 text-muted">Name</dd>
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dd className="col-sm-4 mb-0">
@@ -72,10 +72,10 @@ const CustomForm: FunctionComponent<Props> = ({
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
-        <Button.Submit loading={submitting} className="mr-2" size="sm">
+        <Button.Submit loading={submitting} className="mt-3 mr-2" size="sm">
           Save
         </Button.Submit>
-        <Button.Cancel onClick={handleCancel} />
+        <Button.Cancel onClick={handleCancel} className="mt-3" />
       </dd>
     </dl>
   </Form>

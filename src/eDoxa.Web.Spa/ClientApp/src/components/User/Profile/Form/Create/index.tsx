@@ -51,7 +51,7 @@ const Create: FunctionComponent<Props> = ({
   <Form onSubmit={handleSubmit}>
     <ValidationSummary error={error} />
     <dl className="row mb-0">
-      <dd className="col-sm-3 text-muted mb-0">Name</dd>
+      <dd className="col-sm-3 mb-0 text-muted">Name</dd>
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dd className="col-sm-4 mb-0">
@@ -82,7 +82,7 @@ const Create: FunctionComponent<Props> = ({
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
-        <Button.Submit loading={submitting} size="sm">
+        <Button.Submit loading={submitting} className="mt-3" size="sm">
           Save
         </Button.Submit>
       </dd>
