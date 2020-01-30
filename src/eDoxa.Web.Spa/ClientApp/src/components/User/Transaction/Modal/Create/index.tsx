@@ -5,18 +5,16 @@ import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
 import UserTransactionForm from "components/User/Transaction/Form";
 import { compose } from "recompose";
 import { Currency, TransactionType } from "types";
-import { connect, DispatchProp } from "react-redux";
 import { ModalSubtitle } from "components/Shared/Modal/Subtitle";
 
 type OutterProps = {};
 
-type InnerProps = InjectedProps &
-  DispatchProp & {
-    currency: Currency;
-    transactionType: TransactionType;
-    title: string;
-    description: string;
-  };
+type InnerProps = InjectedProps & {
+  currency: Currency;
+  transactionType: TransactionType;
+  title: string;
+  description: string;
+};
 
 type Props = InnerProps & OutterProps;
 
@@ -52,7 +50,6 @@ const Create: FunctionComponent<Props> = ({
 };
 
 const enhance = compose<InnerProps, OutterProps>(
-  connect(),
   connectModal({ name: CREATE_USER_TRANSACTION_MODAL, destroyOnHide: false })
 );
 

@@ -19,22 +19,21 @@ const Unlink: FunctionComponent<Props> = ({
   handleHide,
   gameOptions
 }) => (
-  <Modal
-    
-    backdrop="static"
-    centered
-    isOpen={show}
-    toggle={handleHide}
-  >
-    <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
+  <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
+    <ModalHeader
+      className="text-uppercase my-auto bg-gray-900"
+      toggle={handleHide}
+    >
       Unlink your {gameOptions.displayName} credential?
     </ModalHeader>
     <ModalBody>
       <p>You can unlink your credential once a month.</p>
-      <GameCredentialFrom.Unlink
-        game={gameOptions.name}
-        handleCancel={handleHide}
-      />
+      {show && (
+        <GameCredentialFrom.Unlink
+          game={gameOptions.name}
+          handleCancel={handleHide}
+        />
+      )}
     </ModalBody>
   </Modal>
 );

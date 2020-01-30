@@ -5,14 +5,10 @@ import StripePaymentMethodForm from "components/Payment/Stripe/PaymentMethod/For
 import { UPDATE_STRIPE_PAYMENTMETHOD_MODAL } from "utils/modal/constants";
 import { compose } from "recompose";
 import { StripePaymentMethod } from "types";
-import { connect, DispatchProp } from "react-redux";
-import { destroy } from "redux-form";
-import { UPDATE_STRIPE_PAYMENTMETHOD_FORM } from "utils/form/constants";
 
-type InnerProps = DispatchProp &
-  InjectedProps & {
-    paymentMethod: StripePaymentMethod;
-  };
+type InnerProps = InjectedProps & {
+  paymentMethod: StripePaymentMethod;
+};
 
 type OutterProps = {};
 
@@ -21,17 +17,9 @@ type Props = InnerProps & OutterProps;
 const Update: FunctionComponent<Props> = ({
   show,
   handleHide,
-  paymentMethod,
-  dispatch
+  paymentMethod
 }) => (
-  <Modal
-    backdrop="static"
-    centered
-    size="lg"
-    isOpen={show}
-    toggle={handleHide}
-    onClosed={() => dispatch(destroy(UPDATE_STRIPE_PAYMENTMETHOD_FORM))}
-  >
+  <Modal backdrop="static" centered size="lg" isOpen={show} toggle={handleHide}>
     <ModalHeader
       className="text-uppercase my-auto bg-gray-900"
       toggle={handleHide}
@@ -39,16 +27,17 @@ const Update: FunctionComponent<Props> = ({
       UPDATE PAYMENT METHOD
     </ModalHeader>
     <ModalBody>
-      <StripePaymentMethodForm.Update
-        paymentMethodId={paymentMethod.id}
-        handleCancel={() => handleHide()}
-      />
+      {show && (
+        <StripePaymentMethodForm.Update
+          paymentMethodId={paymentMethod.id}
+          handleCancel={() => handleHide()}
+        />
+      )}
     </ModalBody>
   </Modal>
 );
 
 const enhance = compose<InnerProps, OutterProps>(
-  connect(),
   connectModal({
     name: UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
     destroyOnHide: false

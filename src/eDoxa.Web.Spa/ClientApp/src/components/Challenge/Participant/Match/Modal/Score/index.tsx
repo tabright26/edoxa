@@ -14,14 +14,7 @@ type OutterProps = {};
 type Props = InnerProps & OutterProps;
 
 const Score: FunctionComponent<Props> = ({ show, handleHide, stats }) => (
-  <Modal
-    size="lg"
-    
-    backdrop="static"
-    isOpen={show}
-    toggle={handleHide}
-    centered
-  >
+  <Modal size="lg" backdrop="static" isOpen={show} toggle={handleHide} centered>
     <ModalHeader
       toggle={handleHide}
       className="text-uppercase my-auto bg-gray-900"

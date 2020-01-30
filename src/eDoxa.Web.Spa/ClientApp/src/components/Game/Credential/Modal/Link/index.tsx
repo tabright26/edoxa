@@ -17,22 +17,21 @@ type Props = InnerProps & OutterProps;
 const Link: FunctionComponent<Props> = ({ show, handleHide, gameOptions }) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
-    <Modal
-      
-      backdrop="static"
-      centered
-      isOpen={show}
-      toggle={handleHide}
-    >
-      <ModalHeader className="text-uppercase my-auto bg-gray-900" toggle={handleHide}>
+    <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
+      <ModalHeader
+        className="text-uppercase my-auto bg-gray-900"
+        toggle={handleHide}
+      >
         <strong>{gameOptions.displayName} Authentications</strong>
       </ModalHeader>
       <ModalBody>
         {!authenticationFactor ? (
-          <GameAuthenticationFrom.Generate
-            game={gameOptions.name}
-            setAuthenticationFactor={setAuthenticationFactor}
-          />
+          show && (
+            <GameAuthenticationFrom.Generate
+              game={gameOptions.name}
+              setAuthenticationFactor={setAuthenticationFactor}
+            />
+          )
         ) : (
           <>
             <div className="d-flex justify-content-between">
@@ -69,11 +68,13 @@ const Link: FunctionComponent<Props> = ({ show, handleHide, gameOptions }) => {
               </div>
             </div>
             <div className="d-flex justify-content-center mt-3">
-              <GameAuthenticationFrom.Validate
-                gameOptions={gameOptions}
-                handleCancel={handleHide}
-                setAuthenticationFactor={setAuthenticationFactor}
-              />
+              {show && (
+                <GameAuthenticationFrom.Validate
+                  gameOptions={gameOptions}
+                  handleCancel={handleHide}
+                  setAuthenticationFactor={setAuthenticationFactor}
+                />
+              )}
             </div>
           </>
         )}
