@@ -50,13 +50,6 @@ exports[`renders correctly 1`] = `
       value=""
     />
   </div>
-  <p
-    className="text-primary"
-  >
-    <strong>
-      SMURF ACCOUNTS ARE NOT ALLOWED ON EDOXA.GG, IF CAUGHT, IT'S AN INSTANT BAN WITH NO REFUNDS!
-    </strong>
-  </p>
   <button
     aria-label={null}
     className="w-25 btn btn-primary"

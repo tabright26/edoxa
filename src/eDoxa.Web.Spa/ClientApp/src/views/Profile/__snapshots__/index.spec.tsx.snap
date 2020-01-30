@@ -11,9 +11,11 @@ exports[`renders without crashing 1`] = `
       className="mt-4 card"
     >
       <div
-        className="card-header"
+        className="bg-gray-900 card-header"
       >
-        <strong>
+        <strong
+          className="text-uppercase"
+        >
           Profile
         </strong>
       </div>
@@ -47,9 +49,11 @@ exports[`renders without crashing 1`] = `
       className="card"
     >
       <div
-        className="card-header"
+        className="bg-gray-900 card-header"
       >
-        <strong>
+        <strong
+          className="text-uppercase"
+        >
           Arena
         </strong>
       </div>
@@ -69,9 +73,11 @@ exports[`renders without crashing 1`] = `
       className="card"
     >
       <div
-        className="card-header"
+        className="bg-gray-900 card-header"
       >
-        <strong>
+        <strong
+          className="text-uppercase"
+        >
           Cashier
         </strong>
       </div>
@@ -105,9 +111,11 @@ exports[`renders without crashing 1`] = `
       className="card"
     >
       <div
-        className="card-header"
+        className="bg-gray-900 card-header"
       >
-        <strong>
+        <strong
+          className="text-uppercase"
+        >
           Connections
         </strong>
       </div>

@@ -38,8 +38,8 @@ const Profile: FunctionComponent = () => (
   <Row>
     <Col xs="12" sm="12" md="4" lg="3" xl="2">
       <Card className="mt-4">
-        <CardHeader>
-          <strong>Profile</strong>
+        <CardHeader className="bg-gray-900">
+          <strong className="text-uppercase">Profile</strong>
         </CardHeader>
         <ListGroup flush>
           <LinkContainer to={getProfileOverviewPath()}>
@@ -54,8 +54,8 @@ const Profile: FunctionComponent = () => (
         </ListGroup>
       </Card>
       <Card>
-        <CardHeader>
-          <strong>Arena</strong>
+        <CardHeader className="bg-gray-900">
+          <strong className="text-uppercase">Arena</strong>
         </CardHeader>
         <ListGroup flush>
           <LinkContainer to={getProfileChallengeHistoryPath()}>
@@ -64,8 +64,8 @@ const Profile: FunctionComponent = () => (
         </ListGroup>
       </Card>
       <Card>
-        <CardHeader>
-          <strong>Cashier</strong>
+        <CardHeader className="bg-gray-900">
+          <strong className="text-uppercase">Cashier</strong>
         </CardHeader>
         <ListGroup flush>
           <LinkContainer to={getProfilePaymentMethodsPath()}>
@@ -80,8 +80,8 @@ const Profile: FunctionComponent = () => (
         </ListGroup>
       </Card>
       <Card>
-        <CardHeader>
-          <strong>Connections</strong>
+        <CardHeader className="bg-gray-900">
+          <strong className="text-uppercase">Connections</strong>
         </CardHeader>
         <ListGroup flush>
           <LinkContainer to={getProfileGamesPath()}>
