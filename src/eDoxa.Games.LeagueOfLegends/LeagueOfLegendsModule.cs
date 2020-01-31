@@ -1,8 +1,8 @@
 ﻿// Filename: LeagueOfLegendsModule.cs
-// Date Created: 2019-11-01
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using Autofac;
 
@@ -23,7 +23,6 @@ namespace eDoxa.Games.LeagueOfLegends
             // Adapters
             builder.RegisterType<LeagueOfLegendsAuthenticationGeneratorAdapter>().As<IAuthenticationGeneratorAdapter>().InstancePerDependency();
             builder.RegisterType<LeagueOfLegendsAuthenticationValidatorAdapter>().As<IAuthenticationValidatorAdapter>().InstancePerDependency();
-            builder.RegisterType<LeagueOfLegendsChallengeScoringAdapter>().As<IChallengeScoringAdapter>().InstancePerDependency();
             builder.RegisterType<LeagueOfLegendsChallengeMatchesAdapter>().As<IChallengeMatchesAdapter>().InstancePerDependency();
         }
     }

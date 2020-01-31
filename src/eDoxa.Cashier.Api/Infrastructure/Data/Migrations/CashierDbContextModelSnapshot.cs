@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.1")
+                .HasAnnotation("ProductVersion", "3.1.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -29,9 +29,10 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutModel", b =>
                 {
                     b.Property<Guid>("Id")
+                        .HasColumnName("ChallengeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("EntryFeeAmount")
@@ -42,7 +43,36 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Challenge");
+                    b.ToTable("ChallengePayout");
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.PromotionModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<DateTime?>("CanceledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Duration")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("ExpiredAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PromotionalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Promotion");
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.TransactionModel", b =>
@@ -79,9 +109,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.ToTable("Transaction");
                 });
 
-            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutModel", b =>
                 {
-                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.BucketModel", "Buckets", b1 =>
+                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutBucketModel", "Buckets", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId")
                                 .HasColumnType("uniqueidentifier");
@@ -101,10 +131,32 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 
                             b1.HasKey("ChallengeId", "Id");
 
-                            b1.ToTable("Bucket");
+                            b1.ToTable("ChallengePayoutBucket");
 
                             b1.WithOwner()
                                 .HasForeignKey("ChallengeId");
+                        });
+                });
+
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.PromotionModel", b =>
+                {
+                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.PromotionRecipientModel", "Recipients", b1 =>
+                        {
+                            b1.Property<Guid>("PromotionId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("RedeemedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("PromotionId", "UserId");
+
+                            b1.ToTable("PromotionRecipient");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PromotionId");
                         });
                 });
 
@@ -126,9 +178,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Key")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Value")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("TransactionId", "Id");

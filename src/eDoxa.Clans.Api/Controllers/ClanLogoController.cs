@@ -1,8 +1,8 @@
 ﻿// Filename: ClanLogoController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.IO;
 using System.Threading.Tasks;
@@ -36,7 +36,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(Stream))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetAsync(ClanId clanId)
+        public async Task<IActionResult> DownloadLogoAsync(ClanId clanId)
         {
             var clan = await _clanService.FindClanAsync(clanId);
 
@@ -61,7 +61,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostAsync(ClanId clanId, [FromForm] IFormFile logo)
+        public async Task<IActionResult> UploadLogoAsync(ClanId clanId, [FromForm] IFormFile logo)
         {
             var userId = HttpContext.GetUserId();
 

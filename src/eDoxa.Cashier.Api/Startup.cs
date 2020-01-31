@@ -11,13 +11,12 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Cashier.Api.Grpc.Services;
 using eDoxa.Cashier.Api.Infrastructure;
 using eDoxa.Cashier.Api.IntegrationEvents.Extensions;
-using eDoxa.Cashier.Api.Services;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Grpc.Protos.Cashier.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -97,11 +96,11 @@ namespace eDoxa.Cashier.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(CashierDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -143,8 +142,6 @@ namespace eDoxa.Cashier.Api
                     endpoints.MapGrpcService<CashierGrpcService>();
 
                     endpoints.MapControllers();
-
-                    endpoints.MapConfigurationRoute<CashierAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
                 });

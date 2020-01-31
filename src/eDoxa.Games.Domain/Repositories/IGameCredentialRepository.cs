@@ -24,5 +24,7 @@ namespace eDoxa.Games.Domain.Repositories
         Task<Credential?> FindCredentialAsync(UserId userId, Game game);
 
         Task<bool> CredentialExistsAsync(UserId userId, Game game);
+
+        Task<bool> CredentialExistsAsync(PlayerId playerId, Game game);
     }
 }

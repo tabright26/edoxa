@@ -1,17 +1,14 @@
 ﻿// Filename: Money.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
-using System.Collections.Generic;
-
-using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
-    public sealed class Money : ValueObject, ICurrency
+    public class Money : Currency
     {
         public static readonly Money MinValue = new Money(2.5M);
 
@@ -24,35 +21,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static readonly Money TwoHundred = new Money(200);
         public static readonly Money FiveHundred = new Money(500);
 
-        public Money(decimal amount)
+        public Money(decimal amount) : base(amount, CurrencyType.Money)
         {
-            Type = Currency.Money;
-            Amount = amount;
-        }
-
-        public Currency Type { get; }
-
-        public decimal Amount { get; }
-
-        public static implicit operator decimal(Money money)
-        {
-            return money.Amount;
         }
 
         public static Money operator -(Money money)
         {
             return new Money(-money.Amount);
-        }
-
-        public override string ToString()
-        {
-            return Amount.ToString("$##.##");
-        }
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Type;
-            yield return Amount;
         }
 
         public long ToCents()

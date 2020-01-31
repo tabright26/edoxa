@@ -1,8 +1,8 @@
 ﻿// Filename: IdentityTestFileStorageTest.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -17,7 +17,12 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 {
     public sealed class IdentityTestFileStorageTest : UnitTest
     {
-
+        public IdentityTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public void GetUserClaims_WithTwoRecords_ShouldHaveCountOfTwo()
@@ -69,10 +74,6 @@ namespace eDoxa.Identity.UnitTests.Infrastructure.Data.Storage
 
             // Assert
             users.Should().HaveCount(1000);
-        }
-
-        public IdentityTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿// Filename: ParticipantsControllerTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,60 +26,34 @@ namespace eDoxa.Challenges.UnitTests.Controllers
 {
     public sealed class ParticipantsControllerTest : UnitTest
     {
-        public ParticipantsControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(testData, testMapper, validator)
+        public ParticipantsControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
+            testData,
+            testMapper,
+            validator)
         {
         }
 
-        //[Fact]
-        //public async Task GetByIdAsync_ShouldBeBadRequestObjectResult()
-        //{
-        //    // Arrange
-        //    var mockParticipantQuery = new Mock<IParticipantQuery>();
-
-        //    mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
-
-        //    mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
-
-        //    var controller = new ParticipantsController(mockParticipantQuery.Object);
-
-        //    controller.ControllerContext.ModelState.AddModelError("error", "error");
-
-        //    // Act
-        //    var result = await controller.GetByIdAsync(new ParticipantId());
-
-        //    // Assert
-        //    result.Should().BeOfType<BadRequestObjectResult>();
-
-        //    mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Never);
-
-        //    mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Never);
-        //}
-
         [Fact]
-        public async Task GetByIdAsync_ShouldBeNotFoundObjectResult()
+        public async Task FindParticipantAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
             var mockParticipantQuery = new Mock<IParticipantQuery>();
 
             mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
 
-            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
-
-            var controller = new ParticipantsController(mockParticipantQuery.Object);
+            var controller = new ParticipantsController(mockParticipantQuery.Object, TestMapper);
 
             // Act
-            var result = await controller.GetByIdAsync(new ParticipantId());
+            var result = await controller.FindParticipantAsync(new ParticipantId());
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
             mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
-
-            mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Once);
         }
 
         [Fact]
-        public async Task GetByIdAsync_ShouldBeOkObjectResult()
+        public async Task FindParticipantAsync_ShouldBeOkObjectResult()
         {
             // Arrange        
             var challengeFaker = TestData.FakerFactory.CreateChallengeFaker(95632852, Game.LeagueOfLegends, ChallengeState.InProgress);
@@ -94,19 +68,15 @@ namespace eDoxa.Challenges.UnitTests.Controllers
                 .ReturnsAsync(participants.First())
                 .Verifiable();
 
-            mockParticipantQuery.SetupGet(participantQuery => participantQuery.Mapper).Returns(TestMapper).Verifiable();
-
-            var controller = new ParticipantsController(mockParticipantQuery.Object);
+            var controller = new ParticipantsController(mockParticipantQuery.Object, TestMapper);
 
             // Act
-            var result = await controller.GetByIdAsync(new ParticipantId());
+            var result = await controller.FindParticipantAsync(new ParticipantId());
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
             mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
-
-            mockParticipantQuery.VerifyGet(participantQuery => participantQuery.Mapper, Times.Once);
         }
     }
 }

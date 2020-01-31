@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
         public const string PositiveTransaction = nameof(PositiveTransaction);
         public const string NegativeTransaction = nameof(NegativeTransaction);
 
-        private readonly ICurrency[] _currencies =
+        private readonly Currency[] _currencies =
         {
             Money.Five,
             Money.Ten,

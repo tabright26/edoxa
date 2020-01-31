@@ -20,13 +20,13 @@ using Xunit;
 
 namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class ClanInvitationSentIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS
+    public sealed class ClanInvitationSentIntegrationEventHandlerTest : UnitTest
     {
         public ClanInvitationSentIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
 
-        [Fact(Skip = "Must be updated.")]
+        [Fact]
         public async Task HandleAsync_WhenClanInvitationSentIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -35,7 +35,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             var mockUserService = new Mock<IUserService>();
 
-            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -65,7 +65,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
         }
     }
 }

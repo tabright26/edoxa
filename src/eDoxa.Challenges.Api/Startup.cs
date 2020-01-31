@@ -11,13 +11,12 @@ using System.Reflection;
 
 using Autofac;
 
-using eDoxa.Challenges.Api.Application;
+using eDoxa.Challenges.Api.Grpc.Services;
 using eDoxa.Challenges.Api.Infrastructure;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
-using eDoxa.Challenges.Api.Services;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Grpc.Protos.Challenges.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -80,7 +79,7 @@ namespace eDoxa.Challenges.Api
         {
             services.AddAppSettings<ChallengesAppSettings>(Configuration);
 
-            services.Configure<ChallengeOptions>(Configuration.GetSection("Challenge"));
+            services.Configure<ChallengesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
@@ -97,11 +96,11 @@ namespace eDoxa.Challenges.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(ChallengesDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -144,8 +143,6 @@ namespace eDoxa.Challenges.Api
 
                     endpoints.MapControllers();
 
-                    endpoints.MapConfigurationRoute<ChallengesAppSettings>(AppSettings.ApiResource);
-
                     endpoints.MapCustomHealthChecks();
                 });
 
@@ -161,7 +158,7 @@ namespace eDoxa.Challenges.Api
         {
             services.AddAppSettings<ChallengesAppSettings>(Configuration);
 
-            services.Configure<ChallengeOptions>(Configuration.GetSection("Challenge"));
+            services.Configure<ChallengesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddCustomDbContext<ChallengesDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

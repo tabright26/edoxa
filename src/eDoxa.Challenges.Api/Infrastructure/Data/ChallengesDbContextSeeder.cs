@@ -12,42 +12,38 @@ using System.Threading.Tasks;
 using eDoxa.Challenges.Api.Infrastructure.Data.Storage;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Extensions;
+using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data
 {
     internal sealed class ChallengesDbContextSeeder : DbContextSeeder
     {
-        private readonly ChallengesDbContext _context;
-        private readonly IChallengeRepository _challengeRepository;
-
-        public ChallengesDbContextSeeder(
-            ChallengesDbContext context,
-            IChallengeRepository challengeRepository,
-            IWebHostEnvironment environment,
-            ILogger<ChallengesDbContextSeeder> logger
-        ) : base(environment, logger)
+        public ChallengesDbContextSeeder(ChallengesDbContext context, IWebHostEnvironment environment, ILogger<ChallengesDbContextSeeder> logger) : base(
+            context,
+            environment,
+            logger)
         {
-            _context = context;
-            _challengeRepository = challengeRepository;
+            Challenges = context.Set<ChallengeModel>();
         }
+
+        private DbSet<ChallengeModel> Challenges { get; }
 
         protected override async Task SeedDevelopmentAsync()
         {
-            if (!_context.Challenges.Any())
+            if (!await Challenges.AnyAsync())
             {
-                var challenges = FileStorage.Challenges;
+                Challenges.AddRange(FileStorage.Challenges.Select(challenge => challenge.ToModel()));
 
-                _challengeRepository.Create(challenges);
-
-                await _challengeRepository.CommitAsync(false);
+                await this.CommitAsync();
             }
         }
 
@@ -168,12 +164,9 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
                     scoring)
             };
 
-            foreach (var challenge in challenges.Where(challenge => _context.Challenges.All(x => x.Id != challenge.Id)))
-            {
-                _challengeRepository.Create(challenge);
-            }
+            Challenges.AddRange(challenges.Where(challenge => Challenges.All(x => x.Id != challenge.Id)).Select(challenge => challenge.ToModel()));
 
-            await _challengeRepository.CommitAsync(false);
+            await this.CommitAsync();
         }
     }
 }

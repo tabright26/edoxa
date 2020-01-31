@@ -41,7 +41,7 @@ namespace eDoxa.Identity.Api.Application.Services
             return await _addressRepository.FindAddressAsync(UserId.FromGuid(user.Id), addressId);
         }
 
-        public async Task<IReadOnlyCollection<Address>> GetAddressBookAsync(User user)
+        public async Task<IReadOnlyCollection<Address>> FetchAddressBookAsync(User user)
         {
             return await _addressRepository.FetchAddressBookAsync(UserId.FromGuid(user.Id));
         }

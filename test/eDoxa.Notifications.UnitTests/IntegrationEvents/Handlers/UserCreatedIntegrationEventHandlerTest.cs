@@ -23,13 +23,13 @@ using Xunit;
 
 namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS
+    public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest
     {
         public UserCreatedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
 
-        [Fact(Skip = "Must be updated.")]
+        [Fact]
         public async Task HandleAsync_WhenUserCreatedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
@@ -42,7 +42,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
-            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -50,13 +50,14 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                CountryIsoCode = EnumCountryIsoCode.CA,
+                UserId = new UserId(),
                 Email = new EmailDto
                 {
                     Address = "test@email.com",
                     Verified = true
                 },
-                UserId = new UserId()
+                Country = EnumCountryIsoCode.CA,
+                Ip = "10.10.10.10"
             };
 
             // Act
@@ -65,7 +66,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             // Assert
             mockUserService.Verify(userService => userService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockUserService.Verify(userService => userService.CreateUserAsync(It.IsAny<UserId>(), It.IsAny<string>()), Times.Once);
-            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
             mockLogger.Verify(Times.Never());
         }
     }

@@ -1,50 +1,41 @@
 ﻿// Filename: ClansDbContextSeeder.cs
-// Date Created: 2019-11-11
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Clans.Api.Infrastructure.Data.Storage;
-using eDoxa.Clans.Domain.Repositories;
+using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Clans.Api.Infrastructure.Data
 {
     internal sealed class ClansDbContextSeeder : DbContextSeeder
     {
-        private readonly ClansDbContext _context;
-        private readonly IClanRepository _clanRepository;
-
-        public ClansDbContextSeeder(
-            ClansDbContext context,
-            IClanRepository clanRepository,
-            IWebHostEnvironment environment,
-            ILogger<ClansDbContextSeeder> logger
-        ) : base(environment, logger)
+        public ClansDbContextSeeder(ClansDbContext context, IWebHostEnvironment environment, ILogger<ClansDbContextSeeder> logger) : base(
+            context,
+            environment,
+            logger)
         {
-            _context = context;
-            _clanRepository = clanRepository;
+            Clans = context.Set<Clan>();
         }
+
+        private DbSet<Clan> Clans { get; }
 
         protected override async Task SeedDevelopmentAsync()
         {
-            if (!_context.Clans.Any())
+            if (!await Clans.AnyAsync())
             {
-                foreach (var clan in FileStorage.Clans)
-                {
-                    clan.ClearDomainEvents();
+                Clans.AddRange(FileStorage.Clans);
 
-                    _clanRepository.Create(clan);
-                }
-
-                await _clanRepository.UnitOfWork.CommitAsync();
+                await this.CommitAsync();
             }
         }
     }

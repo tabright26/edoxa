@@ -1,8 +1,62 @@
 import React, { FunctionComponent } from "react";
 import { connect, MapStateToProps } from "react-redux";
-import { COUNTRY_CLAIM_TYPE, SUB_CLAIM_TYPE } from "utils/oidc/types";
+import {
+  COUNTRY_CLAIM_TYPE,
+  SUB_CLAIM_TYPE,
+  BIRTHDATE_CLAIM_TYPE
+} from "utils/oidc/types";
 import { RootState } from "store/types";
-import { UserId } from "types";
+import { UserId, Game, UserDob } from "types";
+import { camelCase } from "change-case";
+import { User } from "oidc-client";
+
+export interface HocUserStateProps {
+  user: User;
+}
+
+export const withUser = (WrappedComponent: FunctionComponent) => {
+  interface OwnProps {}
+
+  const EnhancedComponent: FunctionComponent<HocUserStateProps> = props => {
+    return <WrappedComponent {...props} />;
+  };
+
+  const mapStateToProps: MapStateToProps<
+    HocUserStateProps,
+    OwnProps,
+    RootState
+  > = state => {
+    return {
+      user: state.oidc.user
+    };
+  };
+
+  return connect(mapStateToProps)(EnhancedComponent);
+};
+
+export interface HocUserProfileDobStateProps {
+  dob: UserDob;
+}
+
+export const withUserProfileDob = (WrappedComponent: FunctionComponent) => {
+  interface OwnProps {}
+
+  const EnhancedComponent: FunctionComponent<HocUserProfileDobStateProps> = props => {
+    return <WrappedComponent {...props} />;
+  };
+
+  const mapStateToProps: MapStateToProps<
+    HocUserProfileDobStateProps,
+    OwnProps,
+    RootState
+  > = state => {
+    return {
+      dob: JSON.parse(state.oidc.user.profile[BIRTHDATE_CLAIM_TYPE])
+    };
+  };
+
+  return connect(mapStateToProps)(EnhancedComponent);
+};
 
 export interface HocUserProfileUserIdStateProps {
   userId: UserId;
@@ -22,6 +76,36 @@ export const withUserProfileUserId = (WrappedComponent: FunctionComponent) => {
   > = state => {
     return {
       userId: state.oidc.user.profile[SUB_CLAIM_TYPE]
+    };
+  };
+
+  return connect(mapStateToProps)(EnhancedComponent);
+};
+
+export interface HocUserProfileGameIsAuthenticatedStateProps {
+  isAuthenticated: boolean;
+}
+
+export const withUserProfileGameIsAuthenticated = (
+  WrappedComponent: FunctionComponent
+) => {
+  interface OwnProps {
+    readonly game: Game;
+  }
+
+  const EnhancedComponent: FunctionComponent<HocUserProfileGameIsAuthenticatedStateProps> = props => {
+    return <WrappedComponent {...props} />;
+  };
+
+  const mapStateToProps: MapStateToProps<
+    HocUserProfileGameIsAuthenticatedStateProps,
+    OwnProps,
+    RootState
+  > = (state, ownProps) => {
+    return {
+      isAuthenticated: !!state.oidc.user.profile[
+        `games:${camelCase(ownProps.game)}`
+      ]
     };
   };
 

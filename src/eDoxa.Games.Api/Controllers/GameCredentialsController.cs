@@ -41,7 +41,7 @@ namespace eDoxa.Games.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(GameCredentialDto))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> DeleteAsync(Game game)
+        public async Task<IActionResult> UnlinkCredentialAsync(Game game)
         {
             var credential = await _gameCredentialService.FindCredentialAsync(HttpContext.GetUserId(), game);
 

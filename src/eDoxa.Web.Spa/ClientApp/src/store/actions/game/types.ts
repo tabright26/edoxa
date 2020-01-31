@@ -1,19 +1,5 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 
-export const LOAD_GAMES = "LOAD_GAMES";
-export const LOAD_GAMES_SUCCESS = "LOAD_GAMES_SUCCESS";
-export const LOAD_GAMES_FAIL = "LOAD_GAMES_FAIL";
-
-export type LoadGamesType =
-  | typeof LOAD_GAMES
-  | typeof LOAD_GAMES_SUCCESS
-  | typeof LOAD_GAMES_FAIL;
-export type LoadGamesActionCreator = AxiosActionCreator<LoadGamesType>;
-export type LoadGamesAction = AxiosAction<LoadGamesType>;
-
-export type GamesActionCreators = LoadGamesActionCreator;
-export type GamesActions = LoadGamesAction;
-
 export const GENERATE_GAME_AUTHENTICATION = "GENERATE_GAME_AUTHENTICATION";
 export const GENERATE_GAME_AUTHENTICATION_SUCCESS =
   "GENERATE_GAME_AUTHENTICATION_SUCCESS";
@@ -48,13 +34,6 @@ export type ValidateGameAuthenticationAction = AxiosAction<
   ValidateGameAuthenticationType
 >;
 
-export type GameAuthenticationActionCreators =
-  | ValidateGameAuthenticationActionCreator
-  | GenerateGameAuthenticationActionCreator;
-export type GameAuthenticationActions =
-  | ValidateGameAuthenticationAction
-  | GenerateGameAuthenticationAction;
-
 export const UNLINK_GAME_CREDENTIAL = "UNLINK_GAME_CREDENTIAL";
 export const UNLINK_GAME_CREDENTIAL_SUCCESS = "UNLINK_GAME_CREDENTIAL_SUCCESS";
 export const UNLINK_GAME_CREDENTIAL_FAIL = "UNLINK_GAME_CREDENTIAL_FAIL";
@@ -67,6 +46,3 @@ export type UnlinkGameCredentialActionCreator = AxiosActionCreator<
   UnlinkGameCredentialType
 >;
 export type UnlinkGameCredentialAction = AxiosAction<UnlinkGameCredentialType>;
-
-export type GameCredentialActionCreators = UnlinkGameCredentialActionCreator;
-export type GameCredentialActions = UnlinkGameCredentialAction;

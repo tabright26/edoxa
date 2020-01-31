@@ -1,17 +1,11 @@
 ﻿// Filename: ITransactionQuery.cs
-// Date Created: 2019-07-01
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-// 
-// This file is subject to the terms and conditions
-// defined in file 'LICENSE.md', which is part of
-// this source code package.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
-using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
@@ -21,17 +15,9 @@ namespace eDoxa.Cashier.Domain.Queries
 {
     public interface ITransactionQuery
     {
-        IMapper Mapper { get; }
-
         Task<IReadOnlyCollection<ITransaction>> FetchUserTransactionsAsync(
             UserId userId,
-            Currency? currency = null,
-            TransactionType? type = null,
-            TransactionStatus? status = null
-        );
-
-        Task<IReadOnlyCollection<ITransaction>> FetchUserTransactionsAsync(
-            Currency? currency = null,
+            CurrencyType? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
         );

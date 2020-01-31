@@ -1,8 +1,8 @@
 ﻿// Filename: FileStorage.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Immutable;
@@ -13,6 +13,7 @@ using System.Reflection;
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Infrastructure.CsvHelper.Extensions;
 
@@ -43,22 +44,22 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                             {
                                 var payoutStrategy = new ChallengePayoutFactory().CreateInstance();
 
-                                var payoutEntries = new PayoutEntries(record.PayoutEntries);
+                                var payoutEntries = new ChallengePayoutEntries(record.PayoutEntries);
 
-                                var currency = Currency.FromValue(record.EntryFeeCurrency)!;
+                                var currency = CurrencyType.FromValue(record.EntryFeeCurrency)!;
 
                                 var entryFee = new EntryFee(record.EntryFeeAmount, currency);
 
-                                var payout = payoutStrategy.GetPayout(payoutEntries, entryFee);
+                                var payout = payoutStrategy.GetChallengePayout(payoutEntries, entryFee);
 
-                                return new Challenge(ChallengeId.FromGuid(record.Id), entryFee, payout);
+                                return new Challenge(record.Id.ConvertTo<ChallengeId>(), payout);
                             })
                         .Cast<IChallenge>()
                         .ToImmutableHashSet();
                 });
 
-        private static Lazy<ILookup<PayoutEntries, PayoutLevel>> LazyChallengePayouts =>
-            new Lazy<ILookup<PayoutEntries, PayoutLevel>>(
+        private static Lazy<ILookup<ChallengePayoutEntries, ChallengePayoutChart>> LazyChallengePayouts =>
+            new Lazy<ILookup<ChallengePayoutEntries, ChallengePayoutChart>>(
                 () =>
                 {
                     var assemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
@@ -75,8 +76,8 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
                                 PrizeFactor = default(decimal)
                             })
                         .ToLookup(
-                            record => new PayoutEntries(record.PayoutEntries),
-                            record => new PayoutLevel(new BucketSize(record.BucketSize), record.PrizeFactor));
+                            record => new ChallengePayoutEntries(record.PayoutEntries),
+                            record => new ChallengePayoutChart(new ChallengePayoutBucketSize(record.BucketSize), record.PrizeFactor));
                 });
 
         private static Lazy<IImmutableSet<UserId>> LazyUsers =>
@@ -100,7 +101,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
 
         public static IImmutableSet<UserId> Users => LazyUsers.Value;
 
-        public static ILookup<PayoutEntries, PayoutLevel> ChallengePayouts => LazyChallengePayouts.Value;
+        public static ILookup<ChallengePayoutEntries, ChallengePayoutChart> ChallengePayouts => LazyChallengePayouts.Value;
 
         public static IImmutableSet<IChallenge> Challenges => LazyChallenges.Value;
 
@@ -109,7 +110,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Storage
             return LazyUsers.Value;
         }
 
-        public ILookup<PayoutEntries, PayoutLevel> GetChallengePayouts()
+        public ILookup<ChallengePayoutEntries, ChallengePayoutChart> GetChallengePayouts()
         {
             return LazyChallengePayouts.Value;
         }

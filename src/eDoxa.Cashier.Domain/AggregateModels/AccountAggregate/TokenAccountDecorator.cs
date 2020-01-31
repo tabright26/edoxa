@@ -11,15 +11,17 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TokenAccountDecorator : AccountDecorator, ITokenAccount
     {
+        public static readonly TimeSpan DepositInterval = TimeSpan.FromDays(1);
+
         public TokenAccountDecorator(IAccount account) : base(account)
         {
         }
 
-        public Balance Balance => new Balance(Transactions, Currency.Token);
+        public Balance Balance => new Balance(Transactions, CurrencyType.Token);
 
         public DateTime? LastDeposit =>
             Transactions.Where(
-                    transaction => transaction.Currency.Type == Currency.Token &&
+                    transaction => transaction.Currency.Type == CurrencyType.Token &&
                                    transaction.Type == TransactionType.Deposit &&
                                    transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction)
@@ -80,9 +82,20 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
+        public ITransaction Promotion(Token amount, TransactionMetadata? metadata = null)
+        {
+            var builder = new TransactionBuilder(TransactionType.Promotion, amount).WithMetadata(metadata);
+
+            var transaction = builder.Build();
+
+            this.CreateTransaction(transaction);
+
+            return transaction;
+        }
+
         public bool IsDepositAvailable()
         {
-            return !(LastDeposit.HasValue && LastDeposit.Value.AddDays(1) >= DateTime.UtcNow);
+            return !(LastDeposit.HasValue && LastDeposit.Value.Add(DepositInterval) >= DateTime.UtcNow);
         }
 
         public bool HaveSufficientMoney(Token token)

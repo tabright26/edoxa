@@ -37,7 +37,8 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
             var fetchInProgressChallengesRequest = new FetchChallengesRequest
             {
                 Game = game,
-                State = EnumChallengeState.InProgress
+                State = EnumChallengeState.InProgress,
+                IncludeMatches = true
             };
 
             var fetchInProgressChallengesResponse = await _challengeServiceClient.FetchChallengesAsync(fetchInProgressChallengesRequest);
@@ -47,7 +48,8 @@ namespace eDoxa.Challenges.Worker.Application.RecurringJobs
             var fetchEndedChallengesRequest = new FetchChallengesRequest
             {
                 Game = game,
-                State = EnumChallengeState.Ended
+                State = EnumChallengeState.Ended,
+                IncludeMatches = true
             };
 
             var fetchEndedChallengesResponse = await _challengeServiceClient.FetchChallengesAsync(fetchEndedChallengesRequest);

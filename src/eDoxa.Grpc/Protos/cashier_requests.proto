@@ -2,6 +2,9 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Requests";
 
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/duration.proto";
+
 import "cashier_dtos.proto";
 import "cashier_enums.proto";
 import "custom_types.proto";
@@ -17,7 +20,7 @@ message FindChallengePayoutRequest {
 message CreateChallengePayoutRequest {
   string challengeId = 1;
   int32 payoutEntries = 2;
-  EntryFeeDto entryFee = 3;
+  CurrencyDto entryFee = 3;
 }
 
 message CreateTransactionRequest {
@@ -28,12 +31,18 @@ message CreateTransactionRequest {
   map<string, string> metadata = 3;
 
   message CustomTransaction {
-    EnumTransactionType type = 1;
-    EnumCurrency currency = 2;
-    customTypes.DecimalValue amount = 3;
+    CurrencyDto currency = 1;
+    EnumTransactionType type = 2;
   }
 }
 
 message CreateTransactionAggregatorRequest {
   int32 bundle = 1;
+}
+
+message CreatePromotionRequest {
+  string promotionalCode = 1;
+  CurrencyDto currency = 2;
+  google.protobuf.Duration duration = 3;
+  google.protobuf.Timestamp expiredAt = 4;
 }

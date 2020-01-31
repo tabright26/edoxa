@@ -1,10 +1,8 @@
 ﻿// Filename: TransactionModelConfiguration.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-
-using System;
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Infrastructure.Models;
 
@@ -19,13 +17,13 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
         {
             builder.ToTable("Transaction");
 
-            builder.Ignore(challenge => challenge.DomainEvents);
+            builder.Ignore(transaction => transaction.DomainEvents);
 
-            builder.Property(transaction => transaction.Id).IsRequired().ValueGeneratedNever();;
+            builder.Property(transaction => transaction.Id).IsRequired().ValueGeneratedNever();
 
             builder.Property(transaction => transaction.Timestamp).IsRequired();
 
-            builder.Property(transaction => transaction.Amount).HasColumnType("decimal(10, 2)").IsRequired();
+            builder.Property(transaction => transaction.Amount).IsRequired().HasColumnType("decimal(10, 2)");
 
             builder.Property(transaction => transaction.Currency).IsRequired();
 
@@ -41,11 +39,22 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                 {
                     transactionMetadata.ToTable("TransactionMetadata");
 
-                    transactionMetadata.WithOwner().HasForeignKey("TransactionId");
+                    transactionMetadata.WithOwner().HasForeignKey(metadata => metadata.TransactionId);
 
-                    transactionMetadata.Property<Guid>("Id").ValueGeneratedOnAdd();
+                    transactionMetadata.Property(metadata => metadata.Id).IsRequired().ValueGeneratedOnAdd();
 
-                    transactionMetadata.HasKey("TransactionId", "Id");
+                    transactionMetadata.Property(metadata => metadata.TransactionId).IsRequired();
+
+                    transactionMetadata.Property(metadata => metadata.Key).IsRequired();
+
+                    transactionMetadata.Property(metadata => metadata.Value).IsRequired();
+
+                    transactionMetadata.HasKey(
+                        metadata => new
+                        {
+                            metadata.TransactionId,
+                            metadata.Id
+                        });
                 });
 
             builder.HasKey(transaction => transaction.Id);

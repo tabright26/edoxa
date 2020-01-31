@@ -20,10 +20,10 @@ export const ACCEPT_CLAN_CANDIDATURE_SUCCESS =
   "ACCEPT_CLAN_CANDIDATURE_SUCCESS";
 export const ACCEPT_CLAN_CANDIDATURE_FAIL = "ACCEPT_CLAN_CANDIDATURE_FAIL";
 
-export const DECLINE_CLAN_CANDIDATURE = "REFUSE_CLAN_CANDIDATURE";
+export const DECLINE_CLAN_CANDIDATURE = "DECLINE_CLAN_CANDIDATURE";
 export const DECLINE_CLAN_CANDIDATURE_SUCCESS =
-  "REFUSE_CLAN_CANDIDATURE_SUCCESS";
-export const DECLINE_CLAN_CANDIDATURE_FAIL = "REFUSE_CLAN_CANDIDATURE_FAIL";
+  "DECLINE_CLAN_CANDIDATURE_SUCCESS";
+export const DECLINE_CLAN_CANDIDATURE_FAIL = "DECLINE_CLAN_CANDIDATURE_FAIL";
 
 export type LoadClanCandidaturesdType =
   | typeof LOAD_CLAN_CANDIDATURES
@@ -81,33 +81,26 @@ export type AcceptClanCandidatureAction = AxiosAction<
   ClanCandidature
 >;
 
-export type RefuseClanCandidatureType =
+export type DeclineClanCandidatureType =
   | typeof DECLINE_CLAN_CANDIDATURE
   | typeof DECLINE_CLAN_CANDIDATURE_SUCCESS
   | typeof DECLINE_CLAN_CANDIDATURE_FAIL;
 
-export type RefuseClanCandidatureActionCreator = AxiosActionCreator<
-  RefuseClanCandidatureType
+export type DeclineClanCandidatureActionCreator = AxiosActionCreator<
+  DeclineClanCandidatureType
 >;
 
-export type RefuseClanCandidatureAction = AxiosAction<
-  RefuseClanCandidatureType,
+export type DeclineClanCandidatureAction = AxiosAction<
+  DeclineClanCandidatureType,
   ClanCandidature
 >;
-
-export type ClanCandidaturesActionCreators =
-  | LoadClanCandidaturesActionCreator
-  | LoadClanCandidatureActionCreator
-  | SendClanCandidatureActionCreator
-  | AcceptClanCandidatureActionCreator
-  | RefuseClanCandidatureActionCreator;
 
 export type ClanCandidaturesActions =
   | LoadClanCandidaturesAction
   | LoadClanCandidatureAction
   | SendClanCandidatureAction
   | AcceptClanCandidatureAction
-  | RefuseClanCandidatureAction;
+  | DeclineClanCandidatureAction;
 
 //------------------------------------------------------------------------------------------------------------
 
@@ -188,33 +181,19 @@ export type AcceptClanInvitationAction = AxiosAction<
   ClanInvitation
 >;
 
-export type RefuseClanInvitationType =
+export type DeclineClanInvitationType =
   | typeof DECLINE_CLAN_INVITATION
   | typeof DECLINE_CLAN_INVITATION_SUCCESS
   | typeof DECLINE_CLAN_INVITATION_FAIL;
 
-export type RefuseClanInvitationActionCreator = AxiosActionCreator<
-  RefuseClanInvitationType
+export type DeclineClanInvitationActionCreator = AxiosActionCreator<
+  DeclineClanInvitationType
 >;
 
-export type RefuseClanInvitationAction = AxiosAction<
-  RefuseClanInvitationType,
+export type DeclineClanInvitationAction = AxiosAction<
+  DeclineClanInvitationType,
   ClanInvitation
 >;
-
-export type ClanInvitationsActionCreators =
-  | LoadClanInvitationsActionCreator
-  | LoadClanInvitationActionCreator
-  | SendClanInvitationActionCreator
-  | AcceptClanInvitationActionCreator
-  | RefuseClanInvitationActionCreator;
-
-export type ClanInvitationsActions =
-  | LoadClanInvitationsAction
-  | LoadClanInvitationAction
-  | SendClanInvitationAction
-  | AcceptClanInvitationAction
-  | RefuseClanInvitationAction;
 
 //------------------------------------------------------------------------------------------------------------
 
@@ -262,17 +241,6 @@ export type LeaveClanType =
 export type LeaveClanActionCreator = AxiosActionCreator<LeaveClanType>;
 export type LeaveClanAction = AxiosAction<LeaveClanType>;
 
-export type ClansActionCreators =
-  | LoadClansActionCreator
-  | LoadClanActionCreator
-  | CreateClanActionCreator
-  | LeaveClanActionCreator;
-export type ClansActions =
-  | LoadClansAction
-  | LoadClanAction
-  | CreateClanAction
-  | LeaveClanAction;
-
 //------------------------------------------------------------------------------------------------------------
 
 export const DOWNLOAD_CLAN_LOGO = "DOWNLOAD_CLAN_LOGO";
@@ -301,11 +269,6 @@ export type UploadClanLogoActionCreator = AxiosActionCreator<
 >;
 export type UploadClanLogoAction = AxiosAction<UploadClanLogoType>;
 
-export type ClanLogosActionCreators =
-  | DownloadClanLogoActionCreator
-  | UploadClanLogoActionCreator;
-export type ClanLogosActions = DownloadClanLogoAction | UploadClanLogoAction;
-
 //------------------------------------------------------------------------------------------------------------
 
 export const LOAD_CLAN_MEMBERS = "LOAD_CLAN_MEMBERS";
@@ -323,7 +286,10 @@ export type LoadClanMembersType =
 export type LoadClanMembersActionCreator = AxiosActionCreator<
   LoadClanMembersType
 >;
-export type LoadClanMembersAction = AxiosAction<LoadClanMembersType, ClanMember[]>;
+export type LoadClanMembersAction = AxiosAction<
+  LoadClanMembersType,
+  ClanMember[]
+>;
 
 export type KickClanMemberType =
   | typeof KICK_CLAN_MEMBER
@@ -333,8 +299,3 @@ export type KickClanMemberActionCreator = AxiosActionCreator<
   KickClanMemberType
 >;
 export type KickClanMemberAction = AxiosAction<KickClanMemberType, ClanMember>;
-
-export type ClanMembersActionCreators =
-  | LoadClanMembersActionCreator
-  | KickClanMemberActionCreator;
-export type ClanMembersActions = LoadClanMembersAction | KickClanMemberAction;

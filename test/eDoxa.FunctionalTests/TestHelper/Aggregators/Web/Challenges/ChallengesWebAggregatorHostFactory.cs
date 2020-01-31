@@ -1,8 +1,8 @@
-﻿// Filename: ChallengesAggregatorHostFactory.cs
-// Date Created: 2019-12-20
+﻿// Filename: ChallengesWebAggregatorHostFactory.cs
+// Date Created: 2019-12-28
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Challenges.Web.Aggregator;
 using eDoxa.Seedwork.TestHelper;

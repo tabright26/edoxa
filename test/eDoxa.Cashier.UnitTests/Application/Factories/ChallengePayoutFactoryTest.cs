@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengePayoutFactoryTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Domain.Strategies;
@@ -19,7 +19,12 @@ namespace eDoxa.Cashier.UnitTests.Application.Factories
 {
     public sealed class ChallengePayoutFactoryTest : UnitTest
     {
-
+        public ChallengePayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public void CreateInstance_WithoutPayoutStrategy_ShouldNotBeNull()
@@ -47,10 +52,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Factories
 
             // Assert
             payoutStrategy.Should().NotBeNull();
-        }
-
-        public ChallengePayoutFactoryTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

@@ -4,11 +4,11 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Enums";
 
 package edoxa.services.cashier;
 
-enum EnumCurrency {
-  ENUM_CURRENCY_NONE = 0;
-  ENUM_CURRENCY_MONEY = 1;
-  ENUM_CURRENCY_TOKEN = 2;
-  ENUM_CURRENCY_ALL = -1;
+enum EnumCurrencyType {
+  ENUM_CURRENCY_TYPE_NONE = 0;
+  ENUM_CURRENCY_TYPE_MONEY = 1;
+  ENUM_CURRENCY_TYPE_TOKEN = 2;
+  ENUM_CURRENCY_TYPE_ALL = -1;
 }
 
 enum EnumTransactionType {
@@ -18,6 +18,7 @@ enum EnumTransactionType {
   ENUM_TRANSACTION_TYPE_CHARGE = 4;
   ENUM_TRANSACTION_TYPE_PAYOUT = 8;
   ENUM_TRANSACTION_TYPE_WITHDRAWAL = 16;
+  ENUM_TRANSACTION_TYPE_PROMOTION = 32;
   ENUM_TRANSACTION_TYPE_ALL = -1;
 }
 

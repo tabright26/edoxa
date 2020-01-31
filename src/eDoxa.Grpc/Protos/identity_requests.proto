@@ -9,6 +9,21 @@ import "identity_enums.proto";
 
 package edoxa.services.identity;
 
+message RegisterAccountRequest {
+  string email = 1;
+  string password = 2;
+  EnumCountryIsoCode country = 3;
+  string ip = 4;
+  string dob = 5;
+}
+
+message LoginAccountRequest {
+  string email = 1;
+  string password = 2;
+  bool rememberMe = 3;
+  string returnUrl = 4;
+}
+
 message ChangeDoxatagRequest {
   string name = 1;
 }
@@ -30,7 +45,6 @@ message CreateProfileRequest {
   string firstName = 1;
   string lastName = 2;
   EnumGender gender = 3;
-  DobDto dob = 4;
 }
 
 message ForgotPasswordRequest {

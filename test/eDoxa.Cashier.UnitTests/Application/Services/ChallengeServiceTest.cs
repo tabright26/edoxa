@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeServiceTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading;
@@ -30,6 +30,12 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 {
     public sealed class ChallengeServiceTest : UnitTest
     {
+        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task CreateChallengeAsync_ShouldBeOfTypeValidationResult()
@@ -38,26 +44,26 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var mockChallengePayoutFactory = new Mock<IChallengePayoutFactory>();
             var mockChallengeRepository = new Mock<IChallengeRepository>();
 
-            mockChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(new ChallengePayoutStrategy()).Verifiable();
+            mockChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(new DefaultChallengePayoutStrategy()).Verifiable();
 
             mockChallengeRepository.Setup(repository => repository.Create(It.IsAny<Challenge>())).Verifiable();
 
-            mockChallengeRepository.Setup(repository => repository.CommitAsync(It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+            mockChallengeRepository.Setup(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
 
             var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(
-                new List<Bucket>
+            var buckets = new ChallengePayoutBuckets(
+                new List<ChallengePayoutBucket>
                 {
                     bucket
                 });
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
-            var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, Currency.Token));
+            var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, CurrencyType.Token));
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
@@ -66,7 +72,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             mockChallengeRepository.Verify(repository => repository.Create(It.IsAny<Challenge>()), Times.Once);
 
-            mockChallengeRepository.Verify(repository => repository.CommitAsync(It.IsAny<CancellationToken>()), Times.Once);
+            mockChallengeRepository.Verify(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
@@ -78,30 +84,30 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var mockChallengePayoutStrategy = new Mock<IChallengePayoutStrategy>();
 
-            mockChallengePayoutStrategy.Setup(payout => payout.GetPayout(It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>())).Verifiable();
+            mockChallengePayoutStrategy.Setup(payout => payout.GetChallengePayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>())).Verifiable();
 
             mockChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(mockChallengePayoutStrategy.Object).Verifiable();
 
             var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(
-                new List<Bucket>
+            var buckets = new ChallengePayoutBuckets(
+                new List<ChallengePayoutBucket>
                 {
                     bucket
                 });
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
-            var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, Currency.Token));
+            var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, CurrencyType.Token));
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
 
-            mockChallengePayoutStrategy.Verify(payout => payout.GetPayout(It.IsAny<PayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);
+            mockChallengePayoutStrategy.Verify(payout => payout.GetChallengePayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);
             mockChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
         }
 
@@ -125,10 +131,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<Challenge>();
             mockChallengeRepository.Verify(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>()), Times.Once);
-        }
-
-        public ChallengeServiceTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

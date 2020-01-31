@@ -1,10 +1,9 @@
 ﻿// Filename: CreateProfileRequestValidator.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Text.RegularExpressions;
 
 using eDoxa.Grpc.Protos.Identity.Requests;
@@ -43,16 +42,6 @@ namespace eDoxa.Identity.Api.Application.Validators
                 .WithMessage(ProfileErrorDescriber.GenderRequired())
                 .NotEmpty()
                 .WithMessage(ProfileErrorDescriber.GenderRequired());
-
-            ////https://stackoverflow.com/questions/7777985/validate-datetime-with-fluentvalidator
-            //this.RuleFor(request => request.Dob)
-            //    .Must(request => BeAValidDate(new DateTime(request.Year, request.Month, request.Day)))
-            //    .WithMessage(InformationsErrorDescriber.BirthDateInvalid());
-        }
-
-        private static bool BeAValidDate(DateTime date)
-        {
-            return !date.Equals(default);
         }
     }
 }

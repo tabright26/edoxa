@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -20,7 +20,9 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TransactionTest : UnitTest
     {
-   
+        public TransactionTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
+        }
 
         [Fact]
         public void MarkAsFailed_StatusPending_ShouldBeStatusFailed()
@@ -136,10 +138,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             transaction.Description.Should().Be(description);
             transaction.Type.Should().Be(type);
             transaction.Status.Should().Be(TransactionStatus.Pending);
-        }
-
-        public TransactionTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

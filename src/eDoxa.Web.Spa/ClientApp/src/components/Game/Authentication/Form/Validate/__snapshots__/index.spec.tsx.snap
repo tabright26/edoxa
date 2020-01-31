@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<form
+  className="w-100"
+  onSubmit={[Function]}
+>
+  <div
+    className="mx-auto w-25"
+  >
+    <button
+      aria-label={null}
+      className="btn btn-primary btn-block"
+      disabled={null}
+      onClick={[Function]}
+      type="submit"
+    >
+      Validate
+    </button>
+  </div>
+</form>
+`;

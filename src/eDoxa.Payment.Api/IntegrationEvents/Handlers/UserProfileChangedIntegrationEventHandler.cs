@@ -50,13 +50,7 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                     {
                         FirstName = integrationEvent.Profile.FirstName,
                         LastName = integrationEvent.Profile.LastName,
-                        Gender = integrationEvent.Profile.Gender.ToEnumerationOrNull<Gender>()?.ToStripe(),
-                        Dob = new DobOptions
-                        {
-                            Day = integrationEvent.Profile.Dob.Day,
-                            Month = integrationEvent.Profile.Dob.Month,
-                            Year = integrationEvent.Profile.Dob.Year
-                        }
+                        Gender = integrationEvent.Profile.Gender.ToEnumerationOrNull<Gender>()?.ToStripe()
                     });
 
                 if (result.IsValid)

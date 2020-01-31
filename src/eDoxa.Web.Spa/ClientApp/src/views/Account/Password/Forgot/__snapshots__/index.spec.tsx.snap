@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<div
+  className="mx-4 card"
+>
+  <div
+    className="p-4 card-body"
+  >
+    <h1>
+      Forgot password
+    </h1>
+    <p
+      className="text-muted"
+    >
+      Enter your email address. You will receive a link to reset your password.
+    </p>
+    <form
+      className=""
+      onSubmit={[Function]}
+    >
+      <div
+        className="form-group"
+      >
+        <input
+          className="form-control-sm form-control"
+          name="email"
+          onBlur={[Function]}
+          onChange={[Function]}
+          onDragStart={[Function]}
+          onDrop={[Function]}
+          onFocus={[Function]}
+          placeholder="Email"
+          type="text"
+          value=""
+        />
+        <div
+          className="invalid-feedback"
+        />
+      </div>
+      <div
+        className="mb-0 d-flex form-group"
+      >
+        <button
+          aria-label={null}
+          className="w-25 btn btn-primary"
+          disabled={null}
+          onClick={[Function]}
+          type="submit"
+        >
+          Send
+        </button>
+        <button
+          aria-label={null}
+          className="ml-auto my-auto btn btn-link btn-sm"
+          disabled={null}
+          onClick={[Function]}
+          type="button"
+        >
+          <small
+            className="null"
+          >
+             
+            Return to login page
+          </small>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

@@ -1,8 +1,8 @@
-﻿// Filename: AuthFactorValidatorFactoryTest.cs
-// Date Created: 2019-11-11
+﻿// Filename: GameAuthenticationValidatorFactoryTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;

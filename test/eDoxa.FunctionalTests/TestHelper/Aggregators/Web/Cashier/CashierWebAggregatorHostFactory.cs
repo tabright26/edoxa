@@ -1,8 +1,8 @@
-﻿// Filename: CashierAggregatorHostFactory.cs
-// Date Created: 2019-12-20
+﻿// Filename: CashierWebAggregatorHostFactory.cs
+// Date Created: 2019-12-28
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Web.Aggregator;
 using eDoxa.Seedwork.TestHelper;

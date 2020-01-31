@@ -1,8 +1,8 @@
-﻿// Filename: InformationsPostRequestValidatorTest.cs
-// Date Created: 2019-10-06
+﻿// Filename: CreateProfileRequestValidatorTest.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
@@ -165,30 +165,5 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             var failures = validator.ShouldHaveValidationErrorFor(request => request.Gender, gender);
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
-
-        [Theory]
-        [MemberData(nameof(ValidDob))]
-        public void Validate_WhenDobIsValid_ShouldNotHaveValidationErrorFor(DobDto dob)
-        {
-            // Arrange
-            var validator = new CreateProfileRequestValidator();
-
-            // Act - Assert
-            validator.ShouldNotHaveValidationErrorFor(request => request.Dob, dob);
-        }
-
-        //[Theory]
-        //[MemberData(nameof(InvalidDob))]
-        //public void Validate_WhenDobIsInvalid_ShouldHaveValidationErrorFor(DobRequest dob, string errorMessage)
-        //{
-        //    // Arrange
-        //    var validator = new InformationsPostRequestValidator();
-
-        //    // Act
-        //    var failures = validator.ShouldHaveValidationErrorFor(request => request.Dob, dob);
-
-        //    // Assert
-        //    failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        //}
     }
 }

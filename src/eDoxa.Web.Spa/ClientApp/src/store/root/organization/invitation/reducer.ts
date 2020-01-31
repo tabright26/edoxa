@@ -13,12 +13,12 @@ import {
   ACCEPT_CLAN_INVITATION_FAIL,
   DECLINE_CLAN_INVITATION,
   DECLINE_CLAN_INVITATION_SUCCESS,
-  DECLINE_CLAN_INVITATION_FAIL,
-  ClanInvitationsActions
+  DECLINE_CLAN_INVITATION_FAIL
 } from "store/actions/clan/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { ClanInvitationsState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: ClanInvitationsState = {
   data: [],
@@ -26,11 +26,8 @@ export const initialState: ClanInvitationsState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  ClanInvitationsState,
-  ClanInvitationsActions
-> = produce(
-  (draft: Draft<ClanInvitationsState>, action: ClanInvitationsActions) => {
+export const reducer: Reducer<ClanInvitationsState, RootActions> = produce(
+  (draft: Draft<ClanInvitationsState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_CLAN_INVITATIONS:
         draft.error = null;

@@ -87,10 +87,7 @@ namespace eDoxa.Identity.Api.Application.Services
             User user,
             string firstName,
             string lastName,
-            Gender gender,
-            int dobYear,
-            int dobMonth,
-            int dobDay
+            Gender gender
         )
         {
             var result = new DomainValidationResult();
@@ -105,8 +102,7 @@ namespace eDoxa.Identity.Api.Application.Services
                 var profile = new UserProfile(
                     firstName,
                     lastName,
-                    gender,
-                    new UserDob(dobYear, dobMonth, dobDay));
+                    gender);
 
                 user.Create(profile);
 
@@ -147,7 +143,7 @@ namespace eDoxa.Identity.Api.Application.Services
             return result;
         }
 
-        public async Task<UserDob?> GetDobAsync(User user)
+        public async Task<UserDob> GetDobAsync(User user)
         {
             return await Repository.GetDobAsync(user, CancellationToken);
         }

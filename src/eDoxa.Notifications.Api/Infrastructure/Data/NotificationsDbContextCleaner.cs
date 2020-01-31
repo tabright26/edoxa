@@ -2,37 +2,34 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
+using eDoxa.Notifications.Domain.AggregateModels.UserAggregate;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Notifications.Api.Infrastructure.Data
 {
-    internal sealed class NotificationsDbContextCleaner : IDbContextCleaner
+    internal sealed class NotificationsDbContextCleaner : DbContextCleaner
     {
-        private readonly NotificationsDbContext _context;
-        private readonly IWebHostEnvironment _environment;
-
-        public NotificationsDbContextCleaner(IWebHostEnvironment environment, NotificationsDbContext context)
+        public NotificationsDbContextCleaner(
+            NotificationsDbContext context,
+            IWebHostEnvironment environment,
+            ILogger<NotificationsDbContextCleaner> logger
+        ) : base(context, environment, logger)
         {
-            _environment = environment;
-            _context = context;
+            Users = context.Set<User>();
         }
 
-        public async Task CleanupAsync()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Users.RemoveRange(_context.Users);
+        private DbSet<User> Users { get; }
 
-                await _context.SaveChangesAsync();
-            }
+        protected override void Cleanup()
+        {
+            Users.RemoveRange(Users);
         }
     }
 }

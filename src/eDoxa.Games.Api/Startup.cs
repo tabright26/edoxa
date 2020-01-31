@@ -11,12 +11,11 @@ using System.Reflection;
 
 using Autofac;
 
+using eDoxa.Games.Api.Grpc.Services;
 using eDoxa.Games.Api.Infrastructure;
-using eDoxa.Games.Api.Services;
 using eDoxa.Games.Infrastructure;
-using eDoxa.Games.LeagueOfLegends;
+using eDoxa.Grpc.Protos.Games.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -79,9 +78,7 @@ namespace eDoxa.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
-            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
-
-            services.Configure<LeagueOfLegendsOptions>(Configuration.GetSection("Games:LeagueOfLegends"));
+            services.Configure<GamesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
@@ -101,7 +98,7 @@ namespace eDoxa.Games.Api
 
             services.AddCustomProblemDetails();
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -148,8 +145,6 @@ namespace eDoxa.Games.Api
 
                     endpoints.MapControllers();
 
-                    endpoints.MapConfigurationRoute<GamesAppSettings>(AppSettings.ApiResource);
-
                     endpoints.MapCustomHealthChecks();
                 });
 
@@ -163,9 +158,7 @@ namespace eDoxa.Games.Api
         {
             services.AddAppSettings<GamesAppSettings>(Configuration);
 
-            services.Configure<GamesOptions>(Configuration.GetSection("Games"));
-
-            services.Configure<LeagueOfLegendsOptions>(Configuration.GetSection("Games:LeagueOfLegends"));
+            services.Configure<GamesApiOptions>(Configuration.GetSection("Api"));
 
             services.AddCustomDbContext<GamesDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 

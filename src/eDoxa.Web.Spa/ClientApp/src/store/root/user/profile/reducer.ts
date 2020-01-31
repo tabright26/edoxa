@@ -7,12 +7,12 @@ import {
   CREATE_USER_PROFILE_FAIL,
   UPDATE_USER_PROFILE,
   UPDATE_USER_PROFILE_SUCCESS,
-  UPDATE_USER_PROFILE_FAIL,
-  UserProfileActions
+  UPDATE_USER_PROFILE_FAIL
 } from "store/actions/identity/types";
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserProfileState } from "./types";
+import { RootActions } from "store/types";
 
 export const initialState: UserProfileState = {
   data: null,
@@ -20,11 +20,8 @@ export const initialState: UserProfileState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  UserProfileState,
-  UserProfileActions
-> = produce(
-  (draft: Draft<UserProfileState>, action: UserProfileActions) => {
+export const reducer: Reducer<UserProfileState, RootActions> = produce(
+  (draft: Draft<UserProfileState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_PROFILE: {
         draft.error = null;

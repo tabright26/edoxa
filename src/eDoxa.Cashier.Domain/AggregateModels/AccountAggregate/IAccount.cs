@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     {
         IReadOnlyCollection<ITransaction> Transactions { get; }
 
-        Balance GetBalanceFor(Currency currency);
+        Balance GetBalanceFor(CurrencyType currencyType);
 
         void CreateTransaction(ITransaction transaction);
 

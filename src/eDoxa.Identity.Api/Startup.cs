@@ -14,7 +14,7 @@ using Autofac;
 
 using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Identity.Api.Application.Services;
-using eDoxa.Identity.Api.Extensions;
+using eDoxa.Identity.Api.Grpc.Services;
 using eDoxa.Identity.Api.Infrastructure;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Api.Services;
@@ -23,7 +23,6 @@ using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -42,7 +41,6 @@ using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.TestHelper.Extensions;
 
 using FluentValidation;
-using FluentValidation.AspNetCore;
 
 using Hellang.Middleware.ProblemDetails;
 
@@ -139,7 +137,7 @@ namespace eDoxa.Identity.Api
                         options.Password.RequireLowercase = true;
                         options.Password.RequireNonAlphanumeric = true;
                         options.Password.RequireUppercase = true;
-                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.AllowedForNewUsers = false;
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                         options.Lockout.MaxFailedAccessAttempts = 5;
                         options.User.RequireUniqueEmail = true;
@@ -173,21 +171,7 @@ namespace eDoxa.Identity.Api
 
             services.AddProblemDetails();
 
-            services.AddMvc()
-                .AddCustomNewtonsoftJson()
-                .AddDevTools()
-                .AddRazorPagesOptions(
-                    options =>
-                    {
-                        options.Conventions.AuthorizeAreaFolder("Identity", "/Account/Manage");
-                        options.Conventions.AuthorizeAreaPage("Identity", "/Account/Logout");
-                    })
-                .AddFluentValidation(
-                    config =>
-                    {
-                        config.RegisterValidatorsFromAssemblyContaining<Startup>();
-                        config.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
-                    });
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -204,9 +188,9 @@ namespace eDoxa.Identity.Api
                         options.Events.RaiseSuccessEvents = true;
                         options.Events.RaiseFailureEvents = true;
                         options.Events.RaiseErrorEvents = true;
-                        options.UserInteraction.LoginUrl = "/Account/Login";
+                        options.UserInteraction.LoginUrl = $"{AppSettings.WebSpaUrl}/account/login";
                         options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
-                        options.UserInteraction.LogoutUrl = "/Account/Logout";
+                        options.UserInteraction.LogoutUrl = $"{AppSettings.WebSpaUrl}/account/logout";
                     })
                 .AddApiAuthorization<User, IdentityDbContext>(
                     options =>
@@ -223,6 +207,7 @@ namespace eDoxa.Identity.Api
                 .AddProfileService<CustomProfileService>();
 
             services.AddTransient<IProfileService, CustomProfileService>();
+            services.AddTransient<IReturnUrlParser, CustomReturnUrlParser>();
 
             //services.AddAuthentication().AddIdentityServerJwt();
 
@@ -273,16 +258,10 @@ namespace eDoxa.Identity.Api
                 {
                     endpoints.MapGrpcService<IdentityGrpcService>();
 
-                    endpoints.MapRazorPages();
-
-                    endpoints.MapDefaultControllerRoute();
-
-                    endpoints.MapConfigurationRoute<IdentityAppSettings>(AppSettings.ApiResource);
+                    endpoints.MapControllers();
 
                     endpoints.MapCustomHealthChecks();
                 });
-
-            application.UseAuthenticationLoginRedirects();
 
             application.UseSwagger(AppSettings);
 
@@ -309,7 +288,7 @@ namespace eDoxa.Identity.Api
                         options.Password.RequireLowercase = true;
                         options.Password.RequireNonAlphanumeric = true;
                         options.Password.RequireUppercase = true;
-                        options.Lockout.AllowedForNewUsers = true;
+                        options.Lockout.AllowedForNewUsers = false;
                         options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                         options.Lockout.MaxFailedAccessAttempts = 5;
                         options.User.RequireUniqueEmail = true;

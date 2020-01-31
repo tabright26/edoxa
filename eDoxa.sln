@@ -179,7 +179,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{2ECF65
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Grpc", "src\eDoxa.Grpc\eDoxa.Grpc.csproj", "{7853D7EF-7CF3-4C6C-8851-B938C1E55CFE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Storage", "src\eDoxa.Storage\eDoxa.Storage.csproj", "{D785CA55-10E4-46AC-8118-55F9CE9B540B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Storage", "src\eDoxa.Storage\eDoxa.Storage.csproj", "{D785CA55-10E4-46AC-8118-55F9CE9B540B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

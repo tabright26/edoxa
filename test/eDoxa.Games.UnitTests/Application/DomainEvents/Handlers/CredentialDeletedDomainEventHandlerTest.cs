@@ -1,8 +1,8 @@
 ﻿// Filename: CredentialDeletedDomainEventHandlerTest.cs
-// Date Created: 2019-11-01
-//
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading;
 using System.Threading.Tasks;
@@ -35,12 +35,16 @@ namespace eDoxa.Games.UnitTests.Application.DomainEvents.Handlers
             // Arrange
             var userId = new UserId();
 
-            var domainEvent = new CredentialDeletedDomainEvent(new Credential(userId, Game.LeagueOfLegends, new PlayerId(), new UtcNowDateTimeProvider()));
+            var domainEvent = new CredentialDeletedDomainEvent(
+                new Credential(
+                    userId,
+                    Game.LeagueOfLegends,
+                    new PlayerId(),
+                    new UtcNowDateTimeProvider()));
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            mockServiceBusPublisher
-                .Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialRemovedIntegrationEvent>()))
+            mockServiceBusPublisher.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialRemovedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -50,8 +54,7 @@ namespace eDoxa.Games.UnitTests.Application.DomainEvents.Handlers
             await credentialDeletedDomainEventHandler.Handle(domainEvent, CancellationToken.None);
 
             // Assert
-            mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialRemovedIntegrationEvent>()),
-                Times.Once);
+            mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialRemovedIntegrationEvent>()), Times.Once);
         }
     }
 }

@@ -1,7 +1,4 @@
 import {
-  LOAD_GAMES,
-  LOAD_GAMES_SUCCESS,
-  LOAD_GAMES_FAIL,
   GENERATE_GAME_AUTHENTICATION,
   GENERATE_GAME_AUTHENTICATION_SUCCESS,
   GENERATE_GAME_AUTHENTICATION_FAIL,
@@ -11,9 +8,9 @@ import {
   UNLINK_GAME_CREDENTIAL,
   UNLINK_GAME_CREDENTIAL_SUCCESS,
   UNLINK_GAME_CREDENTIAL_FAIL,
-  GamesActionCreators,
-  GameAuthenticationActionCreators,
-  GameCredentialActionCreators
+  GenerateGameAuthenticationActionCreator,
+  ValidateGameAuthenticationActionCreator,
+  UnlinkGameCredentialActionCreator
 } from "./types";
 
 import { Game } from "types";
@@ -22,24 +19,11 @@ import {
   AxiosActionCreatorMeta
 } from "utils/axios/types";
 
-export function loadGames(): GamesActionCreators {
-  return {
-    types: [LOAD_GAMES, LOAD_GAMES_SUCCESS, LOAD_GAMES_FAIL],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
-      request: {
-        method: "GET",
-        url: `games/api/games`
-      }
-    }
-  };
-}
-
 export function generateGameAuthentication(
   game: Game,
   data: any,
   meta: AxiosActionCreatorMeta
-): GameAuthenticationActionCreators {
+): GenerateGameAuthenticationActionCreator {
   return {
     types: [
       GENERATE_GAME_AUTHENTICATION,
@@ -61,7 +45,7 @@ export function generateGameAuthentication(
 export function validateGameAuthentication(
   game: Game,
   meta: AxiosActionCreatorMeta
-): GameAuthenticationActionCreators {
+): ValidateGameAuthenticationActionCreator {
   return {
     types: [
       VALIDATE_GAME_AUTHENTICATION,
@@ -82,7 +66,7 @@ export function validateGameAuthentication(
 export function unlinkGameCredential(
   game: Game,
   meta: AxiosActionCreatorMeta
-): GameCredentialActionCreators {
+): UnlinkGameCredentialActionCreator {
   return {
     types: [
       UNLINK_GAME_CREDENTIAL,

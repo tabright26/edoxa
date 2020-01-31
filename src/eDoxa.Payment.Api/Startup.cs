@@ -13,12 +13,12 @@ using Autofac;
 
 using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Api.Application.Stripe.Extensions;
+using eDoxa.Payment.Api.Grpc.Services;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
-using eDoxa.Payment.Api.Services;
+using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -47,6 +47,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
 
 namespace eDoxa.Payment.Api
 {
@@ -97,7 +99,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomProblemDetails(options => options.MapStripeException());
 
-            services.AddCustomControllers<Startup>().AddDevTools();
+            services.AddCustomControllers<Startup>();
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
@@ -144,8 +146,6 @@ namespace eDoxa.Payment.Api
 
                     endpoints.MapControllers();
 
-                    endpoints.MapConfigurationRoute<PaymentAppSettings>(AppSettings.ApiResource);
-
                     endpoints.MapCustomHealthChecks();
                 });
 
@@ -189,6 +189,20 @@ namespace eDoxa.Payment.Api
             builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<PaymentModule>();
+
+            builder.RegisterInstance(new Mock<IStripeAccountService>().Object).As<IStripeAccountService>();
+
+            builder.RegisterInstance(new Mock<IStripeCustomerService>().Object).As<IStripeCustomerService>();
+
+            builder.RegisterInstance(new Mock<IStripeExternalAccountService>().Object).As<IStripeExternalAccountService>();
+
+            builder.RegisterInstance(new Mock<IStripeInvoiceItemService>().Object).As<IStripeInvoiceItemService>();
+
+            builder.RegisterInstance(new Mock<IStripeInvoiceService>().Object).As<IStripeInvoiceService>();
+
+            builder.RegisterInstance(new Mock<IStripePaymentMethodService>().Object).As<IStripePaymentMethodService>();
+
+            builder.RegisterInstance(new Mock<IStripeTransferService>().Object).As<IStripeTransferService>();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

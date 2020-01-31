@@ -42,6 +42,12 @@ static_resources:
                   prefix_rewrite: "/api/"
                   cluster: clans-api
               - match:
+                  prefix: "/challenges/api/"
+                route:
+                  auto_host_rewrite: true
+                  prefix_rewrite: "/api/"
+                  cluster: challenges-api
+              - match:
                   prefix: "/api/"
                 route:
                   auto_host_rewrite: true
@@ -86,6 +92,15 @@ static_resources:
     hosts:
     - socket_address:
         address: clans-api
+        port_value: 80
+  - name: challenges-api
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    hosts:
+    - socket_address:
+        address: challenges-api
         port_value: 80
   - name: challenges-web-aggregator
     connect_timeout: 120.0s

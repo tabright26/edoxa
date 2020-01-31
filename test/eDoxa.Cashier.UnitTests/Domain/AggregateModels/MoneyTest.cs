@@ -1,8 +1,8 @@
 ﻿// Filename: MoneyTest.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.TestHelper;
@@ -16,7 +16,9 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 {
     public sealed class MoneyTest : UnitTest
     {
-  
+        public MoneyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
+        {
+        }
 
         [InlineData(10, 10, 20)]
         [InlineData(10, 20, 30)]
@@ -54,10 +56,6 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels
 
             // Assert
             money.As<decimal>().Should().Be(result);
-        }
-
-        public MoneyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

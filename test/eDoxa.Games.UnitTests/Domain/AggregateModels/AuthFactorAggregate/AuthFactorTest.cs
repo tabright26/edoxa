@@ -1,8 +1,8 @@
 ﻿// Filename: AuthFactorTest.cs
-// Date Created: 2019-11-01
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.LeagueOfLegends;
@@ -26,7 +26,12 @@ namespace eDoxa.Games.UnitTests.Domain.AggregateModels.AuthFactorAggregate
         public void Contructor_Tests()
         {
             // Arrange
-            var authenticationFactor =  new LeagueOfLegendsGameAuthenticationFactor(1, string.Empty, 2, string.Empty);
+            var authenticationFactor = new LeagueOfLegendsGameAuthenticationFactor(
+                1,
+                string.Empty,
+                2,
+                string.Empty);
+
             var playerId = new PlayerId();
 
             // Act
@@ -39,6 +44,5 @@ namespace eDoxa.Games.UnitTests.Domain.AggregateModels.AuthFactorAggregate
             authFactor.Factor.Should().Be(authenticationFactor);
             authFactor.Factor.Should().NotBeNull();
         }
-
     }
 }

@@ -1,0 +1,139 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders without crashing 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col-12 col-sm-12 col-md-4 col-lg-3 col-xl-2"
+  >
+    <div
+      className="mt-4 card"
+    >
+      <div
+        className="bg-gray-900 card-header"
+      >
+        <strong
+          className="text-uppercase"
+        >
+          Profile
+        </strong>
+      </div>
+      <ul
+        className="list-group list-group-flush"
+      >
+        <li
+          className="list-group-item"
+          href="/profile/overview"
+          onClick={[Function]}
+        >
+          Overview
+        </li>
+        <li
+          className="list-group-item"
+          href="/profile/details"
+          onClick={[Function]}
+        >
+          Details
+        </li>
+        <li
+          className="list-group-item"
+          href="/profile/security"
+          onClick={[Function]}
+        >
+          Security
+        </li>
+      </ul>
+    </div>
+    <div
+      className="card"
+    >
+      <div
+        className="bg-gray-900 card-header"
+      >
+        <strong
+          className="text-uppercase"
+        >
+          Arena
+        </strong>
+      </div>
+      <ul
+        className="list-group list-group-flush"
+      >
+        <li
+          className="list-group-item"
+          href="/profile/challenge-history"
+          onClick={[Function]}
+        >
+          Challenge History
+        </li>
+      </ul>
+    </div>
+    <div
+      className="card"
+    >
+      <div
+        className="bg-gray-900 card-header"
+      >
+        <strong
+          className="text-uppercase"
+        >
+          Cashier
+        </strong>
+      </div>
+      <ul
+        className="list-group list-group-flush"
+      >
+        <li
+          className="list-group-item"
+          href="/profile/payment-methods"
+          onClick={[Function]}
+        >
+          Payment Methods
+        </li>
+        <li
+          className="list-group-item"
+          href="/profile/transaction-history"
+          onClick={[Function]}
+        >
+          Transaction History
+        </li>
+        <li
+          className="list-group-item"
+          href="/profile/promotional-code"
+          onClick={[Function]}
+        >
+          Promotional Code
+        </li>
+      </ul>
+    </div>
+    <div
+      className="card"
+    >
+      <div
+        className="bg-gray-900 card-header"
+      >
+        <strong
+          className="text-uppercase"
+        >
+          Connections
+        </strong>
+      </div>
+      <ul
+        className="list-group list-group-flush"
+      >
+        <li
+          className="list-group-item"
+          href="/profile/games"
+          onClick={[Function]}
+        >
+          Games
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div
+    className="col-12 col-sm-12 col-md-8 col-lg-7 col-xl-6"
+  />
+</div>
+`;

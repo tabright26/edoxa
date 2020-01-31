@@ -1,8 +1,8 @@
-﻿// Filename: AccountDepositPostRequestTest.cs
-// Date Created: 2019-09-16
-//
+﻿// Filename: CandidatureServiceTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading;
@@ -31,6 +31,177 @@ namespace eDoxa.Clans.UnitTests.Application.Services
         }
 
         [Fact]
+        public async Task AcceptCandidatureAsync_ShouldBeOfTypeValidationResult()
+        {
+            // Arrange
+            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
+            var mockClanRepository = new Mock<IClanRepository>();
+
+            var candidature = new Candidature(new UserId(), new ClanId());
+
+            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+
+            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
+
+            // Act
+            var result = await service.AcceptCandidatureAsync(candidature, new UserId());
+
+            // Assert
+            result.Should().BeOfType<DomainValidationResult>();
+            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task AcceptCandidatureAsync_WhenNotOwner_ShouldBeOfTypeValidationResultWithErrors()
+        {
+            // Arrange
+            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
+            var mockClanRepository = new Mock<IClanRepository>();
+
+            var candidature = new Candidature(new UserId(), new ClanId());
+
+            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+
+            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
+
+            // Act
+            var result = await service.AcceptCandidatureAsync(candidature, new UserId());
+
+            // Assert
+            result.Should().BeOfType<DomainValidationResult>();
+            result.Errors.Should().NotBeEmpty();
+            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeclineCandidatureAsync_ShouldBeOfTypeValidationResult()
+        {
+            // Arrange
+            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
+            var mockClanRepository = new Mock<IClanRepository>();
+
+            var candidature = new Candidature(new UserId(), new ClanId());
+
+            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+
+            mockCandidatureRepository.Setup(repository => repository.Delete(It.IsAny<Candidature>())).Verifiable();
+
+            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
+
+            // Act
+            var result = await service.DeclineCandidatureAsync(candidature, new UserId());
+
+            // Assert
+            result.Should().BeOfType<DomainValidationResult>();
+            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+            mockCandidatureRepository.Verify(repository => repository.Delete(It.IsAny<Candidature>()), Times.Once);
+            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeclineCandidatureAsync_WhenNotOwner_ShouldBeOfTypeValidationResultWithErrors()
+        {
+            // Arrange
+            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
+            var mockClanRepository = new Mock<IClanRepository>();
+
+            var candidature = new Candidature(new UserId(), new ClanId());
+
+            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+
+            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
+
+            // Act
+            var result = await service.DeclineCandidatureAsync(candidature, new UserId());
+
+            // Assert
+            result.Should().BeOfType<DomainValidationResult>();
+            result.Errors.Should().NotBeEmpty();
+            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteCandidaturesAsync_WithClanId()
+        {
+            // Arrange
+            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
+            var mockClanRepository = new Mock<IClanRepository>();
+
+            var clanId = new ClanId();
+
+            mockCandidatureRepository.Setup(repository => repository.FetchAsync(It.IsAny<ClanId>()))
+                .ReturnsAsync(
+                    new List<Candidature>
+                    {
+                        new Candidature(new UserId(), clanId),
+                        new Candidature(new UserId(), clanId),
+                        new Candidature(new UserId(), clanId)
+                    })
+                .Verifiable();
+
+            mockCandidatureRepository.Setup(repository => repository.Delete(It.IsAny<Candidature>())).Verifiable();
+
+            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
+
+            // Act
+            await service.DeleteCandidaturesAsync(new ClanId());
+
+            // Assert
+            mockCandidatureRepository.Verify(repository => repository.FetchAsync(It.IsAny<ClanId>()), Times.Once);
+            mockCandidatureRepository.Verify(repository => repository.Delete(It.IsAny<Candidature>()), Times.Exactly(3));
+            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task DeleteCandidaturesAsync_WithUserId()
+        {
+            // Arrange
+            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
+            var mockClanRepository = new Mock<IClanRepository>();
+
+            var userId = new UserId();
+
+            mockCandidatureRepository.Setup(repository => repository.FetchAsync(It.IsAny<UserId>()))
+                .ReturnsAsync(
+                    new List<Candidature>
+                    {
+                        new Candidature(userId, new ClanId()),
+                        new Candidature(userId, new ClanId()),
+                        new Candidature(userId, new ClanId())
+                    })
+                .Verifiable();
+
+            mockCandidatureRepository.Setup(repository => repository.Delete(It.IsAny<Candidature>())).Verifiable();
+
+            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
+
+            // Act
+            await service.DeleteCandidaturesAsync(new UserId());
+
+            // Assert
+            mockCandidatureRepository.Verify(repository => repository.FetchAsync(It.IsAny<UserId>()), Times.Once);
+            mockCandidatureRepository.Verify(repository => repository.Delete(It.IsAny<Candidature>()), Times.Exactly(3));
+            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+        }
+
+        [Fact]
         public async Task FetchCandidaturesAsync_WithClanId_ShouldBeOfTypeCandidatureList()
         {
             // Arrange
@@ -40,12 +211,13 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var clanId = new ClanId();
 
             mockCandidatureRepository.Setup(repository => repository.FetchAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new List<Candidature>()
-                {
-                    new Candidature(new UserId(), clanId),
-                    new Candidature(new UserId(), clanId),
-                    new Candidature(new UserId(), clanId)
-                })
+                .ReturnsAsync(
+                    new List<Candidature>
+                    {
+                        new Candidature(new UserId(), clanId),
+                        new Candidature(new UserId(), clanId),
+                        new Candidature(new UserId(), clanId)
+                    })
                 .Verifiable();
 
             var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
@@ -58,7 +230,6 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             mockCandidatureRepository.Verify(repository => repository.FetchAsync(It.IsAny<ClanId>()), Times.Once);
         }
 
-
         [Fact]
         public async Task FetchCandidaturesAsync_WithUserId_ShouldBeOfTypeCandidatureList()
         {
@@ -69,12 +240,13 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var userId = new UserId();
 
             mockCandidatureRepository.Setup(repository => repository.FetchAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(new List<Candidature>()
-                {
-                    new Candidature(userId, new ClanId()),
-                    new Candidature(userId, new ClanId()),
-                    new Candidature(userId, new ClanId())
-                })
+                .ReturnsAsync(
+                    new List<Candidature>
+                    {
+                        new Candidature(userId, new ClanId()),
+                        new Candidature(userId, new ClanId()),
+                        new Candidature(userId, new ClanId())
+                    })
                 .Verifiable();
 
             var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
@@ -115,16 +287,11 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var mockCandidatureRepository = new Mock<ICandidatureRepository>();
             var mockClanRepository = new Mock<IClanRepository>();
 
-            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(false)
-                .Verifiable();
+            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockCandidatureRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()))
-                .ReturnsAsync(false)
-                .Verifiable();
+            mockCandidatureRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>())).ReturnsAsync(false).Verifiable();
 
-            mockCandidatureRepository.Setup(repository => repository.Create(It.IsAny<Candidature>()))
-                .Verifiable();
+            mockCandidatureRepository.Setup(repository => repository.Create(It.IsAny<Candidature>())).Verifiable();
 
             mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
@@ -144,41 +311,15 @@ namespace eDoxa.Clans.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task SendCandidatureAsync_WhenIsMember_ShouldBeOfTypeValidationResultWithErrors()
-        {
-            // Arrange
-            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
-            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(true)
-                .Verifiable();
-
-            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
-
-            // Act
-            var result = await service.SendCandidatureAsync(new UserId(), new ClanId());
-
-            // Assert
-            result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
-            mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
-        }
-
-        [Fact]
         public async Task SendCandidatureAsync_WhenCandidatureExist_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
             var mockCandidatureRepository = new Mock<ICandidatureRepository>();
             var mockClanRepository = new Mock<IClanRepository>();
 
-            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(false)
-                .Verifiable();
+            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockCandidatureRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()))
-                .ReturnsAsync(true)
-                .Verifiable();
+            mockCandidatureRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>())).ReturnsAsync(true).Verifiable();
 
             var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
 
@@ -193,184 +334,23 @@ namespace eDoxa.Clans.UnitTests.Application.Services
         }
 
         [Fact]
-        public async Task AcceptCandidatureAsync_ShouldBeOfTypeValidationResult()
+        public async Task SendCandidatureAsync_WhenIsMember_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
             var mockCandidatureRepository = new Mock<ICandidatureRepository>();
             var mockClanRepository = new Mock<IClanRepository>();
 
-            var candidature = new Candidature(new UserId(), new ClanId());
-
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()))
-                .ReturnsAsync(true)
-                .Verifiable();
-
-            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
             var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
 
             // Act
-            var result = await service.AcceptCandidatureAsync(candidature, new UserId());
-
-            // Assert
-            result.Should().BeOfType<DomainValidationResult>();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
-            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task AcceptCandidatureAsync_WhenNotOwner_ShouldBeOfTypeValidationResultWithErrors()
-        {
-            // Arrange
-            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
-            var candidature = new Candidature(new UserId(), new ClanId());
-
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()))
-                .ReturnsAsync(false)
-                .Verifiable();
-
-            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
-
-            // Act
-            var result = await service.AcceptCandidatureAsync(candidature, new UserId());
+            var result = await service.SendCandidatureAsync(new UserId(), new ClanId());
 
             // Assert
             result.Should().BeOfType<DomainValidationResult>();
             result.Errors.Should().NotBeEmpty();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+            mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
         }
-
-        [Fact]
-        public async Task DeclineCandidatureAsync_ShouldBeOfTypeValidationResult()
-        {
-            // Arrange
-            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
-            var candidature = new Candidature(new UserId(), new ClanId());
-
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()))
-                .ReturnsAsync(true)
-                .Verifiable();
-
-            mockCandidatureRepository.Setup(repository => repository.Delete(It.IsAny<Candidature>()))
-                .Verifiable();
-
-            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-
-            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
-
-            // Act
-            var result = await service.DeclineCandidatureAsync(candidature, new UserId());
-
-            // Assert
-            result.Should().BeOfType<DomainValidationResult>();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
-            mockCandidatureRepository.Verify(repository => repository.Delete(It.IsAny<Candidature>()), Times.Once);
-            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeclineCandidatureAsync_WhenNotOwner_ShouldBeOfTypeValidationResultWithErrors()
-        {
-            // Arrange
-            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
-            var candidature = new Candidature(new UserId(), new ClanId());
-
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()))
-                .ReturnsAsync(false)
-                .Verifiable();
-
-            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
-
-            // Act
-            var result = await service.DeclineCandidatureAsync(candidature, new UserId());
-
-            // Assert
-            result.Should().BeOfType<DomainValidationResult>();
-            result.Errors.Should().NotBeEmpty();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteCandidaturesAsync_WithUserId()
-        {
-            // Arrange
-            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
-            var userId = new UserId();
-
-            mockCandidatureRepository.Setup(repository => repository.FetchAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(new List<Candidature>()
-                {
-                    new Candidature(userId, new ClanId()),
-                    new Candidature(userId, new ClanId()),
-                    new Candidature(userId, new ClanId())
-                })
-                .Verifiable();
-
-            mockCandidatureRepository.Setup(repository => repository.Delete(It.IsAny<Candidature>()))
-                .Verifiable();
-
-            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-
-            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
-
-            // Act
-            await service.DeleteCandidaturesAsync(new UserId());
-
-            // Assert
-            mockCandidatureRepository.Verify(repository => repository.FetchAsync(It.IsAny<UserId>()), Times.Once);
-            mockCandidatureRepository.Verify(repository => repository.Delete(It.IsAny<Candidature>()), Times.Exactly(3));
-            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task DeleteCandidaturesAsync_WithClanId()
-        {
-            // Arrange
-            var mockCandidatureRepository = new Mock<ICandidatureRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
-            var clanId = new ClanId();
-
-            mockCandidatureRepository.Setup(repository => repository.FetchAsync(It.IsAny<ClanId>()))
-                .ReturnsAsync(new List<Candidature>()
-                {
-                    new Candidature(new UserId(), clanId),
-                    new Candidature(new UserId(), clanId),
-                    new Candidature(new UserId(), clanId)
-                })
-                .Verifiable();
-
-            mockCandidatureRepository.Setup(repository => repository.Delete(It.IsAny<Candidature>()))
-                .Verifiable();
-
-            mockCandidatureRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-
-            var service = new CandidatureService(mockCandidatureRepository.Object, mockClanRepository.Object);
-
-            // Act
-            await service.DeleteCandidaturesAsync(new ClanId());
-
-            // Assert
-            mockCandidatureRepository.Verify(repository => repository.FetchAsync(It.IsAny<ClanId>()), Times.Once);
-            mockCandidatureRepository.Verify(repository => repository.Delete(It.IsAny<Candidature>()), Times.Exactly(3));
-            mockCandidatureRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
-        }
-
     }
 }

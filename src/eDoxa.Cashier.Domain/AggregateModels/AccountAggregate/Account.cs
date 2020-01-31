@@ -25,23 +25,23 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public IReadOnlyCollection<ITransaction> Transactions => _transactions;
 
-        public Balance GetBalanceFor(Currency currency)
+        public Balance GetBalanceFor(CurrencyType currencyType)
         {
-            if (currency == Currency.Money)
+            if (currencyType == CurrencyType.Money)
             {
                 var accountMoney = new MoneyAccountDecorator(this);
 
                 return accountMoney.Balance;
             }
 
-            if (currency == Currency.Token)
+            if (currencyType == CurrencyType.Token)
             {
                 var accountToken = new TokenAccountDecorator(this);
 
                 return accountToken.Balance;
             }
 
-            throw new ArgumentException(nameof(currency));
+            throw new ArgumentException(nameof(currencyType));
         }
 
         public void CreateTransaction(ITransaction transaction)

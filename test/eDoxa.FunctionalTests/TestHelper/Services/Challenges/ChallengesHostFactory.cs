@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengesHostFactory.cs
-// Date Created: 2019-12-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Challenges.Api;
 using eDoxa.Challenges.Infrastructure;

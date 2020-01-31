@@ -4,9 +4,11 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
@@ -19,7 +21,7 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId challengeId,
-            PayoutEntries payoutEntries,
+            ChallengePayoutEntries payoutEntries,
             EntryFee entryFee,
             CancellationToken cancellationToken = default
         );
@@ -27,5 +29,11 @@ namespace eDoxa.Cashier.Domain.Services
         Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
 
         Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
+
+        Task CloseChallengeAsync(
+            IChallenge challenge,
+            Dictionary<UserId, decimal?> scoreboard,
+            CancellationToken cancellationToken = default
+        );
     }
 }

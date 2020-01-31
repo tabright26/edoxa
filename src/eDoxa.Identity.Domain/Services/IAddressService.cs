@@ -18,7 +18,7 @@ namespace eDoxa.Identity.Domain.Services
     {
         Task<Address?> FindUserAddressAsync(User user, AddressId addressId);
 
-        Task<IReadOnlyCollection<Address>> GetAddressBookAsync(User user);
+        Task<IReadOnlyCollection<Address>> FetchAddressBookAsync(User user);
 
         Task<IDomainValidationResult> AddAddressAsync(
             UserId userId,

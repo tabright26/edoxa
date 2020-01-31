@@ -21,19 +21,19 @@ using Xunit;
 
 namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class ChallengeClosedIntegrationEventHandlerTest : UnitTest // GABRIEL: UNIT TESTS
+    public sealed class ChallengeClosedIntegrationEventHandlerTest : UnitTest
     {
         public ChallengeClosedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
 
-        [Fact(Skip = "Must be updated.")]
+        [Fact]
         public async Task HandleAsync_WhenChallengeClosedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
             var mockUserService = new Mock<IUserService>();
 
-            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
+            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -45,10 +45,10 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                 PayoutPrizes =
                 {
                     {
-                        "test", new PrizeDto
+                        new UserId().ToString(), new CurrencyDto
                         {
                             Amount = 50.0m,
-                            Currency = EnumCurrency.Money
+                            Type = EnumCurrencyType.Money
                         }
                     }
                 }
@@ -58,7 +58,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
         }
     }
 }

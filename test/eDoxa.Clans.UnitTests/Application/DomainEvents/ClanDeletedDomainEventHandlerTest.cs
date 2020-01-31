@@ -1,8 +1,8 @@
-﻿// Filename: CandidatureAcceptedDomainEventHandler.cs
-// Date Created: 2019-10-01
-//
+﻿// Filename: ClanDeletedDomainEventHandlerTest.cs
+// Date Created: 2019-12-26
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Threading;
@@ -37,20 +37,17 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
             var mockInvitationService = new Mock<IInvitationService>();
             var mockLogger = new MockLogger<ClanDeletedDomainEventHandler>();
 
+            mockClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
-            mockClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            mockCandidationService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
-            mockCandidationService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            mockInvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
-            mockInvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-
-            var domainEventHandler = new ClanDeletedDomainEventHandler(mockClanService.Object, mockCandidationService.Object, mockInvitationService.Object, mockLogger.Object);
+            var domainEventHandler = new ClanDeletedDomainEventHandler(
+                mockClanService.Object,
+                mockCandidationService.Object,
+                mockInvitationService.Object,
+                mockLogger.Object);
 
             // Act
             await domainEventHandler.Handle(new ClanDeletedDomainEvent(new ClanId()), CancellationToken.None);
@@ -70,20 +67,17 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
             var mockInvitationService = new Mock<IInvitationService>();
             var mockLogger = new MockLogger<ClanDeletedDomainEventHandler>();
 
+            mockClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
-            mockClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
+            mockCandidationService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>())).ThrowsAsync(new Exception("test")).Verifiable();
 
-            mockCandidationService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>()))
-                .ThrowsAsync(new Exception("test"))
-                .Verifiable();
+            mockInvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>())).ThrowsAsync(new Exception("test")).Verifiable();
 
-            mockInvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>()))
-                .ThrowsAsync(new Exception("test"))
-                .Verifiable();
-
-            var domainEventHandler = new ClanDeletedDomainEventHandler(mockClanService.Object, mockCandidationService.Object, mockInvitationService.Object, mockLogger.Object);
+            var domainEventHandler = new ClanDeletedDomainEventHandler(
+                mockClanService.Object,
+                mockCandidationService.Object,
+                mockInvitationService.Object,
+                mockLogger.Object);
 
             // Act
             await domainEventHandler.Handle(new ClanDeletedDomainEvent(new ClanId()), CancellationToken.None);

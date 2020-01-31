@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
@@ -39,9 +39,9 @@ namespace eDoxa.Cashier.TestHelper.Extensions
 
             transaction.Id.Should().NotBeEmpty();
 
-            (transaction.Amount >= decimal.Zero).Should().BeTrue();
+            (transaction.Currency.Amount >= decimal.Zero).Should().BeTrue();
 
-            transaction.Currency.Should().NotBeNull();
+            transaction.Currency.Type.Should().NotBeNull();
 
             transaction.Type.Should().NotBeNull();
 
@@ -52,7 +52,7 @@ namespace eDoxa.Cashier.TestHelper.Extensions
         {
             balance.Should().NotBeNull();
 
-            balance.Currency.Should().NotBeNull();
+            balance.CurrencyType.Should().NotBeNull();
 
             (balance.Available >= DecimalValue.FromDecimal(decimal.Zero)).Should().BeTrue();
 

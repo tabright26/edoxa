@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeFakerTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 
@@ -28,7 +28,6 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Data.Fakers
         {
         }
 
-        
         public static TheoryData<Game, ChallengeState, int> ChallengeFakerDataSets
         {
             get

@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
@@ -50,7 +49,11 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                         It.IsAny<UserId>(),
                         It.IsAny<string>(),
                         It.IsAny<Country>(),
-                        It.IsAny<string>()))
+                        It.IsAny<string>(),
+                        It.IsAny<string>(),
+                        It.IsAny<int>(),
+                        It.IsAny<int>(),
+                        It.IsAny<int>()))
                 .ReturnsAsync("AccountId")
                 .Verifiable();
 
@@ -66,12 +69,19 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                UserId = Guid.NewGuid().ToString(),
+                UserId = new UserId(),
                 Email = new EmailDto
                 {
                     Address = "gabriel@edoxa.gg"
                 },
-                CountryIsoCode = EnumCountryIsoCode.CA
+                Country = EnumCountryIsoCode.CA,
+                Ip = "10.10.10.10",
+                Dob = new DobDto
+                {
+                    Day = 1,
+                    Month = 1,
+                    Year = 2000
+                }
             };
 
             // Act
@@ -86,7 +96,11 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                     It.IsAny<UserId>(),
                     It.IsAny<string>(),
                     It.IsAny<Country>(),
-                    It.IsAny<string>()),
+                    It.IsAny<string>(),
+                    It.IsAny<string>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>(),
+                    It.IsAny<int>()),
                 Times.Once);
 
             mockStripeService.Verify(referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);

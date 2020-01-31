@@ -17,7 +17,6 @@ using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.DelegatingHandlers;
-using eDoxa.Seedwork.Application.DevTools.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
@@ -155,8 +154,6 @@ namespace eDoxa.Cashier.Web.Aggregator
                 endpoints =>
                 {
                     endpoints.MapControllers();
-
-                    endpoints.MapConfigurationRoute<CashierWebAggregatorAppSettings>(AppSettings.ApiResource);
 
                     endpoints.MapCustomHealthChecks();
                 });

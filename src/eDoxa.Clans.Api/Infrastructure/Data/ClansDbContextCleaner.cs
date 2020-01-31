@@ -1,47 +1,44 @@
 ﻿// Filename: ClansDbContextCleaner.cs
-// Date Created: 2019-09-15
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
+using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Repositories;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Clans.Api.Infrastructure.Data
 {
-    internal sealed class ClansDbContextCleaner : IDbContextCleaner
+    internal sealed class ClansDbContextCleaner : DbContextCleaner
     {
-        private readonly ClansDbContext _context;
         private readonly IClanRepository _clanRepository;
-        private readonly IWebHostEnvironment _environment;
 
-        public ClansDbContextCleaner(IClanRepository clanRepository, IWebHostEnvironment environment, ClansDbContext context)
+        public ClansDbContextCleaner(
+            IClanRepository clanRepository,
+            ClansDbContext context,
+            IWebHostEnvironment environment,
+            ILogger<ClansDbContextCleaner> logger
+        ) : base(context, environment, logger)
         {
             _clanRepository = clanRepository;
-            _environment = environment;
-            _context = context;
+            Clans = context.Set<Clan>();
         }
 
-        public async Task CleanupAsync()
+        private DbSet<Clan> Clans { get; }
+
+        protected override void Cleanup()
         {
-            if (!_environment.IsProduction())
+            foreach (var clan in Clans)
             {
-                var clans = _context.Clans;
+                _clanRepository.DeleteLogoAsync(clan.Id).GetAwaiter().GetResult();
 
-                foreach (var clan in clans)
-                {
-                    await _clanRepository.DeleteLogoAsync(clan.Id);
-                }
-
-                _context.Clans.RemoveRange(clans);
-
-                await _context.SaveChangesAsync();
+                Clans.Remove(clan);
             }
         }
     }

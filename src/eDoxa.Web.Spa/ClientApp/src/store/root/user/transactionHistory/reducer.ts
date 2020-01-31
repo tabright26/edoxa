@@ -2,7 +2,6 @@ import {
   LOAD_USER_TRANSACTION_HISTORY,
   LOAD_USER_TRANSACTION_HISTORY_SUCCESS,
   LOAD_USER_TRANSACTION_HISTORY_FAIL,
-  UserTransactionActions,
   CREATE_USER_TRANSACTION,
   CREATE_USER_TRANSACTION_SUCCESS,
   CREATE_USER_TRANSACTION_FAIL
@@ -10,6 +9,8 @@ import {
 import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserTransactionState } from "./types";
+import { RootActions } from "store/types";
+import { UserTransaction } from "types";
 
 export const initialState: UserTransactionState = {
   data: [],
@@ -17,14 +18,11 @@ export const initialState: UserTransactionState = {
   loading: false
 };
 
-export const reducer: Reducer<
-  UserTransactionState,
-  UserTransactionActions
-> = produce(
-  (
-    draft: Draft<UserTransactionState>,
-    action: UserTransactionActions
-  ) => {
+const compare = (left: UserTransaction, right: UserTransaction) =>
+  right.timestamp - left.timestamp;
+
+export const reducer: Reducer<UserTransactionState, RootActions> = produce(
+  (draft: Draft<UserTransactionState>, action: RootActions) => {
     switch (action.type) {
       case LOAD_USER_TRANSACTION_HISTORY: {
         draft.error = null;
@@ -40,7 +38,15 @@ export const reducer: Reducer<
             break;
           }
           default: {
-            draft.data = data;
+            data.forEach(transaction => {
+              const index = draft.data.findIndex(x => x.id === transaction.id);
+              if (index === -1) {
+                draft.data.push(transaction);
+              } else {
+                draft.data[index] = transaction;
+              }
+            });
+            draft.data.sort(compare);
             draft.error = null;
             draft.loading = false;
             break;
@@ -60,6 +66,7 @@ export const reducer: Reducer<
       }
       case CREATE_USER_TRANSACTION_SUCCESS: {
         draft.data.push(action.payload.data);
+        draft.data.sort(compare);
         draft.error = null;
         draft.loading = false;
         break;

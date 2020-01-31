@@ -25,12 +25,6 @@ export class AuthorizeService {
     return user && user.profile;
   }
 
-  async getAccessToken() {
-    await this.ensureUserManagerInitialized();
-    const user = await this.userManager.getUser();
-    return user && user.access_token;
-  }
-
   // We try to authenticate the user in three different ways:
   // 1) We try to see if we can authenticate the user silently. This happens
   //    when the user is already logged in on the IdP and is done using a hidden iframe
@@ -128,6 +122,11 @@ export class AuthorizeService {
   async signOut(state) {
     await this.ensureUserManagerInitialized();
     try {
+      if (this._popUpDisabled) {
+        throw new Error(
+          "Popup disabled. Change 'AuthorizeService.js:AuthorizeService._popupDisabled' to false to enable it."
+        );
+      }
       await this.userManager.signoutPopup(
         this.createArguments(LoginMode.PopUp)
       );
@@ -136,9 +135,11 @@ export class AuthorizeService {
     } catch (popupSignOutError) {
       console.log("Popup signout error: ", popupSignOutError);
       try {
+        console.log(state);
         const signOutRequest = await this.userManager.createSignoutRequest(
           this.createArguments(LoginMode.Redirect, state)
         );
+        console.log(signOutRequest);
         return this.redirect(signOutRequest.url);
       } catch (redirectSignOutError) {
         console.log("Redirect signout error: ", redirectSignOutError);

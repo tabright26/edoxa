@@ -10,13 +10,13 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
-using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
@@ -32,6 +32,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class UserDepositFailedIntegrationEventHandlerTest : UnitTest
     {
+        public UserDepositFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_WhenUserDepositFailedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -64,11 +70,14 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 UserId = userId,
                 Transaction = new TransactionDto
                 {
-                    Amount = new DecimalValue(50.0m),
                     Id = new TransactionId(),
                     Description = "test",
                     Status = EnumTransactionStatus.Failed,
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = Money.Fifty.Amount
+                    },
                     Timestamp = Timestamp.FromDateTime(DateTime.UtcNow),
                     Type = EnumTransactionType.Deposit
                 }
@@ -87,10 +96,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 Times.Once);
 
             mockLogger.Verify(Times.Once());
-        }
-
-        public UserDepositFailedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

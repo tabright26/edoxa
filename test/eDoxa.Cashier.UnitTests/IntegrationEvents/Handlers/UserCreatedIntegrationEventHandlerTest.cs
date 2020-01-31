@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
@@ -26,6 +25,12 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class UserCreatedIntegrationEventHandlerTest : UnitTest
     {
+        public UserCreatedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_WhenUserCreatedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -45,12 +50,13 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
-                UserId = Guid.NewGuid().ToString(),
+                UserId = new UserId(),
                 Email = new EmailDto
                 {
                     Address = "noreply@edoxa.gg"
                 },
-                CountryIsoCode = EnumCountryIsoCode.CA
+                Country = EnumCountryIsoCode.CA,
+                Ip = "10.10.10.10"
             };
 
             // Act
@@ -59,10 +65,6 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             // Assert
             mockAccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
             mockAccountService.Verify(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()), Times.Once);
-        }
-
-        public UserCreatedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

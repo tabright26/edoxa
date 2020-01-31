@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengePayoutStrategyTest.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -21,26 +21,31 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
 {
     public sealed class ChallengePayoutStrategyTest : UnitTest
     {
-        
+        public ChallengePayoutStrategyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public void GetPayout_WithEntries_ShouldNotBeNull()
         {
             // Arrange
-            var payoutStrategy = new ChallengePayoutStrategy();
+            var payoutStrategy = new DefaultChallengePayoutStrategy();
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(
-                new List<Bucket>
+            var buckets = new ChallengePayoutBuckets(
+                new List<ChallengePayoutBucket>
                 {
                     bucket
                 });
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
-            var payout = payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token));
+            var payout = payoutStrategy.GetChallengePayout(payoutEntries, new EntryFee(5000, CurrencyType.Token));
 
             // Assert
             payout.Should().NotBeNull();
@@ -50,23 +55,19 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
         public void GetPayout_WithoutEntries_ShouldBeNull()
         {
             // Arrange
-            var payoutStrategy = new ChallengePayoutStrategy();
+            var payoutStrategy = new DefaultChallengePayoutStrategy();
 
-            var bucket = new Bucket(Prize.None, BucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
-            var buckets = new Buckets(new List<Bucket>());
+            var buckets = new ChallengePayoutBuckets(new List<ChallengePayoutBucket>());
 
-            var payoutEntries = new PayoutEntries(buckets);
+            var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
-            var action = new Func<IPayout>(() => payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token)));
+            var action = new Func<IChallengePayout>(() => payoutStrategy.GetChallengePayout(payoutEntries, new EntryFee(5000, CurrencyType.Token)));
 
             // Assert
             action.Should().Throw<NotSupportedException>();
-        }
-
-        public ChallengePayoutStrategyTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

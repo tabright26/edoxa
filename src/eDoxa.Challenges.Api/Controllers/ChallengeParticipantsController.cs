@@ -1,13 +1,15 @@
 ﻿// Filename: ChallengeParticipantsController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Infrastructure.Queries.Extensions;
+using AutoMapper;
+
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 using eDoxa.Seedwork.Domain.Misc;
@@ -27,10 +29,12 @@ namespace eDoxa.Challenges.Api.Controllers
     public class ChallengeParticipantsController : ControllerBase
     {
         private readonly IParticipantQuery _participantQuery;
+        private readonly IMapper _mapper;
 
-        public ChallengeParticipantsController(IParticipantQuery participantQuery)
+        public ChallengeParticipantsController(IParticipantQuery participantQuery, IMapper mapper)
         {
             _participantQuery = participantQuery;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -38,21 +42,16 @@ namespace eDoxa.Challenges.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ParticipantDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> GetAsync(ChallengeId challengeId)
+        public async Task<IActionResult> FetchChallengeParticipantsAsync(ChallengeId challengeId)
         {
-            if (ModelState.IsValid)
+            var participants = await _participantQuery.FetchChallengeParticipantsAsync(challengeId);
+
+            if (!participants.Any())
             {
-                var responses = await _participantQuery.FetchChallengeParticipantResponsesAsync(challengeId);
-
-                if (!responses.Any())
-                {
-                    return this.NoContent();
-                }
-
-                return this.Ok(responses);
+                return this.NoContent();
             }
 
-            return this.BadRequest(new ValidationProblemDetails(ModelState));
+            return this.Ok(_mapper.Map<IReadOnlyCollection<ParticipantDto>>(participants));
         }
     }
 }

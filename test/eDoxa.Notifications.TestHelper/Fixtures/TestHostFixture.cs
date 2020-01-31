@@ -1,8 +1,8 @@
-﻿// Filename: TestApiFixture.cs
-// Date Created: 2019-10-03
+﻿// Filename: TestHostFixture.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Notifications.Api;
 using eDoxa.Notifications.Infrastructure;

@@ -1,40 +1,52 @@
 ﻿// Filename: IdentityDbContextCleaner.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
-
+using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
+using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
+using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
+using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Identity.Api.Infrastructure.Data
 {
-    internal sealed class IdentityDbContextCleaner : IDbContextCleaner
+    internal sealed class IdentityDbContextCleaner : DbContextCleaner
     {
-        private readonly IWebHostEnvironment _environment;
-        private readonly IdentityDbContext _context;
-
-        public IdentityDbContextCleaner(IWebHostEnvironment environment, IdentityDbContext context)
+        public IdentityDbContextCleaner(IdentityDbContext context, IWebHostEnvironment environment, ILogger<IdentityDbContextCleaner> logger) : base(
+            context,
+            environment,
+            logger)
         {
-            _environment = environment;
-            _context = context;
+            Users = context.Set<User>();
+            Doxatags = context.Set<Doxatag>();
+            Addresses = context.Set<Address>();
+            Roles = context.Set<Role>();
         }
 
-        public async Task CleanupAsync()
+        private DbSet<User> Users { get; }
+
+        private DbSet<Doxatag> Doxatags { get; }
+
+        private DbSet<Address> Addresses { get; }
+
+        private DbSet<Role> Roles { get; }
+
+        protected override void Cleanup()
         {
-            if (!_environment.IsProduction())
-            {
-                _context.Users.RemoveRange(_context.Users);
+            Users.RemoveRange(Users);
 
-                _context.Roles.RemoveRange(_context.Roles);
+            Roles.RemoveRange(Roles);
 
-                await _context.SaveChangesAsync();
-            }
+            Addresses.RemoveRange(Addresses);
+
+            Doxatags.RemoveRange(Doxatags);
         }
     }
 }

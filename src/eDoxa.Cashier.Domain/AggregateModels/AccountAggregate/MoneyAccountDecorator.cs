@@ -11,15 +11,18 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class MoneyAccountDecorator : AccountDecorator, IMoneyAccount
     {
+        public static readonly TimeSpan DepositInterval = TimeSpan.FromDays(1);
+        public static readonly TimeSpan WithdrawalInterval = TimeSpan.FromDays(1);
+
         public MoneyAccountDecorator(IAccount account) : base(account)
         {
         }
 
-        public Balance Balance => new Balance(Transactions, Currency.Money);
+        public Balance Balance => new Balance(Transactions, CurrencyType.Money);
 
         public DateTime? LastDeposit =>
             Transactions.Where(
-                    transaction => transaction.Currency.Type == Currency.Money &&
+                    transaction => transaction.Currency.Type == CurrencyType.Money &&
                                    transaction.Type == TransactionType.Deposit &&
                                    transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction.Timestamp)
@@ -28,7 +31,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public DateTime? LastWithdraw =>
             Transactions.Where(
-                    transaction => transaction.Currency.Type == Currency.Money &&
+                    transaction => transaction.Currency.Type == CurrencyType.Money &&
                                    transaction.Type == TransactionType.Withdrawal &&
                                    transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction.Timestamp)
@@ -78,6 +81,17 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return transaction;
         }
 
+        public ITransaction Promotion(Money amount, TransactionMetadata? metadata = null)
+        {
+            var builder = new TransactionBuilder(TransactionType.Promotion, amount).WithMetadata(metadata);
+
+            var transaction = builder.Build();
+
+            this.CreateTransaction(transaction);
+
+            return transaction;
+        }
+
         public ITransaction Withdrawal(Money amount)
         {
             if (!this.CanWithdraw(amount))
@@ -96,12 +110,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public bool IsDepositAvailable()
         {
-            return !(LastDeposit.HasValue && LastDeposit.Value.AddDays(1) >= DateTime.UtcNow);
+            return !(LastDeposit.HasValue && LastDeposit.Value.Add(DepositInterval) >= DateTime.UtcNow);
         }
 
         public bool IsWithdrawalAvailable()
         {
-            return !(LastWithdraw.HasValue && LastWithdraw.Value.AddDays(7) >= DateTime.UtcNow);
+            return !(LastWithdraw.HasValue && LastWithdraw.Value.Add(WithdrawalInterval) >= DateTime.UtcNow);
         }
 
         public bool HaveSufficientMoney(Money money)

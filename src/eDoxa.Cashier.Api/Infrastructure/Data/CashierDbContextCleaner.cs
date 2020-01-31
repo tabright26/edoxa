@@ -1,40 +1,44 @@
 ﻿// Filename: CashierDbContextCleaner.cs
-// Date Created: 2019-08-18
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Threading.Tasks;
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Infrastructure;
+using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Cashier.Api.Infrastructure.Data
 {
-    internal sealed class CashierDbContextCleaner : IDbContextCleaner
+    internal sealed class CashierDbContextCleaner : DbContextCleaner
     {
-        private readonly CashierDbContext _context;
-        private readonly IWebHostEnvironment _environment;
-
-        public CashierDbContextCleaner(IWebHostEnvironment environment, CashierDbContext context)
+        public CashierDbContextCleaner(CashierDbContext context, IWebHostEnvironment environment, ILogger<CashierDbContextCleaner> logger) : base(
+            context,
+            environment,
+            logger)
         {
-            _environment = environment;
-            _context = context;
+            Accounts = context.Set<AccountModel>();
+            ChallengePayouts = context.Set<ChallengePayoutModel>();
+            Promotions = context.Set<PromotionModel>();
         }
 
-        public async Task CleanupAsync()
+        private DbSet<AccountModel> Accounts { get; }
+
+        private DbSet<ChallengePayoutModel> ChallengePayouts { get; }
+
+        private DbSet<PromotionModel> Promotions { get; }
+
+        protected override void Cleanup()
         {
-            if (!_environment.IsProduction())
-            {
-                _context.Accounts.RemoveRange(_context.Accounts);
+            Accounts.RemoveRange(Accounts);
 
-                _context.Challenges.RemoveRange(_context.Challenges);
+            ChallengePayouts.RemoveRange(ChallengePayouts);
 
-                await _context.SaveChangesAsync();
-            }
+            Promotions.RemoveRange(Promotions);
         }
     }
 }

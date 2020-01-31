@@ -1,17 +1,17 @@
 ﻿// Filename: ChallengeResponseCollectionAssertions.cs
-// Date Created: 2019-10-02
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
+using eDoxa.Challenges.TestHelper.Assertions.Extensions;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
 
 using FluentAssertions;
 using FluentAssertions.Collections;
 using FluentAssertions.Execution;
-using eDoxa.Challenges.TestHelper.Assertions.Extensions;
 
 namespace eDoxa.Challenges.TestHelper.Assertions
 {

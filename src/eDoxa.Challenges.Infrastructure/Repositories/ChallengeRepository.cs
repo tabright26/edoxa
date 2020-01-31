@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -10,13 +10,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
+using eDoxa.Challenges.Infrastructure.Extensions;
 using eDoxa.Challenges.Infrastructure.Models;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure;
 
 using LinqKit;
 
@@ -24,22 +25,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Challenges.Infrastructure.Repositories
 {
-    public sealed partial class ChallengeRepository
+    public sealed partial class ChallengeRepository : Repository<IChallenge, ChallengeModel>
     {
-        private readonly IDictionary<Guid, IChallenge> _materializedIds = new Dictionary<Guid, IChallenge>();
-        private readonly IDictionary<IChallenge, ChallengeModel> _materializedObjects = new Dictionary<IChallenge, ChallengeModel>();
-        private readonly IMapper _mapper;
-        private readonly ChallengesDbContext _context;
-
-        public ChallengeRepository(ChallengesDbContext context, IMapper mapper)
+        public ChallengeRepository(ChallengesDbContext context)
         {
-            _context = context;
-            _mapper = mapper;
+            UnitOfWork = context;
+            Challenges = context.Set<ChallengeModel>();
         }
+
+        private DbSet<ChallengeModel> Challenges { get; }
+
+        private IUnitOfWork UnitOfWork { get; }
 
         private async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync(int? game = null, int? state = null)
         {
-            var challenges = from challenge in _context.Challenges.Include(challenge => challenge.Participants)
+            var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
                                  .ThenInclude(participant => participant.Matches)
                                  .AsExpandable()
                              where (game == null || challenge.Game == game) && (state == null || challenge.State == state)
@@ -50,7 +50,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
         {
-            var challenges = from challenge in _context.Challenges.Include(challenge => challenge.Participants)
+            var challenges = from challenge in Challenges.Include(challenge => challenge.Participants)
                                  .ThenInclude(participant => participant.Matches)
                                  .AsExpandable()
                              where challenge.Id == challengeId
@@ -61,7 +61,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         private async Task<bool> ChallengeModelExistsAsync(Guid challengeId)
         {
-            var challenges = from challenge in _context.Challenges.AsExpandable()
+            var challenges = from challenge in Challenges.AsExpandable()
                              where challenge.Id == challengeId
                              select challenge;
 
@@ -81,40 +81,36 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         public void Create(IChallenge challenge)
         {
-            var challengeModel = _mapper.Map<ChallengeModel>(challenge);
+            var challengeModel = challenge.ToModel();
 
-            _context.Challenges.Add(challengeModel);
+            Challenges.Add(challengeModel);
 
-            _materializedObjects[challenge] = challengeModel;
+            Mappings[challenge] = challengeModel;
         }
 
         public void Delete(IChallenge challenge)
         {
-            var challengeModel = _materializedObjects[challenge];
+            var challengeModel = Mappings[challenge];
 
-            _materializedObjects.Remove(challenge);
+            Mappings.Remove(challenge);
 
-            _materializedIds.Remove(challenge.Id);
-
-            _context.Challenges.Remove(challengeModel);
+            Challenges.Remove(challengeModel);
         }
 
         public async Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null)
         {
             var challenges = await this.FetchChallengeModelsAsync(game?.Value, state?.Value);
 
-            return challenges.Select(
-                    challengeModel =>
-                    {
-                        var challenge = _mapper.Map<IChallenge>(challengeModel);
+            return challenges.Select(Selector).ToList();
 
-                        _materializedObjects[challenge] = challengeModel;
+            IChallenge Selector(ChallengeModel challengeModel)
+            {
+                var challenge = challengeModel.ToEntity();
 
-                        _materializedIds[challenge.Id] = challenge;
+                Mappings[challenge] = challengeModel;
 
-                        return challenge;
-                    })
-                .ToList();
+                return challenge;
+            }
         }
 
         public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
@@ -129,7 +125,9 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
         public async Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId)
         {
-            if (_materializedIds.TryGetValue(challengeId, out var challenge))
+            var challenge = Mappings.Keys.SingleOrDefault(x => x.Id == challengeId);
+
+            if (challenge != null)
             {
                 return challenge;
             }
@@ -141,28 +139,21 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
                 return null;
             }
 
-            challenge = _mapper.Map<IChallenge>(challengeModel);
+            challenge = challengeModel.ToEntity();
 
-            _materializedObjects[challenge] = challengeModel;
-
-            _materializedIds[challengeId] = challenge;
+            Mappings[challenge] = challengeModel;
 
             return challenge;
         }
 
-        public async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
+        public override async Task CommitAsync(bool dispatchDomainEvents = true, CancellationToken cancellationToken = default)
         {
-            foreach (var (challenge, challengeModel) in _materializedObjects)
+            foreach (var (challenge, challengeModel) in Mappings)
             {
                 this.CopyChanges(challenge, challengeModel);
             }
 
-            await _context.CommitAsync(dispatchDomainEvents, cancellationToken);
-
-            foreach (var (challenge, challengeModel) in _materializedObjects)
-            {
-                _materializedIds[challengeModel.Id] = challenge;
-            }
+            await UnitOfWork.CommitAsync(dispatchDomainEvents, cancellationToken);
         }
 
         private void CopyChanges(IChallenge challenge, ChallengeModel challengeModel)
@@ -187,7 +178,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
             var participants =
                 challenge.Participants.Where(participant => challengeModel.Participants.All(participantModel => participantModel.Id != participant.Id));
 
-            foreach (var participant in _mapper.Map<ICollection<ParticipantModel>>(participants))
+            foreach (var participant in participants.Select(participant => participant.ToModel()).ToList())
             {
                 challengeModel.Participants.Add(participant);
             }
@@ -208,7 +199,7 @@ namespace eDoxa.Challenges.Infrastructure.Repositories
 
             var matches = participant.Matches.Where(match => participantModel.Matches.All(matchModel => matchModel.Id != match.Id));
 
-            foreach (var match in _mapper.Map<ICollection<MatchModel>>(matches))
+            foreach (var match in matches.Select(match => match.ToModel()))
             {
                 participantModel.Matches.Add(match);
             }

@@ -16,7 +16,7 @@ namespace eDoxa.Cashier.Api.Application.Factories
 
         public ChallengePayoutFactory(IChallengePayoutStrategy? strategy = null)
         {
-            _strategy = strategy ?? new ChallengePayoutStrategy();
+            _strategy = strategy ?? new DefaultChallengePayoutStrategy();
         }
 
         public IChallengePayoutStrategy CreateInstance()

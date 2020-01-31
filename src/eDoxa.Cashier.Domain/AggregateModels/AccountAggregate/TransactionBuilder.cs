@@ -1,8 +1,8 @@
 ﻿// Filename: TransactionBuilder.cs
-// Date Created: 2019-12-06
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 
@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TransactionBuilder : ITransactionBuilder
     {
-        public TransactionBuilder(TransactionType type, ICurrency currency)
+        public TransactionBuilder(TransactionType type, Currency currency)
         {
             Type = type;
             Currency = FormatCurrencyByType(type, currency);
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         }
 
         private TransactionBuilder(
-            ICurrency currency,
+            Currency currency,
             TransactionType type,
             TransactionDescription description,
             IDateTimeProvider provider,
@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             Metadata = metadata;
         }
 
-        private ICurrency Currency { get; }
+        private Currency Currency { get; }
 
         private TransactionType Type { get; }
 
@@ -88,7 +88,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 : this;
         }
 
-        private static TransactionDescription GetDefaultDescriptionByType(TransactionType type, ICurrency currency)
+        private static TransactionDescription GetDefaultDescriptionByType(TransactionType type, Currency currency)
         {
             if (currency is Money money)
             {
@@ -108,6 +108,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 }
 
                 if (TransactionType.Withdrawal == type)
+                {
+                    return new TransactionDescription($"{money}");
+                }
+
+                if (TransactionType.Promotion == type)
                 {
                     return new TransactionDescription($"{money}");
                 }
@@ -134,16 +139,21 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 {
                     return new TransactionDescription($"{token} tokens.");
                 }
+
+                if (TransactionType.Promotion == type)
+                {
+                    return new TransactionDescription($"{token} tokens.");
+                }
             }
 
             throw InvalidOperationException(type, currency);
         }
 
-        private static ICurrency FormatCurrencyByType(TransactionType type, ICurrency currency)
+        private static Currency FormatCurrencyByType(TransactionType type, Currency currency)
         {
             if (currency is Money money)
             {
-                if (TransactionType.Deposit == type || TransactionType.Payout == type)
+                if (TransactionType.Deposit == type || TransactionType.Payout == type || TransactionType.Promotion == type)
                 {
                     return money;
                 }
@@ -156,7 +166,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
             if (currency is Token token)
             {
-                if (TransactionType.Deposit == type || TransactionType.Payout == type || TransactionType.Reward == type)
+                if (TransactionType.Deposit == type || TransactionType.Payout == type || TransactionType.Reward == type || TransactionType.Promotion == type)
                 {
                     return token;
                 }
@@ -170,7 +180,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             throw InvalidOperationException(type, currency);
         }
 
-        private static InvalidOperationException InvalidOperationException(TransactionType type, ICurrency currency)
+        private static InvalidOperationException InvalidOperationException(TransactionType type, Currency currency)
         {
             return new InvalidOperationException($"The {type} transaction type isn't supported for the {currency.Type} currency.");
         }

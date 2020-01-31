@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -10,12 +10,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Repositories;
+using eDoxa.Cashier.Infrastructure.Extensions;
 using eDoxa.Cashier.Infrastructure.Models;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Infrastructure;
 
 using LinqKit;
 
@@ -23,23 +24,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Infrastructure.Repositories
 {
-    public sealed partial class ChallengeRepository
+    public sealed partial class ChallengeRepository : Repository<IChallenge, ChallengePayoutModel>
     {
-        private readonly IDictionary<Guid, IChallenge> _materializedIds = new Dictionary<Guid, IChallenge>();
-        private readonly IDictionary<IChallenge, ChallengeModel> _materializedObjects = new Dictionary<IChallenge, ChallengeModel>();
-        private readonly IMapper _mapper;
-        private readonly CashierDbContext _context;
-
-        public ChallengeRepository(CashierDbContext context, IMapper mapper)
+        public ChallengeRepository(CashierDbContext context)
         {
-            _context = context;
-            _mapper = mapper;
+            UnitOfWork = context;
+            ChallengePayouts = context.Set<ChallengePayoutModel>();
         }
 
-        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
+        private IUnitOfWork UnitOfWork { get; }
+
+        private DbSet<ChallengePayoutModel> ChallengePayouts { get; }
+
+        private async Task<ChallengePayoutModel?> FindChallengeModelAsync(Guid challengeId)
         {
-            var challenges = from challenge in _context.Challenges.AsExpandable()
-                             where challenge.Id == challengeId
+            var challenges = from challenge in ChallengePayouts.AsExpandable()
+                             where challenge.ChallengeId == challengeId
                              select challenge;
 
             return await challenges.SingleOrDefaultAsync();
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         private async Task<bool> ChallengeModelExistsAsync(Guid challengeId)
         {
-            return await _context.Challenges.AsExpandable().AnyAsync(challenge => challenge.Id == challengeId);
+            return await ChallengePayouts.AsExpandable().AnyAsync(challenge => challenge.ChallengeId == challengeId);
         }
     }
 
@@ -63,22 +63,11 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public void Create(IChallenge challenge)
         {
-            var challengeModel = _mapper.Map<ChallengeModel>(challenge);
+            var challengeModel = challenge.ToModel();
 
-            _context.Challenges.Add(challengeModel);
+            ChallengePayouts.Add(challengeModel);
 
-            _materializedObjects[challenge] = challengeModel;
-        }
-
-        public void Delete(IChallenge challenge)
-        {
-            var challengeModel = _materializedObjects[challenge];
-
-            _materializedObjects.Remove(challenge);
-
-            _materializedIds.Remove(challenge.Id);
-
-            _context.Challenges.Remove(challengeModel);
+            Mappings[challenge] = challengeModel;
         }
 
         public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
@@ -93,7 +82,9 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         public async Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId)
         {
-            if (_materializedIds.TryGetValue(challengeId, out var challenge))
+            var challenge = Mappings.Keys.SingleOrDefault(x => x.Id == challengeId);
+
+            if (challenge != null)
             {
                 return challenge;
             }
@@ -105,23 +96,37 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
                 return null;
             }
 
-            challenge = _mapper.Map<IChallenge>(challengeModel);
+            challenge = challengeModel.ToEntity();
 
-            _materializedObjects[challenge] = challengeModel;
-
-            _materializedIds[challengeId] = challenge;
+            Mappings[challenge] = challengeModel;
 
             return challenge;
         }
 
-        public async Task CommitAsync(CancellationToken cancellationToken = default)
+        public override async Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync(cancellationToken);
-
-            foreach (var (challenge, challengeModel) in _materializedObjects)
+            foreach (var (challenge, challengeModel) in Mappings)
             {
-                _materializedIds[challengeModel.Id] = challenge;
+                CopyChanges(challenge, challengeModel);
             }
+
+            await UnitOfWork.CommitAsync(publishDomainEvents, cancellationToken);
+        }
+
+        public void Delete(IChallenge challenge)
+        {
+            var challengeModel = Mappings[challenge];
+
+            Mappings.Remove(challenge);
+
+            ChallengePayouts.Remove(challengeModel);
+        }
+
+        private static void CopyChanges(IChallenge promotion, ChallengePayoutModel promotionModel)
+        {
+            promotionModel.DomainEvents = promotion.DomainEvents.ToList();
+
+            promotion.ClearDomainEvents();
         }
     }
 }

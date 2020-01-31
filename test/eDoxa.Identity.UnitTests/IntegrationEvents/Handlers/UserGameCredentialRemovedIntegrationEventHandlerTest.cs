@@ -28,7 +28,12 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
 {
     public sealed class UserGameCredentialRemovedIntegrationEventHandlerTest : UnitTest
     {
-
+        public UserGameCredentialRemovedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
+            testData,
+            testMapper,
+            testValidator)
+        {
+        }
 
         [Fact]
         public async Task HandleAsync_WhenUserGameCredentialRemovedIntegrationEventIsValid_ShouldBeCompletedTask()
@@ -66,10 +71,6 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             mockUserService.Verify(userService => userService.FindByIdAsync(It.IsAny<string>()), Times.Once);
             mockUserService.Verify(userService => userService.RemoveClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()), Times.Once);
             mockLogger.Verify(Times.Once());
-        }
-
-        public UserGameCredentialRemovedIntegrationEventHandlerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(testData, testMapper, testValidator)
-        {
         }
     }
 }

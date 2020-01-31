@@ -20,6 +20,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         ITransaction Payout(Money amount, TransactionMetadata? metadata = null);
 
+        ITransaction Promotion(Money amount, TransactionMetadata? metadata = null);
+
         ITransaction Withdrawal(Money amount);
 
         bool HaveSufficientMoney(Money money);

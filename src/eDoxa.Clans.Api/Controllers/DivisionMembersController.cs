@@ -1,8 +1,8 @@
 ﻿// Filename: DivisionMembersController.cs
-// Date Created: 2019-11-24
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +41,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Get all members of a specific divisions.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(MemberDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync(DivisionId divisionId)
+        public async Task<IActionResult> FetchDivisionMembersAsync(DivisionId divisionId)
         {
             var members = await _clanService.FetchDivisionMembersAsync(divisionId);
 
@@ -58,7 +58,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> PostByIdAsync(ClanId clanId, DivisionId divisionId, MemberId memberId)
+        public async Task<IActionResult> AddMemberToDivisionAsync(ClanId clanId, DivisionId divisionId, MemberId memberId)
         {
             var userId = HttpContext.GetUserId();
 
@@ -90,7 +90,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> DeleteByIdAsync(ClanId clanId, DivisionId divisionId, MemberId memberId)
+        public async Task<IActionResult> RemoveMemberFromDivisionAsync(ClanId clanId, DivisionId divisionId, MemberId memberId)
         {
             var userId = HttpContext.GetUserId();
 

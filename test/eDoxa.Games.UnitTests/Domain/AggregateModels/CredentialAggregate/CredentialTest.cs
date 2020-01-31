@@ -1,8 +1,8 @@
 ﻿// Filename: CredentialTest.cs
-// Date Created: 2019-11-01
-//
+// Date Created: 2019-11-25
+// 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.TestHelper;
@@ -32,7 +32,11 @@ namespace eDoxa.Games.UnitTests.Domain.AggregateModels.CredentialAggregate
             var timestamp = new UtcNowDateTimeProvider();
 
             // Act
-            var credential = new Credential(userId, Game.LeagueOfLegends, playerId, timestamp);
+            var credential = new Credential(
+                userId,
+                Game.LeagueOfLegends,
+                playerId,
+                timestamp);
 
             // Assert
             credential.UserId.Should().Be(userId);
@@ -46,6 +50,5 @@ namespace eDoxa.Games.UnitTests.Domain.AggregateModels.CredentialAggregate
 
             credential.Timestamp.Should().Be(timestamp.DateTime);
         }
-
     }
 }

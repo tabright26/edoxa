@@ -1,14 +1,15 @@
 ﻿// Filename: IdentityDbContextSeeder.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Services;
+using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
@@ -32,10 +33,11 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             IDoxatagService doxatagService,
             IUserService userService,
             RoleService roleService,
+            IdentityDbContext context,
             IWebHostEnvironment environment,
             IOptionsSnapshot<AdminOptions> optionsSnapshot,
             ILogger<IdentityDbContextSeeder> logger
-        ) : base(environment, logger)
+        ) : base(context, environment, logger)
         {
             _doxatagService = doxatagService;
             _userService = userService;

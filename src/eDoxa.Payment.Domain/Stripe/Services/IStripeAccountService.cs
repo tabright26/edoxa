@@ -23,7 +23,11 @@ namespace eDoxa.Payment.Domain.Stripe.Services
             UserId userId,
             string email,
             Country country,
-            string customerId
+            string ip,
+            string customerId,
+            int day,
+            int month,
+            int year
         );
 
         Task<IDomainValidationResult> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);

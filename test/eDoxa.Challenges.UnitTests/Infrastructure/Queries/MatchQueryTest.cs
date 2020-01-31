@@ -1,15 +1,15 @@
 ﻿// Filename: MatchQueryTest.cs
-// Date Created: 2019-09-29
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Challenges.Api.Infrastructure.Queries;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Queries;
 using eDoxa.Challenges.Infrastructure.Repositories;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
@@ -56,7 +56,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, TestMapper);
+                var challengeRepository = new ChallengeRepository(context);
 
                 challengeRepository.Create(challenge);
 
@@ -65,7 +65,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var matchQuery = new MatchQuery(context, TestMapper);
+                var matchQuery = new MatchQuery(context);
 
                 foreach (var participant in challenge.Participants)
                 {
@@ -91,7 +91,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var challengeRepository = new ChallengeRepository(context, TestMapper);
+                var challengeRepository = new ChallengeRepository(context);
 
                 challengeRepository.Create(challenge);
 
@@ -100,7 +100,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using (var context = factory.CreateContext())
             {
-                var matchQuery = new MatchQuery(context, TestMapper);
+                var matchQuery = new MatchQuery(context);
 
                 foreach (var match in challenge.Participants.SelectMany(participant => participant.Matches).ToList())
                 {

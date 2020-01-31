@@ -1,5 +1,5 @@
 ﻿// Filename: BalanceControllerTest.cs
-// Date Created: 2019-12-26
+// Date Created: 2020-01-22
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -12,6 +12,7 @@ using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
+using eDoxa.Cashier.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
@@ -34,53 +35,61 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetByCurrencyAsync_ShouldBeOfTypeNotFoundObjectResult()
+        public async Task FindUserBalanceAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
             var mockAccountQuery = new Mock<IAccountQuery>();
 
-            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>())).Verifiable();
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper).Verifiable();
+            mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>())).ReturnsAsync((Balance) null);
 
-            var controller = new BalanceController(mockAccountQuery.Object);
+            var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
-            var result = await controller.GetByCurrencyAsync(Currency.Money);
+            var result = await controller.FindUserBalanceAsync(CurrencyType.Money);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
-
-            mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
+            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
         }
 
         [Fact]
-        public async Task GetByCurrencyAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task FindUserBalanceAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var mockAccountQuery = new Mock<IAccountQuery>();
 
             var account = new Account(new UserId());
 
-            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<Currency>()))
-                .ReturnsAsync(account.GetBalanceFor(Currency.Money))
+            var mockHttpContextAccessor = new MockHttpContextAccessor();
+
+            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()))
+                .ReturnsAsync(account.GetBalanceFor(CurrencyType.Money))
                 .Verifiable();
 
-            mockAccountQuery.SetupGet(accountQuery => accountQuery.Mapper).Returns(TestMapper);
-
-            var controller = new BalanceController(mockAccountQuery.Object);
+            var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                }
+            };
 
             // Act
-            var result = await controller.GetByCurrencyAsync(Currency.Money);
+            var result = await controller.FindUserBalanceAsync(CurrencyType.Money);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<Currency>()), Times.Once);
-
-            mockAccountQuery.VerifyGet(accountQuery => accountQuery.Mapper, Times.Once);
+            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
         }
     }
 }

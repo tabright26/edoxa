@@ -1,8 +1,8 @@
 ﻿// Filename: ParticipantModel.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 #nullable disable
 
@@ -15,7 +15,7 @@ using eDoxa.Seedwork.Infrastructure.SqlServer;
 namespace eDoxa.Challenges.Infrastructure.Models
 {
     /// <remarks>
-    ///     This class is a pure POCO object that represents a database table in EF Core 2.2.
+    ///     This class is a pure POCO object that represents a database table in EF Core 3.1.
     /// </remarks>
     public class ParticipantModel : IEntityModel
     {

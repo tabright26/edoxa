@@ -6,6 +6,10 @@ import "challenges_dtos.proto";
 
 package edoxa.services.challenges;
 
+message FetchChallengeHistoryResponse {
+  repeated ChallengeDto challenges = 1;
+}
+
 message FetchChallengesResponse {
   repeated ChallengeDto challenges = 1;
 }

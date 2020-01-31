@@ -18,7 +18,7 @@ using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Worker.Application.RecurringJobs;
 using eDoxa.FunctionalTests.TestHelper.Services.Challenges;
 using eDoxa.FunctionalTests.TestHelper.Services.Games;
-using eDoxa.Games.Api.Services;
+using eDoxa.Games.Api.Grpc.Services;
 using eDoxa.Games.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Games.Domain.Services;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
@@ -40,8 +40,6 @@ using Microsoft.AspNetCore.TestHost;
 using Moq;
 
 using Xunit;
-
-using Scoring = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Scoring;
 
 namespace eDoxa.FunctionalTests
 {
@@ -309,7 +307,7 @@ namespace eDoxa.FunctionalTests
                 Times.Exactly(4));
         }
 
-        [Fact]
+        [Fact(Skip = "League of Legends API")]
         public async Task Success2()
         {
             // Arrange
@@ -351,7 +349,9 @@ namespace eDoxa.FunctionalTests
                 BestOf.One,
                 Entries.Two,
                 new ChallengeTimeline(createdAt, ChallengeDuration.OneDay),
-                new Scoring(findChallengeScoringResponse.Scoring.Items.OrderBy(scoring => scoring.Order).ToDictionary(scoring => scoring.StatName, scoring => scoring.StatWeighting)));
+                new Scoring(
+                    findChallengeScoringResponse.Scoring.Items.OrderBy(scoring => scoring.Order)
+                        .ToDictionary(scoring => scoring.StatName, scoring => scoring.StatWeighting)));
 
             var participant = new Participant(
                 new ParticipantId(),

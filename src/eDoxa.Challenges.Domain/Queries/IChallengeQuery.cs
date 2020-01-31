@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain.Misc;
@@ -21,13 +19,9 @@ namespace eDoxa.Challenges.Domain.Queries
 {
     public interface IChallengeQuery
     {
-        IMapper Mapper { get; }
+        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, Game? game = null, ChallengeState? state = null, bool includeMatches = true);
 
-        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(UserId userId, Game? game = null, ChallengeState? state = null);
-
-        Task<IReadOnlyCollection<IChallenge>> FetchUserChallengeHistoryAsync(Game? game = null, ChallengeState? state = null);
-
-        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null);
+        Task<IReadOnlyCollection<IChallenge>> FetchChallengesAsync(Game? game = null, ChallengeState? state = null, bool includeMatches = true);
 
         Task<IChallenge?> FindChallengeAsync(ChallengeId challengeId);
     }

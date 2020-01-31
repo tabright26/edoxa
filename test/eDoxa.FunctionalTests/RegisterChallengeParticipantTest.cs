@@ -1,8 +1,8 @@
 ﻿// Filename: RegisterChallengeParticipantTest.cs
-// Date Created: 2019-12-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,6 @@ using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Services;
 using eDoxa.Grpc.Protos.Identity.Services;
 using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Repositories;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
@@ -51,9 +50,9 @@ using Moq;
 using Xunit;
 
 using Challenge = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge;
-using ChallengePayout = eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate.Challenge;
 using IChallengePayoutRepository = eDoxa.Cashier.Domain.Repositories.IChallengeRepository;
 using IChallengeRepository = eDoxa.Challenges.Domain.Repositories.IChallengeRepository;
+using User = eDoxa.Identity.Domain.AggregateModels.UserAggregate.User;
 
 namespace eDoxa.FunctionalTests
 {
@@ -112,10 +111,9 @@ namespace eDoxa.FunctionalTests
 
             var payout = new ChallengePayoutFactory();
 
-            var challengePayout = new ChallengePayout(
+            var challengePayout = new Cashier.Domain.AggregateModels.ChallengeAggregate.Challenge(
                 challenge.Id,
-                MoneyEntryFee.OneHundred,
-                payout.CreateInstance().GetPayout(PayoutEntries.One, MoneyEntryFee.OneHundred));
+                payout.CreateInstance().GetChallengePayout(ChallengePayoutEntries.One, MoneyEntryFee.OneHundred));
 
             using var gamesHost = new GamesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id));
 
@@ -138,15 +136,16 @@ namespace eDoxa.FunctionalTests
 
             var gameServiceClient = new GameService.GameServiceClient(gamesHost.CreateChannel());
 
-            using var challengesHost = new ChallengesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id)).WithWebHostBuilder(
-                builder =>
-                {
-                    builder.ConfigureTestContainer<ContainerBuilder>(
-                        container =>
-                        {
-                            container.RegisterInstance(mockServiceBusPubliser.Object).As<IServiceBusPublisher>().SingleInstance();
-                        });
-                });
+            using var challengesHost = new ChallengesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id))
+                .WithWebHostBuilder(
+                    builder =>
+                    {
+                        builder.ConfigureTestContainer<ContainerBuilder>(
+                            container =>
+                            {
+                                container.RegisterInstance(mockServiceBusPubliser.Object).As<IServiceBusPublisher>().SingleInstance();
+                            });
+                    });
 
             challengesHost.Server.CleanupDbContext();
 
@@ -212,7 +211,8 @@ namespace eDoxa.FunctionalTests
 
             var identityServiceClient = new IdentityService.IdentityServiceClient(identityHost.CreateChannel());
 
-            using var challengesAggregatorHost = new ChallengesWebAggregatorHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id))
+            using var challengesAggregatorHost = new ChallengesWebAggregatorHostFactory()
+                .WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id))
                 .WithWebHostBuilder(
                     builder =>
                     {
@@ -241,7 +241,9 @@ namespace eDoxa.FunctionalTests
             // Assert
             response.EnsureSuccessStatusCode();
 
-            mockServiceBusPubliser.Verify(serviceBusPubliser => serviceBusPubliser.PublishAsync(It.IsAny<ChallengeParticipantRegisteredIntegrationEvent>()), Times.Once);
+            mockServiceBusPubliser.Verify(
+                serviceBusPubliser => serviceBusPubliser.PublishAsync(It.IsAny<ChallengeParticipantRegisteredIntegrationEvent>()),
+                Times.Once);
         }
     }
 }

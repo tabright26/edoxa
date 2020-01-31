@@ -80,7 +80,7 @@ namespace eDoxa.Identity.Api.Application.Services
             return Task.FromResult(user.Profile?.Gender);
         }
 
-        public Task<UserDob?> GetDobAsync(User user, CancellationToken cancellationToken = default)
+        public Task<UserDob> GetDobAsync(User user, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -91,7 +91,7 @@ namespace eDoxa.Identity.Api.Application.Services
                 throw new ArgumentNullException(nameof(user));
             }
 
-            return Task.FromResult(user.Profile?.Dob);
+            return Task.FromResult(user.Dob);
         }
 
         public Task UpdateProfileAsync(User user, UserProfile userProfile, CancellationToken cancellationToken)

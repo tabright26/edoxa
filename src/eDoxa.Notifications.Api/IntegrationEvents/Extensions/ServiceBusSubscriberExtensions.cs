@@ -34,6 +34,7 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Extensions
             subscriber.Subscribe<UserEmailConfirmationTokenGeneratedIntegrationEvent, UserEmailConfirmationTokenGeneratedIntegrationEventHandler>();
             subscriber.Subscribe<UserPasswordResetTokenGeneratedIntegrationEvent, UserPasswordResetTokenGeneratedIntegrationEventHandler>();
             subscriber.Subscribe<ChallengeParticipantRegisteredIntegrationEvent, ChallengeParticipantRegisteredIntegrationEventHandler>();
+            subscriber.Subscribe<ChallengeStartedntegrationEvent, ChallengeStartedntegrationEventHandler>();
         }
     }
 }

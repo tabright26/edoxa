@@ -1,8 +1,8 @@
 // Filename: ClansControllerTest.cs
-// Date Created: 2019-11-25
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -34,90 +34,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_ShouldBeOfTypeNoContentResult()
-        {
-            // Arrange
-            var mockClanService = new Mock<IClanService>();
-            mockClanService.Setup(clanService => clanService.FetchClansAsync()).ReturnsAsync(new List<Clan>()).Verifiable();
-
-            var clansController = new ClansController(mockClanService.Object, TestMapper);
-
-            // Act
-            var result = await clansController.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<NoContentResult>();
-
-            mockClanService.Verify(clanService => clanService.FetchClansAsync(), Times.Once);
-        }
-
-        [Fact]
-        public async Task GetAsync_ShouldBeOfTypeOkObjectResult()
-        {
-            // Arrange
-            var mockClanService = new Mock<IClanService>();
-
-            mockClanService.Setup(clanService => clanService.FetchClansAsync())
-                .ReturnsAsync(
-                    new List<Clan>
-                    {
-                        new Clan("Test", new UserId()),
-                        new Clan("Test", new UserId()),
-                        new Clan("Test", new UserId())
-                    })
-                .Verifiable();
-
-            var clansController = new ClansController(mockClanService.Object, TestMapper);
-
-            // Act
-            var result = await clansController.GetAsync();
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            mockClanService.Verify(clanService => clanService.FetchClansAsync(), Times.Once);
-        }
-
-        [Fact]
-        public async Task GetByIdAsync_ShouldBeOfTypeNoContentResult()
-        {
-            // Arrange
-            var mockClanService = new Mock<IClanService>();
-
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync((Clan) null).Verifiable();
-
-            var clanController = new ClansController(mockClanService.Object, TestMapper);
-
-            // Act
-            var result = await clanController.GetByIdAsync(new ClanId());
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-
-            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task GetByIdAsync_ShouldBeOfTypeOkObjectResult()
-        {
-            // Arrange
-            var mockClanService = new Mock<IClanService>();
-
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
-
-            var clansController = new ClansController(mockClanService.Object, TestMapper);
-
-            // Act
-            var result = await clansController.GetByIdAsync(new ClanId());
-
-            // Assert
-            result.Should().BeOfType<OkObjectResult>();
-
-            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task PostAsync_ShouldBeOfTypeBadRequestObjectResult()
+        public async Task CreateClanAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
             var mockClanService = new Mock<IClanService>();
@@ -139,7 +56,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
             };
 
             // Act
-            var result = await clansController.PostAsync(request);
+            var result = await clansController.CreateClanAsync(request);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -148,7 +65,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task CreateClanAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var mockClanService = new Mock<IClanService>();
@@ -170,12 +87,95 @@ namespace eDoxa.Clans.UnitTests.Controllers
             };
 
             // Act
-            var result = await clansController.PostAsync(request);
+            var result = await clansController.CreateClanAsync(request);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
             mockClanService.Verify(clanService => clanService.CreateClanAsync(It.IsAny<UserId>(), It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task FetchClansAsync_ShouldBeOfTypeNoContentResult()
+        {
+            // Arrange
+            var mockClanService = new Mock<IClanService>();
+            mockClanService.Setup(clanService => clanService.FetchClansAsync()).ReturnsAsync(new List<Clan>()).Verifiable();
+
+            var clansController = new ClansController(mockClanService.Object, TestMapper);
+
+            // Act
+            var result = await clansController.FetchClansAsync();
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>();
+
+            mockClanService.Verify(clanService => clanService.FetchClansAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task FetchClansAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var mockClanService = new Mock<IClanService>();
+
+            mockClanService.Setup(clanService => clanService.FetchClansAsync())
+                .ReturnsAsync(
+                    new List<Clan>
+                    {
+                        new Clan("Test", new UserId()),
+                        new Clan("Test", new UserId()),
+                        new Clan("Test", new UserId())
+                    })
+                .Verifiable();
+
+            var clansController = new ClansController(mockClanService.Object, TestMapper);
+
+            // Act
+            var result = await clansController.FetchClansAsync();
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            mockClanService.Verify(clanService => clanService.FetchClansAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task FindClanAsync_ShouldBeOfTypeNoContentResult()
+        {
+            // Arrange
+            var mockClanService = new Mock<IClanService>();
+
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync((Clan) null).Verifiable();
+
+            var clanController = new ClansController(mockClanService.Object, TestMapper);
+
+            // Act
+            var result = await clanController.FindClanAsync(new ClanId());
+
+            // Assert
+            result.Should().BeOfType<NotFoundObjectResult>();
+
+            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task FindClanAsync_ShouldBeOfTypeOkObjectResult()
+        {
+            // Arrange
+            var mockClanService = new Mock<IClanService>();
+
+            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(new Clan("Test", new UserId())).Verifiable();
+
+            var clansController = new ClansController(mockClanService.Object, TestMapper);
+
+            // Act
+            var result = await clansController.FindClanAsync(new ClanId());
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>();
+
+            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
         }
     }
 }

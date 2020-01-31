@@ -1,17 +1,20 @@
 ﻿// Filename: TransactionsController.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using eDoxa.Cashier.Api.Infrastructure.Queries.Extensions;
+using AutoMapper;
+
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
+using eDoxa.Seedwork.Application.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,26 +31,38 @@ namespace eDoxa.Cashier.Api.Controllers
     public sealed class TransactionsController : ControllerBase
     {
         private readonly ITransactionQuery _transactionQuery;
+        private readonly IMapper _mapper;
 
-        public TransactionsController(ITransactionQuery transactionQuery)
+        public TransactionsController(ITransactionQuery transactionQuery, IMapper mapper)
         {
             _transactionQuery = transactionQuery;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [SwaggerOperation("Get transactions by currency, type and status.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync(Currency? currency = null, TransactionType? type = null, TransactionStatus? status = null)
+        public async Task<IActionResult> FetchUserTransactionsAsync(
+            [FromQuery] CurrencyType? currencyType = null,
+            [FromQuery] TransactionType? type = null,
+            [FromQuery] TransactionStatus? status = null
+        )
         {
-            var responses = await _transactionQuery.FetchUserTransactionResponsesAsync(currency, type, status);
+            var userId = HttpContext.GetUserId();
+
+            var responses = await _transactionQuery.FetchUserTransactionsAsync(
+                userId,
+                currencyType,
+                type,
+                status);
 
             if (!responses.Any())
             {
                 return this.NoContent();
             }
 
-            return this.Ok(responses);
+            return this.Ok(_mapper.Map<IReadOnlyCollection<TransactionDto>>(responses));
         }
     }
 }

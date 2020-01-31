@@ -1,38 +1,34 @@
 ﻿// Filename: ChallengesDbContextCleaner.cs
-// Date Created: 2019-10-06
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Threading.Tasks;
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Challenges.Infrastructure;
+using eDoxa.Challenges.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace eDoxa.Challenges.Api.Infrastructure.Data
 {
-    internal sealed class ChallengesDbContextCleaner : IDbContextCleaner
+    internal sealed class ChallengesDbContextCleaner : DbContextCleaner
     {
-        private readonly ChallengesDbContext _context;
-        private readonly IWebHostEnvironment _environment;
-
-        public ChallengesDbContextCleaner(ChallengesDbContext context, IWebHostEnvironment environment)
+        public ChallengesDbContextCleaner(ChallengesDbContext context, IWebHostEnvironment environment, ILogger<ChallengesDbContextCleaner> logger) : base(
+            context,
+            environment,
+            logger)
         {
-            _context = context;
-            _environment = environment;
+            Challenges = context.Set<ChallengeModel>();
         }
 
-        public async Task CleanupAsync()
-        {
-            if (!_environment.IsProduction())
-            {
-                _context.Challenges.RemoveRange(_context.Challenges);
+        private DbSet<ChallengeModel> Challenges { get; }
 
-                await _context.SaveChangesAsync();
-            }
+        protected override void Cleanup()
+        {
+            Challenges.RemoveRange(Challenges);
         }
     }
 }

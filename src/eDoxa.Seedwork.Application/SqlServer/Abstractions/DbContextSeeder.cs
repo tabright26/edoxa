@@ -4,7 +4,10 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Threading;
 using System.Threading.Tasks;
+
+using eDoxa.Seedwork.Domain;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -14,15 +17,22 @@ namespace eDoxa.Seedwork.Application.SqlServer.Abstractions
 {
     public abstract class DbContextSeeder : IDbContextSeeder
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _environment;
 
-        protected DbContextSeeder(IWebHostEnvironment environment, ILogger logger)
+        protected DbContextSeeder(IUnitOfWork unitOfWork, IWebHostEnvironment environment, ILogger logger)
         {
+            _unitOfWork = unitOfWork;
             _environment = environment;
             Logger = logger;
         }
 
         protected ILogger Logger { get; }
+
+        protected async Task CommitAsync(CancellationToken cancellationToken = default)
+        {
+            await _unitOfWork.CommitAsync(false, cancellationToken);
+        }
 
         async Task IDbContextSeeder.SeedAsync()
         {
@@ -42,6 +52,11 @@ namespace eDoxa.Seedwork.Application.SqlServer.Abstractions
             {
                 await this.SeedProductionAsync();
             }
+
+            if (_environment.IsEnvironment("Test"))
+            {
+                await this.SeedTestAsync();
+            }
         }
 
         protected virtual async Task SeedAsync()
@@ -60,6 +75,11 @@ namespace eDoxa.Seedwork.Application.SqlServer.Abstractions
         }
 
         protected virtual async Task SeedProductionAsync()
+        {
+            await Task.CompletedTask;
+        }
+
+        protected virtual async Task SeedTestAsync()
         {
             await Task.CompletedTask;
         }

@@ -1,5 +1,11 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
-import { UserAddress, UserDoxatag, UserEmail, UserProfile } from "types";
+import {
+  UserAddress,
+  UserDoxatag,
+  UserEmail,
+  UserProfile,
+  LogoutToken
+} from "types";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
 export const LOAD_USER_ADDRESSBOOK_SUCCESS = "LOAD_USER_ADDRESSBOOK_SUCCESS";
@@ -16,6 +22,55 @@ export const UPDATE_USER_ADDRESS_FAIL = "UPDATE_USER_ADDRESS_FAIL";
 export const DELETE_USER_ADDRESS = "DELETE_USER_ADDRESS";
 export const DELETE_USER_ADDRESS_SUCCESS = "DELETE_USER_ADDRESS_SUCCESS";
 export const DELETE_USER_ADDRESS_FAIL = "DELETE_USER_ADDRESS_FAIL";
+
+export const LOGIN_USER_ACCOUNT = "LOGIN_USER_ACCOUNT";
+export const LOGIN_USER_ACCOUNT_SUCCESS = "LOGIN_USER_ACCOUNT_SUCCESS";
+export const LOGIN_USER_ACCOUNT_FAIL = "LOGIN_USER_ACCOUNT_FAIL";
+
+export const LOGOUT_USER_ACCOUNT = "LOGOUT_USER_ACCOUNT";
+export const LOGOUT_USER_ACCOUNT_SUCCESS = "LOGOUT_USER_ACCOUNT_SUCCESS";
+export const LOGOUT_USER_ACCOUNT_FAIL = "LOGOUT_USER_ACCOUNT_FAIL";
+
+export const REGISTER_USER_ACCOUNT = "REGISTER_USER_ACCOUNT";
+export const REGISTER_USER_ACCOUNT_SUCCESS = "REGISTER_USER_ACCOUNT_SUCCESS";
+export const REGISTER_USER_ACCOUNT_FAIL = "REGISTER_USER_ACCOUNT_FAIL";
+
+export type RegisterUserAccountType =
+  | typeof REGISTER_USER_ACCOUNT
+  | typeof REGISTER_USER_ACCOUNT_SUCCESS
+  | typeof REGISTER_USER_ACCOUNT_FAIL;
+export type RegisterUserAccountActionCreator = AxiosActionCreator<
+  RegisterUserAccountType
+>;
+export type RegisterUserAccountAction = AxiosAction<RegisterUserAccountType>;
+export type RegisterUserAccountRequest = {
+  email: string;
+  password: string;
+  country: string;
+  ip: string;
+  dob: string;
+};
+
+export type LoginUserAccountType =
+  | typeof LOGIN_USER_ACCOUNT
+  | typeof LOGIN_USER_ACCOUNT_SUCCESS
+  | typeof LOGIN_USER_ACCOUNT_FAIL;
+export type LoginUserAccountActionCreator = AxiosActionCreator<
+  LoginUserAccountType
+>;
+export type LoginUserAccountAction = AxiosAction<LoginUserAccountType, string>;
+
+export type LogoutUserAccountType =
+  | typeof LOGOUT_USER_ACCOUNT
+  | typeof LOGOUT_USER_ACCOUNT_SUCCESS
+  | typeof LOGOUT_USER_ACCOUNT_FAIL;
+export type LogoutUserAccountActionCreator = AxiosActionCreator<
+  LogoutUserAccountType
+>;
+export type LogoutUserAccountAction = AxiosAction<
+  LogoutUserAccountType,
+  LogoutToken
+>;
 
 export type LoadUserAddressBookType =
   | typeof LOAD_USER_ADDRESSBOOK
@@ -65,17 +120,6 @@ export type DeleteUserAddressAction = AxiosAction<
   UserAddress
 >;
 
-export type UserAddressBookActionCreators =
-  | LoadUserAddressBookActionCreator
-  | CreateUserAddressActionCreator
-  | UpdateUserAddressActionCreator
-  | DeleteUserAddressActionCreator;
-export type UserAddressBookActions =
-  | LoadUserAddressBookAction
-  | CreateUserAddressAction
-  | UpdateUserAddressAction
-  | DeleteUserAddressAction;
-
 export const LOAD_USER_DOXATAGHISTORY = "LOAD_USER_DOXATAGHISTORY";
 export const LOAD_USER_DOXATAGHISTORY_SUCCESS =
   "LOAD_USER_DOXATAGHISTORY_SUCCESS";
@@ -109,13 +153,6 @@ export type ChangeUserDoxatagAction = AxiosAction<
   UserDoxatag
 >;
 
-export type UserDoxatagHistoryActionCreators =
-  | LoadUserDoxatagHistoryActionCreator
-  | ChangeUserDoxatagActionCreator;
-export type UserDoxatagHistoryActions =
-  | LoadUserDoxatagHistoryAction
-  | ChangeUserDoxatagAction;
-
 export const LOAD_USER_EMAIL = "LOAD_USER_EMAIL";
 export const LOAD_USER_EMAIL_SUCCESS = "LOAD_USER_EMAIL_SUCCESS";
 export const LOAD_USER_EMAIL_FAIL = "LOAD_USER_EMAIL_FAIL";
@@ -142,11 +179,6 @@ export type ConfirmUserEmailAction = AxiosAction<
   ConfirmUserEmailType,
   UserEmail
 >;
-
-export type UserEmailActionCreators =
-  | LoadUserEmailActionCreator
-  | ConfirmUserEmailActionCreator;
-export type UserEmailActions = LoadUserEmailAction | ConfirmUserEmailAction;
 
 export const LOAD_USER_PROFILE = "LOAD_USER_PROFILE";
 export const LOAD_USER_PROFILE_SUCCESS = "LOAD_USER_PROFILE_SUCCESS";
@@ -196,15 +228,6 @@ export type UpdateUserProfileAction = AxiosAction<
   UserProfile
 >;
 
-export type UserProfileActionCreators =
-  | LoadUserProfileActionCreator
-  | CreateUserProfileActionCreator
-  | UpdateUserProfileActionCreator;
-export type UserProfileActions =
-  | LoadUserProfileAction
-  | CreateUserProfileAction
-  | UpdateUserProfileAction;
-
 export const FORGOT_USER_PASSWORD = "FORGOT_USER_PASSWORD";
 export const FORGOT_USER_PASSWORD_SUCCESS = "FORGOT_USER_PASSWORD_SUCCESS";
 export const FORGOT_USER_PASSWORD_FAIL = "FORGOT_USER_PASSWORD_FAIL";
@@ -231,13 +254,6 @@ export type ResetUserPasswordActionCreator = AxiosActionCreator<
 >;
 export type ResetUserPasswordAction = AxiosAction<ResetUserPasswordType>;
 
-export type UserPasswordActionCreators =
-  | ForgotUserPasswordActionCreator
-  | ResetUserPasswordActionCreator;
-export type UserPasswordActions =
-  | ForgotUserPasswordAction
-  | ResetUserPasswordAction;
-
 export const LOAD_USER_PHONE = "LOAD_USER_PHONE";
 export const LOAD_USER_PHONE_SUCCESS = "LOAD_USER_PHONE_SUCCESS";
 export const LOAD_USER_PHONE_FAIL = "LOAD_USER_PHONE_FAIL";
@@ -252,7 +268,6 @@ export type LoadUserPhoneType =
   | typeof LOAD_USER_PHONE_FAIL;
 export type LoadUserPhoneActionCreator = AxiosActionCreator<LoadUserPhoneType>;
 export type LoadUserPhoneAction = AxiosAction<LoadUserPhoneType>;
-
 export type UpdateUserPhoneType =
   | typeof UPDATE_USER_PHONE
   | typeof UPDATE_USER_PHONE_SUCCESS
@@ -261,8 +276,3 @@ export type UpdateUserPhoneActionCreator = AxiosActionCreator<
   UpdateUserPhoneType
 >;
 export type UpdateUserPhoneAction = AxiosAction<UpdateUserPhoneType>;
-
-export type UserPhoneActionCreators =
-  | LoadUserPhoneActionCreator
-  | UpdateUserPhoneActionCreator;
-export type UserPhoneActions = LoadUserPhoneAction | UpdateUserPhoneAction;

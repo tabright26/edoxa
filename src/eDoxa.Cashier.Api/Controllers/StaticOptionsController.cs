@@ -7,7 +7,6 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Cashier.Options;
-using eDoxa.Grpc.Protos.Identity.Options;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 ﻿// Filename: GameAuthenticationsControllerTest.cs
-// Date Created: 2019-11-11
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -36,7 +36,7 @@ namespace eDoxa.Games.UnitTests.Controllers
 
         //Todo Test other games too.
         [Fact]
-        public async Task PostAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task GenerateAuthenticationAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var mockAuthFactorService = new Mock<IGameAuthenticationService>();
@@ -48,10 +48,7 @@ namespace eDoxa.Games.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult())
                 .Verifiable();
 
-            mockAuthFactorService
-                .Setup(
-                    authFactorService =>
-                        authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            mockAuthFactorService.Setup(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(
                     new LeagueOfLegendsGameAuthentication(
                         PlayerId.Parse("playerId"),
@@ -68,7 +65,7 @@ namespace eDoxa.Games.UnitTests.Controllers
             authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await authFactorController.PostAsync(Game.LeagueOfLegends, "playerId");
+            var result = await authFactorController.GenerateAuthenticationAsync(Game.LeagueOfLegends, "playerId");
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
@@ -77,13 +74,11 @@ namespace eDoxa.Games.UnitTests.Controllers
                 authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()),
                 Times.Once);
 
-            mockAuthFactorService.Verify(
-                authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()),
-                Times.Once);
+            mockAuthFactorService.Verify(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
-        public async Task PostByGameAsync_ShouldBeOfTypeBadRequestObjectResult()
+        public async Task LinkCredentialAsync_ShouldBeOfTypeBadRequestObjectResult()
         {
             // Arrange
             var mockCredentialService = new Mock<IGameCredentialService>();
@@ -106,7 +101,7 @@ namespace eDoxa.Games.UnitTests.Controllers
             authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await authFactorController.PutAsync(Game.LeagueOfLegends);
+            var result = await authFactorController.LinkCredentialAsync(Game.LeagueOfLegends);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -114,7 +109,7 @@ namespace eDoxa.Games.UnitTests.Controllers
         }
 
         [Fact]
-        public async Task PuAsync_ShouldBeOfTypeOkObjectResult()
+        public async Task LinkCredentialAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
             var mockCredentialService = new Mock<IGameCredentialService>();
@@ -146,7 +141,7 @@ namespace eDoxa.Games.UnitTests.Controllers
             authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
-            var result = await authFactorController.PutAsync(Game.LeagueOfLegends);
+            var result = await authFactorController.LinkCredentialAsync(Game.LeagueOfLegends);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();

@@ -47,8 +47,12 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
                 var accountId = await _stripeAccountService.CreateAccountAsync(
                     userId,
                     integrationEvent.Email.Address,
-                    integrationEvent.CountryIsoCode.ToEnumeration<Country>(),
-                    customerId);
+                    integrationEvent.Country.ToEnumeration<Country>(),
+                    integrationEvent.Ip,
+                    customerId,
+                    integrationEvent.Dob.Day,
+                    integrationEvent.Dob.Month,
+                    integrationEvent.Dob.Year);
 
                 var result = await _stripeService.CreateAsync(userId, customerId, accountId);
 

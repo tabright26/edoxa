@@ -1,8 +1,8 @@
 ﻿// Filename: ClansController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Get all clans.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> FetchClansAsync()
         {
             var clans = await _clanService.FetchClansAsync();
 
@@ -58,7 +58,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Create a clan.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public async Task<IActionResult> PostAsync(CreateClanRequest request)
+        public async Task<IActionResult> CreateClanAsync(CreateClanRequest request)
         {
             var userId = HttpContext.GetUserId();
 
@@ -78,7 +78,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerOperation("Get a specific clan.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(ClanDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> GetByIdAsync(ClanId clanId)
+        public async Task<IActionResult> FindClanAsync(ClanId clanId)
         {
             var clan = await _clanService.FindClanAsync(clanId);
 
@@ -95,7 +95,7 @@ namespace eDoxa.Clans.Api.Controllers
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
         [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> UpdateAsync(ClanId clanId, UpdateClanRequest request)
+        public async Task<IActionResult> UpdateClanAsync(ClanId clanId, UpdateClanRequest request)
         {
             var userId = HttpContext.GetUserId();
 

@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Domain.Repositories
 
         Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId);
 
-        Task CommitAsync(CancellationToken cancellationToken = default);
+        Task CommitAsync(bool publishDomainEvents = true, CancellationToken cancellationToken = default);
 
         Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
 

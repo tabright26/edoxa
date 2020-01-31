@@ -21,8 +21,7 @@ namespace eDoxa.Identity.Api.Application.Profiles
                 .ForMember(profile => profile.Name, config => config.MapFrom(profile => profile.ToString()))
                 .ForMember(profile => profile.FirstName, config => config.MapFrom(profile => profile.FirstName))
                 .ForMember(profile => profile.LastName, config => config.MapFrom(profile => profile.LastName))
-                .ForMember(profile => profile.Gender, config => config.MapFrom(profile => profile.Gender.ToEnum<EnumGender>()))
-                .ForMember(profile => profile.Dob, config => config.MapFrom(profile => profile.Dob));
+                .ForMember(profile => profile.Gender, config => config.MapFrom(profile => profile.Gender.ToEnum<EnumGender>()));
 
             this.CreateMap<UserDob, DobDto>()
                 .ForMember(dob => dob.Year, config => config.MapFrom(dob => dob.Year))
