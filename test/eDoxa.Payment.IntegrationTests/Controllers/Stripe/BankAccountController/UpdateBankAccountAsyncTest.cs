@@ -139,7 +139,7 @@ namespace eDoxa.Payment.IntegrationTests.Controllers.Stripe.BankAccountControlle
                                 .ReturnsAsync("acct_123eqwqw12");
 
                             mockStripeExternalAccountService
-                                .Setup(externalAccountService => externalAccountService.UpdateBankAccountAsync(It.IsAny<string>(), It.IsAny<string>()))
+                                .Setup(externalAccountService => externalAccountService.ChangeBankAccountAsync(It.IsAny<string>(), It.IsAny<string>()))
                                 .ReturnsAsync(
                                     new BankAccount
                                     {
