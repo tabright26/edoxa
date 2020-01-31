@@ -143,7 +143,7 @@ namespace eDoxa.Identity.Api.Controllers
                 return this.Ok();
             }
 
-            ModelState.Bind(result);
+            ModelState.Bind(result); // FRANCIS: VALIDATION SHOULD BE MORE GENERAL FOR REGISTRATION
 
             return this.BadRequest(new ValidationProblemDetails(ModelState));
         }

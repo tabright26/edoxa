@@ -39,7 +39,11 @@ type InnerProps = InjectedFormProps<FormData, Props> &
 
 type Props = InnerProps & OutterProps;
 
-const Login: FunctionComponent<Props> = ({ handleSubmit, error, anyTouched }) => (
+const Login: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  anyTouched
+}) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field type="hidden" name="returnUrl" component={Input.Text} />
@@ -113,12 +117,8 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch) => {
+    onSubmitSuccess: result => {
       window.location = result.data;
-    },
-    validate: values => {
-      const errors: FormErrors<FormData> = {};
-      return errors;
     }
   })
 );

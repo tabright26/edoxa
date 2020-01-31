@@ -1,4 +1,9 @@
-import { combineEpics, ofType } from "redux-observable";
+import {
+  combineEpics,
+  ofType,
+  ActionsObservable,
+  Epic
+} from "redux-observable";
 import { NEVER } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import {
@@ -47,8 +52,9 @@ import {
   UNLINK_GAME_CREDENTIAL_SUCCESS,
   UNLINK_GAME_CREDENTIAL_FAIL
 } from "./actions/game/types";
+import { RootActions } from "./types";
 
-const formSuccessEpic = (action$: any): any =>
+const onSubmitSuccessEpic: Epic<RootActions> = action$ =>
   action$.pipe(
     ofType(
       CREATE_USER_ADDRESS_SUCCESS,
@@ -68,7 +74,7 @@ const formSuccessEpic = (action$: any): any =>
       LOGIN_USER_ACCOUNT_SUCCESS,
       REGISTER_USER_ACCOUNT_SUCCESS
     ),
-    switchMap((action: any): any => {
+    switchMap(action => {
       const { resolve } = action.meta.previousAction.meta;
       if (resolve) {
         resolve(action.payload);
@@ -77,7 +83,7 @@ const formSuccessEpic = (action$: any): any =>
     })
   );
 
-const formFailEpic = (action$: any) =>
+const onSubmitFailEpic: Epic<RootActions> = action$ =>
   action$.pipe(
     ofType(
       CREATE_USER_ADDRESS_FAIL,
@@ -97,7 +103,7 @@ const formFailEpic = (action$: any) =>
       LOGIN_USER_ACCOUNT_FAIL,
       REGISTER_USER_ACCOUNT_FAIL
     ),
-    switchMap((action: any) => {
+    switchMap(action => {
       const { reject } = action.meta.previousAction.meta;
       if (reject) {
         reject(action.error);
@@ -106,4 +112,4 @@ const formFailEpic = (action$: any) =>
     })
   );
 
-export const epic = combineEpics(formSuccessEpic, formFailEpic);
+export const epic = combineEpics(onSubmitSuccessEpic, onSubmitFailEpic);
