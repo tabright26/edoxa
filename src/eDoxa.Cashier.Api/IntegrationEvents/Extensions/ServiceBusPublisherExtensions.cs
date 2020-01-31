@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
         public static async Task PublishChallengeClosedIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             ChallengeId challengeId,
-            PayoutPrizes payoutPrizes
+            ChallengeParticipantPayouts payouts
         )
         {
             var integrationEvent = new ChallengeClosedIntegrationEvent
@@ -30,12 +30,12 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
                 ChallengeId = challengeId,
                 PayoutPrizes =
                 {
-                    payoutPrizes.ToDictionary(
+                    payouts.ToDictionary(
                         payoutPrize => payoutPrize.Key.ToString(),
-                        payoutPrize => new PrizeDto
+                        payoutPrize => new CurrencyDto
                         {
                             Amount = payoutPrize.Value.Amount,
-                            Currency = payoutPrize.Value.Type.ToEnum<EnumCurrency>()
+                            Type = payoutPrize.Value.Type.ToEnum<EnumCurrencyType>()
                         })
                 }
             };

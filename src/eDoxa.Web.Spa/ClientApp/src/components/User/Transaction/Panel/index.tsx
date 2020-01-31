@@ -4,7 +4,7 @@ import List from "components/User/Transaction/List";
 import { Paginate } from "components/Shared/Paginate";
 import { compose } from "recompose";
 import { UserTransactionState } from "store/root/user/transactionHistory/types";
-import { Currency, TransactionType, TransactionStatus } from "types";
+import { CurrencyType, TransactionType, TransactionStatus } from "types";
 import { Loading } from "components/Shared/Loading";
 import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
 import { RootState } from "store/types";
@@ -21,7 +21,7 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  currency?: Currency | null;
+  currency?: CurrencyType | null;
   type?: TransactionType | null;
   status?: TransactionStatus | null;
 }

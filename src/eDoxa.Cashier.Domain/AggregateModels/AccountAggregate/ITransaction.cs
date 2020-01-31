@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     {
         DateTime Timestamp { get; }
 
-        ICurrency Currency { get; }
+        Currency Currency { get; }
 
         Price Price { get; }
 

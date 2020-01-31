@@ -29,7 +29,7 @@ namespace eDoxa.Cashier.Api.Application.DomainEvents.Handlers
 
         public async Task Handle(ChallengeClosedDomainEvent domainEvent, CancellationToken cancellationToken)
         {
-            await _serviceBusPublisher.PublishChallengeClosedIntegrationEventAsync(domainEvent.ChallengeId, domainEvent.PayoutPrizes);
+            await _serviceBusPublisher.PublishChallengeClosedIntegrationEventAsync(domainEvent.ChallengeId, domainEvent.Payouts);
 
             _logger.LogInformation(""); // FRANCIS: TODO.
         }

@@ -12,13 +12,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public class ChallengePayoutBucket : ValueObject
     {
-        public ChallengePayoutBucket(Prize prize, ChallengePayoutBucketSize size)
+        public ChallengePayoutBucket(ChallengePayoutBucketPrize prize, ChallengePayoutBucketSize size)
         {
             Size = size;
             Prize = prize;
         }
 
-        public Prize Prize { get; }
+        public ChallengePayoutBucketPrize Prize { get; }
 
         public ChallengePayoutBucketSize Size { get; }
 

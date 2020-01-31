@@ -12,14 +12,14 @@ namespace eDoxa.Cashier.Domain.DomainEvents
 {
     public sealed class ChallengeClosedDomainEvent : IDomainEvent
     {
-        public ChallengeClosedDomainEvent(ChallengeId challengeId, PayoutPrizes payoutPrizes)
+        public ChallengeClosedDomainEvent(ChallengeId challengeId, ChallengeParticipantPayouts payouts)
         {
             ChallengeId = challengeId;
-            PayoutPrizes = payoutPrizes;
+            Payouts = payouts;
         }
 
         public ChallengeId ChallengeId { get; }
 
-        public PayoutPrizes PayoutPrizes { get; }
+        public ChallengeParticipantPayouts Payouts { get; }
     }
 }

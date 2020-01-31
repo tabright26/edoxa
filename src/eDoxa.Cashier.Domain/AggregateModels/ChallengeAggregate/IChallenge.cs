@@ -11,8 +11,6 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public interface IChallenge : IEntity<ChallengeId>, IAggregateRoot
     {
-        EntryFee EntryFee { get; }
-
         IChallengePayout Payout { get; }
 
         void Close(ChallengeScoreboard scoreboard);

@@ -45,10 +45,10 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                 PayoutPrizes =
                 {
                     {
-                        new UserId().ToString(), new PrizeDto
+                        new UserId().ToString(), new CurrencyDto
                         {
                             Amount = 50.0m,
-                            Currency = EnumCurrency.Money
+                            Type = EnumCurrencyType.Money
                         }
                     }
                 }

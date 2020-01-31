@@ -34,7 +34,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
             return Faker.PickRandom(ValueObject.GetValues<ChallengePayoutEntries>());
         }
 
-        public EntryFee EntryFee(Currency? entryFeeCurrency = null)
+        public EntryFee EntryFee(CurrencyType? entryFeeCurrency = null)
         {
             var moneyEntryFees = ValueObject.GetValues<MoneyEntryFee>().ToList();
 
@@ -42,12 +42,12 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers.DataSets
 
             if (entryFeeCurrency != null)
             {
-                if (entryFeeCurrency == Currency.Money)
+                if (entryFeeCurrency == CurrencyType.Money)
                 {
                     Faker.PickRandom(moneyEntryFees);
                 }
 
-                if (entryFeeCurrency == Currency.Token)
+                if (entryFeeCurrency == CurrencyType.Token)
                 {
                     Faker.PickRandom(tokenEntryFees);
                 }

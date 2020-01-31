@@ -49,11 +49,11 @@ namespace eDoxa.Cashier.Infrastructure.Queries
             return accountModel?.ToEntity();
         }
 
-        public async Task<Balance?> FindUserBalanceAsync(UserId userId, Currency currency)
+        public async Task<Balance?> FindUserBalanceAsync(UserId userId, CurrencyType currencyType)
         {
             var account = await this.FindUserAccountAsync(userId);
 
-            return account?.GetBalanceFor(currency);
+            return account?.GetBalanceFor(currencyType);
         }
     }
 }

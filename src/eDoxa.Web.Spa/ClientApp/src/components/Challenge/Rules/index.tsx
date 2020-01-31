@@ -8,6 +8,12 @@ const Rules: FunctionComponent = () => (
       <strong className="text-uppercase">Rules</strong>
     </CardHeader>
     <CardBody className="text-justify">
+      <p>
+        <strong className="text-uppercase text-primary">
+          SMURF ACCOUNTS ARE NOT ALLOWED ON EDOXA.GG, IF CAUGHT, IT'S AN INSTANT
+          BAN WITH NO REFUNDS.
+        </strong>
+      </p>
       <ol className="pl-3">
         <li>You can register to multiple Challenges at a time.</li>
         <li>
@@ -32,10 +38,6 @@ const Rules: FunctionComponent = () => (
           the "Closed" state.
         </li>
       </ol>
-      <strong className="text-uppercase text-primary">
-        SMURF ACCOUNTS ARE NOT ALLOWED ON EDOXA.GG, IF CAUGHT, IT'S AN INSTANT
-        BAN WITH NO REFUNDS.
-      </strong>
       <Register className="w-100 mt-2 text-uppercase" />
     </CardBody>
   </Card>

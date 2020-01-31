@@ -65,7 +65,7 @@ namespace eDoxa.Cashier.Api.Controllers
         {
             var result = await _promotionService.CreatePromotionAsync(
                 request.PromotionalCode,
-                request.Currency.ToEnumeration<Currency>().From(request.Amount),
+                request.Currency.Type.ToEnumeration<CurrencyType>().ToCurrency(request.Currency.Amount),
                 request.Duration.ToTimeSpan(),
                 request.ExpiredAt.ToDateTime());
 

@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
 import Deposit from ".";
 import { configureStore } from "store";
-import { CURRENCY_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
+import { CURRENCY_TYPE_MONEY, TRANSACTION_TYPE_DEPOSIT } from "types";
 import {
   StaticOptionsActions,
   LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
@@ -31,11 +31,11 @@ const action: StaticOptionsActions = {
             type: TRANSACTION_TYPE_DEPOSIT,
             currency: {
               amount: 10,
-              type: CURRENCY_MONEY
+              type: CURRENCY_TYPE_MONEY
             },
             price: {
               amount: 10,
-              type: CURRENCY_MONEY
+              type: CURRENCY_TYPE_MONEY
             },
             description: null,
             notes: null,
@@ -55,7 +55,7 @@ const createWrapper = (): ReactWrapper | any => {
     <Provider store={store}>
       <Deposit
         transactionType={TRANSACTION_TYPE_DEPOSIT}
-        currency={CURRENCY_MONEY}
+        currency={CURRENCY_TYPE_MONEY}
         handleCancel={() => {}}
       />
     </Provider>
@@ -69,7 +69,7 @@ describe("<UserAccountDepositForm />", () => {
         <Deposit
           handleCancel={() => {}}
           transactionType={TRANSACTION_TYPE_DEPOSIT}
-          currency={CURRENCY_MONEY}
+          currency={CURRENCY_TYPE_MONEY}
         />
       </Provider>
     );

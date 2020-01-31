@@ -1,4 +1,4 @@
-﻿// Filename: IBuckets.cs
+﻿// Filename: IChallengePayoutBuckets.cs
 // Date Created: 2019-11-25
 // 
 // ================================================

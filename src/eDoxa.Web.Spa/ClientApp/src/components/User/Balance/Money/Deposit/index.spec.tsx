@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Deposit from ".";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
-import { CURRENCY_MONEY } from "types";
+import { CURRENCY_TYPE_MONEY } from "types";
 import { StaticOptionsState } from "store/static/types";
 
 it("renders without crashing", () => {
@@ -45,7 +45,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Deposit currency={CURRENCY_MONEY} />
+        <Deposit currency={CURRENCY_TYPE_MONEY} />
       </Provider>
     )
     .toJSON();

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Button } from "reactstrap";
 import { compose } from "recompose";
-import { Currency, TransactionType } from "types";
+import { CurrencyType, TransactionType } from "types";
 import { connect, MapDispatchToProps } from "react-redux";
 import { show } from "redux-modal";
 import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
@@ -11,7 +11,7 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  currency: Currency;
+  currency: CurrencyType;
   transactionType: TransactionType;
   title: string;
   description: string;

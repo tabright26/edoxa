@@ -3,7 +3,7 @@ import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import Balance from "components/User/Balance";
 import DepositMoney from "./Deposit";
 import WithdrawMoney from "./Withdraw";
-import { CURRENCY_MONEY } from "types";
+import { CURRENCY_TYPE_MONEY } from "types";
 
 const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
@@ -14,7 +14,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
         className="bg-gray-900"
         style={{ width: "100px" }}
       >
-        <Balance currency={CURRENCY_MONEY} attribute="available" />
+        <Balance type={CURRENCY_TYPE_MONEY} attribute="available" />
       </Badge>
       <Popover
         style={{
@@ -33,7 +33,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
             <dt className="col-6">Available</dt>
             <dd className="col-6">
               <Balance
-                currency={CURRENCY_MONEY}
+                type={CURRENCY_TYPE_MONEY}
                 attribute="available"
                 alignment="right"
               />
@@ -41,7 +41,7 @@ const MoneyBreadcrumb: FunctionComponent<any> = ({ className }) => {
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
               <Balance
-                currency={CURRENCY_MONEY}
+                type={CURRENCY_TYPE_MONEY}
                 attribute="pending"
                 alignment="right"
               />

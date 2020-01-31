@@ -1,8 +1,8 @@
-// Filename: PayoutEntries.cs
-// Date Created: 2019-07-10
+// Filename: ChallengePayoutEntries.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿// Filename: PayoutPrizes.cs
+﻿// Filename: ChallengeParticipantPayouts.cs
 // Date Created: 2019-12-26
 // 
 // ================================================
@@ -10,7 +10,7 @@ using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class PayoutPrizes : Dictionary<UserId, ICurrency>
+    public sealed class ChallengeParticipantPayouts : Dictionary<UserId, ChallengePayoutBucketPrize>
     {
     }
 }

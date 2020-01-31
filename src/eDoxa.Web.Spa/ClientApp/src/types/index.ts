@@ -11,14 +11,14 @@ export type Gender =
   | typeof GENDER_FEMALE
   | typeof GENDER_OTHER;
 
-export const CURRENCY_MONEY = "money";
-export const CURRENCY_TOKEN = "token";
-export const CURRENCY_ALL = "all";
+export const CURRENCY_TYPE_MONEY = "money";
+export const CURRENCY_TYPE_TOKEN = "token";
+export const CURRENCY_TYPE_ALL = "all";
 
-export type Currency =
-  | typeof CURRENCY_MONEY
-  | typeof CURRENCY_TOKEN
-  | typeof CURRENCY_ALL;
+export type CurrencyType =
+  | typeof CURRENCY_TYPE_MONEY
+  | typeof CURRENCY_TYPE_TOKEN
+  | typeof CURRENCY_TYPE_ALL;
 
 export const TRANSACTION_TYPE_DEPOSIT = "Deposit";
 export const TRANSACTION_TYPE_REWARD = "Reward";
@@ -67,6 +67,11 @@ export type TransactionId = string;
 export type UserId = string;
 export type TransactionBundleId = number;
 
+export interface Currency {
+  readonly amount: number;
+  readonly type: CurrencyType;
+}
+
 interface Entity<TEntityId> {
   readonly id: TEntityId;
 }
@@ -90,14 +95,8 @@ export interface TransactionOptions {
 
 export interface TransactionBundle {
   readonly id: TransactionBundleId;
-  readonly currency: {
-    readonly amount: number;
-    readonly type: Currency;
-  };
-  readonly price: {
-    readonly amount: number;
-    readonly type: Currency;
-  };
+  readonly currency: Currency;
+  readonly price: Currency;
   readonly type: TransactionType;
   readonly description: string;
   readonly notes: string;
@@ -113,7 +112,6 @@ export interface Balance {
 export interface UserTransaction extends Entity<TransactionId> {
   readonly timestamp: number;
   readonly currency: Currency;
-  readonly amount: number;
   readonly description: string;
   readonly type: TransactionType;
   readonly status: TransactionStatus;
@@ -234,7 +232,6 @@ export interface UserProfile {
   readonly firstName: string;
   readonly lastName: string;
   readonly gender: Gender;
-  readonly dob: UserDob;
 }
 
 export interface UserDob {
@@ -348,10 +345,7 @@ export interface ChallengeTimeline {
   readonly closedAt?: number;
 }
 
-export interface EntryFee {
-  readonly currency: Currency;
-  readonly amount: number;
-}
+export interface EntryFee extends Currency {}
 
 export type ChallengeScoring = Map<string, string>;
 
@@ -359,14 +353,11 @@ export interface ChallengePayout {
   readonly challengeId: ChallengeId;
   readonly entries: number;
   readonly entryFee: EntryFee;
-  readonly prizePool: PrizePool;
+  readonly prizePool: ChallengePayoutPrizePool;
   readonly buckets: ChallengePayoutBucket[];
 }
 
-export interface PrizePool {
-  readonly currency: Currency;
-  readonly amount: number;
-}
+export interface ChallengePayoutPrizePool extends Currency {}
 
 export interface ChallengePayoutBucket {
   readonly size: number;

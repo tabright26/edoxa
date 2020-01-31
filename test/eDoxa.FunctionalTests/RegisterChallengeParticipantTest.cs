@@ -113,8 +113,7 @@ namespace eDoxa.FunctionalTests
 
             var challengePayout = new Cashier.Domain.AggregateModels.ChallengeAggregate.Challenge(
                 challenge.Id,
-                MoneyEntryFee.OneHundred,
-                payout.CreateInstance().GetPayout(ChallengePayoutEntries.One, MoneyEntryFee.OneHundred));
+                payout.CreateInstance().GetChallengePayout(ChallengePayoutEntries.One, MoneyEntryFee.OneHundred));
 
             using var gamesHost = new GamesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id));
 

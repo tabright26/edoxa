@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
                 .Setup(
                     transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                         It.IsAny<UserId>(),
-                        It.IsAny<Currency>(),
+                        It.IsAny<CurrencyType>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()))
                 .ReturnsAsync(new Collection<ITransaction>())
@@ -71,7 +71,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             mockTransactionQuery.Verify(
                 transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                     It.IsAny<UserId>(),
-                    It.IsAny<Currency>(),
+                    It.IsAny<CurrencyType>(),
                     It.IsAny<TransactionType>(),
                     It.IsAny<TransactionStatus>()),
                 Times.Once);
@@ -91,7 +91,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
                 .Setup(
                     transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                         It.IsAny<UserId>(),
-                        It.IsAny<Currency>(),
+                        It.IsAny<CurrencyType>(),
                         It.IsAny<TransactionType>(),
                         It.IsAny<TransactionStatus>()))
                 .ReturnsAsync(faker.FakeTransactions(5, TransactionFaker.PositiveTransaction))
@@ -114,7 +114,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             mockTransactionQuery.Verify(
                 transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                     It.IsAny<UserId>(),
-                    It.IsAny<Currency>(),
+                    It.IsAny<CurrencyType>(),
                     It.IsAny<TransactionType>(),
                     It.IsAny<TransactionStatus>()),
                 Times.Once);

@@ -14,71 +14,46 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
     public partial class Challenge : Entity<ChallengeId>, IChallenge
     {
-        public Challenge(ChallengeId challengeId, EntryFee entryFee, IChallengePayout payout)
+        public Challenge(ChallengeId challengeId, IChallengePayout payout)
         {
             this.SetEntityId(challengeId);
-            EntryFee = entryFee;
             Payout = payout;
         }
-
-        public EntryFee EntryFee { get; }
 
         public IChallengePayout Payout { get; }
 
         public void Close(ChallengeScoreboard scoreboard)
         {
-            var payoutPrizes = new PayoutPrizes();
+            var payouts = new ChallengeParticipantPayouts();
 
-            foreach (var ladderGroup in scoreboard.Ladders)
+            foreach (var bucket in scoreboard.Buckets)
             {
-                for (var index = 0; index < ladderGroup.Size; index++)
+                for (var index = 0; index < bucket.Size; index++)
                 {
                     var userId = scoreboard.Winners.Dequeue();
 
                     var score = scoreboard[userId];
 
-                    if (score == null)
-                    {
-                        var currency = scoreboard.PayoutCurrency.From(0);
+                    var currency = score == null ? scoreboard.PayoutCurrencyType.ToCurrency(0) : bucket.Prize;
 
-                        this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, currency));
+                    this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, currency));
 
-                        payoutPrizes.Add(userId, currency);
-                    }
-                    else
-                    {
-                        var currency = scoreboard.PayoutCurrency.From(ladderGroup.Prize);
-
-                        this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, currency));
-
-                        payoutPrizes.Add(userId, currency);
-                    }
+                    payouts.Add(userId, new ChallengePayoutBucketPrize(currency));
                 }
             }
 
-            foreach (var user in scoreboard.Losers)
+            foreach (var userId in scoreboard.Losers)
             {
-                var score = scoreboard[user];
+                var score = scoreboard[userId];
 
-                if (score == null)
-                {
-                    var currency = scoreboard.PayoutCurrency.From(0);
+                var currency = score == null ? scoreboard.PayoutCurrencyType.ToCurrency(0) : ChallengePayoutBucketPrize.Consolation;
 
-                    this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(user, currency));
+                this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, currency));
 
-                    payoutPrizes.Add(user, currency);
-                }
-                else
-                {
-                    var currency = Currency.Token.From(Token.MinValue);
-
-                    this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(user, currency));
-
-                    payoutPrizes.Add(user, currency);
-                }
+                payouts.Add(userId, new ChallengePayoutBucketPrize(currency));
             }
 
-            this.AddDomainEvent(new ChallengeClosedDomainEvent(Id, payoutPrizes));
+            this.AddDomainEvent(new ChallengeClosedDomainEvent(Id, payouts));
         }
     }
 

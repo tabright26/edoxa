@@ -18,8 +18,8 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
             return new ChallengePayoutModel
             {
                 ChallengeId = model.Id,
-                EntryFeeCurrency = model.EntryFee.Currency.Value,
-                EntryFeeAmount = model.EntryFee.Amount,
+                EntryFeeCurrency = model.Payout.EntryFee.Type.Value,
+                EntryFeeAmount = model.Payout.EntryFee.Amount,
                 Buckets = model.Payout.Buckets.Select(bucket => bucket.ToModel()).ToList()
             };
         }

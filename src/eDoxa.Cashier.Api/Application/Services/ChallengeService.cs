@@ -53,7 +53,7 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var strategy = _challengePayoutFactory.CreateInstance();
 
-            var payout = strategy.GetPayout(payoutEntries, entryFee);
+            var payout = strategy.GetChallengePayout(payoutEntries, entryFee);
 
             var result = new DomainValidationResult();
 
@@ -64,7 +64,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (result.IsValid)
             {
-                var challenge = new Challenge(challengeId, entryFee, payout!);
+                var challenge = new Challenge(challengeId, payout!);
 
                 _challengeRepository.Create(challenge);
 

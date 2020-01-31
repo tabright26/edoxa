@@ -18,11 +18,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         {
         }
 
-        public Balance Balance => new Balance(Transactions, Currency.Money);
+        public Balance Balance => new Balance(Transactions, CurrencyType.Money);
 
         public DateTime? LastDeposit =>
             Transactions.Where(
-                    transaction => transaction.Currency.Type == Currency.Money &&
+                    transaction => transaction.Currency.Type == CurrencyType.Money &&
                                    transaction.Type == TransactionType.Deposit &&
                                    transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction.Timestamp)
@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public DateTime? LastWithdraw =>
             Transactions.Where(
-                    transaction => transaction.Currency.Type == Currency.Money &&
+                    transaction => transaction.Currency.Type == CurrencyType.Money &&
                                    transaction.Type == TransactionType.Withdrawal &&
                                    transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction.Timestamp)

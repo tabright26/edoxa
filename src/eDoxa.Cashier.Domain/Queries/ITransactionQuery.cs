@@ -17,7 +17,7 @@ namespace eDoxa.Cashier.Domain.Queries
     {
         Task<IReadOnlyCollection<ITransaction>> FetchUserTransactionsAsync(
             UserId userId,
-            Currency? currency = null,
+            CurrencyType? currency = null,
             TransactionType? type = null,
             TransactionStatus? status = null
         );

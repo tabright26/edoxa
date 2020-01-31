@@ -94,8 +94,8 @@ namespace eDoxa.Cashier.Api.Grpc.Services
                         {
                             return await _accountService.CreateTransactionAsync(
                                 account!,
-                                request.Custom.Amount,
-                                request.Custom.Currency.ToEnumeration<Currency>(),
+                                request.Custom.Currency.Amount,
+                                request.Custom.Currency.Type.ToEnumeration<CurrencyType>(),
                                 request.Custom.Type.ToEnumeration<TransactionType>(),
                                 new TransactionMetadata(request.Metadata));
                         }
@@ -149,7 +149,7 @@ namespace eDoxa.Cashier.Api.Grpc.Services
             var result = await _challengeService.CreateChallengeAsync(
                 challengeId,
                 new ChallengePayoutEntries(request.PayoutEntries),
-                new EntryFee(request.EntryFee.Amount, request.EntryFee.Currency.ToEnumeration<Currency>()));
+                new EntryFee(request.EntryFee.Amount, request.EntryFee.Type.ToEnumeration<CurrencyType>()));
 
             if (result.IsValid)
             {

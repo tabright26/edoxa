@@ -1,17 +1,12 @@
 ﻿// Filename: Token.cs
-// Date Created: 2019-08-27
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Collections.Generic;
-using System.Globalization;
-
-using eDoxa.Seedwork.Domain;
+// Copyright © 2020, eDoxa. All rights reserved.
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
-    public sealed class Token : ValueObject, ICurrency
+    public sealed class Token : Currency
     {
         public static readonly Token MinValue = new Token(25000);
 
@@ -22,35 +17,13 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static readonly Token OneMillion = new Token(1000000);
         public static readonly Token FiveMillions = new Token(5000000);
 
-        public Token(decimal amount)
+        public Token(decimal amount) : base(amount, CurrencyType.Token)
         {
-            Type = Currency.Token;
-            Amount = amount;
-        }
-
-        public Currency Type { get; }
-
-        public decimal Amount { get; }
-
-        public static implicit operator decimal(Token money)
-        {
-            return money.Amount;
         }
 
         public static Token operator -(Token token)
         {
             return new Token(-token.Amount);
-        }
-
-        public override string ToString()
-        {
-            return Amount.ToString(CultureInfo.InvariantCulture);
-        }
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Type;
-            yield return Amount;
         }
     }
 }

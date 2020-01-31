@@ -6,7 +6,7 @@ import Item from ".";
 import { ChallengesState } from "store/root/challenge/types";
 import {
   CHALLENGE_STATE_ENDED,
-  CURRENCY_MONEY,
+  CURRENCY_TYPE_MONEY,
   GAME_LEAGUE_OF_LEGENDS
 } from "types";
 
@@ -21,19 +21,20 @@ it("renders without crashing", () => {
         state: CHALLENGE_STATE_ENDED,
         bestOf: 3,
         entries: 100,
-        payoutEntries: 50,
         scoring: new Map<string, string>(),
         timeline: {
+          duration: 84000,
           createdAt: 0,
           startedAt: 0,
           endedAt: 0
         },
         payout: {
           challengeId: "789",
-          entryFee: { amount: 10, currency: CURRENCY_MONEY },
+          entries: 50,
+          entryFee: { amount: 10, type: CURRENCY_TYPE_MONEY },
           prizePool: {
             amount: 10000,
-            currency: CURRENCY_MONEY
+            type: CURRENCY_TYPE_MONEY
           },
           buckets: []
         },
@@ -110,19 +111,20 @@ it("renders without crashing", () => {
         state: CHALLENGE_STATE_ENDED,
         bestOf: 3,
         entries: 100,
-        payoutEntries: 50,
         scoring: new Map<string, string>(),
         timeline: {
+          duration: 84000,
           createdAt: 0,
           startedAt: 0,
           endedAt: 0
         },
         payout: {
           challengeId: "789",
-          entryFee: { amount: 10, currency: CURRENCY_MONEY },
+          entries: 50,
+          entryFee: { amount: 10, type: CURRENCY_TYPE_MONEY },
           prizePool: {
             amount: 10000,
-            currency: CURRENCY_MONEY
+            type: CURRENCY_TYPE_MONEY
           },
           buckets: []
         },
@@ -199,19 +201,20 @@ it("renders without crashing", () => {
         state: CHALLENGE_STATE_ENDED,
         bestOf: 3,
         entries: 100,
-        payoutEntries: 50,
         scoring: new Map<string, string>(),
         timeline: {
+          duration: 84000,
           createdAt: 0,
           startedAt: 0,
           endedAt: 0
         },
         payout: {
           challengeId: "789",
-          entryFee: { amount: 10, currency: CURRENCY_MONEY },
+          entries: 50,
+          entryFee: { amount: 10, type: CURRENCY_TYPE_MONEY },
           prizePool: {
             amount: 10000,
-            currency: CURRENCY_MONEY
+            type: CURRENCY_TYPE_MONEY
           },
           buckets: []
         },

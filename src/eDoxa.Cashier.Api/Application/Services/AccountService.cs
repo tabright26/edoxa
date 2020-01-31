@@ -72,8 +72,8 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 return await this.CreateTransactionAsync(
                     account,
-                    new decimal(transactionBundle.Currency.Amount),
-                    transactionBundle.Currency.Type.ToEnumeration<Currency>(),
+                    transactionBundle.Currency.Amount,
+                    transactionBundle.Currency.Type.ToEnumeration<CurrencyType>(),
                     transactionBundle.Type.ToEnumeration<TransactionType>(),
                     metadata,
                     cancellationToken);
@@ -84,7 +84,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
         public async Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
-            ICurrency currency,
+            Currency currency,
             TransactionType type,
             TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
@@ -120,7 +120,7 @@ namespace eDoxa.Cashier.Api.Application.Services
         public async Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
             decimal amount,
-            Currency currency,
+            CurrencyType currencyType,
             TransactionType type,
             TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
@@ -130,7 +130,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (result.IsValid)
             {
-                var value = currency.From(amount);
+                var value = currencyType.ToCurrency(amount);
 
                 if (value is Money money)
                 {
@@ -325,13 +325,13 @@ namespace eDoxa.Cashier.Api.Application.Services
 
         public async Task<IReadOnlyCollection<TransactionBundleDto>> FetchTransactionBundlesAsync(
             EnumTransactionType type = EnumTransactionType.All,
-            EnumCurrency currency = EnumCurrency.All,
+            EnumCurrencyType currencyType = EnumCurrencyType.All,
             bool includeDisabled = false
         )
         {
             var transactionBundles = Options.Static.Transaction.Bundles.Where(
                 transactionBundle => (type == EnumTransactionType.All || type == transactionBundle.Type) &&
-                                     (currency == EnumCurrency.All || currency == transactionBundle.Currency.Type) &&
+                                     (currencyType == EnumCurrencyType.All || currencyType == transactionBundle.Currency.Type) &&
                                      !transactionBundle.Deprecated);
 
             if (!includeDisabled)
@@ -354,25 +354,6 @@ namespace eDoxa.Cashier.Api.Application.Services
             var transactionBundles = await this.FetchTransactionBundlesAsync();
 
             return transactionBundles.Single(transactionBundle => transactionBundle.Id == transactionBundleId);
-        }
-
-        private async Task ProcessChallengePayoutAsync(UserId userId, ICurrency currency)
-        {
-            var account = await _accountRepository.FindAccountOrNullAsync(userId);
-
-            if (currency.Type == Currency.Money)
-            {
-                var moneyAccount = new MoneyAccountDecorator(account!);
-
-                moneyAccount.Payout(new Money(currency.Amount)).MarkAsSucceeded();
-            }
-
-            if (currency.Type == Currency.Token)
-            {
-                var tokenAccount = new TokenAccountDecorator(account!);
-
-                tokenAccount.Payout(new Token(currency.Amount)).MarkAsSucceeded();
-            }
         }
 
         private async Task<IDomainValidationResult> CreateTransactionAsync(
@@ -431,9 +412,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrency.Money);
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrencyType.Money);
 
-            if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != money.Amount))
+            if (transactionBundles.All(deposit => deposit.Currency.Amount != money.Amount))
             {
                 result.AddFailedPreconditionError(
                     $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
@@ -465,9 +446,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Withdrawal, EnumCurrency.Money);
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Withdrawal, EnumCurrencyType.Money);
 
-            if (transactionBundles.All(withdrawal => new decimal(withdrawal.Currency.Amount) != money.Amount))
+            if (transactionBundles.All(withdrawal => withdrawal.Currency.Amount != money.Amount))
             {
                 result.AddFailedPreconditionError(
                     $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
@@ -576,9 +557,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrency.Token);
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrencyType.Token);
 
-            if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != token.Amount))
+            if (transactionBundles.All(deposit => deposit.Currency.Amount != token.Amount))
             {
                 result.AddFailedPreconditionError(
                     $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");

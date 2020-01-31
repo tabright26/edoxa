@@ -32,9 +32,9 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
         public void GetPayout_WithEntries_ShouldNotBeNull()
         {
             // Arrange
-            var payoutStrategy = new ChallengePayoutStrategy();
+            var payoutStrategy = new DefaultChallengePayoutStrategy();
 
-            var bucket = new ChallengePayoutBucket(Prize.None, ChallengePayoutBucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
             var buckets = new ChallengePayoutBuckets(
                 new List<ChallengePayoutBucket>
@@ -45,7 +45,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
             var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
-            var payout = payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token));
+            var payout = payoutStrategy.GetChallengePayout(payoutEntries, new EntryFee(5000, CurrencyType.Token));
 
             // Assert
             payout.Should().NotBeNull();
@@ -55,16 +55,16 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
         public void GetPayout_WithoutEntries_ShouldBeNull()
         {
             // Arrange
-            var payoutStrategy = new ChallengePayoutStrategy();
+            var payoutStrategy = new DefaultChallengePayoutStrategy();
 
-            var bucket = new ChallengePayoutBucket(Prize.None, ChallengePayoutBucketSize.Individual);
+            var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
             var buckets = new ChallengePayoutBuckets(new List<ChallengePayoutBucket>());
 
             var payoutEntries = new ChallengePayoutEntries(buckets);
 
             // Act
-            var action = new Func<IChallengePayout>(() => payoutStrategy.GetPayout(payoutEntries, new EntryFee(5000, Currency.Token)));
+            var action = new Func<IChallengePayout>(() => payoutStrategy.GetChallengePayout(payoutEntries, new EntryFee(5000, CurrencyType.Token)));
 
             // Assert
             action.Should().Throw<NotSupportedException>();

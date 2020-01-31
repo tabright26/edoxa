@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.DomainEvents
 {
     public sealed class ChallengeParticipantPayoutDomainEvent : IDomainEvent
     {
-        public ChallengeParticipantPayoutDomainEvent(UserId userId, ICurrency currency)
+        public ChallengeParticipantPayoutDomainEvent(UserId userId, Currency currency)
         {
             UserId = userId;
             Currency = currency;
@@ -20,6 +20,6 @@ namespace eDoxa.Cashier.Domain.DomainEvents
 
         public UserId UserId { get; }
 
-        public ICurrency Currency { get; }
+        public Currency Currency { get; }
     }
 }

@@ -16,13 +16,13 @@ namespace eDoxa.Cashier.Domain.DomainEvents
         public PromotionRedeemedDomainEvent(
             UserId userId,
             PromotionId promotionId,
-            Currency currency,
+            CurrencyType currencyType,
             decimal amount
         )
         {
             UserId = userId;
             PromotionId = promotionId;
-            Currency = currency;
+            CurrencyType = currencyType;
             Amount = amount;
         }
 
@@ -30,7 +30,7 @@ namespace eDoxa.Cashier.Domain.DomainEvents
 
         public PromotionId PromotionId { get; }
 
-        public Currency Currency { get; }
+        public CurrencyType CurrencyType { get; }
 
         public decimal Amount { get; }
     }

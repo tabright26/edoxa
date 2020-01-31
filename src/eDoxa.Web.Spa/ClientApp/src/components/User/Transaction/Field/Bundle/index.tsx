@@ -4,7 +4,7 @@ import { Field } from "redux-form";
 import Format from "components/Shared/Format";
 import {
   TransactionBundle,
-  Currency,
+  CurrencyType,
   TransactionType,
   TransactionBundleId
 } from "types";
@@ -18,7 +18,7 @@ interface StateProps {
 
 interface OwnProps {
   name: string;
-  currency: Currency;
+  currency: CurrencyType;
   transactionType: TransactionType;
 }
 
@@ -41,33 +41,27 @@ const FormFieldTransactionBundle: FunctionComponent<Props> = ({
       parse={Number}
       component={({ input }) => (
         <Row>
-          {bundles.map(
-            ({ id, currency: { amount, type } }: TransactionBundle, index) => {
-              const checked = id === input.value;
-              return (
-                <Col key={index} xs="2">
-                  <Label
-                    className={`btn btn-dark btn-block rounded py-3 px-4 m-0 ${checked &&
-                      "active"}`}
-                  >
-                    <Input
-                      type="radio"
-                      className="d-none"
-                      {...input}
-                      value={id}
-                      checked={checked}
-                      onClick={() => setBundleId(id)}
-                    />
-                    <Format.Currency
-                      currency={type}
-                      amount={amount}
-                      alignment="center"
-                    />
-                  </Label>
-                </Col>
-              );
-            }
-          )}
+          {bundles.map(({ id, currency }: TransactionBundle, index) => {
+            const checked = id === input.value;
+            return (
+              <Col key={index} xs="2">
+                <Label
+                  className={`btn btn-dark btn-block rounded py-3 px-4 m-0 ${checked &&
+                    "active"}`}
+                >
+                  <Input
+                    type="radio"
+                    className="d-none"
+                    {...input}
+                    value={id}
+                    checked={checked}
+                    onClick={() => setBundleId(id)}
+                  />
+                  <Format.Currency currency={currency} alignment="center" />
+                </Label>
+              </Col>
+            );
+          })}
         </Row>
       )}
     />

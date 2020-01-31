@@ -34,7 +34,6 @@ const List: FunctionComponent<Props> = ({ transactions }) => (
             <Badge className="bg-gray-900 w-100">
               <Format.Currency
                 currency={transaction.currency}
-                amount={transaction.amount}
                 alignment="justify"
               />
             </Badge>

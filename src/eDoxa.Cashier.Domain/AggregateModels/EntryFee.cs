@@ -4,10 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
-using System.Globalization;
-
-using eDoxa.Seedwork.Domain;
+using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
@@ -22,7 +19,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static readonly TokenEntryFee SeventyFiveThousand = new TokenEntryFee(75000M);
         public static readonly TokenEntryFee OneHundredThousand = new TokenEntryFee(100000M);
 
-        private TokenEntryFee(decimal entryFee) : base(entryFee, Currency.Token)
+        private TokenEntryFee(decimal entryFee) : base(entryFee, CurrencyType.Token)
         {
         }
     }
@@ -38,60 +35,35 @@ namespace eDoxa.Cashier.Domain.AggregateModels
         public static readonly MoneyEntryFee SeventyFive = new MoneyEntryFee(75M);
         public static readonly MoneyEntryFee OneHundred = new MoneyEntryFee(100M);
 
-        private MoneyEntryFee(decimal entryFee) : base(entryFee, Currency.Money)
+        private MoneyEntryFee(decimal entryFee) : base(entryFee, CurrencyType.Money)
         {
         }
     }
 
-    public class EntryFee : ValueObject
+    public class EntryFee : Currency
     {
-        public EntryFee(decimal amount, Currency currency)
+        public EntryFee(decimal amount, CurrencyType type) : base(amount, type)
         {
-            Amount = amount;
-            Currency = currency;
         }
 
-        public decimal Amount { get; private set; }
+        public bool Free => Amount == 0;
 
-        public Currency Currency { get; private set; }
-
-        public static implicit operator decimal(EntryFee entryFee)
+        public ChallengePayoutBucketPrize GetPayoutBucketPrizeOrDefault()
         {
-            return entryFee.Amount;
-        }
-
-        protected override IEnumerable<object> GetAtomicValues()
-        {
-            yield return Amount;
-            yield return Currency;
-        }
-
-        public override string ToString()
-        {
-            if (Currency == Currency.Money)
+            if (Free)
             {
-                return $"${Amount}";
-            }
-
-            return Amount.ToString(CultureInfo.InvariantCulture);
-        }
-
-        public Prize GetLowestPrize()
-        {
-            if (Amount == 0) // TODO: Quick fix.
-            {
-                if (Currency == Currency.Money) // TODO: Quick fix.
+                if (Type == CurrencyType.Money)
                 {
-                    return new Prize(Money.MinValue, Currency);
+                    return new ChallengePayoutBucketPrize(Money.MinValue, Type);
                 }
 
-                if (Currency == Currency.Token) // TODO: Quick fix.
+                if (Type == CurrencyType.Token)
                 {
-                    return new Prize(Token.MinValue, Currency);
+                    return new ChallengePayoutBucketPrize(Token.MinValue, Type);
                 }
             }
 
-            return new Prize(Amount, Currency);
+            return new ChallengePayoutBucketPrize(Amount, Type);
         }
     }
 }

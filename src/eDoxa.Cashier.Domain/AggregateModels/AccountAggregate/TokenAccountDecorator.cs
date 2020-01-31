@@ -17,11 +17,11 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         {
         }
 
-        public Balance Balance => new Balance(Transactions, Currency.Token);
+        public Balance Balance => new Balance(Transactions, CurrencyType.Token);
 
         public DateTime? LastDeposit =>
             Transactions.Where(
-                    transaction => transaction.Currency.Type == Currency.Token &&
+                    transaction => transaction.Currency.Type == CurrencyType.Token &&
                                    transaction.Type == TransactionType.Deposit &&
                                    transaction.Status == TransactionStatus.Succeeded)
                 .OrderByDescending(transaction => transaction)

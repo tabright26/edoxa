@@ -171,36 +171,36 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
             var strategy = _challengePayoutFactory.CreateInstance();
 
-            var twoDollars = new EntryFee(2, Currency.Money);
+            var twoDollars = new EntryFee(2, CurrencyType.Money);
 
-            var threeDollars = new EntryFee(3, Currency.Money);
+            var threeDollars = new EntryFee(3, CurrencyType.Money);
 
-            var twoDollarsForOneEntries = strategy.GetPayout(ChallengePayoutEntries.One, twoDollars);
+            var twoDollarsForOneEntries = strategy.GetChallengePayout(ChallengePayoutEntries.One, twoDollars);
 
-            var twoDollarsForTwoEntries = strategy.GetPayout(ChallengePayoutEntries.Two, twoDollars);
+            var twoDollarsForTwoEntries = strategy.GetChallengePayout(ChallengePayoutEntries.Two, twoDollars);
 
-            var twoDollarsForThreeEntries = strategy.GetPayout(ChallengePayoutEntries.Three, twoDollars);
+            var twoDollarsForThreeEntries = strategy.GetChallengePayout(ChallengePayoutEntries.Three, twoDollars);
 
-            var threeDollarsForOneEntries = strategy.GetPayout(ChallengePayoutEntries.One, threeDollars);
+            var threeDollarsForOneEntries = strategy.GetChallengePayout(ChallengePayoutEntries.One, threeDollars);
 
-            var threeDollarsForTwoEntries = strategy.GetPayout(ChallengePayoutEntries.Two, threeDollars);
+            var threeDollarsForTwoEntries = strategy.GetChallengePayout(ChallengePayoutEntries.Two, threeDollars);
 
-            var threeDollarsForThreeEntries = strategy.GetPayout(ChallengePayoutEntries.Three, threeDollars);
+            var threeDollarsForThreeEntries = strategy.GetChallengePayout(ChallengePayoutEntries.Three, threeDollars);
 
             var challengePayouts = new List<IChallenge>
             {
-                new Challenge(ChallengeId.Parse("d53b366f-e717-43d4-ac12-6e13d37f5cef"), twoDollars, twoDollarsForOneEntries),
-                new Challenge(ChallengeId.Parse("369ae69d-b10d-4d72-84ba-698691646ba6"), twoDollars, twoDollarsForOneEntries),
-                new Challenge(ChallengeId.Parse("eb76fa60-700f-4dce-b312-d69897563437"), twoDollars, twoDollarsForTwoEntries),
-                new Challenge(ChallengeId.Parse("82592581-e6ac-41e0-9c61-773d924f233d"), twoDollars, twoDollarsForTwoEntries),
-                new Challenge(ChallengeId.Parse("9457ae9a-4e5c-436f-b10f-33134af68439"), twoDollars, twoDollarsForThreeEntries),
-                new Challenge(ChallengeId.Parse("91f6d007-b458-4f1c-9814-755b32059e00"), twoDollars, twoDollarsForThreeEntries),
-                new Challenge(ChallengeId.Parse("4ecb13a4-0742-4140-93b0-27ee582e5cab"), threeDollars, threeDollarsForOneEntries),
-                new Challenge(ChallengeId.Parse("fa38f697-2ef3-40e9-a165-d62c3cc750a8"), threeDollars, threeDollarsForOneEntries),
-                new Challenge(ChallengeId.Parse("ac6851b4-2cb7-42ab-bf44-fb197d21221b"), threeDollars, threeDollarsForTwoEntries),
-                new Challenge(ChallengeId.Parse("bb5f6e0c-ada7-47b4-9d24-a3c9ec7df034"), threeDollars, threeDollarsForTwoEntries),
-                new Challenge(ChallengeId.Parse("6ec217f7-3d6a-41c2-b2eb-4cc8799d2af5"), threeDollars, threeDollarsForThreeEntries),
-                new Challenge(ChallengeId.Parse("7d96b314-8d5b-4393-9257-9c0e2cf7c0f1"), threeDollars, threeDollarsForThreeEntries)
+                new Challenge(ChallengeId.Parse("d53b366f-e717-43d4-ac12-6e13d37f5cef"), twoDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("369ae69d-b10d-4d72-84ba-698691646ba6"), twoDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("eb76fa60-700f-4dce-b312-d69897563437"), twoDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("82592581-e6ac-41e0-9c61-773d924f233d"), twoDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("9457ae9a-4e5c-436f-b10f-33134af68439"), twoDollarsForThreeEntries),
+                new Challenge(ChallengeId.Parse("91f6d007-b458-4f1c-9814-755b32059e00"), twoDollarsForThreeEntries),
+                new Challenge(ChallengeId.Parse("4ecb13a4-0742-4140-93b0-27ee582e5cab"), threeDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("fa38f697-2ef3-40e9-a165-d62c3cc750a8"), threeDollarsForOneEntries),
+                new Challenge(ChallengeId.Parse("ac6851b4-2cb7-42ab-bf44-fb197d21221b"), threeDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("bb5f6e0c-ada7-47b4-9d24-a3c9ec7df034"), threeDollarsForTwoEntries),
+                new Challenge(ChallengeId.Parse("6ec217f7-3d6a-41c2-b2eb-4cc8799d2af5"), threeDollarsForThreeEntries),
+                new Challenge(ChallengeId.Parse("7d96b314-8d5b-4393-9257-9c0e2cf7c0f1"), threeDollarsForThreeEntries)
             };
 
             ChallengePayouts.AddRange(

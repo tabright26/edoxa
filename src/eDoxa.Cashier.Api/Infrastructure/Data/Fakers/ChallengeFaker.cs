@@ -1,8 +1,8 @@
 ﻿// Filename: ChallengeFaker.cs
-// Date Created: 2019-09-16
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
@@ -34,14 +34,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
         public ChallengeFaker()
         {
             this.CustomInstantiator(
-                faker =>
-                {
-                    var entryFee = MoneyEntryFee.Five;
-
-                    var payout = new ChallengePayoutFactory().CreateInstance().GetPayout(ChallengePayoutEntries.Ten, entryFee);
-
-                    return new Challenge(faker.Challenge().Id(), entryFee, payout);
-                });
+                faker => new Challenge(
+                    faker.Challenge().Id(),
+                    new ChallengePayoutFactory().CreateInstance().GetChallengePayout(ChallengePayoutEntries.Ten, MoneyEntryFee.Five)));
         }
     }
 }

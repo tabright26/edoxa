@@ -6,7 +6,7 @@
 
 using System;
 using System.Threading.Tasks;
-
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.CustomTypes;
@@ -47,8 +47,11 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             {
                 Transaction = new TransactionDto
                 {
-                    Amount = new DecimalValue(50.0m),
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = Money.Fifty.Amount
+                    },
                     Description = "test",
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Failed,

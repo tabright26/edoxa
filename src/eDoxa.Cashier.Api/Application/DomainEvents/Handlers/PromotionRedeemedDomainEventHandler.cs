@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.Api.Application.DomainEvents.Handlers
             await _accountService.CreateTransactionAsync(
                 account,
                 domainEvent.Amount,
-                domainEvent.Currency,
+                domainEvent.CurrencyType,
                 TransactionType.Promotion,
                 new TransactionMetadata
                 {

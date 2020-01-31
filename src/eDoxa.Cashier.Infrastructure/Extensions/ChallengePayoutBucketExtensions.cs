@@ -16,7 +16,7 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
             return new ChallengePayoutBucketModel
             {
                 Size = challengePayoutBucket.Size,
-                PrizeCurrency = challengePayoutBucket.Prize.Currency.Value,
+                PrizeCurrency = challengePayoutBucket.Prize.Type.Value,
                 PrizeAmount = challengePayoutBucket.Prize.Amount
             };
         }

@@ -20,6 +20,6 @@ namespace eDoxa.Cashier.Domain.Queries
     {
         Task<IAccount?> FindUserAccountAsync(UserId userId);
 
-        Task<Balance?> FindUserBalanceAsync(UserId userId, Currency currency);
+        Task<Balance?> FindUserBalanceAsync(UserId userId, CurrencyType currencyType);
     }
 }

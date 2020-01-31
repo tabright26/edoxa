@@ -12,7 +12,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class TransactionBuilder : ITransactionBuilder
     {
-        public TransactionBuilder(TransactionType type, ICurrency currency)
+        public TransactionBuilder(TransactionType type, Currency currency)
         {
             Type = type;
             Currency = FormatCurrencyByType(type, currency);
@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
         }
 
         private TransactionBuilder(
-            ICurrency currency,
+            Currency currency,
             TransactionType type,
             TransactionDescription description,
             IDateTimeProvider provider,
@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             Metadata = metadata;
         }
 
-        private ICurrency Currency { get; }
+        private Currency Currency { get; }
 
         private TransactionType Type { get; }
 
@@ -88,7 +88,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
                 : this;
         }
 
-        private static TransactionDescription GetDefaultDescriptionByType(TransactionType type, ICurrency currency)
+        private static TransactionDescription GetDefaultDescriptionByType(TransactionType type, Currency currency)
         {
             if (currency is Money money)
             {
@@ -149,7 +149,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             throw InvalidOperationException(type, currency);
         }
 
-        private static ICurrency FormatCurrencyByType(TransactionType type, ICurrency currency)
+        private static Currency FormatCurrencyByType(TransactionType type, Currency currency)
         {
             if (currency is Money money)
             {
@@ -180,7 +180,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             throw InvalidOperationException(type, currency);
         }
 
-        private static InvalidOperationException InvalidOperationException(TransactionType type, ICurrency currency)
+        private static InvalidOperationException InvalidOperationException(TransactionType type, Currency currency)
         {
             return new InvalidOperationException($"The {type} transaction type isn't supported for the {currency.Type} currency.");
         }

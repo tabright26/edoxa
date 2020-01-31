@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Domain.Services
     {
         Task<IReadOnlyCollection<TransactionBundleDto>> FetchTransactionBundlesAsync(
             EnumTransactionType type,
-            EnumCurrency currency,
+            EnumCurrencyType currencyType,
             bool includeDisabled = false
         );
 
@@ -43,7 +43,7 @@ namespace eDoxa.Cashier.Domain.Services
         Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
             decimal amount,
-            Currency currency,
+            CurrencyType currencyType,
             TransactionType type,
             TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
@@ -51,7 +51,7 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
-            ICurrency currency,
+            Currency currency,
             TransactionType type,
             TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default

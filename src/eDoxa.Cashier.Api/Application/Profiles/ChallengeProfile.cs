@@ -22,7 +22,7 @@ namespace eDoxa.Cashier.Api.Application.Profiles
             this.CreateMap<IChallenge, ChallengePayoutDto>()
                 .ForMember(challenge => challenge.ChallengeId, config => config.MapFrom(challenge => challenge.Id.ToString()))
                 .ForMember(challenge => challenge.Entries, config => config.MapFrom(challenge => challenge.Payout.Entries))
-                .ForMember(challenge => challenge.EntryFee, config => config.MapFrom(challenge => challenge.EntryFee))
+                .ForMember(challenge => challenge.EntryFee, config => config.MapFrom(challenge => challenge.Payout.EntryFee))
                 .ForMember(challenge => challenge.PrizePool, config => config.MapFrom(challenge => challenge.Payout.PrizePool))
                 .ForMember(challenge => challenge.Buckets, config => config.MapFrom(challenge => challenge.Payout.Buckets));
 
@@ -30,12 +30,12 @@ namespace eDoxa.Cashier.Api.Application.Profiles
                 .ForMember(bucket => bucket.Size, config => config.MapFrom<int>(bucket => bucket.Size))
                 .ForMember(bucket => bucket.Prize, config => config.MapFrom<DecimalValue>(bucket => bucket.Prize.Amount));
 
-            this.CreateMap<EntryFee, EntryFeeDto>()
-                .ForMember(entryFee => entryFee.Currency, config => config.MapFrom(entryFee => entryFee.Currency.ToEnum<EnumCurrency>()))
+            this.CreateMap<EntryFee, CurrencyDto>()
+                .ForMember(entryFee => entryFee.Type, config => config.MapFrom(entryFee => entryFee.Type.ToEnum<EnumCurrencyType>()))
                 .ForMember(entryFee => entryFee.Amount, config => config.MapFrom<DecimalValue>(entryFee => entryFee.Amount));
 
-            this.CreateMap<PrizePool, PrizePoolDto>()
-                .ForMember(prizePool => prizePool.Currency, config => config.MapFrom(prizePool => prizePool.Currency.ToEnum<EnumCurrency>()))
+            this.CreateMap<ChallengePayoutPrizePool, CurrencyDto>()
+                .ForMember(prizePool => prizePool.Type, config => config.MapFrom(prizePool => prizePool.Type.ToEnum<EnumCurrencyType>()))
                 .ForMember(prizePool => prizePool.Amount, config => config.MapFrom<DecimalValue>(prizePool => prizePool.Amount));
         }
     }

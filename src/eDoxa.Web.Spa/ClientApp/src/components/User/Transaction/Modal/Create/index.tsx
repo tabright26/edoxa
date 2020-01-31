@@ -4,13 +4,13 @@ import { Modal, ModalHeader } from "reactstrap";
 import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
 import UserTransactionForm from "components/User/Transaction/Form";
 import { compose } from "recompose";
-import { Currency, TransactionType } from "types";
+import { CurrencyType, TransactionType } from "types";
 import { ModalSubtitle } from "components/Shared/Modal/Subtitle";
 
 type OutterProps = {};
 
 type InnerProps = InjectedProps & {
-  currency: Currency;
+  currency: CurrencyType;
   transactionType: TransactionType;
   title: string;
   description: string;

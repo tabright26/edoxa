@@ -93,8 +93,7 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
                 Custom = new CustomTransaction
                 {
                     Type = EnumTransactionType.Charge,
-                    Amount = challengePayoutResponse.Payout.EntryFee.Amount,
-                    Currency = challengePayoutResponse.Payout.EntryFee.Currency
+                    Currency = challengePayoutResponse.Payout.EntryFee
                 },
                 Metadata =
                 {

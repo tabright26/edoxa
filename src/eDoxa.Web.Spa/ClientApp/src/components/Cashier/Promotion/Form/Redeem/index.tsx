@@ -14,7 +14,7 @@ import {
   loadUserBalance
 } from "store/actions/cashier";
 import { toastr } from "react-redux-toastr";
-import { CURRENCY_MONEY, CURRENCY_TOKEN, PromotionOptions } from "types";
+import { CURRENCY_TYPE_MONEY, CURRENCY_TYPE_TOKEN, PromotionOptions } from "types";
 import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 
@@ -83,8 +83,8 @@ const enhance = compose<InnerProps, OutterProps>(
       reset();
       Promise.all([
         dispatch(loadUserTransactionHistory()),
-        dispatch(loadUserBalance(CURRENCY_MONEY)),
-        dispatch(loadUserBalance(CURRENCY_TOKEN))
+        dispatch(loadUserBalance(CURRENCY_TYPE_MONEY)),
+        dispatch(loadUserBalance(CURRENCY_TYPE_TOKEN))
       ]).then(() =>
         toastr.success(
           "Promotional code",

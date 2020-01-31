@@ -14,7 +14,7 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
     {
         public static ChallengePayoutBucket ToEntity(this ChallengePayoutBucketModel model)
         {
-            return new ChallengePayoutBucket(new Prize(model.PrizeAmount, Currency.FromValue(model.PrizeCurrency)), new ChallengePayoutBucketSize(model.Size));
+            return new ChallengePayoutBucket(new ChallengePayoutBucketPrize(model.PrizeAmount, CurrencyType.FromValue(model.PrizeCurrency)), new ChallengePayoutBucketSize(model.Size));
         }
     }
 }

@@ -36,19 +36,19 @@ namespace eDoxa.Cashier.Api.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("{currency}", Name = "Test")]
+        [HttpGet("{currencyType}", Name = "Test")]
         [SwaggerOperation("Get account balance by currency.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(BalanceDto))]
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
-        public async Task<IActionResult> FindUserBalanceAsync(Currency currency)
+        public async Task<IActionResult> FindUserBalanceAsync(CurrencyType currencyType)
         {
             var userId = HttpContext.GetUserId();
 
-            var response = await _accountQuery.FindUserBalanceAsync(userId, currency);
+            var response = await _accountQuery.FindUserBalanceAsync(userId, currencyType);
 
             if (response == null)
             {
-                return this.NotFound($"Account balance for currency {currency} not found.");
+                return this.NotFound($"Account balance for currency {currencyType} not found.");
             }
 
             return this.Ok(_mapper.Map<BalanceDto>(response));

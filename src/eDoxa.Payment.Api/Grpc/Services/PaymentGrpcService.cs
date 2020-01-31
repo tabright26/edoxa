@@ -76,7 +76,7 @@ namespace eDoxa.Payment.Api.Grpc.Services
                 var invoice = await _stripeInvoiceService.CreateInvoiceAsync(
                     customerId,
                     request.Transaction.Id.ParseEntityId<TransactionId>(),
-                    Convert.ToInt64(request.Transaction.Amount.ToDecimal()),
+                    Convert.ToInt64(request.Transaction.Currency.Amount.ToDecimal()),
                     request.Transaction.Description);
 
                 await _serviceBusPublisher.PublishUserDepositSucceededIntegrationEventAsync(userId, request.Transaction);
@@ -119,7 +119,7 @@ namespace eDoxa.Payment.Api.Grpc.Services
                 var transfer = await _stripeTransferService.CreateTransferAsync(
                     accountId,
                     request.Transaction.Id.ParseEntityId<TransactionId>(),
-                    Convert.ToInt64(-request.Transaction.Amount.ToDecimal()), // TODO: Invalid integer operator.
+                    Convert.ToInt64(-request.Transaction.Currency.Amount.ToDecimal()), // TODO: Invalid integer operator.
                     request.Transaction.Description);
 
                 await _serviceBusPublisher.PublishUserWithdrawalSucceededIntegrationEventAsync(userId, request.Transaction);

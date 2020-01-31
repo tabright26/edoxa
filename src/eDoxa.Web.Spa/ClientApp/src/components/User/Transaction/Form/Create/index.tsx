@@ -7,7 +7,7 @@ import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { createUserTransaction } from "store/actions/cashier";
-import { Currency, TransactionType, TransactionBundleId } from "types";
+import { CurrencyType, TransactionType, TransactionBundleId } from "types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import FormField from "components/User/Transaction/Field";
 
@@ -16,7 +16,7 @@ interface FormData {
 }
 
 interface OutterProps {
-  currency: Currency;
+  currency: CurrencyType;
   transactionType: TransactionType;
   handleCancel: () => void;
 }

@@ -20,7 +20,7 @@ message CreateChallangeAggregateRequest {
   int32 bestOf = 4;
   int32 entries = 5;
   int32 duration = 6;
-  cashier.EntryFeeDto entryFee = 7;
+  cashier.CurrencyDto entryFee = 7;
 }
 
 message ChallengeAggregate {

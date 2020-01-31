@@ -12,5 +12,5 @@ message CreateChallengePayoutFailedIntegrationEvent {
 
 message ChallengeClosedIntegrationEvent {
   string challengeId = 1;
-  map<string, PrizeDto> payoutPrizes = 2;
+  map<string, CurrencyDto> payoutPrizes = 2;
 }

@@ -15,11 +15,9 @@ using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
-using eDoxa.ServiceBus.Abstractions;
 
 using Moq;
 
@@ -44,9 +42,9 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var factory = new ChallengePayoutFactory();
             var strategy = factory.CreateInstance();
-            var payout = strategy.GetPayout(ChallengePayoutEntries.Five, MoneyEntryFee.Fifty);
+            var payout = strategy.GetChallengePayout(ChallengePayoutEntries.Five, MoneyEntryFee.Fifty);
 
-            var challenge = new Challenge(challengeId, MoneyEntryFee.Fifty, payout);
+            var challenge = new Challenge(challengeId, payout);
 
             var mockChallengeService = new Mock<IChallengeService>();
 
