@@ -83,7 +83,7 @@ const Create: FunctionComponent<Props> = ({
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-9 mb-0">
-        <Button.Submit loading={submitting} className="mt-3" size="sm">
+        <Button.Submit loading={submitting} size="sm">
           Save
         </Button.Submit>
       </dd>

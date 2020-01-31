@@ -25,35 +25,50 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
     {
         private readonly ILeagueOfLegendsService _leagueOfLegendsService;
         private readonly IGameAuthenticationRepository _gameAuthenticationRepository;
+        private readonly IGameCredentialRepository _gameCredentialRepository;
 
         public LeagueOfLegendsAuthenticationGeneratorAdapter(
             ILeagueOfLegendsService leagueOfLegendsService,
-            IGameAuthenticationRepository gameAuthenticationRepository
+            IGameAuthenticationRepository gameAuthenticationRepository,
+            IGameCredentialRepository gameCredentialRepository
         )
         {
             _leagueOfLegendsService = leagueOfLegendsService;
             _gameAuthenticationRepository = gameAuthenticationRepository;
+            _gameCredentialRepository = gameCredentialRepository;
         }
 
         public override Game Game => Game.LeagueOfLegends;
 
         public override async Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
         {
-            var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
+            var result = new DomainValidationResult();
 
-            if (summoner == null)
+            try
             {
-                return DomainValidationResult.Failure($"{Game} summoner's name doesn't exists. Note: Only NA server is supported for the moment");
+                var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
+
+                if (await _gameCredentialRepository.CredentialExistsAsync(PlayerId.Parse(summoner.AccountId), Game))
+                {
+                    result.AddFailedPreconditionError("Summoner's name is already linked by another eDoxa account");
+                }
+
+                if (result.IsValid)
+                {
+                    if (await _gameAuthenticationRepository.AuthenticationExistsAsync(userId, Game))
+                    {
+                        await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
+                    }
+
+                    await _gameAuthenticationRepository.AddAuthenticationAsync(userId, Game, await this.GenerateAuthFactor(summoner));
+                }
+            }
+            catch (Exception)
+            {
+                result.AddFailedPreconditionError("Summoner name is invalid");
             }
 
-            if (await _gameAuthenticationRepository.AuthenticationExistsAsync(userId, Game))
-            {
-                await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
-            }
-
-            await _gameAuthenticationRepository.AddAuthenticationAsync(userId, Game, await this.GenerateAuthFactor(summoner));
-
-            return new DomainValidationResult();
+            return result;
         }
 
         private async Task<LeagueOfLegendsGameAuthentication> GenerateAuthFactor(Summoner summoner)

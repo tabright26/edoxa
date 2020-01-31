@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { connectModal, InjectedProps } from "redux-modal";
-import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Modal, ModalHeader } from "reactstrap";
 import { UNLINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
 import GameCredentialFrom from "components/Game/Credential/Form";
 import { compose } from "recompose";
@@ -26,15 +26,12 @@ const Unlink: FunctionComponent<Props> = ({
     >
       Unlink your {gameOptions.displayName} credential?
     </ModalHeader>
-    <ModalBody>
-      <p>You can unlink your credential once a month.</p>
-      {show && (
-        <GameCredentialFrom.Unlink
-          game={gameOptions.name}
-          handleCancel={handleHide}
-        />
-      )}
-    </ModalBody>
+    {show && (
+      <GameCredentialFrom.Unlink
+        game={gameOptions.name}
+        handleCancel={handleHide}
+      />
+    )}
   </Modal>
 );
 

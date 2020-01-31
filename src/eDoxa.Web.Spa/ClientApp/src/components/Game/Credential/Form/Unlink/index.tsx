@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { FormGroup, Form, Button } from "reactstrap";
+import { Form, Button, ModalBody, ModalFooter } from "reactstrap";
 import { reduxForm, InjectedFormProps } from "redux-form";
 import { UNLINK_GAME_CREDENTIAL_FORM } from "utils/form/constants";
 import { compose } from "recompose";
@@ -8,6 +8,7 @@ import { unlinkGameCredential } from "store/actions/game";
 import { throwSubmissionError } from "utils/form/types";
 import authorizeService from "utils/oidc/AuthorizeService";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { ValidationSummary } from "components/Shared/ValidationSummary";
 
 interface FormData {}
 
@@ -22,16 +23,26 @@ type OutterProps = {
 
 type Props = InnerProps & OutterProps;
 
-const Unlink: FunctionComponent<Props> = ({ handleSubmit, handleCancel }) => (
+const Unlink: FunctionComponent<Props> = ({
+  handleSubmit,
+  error,
+  handleCancel,
+  anyTouched
+}) => (
   <Form onSubmit={handleSubmit}>
-    <FormGroup className="mb-0">
-    <Button type="submit" size="sm" color="primary" className="mr-2">
+    <ModalBody>
+      <ValidationSummary error={error} anyTouched={anyTouched} />
+      You can unlink your League of Legends credentials one month after linking
+      your account.
+    </ModalBody>
+    <ModalFooter className="bg-gray-800">
+      <Button type="submit" size="sm" color="primary" className="mr-2">
         Yes
       </Button>
       <Button onClick={() => handleCancel()} size="sm">
         No
       </Button>
-    </FormGroup>
+    </ModalFooter>
   </Form>
 );
 
