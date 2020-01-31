@@ -4,8 +4,7 @@ import {
   UserDoxatag,
   UserEmail,
   UserProfile,
-  LogoutToken,
-  UserDob
+  LogoutToken
 } from "types";
 
 export const LOAD_USER_ADDRESSBOOK = "LOAD_USER_ADDRESSBOOK";
@@ -49,7 +48,7 @@ export type RegisterUserAccountRequest = {
   password: string;
   country: string;
   ip: string;
-  dob: UserDob;
+  dob: string;
 };
 
 export type LoginUserAccountType =

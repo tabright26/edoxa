@@ -9,15 +9,15 @@ import "identity_enums.proto";
 
 package edoxa.services.identity;
 
-message RegisterRequest {
+message RegisterAccountRequest {
   string email = 1;
   string password = 2;
   EnumCountryIsoCode country = 3;
   string ip = 4;
-  DobDto dob = 5;
+  string dob = 5;
 }
 
-message LoginRequest {
+message LoginAccountRequest {
   string email = 1;
   string password = 2;
   bool rememberMe = 3;

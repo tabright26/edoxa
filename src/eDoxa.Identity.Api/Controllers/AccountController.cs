@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
@@ -12,6 +13,7 @@ using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
@@ -51,7 +53,7 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginAccountAsync([FromBody] LoginRequest request)
+        public async Task<IActionResult> LoginAccountAsync([FromBody] LoginAccountRequest request)
         {
             var context = await _interactionService.GetAuthorizationContextAsync(request.ReturnUrl);
 
@@ -78,7 +80,7 @@ namespace eDoxa.Identity.Api.Controllers
 
                     await _eventService.RaiseAsync(new UserLoginFailureEvent(user.UserName, errorMessage));
 
-                    ModelState.AddModelError("_error", errorMessage);
+                    ModelState.AddModelError(DomainValidationError.FailedPreconditionPropertyName, errorMessage);
 
                     return this.BadRequest(new ValidationProblemDetails(ModelState));
                 }
@@ -115,7 +117,7 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAccountAsync([FromBody] RegisterRequest request)
+        public async Task<IActionResult> RegisterAccountAsync([FromBody] RegisterAccountRequest request)
         {
             var result = await _userService.CreateAsync(
                 new User
@@ -124,7 +126,7 @@ namespace eDoxa.Identity.Api.Controllers
                     Email = request.Email,
                     UserName = request.Email,
                     Country = request.Country.ToEnumeration<Country>(),
-                    Dob = new UserDob(request.Dob.Year, request.Dob.Month, request.Dob.Day)
+                    Dob = new UserDob(DateTime.Parse(request.Dob))
                 },
                 request.Password);
 
