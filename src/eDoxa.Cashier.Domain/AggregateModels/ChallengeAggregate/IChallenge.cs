@@ -1,8 +1,8 @@
 ﻿// Filename: IChallenge.cs
-// Date Created: 2019-07-10
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
@@ -14,5 +14,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
         EntryFee EntryFee { get; }
 
         IChallengePayout Payout { get; }
+
+        void Close(ChallengeScoreboard scoreboard);
     }
 }

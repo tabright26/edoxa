@@ -1,13 +1,12 @@
 ﻿// Filename: EntryFee.cs
-// Date Created: 2019-10-06
+// Date Created: 2020-01-29
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Globalization;
 
-using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels
@@ -83,12 +82,12 @@ namespace eDoxa.Cashier.Domain.AggregateModels
             {
                 if (Currency == Currency.Money) // TODO: Quick fix.
                 {
-                    return new Prize(Money.MinValue, Currency); 
+                    return new Prize(Money.MinValue, Currency);
                 }
 
                 if (Currency == Currency.Token) // TODO: Quick fix.
                 {
-                    return new Prize(Token.MinValue, Currency); 
+                    return new Prize(Token.MinValue, Currency);
                 }
             }
 

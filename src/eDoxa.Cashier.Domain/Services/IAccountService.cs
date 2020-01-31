@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Seedwork.Domain;
@@ -21,7 +20,7 @@ namespace eDoxa.Cashier.Domain.Services
     public interface IAccountService
     {
         Task<IReadOnlyCollection<TransactionBundleDto>> FetchTransactionBundlesAsync(
-            EnumTransactionType transactionType,
+            EnumTransactionType type,
             EnumCurrency currency,
             bool includeDisabled = false
         );
@@ -36,8 +35,8 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
-            int transactionBundleId,
-            TransactionMetadata? transactionMetadata = null,
+            int bundleId,
+            TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
         );
 
@@ -45,12 +44,18 @@ namespace eDoxa.Cashier.Domain.Services
             IAccount account,
             decimal amount,
             Currency currency,
-            TransactionType transactionType,
-            TransactionMetadata? transactionMetadata = null,
+            TransactionType type,
+            TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> ProcessChallengePayoutAsync(ChallengeScoreboard scoreboard, CancellationToken cancellationToken = default);
+        Task<IDomainValidationResult> CreateTransactionAsync(
+            IAccount account,
+            ICurrency currency,
+            TransactionType type,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        );
 
         Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId);
 

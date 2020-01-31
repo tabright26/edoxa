@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,5 +29,11 @@ namespace eDoxa.Cashier.Domain.Services
         Task<IChallenge> FindChallengeAsync(ChallengeId challengeId);
 
         Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
+
+        Task CloseChallengeAsync(
+            IChallenge challenge,
+            Dictionary<UserId, decimal?> scoreboard,
+            CancellationToken cancellationToken = default
+        );
     }
 }

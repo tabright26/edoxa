@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace eDoxa.Cashier.Api.IntegrationEvents.Extensions
                         payoutPrize => new PrizeDto
                         {
                             Amount = payoutPrize.Value.Amount,
-                            Currency = payoutPrize.Value.Currency.ToEnum<EnumCurrency>()
+                            Currency = payoutPrize.Value.Type.ToEnum<EnumCurrency>()
                         })
                 }
             };

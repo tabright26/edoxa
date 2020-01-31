@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +17,6 @@ using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
 using eDoxa.ServiceBus.Abstractions;
@@ -48,9 +48,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var challenge = new Challenge(challengeId, MoneyEntryFee.Fifty, payout);
 
-            var mockAccountService = new Mock<IAccountService>();
             var mockChallengeService = new Mock<IChallengeService>();
-            var mockServiceBus = new Mock<IServiceBusPublisher>();
 
             var mockLogger = new MockLogger<ChallengeSynchronizedIntegrationEventHandler>();
 
@@ -58,16 +56,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             mockChallengeService.Setup(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.ProcessChallengePayoutAsync(It.IsAny<ChallengeScoreboard>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(DomainValidationResult.Succeeded(new PayoutPrizes()))
-                .Verifiable();
-
-            mockServiceBus.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<ChallengeClosedIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
+            mockChallengeService.Setup(challengeService => challengeService.CloseChallengeAsync(It.IsAny<IChallenge>(), It.IsAny<Dictionary<UserId, decimal?>>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
 
             var handler = new ChallengeSynchronizedIntegrationEventHandler(
                 mockChallengeService.Object,
-                mockAccountService.Object,
-                mockServiceBus.Object,
                 mockLogger.Object);
 
             var integrationEvent = new ChallengeSynchronizedIntegrationEvent
@@ -80,13 +72,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             // Assert
             mockChallengeService.Verify(challengeService => challengeService.ChallengeExistsAsync(It.IsAny<ChallengeId>()), Times.Once);
+
             mockChallengeService.Verify(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
-            mockAccountService.Verify(
-                accountService => accountService.ProcessChallengePayoutAsync(It.IsAny<ChallengeScoreboard>(), It.IsAny<CancellationToken>()),
-                Times.Once);
-
-            mockServiceBus.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<ChallengeClosedIntegrationEvent>()), Times.Once);
+            mockChallengeService.Verify(challengeService => challengeService.CloseChallengeAsync(It.IsAny<IChallenge>(), It.IsAny<Dictionary<UserId, decimal?>>(), It.IsAny<CancellationToken>()), Times.Once);
 
             mockLogger.Verify(Times.Once());
         }
