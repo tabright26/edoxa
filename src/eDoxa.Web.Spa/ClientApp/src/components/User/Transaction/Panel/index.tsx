@@ -1,10 +1,10 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import { Card } from "reactstrap";
-import TransactionList from "components/User/Transaction/List";
+import List from "components/User/Transaction/List";
 import { Paginate } from "components/Shared/Paginate";
 import { compose } from "recompose";
 import { UserTransactionState } from "store/root/user/transactionHistory/types";
-import { Currency, TransactionType, TransactionStatus } from "types";
+import { CurrencyType, TransactionType, TransactionStatus } from "types";
 import { Loading } from "components/Shared/Loading";
 import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
 import { RootState } from "store/types";
@@ -21,7 +21,7 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  currency?: Currency | null;
+  currency?: CurrencyType | null;
   type?: TransactionType | null;
   status?: TransactionStatus | null;
 }
@@ -32,7 +32,7 @@ type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
-const FilteredTransactions: FunctionComponent<Props> = ({
+const Panel: FunctionComponent<Props> = ({
   transactionHistory: { data, loading },
   loadUserTransactionHistory
 }) => {
@@ -49,11 +49,7 @@ const FilteredTransactions: FunctionComponent<Props> = ({
   return (
     <>
       <Card className="card-accent-primary mt-4 mb-3">
-        {loading ? (
-          <Loading />
-        ) : (
-          <TransactionList transactions={transactions} />
-        )}
+        {loading ? <Loading /> : <List transactions={transactions} />}
       </Card>
       <Paginate
         pageSize={pageSize}
@@ -98,4 +94,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connect(mapStateToProps, mapDispatchToProps)
 );
 
-export default enhance(FilteredTransactions);
+export default enhance(Panel);

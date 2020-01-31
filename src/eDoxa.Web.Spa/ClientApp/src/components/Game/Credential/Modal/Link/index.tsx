@@ -7,6 +7,7 @@ import { compose } from "recompose";
 import { GameOptions } from "types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { ModalSubtitle } from "components/Shared/Modal/Subtitle";
 
 type InnerProps = InjectedProps & { gameOptions: GameOptions };
 
@@ -14,29 +15,35 @@ type OutterProps = {};
 
 type Props = InnerProps & OutterProps;
 
-const Link: FunctionComponent<Props> = ({
-  show,
-  handleHide,
-  gameOptions
-}) => {
+const Link: FunctionComponent<Props> = ({ show, handleHide, gameOptions }) => {
   const [authenticationFactor, setAuthenticationFactor] = useState(null);
   return (
-    <Modal
-      unmountOnClose={false}
-      backdrop="static"
-      centered
-      isOpen={show}
-      toggle={handleHide}
-    >
-      <ModalHeader toggle={handleHide}>
-        <strong>{gameOptions.displayName} Authentications</strong>
+    <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
+      <ModalHeader className="my-auto bg-gray-900" toggle={handleHide}>
+        <strong className="text-uppercase">
+          {gameOptions.displayName} Authentications
+        </strong>
+        <ModalSubtitle>
+          We need to link your primary account summoner name to automatically
+          validate your in-game score and to verify the account ownership.
+        </ModalSubtitle>
       </ModalHeader>
       <ModalBody>
         {!authenticationFactor ? (
-          <GameAuthenticationFrom.Generate
-            game={gameOptions.name}
-            setAuthenticationFactor={setAuthenticationFactor}
-          />
+          <>
+            <p className="text-primary">
+              <strong>
+                SMURF ACCOUNTS ARE NOT ALLOWED ON EDOXA.GG, IF CAUGHT, IT'S AN
+                INSTANT BAN WITH NO REFUNDS!
+              </strong>
+            </p>
+            {show && (
+              <GameAuthenticationFrom.Generate
+                game={gameOptions.name}
+                setAuthenticationFactor={setAuthenticationFactor}
+              />
+            )}
+          </>
         ) : (
           <>
             <div className="d-flex justify-content-between">
@@ -73,11 +80,13 @@ const Link: FunctionComponent<Props> = ({
               </div>
             </div>
             <div className="d-flex justify-content-center mt-3">
-              <GameAuthenticationFrom.Validate
-                gameOptions={gameOptions}
-                handleCancel={handleHide}
-                setAuthenticationFactor={setAuthenticationFactor}
-              />
+              {show && (
+                <GameAuthenticationFrom.Validate
+                  gameOptions={gameOptions}
+                  handleCancel={handleHide}
+                  setAuthenticationFactor={setAuthenticationFactor}
+                />
+              )}
             </div>
           </>
         )}

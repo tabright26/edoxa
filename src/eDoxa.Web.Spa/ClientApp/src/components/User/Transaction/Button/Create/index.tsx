@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from "react";
 import { Button } from "reactstrap";
 import { compose } from "recompose";
-import { Currency, TransactionType } from "types";
+import { CurrencyType, TransactionType } from "types";
 import { connect, MapDispatchToProps } from "react-redux";
 import { show } from "redux-modal";
 import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
@@ -11,9 +11,10 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-  currency: Currency;
+  currency: CurrencyType;
   transactionType: TransactionType;
   title: string;
+  description: string;
 }
 
 type InnerProps = DispatchProps;
@@ -24,7 +25,7 @@ type OutterProps = OwnProps & {
 
 type Props = InnerProps & OutterProps;
 
-const CreateTransactionButton: FunctionComponent<Props> = ({
+const Create: FunctionComponent<Props> = ({
   showModal,
   disabled,
   children
@@ -50,7 +51,8 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
         show(CREATE_USER_TRANSACTION_MODAL, {
           currency: ownProps.currency,
           transactionType: ownProps.transactionType,
-          title: ownProps.title
+          title: ownProps.title,
+          description: ownProps.description
         })
       )
   };
@@ -60,4 +62,4 @@ const enhance = compose<InnerProps, OutterProps>(
   connect(null, mapDispatchToProps)
 );
 
-export default enhance(CreateTransactionButton);
+export default enhance(Create);

@@ -110,10 +110,10 @@ namespace eDoxa.Challenges.Web.Aggregator.Controllers
             {
                 ChallengeId = challenge.Id,
                 PayoutEntries = challenge.Entries / 2, // TODO
-                EntryFee = new EntryFeeDto
+                EntryFee = new CurrencyDto
                 {
                     Amount = request.EntryFee.Amount,
-                    Currency = request.EntryFee.Currency
+                    Type = request.EntryFee.Type
                 }
             };
 

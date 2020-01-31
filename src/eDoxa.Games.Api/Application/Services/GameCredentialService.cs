@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -61,15 +62,25 @@ namespace eDoxa.Games.Api.Application.Services
 
         public async Task<IDomainValidationResult> UnlinkCredentialAsync(Credential credential)
         {
-            credential.Delete();
+            var result = new DomainValidationResult();
 
-            await _gameCredentialRepository.UnitOfWork.CommitAsync();
+            if (credential.Timestamp > DateTime.UtcNow.AddMonths(-1))
+            {
+                result.AddFailedPreconditionError($"You will have the right to unlink your {credential.Game.DisplayName} credentials in {(credential.Timestamp - DateTime.UtcNow.AddMonths(-1)).Days} days.");
+            }
 
-            _gameCredentialRepository.DeleteCredential(credential);
+            if (result.IsValid)
+            {
+                credential.Delete();
 
-            await _gameCredentialRepository.UnitOfWork.CommitAsync();
+                await _gameCredentialRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+                _gameCredentialRepository.DeleteCredential(credential);
+
+                await _gameCredentialRepository.UnitOfWork.CommitAsync();
+            }
+
+            return result;
         }
 
         public async Task<IReadOnlyCollection<Credential>> FetchCredentialsAsync(UserId userId)

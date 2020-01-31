@@ -23,10 +23,11 @@ type Props = InnerProps & OutterProps;
 const Delete: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  handleCancel
+  handleCancel,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Label className="mb-3">
       Are you sure you want to delete this payment method?
     </Label>

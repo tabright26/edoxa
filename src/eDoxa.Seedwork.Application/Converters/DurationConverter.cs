@@ -24,7 +24,7 @@ namespace eDoxa.Seedwork.Application.Converters
             }
             else
             {
-                writer.WriteValue(value.ToTimeSpan().Seconds);
+                writer.WriteValue(value.ToTimeSpan().TotalSeconds);
             }
         }
 

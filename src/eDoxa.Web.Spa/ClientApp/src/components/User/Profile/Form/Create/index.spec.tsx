@@ -26,7 +26,11 @@ const createWrapper = (): ReactWrapper | any => {
 
 describe("<UserInformationCreateForm />", () => {
   it("should match the snapshot", () => {
-    const shallowWrapper = shallow(<Create handleCancel={() => {}} />);
+    const shallowWrapper = shallow(
+      <Provider store={store}>
+        <Create handleCancel={() => {}} />
+      </Provider>
+    );
     expect(shallowWrapper).toMatchSnapshot();
   });
 

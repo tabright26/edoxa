@@ -15,17 +15,21 @@ type InnerProps = InjectedFormProps<FormData, Props> &
   RouteComponentProps<{ challengeId: ChallengeId }>;
 
 type OutterProps = {
+  className?: string;
   userId: UserId;
 };
 
 type Props = InnerProps & OutterProps;
 
-const Register: FunctionComponent<Props> = ({ handleSubmit, submitting }) => (
+const Register: FunctionComponent<Props> = ({
+  handleSubmit,
+  submitting,
+  className
+}) => (
   <Form onSubmit={handleSubmit} className="h-100">
     <Button.Submit
       color="primary"
-      size="lg"
-      className="text-uppercase h-100 w-100"
+      className={className}
       loading={submitting}
     >
       REGISTER

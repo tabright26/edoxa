@@ -15,24 +15,24 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
 {
     public static class PromotionModelExtensions
     {
-        public static Promotion ToEntity(this PromotionModel promotionModel)
+        public static Promotion ToEntity(this PromotionModel model)
         {
             var promotion = new Promotion(
-                promotionModel.PromotionalCode,
-                Currency.FromValue(promotionModel.Currency).From(promotionModel.Amount),
-                TimeSpan.FromTicks(promotionModel.Duration),
-                new DateTimeProvider(promotionModel.ExpiredAt));
+                model.PromotionalCode,
+                CurrencyType.FromValue(model.Currency).ToCurrency(model.Amount),
+                TimeSpan.FromTicks(model.Duration),
+                new DateTimeProvider(model.ExpiredAt));
 
-            promotion.SetEntityId(promotionModel.Id);
+            promotion.SetEntityId(model.Id);
 
-            foreach (var recipient in promotionModel.Recipients)
+            foreach (var recipient in model.Recipients)
             {
                 promotion.Redeem(recipient.ToEntity());
             }
 
-            if (promotionModel.CanceledAt.HasValue)
+            if (model.CanceledAt.HasValue)
             {
-                promotion.Cancel(new DateTimeProvider(promotionModel.CanceledAt.Value));
+                promotion.Cancel(new DateTimeProvider(model.CanceledAt.Value));
             }
 
             promotion.ClearDomainEvents();

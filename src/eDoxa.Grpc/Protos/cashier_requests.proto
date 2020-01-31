@@ -20,7 +20,7 @@ message FindChallengePayoutRequest {
 message CreateChallengePayoutRequest {
   string challengeId = 1;
   int32 payoutEntries = 2;
-  EntryFeeDto entryFee = 3;
+  CurrencyDto entryFee = 3;
 }
 
 message CreateTransactionRequest {
@@ -31,9 +31,8 @@ message CreateTransactionRequest {
   map<string, string> metadata = 3;
 
   message CustomTransaction {
-    EnumTransactionType type = 1;
-    EnumCurrency currency = 2;
-    customTypes.DecimalValue amount = 3;
+    CurrencyDto currency = 1;
+    EnumTransactionType type = 2;
   }
 }
 
@@ -43,8 +42,7 @@ message CreateTransactionAggregatorRequest {
 
 message CreatePromotionRequest {
   string promotionalCode = 1;
-  customTypes.DecimalValue amount = 2;
-  EnumCurrency currency = 3;
-  google.protobuf.Duration duration = 4;
-  google.protobuf.Timestamp expiredAt = 5;
+  CurrencyDto currency = 2;
+  google.protobuf.Duration duration = 3;
+  google.protobuf.Timestamp expiredAt = 4;
 }

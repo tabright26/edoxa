@@ -1,12 +1,12 @@
 import React, { FunctionComponent, useEffect } from "react";
 import { Row, Col, CardDeck, Card, CardBody } from "reactstrap";
-import ChallengeLogo from "components/Challenge/Logo";
-import ChallengeSummary from "components/Challenge/Summary";
+import Logo from "components/Challenge/Logo";
+import Summary from "components/Challenge/Summary";
 import Scoreboard from "components/Challenge/Scoreboard";
-import ChallengeScoring from "components/Challenge/Scoring";
-import ChallengePayout from "components/Challenge/Payout";
-import ChallengeTimeline from "components/Challenge/Timeline";
-import Register from "components/Challenge/Register";
+import Scoring from "components/Challenge/Scoring";
+import Payout from "components/Challenge/Payout";
+import Timeline from "components/Challenge/Timeline";
+import Rules from "components/Challenge/Rules";
 import { Loading } from "components/Shared/Loading";
 import { Challenge, ChallengeId } from "types";
 import GameCredentialModal from "components/Game/Credential/Modal";
@@ -44,25 +44,25 @@ const Details: FunctionComponent<Props> = ({ challenge, loadChallenge }) => {
       <GameCredentialModal.Link />
       <GameCredentialModal.Unlink />
       <Row>
-        <Col xs={{ size: 9, order: 1 }}>
+        <Col xs={{ size: 8, order: 1 }}>
           <CardDeck className="mt-4">
-            <ChallengeLogo className="col-2 bg-gray-900" />
+            <Logo className="col-2 bg-gray-900" />
             <Card className="col-10">
               <CardBody className="d-flex">
-                <ChallengeTimeline />
-                <ChallengeSummary />
+                <Timeline />
+                <Summary />
               </CardBody>
             </Card>
           </CardDeck>
         </Col>
-        <Col xs={{ size: 3, order: 2 }}>
-          <ChallengeScoring className="mt-4" />
+        <Col xs={{ size: 4, order: 2 }}>
+          <Scoring className="mt-4" />
         </Col>
-        <Col xs={{ size: 3, order: 4 }}>
-          <ChallengePayout />
-          <Register />
+        <Col xs={{ size: 4, order: 4 }}>
+          <Payout />
+          <Rules />
         </Col>
-        <Col xs={{ size: 9, order: 3 }}>
+        <Col xs={{ size: 8, order: 3 }}>
           <Scoreboard />
         </Col>
       </Row>

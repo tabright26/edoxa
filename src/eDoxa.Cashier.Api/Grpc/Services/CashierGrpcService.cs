@@ -86,26 +86,26 @@ namespace eDoxa.Cashier.Api.Grpc.Services
                 switch (request.TransactionCase)
                 {
                     case CreateTransactionRequest.TransactionOneofCase.Bundle:
-                    {
-                        return await _accountService.CreateTransactionAsync(account!, request.Bundle, new TransactionMetadata(request.Metadata));
-                    }
+                        {
+                            return await _accountService.CreateTransactionAsync(account!, request.Bundle, new TransactionMetadata(request.Metadata));
+                        }
 
                     case CreateTransactionRequest.TransactionOneofCase.Custom:
-                    {
-                        return await _accountService.CreateTransactionAsync(
-                            account!,
-                            request.Custom.Amount,
-                            request.Custom.Currency.ToEnumeration<Currency>(),
-                            request.Custom.Type.ToEnumeration<TransactionType>(),
-                            new TransactionMetadata(request.Metadata));
-                    }
+                        {
+                            return await _accountService.CreateTransactionAsync(
+                                account!,
+                                request.Custom.Currency.Amount,
+                                request.Custom.Currency.Type.ToEnumeration<CurrencyType>(),
+                                request.Custom.Type.ToEnumeration<TransactionType>(),
+                                new TransactionMetadata(request.Metadata));
+                        }
                     default:
-                    {
-                        throw context.RpcException(
-                            new Status(
-                                StatusCode.InvalidArgument,
-                                $"The case ({request.TransactionCase}) is not supported for {nameof(this.CreateTransaction)}."));
-                    }
+                        {
+                            throw context.RpcException(
+                                new Status(
+                                    StatusCode.InvalidArgument,
+                                    $"The case ({request.TransactionCase}) is not supported for {nameof(this.CreateTransaction)}."));
+                        }
                 }
             }
         }
@@ -148,8 +148,8 @@ namespace eDoxa.Cashier.Api.Grpc.Services
 
             var result = await _challengeService.CreateChallengeAsync(
                 challengeId,
-                new PayoutEntries(request.PayoutEntries),
-                new EntryFee(request.EntryFee.Amount, request.EntryFee.Currency.ToEnumeration<Currency>()));
+                new ChallengePayoutEntries(request.PayoutEntries),
+                new EntryFee(request.EntryFee.Amount, request.EntryFee.Type.ToEnumeration<CurrencyType>()));
 
             if (result.IsValid)
             {

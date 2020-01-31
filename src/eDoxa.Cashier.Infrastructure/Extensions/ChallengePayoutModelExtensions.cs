@@ -17,11 +17,11 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
     {
         public static IChallenge ToEntity(this ChallengePayoutModel model)
         {
-            var entryFee = new EntryFee(model.EntryFeeAmount, Currency.FromValue(model.EntryFeeCurrency));
+            var entryFee = new EntryFee(model.EntryFeeAmount, CurrencyType.FromValue(model.EntryFeeCurrency));
 
-            var payout = new Payout(new Buckets(model.Buckets.Select(bucket => bucket.ToEntity())));
+            var payout = new ChallengePayout(entryFee, new ChallengePayoutBuckets(model.Buckets.Select(bucket => bucket.ToEntity())));
 
-            var challenge = new Challenge(ChallengeId.FromGuid(model.ChallengeId), entryFee, payout);
+            var challenge = new Challenge(ChallengeId.FromGuid(model.ChallengeId), payout);
 
             challenge.ClearDomainEvents();
 

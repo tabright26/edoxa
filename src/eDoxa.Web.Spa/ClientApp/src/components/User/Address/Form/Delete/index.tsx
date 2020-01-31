@@ -25,10 +25,11 @@ const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Label className="text-muted">Do you want to remove your address?</Label>
     <FormGroup className="mb-0">
       <Button.Submit loading={submitting} size="sm" className="mr-2">

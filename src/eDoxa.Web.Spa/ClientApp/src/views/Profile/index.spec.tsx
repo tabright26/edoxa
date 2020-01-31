@@ -20,7 +20,7 @@ import {
   TRANSACTION_TYPE_WITHDRAWAL,
   TRANSACTION_TYPE_DEPOSIT,
   TRANSACTION_TYPE_CHARGE,
-  CURRENCY_MONEY
+  CURRENCY_TYPE_MONEY
 } from "types";
 
 it("renders without crashing", () => {
@@ -60,8 +60,10 @@ it("renders without crashing", () => {
     data: [
       {
         timestamp: 111111,
-        currency: CURRENCY_MONEY,
-        amount: 100,
+        currency: {
+          type: CURRENCY_TYPE_MONEY,
+          amount: 100
+        },
         description: "test",
         type: TRANSACTION_TYPE_CHARGE,
         status: TRANSACTION_STATUS_SUCCEEDED,
@@ -69,8 +71,10 @@ it("renders without crashing", () => {
       },
       {
         timestamp: 222222,
-        currency: CURRENCY_MONEY,
-        amount: 100,
+        currency: {
+          type: CURRENCY_TYPE_MONEY,
+          amount: 100
+        },
         description: "test",
         type: TRANSACTION_TYPE_DEPOSIT,
         status: TRANSACTION_STATUS_SUCCEEDED,
@@ -78,8 +82,10 @@ it("renders without crashing", () => {
       },
       {
         timestamp: 333333,
-        currency: CURRENCY_MONEY,
-        amount: 100,
+        currency: {
+          type: CURRENCY_TYPE_MONEY,
+          amount: 100
+        },
         description: "test",
         type: TRANSACTION_TYPE_WITHDRAWAL,
         status: TRANSACTION_STATUS_SUCCEEDED,
@@ -134,8 +140,7 @@ it("renders without crashing", () => {
     data: {
       firstName: "Gabriel",
       lastName: "Roy",
-      gender: "Male",
-      dob: { year: 1995, month: 8, day: 4 }
+      gender: "Male"
     },
     loading: false,
     error: null
@@ -177,11 +182,7 @@ it("renders without crashing", () => {
     .create(
       <Provider store={store}>
         <MemoryRouter>
-          <Profile
-            match={{ params: "userId", isExact: false, path: "", url: "" }}
-            history={null}
-            location={null}
-          />
+          <Profile />
         </MemoryRouter>
       </Provider>
     )

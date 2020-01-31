@@ -63,10 +63,10 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
             var request = new CreateChallengePayoutRequest
             {
                 ChallengeId = new ChallengeId(),
-                EntryFee = new EntryFeeDto
+                EntryFee = new CurrencyDto
                 {
                     Amount = 20,
-                    Currency = EnumCurrency.Money
+                    Type = EnumCurrencyType.Money
                 },
                 PayoutEntries = 10
             };
@@ -96,10 +96,10 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
             var request = new CreateChallengePayoutRequest
             {
                 ChallengeId = new ChallengeId(),
-                EntryFee = new EntryFeeDto
+                EntryFee = new CurrencyDto
                 {
                     Amount = 20,
-                    Currency = EnumCurrency.Money
+                    Type = EnumCurrencyType.Money
                 }
             };
 
@@ -133,12 +133,14 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
 
             var request = new CreateTransactionRequest
             {
-                Bundle = 0,
                 Custom = new CreateTransactionRequest.Types.CustomTransaction
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
-                    Type = EnumTransactionType.Deposit
+                    Type = EnumTransactionType.Deposit,
+                    Currency = new CurrencyDto
+                    {
+                        Amount = 20,
+                        Type = EnumCurrencyType.Money
+                    }
                 }
             };
 
@@ -169,9 +171,12 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
                 Bundle = 0,
                 Custom = new CreateTransactionRequest.Types.CustomTransaction
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
-                    Type = EnumTransactionType.Charge
+                    Type = EnumTransactionType.Charge,
+                    Currency = new CurrencyDto
+                    {
+                        Amount = 20,
+                        Type = EnumCurrencyType.Money
+                    }
                 }
             };
 
@@ -200,9 +205,12 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
                 Bundle = 0,
                 Custom = new CreateTransactionRequest.Types.CustomTransaction
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
-                    Type = EnumTransactionType.Deposit
+                    Type = EnumTransactionType.Deposit,
+                    Currency = new CurrencyDto
+                    {
+                        Amount = 20,
+                        Type = EnumCurrencyType.Money
+                    }
                 }
             };
 
@@ -267,7 +275,7 @@ namespace eDoxa.Cashier.IntegrationTests.Grpc.Services
                     var challengeService = scope.GetRequiredService<IChallengeService>();
 
                     await accountService.CreateAccountAsync(userId);
-                    await challengeService.CreateChallengeAsync(challengeId, PayoutEntries.Fifteen, new EntryFee(20, Currency.Money));
+                    await challengeService.CreateChallengeAsync(challengeId, ChallengePayoutEntries.Fifteen, new EntryFee(20, CurrencyType.Money));
                 });
 
             var request = new FindChallengePayoutRequest

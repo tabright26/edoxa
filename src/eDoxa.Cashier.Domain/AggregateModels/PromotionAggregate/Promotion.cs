@@ -19,14 +19,14 @@ namespace eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate
 
         public Promotion(
             string promotionalCode,
-            ICurrency currency,
+            Currency currency,
             TimeSpan duration,
             IDateTimeProvider expiredAt
         )
         {
             PromotionalCode = promotionalCode.ToUpperInvariant();
             Amount = currency.Amount;
-            Currency = currency.Type;
+            CurrencyType = currency.Type;
             Duration = duration;
             ExpiredAt = expiredAt.DateTime;
             CanceledAt = null;
@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate
 
         public decimal Amount { get; }
 
-        public Currency Currency { get; }
+        public CurrencyType CurrencyType { get; }
 
         public TimeSpan Duration { get; }
 
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate
 
             _recipients.Add(recipient);
 
-            this.AddDomainEvent(new PromotionRedeemedDomainEvent(recipient.User.Id, Id, Currency, Amount));
+            this.AddDomainEvent(new PromotionRedeemedDomainEvent(recipient.User.Id, Id, CurrencyType, Amount));
         }
 
         private bool CanRedeem(PromotionRecipient recipient)

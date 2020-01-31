@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.BalanceController
                 server.Services.GetRequiredService<LinkGenerator>(),
                 new
                 {
-                    currency = Currency.All
+                    currencyType = CurrencyType.All
                 });
 
             // Assert
@@ -81,9 +81,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.BalanceController
         public async Task ShouldBeHttpStatusCodeOK()
         {
             // Arrange
-            var currency = Currency.Money;
+            var currencyType = CurrencyType.Money;
             var account = new Account(new UserId());
-            var balance = account.GetBalanceFor(currency);
+            var balance = account.GetBalanceFor(currencyType);
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id.ToString()));
             var server = factory.Server;
             server.CleanupDbContext();
@@ -102,7 +102,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.BalanceController
                 server.Services.GetRequiredService<LinkGenerator>(),
                 new
                 {
-                    currency
+                    currencyType
                 });
 
             // Assert
@@ -112,7 +112,7 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.BalanceController
             var balanceDto = await response.Content.ReadAsJsonAsync<BalanceDto>();
 
             balanceDto.Should().NotBeNull();
-            balanceDto?.Currency.Should().Be(currency.ToEnum<EnumCurrency>());
+            balanceDto?.CurrencyType.Should().Be(currencyType.ToEnum<EnumCurrencyType>());
             balanceDto?.Available.Should().Be(DecimalValue.FromDecimal(balance.Available));
             balanceDto?.Pending.Should().Be(DecimalValue.FromDecimal(balance.Pending));
         }

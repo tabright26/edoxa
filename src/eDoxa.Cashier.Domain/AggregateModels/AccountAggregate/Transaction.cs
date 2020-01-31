@@ -14,7 +14,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
     public partial class Transaction : Entity<TransactionId>, ITransaction
     {
         public Transaction(
-            ICurrency currency,
+            Currency currency,
             TransactionDescription description,
             TransactionType type,
             IDateTimeProvider provider,
@@ -31,7 +31,7 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public DateTime Timestamp { get; }
 
-        public ICurrency Currency { get; }
+        public Currency Currency { get; }
 
         public Price Price => new Price(Currency);
 

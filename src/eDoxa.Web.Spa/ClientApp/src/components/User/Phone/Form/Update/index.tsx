@@ -34,10 +34,11 @@ const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
   handleCancel,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field
       type="text"
       name="number"

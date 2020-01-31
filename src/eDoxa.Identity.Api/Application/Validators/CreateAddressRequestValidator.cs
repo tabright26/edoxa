@@ -34,7 +34,7 @@ namespace eDoxa.Identity.Api.Application.Validators
                     {
                         this.RuleFor(request => request)
                             .Custom(
-                                (x, context) =>
+                                (request, context) =>
                                 {
                                     var fieldsOptions =
                                         (IdentityApiOptions.Types.AddressOptions.Types.FieldsOptions) context.ParentContext.RootContextData["FieldsOptions"];
@@ -43,23 +43,23 @@ namespace eDoxa.Identity.Api.Application.Validators
                                         (IdentityApiOptions.Types.AddressOptions.Types.ValidatorOptions) context.ParentContext.RootContextData[
                                             "ValidatorOptions"];
 
-                                    context.ValidateCustomRule(nameof(x.Line1), x.Line1, validatorOptions.Line1);
+                                    context.ValidateCustomRule(nameof(request.Line1), request.Line1, validatorOptions.Line1);
 
                                     if (!fieldsOptions.Line2.Excluded)
                                     {
-                                        context.ValidateCustomRule(nameof(x.Line2), x.Line2, validatorOptions.Line2);
+                                        context.ValidateCustomRule(nameof(request.Line2), request.Line2, validatorOptions.Line2);
                                     }
 
-                                    context.ValidateCustomRule(nameof(x.City), x.City, validatorOptions.City);
+                                    context.ValidateCustomRule(nameof(request.City), request.City, validatorOptions.City);
 
                                     if (!fieldsOptions.State.Excluded)
                                     {
-                                        context.ValidateCustomRule(nameof(x.State), x.State, validatorOptions.State);
+                                        context.ValidateCustomRule(nameof(request.State), request.State, validatorOptions.State);
                                     }
 
                                     if (!fieldsOptions.PostalCode.Excluded)
                                     {
-                                        context.ValidateCustomRule(nameof(x.PostalCode), x.PostalCode, validatorOptions.PostalCode);
+                                        context.ValidateCustomRule(nameof(request.PostalCode), request.PostalCode, validatorOptions.PostalCode);
                                     }
                                 });
                     });

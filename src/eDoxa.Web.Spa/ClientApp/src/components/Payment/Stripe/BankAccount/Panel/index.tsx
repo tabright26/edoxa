@@ -12,6 +12,8 @@ import {
 } from "utils/oidc/containers";
 import { StripeBankAccountState } from "store/root/payment/stripe/bankAccount/types";
 import { Elements } from "react-stripe-elements";
+import Popover from "components/Shared/Popover";
+import Example from "assets/img/payment/bank-account/example.png";
 
 type InnerProps = HocUserProfileCountryStateProps & {
   bankAccount: StripeBankAccountState;
@@ -48,7 +50,7 @@ const Panel: FunctionComponent<Props> = ({
             UPDATE
           </Button.Link>
         </div>
-        <div className="d-block mt-1 text-muted">
+        <div className="d-block mt-2 text-muted">
           You can withdraw money from your eDoxa cashier and to deposit the
           winnings to your bank account. Enjoy the fruits of your passion!
         </div>
@@ -59,7 +61,22 @@ const Panel: FunctionComponent<Props> = ({
         ) : (
           <>
             <dl className="row mb-0">
-              <dd className="col-sm-3 text-muted mb-0">Bank account</dd>
+              <dd className="col-sm-3 text-muted mb-0">
+                Bank account
+                {disabled && (
+                  <Popover.Info
+                    id="bank-account"
+                    header="Example"
+                    placement="right"
+                  >
+                    <img
+                      className="d-absolute w-100 h-100"
+                      src={Example}
+                      alt="example.png"
+                    />
+                  </Popover.Info>
+                )}
+              </dd>
               <dd className="col-sm-5 mb-0">
                 {disabled && (
                   <Elements>

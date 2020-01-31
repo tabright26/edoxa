@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Api.Infrastructure
             builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
 
             // Strategies
-            builder.RegisterType<ChallengePayoutStrategy>().As<IChallengePayoutStrategy>().SingleInstance();
+            builder.RegisterType<DefaultChallengePayoutStrategy>().As<IChallengePayoutStrategy>().SingleInstance();
 
             // Factories
             builder.RegisterType<ChallengePayoutFactory>().As<IChallengePayoutFactory>().SingleInstance();

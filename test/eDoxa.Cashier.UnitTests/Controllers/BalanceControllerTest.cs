@@ -42,7 +42,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<Currency>())).ReturnsAsync((Balance) null);
+            mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>())).ReturnsAsync((Balance) null);
 
             var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
             {
@@ -53,12 +53,12 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             };
 
             // Act
-            var result = await controller.FindUserBalanceAsync(Currency.Money);
+            var result = await controller.FindUserBalanceAsync(CurrencyType.Money);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<Currency>()), Times.Once);
+            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
         }
 
         [Fact]
@@ -71,8 +71,8 @@ namespace eDoxa.Cashier.UnitTests.Controllers
 
             var mockHttpContextAccessor = new MockHttpContextAccessor();
 
-            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<Currency>()))
-                .ReturnsAsync(account.GetBalanceFor(Currency.Money))
+            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()))
+                .ReturnsAsync(account.GetBalanceFor(CurrencyType.Money))
                 .Verifiable();
 
             var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
@@ -84,12 +84,12 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             };
 
             // Act
-            var result = await controller.FindUserBalanceAsync(Currency.Money);
+            var result = await controller.FindUserBalanceAsync(CurrencyType.Money);
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<Currency>()), Times.Once);
+            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
         }
     }
 }

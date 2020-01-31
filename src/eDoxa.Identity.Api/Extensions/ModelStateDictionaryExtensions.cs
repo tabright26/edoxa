@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
+using eDoxa.Seedwork.Domain;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -15,7 +17,7 @@ namespace eDoxa.Identity.Api.Extensions
         {
             foreach (var error in result.Errors)
             {
-                modelState.AddModelError(string.Empty, error.Description);
+                modelState.AddModelError(DomainValidationError.FailedPreconditionPropertyName, error.Description);
             }
         }
     }

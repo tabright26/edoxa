@@ -50,7 +50,6 @@ using Moq;
 using Xunit;
 
 using Challenge = eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate.Challenge;
-using ChallengePayout = eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate.Challenge;
 using IChallengePayoutRepository = eDoxa.Cashier.Domain.Repositories.IChallengeRepository;
 using IChallengeRepository = eDoxa.Challenges.Domain.Repositories.IChallengeRepository;
 using User = eDoxa.Identity.Domain.AggregateModels.UserAggregate.User;
@@ -112,10 +111,9 @@ namespace eDoxa.FunctionalTests
 
             var payout = new ChallengePayoutFactory();
 
-            var challengePayout = new ChallengePayout(
+            var challengePayout = new Cashier.Domain.AggregateModels.ChallengeAggregate.Challenge(
                 challenge.Id,
-                MoneyEntryFee.OneHundred,
-                payout.CreateInstance().GetPayout(PayoutEntries.One, MoneyEntryFee.OneHundred));
+                payout.CreateInstance().GetChallengePayout(ChallengePayoutEntries.One, MoneyEntryFee.OneHundred));
 
             using var gamesHost = new GamesHostFactory().WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, account.Id));
 

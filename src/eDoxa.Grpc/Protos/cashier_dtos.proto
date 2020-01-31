@@ -12,68 +12,57 @@ package edoxa.services.cashier;
 
 message ChallengePayoutDto {
   string challengeId = 1;
-  EntryFeeDto entryFee = 2;
-  PrizePoolDto prizePool = 3;
-  repeated BucketDto buckets = 4;
-  
-  message PrizePoolDto {
-    EnumCurrency currency = 1;
-    customTypes.DecimalValue amount = 2;
-  }
-
-  message BucketDto {
-    int32 size = 1;
-    customTypes.DecimalValue prize = 2;
-  }
+  int32 entries = 2;
+  CurrencyDto entryFee = 3;
+  CurrencyDto prizePool = 4;
+  repeated ChallengePayoutBucketDto buckets = 5;
 }
 
-message EntryFeeDto {
-  customTypes.DecimalValue amount = 1;
-  EnumCurrency currency = 2;
-}
-
-message PrizeDto {
-  customTypes.DecimalValue amount = 1;
-  EnumCurrency currency = 2;
+message ChallengePayoutBucketDto {
+  int32 size = 1;
+  customTypes.DecimalValue prize = 2;
 }
 
 message BalanceDto {
-  EnumCurrency currency = 1;
+  EnumCurrencyType currencyType = 1;
   customTypes.DecimalValue available = 2;
   customTypes.DecimalValue pending = 3;
 }
 
 message CurrencyDto {
-  EnumCurrency type = 1;
-  double amount = 2;
+  EnumCurrencyType type = 1;
+  customTypes.DecimalValue amount = 2;
 }
 
 message TransactionDto {
   string id = 1;
   google.protobuf.Timestamp timestamp = 2;
-  EnumCurrency currency = 3;
-  customTypes.DecimalValue amount = 4;
-  string description = 5;
-  EnumTransactionType type = 6;
-  EnumTransactionStatus status = 7;
+  CurrencyDto currency = 3;
+  string description = 4;
+  EnumTransactionType type = 5;
+  EnumTransactionStatus status = 6;
 }
 
 message TransactionBundleDto {
   int32 id = 1;
-  CurrencyDto currency = 2;
-  CurrencyDto price = 3;
+  TransactionBundleCurrencyDto currency = 2;
+  TransactionBundleCurrencyDto price = 3;
   EnumTransactionType type = 4;
   google.protobuf.StringValue description = 5;
   google.protobuf.StringValue notes = 6;
   bool disabled = 7;
   bool deprecated = 8;
+
+  message TransactionBundleCurrencyDto {
+    EnumCurrencyType type = 1;
+    int64 amount = 2;
+  }
 }
 
 message PromotionDto {
   string promotionalCode = 1;
-  EnumCurrency currency = 2;
-  customTypes.DecimalValue amount = 3;
-  bool expired = 4;
-  bool canceled = 5;
-  bool active = 6;
+  CurrencyDto currency = 2;
+  bool expired = 3;
+  bool canceled = 4;
+  bool active = 5;
 }

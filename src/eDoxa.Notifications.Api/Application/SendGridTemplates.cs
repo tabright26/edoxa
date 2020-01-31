@@ -8,6 +8,7 @@ namespace eDoxa.Notifications.Api.Application
 {
     public static class SendGridTemplates
     {
+        public const string ChallengeStarted = "d-8d59323874db46fa82f95f35939ac24c";
         public const string ChallengeClosed = "d-7fb0759818974e0486d9df7eab95dd28";
         public const string ChallengeParticipantRegistered = "d-e0832d40f9de441bbccd8d79f59fcc3f";
         public const string ClanCandidatureSent = "d-852f36fbcfdc4e5d964574232c0de97b";

@@ -47,10 +47,11 @@ type Props = InnerProps & OutterProps;
 const Register: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     {/* <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
         <InputGroupText>
@@ -190,15 +191,6 @@ const enhance = compose<InnerProps, OutterProps>(
     },
     onSubmitSuccess: (_result, dispatch) => {
       dispatch(push("/authentication/login"));
-    },
-    validate: () => {
-      const errors: FormErrors<RegisterUserAccountFormData> = {};
-      //   for (let [key, value] of Object.entries(validatorOptions)) {
-      //     if (!fieldsOptions[key].excluded) {
-      //       errors[key] = getFieldValidationRuleMessage(value, values[key]);
-      //     }
-      //   }
-      return errors;
     }
   })
 );

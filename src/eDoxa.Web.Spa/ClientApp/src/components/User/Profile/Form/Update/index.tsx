@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Form } from "reactstrap";
+import { Form, FormGroup } from "reactstrap";
 import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Input from "components/Shared/Input";
 import Button from "components/Shared/Button";
@@ -35,12 +35,13 @@ const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   handleCancel,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <dl className="row mb-0">
-      <dd className="col-sm-3 text-muted mb-0">Name</dd>
+      <dd className="col-sm-3 mb-0 text-muted">Name</dd>
       <dd className="col-sm-9 mb-0">
         <dl className="row">
           <dd className="col-sm-4 mb-0">
@@ -62,12 +63,14 @@ const CustomForm: FunctionComponent<Props> = ({
       </dd>
       <dd className="col-sm-3 mb-0 text-muted">Gender</dd>
       <dd className="col-sm-6 mb-0">
-        <Field
-          name="gender"
-          placeholder="Gender"
-          component={Input.Text}
-          disabled
-        />
+        <FormGroup>
+          <Field
+            name="gender"
+            placeholder="Gender"
+            component={Input.Text}
+            disabled
+          />
+        </FormGroup>
       </dd>
       <dd className="col-sm-3 mb-0"></dd>
       <dd className="col-sm-3 mb-0"></dd>

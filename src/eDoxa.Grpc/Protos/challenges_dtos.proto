@@ -29,6 +29,7 @@ message ChallengeDto {
 	google.protobuf.Timestamp startedAt = 2;
 	google.protobuf.Timestamp endedAt = 3;
 	google.protobuf.Timestamp closedAt = 4;
+    google.protobuf.Duration duration = 5;
   }
 }
 

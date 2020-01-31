@@ -1,22 +1,22 @@
 import React, { FunctionComponent } from "react";
-import { FormGroup, Form } from "reactstrap";
-import { reduxForm, InjectedFormProps } from "redux-form";
+import { Form, ModalBody, ModalFooter } from "reactstrap";
+import { reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import { CREATE_USER_TRANSACTION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { createUserTransaction } from "store/actions/cashier";
-import { Currency, TransactionType, TransactionBundleId } from "types";
+import { CurrencyType, TransactionType, TransactionBundleId } from "types";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import FormField from "components/User/Transaction/Field";
 
 interface FormData {
-  transactionBundleId: TransactionBundleId;
+  bundleId: TransactionBundleId;
 }
 
 interface OutterProps {
-  currency: Currency;
+  currency: CurrencyType;
   transactionType: TransactionType;
   handleCancel: () => void;
 }
@@ -31,22 +31,24 @@ const Create: FunctionComponent<Props> = ({
   handleCancel,
   currency,
   transactionType,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
-    <FormField.Bundle
-      name="transactionBundleId"
-      transactionType={transactionType}
-      currency={currency}
-    />
-    <hr className="border-secondary" />
-    <FormGroup className="mb-0">
-      <Button.Submit loading={submitting} className="mr-2">
+    <ModalBody>
+      <ValidationSummary anyTouched={anyTouched} error={error} />
+      <FormField.Bundle
+        name="bundleId"
+        transactionType={transactionType}
+        currency={currency}
+      />
+    </ModalBody>
+    <ModalFooter className="bg-gray-800">
+      <Button.Submit size={null} loading={submitting} className="mr-2">
         Confirm
       </Button.Submit>
-      <Button.Cancel onClick={handleCancel} />
-    </FormGroup>
+      <Button.Cancel size={null} onClick={handleCancel} />
+    </ModalFooter>
   </Form>
 );
 
@@ -57,13 +59,20 @@ const enhance = compose<InnerProps, OutterProps>(
       try {
         return await new Promise((resolve, reject) => {
           const meta: AxiosActionCreatorMeta = { resolve, reject };
-          dispatch(createUserTransaction(values.transactionBundleId, meta));
+          dispatch(createUserTransaction(values.bundleId, meta));
         });
       } catch (error) {
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch, { handleCancel }) => handleCancel()
+    onSubmitSuccess: (_result, _dispatch, { handleCancel }) => handleCancel(),
+    validate: values => {
+      var errors: FormErrors<FormData> = {};
+      if (!values.bundleId) {
+        errors._error = "Select a bundle";
+      }
+      return errors;
+    }
   })
 );
 

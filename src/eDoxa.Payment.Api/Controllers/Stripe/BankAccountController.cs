@@ -87,7 +87,7 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
 
             var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
 
-            var bankAccount = await _externalAccountService.UpdateBankAccountAsync(accountId, request.Token);
+            var bankAccount = await _externalAccountService.ChangeBankAccountAsync(accountId, request.Token);
 
             return this.Ok(_mapper.Map<StripeBankAccountDto>(bankAccount));
         }

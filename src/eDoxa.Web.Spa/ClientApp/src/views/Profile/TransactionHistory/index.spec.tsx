@@ -7,7 +7,8 @@ import {
   TRANSACTION_STATUS_SUCCEEDED,
   TRANSACTION_TYPE_WITHDRAWAL,
   TRANSACTION_TYPE_DEPOSIT,
-  TRANSACTION_TYPE_CHARGE
+  TRANSACTION_TYPE_CHARGE,
+  CURRENCY_TYPE_MONEY
 } from "types";
 
 it("renders without crashing", () => {
@@ -17,8 +18,10 @@ it("renders without crashing", () => {
       {
         id: "1",
         timestamp: 111111,
-        currency: "money",
-        amount: 100,
+        currency: {
+          type: CURRENCY_TYPE_MONEY,
+          amount: 100
+        },
         description: "test",
         type: TRANSACTION_TYPE_CHARGE,
         status: TRANSACTION_STATUS_SUCCEEDED
@@ -26,8 +29,10 @@ it("renders without crashing", () => {
       {
         id: "2",
         timestamp: 222222,
-        currency: "money",
-        amount: 100,
+        currency: {
+          type: CURRENCY_TYPE_MONEY,
+          amount: 100
+        },
         description: "test",
         type: TRANSACTION_TYPE_DEPOSIT,
         status: TRANSACTION_STATUS_SUCCEEDED
@@ -35,8 +40,10 @@ it("renders without crashing", () => {
       {
         id: "3",
         timestamp: 333333,
-        currency: "money",
-        amount: 100,
+        currency: {
+          type: CURRENCY_TYPE_MONEY,
+          amount: 100
+        },
         description: "test",
         type: TRANSACTION_TYPE_WITHDRAWAL,
         status: TRANSACTION_STATUS_SUCCEEDED

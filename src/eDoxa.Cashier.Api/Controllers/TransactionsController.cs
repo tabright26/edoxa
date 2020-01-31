@@ -43,11 +43,19 @@ namespace eDoxa.Cashier.Api.Controllers
         [SwaggerOperation("Get transactions by currency, type and status.")]
         [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(TransactionDto[]))]
         [SwaggerResponse(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> FetchUserTransactionsAsync(Currency? currency = null, TransactionType? type = null, TransactionStatus? status = null)
+        public async Task<IActionResult> FetchUserTransactionsAsync(
+            [FromQuery] CurrencyType? currencyType = null,
+            [FromQuery] TransactionType? type = null,
+            [FromQuery] TransactionStatus? status = null
+        )
         {
             var userId = HttpContext.GetUserId();
 
-            var responses = await _transactionQuery.FetchUserTransactionsAsync(userId, currency, type, status);
+            var responses = await _transactionQuery.FetchUserTransactionsAsync(
+                userId,
+                currencyType,
+                type,
+                status);
 
             if (!responses.Any())
             {

@@ -8,6 +8,7 @@ import "challenges_dtos.proto";
 import "challenges_enums.proto";
 import "games_enums.proto";
 import "cashier_enums.proto";
+import "cashier_dtos.proto";
 import "custom_types.proto";
 
 package edoxa.services.challenges;
@@ -19,7 +20,7 @@ message CreateChallangeAggregateRequest {
   int32 bestOf = 4;
   int32 entries = 5;
   int32 duration = 6;
-  EntryFeeAggregate entryFee = 7;
+  cashier.CurrencyDto entryFee = 7;
 }
 
 message ChallengeAggregate {
@@ -30,12 +31,11 @@ message ChallengeAggregate {
   EnumChallengeState state = 5;
   int32 bestOf = 6;
   int32 entries = 7;
-  int32 payoutEntries = 8;
-  google.protobuf.Timestamp synchronizedAt = 9;
+  google.protobuf.Timestamp synchronizedAt = 8;
+  ChallengeDto.TimelineDto timeline = 9;
   map<string, float> scoring = 10;
-  ChallengeDto.TimelineDto timeline = 11;
-  PayoutAggregate payout = 12;
-  repeated ParticipantAggregate participants = 13;
+  cashier.ChallengePayoutDto payout = 11;
+  repeated ParticipantAggregate participants = 12;
 
   message ParticipantAggregate {
     string id = 1;
@@ -54,26 +54,4 @@ message ChallengeAggregate {
       }
     }
   }
-
-  message PayoutAggregate {
-    string challengeId = 1;
-    EntryFeeAggregate entryFee = 2;
-    PrizePoolAggregate prizePool = 3;
-    repeated BucketAggregate buckets = 4;
-
-    message BucketAggregate {
-      int32 size = 1;
-      customTypes.DecimalValue prize = 2;
-    }
-  }
-}
-
-message PrizePoolAggregate {
-  cashier.EnumCurrency currency = 1;
-  customTypes.DecimalValue amount = 2;
-}
-
-message EntryFeeAggregate {
-  customTypes.DecimalValue amount = 1;
-  cashier.EnumCurrency currency = 2;
 }

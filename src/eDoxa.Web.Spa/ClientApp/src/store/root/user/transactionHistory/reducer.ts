@@ -10,12 +10,16 @@ import { Reducer } from "redux";
 import produce, { Draft } from "immer";
 import { UserTransactionState } from "./types";
 import { RootActions } from "store/types";
+import { UserTransaction } from "types";
 
 export const initialState: UserTransactionState = {
   data: [],
   error: null,
   loading: false
 };
+
+const compare = (left: UserTransaction, right: UserTransaction) =>
+  right.timestamp - left.timestamp;
 
 export const reducer: Reducer<UserTransactionState, RootActions> = produce(
   (draft: Draft<UserTransactionState>, action: RootActions) => {
@@ -34,7 +38,15 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
             break;
           }
           default: {
-            draft.data = data;
+            data.forEach(transaction => {
+              const index = draft.data.findIndex(x => x.id === transaction.id);
+              if (index === -1) {
+                draft.data.push(transaction);
+              } else {
+                draft.data[index] = transaction;
+              }
+            });
+            draft.data.sort(compare);
             draft.error = null;
             draft.loading = false;
             break;
@@ -54,6 +66,7 @@ export const reducer: Reducer<UserTransactionState, RootActions> = produce(
       }
       case CREATE_USER_TRANSACTION_SUCCESS: {
         draft.data.push(action.payload.data);
+        draft.data.sort(compare);
         draft.error = null;
         draft.loading = false;
         break;

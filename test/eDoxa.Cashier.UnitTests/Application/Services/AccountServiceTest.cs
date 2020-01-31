@@ -89,7 +89,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 moneyAccount,
                 Money.Twenty.Amount,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Charge);
 
             // Assert
@@ -113,7 +113,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 account,
                 Money.Twenty.Amount,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Charge);
 
             // Assert
@@ -146,7 +146,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 tokenAccount,
                 Token.FiftyThousand.Amount,
-                Currency.Token,
+                CurrencyType.Token,
                 TransactionType.Charge);
 
             // Assert
@@ -172,7 +172,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 account,
                 Token.FiftyThousand.Amount,
-                Currency.Token,
+                CurrencyType.Token,
                 TransactionType.Charge);
 
             // Assert
@@ -205,7 +205,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 account,
                 20,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Deposit);
 
             // Assert
@@ -237,7 +237,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 account,
                 20,
-                Currency.Token,
+                CurrencyType.Token,
                 TransactionType.Deposit);
 
             // Assert
@@ -262,7 +262,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 account,
                 Money.OneHundred.Amount,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Deposit);
 
             // Assert
@@ -289,7 +289,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 moneyAccount,
                 Money.OneHundred.Amount,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Deposit);
 
             // Assert
@@ -316,7 +316,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await accountService.CreateTransactionAsync(
                 account,
                 Token.OneMillion.Amount,
-                Currency.Token,
+                CurrencyType.Token,
                 TransactionType.Deposit);
 
             // Assert
@@ -343,7 +343,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 tokenAccount,
                 Token.FiftyThousand.Amount,
-                Currency.Token,
+                CurrencyType.Token,
                 TransactionType.Deposit);
 
             // Assert
@@ -403,7 +403,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 moneyAccount,
                 Money.OneHundred.Amount,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Withdrawal,
                 metadata);
 
@@ -433,7 +433,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 account,
                 Money.Twenty.Amount,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Withdrawal,
                 metadata);
 
@@ -463,7 +463,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateTransactionAsync(
                 account,
                 Money.Twenty.Amount,
-                Currency.Money,
+                CurrencyType.Money,
                 TransactionType.Withdrawal,
                 metadata);
 

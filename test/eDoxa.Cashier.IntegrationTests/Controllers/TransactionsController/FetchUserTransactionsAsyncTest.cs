@@ -38,9 +38,9 @@ namespace eDoxa.Cashier.IntegrationTests.Controllers.TransactionsController
 
         private HttpClient _httpClient;
 
-        private async Task<HttpResponseMessage> ExecuteAsync(Currency? currency = null, TransactionType? type = null, TransactionStatus? status = null)
+        private async Task<HttpResponseMessage> ExecuteAsync(CurrencyType? currencyType = null, TransactionType? type = null, TransactionStatus? status = null)
         {
-            return await _httpClient.GetAsync($"api/transactions?currency={currency}&type={type}&status={status}");
+            return await _httpClient.GetAsync($"api/transactions?currencyType={currencyType}&type={type}&status={status}");
         }
 
         [Fact]

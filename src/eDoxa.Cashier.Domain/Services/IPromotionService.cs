@@ -23,7 +23,7 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<IDomainValidationResult> CreatePromotionAsync(
             string promotionalCode,
-            ICurrency currency,
+            Currency currency,
             TimeSpan duration,
             DateTime expiredAt
         );

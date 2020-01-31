@@ -24,38 +24,38 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
         {
         }
 
-        public static TheoryData<Currency> ValidCurrencyDataSets =>
-            new TheoryData<Currency>
+        public static TheoryData<CurrencyType> ValidCurrencyDataSets =>
+            new TheoryData<CurrencyType>
             {
-                Currency.Money,
-                Currency.Token
+                CurrencyType.Money,
+                CurrencyType.Token
             };
 
-        public static TheoryData<Currency> InvalidCurrencyDataSets =>
-            new TheoryData<Currency>
+        public static TheoryData<CurrencyType> InvalidCurrencyDataSets =>
+            new TheoryData<CurrencyType>
             {
-                new Currency(),
-                Currency.All
+                new CurrencyType(),
+                CurrencyType.All
             };
 
         [Theory]
         [MemberData(nameof(ValidCurrencyDataSets))]
-        public void GetBalanceFor_WithValidCurrency_ShouldBeCurrency(Currency currency)
+        public void GetBalanceFor_WithValidCurrency_ShouldBeCurrency(CurrencyType currencyType)
         {
             var account = new Account(new UserId());
 
-            var balance = account.GetBalanceFor(currency);
+            var balance = account.GetBalanceFor(currencyType);
 
-            balance.Currency.Should().Be(currency);
+            balance.CurrencyType.Should().Be(currencyType);
         }
 
         [Theory]
         [MemberData(nameof(InvalidCurrencyDataSets))]
-        public void GetBalanceFor_WithInvalidCurrency_ShouldThrowArgumentException(Currency currency)
+        public void GetBalanceFor_WithInvalidCurrency_ShouldThrowArgumentException(CurrencyType currencyType)
         {
             var account = new Account(new UserId());
 
-            var action = new Action(() => account.GetBalanceFor(currency));
+            var action = new Action(() => account.GetBalanceFor(currencyType));
 
             action.Should().Throw<ArgumentException>();
         }

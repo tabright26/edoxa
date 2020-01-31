@@ -6,7 +6,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import {
   ChallengeId,
   Game,
-  ChallengeEntryFee,
+  EntryFee,
   ChallengeState,
   ChallengePayoutPrizePool
 } from "types";
@@ -27,7 +27,7 @@ type StateProps = {
   readonly bestOf: number;
   readonly entries: number;
   readonly prizePool: ChallengePayoutPrizePool;
-  readonly entryFee: ChallengeEntryFee;
+  readonly entryFee: EntryFee;
   readonly duration: number;
   readonly participantCount: number;
 };
@@ -66,11 +66,7 @@ const Summary: FunctionComponent<Props> = ({
             <dd className="col-5 text-muted">Entry fee</dd>
             <dt className="col-7 text-right">
               <Badge color="dark" pill className="w-100">
-                <Format.Currency
-                  alignment="center"
-                  currency={entryFee.currency}
-                  amount={entryFee.amount}
-                />
+                <Format.Currency alignment="center" currency={entryFee} />
               </Badge>
             </dt>
             <dd className="col-5 text-muted">State</dd>
@@ -103,11 +99,7 @@ const Summary: FunctionComponent<Props> = ({
             <dd className="col-5 text-muted">Prize pool</dd>
             <dt className="col-7 text-right">
               <Badge color="dark" pill className="w-100">
-                <Format.Currency
-                  alignment="center"
-                  currency={prizePool.currency}
-                  amount={prizePool.amount}
-                />
+                <Format.Currency alignment="center" currency={prizePool} />
               </Badge>
             </dt>
             <dd className="col-5 text-muted">Best of</dd>
@@ -142,9 +134,9 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
     bestOf: challenge.bestOf,
     entries: challenge.entries,
     entryFee: challenge.payout.entryFee,
-    payoutEntries: challenge.payoutEntries,
+    payoutEntries: challenge.payout.entries,
     prizePool: challenge.payout.prizePool,
-    duration: challenge.timeline.endedAt - challenge.timeline.startedAt,
+    duration: challenge.timeline.duration,
     participantCount: challenge.participants.length
   };
 };

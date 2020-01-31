@@ -30,15 +30,8 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
             return bankAccounts.FirstOrDefault();
         }
 
-        public async Task<IExternalAccount> UpdateBankAccountAsync(string accountId, string token)
+        public async Task<IExternalAccount> ChangeBankAccountAsync(string accountId, string token)
         {
-            var bankAccount = await this.FindBankAccountAsync(accountId);
-
-            if (bankAccount != null)
-            {
-                await this.DeleteBankAccountAsync(accountId, bankAccount.Id);
-            }
-
             return await this.CreateAsync(
                 accountId,
                 new ExternalAccountCreateOptions
@@ -46,11 +39,6 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                     ExternalAccount = token,
                     DefaultForCurrency = true
                 });
-        }
-
-        private async Task DeleteBankAccountAsync(string accountId, string bankAccountId)
-        {
-            await this.DeleteAsync(accountId, bankAccountId);
         }
     }
 }

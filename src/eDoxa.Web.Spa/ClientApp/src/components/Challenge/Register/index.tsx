@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { Card, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import ChallengeForm from "components/Challenge/Form";
 import {
   HocUserProfileUserIdStateProps,
@@ -60,14 +60,11 @@ const Register: FunctionComponent<Props> = ({
 }) =>
   canRegister &&
   (isAuthenticated ? (
-    <Card className={className}>
-      <ChallengeForm.Register userId={userId} />
-    </Card>
+    <ChallengeForm.Register className={className} userId={userId} />
   ) : (
     <Button
       color="primary"
-      size="lg"
-      className="w-100 text-uppercase"
+      className={className}
       onClick={() =>
         dispatch(
           show(LINK_GAME_CREDENTIAL_MODAL, {

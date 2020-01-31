@@ -21,9 +21,9 @@ import {
   LoadUserTransactionHistoryActionCreator
 } from "./types";
 import {
-  Currency,
-  CURRENCY_MONEY,
-  CURRENCY_TOKEN,
+  CurrencyType,
+  CURRENCY_TYPE_MONEY,
+  CURRENCY_TYPE_TOKEN,
   TransactionType,
   TransactionStatus,
   TransactionBundleId
@@ -35,7 +35,7 @@ import {
 } from "utils/axios/types";
 
 export function createUserTransaction(
-  transactionBundleId: TransactionBundleId,
+  bundleId: TransactionBundleId,
   meta: AxiosActionCreatorMeta
 ): CreateUserTransactionActionCreator {
   return {
@@ -50,7 +50,7 @@ export function createUserTransaction(
         method: "POST",
         url: "/api/transactions",
         data: {
-          bundle: transactionBundleId
+          bundle: bundleId
         }
       }
     },
@@ -76,7 +76,7 @@ export function redeemPromotion(
 }
 
 export function loadUserBalance(
-  currency: Currency
+  currencyType: CurrencyType
 ):
   | LoadUserMoneyAccountBalanceActionCreator
   | LoadUserTokenAccountBalanceActionCreator {
@@ -84,11 +84,11 @@ export function loadUserBalance(
     client: AXIOS_PAYLOAD_CLIENT_CASHIER,
     request: {
       method: "GET",
-      url: `/cashier/api/balance/${currency}`
+      url: `/cashier/api/balance/${currencyType}`
     }
   };
-  switch (currency) {
-    case CURRENCY_MONEY: {
+  switch (currencyType) {
+    case CURRENCY_TYPE_MONEY: {
       return {
         types: [
           LOAD_USER_MONEY_ACCOUNT_BALANCE,
@@ -98,7 +98,7 @@ export function loadUserBalance(
         payload
       };
     }
-    case CURRENCY_TOKEN: {
+    case CURRENCY_TYPE_TOKEN: {
       return {
         types: [
           LOAD_USER_TOKEN_ACCOUNT_BALANCE,
@@ -112,7 +112,7 @@ export function loadUserBalance(
 }
 
 export function loadUserTransactionHistory(
-  currency: Currency | null = null,
+  currencyType: CurrencyType | null = null,
   type: TransactionType | null = null,
   status: TransactionStatus | null = null
 ): LoadUserTransactionHistoryActionCreator {
@@ -128,7 +128,7 @@ export function loadUserTransactionHistory(
         method: "GET",
         url: "/cashier/api/transactions",
         params: {
-          currency,
+          currencyType,
           type,
           status
         }

@@ -31,10 +31,10 @@ namespace eDoxa.Cashier.UnitTests.Infrastructure.Data.Storage
             var storage = TestData.FileStorage;
 
             // Act
-            var payoutStructures = storage.GetChallengePayouts();
+            var payouts = storage.GetChallengePayouts();
 
             // Assert
-            payoutStructures.SelectMany(payoutStructure => payoutStructure).Should().HaveCount(55);
+            payouts.SelectMany(payout => payout).Should().HaveCount(55);
         }
     }
 }

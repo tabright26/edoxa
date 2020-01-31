@@ -38,7 +38,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
         public async Task<IDomainValidationResult> CreatePromotionAsync(
             string promotionalCode,
-            ICurrency currency,
+            Currency currency,
             TimeSpan duration,
             DateTime expiredAt
         )

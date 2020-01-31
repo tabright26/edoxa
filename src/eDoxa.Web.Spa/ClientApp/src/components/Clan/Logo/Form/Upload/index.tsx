@@ -9,10 +9,11 @@ import { ValidationSummary } from "components/Shared/ValidationSummary";
 const UploadClanLogoForm: FunctionComponent<any> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <FormGroup>
       <input type="file" name="Logo" accept="image/png, image/jpeg" />
     </FormGroup>

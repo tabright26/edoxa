@@ -1,8 +1,8 @@
-﻿// Filename: Payout.cs
-// Date Created: 2019-07-10
+﻿// Filename: ChallengePayout.cs
+// Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 
@@ -10,18 +10,21 @@ using eDoxa.Seedwork.Domain;
 
 namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
 {
-    public sealed class Payout : ValueObject, IPayout
+    public sealed class ChallengePayout : ValueObject, IChallengePayout
     {
-        public Payout(IBuckets buckets)
+        public ChallengePayout(EntryFee entryFee, IChallengePayoutBuckets buckets)
         {
+            EntryFee = entryFee;
             Buckets = buckets;
         }
 
-        public IBuckets Buckets { get; }
+        public EntryFee EntryFee { get; }
 
-        public PayoutEntries Entries => new PayoutEntries(Buckets);
+        public IChallengePayoutBuckets Buckets { get; }
 
-        public PrizePool PrizePool => new PrizePool(Buckets);
+        public ChallengePayoutEntries Entries => new ChallengePayoutEntries(Buckets);
+
+        public ChallengePayoutPrizePool PrizePool => new ChallengePayoutPrizePool(Buckets);
 
         public override string ToString()
         {

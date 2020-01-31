@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import Balance from "components/User/Balance";
 import BuyToken from "./Buy";
-import { CURRENCY_TOKEN } from "types";
+import { CURRENCY_TYPE_TOKEN } from "types";
 
 const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
@@ -13,7 +13,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
         className="bg-gray-900"
         style={{ width: "100px" }}
       >
-        <Balance currency={CURRENCY_TOKEN} attribute="available" />
+        <Balance type={CURRENCY_TYPE_TOKEN} attribute="available" />
       </Badge>
       <Popover
         style={{
@@ -32,7 +32,7 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
             <dt className="col-6">Available</dt>
             <dd className="col-6">
               <Balance
-                currency={CURRENCY_TOKEN}
+                type={CURRENCY_TYPE_TOKEN}
                 attribute="available"
                 alignment="right"
               />
@@ -40,12 +40,17 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
               <Balance
-                currency={CURRENCY_TOKEN}
+                type={CURRENCY_TYPE_TOKEN}
                 attribute="pending"
                 alignment="right"
               />
             </dd>
           </dl>
+          <p className="text-muted text-justify">
+            Pending transactions are in the process of getting validated. If the
+            transaction stay for longer than 5 minutes please contact{" "}
+            <a href="mailto:support@edoxa.gg">support@edoxa.gg</a>.
+          </p>
           {process.env.NODE_ENV !== "production" && <BuyToken />}
         </PopoverBody>
       </Popover>

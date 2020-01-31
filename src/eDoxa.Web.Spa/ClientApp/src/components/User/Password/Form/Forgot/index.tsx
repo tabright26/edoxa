@@ -8,15 +8,12 @@ import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { forgotUserPassword } from "store/actions/identity";
-import {
-  EMAIL_REQUIRED,
-  EMAIL_INVALID,
-  EMAIL_REGEXP
-} from "utils/form/validators";
+import { EMAIL_REQUIRED } from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { push } from "connected-react-router";
 import { toastr } from "react-redux-toastr";
 import { LinkContainer } from "react-router-bootstrap";
+import { getHomePath } from "utils/coreui/constants";
 
 interface FormData {
   email: string;
@@ -31,10 +28,11 @@ type Props = InnerProps & OutterProps;
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field
       type="text"
       name="email"
@@ -69,7 +67,7 @@ const enhance = compose<InnerProps, OutterProps>(
       }
     },
     onSubmitSuccess: (_result, dispatch) => {
-      dispatch(push("/"));
+      dispatch(push(getHomePath()));
       setTimeout(function() {
         toastr.success(
           "Email sent",
@@ -81,8 +79,6 @@ const enhance = compose<InnerProps, OutterProps>(
       const errors: FormErrors<FormData> = {};
       if (!values.email) {
         errors.email = EMAIL_REQUIRED;
-      } else if (!EMAIL_REGEXP.test(values.email)) {
-        errors.email = EMAIL_INVALID;
       }
       return errors;
     }

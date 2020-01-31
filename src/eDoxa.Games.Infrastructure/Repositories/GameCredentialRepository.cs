@@ -57,5 +57,10 @@ namespace eDoxa.Games.Infrastructure.Repositories
         {
             return await _context.Credentials.AsExpandable().AnyAsync(credential => credential.UserId == userId && credential.Game == game);
         }
+
+        public async Task<bool> CredentialExistsAsync(PlayerId playerId, Game game)
+        {
+            return await _context.Credentials.AsExpandable().AnyAsync(credential => credential.PlayerId == playerId && credential.Game == game);
+        }
     }
 }

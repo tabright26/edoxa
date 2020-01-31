@@ -1,12 +1,14 @@
 ﻿// Filename: ChallengeService.cs
-// Date Created: 2019-12-08
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
+using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Domain.Repositories;
@@ -32,16 +34,26 @@ namespace eDoxa.Cashier.Api.Application.Services
             return await _challengeRepository.FindChallengeOrNullAsync(challengeId);
         }
 
+        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        {
+            return await _challengeRepository.FindChallengeAsync(challengeId);
+        }
+
+        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
+        {
+            return await _challengeRepository.ChallengeExistsAsync(challengeId);
+        }
+
         public async Task<IDomainValidationResult> CreateChallengeAsync(
             ChallengeId challengeId,
-            PayoutEntries payoutEntries,
+            ChallengePayoutEntries payoutEntries,
             EntryFee entryFee,
             CancellationToken cancellationToken = default
         )
         {
             var strategy = _challengePayoutFactory.CreateInstance();
 
-            var payout = strategy.GetPayout(payoutEntries, entryFee);
+            var payout = strategy.GetChallengePayout(payoutEntries, entryFee);
 
             var result = new DomainValidationResult();
 
@@ -52,7 +64,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (result.IsValid)
             {
-                var challenge = new Challenge(challengeId, entryFee, payout!);
+                var challenge = new Challenge(challengeId, payout!);
 
                 _challengeRepository.Create(challenge);
 
@@ -64,14 +76,11 @@ namespace eDoxa.Cashier.Api.Application.Services
             return result;
         }
 
-        public async Task<IChallenge> FindChallengeAsync(ChallengeId challengeId)
+        public async Task CloseChallengeAsync(IChallenge challenge, Dictionary<UserId, decimal?> scoreboard, CancellationToken cancellationToken = default)
         {
-            return await _challengeRepository.FindChallengeAsync(challengeId);
-        }
+            challenge.Close(new ChallengeScoreboard(challenge.Payout, scoreboard));
 
-        public async Task<bool> ChallengeExistsAsync(ChallengeId challengeId)
-        {
-            return await _challengeRepository.ChallengeExistsAsync(challengeId);
+            await _challengeRepository.CommitAsync(true, cancellationToken);
         }
     }
 }

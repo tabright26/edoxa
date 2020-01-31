@@ -12,8 +12,6 @@ using eDoxa.Seedwork.Domain;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-using PascalCaseNamingConvention = AutoMapper.PascalCaseNamingConvention;
-
 namespace eDoxa.Identity.Domain.AggregateModels.UserAggregate
 {
     public sealed class UserDob : ValueObject

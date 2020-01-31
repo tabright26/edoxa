@@ -14,6 +14,6 @@ namespace eDoxa.Payment.Domain.Stripe.Services
     {
         Task<IExternalAccount?> FindBankAccountAsync(string accountId);
 
-        Task<IExternalAccount> UpdateBankAccountAsync(string accountId, string token);
+        Task<IExternalAccount> ChangeBankAccountAsync(string accountId, string token);
     }
 }

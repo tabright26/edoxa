@@ -21,7 +21,7 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
                 PromotionalCode = promotion.PromotionalCode,
                 Amount = promotion.Amount,
                 Duration = promotion.Duration.Ticks,
-                Currency = promotion.Currency.Value,
+                Currency = promotion.CurrencyType.Value,
                 CanceledAt = promotion.CanceledAt,
                 ExpiredAt = promotion.ExpiredAt,
                 Recipients = promotion.Recipients.Select(recipient => recipient.ToModel()).ToList(),

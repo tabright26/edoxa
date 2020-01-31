@@ -15,10 +15,8 @@ import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { resetUserPassword } from "store/actions/identity";
 import {
-  EMAIL_REGEXP,
   PASSWORD_REGEXP,
   EMAIL_REQUIRED,
-  EMAIL_INVALID,
   PASSWORD_REQUIRED,
   PASSWORD_INVALID
 } from "utils/form/validators";
@@ -48,10 +46,11 @@ type Props = InnerProps & OutterProps;
 const CustomForm: FunctionComponent<Props> = ({
   handleSubmit,
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field type="hidden" name="code" component={Input.Text} />
     <InputGroup size="sm" className="mb-3">
       <InputGroupAddon addonType="prepend">
@@ -126,15 +125,13 @@ const enhance = compose<InnerProps, OutterProps>(
         throwSubmissionError(error);
       }
     },
-    onSubmitSuccess: (result, dispatch) => {
+    onSubmitSuccess: (_result, dispatch) => {
       dispatch(push("/authentication/login"));
     },
     validate: values => {
       const errors: FormErrors<FormData> = {};
       if (!values.email) {
         errors.email = EMAIL_REQUIRED;
-      } else if (!EMAIL_REGEXP.test(values.email)) {
-        errors.email = EMAIL_INVALID;
       }
       if (!values.password) {
         errors.password = PASSWORD_REQUIRED;

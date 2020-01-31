@@ -47,9 +47,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
             return _account.FindTransaction(metadata);
         }
 
-        public Balance GetBalanceFor(Currency currency)
+        public Balance GetBalanceFor(CurrencyType currencyType)
         {
-            return _account.GetBalanceFor(currency);
+            return _account.GetBalanceFor(currencyType);
         }
 
         public IReadOnlyCollection<IDomainEvent> DomainEvents => _account.DomainEvents;

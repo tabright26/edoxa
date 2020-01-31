@@ -1,22 +1,20 @@
 import React, { FunctionComponent } from "react";
 import { connectModal, InjectedProps } from "redux-modal";
-import { Modal, ModalBody, ModalHeader } from "reactstrap";
+import { Modal, ModalHeader } from "reactstrap";
 import { CREATE_USER_TRANSACTION_MODAL } from "utils/modal/constants";
 import UserTransactionForm from "components/User/Transaction/Form";
 import { compose } from "recompose";
-import { Currency, TransactionType } from "types";
-import { connect, DispatchProp } from "react-redux";
-import { destroy } from "redux-form";
-import { CREATE_USER_TRANSACTION_FORM } from "utils/form/constants";
+import { CurrencyType, TransactionType } from "types";
+import { ModalSubtitle } from "components/Shared/Modal/Subtitle";
 
 type OutterProps = {};
 
-type InnerProps = InjectedProps &
-  DispatchProp & {
-    currency: Currency;
-    transactionType: TransactionType;
-    title: string;
-  };
+type InnerProps = InjectedProps & {
+  currency: CurrencyType;
+  transactionType: TransactionType;
+  title: string;
+  description: string;
+};
 
 type Props = InnerProps & OutterProps;
 
@@ -26,32 +24,32 @@ const Create: FunctionComponent<Props> = ({
   currency,
   transactionType,
   title,
-  dispatch
-}) => (
-  <Modal
-    unmountOnClose={false}
-    backdrop="static"
-    size="lg"
-    centered
-    isOpen={show}
-    toggle={handleHide}
-    onClosed={() => dispatch(destroy(CREATE_USER_TRANSACTION_FORM))}
-  >
-    <ModalHeader toggle={handleHide} className="text-uppercase">
-      {title}
-    </ModalHeader>
-    <ModalBody>
-      <UserTransactionForm.Create
-        transactionType={transactionType}
-        currency={currency}
-        handleCancel={handleHide}
-      />
-    </ModalBody>
-  </Modal>
-);
+  description
+}) => {
+  return (
+    <Modal
+      backdrop="static"
+      size="lg"
+      centered
+      isOpen={show}
+      toggle={handleHide}
+    >
+      <ModalHeader toggle={handleHide} className="my-auto bg-gray-900">
+        <span className="d-block text-uppercase">{title}</span>
+        {description && <ModalSubtitle>{description}</ModalSubtitle>}
+      </ModalHeader>
+      {show && (
+        <UserTransactionForm.Create
+          transactionType={transactionType}
+          currency={currency}
+          handleCancel={handleHide}
+        />
+      )}
+    </Modal>
+  );
+};
 
 const enhance = compose<InnerProps, OutterProps>(
-  connect(),
   connectModal({ name: CREATE_USER_TRANSACTION_MODAL, destroyOnHide: false })
 );
 

@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
@@ -55,94 +54,49 @@ namespace eDoxa.Cashier.Api.Application.Services
 
         public async Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
-            int transactionBundleId,
-            TransactionMetadata? transactionMetadata = null,
+            int bundleId,
+            TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
         )
         {
             var result = new DomainValidationResult();
 
-            if (!await this.TransactionBundleExistsAsync(transactionBundleId))
+            if (!await this.TransactionBundleExistsAsync(bundleId))
             {
-                result.AddFailedPreconditionError($"Transaction bundle with id of '{transactionBundleId}' wasn't found.");
+                result.AddFailedPreconditionError($"Transaction bundle with id of '{bundleId}' wasn't found.");
             }
 
             if (result.IsValid)
             {
-                var transactionBundle = await this.FindTransactionBundleAsync(transactionBundleId);
+                var transactionBundle = await this.FindTransactionBundleAsync(bundleId);
 
                 return await this.CreateTransactionAsync(
                     account,
-                    new decimal(transactionBundle.Currency.Amount),
-                    transactionBundle.Currency.Type.ToEnumeration<Currency>(),
+                    transactionBundle.Currency.Amount,
+                    transactionBundle.Currency.Type.ToEnumeration<CurrencyType>(),
                     transactionBundle.Type.ToEnumeration<TransactionType>(),
-                    transactionMetadata,
+                    metadata,
                     cancellationToken);
             }
 
             return result;
         }
 
-        // TODO: Need to be refactored.
-        public async Task<IDomainValidationResult> ProcessChallengePayoutAsync(Scoreboard scoreboard, CancellationToken cancellationToken = default)
+        public async Task<IDomainValidationResult> CreateTransactionAsync(
+            IAccount account,
+            Currency currency,
+            TransactionType type,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
         {
-            var result = new DomainValidationResult();
-
-            var payoutPrizes = new PayoutPrizes();
-
-            if (result.IsValid)
-            {
-                foreach (var ladderGroup in scoreboard.Ladders)
-                {
-                    for (var index = 0; index < ladderGroup.Size; index++)
-                    {
-                        var user = scoreboard.Winners.Dequeue();
-
-                        var score = scoreboard[user];
-
-                        if (score == null)
-                        {
-                            // TODO: Need to be refactored.
-                            await this.ProcessChallengePayoutAsync(user, scoreboard.PayoutCurrency, 0);
-
-                            payoutPrizes.Add(user, new Prize(0, scoreboard.PayoutCurrency));
-                        }
-                        else
-                        {
-                            // TODO: Need to be refactored.
-                            await this.ProcessChallengePayoutAsync(user, scoreboard.PayoutCurrency, ladderGroup.Prize);
-
-                            payoutPrizes.Add(user, new Prize(ladderGroup.Prize.Amount, scoreboard.PayoutCurrency));
-                        }
-                    }
-                }
-
-                foreach (var user in scoreboard.Losers)
-                {
-                    var score = scoreboard[user];
-
-                    if (score == null)
-                    {
-                        // TODO: Need to be refactored.
-                        await this.ProcessChallengePayoutAsync(user, scoreboard.PayoutCurrency, 0);
-
-                        payoutPrizes.Add(user, new Prize(0, scoreboard.PayoutCurrency));
-                    }
-                    else
-                    {
-                        // TODO: Need to be refactored.
-                        await this.ProcessChallengePayoutAsync(user, Currency.Token, Token.MinValue);
-
-                        payoutPrizes.Add(user, new Prize(Token.MinValue.Amount, Currency.Token));
-                    }
-                }
-
-                await _accountRepository.CommitAsync(true, cancellationToken);
-
-                result.AddEntityToMetadata(payoutPrizes);
-            }
-
-            return result;
+            return await this.CreateTransactionAsync(
+                account,
+                currency.Amount,
+                currency.Type,
+                type,
+                metadata,
+                cancellationToken);
         }
 
         public async Task<IDomainValidationResult> CreateAccountAsync(UserId userId)
@@ -166,9 +120,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         public async Task<IDomainValidationResult> CreateTransactionAsync(
             IAccount account,
             decimal amount,
-            Currency currency,
-            TransactionType transactionType,
-            TransactionMetadata? transactionMetadata = null,
+            CurrencyType currencyType,
+            TransactionType type,
+            TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
         )
         {
@@ -176,15 +130,15 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (result.IsValid)
             {
-                var value = currency.From(amount);
+                var value = currencyType.ToCurrency(amount);
 
                 if (value is Money money)
                 {
                     return await this.CreateTransactionAsync(
                         new MoneyAccountDecorator(account),
                         money,
-                        transactionType,
-                        transactionMetadata,
+                        type,
+                        metadata,
                         cancellationToken);
                 }
 
@@ -193,8 +147,8 @@ namespace eDoxa.Cashier.Api.Application.Services
                     return await this.CreateTransactionAsync(
                         new TokenAccountDecorator(account),
                         token,
-                        transactionType,
-                        transactionMetadata,
+                        type,
+                        metadata,
                         cancellationToken);
                 }
             }
@@ -370,14 +324,14 @@ namespace eDoxa.Cashier.Api.Application.Services
         }
 
         public async Task<IReadOnlyCollection<TransactionBundleDto>> FetchTransactionBundlesAsync(
-            EnumTransactionType transactionType = EnumTransactionType.All,
-            EnumCurrency currency = EnumCurrency.All,
+            EnumTransactionType type = EnumTransactionType.All,
+            EnumCurrencyType currencyType = EnumCurrencyType.All,
             bool includeDisabled = false
         )
         {
             var transactionBundles = Options.Static.Transaction.Bundles.Where(
-                transactionBundle => (transactionType == EnumTransactionType.All || transactionType == transactionBundle.Type) &&
-                                     (currency == EnumCurrency.All || currency == transactionBundle.Currency.Type) &&
+                transactionBundle => (type == EnumTransactionType.All || type == transactionBundle.Type) &&
+                                     (currencyType == EnumCurrencyType.All || currencyType == transactionBundle.Currency.Type) &&
                                      !transactionBundle.Deprecated);
 
             if (!includeDisabled)
@@ -400,25 +354,6 @@ namespace eDoxa.Cashier.Api.Application.Services
             var transactionBundles = await this.FetchTransactionBundlesAsync();
 
             return transactionBundles.Single(transactionBundle => transactionBundle.Id == transactionBundleId);
-        }
-
-        private async Task ProcessChallengePayoutAsync(UserId userId, Currency currency, decimal amount)
-        {
-            var account = await _accountRepository.FindAccountOrNullAsync(userId);
-
-            if (currency == Currency.Money)
-            {
-                var moneyAccount = new MoneyAccountDecorator(account!);
-
-                moneyAccount.Payout(new Money(amount)).MarkAsSucceeded();
-            }
-
-            if (currency == Currency.Token)
-            {
-                var tokenAccount = new TokenAccountDecorator(account!);
-
-                tokenAccount.Payout(new Token(amount)).MarkAsSucceeded();
-            }
         }
 
         private async Task<IDomainValidationResult> CreateTransactionAsync(
@@ -448,6 +383,15 @@ namespace eDoxa.Cashier.Api.Application.Services
                     cancellationToken);
             }
 
+            if (type == TransactionType.Payout)
+            {
+                return await this.CreatePayoutTransactionAsync(
+                    account,
+                    money,
+                    metadata,
+                    cancellationToken);
+            }
+
             if (type == TransactionType.Promotion)
             {
                 return await this.CreatePromotionTransactionAsync(
@@ -468,9 +412,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrency.Money);
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrencyType.Money);
 
-            if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != money.Amount))
+            if (transactionBundles.All(deposit => deposit.Currency.Amount != money.Amount))
             {
                 result.AddFailedPreconditionError(
                     $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
@@ -478,7 +422,8 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.IsDepositAvailable())
             {
-                result.AddFailedPreconditionError($"Deposit is unavailable until {account.LastDeposit?.Add(MoneyAccountDecorator.DepositInterval)}. For security reason we limit the number of financial transaction that can be done in {MoneyAccountDecorator.DepositInterval.TotalHours} hours.");
+                result.AddFailedPreconditionError(
+                    $"Deposit is unavailable until {account.LastDeposit?.Add(MoneyAccountDecorator.DepositInterval)}. For security reason we limit the number of financial transaction that can be done in {MoneyAccountDecorator.DepositInterval.TotalHours} hours.");
             }
 
             if (result.IsValid)
@@ -501,9 +446,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Withdrawal, EnumCurrency.Money);
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Withdrawal, EnumCurrencyType.Money);
 
-            if (transactionBundles.All(withdrawal => new decimal(withdrawal.Currency.Amount) != money.Amount))
+            if (transactionBundles.All(withdrawal => withdrawal.Currency.Amount != money.Amount))
             {
                 result.AddFailedPreconditionError(
                     $"The amount of {nameof(Money)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
@@ -516,12 +461,59 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.IsWithdrawalAvailable())
             {
-                result.AddFailedPreconditionError($"Withdrawal unavailable until {account.LastWithdraw?.Add(MoneyAccountDecorator.WithdrawalInterval)}.");
+                result.AddFailedPreconditionError(
+                    $"Withdrawal is unavailable until {account.LastWithdraw?.Add(MoneyAccountDecorator.WithdrawalInterval)}. For security reason we limit the number of financial transaction that can be done in {MoneyAccountDecorator.WithdrawalInterval.TotalHours} hours.");
             }
 
             if (result.IsValid)
             {
                 var transaction = account.Withdrawal(money);
+
+                await _accountRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        private async Task<IDomainValidationResult> CreatePayoutTransactionAsync(
+            IMoneyAccount account,
+            Money money,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (result.IsValid)
+            {
+                var transaction = account.Payout(money, metadata);
+
+                transaction.MarkAsSucceeded();
+
+                await _accountRepository.CommitAsync(true, cancellationToken);
+
+                result.AddEntityToMetadata(transaction);
+            }
+
+            return result;
+        }
+
+        private async Task<IDomainValidationResult> CreatePayoutTransactionAsync(
+            ITokenAccount account,
+            Token token,
+            TransactionMetadata? metadata = null,
+            CancellationToken cancellationToken = default
+        )
+        {
+            var result = new DomainValidationResult();
+
+            if (result.IsValid)
+            {
+                var transaction = account.Payout(token, metadata);
+
+                transaction.MarkAsSucceeded();
 
                 await _accountRepository.CommitAsync(true, cancellationToken);
 
@@ -565,9 +557,9 @@ namespace eDoxa.Cashier.Api.Application.Services
         {
             var result = new DomainValidationResult();
 
-            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrency.Token);
+            var transactionBundles = await this.FetchTransactionBundlesAsync(EnumTransactionType.Deposit, EnumCurrencyType.Token);
 
-            if (transactionBundles.All(deposit => new decimal(deposit.Currency.Amount) != token.Amount))
+            if (transactionBundles.All(deposit => deposit.Currency.Amount != token.Amount))
             {
                 result.AddFailedPreconditionError(
                     $"The amount of {nameof(Token)} is invalid. These are valid amounts: [{string.Join(", ", transactionBundles.Select(deposit => deposit.Currency.Amount))}].");
@@ -575,7 +567,8 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             if (!account.IsDepositAvailable())
             {
-                result.AddFailedPreconditionError($"Deposit unavailable until {account.LastDeposit?.Add(TokenAccountDecorator.DepositInterval)}.");
+                result.AddFailedPreconditionError(
+                    $"Buying tokens is unavailable until {account.LastDeposit?.Add(TokenAccountDecorator.DepositInterval)}. For security reason we limit the number of financial transaction that can be done in {TokenAccountDecorator.DepositInterval.TotalHours} hours.");
             }
 
             if (result.IsValid)
@@ -632,6 +625,15 @@ namespace eDoxa.Cashier.Api.Application.Services
             if (type == TransactionType.Charge)
             {
                 return await this.CreateChargeTransactionAsync(
+                    account,
+                    token,
+                    metadata,
+                    cancellationToken);
+            }
+
+            if (type == TransactionType.Payout)
+            {
+                return await this.CreatePayoutTransactionAsync(
                     account,
                     token,
                     metadata,

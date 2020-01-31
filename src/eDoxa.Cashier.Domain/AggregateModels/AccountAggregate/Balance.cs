@@ -13,33 +13,33 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 {
     public sealed class Balance : ValueObject
     {
-        public Balance(IReadOnlyCollection<ITransaction> transactions, Currency currency)
+        public Balance(IReadOnlyCollection<ITransaction> transactions, CurrencyType currencyType)
         {
-            Available = transactions.Where(transaction => transaction.Currency.Type == currency && transaction.Status == TransactionStatus.Succeeded)
+            Available = transactions.Where(transaction => transaction.Currency.Type == currencyType && transaction.Status == TransactionStatus.Succeeded)
                 .Sum(transaction => transaction.Currency.Amount);
 
-            Pending = transactions.Where(transaction => transaction.Currency.Type == currency && transaction.Status == TransactionStatus.Pending)
+            Pending = transactions.Where(transaction => transaction.Currency.Type == currencyType && transaction.Status == TransactionStatus.Pending)
                 .Sum(transaction => transaction.Currency.Amount);
 
-            Currency = currency;
+            CurrencyType = currencyType;
         }
 
         public decimal Available { get; }
 
         public decimal Pending { get; }
 
-        public Currency Currency { get; }
+        public CurrencyType CurrencyType { get; }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Available;
             yield return Pending;
-            yield return Currency;
+            yield return CurrencyType;
         }
 
         public override string ToString()
         {
-            return Currency.ToString();
+            return CurrencyType.ToString();
         }
     }
 }

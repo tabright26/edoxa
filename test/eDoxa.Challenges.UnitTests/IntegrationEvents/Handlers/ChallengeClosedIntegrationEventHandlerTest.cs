@@ -80,10 +80,10 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
                 PayoutPrizes =
                 {
                     {
-                        "test1", new PrizeDto
+                        "test1", new CurrencyDto
                         {
                             Amount = 50.0m,
-                            Currency = EnumCurrency.Money
+                            Type = EnumCurrencyType.Money
                         }
                     }
                 }

@@ -308,16 +308,11 @@ export function registerUserAccount(
   meta: AxiosActionCreatorMeta
 ) {
   return async (dispatch: Dispatch<RegisterUserAccountActionCreator>) => {
-    const dob: number[] = data.dob.split("/").map(x => Number(x));
     const request: RegisterUserAccountRequest = {
       email: data.email,
       password: data.password,
       country: data.countryIsoCode,
-      dob: {
-        month: dob[0],
-        day: dob[1],
-        year: dob[2]
-      },
+      dob: data.dob,
       ip: await publicIp.v4({
         fallbackUrls: ["https://ifconfig.co/ip"]
       })

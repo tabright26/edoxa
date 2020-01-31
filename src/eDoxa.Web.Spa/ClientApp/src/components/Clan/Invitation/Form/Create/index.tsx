@@ -7,16 +7,15 @@ import { SEND_INVITATION_FORM } from "utils/form/constants";
 import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 
-//TODO: ASK ROY IF WE ARE GONNA KEEP THIS INVITATION FORM, BECAUSE WE ARE SUPPOSE TO USE A SPECIFIC USER PROFILE PAGE WITH AN INVITATION BUTTON.
-
-const CreateInvitationForm: FunctionComponent<any> = ({
+const Create: FunctionComponent<any> = ({
   handleSubmit,
   initialValues: { clanId },
   error,
-  submitting
+  submitting,
+  anyTouched
 }) => (
   <Form onSubmit={handleSubmit}>
-    <ValidationSummary error={error} />
+    <ValidationSummary anyTouched={anyTouched} error={error} />
     <Field
       type="text"
       name="userId"
@@ -45,4 +44,4 @@ const enhance = compose<any, any>(
   })
 );
 
-export default enhance(CreateInvitationForm);
+export default enhance(Create);

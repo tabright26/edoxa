@@ -111,8 +111,11 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             {
                 Transaction = new TransactionDto
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = 20
+                    },
                     Description = "Test",
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
@@ -167,8 +170,11 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             {
                 Transaction = new TransactionDto
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = 20
+                    },
                     Description = "test",
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
@@ -201,8 +207,11 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             {
                 Transaction = new TransactionDto
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = 20
+                    },
                     Description = "test",
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
@@ -267,8 +276,11 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             {
                 Transaction = new TransactionDto
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = 20
+                    },
                     Description = "test",
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
@@ -301,8 +313,11 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             {
                 Transaction = new TransactionDto
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = 20
+                    },
                     Description = "test",
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,
@@ -333,8 +348,11 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             {
                 Transaction = new TransactionDto
                 {
-                    Amount = 20,
-                    Currency = EnumCurrency.Money,
+                    Currency = new CurrencyDto
+                    {
+                        Type = EnumCurrencyType.Money,
+                        Amount = 20
+                    },
                     Description = "test",
                     Id = new TransactionId(),
                     Status = EnumTransactionStatus.Pending,

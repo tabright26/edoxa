@@ -3,7 +3,7 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Buy from ".";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
-import { CURRENCY_TOKEN } from "types";
+import { CURRENCY_TYPE_TOKEN } from "types";
 import { TransactionBundlesState } from "store/static/transactionBundle/types";
 
 it("renders without crashing", () => {
@@ -45,7 +45,7 @@ it("renders without crashing", () => {
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Buy currency={CURRENCY_TOKEN} />
+        <Buy />
       </Provider>
     )
     .toJSON();

@@ -53,8 +53,10 @@ const Payout: FunctionComponent<Props> = ({ payout }) => {
                 <td className="align-middle w-50">
                   <Format.Currency
                     alignment="center"
-                    currency={payout.prizePool.currency}
-                    amount={bucket.prize}
+                    currency={{
+                      type: payout.prizePool.type,
+                      amount: bucket.prize
+                    }}
                   />
                 </td>
               </tr>

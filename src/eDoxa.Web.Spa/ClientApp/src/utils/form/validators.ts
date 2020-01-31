@@ -46,11 +46,7 @@ export const PROFILE_DOB_DAY_INVALID = sentenceCase("Invalid day");
 export const PHONE_REGEXP = new RegExp("^[0-9]{11}$");
 export const PHONE_REQUIRED = sentenceCase("Phone is required");
 export const PHONE_INVALID = sentenceCase("Phone is invalid");
-export const EMAIL_REGEXP = new RegExp(
-  "^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
-);
 export const EMAIL_REQUIRED = sentenceCase("Email is required");
-export const EMAIL_INVALID = sentenceCase("Email is invalid");
 export const PASSWORD_REGEXP = new RegExp(
   "^((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\\W]).{8,})$"
 );

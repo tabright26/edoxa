@@ -1,13 +1,10 @@
 ﻿// Filename: ForgotPasswordRequestValidator.cs
-// Date Created: 2019-12-18
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
-
-using System.Text.RegularExpressions;
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Api.Application.ErrorDescribers;
 
 using FluentValidation;
 
@@ -17,13 +14,7 @@ namespace eDoxa.Identity.Api.Application.Validators
     {
         public ForgotPasswordRequestValidator()
         {
-            this.RuleFor(request => request.Email)
-                .NotNull()
-                .WithMessage(PasswordForgotErrorDescriber.EmailRequired())
-                .NotEmpty()
-                .WithMessage(PasswordForgotErrorDescriber.EmailRequired())
-                .Matches(new Regex("^([A-Z|a-z|0-9](\\.|_){0,1})+[A-Z|a-z|0-9]\\@([A-Z|a-z|0-9])+((\\.){0,1}[A-Z|a-z|0-9]){2}\\.[a-z]{2,3}$"))
-                .WithMessage(PasswordForgotErrorDescriber.EmailInvalid());
+            this.RuleFor(request => request.Email).EmailAddress().WithMessage("Email is invalid");
         }
     }
 }
