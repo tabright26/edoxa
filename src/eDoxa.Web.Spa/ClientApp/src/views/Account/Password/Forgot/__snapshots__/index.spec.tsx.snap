@@ -23,6 +23,7 @@ exports[`renders correctly 1`] = `
         className="form-group"
       >
         <input
+          autoComplete="email"
           className="form-control-sm form-control"
           name="email"
           onBlur={[Function]}

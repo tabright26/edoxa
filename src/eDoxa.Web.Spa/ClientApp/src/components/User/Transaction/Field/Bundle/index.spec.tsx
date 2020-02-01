@@ -10,7 +10,7 @@ import {
 } from "types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const store: any = {
     getState: () => {
       return {
@@ -63,12 +63,12 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const store: any = {
     getState: () => {
       return {
@@ -121,6 +121,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

@@ -25,24 +25,9 @@ export const PROFILE_LAST_NAME_REGEXP = new RegExp(
   "^[A-Za-z]((-)[a-zA-Z]|[a-z]){1,15}$"
 );
 export const PROFILE_LAST_NAME_REQUIRED = sentenceCase("Last name is required");
-export const PROFILE_LAST_NAME_INVALID = sentenceCase("Invalid last name");
+export const PROFILE_LAST_NAME_INVALID = sentenceCase("Last name is invalid");
 export const PROFILE_GENDER_REQUIRED = sentenceCase("Gender is required");
-export const PROFILE_GENDER_INVALID = sentenceCase("Invalid day");
-export const PROFILE_DOB_YEAR_REGEXP = new RegExp("^[0-9]{4}$");
-export const PROFILE_DOB_YEAR_REQUIRED = sentenceCase(
-  "Year of birth is required"
-);
-export const PROFILE_DOB_YEAR_INVALID = sentenceCase("Invalid year");
-export const PROFILE_DOB_MONTH_REGEXP = new RegExp("^(0[1-9]|1[012])$");
-export const PROFILE_DOB_MONTH_REQUIRED = sentenceCase(
-  "Month of birth is required"
-);
-export const PROFILE_DOB_MONTH_INVALID = sentenceCase("Invalid month");
-export const PROFILE_DOB_DAY_REGEXP = new RegExp("^(0[1-9]|[12]\\d|3[01])$");
-export const PROFILE_DOB_DAY_REQUIRED = sentenceCase(
-  "Day of birth is required"
-);
-export const PROFILE_DOB_DAY_INVALID = sentenceCase("Invalid day");
+export const PROFILE_GENDER_INVALID = sentenceCase("Gender is invalid");
 export const PHONE_REGEXP = new RegExp("^[0-9]{11}$");
 export const PHONE_REQUIRED = sentenceCase("Phone is required");
 export const PHONE_INVALID = sentenceCase("Phone is invalid");
@@ -52,6 +37,7 @@ export const PASSWORD_REGEXP = new RegExp(
 );
 export const PASSWORD_REQUIRED = sentenceCase("Password is required");
 export const PASSWORD_INVALID = sentenceCase("Password is invalid");
+export const DOB_REQUIRED = sentenceCase("Data of birth is required");
 export const PAYMENT_METHOD_CARD_EXP_MONTH_REGEXP = new RegExp(
   "^(01|02|03|04|05|06|07|08|09|10|11|12)$"
 );

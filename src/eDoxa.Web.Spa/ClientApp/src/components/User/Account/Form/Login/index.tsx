@@ -7,7 +7,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps } from "redux-form";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { LOGIN_USER_ACCOUNT_FORM } from "utils/form/constants";
@@ -22,6 +22,7 @@ import queryString from "query-string";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { getPasswordForgotPath } from "utils/coreui/constants";
+import { EMAIL_REQUIRED, PASSWORD_REQUIRED } from "utils/form/validators";
 
 interface StateProps {}
 
@@ -58,7 +59,7 @@ const Login: FunctionComponent<Props> = ({
         name="email"
         placeholder="Email"
         size={null}
-        //autoComplete="email"
+        autoComplete="email"
         component={Input.Text}
       />
     </InputGroup>
@@ -73,7 +74,7 @@ const Login: FunctionComponent<Props> = ({
         name="password"
         placeholder="Password"
         size={null}
-        //autoComplete="current-password"
+        autoComplete="current-password"
         component={Input.Password}
       />
     </InputGroup>
@@ -83,7 +84,7 @@ const Login: FunctionComponent<Props> = ({
       </Col>
       <Col xs="6" className="text-right">
         <LinkContainer to={getPasswordForgotPath()}>
-          <Button.Link className="px-0" size={null}>
+          <Button.Link className="p-0" size="lg">
             Forgot password?
           </Button.Link>
         </LinkContainer>
@@ -119,6 +120,16 @@ const enhance = compose<InnerProps, OutterProps>(
     },
     onSubmitSuccess: result => {
       window.location = result.data;
+    },
+    validate: values => {
+      const errors: FormErrors<FormData> = {};
+      if (!values.email) {
+        errors.email = EMAIL_REQUIRED;
+      }
+      if (!values.password) {
+        errors.password = PASSWORD_REQUIRED;
+      }
+      return errors;
     }
   })
 );

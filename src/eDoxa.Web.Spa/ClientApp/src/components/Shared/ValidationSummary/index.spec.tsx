@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { ValidationSummary } from ".";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const store: any = {
     getState: () => {},
     dispatch: action => {},
@@ -14,7 +14,7 @@ it("renders without crashing", () => {
 
   const FormWrapper = () => (
     <Form onSubmit={() => {}}>
-      <ValidationSummary error={null} />
+      <ValidationSummary anyTouched error={null} />
     </Form>
   );
 
@@ -29,6 +29,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

@@ -6,7 +6,7 @@ import { StripeAccountState } from "store/root/payment/stripe/account/types";
 import { TransactionBundlesState } from "store/static/transactionBundle/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const moneyBundles: TransactionBundlesState = {
     data: [],
     loading: false,
@@ -40,7 +40,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -49,6 +49,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

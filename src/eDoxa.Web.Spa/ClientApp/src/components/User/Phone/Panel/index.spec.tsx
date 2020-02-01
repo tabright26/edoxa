@@ -5,7 +5,7 @@ import Phone from ".";
 import { UserPhoneState } from "store/root/user/phone/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const phone: UserPhoneState = {
     data: { number: "123456789", verified: true },
     loading: false,
@@ -26,7 +26,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -35,6 +35,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

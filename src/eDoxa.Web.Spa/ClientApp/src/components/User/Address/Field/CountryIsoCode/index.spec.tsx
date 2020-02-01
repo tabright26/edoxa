@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import Country from ".";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const store: any = {
     getState: () => {},
     dispatch: action => {},
@@ -29,6 +29,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

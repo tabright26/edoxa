@@ -6,7 +6,7 @@ import { UserBalanceState } from "store/root/user/balance/types";
 import { CURRENCY_TYPE_MONEY, CURRENCY_TYPE_TOKEN } from "types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const balanceMoney: UserBalanceState = {
     data: { available: 100, pending: 50 },
     loading: false,
@@ -31,7 +31,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -40,12 +40,12 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const balanceToken: UserBalanceState = {
     data: { available: 10, pending: 25 },
     loading: false,
@@ -70,7 +70,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -79,6 +79,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

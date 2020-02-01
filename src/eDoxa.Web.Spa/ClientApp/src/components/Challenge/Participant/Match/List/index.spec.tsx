@@ -5,7 +5,7 @@ import { MemoryRouter } from "react-router-dom";
 import List from ".";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   // const challenges: ChallengesState = {
   //   data: [
   //     {
@@ -28,8 +28,8 @@ it("renders without crashing", () => {
   //       scoring: new Map<string, string>(),
   //       payout: {
   //         challengeId: "123",
-  //         entryFee: { currency: "token", amount: 0 },
-  //         prizePool: { currency: "token", amount: 200000 },
+  //         entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+  //         prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
   //         buckets: []
   //       }
   //     }
@@ -44,7 +44,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -55,6 +55,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

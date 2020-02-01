@@ -7,7 +7,7 @@ import {
   InputGroupText,
   Col
 } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps } from "redux-form";
+import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { REGISTER_USER_ACCOUNT_FORM } from "utils/form/constants";
@@ -25,6 +25,8 @@ import { connect, MapStateToProps } from "react-redux";
 import InputMask from "react-input-mask";
 import { getTermsOfServicesPath } from "utils/coreui/constants";
 import { Link } from "react-router-dom";
+import { CountryIsoCode, COUNTRY_ISO_CODE_CA } from "types";
+import { EMAIL_REQUIRED, PASSWORD_REQUIRED, DOB_REQUIRED } from "utils/form/validators";
 
 type StateProps = {};
 
@@ -33,7 +35,8 @@ type OwnProps = {};
 export interface RegisterUserAccountFormData {
   email: string;
   password: string;
-  countryIsoCode: string;
+  newPassword: string;
+  countryIsoCode: CountryIsoCode;
   dob: string;
 }
 
@@ -52,20 +55,6 @@ const Register: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
-    {/* <InputGroup className="mb-3">
-      <InputGroupAddon addonType="prepend">
-        <InputGroupText>
-          <i className="icon-user"></i>
-        </InputGroupText>
-      </InputGroupAddon>
-      <Field
-        type="text"
-        name="username"
-        placeholder="Username"
-        //autoComplete="username"
-        component={Input.Text}
-      />
-    </InputGroup> */}
     <InputGroup className="mb-3">
       <InputGroupAddon addonType="prepend">
         <InputGroupText>@</InputGroupText>
@@ -75,7 +64,7 @@ const Register: FunctionComponent<Props> = ({
         name="email"
         placeholder="Email"
         size={null}
-        //autoComplete="email"
+        autoComplete="email"
         component={Input.Text}
       />
     </InputGroup>
@@ -92,7 +81,7 @@ const Register: FunctionComponent<Props> = ({
             name="password"
             placeholder="Password"
             size={null}
-            //autoComplete="password"
+            autoComplete="password"
             component={Input.Password}
           />
         </InputGroup>
@@ -109,7 +98,7 @@ const Register: FunctionComponent<Props> = ({
             name="newPassword"
             placeholder="Repeat password"
             size={null}
-            //autoComplete="new-password"
+            autoComplete="new-password"
             component={Input.Password}
           />
         </InputGroup>
@@ -170,7 +159,7 @@ const mapStateToProps: MapStateToProps<
 > = () => {
   return {
     initialValues: {
-      countryIsoCode: "CA"
+      countryIsoCode: COUNTRY_ISO_CODE_CA
     }
   };
 };
@@ -191,6 +180,21 @@ const enhance = compose<InnerProps, OutterProps>(
     },
     onSubmitSuccess: (_result, dispatch) => {
       dispatch(push("/authentication/login"));
+    },
+    validate: values => {
+      const errors: FormErrors<RegisterUserAccountFormData> = {};
+      if (!values.email) {
+        errors.email = EMAIL_REQUIRED;
+      }
+      if (!values.password) {
+        errors.password = PASSWORD_REQUIRED;
+      } else if (values.password !== values.newPassword) {
+        errors._error = "Repeat password doesn't match password";
+      }
+      if (!values.dob) {
+        errors.dob = DOB_REQUIRED;
+      }
+      return errors;
     }
   })
 );

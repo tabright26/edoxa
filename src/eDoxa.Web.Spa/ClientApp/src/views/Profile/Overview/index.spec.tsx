@@ -5,7 +5,7 @@ import Overview from ".";
 import { UserDoxatagHistoryState } from "store/root/user/doxatagHistory/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const doxatagHistory: UserDoxatagHistoryState = {
     data: [{ name: "League of legends", userId: "testId", code: 1234, timestamp: 111111 }],
     loading: false,
@@ -26,7 +26,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -35,6 +35,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

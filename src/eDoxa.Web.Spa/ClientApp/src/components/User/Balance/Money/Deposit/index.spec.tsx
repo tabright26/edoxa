@@ -7,7 +7,7 @@ import { CURRENCY_TYPE_MONEY } from "types";
 import { StaticOptionsState } from "store/static/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const moneyBundles: StaticOptionsState = {
     data: [],
     loading: false,
@@ -41,7 +41,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -50,6 +50,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

@@ -37,6 +37,7 @@ const CustomForm: FunctionComponent<Props> = ({
       type="text"
       name="email"
       placeholder="Email"
+      autoComplete="email"
       formGroup={FormGroup}
       component={Input.Text}
     />
@@ -45,7 +46,7 @@ const CustomForm: FunctionComponent<Props> = ({
         Send
       </Button.Submit>
       <LinkContainer to="/authentication/login">
-        <Button.Link className="ml-auto my-auto" size="sm">
+        <Button.Link className="p-0 ml-auto my-auto" size="lg">
           Return to login page
         </Button.Link>
       </LinkContainer>

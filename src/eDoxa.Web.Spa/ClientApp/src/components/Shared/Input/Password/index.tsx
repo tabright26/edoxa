@@ -1,5 +1,5 @@
 import React, { FunctionComponent, Fragment } from "react";
-import { Input, Label } from "reactstrap";
+import { Input, Label, FormFeedback } from "reactstrap";
 
 export const Password: FunctionComponent<any> = ({
   children,
@@ -8,7 +8,7 @@ export const Password: FunctionComponent<any> = ({
   placeholder = null,
   size = "sm",
   disabled = false,
-  meta: { touched, error },
+  meta,
   formGroup: FormGroup = Fragment,
   ...props
 }) => (
@@ -20,9 +20,10 @@ export const Password: FunctionComponent<any> = ({
       placeholder={placeholder}
       bsSize={size}
       disabled={disabled}
-      invalid={touched && !!error}
+      invalid={!disabled && meta.touched && !!meta.error}
     >
       {children}
     </Input>
+    {meta && <FormFeedback>{meta.error}</FormFeedback>}
   </FormGroup>
 );

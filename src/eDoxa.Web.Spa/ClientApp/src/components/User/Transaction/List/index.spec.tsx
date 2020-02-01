@@ -5,7 +5,7 @@
 // import { UserAccountTransactionsState } from "store/root/user/account/transaction/types";
 
 it("renders without crashing", () => {
-  // //Arrange
+  // // Arrange
   // const transactions: UserAccountTransactionsState = {
   //   data: [
   //     {
@@ -46,7 +46,7 @@ it("renders without crashing", () => {
   //   subscribe: () => {}
   // };
 
-  // //Act
+  // // Act
   // const tree = renderer
   //   .create(
   //     <Provider store={store}>
@@ -55,6 +55,6 @@ it("renders without crashing", () => {
   //   )
   //   .toJSON();
 
-  // //Assert
+  // // Assert
   // expect(tree).toMatchSnapshot();
 });

@@ -14,12 +14,7 @@ import { compose } from "recompose";
 import { ValidationSummary } from "components/Shared/ValidationSummary";
 import { throwSubmissionError } from "utils/form/types";
 import { resetUserPassword } from "store/actions/identity";
-import {
-  PASSWORD_REGEXP,
-  EMAIL_REQUIRED,
-  PASSWORD_REQUIRED,
-  PASSWORD_INVALID
-} from "utils/form/validators";
+import { EMAIL_REQUIRED, PASSWORD_REQUIRED } from "utils/form/validators";
 import { AxiosActionCreatorMeta } from "utils/axios/types";
 import { MapStateToProps, connect } from "react-redux";
 import { RootState } from "store/types";
@@ -33,6 +28,7 @@ interface FormData {
   code: string;
   email: string;
   password: string;
+  newPassword: string;
 }
 
 interface OutterProps {}
@@ -60,6 +56,7 @@ const CustomForm: FunctionComponent<Props> = ({
         type="text"
         name="email"
         placeholder="Email"
+        autoComplete="email"
         component={Input.Text}
       />
     </InputGroup>
@@ -73,6 +70,7 @@ const CustomForm: FunctionComponent<Props> = ({
         type="password"
         name="password"
         placeholder="New password"
+        autoComplete="password"
         component={Input.Password}
       />
     </InputGroup>
@@ -84,8 +82,9 @@ const CustomForm: FunctionComponent<Props> = ({
       </InputGroupAddon>
       <Field
         type="password"
-        name="confirmPassword"
-        placeholder="Confirm new password"
+        name="newPassword"
+        placeholder="Repeat new password"
+        autoComplete="new-password"
         component={Input.Password}
       />
     </InputGroup>
@@ -135,8 +134,8 @@ const enhance = compose<InnerProps, OutterProps>(
       }
       if (!values.password) {
         errors.password = PASSWORD_REQUIRED;
-      } else if (!PASSWORD_REGEXP.test(values.password)) {
-        errors.password = PASSWORD_INVALID;
+      } else if (values.password !== values.newPassword) {
+        errors._error = "Repeat password doesn't match password";
       }
       return errors;
     }

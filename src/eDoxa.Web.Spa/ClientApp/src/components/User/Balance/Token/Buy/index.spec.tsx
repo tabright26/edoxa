@@ -3,11 +3,9 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Buy from ".";
 import { StripeCustomerState } from "store/root/payment/stripe/customer/types";
-import { CURRENCY_TYPE_TOKEN } from "types";
-import { TransactionBundlesState } from "store/static/transactionBundle/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const tokenBundles: TransactionBundlesState = {
     data: [],
     loading: false,
@@ -41,7 +39,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -50,6 +48,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

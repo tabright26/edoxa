@@ -6,7 +6,7 @@
 // import { ChallengesState } from "store/root/challenge/types";
 
 it("renders without crashing", () => {
-  // //Arrange
+  // // Arrange
   // const challenges: ChallengesState = {
   //   data: [
   //     {
@@ -17,7 +17,7 @@ it("renders without crashing", () => {
   //       entries: 10,
   //       game: "LeagueOfLegends",
   //       payoutEntries: 5,
-  //       entryFee: { currency: "token", amount: 0 },
+  //       entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
   //       participants: [
   //         { id: "id1", challengeId: "123", score: 0, matches: [] }
   //       ],
@@ -29,7 +29,7 @@ it("renders without crashing", () => {
   //       },
   //       scoring: new Map<string, string>(),
   //       payout: {
-  //         prizePool: { currency: "token", amount: 200000 },
+  //         prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
   //         buckets: []
   //       }
   //     },
@@ -41,7 +41,7 @@ it("renders without crashing", () => {
   //       entries: 10,
   //       game: "LeagueOfLegends",
   //       payoutEntries: 5,
-  //       entryFee: { currency: "token", amount: 0 },
+  //       entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
   //       participants: [
   //         { id: "id2", challengeId: "456", score: 0, matches: [] }
   //       ],
@@ -53,7 +53,7 @@ it("renders without crashing", () => {
   //       },
   //       scoring: new Map<string, string>(),
   //       payout: {
-  //         prizePool: { currency: "token", amount: 200000 },
+  //         prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
   //         buckets: []
   //       }
   //     },
@@ -65,7 +65,7 @@ it("renders without crashing", () => {
   //       entries: 10,
   //       game: "LeagueOfLegends",
   //       payoutEntries: 5,
-  //       entryFee: { currency: "token", amount: 0 },
+  //       entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
   //       participants: [
   //         { id: "id3", challengeId: "678", score: 0, matches: [] }
   //       ],
@@ -77,7 +77,7 @@ it("renders without crashing", () => {
   //       },
   //       scoring: new Map<string, string>(),
   //       payout: {
-  //         prizePool: { currency: "token", amount: 200000 },
+  //         prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
   //         buckets: []
   //       }
   //     }
@@ -85,7 +85,6 @@ it("renders without crashing", () => {
   //   loading: false,
   //   error: null
   // };
-
   // const store: any = {
   //   getState: () => {
   //     return {
@@ -97,8 +96,7 @@ it("renders without crashing", () => {
   //   dispatch: action => {},
   //   subscribe: () => {}
   // };
-
-  // //Act
+  // // Act
   // const tree = renderer
   //   .create(
   //     <Provider store={store}>
@@ -108,7 +106,6 @@ it("renders without crashing", () => {
   //     </Provider>
   //   )
   //   .toJSON();
-
-  // //Assert
+  // // Assert
   // expect(tree).toMatchSnapshot();
 });

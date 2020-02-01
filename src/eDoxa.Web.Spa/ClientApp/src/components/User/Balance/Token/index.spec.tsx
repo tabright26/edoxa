@@ -5,7 +5,7 @@
 // import { UserAccountBalanceState } from "store/root/user/account/balance/types";
 
 it("renders without crashing", () => {
-  // //Arrange
+  // // Arrange
   // const balanceToken: UserAccountBalanceState = {
   //   data: { available: 10, pending: 25 },
   //   loading: false,
@@ -30,7 +30,7 @@ it("renders without crashing", () => {
   //   subscribe: () => {}
   // };
 
-  // //Act
+  // // Act
   // const tree = renderer
   //   .create(
   //     <Provider store={store}>
@@ -39,6 +39,6 @@ it("renders without crashing", () => {
   //   )
   //   .toJSON();
 
-  // //Assert
+  // // Assert
   // expect(tree).toMatchSnapshot();
 });
