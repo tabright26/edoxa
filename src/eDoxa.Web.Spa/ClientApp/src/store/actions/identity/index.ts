@@ -78,7 +78,8 @@ import {
 import { AddressId } from "types";
 import {
   AxiosActionCreatorMeta,
-  AXIOS_PAYLOAD_CLIENT_DEFAULT
+  AXIOS_PAYLOAD_CLIENT_DEFAULT,
+  AXIOS_PAYLOAD_CLIENT_AUTHORITY
 } from "utils/axios/types";
 import { Dispatch } from "react";
 import { RegisterUserAccountFormData } from "components/User/Account/Form/Register";
@@ -324,10 +325,10 @@ export function registerUserAccount(
         REGISTER_USER_ACCOUNT_FAIL
       ],
       payload: {
-        client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
+        client: AXIOS_PAYLOAD_CLIENT_AUTHORITY,
         request: {
           method: "POST",
-          url: "/identity/api/account/register",
+          url: "/api/account/register",
           data: request,
           withCredentials: true
         }
@@ -349,10 +350,10 @@ export function loginUserAccount(
       LOGIN_USER_ACCOUNT_FAIL
     ],
     payload: {
-      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
+      client: AXIOS_PAYLOAD_CLIENT_AUTHORITY,
       request: {
         method: "POST",
-        url: "/identity/api/account/login",
+        url: "/api/account/login",
         data,
         withCredentials: true,
         responseType: "text"
@@ -372,10 +373,10 @@ export function logoutUserAccount(
       LOGOUT_USER_ACCOUNT_FAIL
     ],
     payload: {
-      client: AXIOS_PAYLOAD_CLIENT_DEFAULT,
+      client: AXIOS_PAYLOAD_CLIENT_AUTHORITY,
       request: {
         method: "GET",
-        url: "/identity/api/account/logout",
+        url: "/api/account/logout",
         params: {
           logoutId
         },

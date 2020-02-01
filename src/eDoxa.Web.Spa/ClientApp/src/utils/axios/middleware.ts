@@ -3,13 +3,20 @@ import { multiClientMiddleware, IClientsList } from "redux-axios-middleware";
 import { RootState } from "store/types";
 import {
   REACT_APP_CASHIER_WEB_GATEWAY_URL,
-  REACT_APP_CHALLENGES_WEB_GATEWAY_URL
+  REACT_APP_CHALLENGES_WEB_GATEWAY_URL,
+  REACT_APP_AUTHORITY
 } from "keys";
 
 const clients: IClientsList = {
   default: {
     client: axios.create({
       baseURL: REACT_APP_CHALLENGES_WEB_GATEWAY_URL,
+      responseType: "json"
+    })
+  },
+  authority: {
+    client: axios.create({
+      baseURL: REACT_APP_AUTHORITY,
       responseType: "json"
     })
   },
