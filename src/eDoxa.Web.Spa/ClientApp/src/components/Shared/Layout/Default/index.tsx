@@ -54,7 +54,7 @@ export const Default: FunctionComponent = () => {
       </div>
       <AppFooter className="mt-4">
         <Suspense fallback={<Loading />}>
-          <Footer />
+          <Footer className="ml-auto" />
         </Suspense>
       </AppFooter>
     </div>

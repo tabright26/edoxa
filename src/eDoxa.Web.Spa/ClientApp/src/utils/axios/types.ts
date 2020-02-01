@@ -1,11 +1,13 @@
 import { AxiosRequestConfig, AxiosResponse, AxiosError } from "axios";
 
 export const AXIOS_PAYLOAD_CLIENT_DEFAULT = "default";
+export const AXIOS_PAYLOAD_CLIENT_AUTHORITY = "authority";
 export const AXIOS_PAYLOAD_CLIENT_CASHIER = "cashier";
 export const AXIOS_PAYLOAD_CLIENT_CHALLENGES = "challenges";
 
 type AxiosPayloadClient =
   | typeof AXIOS_PAYLOAD_CLIENT_DEFAULT
+  | typeof AXIOS_PAYLOAD_CLIENT_AUTHORITY
   | typeof AXIOS_PAYLOAD_CLIENT_CASHIER
   | typeof AXIOS_PAYLOAD_CLIENT_CHALLENGES;
 

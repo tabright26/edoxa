@@ -1,9 +1,720 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders without crashing 1`] = `
-<h1
-  className="text-uppercase"
+<div
+  className="app"
 >
-  HOME PAGE
-</h1>
+  <main
+    className="main"
+  >
+    <div
+      className="m-0 p-0 border-0 card"
+    >
+      <img
+        className="card-img"
+        src="panel.jpg"
+        style={
+          Object {
+            "filter": "brightness(75%)",
+          }
+        }
+      />
+      <div
+        className="p-0 card-img-overlay"
+      >
+        <div
+          className="text-center my-5 h-100 container"
+        >
+          <header
+            className="mb-5 bg-transparent border-0 navbar nav"
+          >
+            <a
+              className="navbar-brand"
+            >
+              <img
+                alt="brand"
+                height={60}
+                src="logo.png"
+                width={150}
+              />
+            </a>
+            <ul
+              className="ml-auto mr-3 nav"
+            >
+              <button
+                aria-label={null}
+                className="d-inline btn btn-link btn-lg"
+                onClick={[Function]}
+                style={
+                  Object {
+                    "textDecoration": "none",
+                  }
+                }
+              >
+                Login
+              </button>
+              <a
+                aria-label={null}
+                className="d-inline ml-2 btn btn-outline-primary btn-lg"
+                href="http://192.168.0.105:5000/Identity/Account/Register"
+                onClick={[Function]}
+              >
+                Register
+              </a>
+            </ul>
+          </header>
+          <div
+            className="d-flex justify-content-center h-100"
+            style={
+              Object {
+                "fontSize": "20px",
+              }
+            }
+          >
+            <div
+              className="align-items-center position-absolute my-auto w-100"
+              style={
+                Object {
+                  "left": "50%",
+                  "top": "50%",
+                  "transform": "translate(-50%, -50%)",
+                  "width": "125px",
+                }
+              }
+            >
+              <h1
+                className="text-uppercase"
+              >
+                PLAY FOR YOUR DREAM
+              </h1>
+              <p
+                className="mb-5"
+              >
+                Be the reason for your Clan's
+                 
+                <span
+                  className="text-primary"
+                >
+                  success
+                </span>
+                 by winning Challenges for 
+                <span
+                  className="text-primary"
+                >
+                  CASH
+                </span>
+                !
+              </p>
+              <span
+                className="d-block"
+              >
+                LIVE 2 PLAY
+              </span>
+              <button
+                aria-label={null}
+                className="my-3 btn btn-primary btn-lg"
+                onClick={[Function]}
+              >
+                PLAY 2 WIN
+              </button>
+              <span
+                className="d-block"
+              >
+                WIN 4 GLORY
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="bg-gray-900 py-5 d-flex align-items-center"
+      style={
+        Object {
+          "height": "350px",
+        }
+      }
+    >
+      <div
+        className="container"
+      >
+        <h3
+          className="text-uppercase mb-5"
+        >
+          How does it work?
+        </h3>
+        <div
+          className="text-muted mt-5 d-flex justify-content-around"
+        >
+          <div
+            className="position-relative"
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-trophy fa-w-18 fa-8x text-dark"
+              data-icon="trophy"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M552 64H448V24c0-13.3-10.7-24-24-24H152c-13.3 0-24 10.7-24 24v40H24C10.7 64 0 74.7 0 88v56c0 35.7 22.5 72.4 61.9 100.7 31.5 22.7 69.8 37.1 110 41.7C203.3 338.5 240 360 240 360v72h-48c-35.3 0-64 20.7-64 56v12c0 6.6 5.4 12 12 12h296c6.6 0 12-5.4 12-12v-12c0-35.3-28.7-56-64-56h-48v-72s36.7-21.5 68.1-73.6c40.3-4.6 78.6-19 110-41.7 39.3-28.3 61.9-65 61.9-100.7V88c0-13.3-10.7-24-24-24zM99.3 192.8C74.9 175.2 64 155.6 64 144v-16h64.2c1 32.6 5.8 61.2 12.8 86.2-15.1-5.2-29.2-12.4-41.7-21.4zM512 144c0 16.1-17.7 36.1-35.3 48.8-12.5 9-26.7 16.2-41.8 21.4 7-25 11.8-53.6 12.8-86.2H512v16z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+            <span
+              className="text-primary text-center position-absolute"
+              style={
+                Object {
+                  "fontSize": "17px",
+                  "fontWeight": "bold",
+                  "left": "50%",
+                  "lineHeight": "0.9",
+                  "top": "50%",
+                  "transform": "translate(-50%, -50%)",
+                  "width": "125px",
+                }
+              }
+            >
+              <strong>
+                JOIN
+              </strong>
+              <br />
+              <small>
+                A CHALLENGE
+              </small>
+            </span>
+          </div>
+          <div
+            className="position-relative"
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-archway fa-w-18 fa-8x text-dark"
+              data-icon="archway"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 576 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M560 448h-16V96H32v352H16.02c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16H176c8.84 0 16-7.16 16-16V320c0-53.02 42.98-96 96-96s96 42.98 96 96l.02 160v16c0 8.84 7.16 16 16 16H560c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zm0-448H16C7.16 0 0 7.16 0 16v32c0 8.84 7.16 16 16 16h544c8.84 0 16-7.16 16-16V16c0-8.84-7.16-16-16-16z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+            <span
+              className="text-primary text-center position-absolute"
+              style={
+                Object {
+                  "fontSize": "17px",
+                  "fontWeight": "bold",
+                  "left": "50%",
+                  "lineHeight": "0.9",
+                  "top": "50%",
+                  "transform": "translate(-50%, -50%)",
+                  "width": "125px",
+                }
+              }
+            >
+              <strong>
+                PLAY
+              </strong>
+              <br />
+              <small>
+                THE GAME
+              </small>
+            </span>
+          </div>
+          <div
+            className="position-relative"
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-coins fa-w-16 fa-8x text-dark"
+              data-icon="coins"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={Object {}}
+              viewBox="0 0 512 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 405.3V448c0 35.3 86 64 192 64s192-28.7 192-64v-42.7C342.7 434.4 267.2 448 192 448S41.3 434.4 0 405.3zM320 128c106 0 192-28.7 192-64S426 0 320 0 128 28.7 128 64s86 64 192 64zM0 300.4V352c0 35.3 86 64 192 64s192-28.7 192-64v-51.6c-41.3 34-116.9 51.6-192 51.6S41.3 334.4 0 300.4zm416 11c57.3-11.1 96-31.7 96-55.4v-42.7c-23.2 16.4-57.3 27.6-96 34.5v63.6zM192 160C86 160 0 195.8 0 240s86 80 192 80 192-35.8 192-80-86-80-192-80zm219.3 56.3c60-10.8 100.7-32 100.7-56.3v-42.7c-35.5 25.1-96.5 38.6-160.7 41.8 29.5 14.3 51.2 33.5 60 57.2z"
+                fill="currentColor"
+                style={Object {}}
+              />
+            </svg>
+            <span
+              className="text-primary text-center position-absolute"
+              style={
+                Object {
+                  "fontSize": "17px",
+                  "fontWeight": "bold",
+                  "left": "50%",
+                  "lineHeight": "0.9",
+                  "top": "50%",
+                  "transform": "translate(-50%, -50%)",
+                  "width": "125px",
+                }
+              }
+            >
+              <strong>
+                COLLECT
+              </strong>
+              <br />
+              <small>
+                WIN AND AUTOMATICALLY GET YOUR MONEY
+              </small>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="bg-gray-800 py-5 d-flex align-items-center"
+      style={
+        Object {
+          "height": "550px",
+        }
+      }
+    >
+      <div
+        className="container"
+      >
+        <h3
+          className="text-uppercase"
+        >
+          Join a clan
+        </h3>
+        <div
+          className="row"
+        >
+          <div
+            className="mt-4 col-md-4"
+          >
+            <ul
+              className="mb-0 text-primary text-justify"
+            >
+              <li
+                className="mb-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Find the perfect clan
+                </span>
+              </li>
+              <li
+                className="my-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Create bonds with your teammates
+                </span>
+              </li>
+              <li
+                className="my-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Hone your skills
+                </span>
+              </li>
+              <li
+                className="mt-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Propel your eSport career
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div
+            className="d-flex justify-content-center align-items-center col-md-8"
+          >
+            <div>
+              <img
+                alt=""
+                className="rounded"
+                src="clan1.jpg"
+                style={
+                  Object {
+                    "height": "175px",
+                    "width": "175px",
+                  }
+                }
+              />
+              <button
+                aria-label={null}
+                className="mt-2 btn btn-primary btn-block"
+                onClick={[Function]}
+              >
+                JOIN NOW
+              </button>
+            </div>
+            <div
+              className="mx-3"
+            >
+              <img
+                alt=""
+                className="rounded"
+                src="clan2.jpg"
+                style={
+                  Object {
+                    "height": "175px",
+                    "width": "175px",
+                  }
+                }
+              />
+              <button
+                aria-label={null}
+                className="mt-2 btn btn-primary btn-block"
+                onClick={[Function]}
+              >
+                JOIN NOW
+              </button>
+            </div>
+            <div>
+              <img
+                alt=""
+                className="rounded"
+                src="clan3.jpg"
+                style={
+                  Object {
+                    "height": "175px",
+                    "width": "175px",
+                  }
+                }
+              />
+              <button
+                aria-label={null}
+                className="mt-2 btn btn-primary btn-block"
+                onClick={[Function]}
+              >
+                JOIN NOW
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="bg-gray-900 py-5 d-flex align-items-center"
+      style={
+        Object {
+          "height": "350px",
+        }
+      }
+    >
+      <div
+        className="container"
+      >
+        <h3
+          className="text-uppercase mb-4"
+        >
+          Games
+        </h3>
+        <div
+          className="d-flex w-auto mt-4"
+        >
+          <div
+            className="position-relative mr-4"
+          >
+            <img
+              alt=""
+              className="w-100"
+              src="panel.jpg"
+              style={
+                Object {
+                  "borderRadius": "20px",
+                  "height": "200px",
+                  "minWidth": "325px",
+                }
+              }
+            />
+            <img
+              alt=""
+              className="position-absolute"
+              src="large.png"
+              style={
+                Object {
+                  "fontWeight": "bold",
+                  "left": "50%",
+                  "top": "50%",
+                  "transform": "translate(-50%, -50%)",
+                }
+              }
+            />
+          </div>
+          <div
+            className="position-relative mx-5"
+          >
+            <img
+              alt=""
+              className="w-100"
+              src="panel.png"
+              style={
+                Object {
+                  "borderRadius": "20px",
+                  "height": "200px",
+                  "minWidth": "325px",
+                }
+              }
+            />
+            <img
+              alt=""
+              className="position-absolute"
+              src="large.png"
+              style={
+                Object {
+                  "fontWeight": "bold",
+                  "left": "50%",
+                  "top": "50%",
+                  "transform": "translate(-50%, -50%)",
+                }
+              }
+            />
+          </div>
+          <div
+            className="position-relative ml-4"
+          >
+            <img
+              alt=""
+              className="w-100"
+              src="panel.png"
+              style={
+                Object {
+                  "borderRadius": "20px",
+                  "height": "200px",
+                  "minWidth": "325px",
+                }
+              }
+            />
+            <img
+              alt=""
+              className="position-absolute"
+              src="large.png"
+              style={
+                Object {
+                  "fontWeight": "bold",
+                  "left": "50%",
+                  "top": "50%",
+                  "transform": "translate(-50%, -50%)",
+                }
+              }
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="bg-gray-800 py-5 d-flex align-items-center"
+      style={
+        Object {
+          "height": "550px",
+        }
+      }
+    >
+      <div
+        className="container"
+      >
+        <h3
+          className="text-uppercase"
+        >
+          Challenges
+        </h3>
+        <div
+          className="d-flex justify-content-center align-items-center row"
+        >
+          <div
+            className="mt-4 col-md-6"
+          >
+            <h5
+              className="mb-4"
+            >
+              What is a challenge?
+            </h5>
+            <ul
+              className="mb-0 text-primary text-justify"
+            >
+              <li
+                className="mb-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Join a room of players competing for cash or tokens.
+                </span>
+              </li>
+              <li
+                className="my-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Your Challenge points are calculated automatically based on the stats played in-game.
+                </span>
+              </li>
+              <li
+                className="my-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Only the 3 best matches played during the period of the Challenge are considered in your final score.
+                </span>
+              </li>
+              <li
+                className="mt-4"
+              >
+                <span
+                  className="text-white"
+                >
+                  Your matches are not played against the other participants allowing you to play your ranked games against your own skill level and at your leisure.
+                </span>
+              </li>
+            </ul>
+          </div>
+          <div
+            className="col-md-4 offset-md-2"
+          >
+            <div
+              className="card-accent-primary card"
+            >
+              <div
+                className="bg-gray-900 card-header"
+              >
+                <strong>
+                  SCORE WEIGHTING
+                </strong>
+              </div>
+              <div
+                className="card-body"
+              >
+                <dl
+                  className="row mb-0"
+                >
+                  <dt
+                    className="col-6 text-left"
+                  >
+                    Kills
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-success"
+                  >
+                    +4
+                  </dd>
+                  <dt
+                    className="col-6 text-left"
+                  >
+                    Assists
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-success"
+                  >
+                    +3.5
+                  </dd>
+                  <dt
+                    className="col-6 text-left"
+                  >
+                    Deaths
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-danger"
+                  >
+                    -4
+                  </dd>
+                  <dt
+                    className="col-6 text-left"
+                  >
+                    Minions
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-success"
+                  >
+                    +0.04
+                  </dd>
+                  <dt
+                    className="col-6 text-left"
+                  >
+                    TotalDamageDealt
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-success"
+                  >
+                    +0.0009
+                  </dd>
+                  <dt
+                    className="col-6 text-left"
+                  >
+                    TotalDamageTaken
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-success"
+                  >
+                    +0.00125
+                  </dd>
+                  <dt
+                    className="col-6 text-left"
+                  >
+                    VisionScore
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-success"
+                  >
+                    +0.38
+                  </dd>
+                  <dt
+                    className="col-6 text-left mb-0"
+                  >
+                    Win
+                  </dt>
+                  <dd
+                    className="col-6 text-right text-success mb-0"
+                  >
+                    +20
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div
+            className="text-center col-md-12"
+          >
+            <button
+              aria-label={null}
+              className="mt-4 btn btn-primary btn-lg"
+              onClick={[Function]}
+            >
+              PLAY NOW
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer
+    className="bg-gray-900 app-footer"
+  >
+    <div
+      className="mx-auto"
+    >
+      © 
+      2020
+       eDoxa - All rights reserved.
+    </div>
+  </footer>
+</div>
 `;

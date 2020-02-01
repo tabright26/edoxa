@@ -4,11 +4,10 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/history";
 import UserTransactionModal from "components/User/Transaction/Modal";
-import Score from "components/Challenge/Participant/Match/Modal/Score";
+import ChallengeParticipantMatchModal from "components/Challenge/Participant/Match/Modal";
 import { Loading } from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";
 import StripePaymentMethodModal from "components/Payment/Stripe/PaymentMethod/Modal";
-import { Elements } from "react-stripe-elements";
 import { ApplicationPaths } from "utils/oidc/ApiAuthorizationConstants";
 import { initializeReactGA } from "utils/ga";
 import {
@@ -30,6 +29,7 @@ initializeReactGA();
 const ApiAuthorizationRoutes = React.lazy(() =>
   import("utils/oidc/ApiAuthorizationRoutes")
 );
+const Home = React.lazy(() => import("views/Home"));
 const ErrorPage401 = React.lazy(() => import("views/Errors/401"));
 const ErrorPage403 = React.lazy(() => import("views/Errors/403"));
 const ErrorPage404 = React.lazy(() => import("views/Errors/404"));
@@ -49,20 +49,19 @@ const Register = React.lazy(() => import("views/Account/Register"));
 
 const App = () => (
   <>
-    <Elements>
-      <StripePaymentMethodModal.Create />
-    </Elements>
+    <StripePaymentMethodModal.Create />
     <StripePaymentMethodModal.Update />
     <StripePaymentMethodModal.Delete />
     <UserTransactionModal.Create />
-    <Score />
+    <ChallengeParticipantMatchModal.Score />
     <Router history={history}>
       <Suspense fallback={<Loading />}>
         <Switch>
           <Route<any>
             path={ApplicationPaths.ApiAuthorizationPrefix}
-            component={() => <ApiAuthorizationRoutes />}
+            component={ApiAuthorizationRoutes}
           />
+          <Route<RouteProps> exact path="/home" name="Home" component={Home} />
           <Route<RouteProps>
             exact
             path={getError401Path()}

@@ -1,9 +1,4 @@
-import {
-  combineEpics,
-  ofType,
-  ActionsObservable,
-  Epic
-} from "redux-observable";
+import { combineEpics, ofType, Epic } from "redux-observable";
 import { NEVER } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import {

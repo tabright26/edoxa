@@ -7,7 +7,7 @@ import {
   Row,
   Col
 } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { LOGIN_USER_ACCOUNT_FORM } from "utils/form/constants";
@@ -83,7 +83,7 @@ const Login: FunctionComponent<Props> = ({
       </Col>
       <Col xs="6" className="text-right">
         <LinkContainer to={getPasswordForgotPath()}>
-          <Button.Link className="px-0" size="sm">
+          <Button.Link className="px-0" size={null}>
             Forgot password?
           </Button.Link>
         </LinkContainer>
