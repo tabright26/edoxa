@@ -7,7 +7,7 @@ import {
   InputGroupText,
   Col
 } from "reactstrap";
-import { Field, reduxForm, InjectedFormProps, FormErrors } from "redux-form";
+import { Field, reduxForm, InjectedFormProps } from "redux-form";
 import Button from "components/Shared/Button";
 import Input from "components/Shared/Input";
 import { REGISTER_USER_ACCOUNT_FORM } from "utils/form/constants";

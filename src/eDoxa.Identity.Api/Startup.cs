@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -100,7 +100,7 @@ namespace eDoxa.Identity.Api
             services.AddAppSettings<IdentityAppSettings>(Configuration);
 
             services.Configure<IdentityApiOptions>(Configuration.GetSection("Api"));
-            
+
             services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
 
             services.Configure<CookiePolicyOptions>(
@@ -204,7 +204,8 @@ namespace eDoxa.Identity.Api
                         options.Clients.Clear();
                         options.Clients.AddRange(IdentityServerConfig.GetClients(AppSettings).ToArray());
                     })
-                .AddProfileService<CustomProfileService>();
+                .AddProfileService<CustomProfileService>()
+                .AddCorsPolicyService<CustomCorsPolicyService>();
 
             services.AddTransient<IProfileService, CustomProfileService>();
             services.AddTransient<IReturnUrlParser, CustomReturnUrlParser>();
