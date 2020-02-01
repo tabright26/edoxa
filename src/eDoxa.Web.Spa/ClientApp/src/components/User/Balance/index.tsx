@@ -22,18 +22,15 @@ const Balance: FunctionComponent<Props> = ({
   balance: { data },
   attribute,
   alignment = "justify"
-}) => {
-  console.log(data);
-  return (
-    <Format.Currency
-      currency={{
-        type,
-        amount: data[attribute]
-      }}
-      alignment={alignment}
-    />
-  );
-};
+}) => (
+  <Format.Currency
+    currency={{
+      type,
+      amount: data[attribute]
+    }}
+    alignment={alignment}
+  />
+);
 
 const enhance = compose<InnerProps, OutterProps>(withUserAccountBalance);
 
