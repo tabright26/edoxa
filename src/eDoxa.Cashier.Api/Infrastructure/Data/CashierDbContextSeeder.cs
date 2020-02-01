@@ -4,6 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,11 +12,13 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
+using eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate;
 using eDoxa.Cashier.Domain.Factories;
 using eDoxa.Cashier.Infrastructure;
 using eDoxa.Cashier.Infrastructure.Extensions;
 using eDoxa.Cashier.Infrastructure.Models;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
+using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 
@@ -41,14 +44,34 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             _challengePayoutFactory = challengePayoutFactory;
             Accounts = context.Set<AccountModel>();
             ChallengePayouts = context.Set<ChallengePayoutModel>();
+            Promotions = context.Set<PromotionModel>();
         }
 
         private DbSet<AccountModel> Accounts { get; }
 
         private DbSet<ChallengePayoutModel> ChallengePayouts { get; }
 
+        private DbSet<PromotionModel> Promotions { get; }
+
         protected override async Task SeedDevelopmentAsync()
         {
+            if (!await Promotions.AnyAsync())
+            {
+                var duration = TimeSpan.FromDays(365);
+
+                var promotion = new Promotion("TEST", Money.Five, duration, new DateTimeProvider(DateTime.UtcNow + duration));
+
+                Promotions.Add(promotion.ToModel());
+
+                await this.CommitAsync();
+
+                Logger.LogInformation("The admin account being populated.");
+            }
+            else
+            {
+                Logger.LogInformation("The admin account already populated.");
+            }
+
             if (!await Accounts.AnyAsync())
             {
                 var adminAccount = new Account(UserId.FromGuid(AppAdmin.Id));
@@ -146,6 +169,23 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
 
         protected override async Task SeedProductionAsync()
         {
+            if (!await Promotions.AnyAsync())
+            {
+                var duration = TimeSpan.FromDays(365);
+
+                var promotion = new Promotion("TEST", Money.Five, duration, new DateTimeProvider(DateTime.UtcNow + duration));
+
+                Promotions.Add(promotion.ToModel());
+
+                await this.CommitAsync();
+
+                Logger.LogInformation("The admin account being populated.");
+            }
+            else
+            {
+                Logger.LogInformation("The admin account already populated.");
+            }
+
             if (!await Accounts.AnyAsync(account => account.Id == UserId.FromGuid(AppAdmin.Id)))
             {
                 var account = new Account(UserId.FromGuid(AppAdmin.Id));
