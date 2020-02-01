@@ -208,6 +208,7 @@ namespace eDoxa.Identity.Api
 
             services.AddTransient<IProfileService, CustomProfileService>();
             services.AddTransient<IReturnUrlParser, CustomReturnUrlParser>();
+            services.AddSingleton<ICorsPolicyService, CustomCorsPolicyService>();
 
             //services.AddAuthentication().AddIdentityServerJwt();
 
