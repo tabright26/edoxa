@@ -56,10 +56,6 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _addressRepository.UnitOfWork.CommitAsync();
 
-                //await this.UpdateSecurityStampAsync(user);
-
-                //await this.UpdateUserAsync(user);
-
                 result.AddEntityToMetadata(address);
             }
 
@@ -100,10 +96,6 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _addressRepository.UnitOfWork.CommitAsync();
 
-                //await this.UpdateSecurityStampAsync(user);
-
-                //await this.UpdateUserAsync(user);
-
                 await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(userId, address);
 
                 result.AddEntityToMetadata(address);
@@ -133,10 +125,6 @@ namespace eDoxa.Identity.Api.Application.Services
                     postalCode);
 
                 await _addressRepository.UnitOfWork.CommitAsync();
-
-                //await this.UpdateSecurityStampAsync(user);
-
-                //await this.UpdateUserAsync(user);
 
                 await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(address.UserId), address);
 

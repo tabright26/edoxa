@@ -18,8 +18,6 @@ using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
 
-using FluentValidation.Validators;
-
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
@@ -126,7 +124,6 @@ namespace eDoxa.Identity.Api.Controllers
                 {
                     Id = new UserId(),
                     Email = request.Email,
-                    UserName = request.Email,
                     Country = request.Country.ToEnumeration<Country>(),
                     Dob = new UserDob(DateTime.Parse(request.Dob))
                 },

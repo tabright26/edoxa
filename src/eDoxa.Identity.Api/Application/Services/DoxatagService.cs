@@ -61,10 +61,6 @@ namespace eDoxa.Identity.Api.Application.Services
                 await _doxatagRepository.UnitOfWork.CommitAsync();
 
                 result.AddEntityToMetadata(doxatag);
-
-                //await this.UpdateSecurityStampAsync(user);
-
-                //await this.UpdateUserAsync(user);
             }
 
             return result;

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
-using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents.Handlers;
 using eDoxa.Notifications.Domain.Services;

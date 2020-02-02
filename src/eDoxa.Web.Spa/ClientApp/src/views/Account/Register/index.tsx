@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardBody, Col, Container, Row, CardImg } from "reactstrap";
-import UserAccountForm from "components/User/Account/Form";
+import UserAccountForm from "components/Account/Form";
 import logo from "assets/img/brand/logo.png";
 import Layout from "components/Shared/Layout";
 import { LinkContainer } from "react-router-bootstrap";

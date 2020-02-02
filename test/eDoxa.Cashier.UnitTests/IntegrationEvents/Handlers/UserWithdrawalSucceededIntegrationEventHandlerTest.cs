@@ -17,7 +17,6 @@ using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
-using eDoxa.Grpc.Protos.CustomTypes;
 using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;

@@ -3,7 +3,7 @@ import React, { Suspense } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from "connected-react-router";
 import { history } from "utils/router/history";
-import UserTransactionModal from "components/User/Transaction/Modal";
+import UserTransactionModal from "components/Transaction/Modal";
 import ChallengeParticipantMatchModal from "components/Challenge/Participant/Match/Modal";
 import { Loading } from "components/Shared/Loading";
 import { RouteProps } from "utils/router/types";

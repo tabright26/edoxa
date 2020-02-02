@@ -2,6 +2,8 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Dtos";
 
+import "google/protobuf/wrappers.proto";
+
 package edoxa.services.payment;
 
 message StripeAccountDto {
@@ -18,7 +20,7 @@ message StripeBankAccountDto {
 }
 
 message StripeCustomerDto {
-  string defaultPaymentMethodId = 1;
+  google.protobuf.StringValue defaultPaymentMethodId = 1;
 }
 
 message StripePaymentMethodCardDto {

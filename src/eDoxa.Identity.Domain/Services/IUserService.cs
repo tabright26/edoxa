@@ -20,23 +20,9 @@ namespace eDoxa.Identity.Domain.Services
 {
     public interface IUserService
     {
-        IdentityOptions Options { get; set; }
-
-        bool SupportsUserAuthenticationTokens { get; }
-
-        bool SupportsUserAuthenticatorKey { get; }
-
-        bool SupportsUserTwoFactorRecoveryCodes { get; }
-
-        bool SupportsUserTwoFactor { get; }
-
-        bool SupportsUserPassword { get; }
-
         bool SupportsUserSecurityStamp { get; }
 
         bool SupportsUserRole { get; }
-
-        bool SupportsUserLogin { get; }
 
         bool SupportsUserEmail { get; }
 
@@ -221,22 +207,6 @@ namespace eDoxa.Identity.Domain.Services
             string tokenName,
             string tokenValue
         );
-
-        Task<IdentityResult> RemoveAuthenticationTokenAsync(User user, string loginProvider, string tokenName);
-
-        Task<string> GetAuthenticatorKeyAsync(User user);
-
-        Task<IdentityResult> ResetAuthenticatorKeyAsync(User user);
-
-        string GenerateNewAuthenticatorKey();
-
-        Task<IEnumerable<string>> GenerateNewTwoFactorRecoveryCodesAsync(User user, int number);
-
-        Task<IdentityResult> RedeemTwoFactorRecoveryCodeAsync(User user, string code);
-
-        Task<int> CountRecoveryCodesAsync(User user);
-
-        Task<byte[]> CreateSecurityTokenAsync(User user);
 
         Task<IDomainValidationResult> CreateProfileAsync(
             User user,

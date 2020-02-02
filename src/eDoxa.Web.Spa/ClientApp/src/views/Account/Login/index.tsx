@@ -9,7 +9,7 @@ import {
   Row,
   CardImg
 } from "reactstrap";
-import UserAccountForm from "components/User/Account/Form";
+import UserAccountForm from "components/Account/Form";
 import { getAccountRegisterPath, getHomePath } from "utils/coreui/constants";
 import { LinkContainer } from "react-router-bootstrap";
 import Layout from "components/Shared/Layout";

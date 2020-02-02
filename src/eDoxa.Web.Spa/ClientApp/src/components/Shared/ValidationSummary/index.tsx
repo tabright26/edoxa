@@ -2,16 +2,28 @@ import React, { FunctionComponent } from "react";
 import { Alert } from "reactstrap";
 
 interface Props {
-  error: string;
+  error: string | string[];
   anyTouched: boolean;
 }
 
 export const ValidationSummary: FunctionComponent<Props> = ({
   error,
   anyTouched
-}) =>
-  error && anyTouched ? (
-    <Alert color="primary">
-      <strong>Error:</strong> {error}
-    </Alert>
-  ) : null;
+}) => {
+  if (error && anyTouched) {
+    if (Array.isArray(error)) {
+      return (
+        <Alert color="primary">
+          <ul className="mb-0">
+            {error.map(message => (
+              <li>{message}</li>
+            ))}
+          </ul>
+        </Alert>
+      );
+    } else {
+      return <Alert color="primary">{error}</Alert>;
+    }
+  }
+  return null;
+};
