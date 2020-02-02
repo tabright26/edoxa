@@ -29,9 +29,9 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
+        public override async Task<DomainValidationResult<object>> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<object>();
 
             await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
 

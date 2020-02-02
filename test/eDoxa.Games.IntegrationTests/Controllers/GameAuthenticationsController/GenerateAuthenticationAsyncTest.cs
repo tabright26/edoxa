@@ -61,7 +61,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameAuthenticationsController
                         {
                             var mockAuthFactorService = new Mock<IGameAuthenticationService>();
 
-                            var validationFailure = new DomainValidationResult();
+                            var validationFailure = new DomainValidationResult<object>();
                             validationFailure.AddInvalidArgumentError("test", "validation failure test");
 
                             mockAuthFactorService
@@ -108,7 +108,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameAuthenticationsController
                                 .Setup(
                                     authFactorService =>
                                         authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
-                                .ReturnsAsync(new DomainValidationResult())
+                                .ReturnsAsync(new DomainValidationResult<object>())
                                 .Verifiable();
 
                             mockAuthFactorService.Setup(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))

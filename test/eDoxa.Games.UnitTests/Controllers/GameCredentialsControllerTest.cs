@@ -49,15 +49,12 @@ namespace eDoxa.Games.UnitTests.Controllers
                 new PlayerId(),
                 new UtcNowDateTimeProvider());
 
-            var validation = new DomainValidationResult();
-            validation.AddInvalidArgumentError("test", "test error");
-
             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(credential)
                 .Verifiable();
 
             mockCredentialService.Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()))
-                .ReturnsAsync(validation)
+                .ReturnsAsync(DomainValidationResult<Credential>.Failure("test", "test error"))
                 .Verifiable();
 
             var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
@@ -123,14 +120,17 @@ namespace eDoxa.Games.UnitTests.Controllers
                 .Verifiable();
 
             mockCredentialService.Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Credential>())
                 .Verifiable();
 
-            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
+            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object)
+            {
+                ControllerContext =
+                {
+                    HttpContext = new MockHttpContextAccessor().Object.HttpContext
+                }
+            };
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
 
             // Act
             var result = await authFactorController.UnlinkCredentialAsync(Game.LeagueOfLegends);

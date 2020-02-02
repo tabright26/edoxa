@@ -36,8 +36,8 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
         {
             var userAccount = new Account(new UserId());
 
-            TestHost.CreateClient();
             var testServer = TestHost.Server;
+
             testServer.CleanupDbContext();
 
             await testServer.UsingScopeAsync(

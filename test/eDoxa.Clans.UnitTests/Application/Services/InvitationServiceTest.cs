@@ -50,7 +50,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.AcceptInvitationAsync(invitation, userId);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             mockInvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
@@ -69,7 +69,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.AcceptInvitationAsync(invitation, new UserId());
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -95,7 +95,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.DeclineInvitationAsync(invitation, userId);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             mockInvitationRepository.Verify(repository => repository.Delete(It.IsAny<Invitation>()), Times.Once);
             mockInvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -115,7 +115,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.DeclineInvitationAsync(invitation, new UserId());
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -295,7 +295,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
             mockInvitationRepository.Verify(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
@@ -322,7 +322,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
@@ -346,7 +346,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
             mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
@@ -367,7 +367,7 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<Invitation>>();
             result.Errors.Should().NotBeEmpty();
             mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
         }

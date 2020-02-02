@@ -12,7 +12,8 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class DomainValidationResultExtensions
     {
-        public static void AddToModelState(this IDomainValidationResult result, ModelStateDictionary modelState)
+        public static void AddToModelState<TResponse>(this DomainValidationResult<TResponse> result, ModelStateDictionary modelState)
+        where TResponse : class
         {
             foreach (var error in result.Errors)
             {

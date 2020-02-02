@@ -286,7 +286,7 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
             mockPaymentMethodService
                 .Setup(paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .ReturnsAsync(
-                    DomainValidationResult.Succeeded(
+                    DomainValidationResult<PaymentMethod>.Succeeded(
                         new PaymentMethod
                         {
                             Id = "PaymentMethodId",

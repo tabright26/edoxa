@@ -10,6 +10,7 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Payment.Api.IntegrationEvents.Handlers;
+using eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
@@ -58,7 +59,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
                 .Verifiable();
 
             mockStripeService.Setup(referenceService => referenceService.CreateAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<string>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<StripeReference>())
                 .Verifiable();
 
             var handler = new UserCreatedIntegrationEventHandler(

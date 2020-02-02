@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
+using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
@@ -43,7 +44,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             mockAccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
             mockAccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<IAccount>())
                 .Verifiable();
 
             var handler = new UserCreatedIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);

@@ -44,7 +44,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .Verifiable();
 
             mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
-                .ReturnsAsync(DomainValidationResult.Failure("Error"))
+                .ReturnsAsync(DomainValidationResult<Candidature>.Failure("Error"))
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
@@ -75,7 +75,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .Verifiable();
 
             mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
@@ -106,7 +106,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .Verifiable();
 
             mockCandidatureService.Setup(clanService => clanService.AcceptCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
@@ -137,7 +137,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .Verifiable();
 
             mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
-                .ReturnsAsync(DomainValidationResult.Failure("Error"))
+                .ReturnsAsync(DomainValidationResult<Candidature>.Failure("Error"))
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
@@ -168,7 +168,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .Verifiable();
 
             mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
@@ -199,7 +199,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .Verifiable();
 
             mockCandidatureService.Setup(clanService => clanService.DeclineCandidatureAsync(It.IsAny<Candidature>(), It.IsAny<UserId>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
@@ -389,7 +389,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
             var mockCandidatureService = new Mock<ICandidatureService>();
 
             mockCandidatureService.Setup(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()))
-                .ReturnsAsync(DomainValidationResult.Failure("Error"))
+                .ReturnsAsync(DomainValidationResult<Candidature>.Failure("Error"))
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
@@ -419,7 +419,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
             var mockCandidatureService = new Mock<ICandidatureService>();
 
             mockCandidatureService.Setup(clanService => clanService.SendCandidatureAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
             var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);

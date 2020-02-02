@@ -55,9 +55,9 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                 });
         }
 
-        public async Task<IDomainValidationResult> AttachPaymentMethodAsync(string paymentMethodId, string customerId, bool defaultPaymentMethod = false)
+        public async Task<DomainValidationResult<PaymentMethod>> AttachPaymentMethodAsync(string paymentMethodId, string customerId, bool defaultPaymentMethod = false)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<PaymentMethod>();
 
             var paymentMethodLimit = Options.Static.Stripe.PaymentMethod.Card.Limit;
 
@@ -81,7 +81,7 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                     await _stripeCustomerService.SetDefaultPaymentMethodAsync(customerId, paymentMethodId);
                 }
 
-                result.AddEntityToMetadata(paymentMethod);
+                return paymentMethod;
             }
 
             return result;

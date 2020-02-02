@@ -18,9 +18,9 @@ namespace eDoxa.Notifications.Domain.Services
 
         Task<User> FindUserAsync(UserId userId);
 
-        Task<IDomainValidationResult> CreateUserAsync(UserId userId, string email);
+        Task<DomainValidationResult<User>> CreateUserAsync(UserId userId, string email);
 
-        Task<IDomainValidationResult> UpdateUserAsync(User user, string email);
+        Task<DomainValidationResult<User>> UpdateUserAsync(User user, string email);
 
         Task SendEmailAsync(UserId userId, string templateId, object templateData);
     }

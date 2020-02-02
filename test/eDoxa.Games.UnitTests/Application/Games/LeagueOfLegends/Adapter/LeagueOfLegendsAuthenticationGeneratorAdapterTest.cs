@@ -1,9 +1,10 @@
 ﻿// Filename: LeagueOfLegendsAuthenticationGeneratorAdapterTest.cs
-// Date Created: 2020-01-26
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using System.Net;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
@@ -21,6 +22,7 @@ using FluentAssertions;
 
 using Moq;
 
+using RiotSharp;
 using RiotSharp.Endpoints.SummonerEndpoint;
 using RiotSharp.Misc;
 
@@ -45,15 +47,18 @@ namespace eDoxa.Games.UnitTests.Application.Games.LeagueOfLegends.Adapter
             var mockGameCredentialRepository = new Mock<IGameCredentialRepository>();
 
             mockLeagueOfLegendsService.Setup(leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()))
-                .Verifiable();
+                .ThrowsAsync(new RiotSharpException("Summoner's name not found", HttpStatusCode.NotFound));
 
-            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object, mockGameCredentialRepository.Object);
+            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(
+                mockLeagueOfLegendsService.Object,
+                mockAuthFactorRepository.Object,
+                mockGameCredentialRepository.Object);
 
             // Act
             var result = await authFactorService.GenerateAuthenticationAsync(userId, new LeagueOfLegendsRequest("testSummoner"));
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<object>>();
 
             mockLeagueOfLegendsService.Verify(
                 leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()),
@@ -99,13 +104,16 @@ namespace eDoxa.Games.UnitTests.Application.Games.LeagueOfLegends.Adapter
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object, mockGameCredentialRepository.Object);
+            var authFactorService = new LeagueOfLegendsAuthenticationGeneratorAdapter(
+                mockLeagueOfLegendsService.Object,
+                mockAuthFactorRepository.Object,
+                mockGameCredentialRepository.Object);
 
             // Act
             var result = await authFactorService.GenerateAuthenticationAsync(userId, new LeagueOfLegendsRequest("testSummoner"));
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<object>>();
 
             mockLeagueOfLegendsService.Verify(
                 leagueService => leagueService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()),

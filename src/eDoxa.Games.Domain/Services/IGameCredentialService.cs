@@ -15,9 +15,9 @@ namespace eDoxa.Games.Domain.Services
 {
     public interface IGameCredentialService
     {
-        Task<IDomainValidationResult> LinkCredentialAsync(UserId userId, Game game);
+        Task<DomainValidationResult<object>> LinkCredentialAsync(UserId userId, Game game);
 
-        Task<IDomainValidationResult> UnlinkCredentialAsync(Credential credential);
+        Task<DomainValidationResult<Credential>> UnlinkCredentialAsync(Credential credential);
 
         Task<IReadOnlyCollection<Credential>> FetchCredentialsAsync(UserId userId);
 

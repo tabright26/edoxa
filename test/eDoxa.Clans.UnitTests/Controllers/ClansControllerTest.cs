@@ -40,7 +40,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
             var mockClanService = new Mock<IClanService>();
 
             mockClanService.Setup(clanService => clanService.CreateClanAsync(It.IsAny<UserId>(), It.IsAny<string>()))
-                .ReturnsAsync(DomainValidationResult.Failure("Test error"))
+                .ReturnsAsync(DomainValidationResult<Clan>.Failure("Test error"))
                 .Verifiable();
 
             var clansController = new ClansController(mockClanService.Object, TestMapper);
@@ -71,7 +71,7 @@ namespace eDoxa.Clans.UnitTests.Controllers
             var mockClanService = new Mock<IClanService>();
 
             mockClanService.Setup(clanService => clanService.CreateClanAsync(It.IsAny<UserId>(), It.IsAny<string>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Clan>())
                 .Verifiable();
 
             var clansController = new ClansController(mockClanService.Object, TestMapper);

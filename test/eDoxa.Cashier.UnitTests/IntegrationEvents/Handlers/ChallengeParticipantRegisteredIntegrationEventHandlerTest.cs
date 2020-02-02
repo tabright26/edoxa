@@ -56,7 +56,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                         It.IsAny<IAccount>(),
                         It.IsAny<TransactionMetadata>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<ITransaction>())
                 .Verifiable();
 
             var handler = new ChallengeParticipantRegisteredIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);

@@ -69,7 +69,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameCredentialsController
                         {
                             var mockCredentialService = new Mock<IGameCredentialService>();
 
-                            var validationFailure = new DomainValidationResult();
+                            var validationFailure = new DomainValidationResult<Credential>();
                             validationFailure.AddInvalidArgumentError("test", "validation failure test");
 
                             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -123,7 +123,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameCredentialsController
                 userId,
                 Game.LeagueOfLegends,
                 new PlayerId(),
-                new DateTimeProvider(DateTime.Now));
+                new DateTimeProvider(DateTime.UtcNow.AddMonths(-2)));
 
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
 

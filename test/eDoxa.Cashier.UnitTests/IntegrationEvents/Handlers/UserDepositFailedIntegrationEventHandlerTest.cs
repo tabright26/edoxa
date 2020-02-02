@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         {
             // Arrange
             var userId = new UserId();
-            var account = new Account(userId, new List<ITransaction>());
+            var account = new Account(userId, new List<Transaction>());
 
             var mockAccountService = new Mock<IAccountService>();
 
@@ -60,7 +60,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                         It.IsAny<IAccount>(),
                         It.IsAny<TransactionId>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<ITransaction>())
                 .Verifiable();
 
             var handler = new UserDepositFailedIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);

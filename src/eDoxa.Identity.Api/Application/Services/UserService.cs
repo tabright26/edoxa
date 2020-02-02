@@ -121,14 +121,14 @@ namespace eDoxa.Identity.Api.Application.Services
             return await Repository.GetProfileAsync(user, CancellationToken);
         }
 
-        public async Task<IDomainValidationResult> CreateProfileAsync(
+        public async Task<DomainValidationResult<UserProfile>> CreateProfileAsync(
             User user,
             string firstName,
             string lastName,
             Gender gender
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<UserProfile>();
 
             if (user.Profile != null)
             {
@@ -147,15 +147,15 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _publisher.PublishUserProfileChangedIntegrationEventAsync(UserId.FromGuid(user.Id), profile);
 
-                result.AddEntityToMetadata(profile);
+                return profile;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> UpdateProfileAsync(User user, string firstName)
+        public async Task<DomainValidationResult<UserProfile>> UpdateProfileAsync(User user, string firstName)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<UserProfile>();
 
             if (user.Profile == null)
             {
@@ -172,7 +172,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _publisher.PublishUserProfileChangedIntegrationEventAsync(UserId.FromGuid(user.Id), user.Profile!);
 
-                result.AddEntityToMetadata(user.Profile!);
+                return user.Profile!;
             }
 
             return result;

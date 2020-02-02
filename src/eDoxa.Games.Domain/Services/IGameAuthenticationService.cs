@@ -21,8 +21,8 @@ namespace eDoxa.Games.Domain.Services
 
         Task<bool> AuthenticationExistsAsync(UserId userId, Game game);
 
-        Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request);
+        Task<DomainValidationResult<object>> GenerateAuthenticationAsync(UserId userId, Game game, object request);
 
-        Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication);
+        Task<DomainValidationResult<object>> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication);
     }
 }

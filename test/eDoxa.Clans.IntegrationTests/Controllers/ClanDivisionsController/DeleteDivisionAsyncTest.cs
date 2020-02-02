@@ -45,8 +45,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             // Arrange
             var userId = new UserId();
             var clan = new Clan("ClanName", new UserId());
-
-            clan.CreateDivision("test", "description");
+            var division = new Division(clan.Id, "test", "description");
+            clan.CreateDivision(division);
             var divisionId = clan.Divisions.FirstOrDefault()?.Id;
 
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
@@ -94,8 +94,8 @@ namespace eDoxa.Clans.IntegrationTests.Controllers.ClanDivisionsController
             // Arrange
             var userId = new UserId();
             var clan = new Clan("ClanName", userId);
-
-            clan.CreateDivision("test", "description");
+            var division = new Division(clan.Id, "test", "description");
+            clan.CreateDivision(division);
             var divisionId = clan.Divisions.FirstOrDefault()?.Id;
 
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));

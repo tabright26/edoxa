@@ -61,7 +61,7 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
                     Id = clanId,
                     Name = "testClan",
                     OwnerId = userId,
-                    Summary = "",
+                    Summary = null,
                     Members =
                     {
                         new MemberDto

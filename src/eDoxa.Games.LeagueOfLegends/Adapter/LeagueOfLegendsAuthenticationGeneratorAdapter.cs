@@ -40,9 +40,9 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
+        public override async Task<DomainValidationResult<object>> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<object>();
 
             try
             {

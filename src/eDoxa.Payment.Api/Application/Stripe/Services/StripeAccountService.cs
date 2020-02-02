@@ -39,9 +39,9 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
             return await this.GetAsync(accountId);
         }
 
-        public async Task<IDomainValidationResult> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual)
+        public async Task<DomainValidationResult<Account>> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Account>();
 
             if (result.IsValid)
             {
@@ -54,7 +54,7 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
                             Individual = individual
                         });
 
-                    result.AddEntityToMetadata(account);
+                    return account;
                 }
                 catch (StripeException exception)
                 {

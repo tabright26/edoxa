@@ -16,7 +16,7 @@ const Buy: FunctionComponent<Props> = ({ hasDefaultPaymentMethod }) => (
     currency={CURRENCY_TYPE_TOKEN}
     disabled={!hasDefaultPaymentMethod}
     title="BUY (TOKEN)"
-    description=""
+    description={null}
   >
     Buy
   </UserTransactionButton.Create>

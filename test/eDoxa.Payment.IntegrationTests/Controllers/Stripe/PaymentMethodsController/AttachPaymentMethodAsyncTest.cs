@@ -138,7 +138,7 @@ namespace eDoxa.Payment.IntegrationTests.Controllers.Stripe.PaymentMethodsContro
                                         It.IsAny<string>(),
                                         It.IsAny<bool>()))
                                 .ReturnsAsync(
-                                    DomainValidationResult.Succeeded(
+                                    DomainValidationResult<PaymentMethod>.Succeeded(
                                         new PaymentMethod
                                         {
                                             Id = "PaymentMethodId",

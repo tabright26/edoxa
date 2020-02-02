@@ -60,7 +60,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                         It.IsAny<IAccount>(),
                         It.IsAny<TransactionId>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<ITransaction>())
                 .Verifiable();
 
             var handler = new UserWithdrawalSucceededIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);

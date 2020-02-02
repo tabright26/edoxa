@@ -22,7 +22,7 @@ namespace eDoxa.Challenges.Domain.Services
 
         Task<bool> ChallengeExistsAsync(ChallengeId challengeId);
 
-        Task<IDomainValidationResult> CreateChallengeAsync(
+        Task<DomainValidationResult<IChallenge>> CreateChallengeAsync(
             ChallengeName name,
             Game game,
             BestOf bestOf,
@@ -33,7 +33,7 @@ namespace eDoxa.Challenges.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> RegisterChallengeParticipantAsync(
+        Task<DomainValidationResult<Participant>> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             UserId userId,
             ParticipantId participantId,
@@ -42,17 +42,17 @@ namespace eDoxa.Challenges.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> CloseChallengeAsync(IChallenge challenge, IDateTimeProvider provider, CancellationToken cancellationToken = default);
+        Task<DomainValidationResult<IChallenge>> CloseChallengeAsync(IChallenge challenge, IDateTimeProvider provider, CancellationToken cancellationToken = default);
 
-        Task<IDomainValidationResult> SynchronizeChallengeAsync(
+        Task<DomainValidationResult<IChallenge>> SynchronizeChallengeAsync(
             IChallenge challenge,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
+        Task<DomainValidationResult<IChallenge>> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default);
 
-        Task<IDomainValidationResult> SnapshotChallengeParticipantAsync(
+        Task<DomainValidationResult<Participant>> SnapshotChallengeParticipantAsync(
             IChallenge challenge,
             PlayerId gamePlayerId,
             IDateTimeProvider synchronizedAt,

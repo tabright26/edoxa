@@ -46,9 +46,9 @@ namespace eDoxa.Identity.Api.Application.Services
             return await _addressRepository.FetchAddressBookAsync(UserId.FromGuid(user.Id));
         }
 
-        public async Task<IDomainValidationResult> RemoveAddressAsync(Address address)
+        public async Task<DomainValidationResult<Address>> RemoveAddressAsync(Address address)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Address>();
 
             if (result.IsValid)
             {
@@ -56,13 +56,13 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _addressRepository.UnitOfWork.CommitAsync();
 
-                result.AddEntityToMetadata(address);
+                return address;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> AddAddressAsync(
+        public async Task<DomainValidationResult<Address>> AddAddressAsync(
             UserId userId,
             Country country,
             string line1,
@@ -72,7 +72,7 @@ namespace eDoxa.Identity.Api.Application.Services
             string? postalCode
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Address>();
 
             var addressBookLimit = Options.Static.AddressBook.Limit;
 
@@ -98,13 +98,13 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(userId, address);
 
-                result.AddEntityToMetadata(address);
+                return address;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> UpdateAddressAsync(
+        public async Task<DomainValidationResult<Address>> UpdateAddressAsync(
             Address address,
             string line1,
             string? line2,
@@ -113,7 +113,7 @@ namespace eDoxa.Identity.Api.Application.Services
             string? postalCode
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Address>();
 
             if (result.IsValid)
             {
@@ -128,7 +128,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _serviceBusPublisher.PublishUserAddressChangedIntegrationEventAsync(UserId.FromGuid(address.UserId), address);
 
-                result.AddEntityToMetadata(address);
+                return address;
             }
 
             return result;

@@ -10,7 +10,7 @@ it("renders without crashing", () => {
     getState: () => {
       return {
         oidc: {
-          user: { profile: { email: "" } }
+          user: { profile: { email: null } }
         }
       };
     },

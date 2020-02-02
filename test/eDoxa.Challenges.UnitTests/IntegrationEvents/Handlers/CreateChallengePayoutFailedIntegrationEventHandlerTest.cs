@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.IntegrationEvents.Handlers;
+using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Challenges.TestHelper;
@@ -60,7 +61,7 @@ namespace eDoxa.Challenges.UnitTests.IntegrationEvents.Handlers
             mockChallengeService.Setup(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
             mockChallengeService.Setup(challengeService => challengeService.DeleteChallengeAsync(It.IsAny<Challenge>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<IChallenge>())
                 .Verifiable();
 
             var handler = new CreateChallengePayoutFailedIntegrationEventHandler(mockChallengeService.Object, mockLogger.Object);

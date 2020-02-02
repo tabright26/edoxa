@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
 {
     public static class TransactionModelExtensions
     {
-        public static ITransaction ToEntity(this TransactionModel model)
+        public static Transaction ToEntity(this TransactionModel model)
         {
             var transaction = new Transaction(
                 CurrencyType.FromValue(model.Currency).ToCurrency(model.Amount),

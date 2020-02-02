@@ -93,7 +93,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -117,7 +117,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -150,7 +150,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -176,7 +176,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Charge);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -209,7 +209,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
         }
 
         [Fact]
@@ -241,7 +241,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
         }
 
         [Fact]
@@ -266,7 +266,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -293,7 +293,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             result.Errors.Should().NotBeEmpty();
         }
@@ -320,7 +320,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -347,7 +347,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 TransactionType.Deposit);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             result.Errors.Should().NotBeEmpty();
         }
@@ -408,7 +408,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 metadata);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -438,7 +438,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 metadata);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             result.Errors.Should().NotBeEmpty();
         }
@@ -468,7 +468,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 metadata);
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
             result.Errors.Should().NotBeEmpty();
         }

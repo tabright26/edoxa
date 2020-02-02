@@ -45,7 +45,7 @@ namespace eDoxa.Games.UnitTests.Controllers
 
             mockAuthFactorService
                 .Setup(authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<object>())
                 .Verifiable();
 
             mockAuthFactorService.Setup(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -87,7 +87,7 @@ namespace eDoxa.Games.UnitTests.Controllers
 
             var mockMapper = new Mock<IMapper>();
 
-            var validation = new DomainValidationResult();
+            var validation = new DomainValidationResult<object>();
             validation.AddInvalidArgumentError("test", "test error");
 
             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -127,7 +127,7 @@ namespace eDoxa.Games.UnitTests.Controllers
                 new UtcNowDateTimeProvider());
 
             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<object>())
                 .Verifiable();
 
             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))

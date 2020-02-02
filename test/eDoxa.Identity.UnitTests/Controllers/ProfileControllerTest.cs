@@ -7,7 +7,6 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Controllers;
@@ -56,7 +55,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                         It.IsAny<string>(),
                         It.IsAny<string>(),
                         It.IsAny<Gender>()))
-                .ReturnsAsync(DomainValidationResult.Succeeded(profile))
+                .ReturnsAsync(DomainValidationResult<UserProfile>.Succeeded(profile))
                 .Verifiable();
 
             var controller = new ProfileController(mockUserManager.Object, TestMapper);
@@ -130,8 +129,6 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<ProfileDto>(user.Profile));
-
             mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockUserManager.Verify(userManager => userManager.GetProfileAsync(It.IsAny<User>()), Times.Once);
@@ -151,7 +148,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             mockUserManager.Setup(userManager => userManager.UpdateProfileAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(DomainValidationResult.Succeeded(user.Profile))
+                .ReturnsAsync(DomainValidationResult<UserProfile>.Succeeded(user.Profile))
                 .Verifiable();
 
             var controller = new ProfileController(mockUserManager.Object, TestMapper);

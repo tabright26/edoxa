@@ -19,8 +19,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-using Stripe;
-
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Payment.Api.Controllers.Stripe
@@ -115,7 +113,7 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<StripePaymentMethodDto>(result.GetEntityFromMetadata<PaymentMethod>()));
+                return this.Ok(_mapper.Map<StripePaymentMethodDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);

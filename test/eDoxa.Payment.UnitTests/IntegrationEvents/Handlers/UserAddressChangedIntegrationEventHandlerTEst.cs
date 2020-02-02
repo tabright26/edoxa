@@ -44,7 +44,7 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
             mockAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<Account>())
                 .Verifiable();
 
             var handler = new UserAddressChangedIntegrationEventHandler(mockStripeService.Object, mockAccountService.Object, mockLogger.Object);

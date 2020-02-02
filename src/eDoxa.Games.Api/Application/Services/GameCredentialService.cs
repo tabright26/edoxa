@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
@@ -28,16 +27,16 @@ namespace eDoxa.Games.Api.Application.Services
             _gameAuthenticationService = gameAuthenticationService;
         }
 
-        public async Task<IDomainValidationResult> LinkCredentialAsync(UserId userId, Game game)
+        public async Task<DomainValidationResult<object>> LinkCredentialAsync(UserId userId, Game game)
         {
             if (await _gameCredentialRepository.CredentialExistsAsync(userId, game))
             {
-                return DomainValidationResult.Failure($"{game} credential are already linked.");
+                return DomainValidationResult<object>.Failure($"{game} credential are already linked.");
             }
 
             if (!await _gameAuthenticationService.AuthenticationExistsAsync(userId, game))
             {
-                return DomainValidationResult.Failure($"{game} authentication process not started.");
+                return DomainValidationResult<object>.Failure($"{game} authentication process not started.");
             }
 
             var authFactor = await _gameAuthenticationService.FindAuthenticationAsync(userId, game);
@@ -60,9 +59,9 @@ namespace eDoxa.Games.Api.Application.Services
             return result;
         }
 
-        public async Task<IDomainValidationResult> UnlinkCredentialAsync(Credential credential)
+        public async Task<DomainValidationResult<Credential>> UnlinkCredentialAsync(Credential credential)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Credential>();
 
             if (credential.Timestamp > DateTime.UtcNow.AddMonths(-1))
             {
@@ -78,6 +77,8 @@ namespace eDoxa.Games.Api.Application.Services
                 _gameCredentialRepository.DeleteCredential(credential);
 
                 await _gameCredentialRepository.UnitOfWork.CommitAsync();
+
+                return credential;
             }
 
             return result;
@@ -96,13 +97,6 @@ namespace eDoxa.Games.Api.Application.Services
         public async Task<bool> CredentialExistsAsync(UserId userId, Game game)
         {
             return await _gameCredentialRepository.CredentialExistsAsync(userId, game);
-        }
-
-        public async Task<IReadOnlyCollection<string>> FetchGamesWithCredentialAsync(UserId userId)
-        {
-            var credentials = await this.FetchCredentialsAsync(userId);
-
-            return credentials.Select(credential => credential.Game.Name.ToLowerInvariant()).ToList();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             mockUserService.Setup(userService => userService.FindUserAsync(It.IsAny<UserId>())).ReturnsAsync(user).Verifiable();
 
             mockUserService.Setup(userService => userService.UpdateUserAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<User>())
                 .Verifiable();
 
             mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))

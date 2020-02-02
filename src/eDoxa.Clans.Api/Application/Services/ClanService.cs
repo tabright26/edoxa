@@ -37,9 +37,9 @@ namespace eDoxa.Clans.Api.Application.Services
             return await _clanRepository.FindClanAsync(clanId);
         }
 
-        public async Task<IDomainValidationResult> CreateClanAsync(UserId userId, string name)
+        public async Task<DomainValidationResult<Clan>> CreateClanAsync(UserId userId, string name)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Clan>();
 
             if (await _clanRepository.IsMemberAsync(userId))
             {
@@ -59,23 +59,31 @@ namespace eDoxa.Clans.Api.Application.Services
 
                 await _clanRepository.UnitOfWork.CommitAsync();
 
-                result.AddEntityToMetadata(clan);
+                return clan;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> UpdateClanAsync(Clan clan, UserId userId, string? summary)
+        public async Task<DomainValidationResult<Clan>> UpdateClanAsync(Clan clan, UserId userId, string? summary)
         {
+            var result = new DomainValidationResult<Clan>();
+
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                result.AddFailedPreconditionError($"The user ({userId}) isn't the clan owner.");
             }
 
-            clan.Update(summary);
-            await _clanRepository.UnitOfWork.CommitAsync();
+            if (result.IsValid)
+            {
+                clan.Update(summary);
 
-            return new DomainValidationResult();
+                await _clanRepository.UnitOfWork.CommitAsync();
+
+                return clan;
+            }
+            
+            return result;
         }
 
         public async Task<Stream> DownloadLogoAsync(Clan clan)
@@ -83,7 +91,7 @@ namespace eDoxa.Clans.Api.Application.Services
             return await _clanRepository.DownloadLogoAsync(clan.Id);
         }
 
-        public async Task<IDomainValidationResult> UploadLogoAsync(
+        public async Task<DomainValidationResult<object>> UploadLogoAsync(
             Clan clan,
             UserId userId,
             Stream stream,
@@ -92,12 +100,12 @@ namespace eDoxa.Clans.Api.Application.Services
         {
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                return DomainValidationResult<object>.Failure($"The user ({userId}) isn't the clan owner.");
             }
 
             await _clanRepository.UploadLogoAsync(clan.Id, stream, fileName);
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<object>();
         }
 
         public async Task DeleteLogoAsync(ClanId clanId)
@@ -124,46 +132,60 @@ namespace eDoxa.Clans.Api.Application.Services
             await _clanRepository.UnitOfWork.CommitAsync();
         }
 
-        public async Task<IDomainValidationResult> KickMemberFromClanAsync(Clan clan, UserId userId, MemberId memberId)
+        public async Task<DomainValidationResult<Member>> KickMemberFromClanAsync(Clan clan, UserId userId, MemberId memberId)
         {
+            var result = new DomainValidationResult<Member>();
+
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                result.AddFailedPreconditionError($"The user ({userId}) isn't the clan owner.");
             }
 
             if (!clan.HasMember(memberId))
             {
-                return DomainValidationResult.Failure($"The memberId ({memberId}) isn't a member of the clan '{clan.Name}'.");
+                result.AddFailedPreconditionError($"The memberId ({memberId}) isn't a member of the clan '{clan.Name}'.");
             }
 
-            var member = clan.FindMember(memberId);
+            if (result.IsValid)
+            {
+                var member = clan.FindMember(memberId);
 
-            clan.Kick(member);
+                clan.Kick(member);
 
-            await _clanRepository.UnitOfWork.CommitAsync();
+                await _clanRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+                return member;
+            }
+
+            return result;
         }
 
-        public async Task<IDomainValidationResult> LeaveClanAsync(Clan clan, UserId userId)
+        public async Task<DomainValidationResult<Clan>> LeaveClanAsync(Clan clan, UserId userId)
         {
+            var result = new DomainValidationResult<Clan>();
+
             if (!clan.HasMember(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't a member of the clan '{clan.Name}'.");
+                result.AddFailedPreconditionError($"The user ({userId}) isn't a member of the clan '{clan.Name}'.");
             }
 
-            var member = clan.FindMember(userId);
-
-            clan.Leave(member);
-
-            await _clanRepository.UnitOfWork.CommitAsync();
-
-            if (clan.Deleted)
+            if (result.IsValid)
             {
-                await this.DeleteClanAsync(clan);
+                var member = clan.FindMember(userId);
+
+                clan.Leave(member);
+
+                await _clanRepository.UnitOfWork.CommitAsync();
+
+                if (clan.Deleted)
+                {
+                    await this.DeleteClanAsync(clan);
+                }
+
+                return clan;
             }
 
-            return new DomainValidationResult();
+            return result;
         }
 
         public async Task<bool> IsMemberAsync(UserId userId)
@@ -188,38 +210,56 @@ namespace eDoxa.Clans.Api.Application.Services
             return division.Members.ToList();
         }
 
-        public async Task<IDomainValidationResult> CreateDivisionAsync(
+        public async Task<DomainValidationResult<Division>> CreateDivisionAsync(
             Clan clan,
             UserId userId,
             string name,
             string description
         )
         {
+            var result = new DomainValidationResult<Division>();
+
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                result.AddFailedPreconditionError($"The user ({userId}) isn't the clan owner.");
             }
 
-            clan.CreateDivision(name, description);
-            await _clanRepository.UnitOfWork.CommitAsync();
+            if (result.IsValid)
+            {
+                var division = new Division(clan.Id, name, description);
 
-            return new DomainValidationResult();
+                clan.CreateDivision(division);
+
+                await _clanRepository.UnitOfWork.CommitAsync();
+
+                return division;
+            }
+
+            return result;
         }
 
-        public async Task<IDomainValidationResult> DeleteDivisionAsync(Clan clan, UserId userId, DivisionId divisionId)
+        public async Task<DomainValidationResult<Division>> DeleteDivisionAsync(Clan clan, UserId userId, DivisionId divisionId)
         {
+            var result = new DomainValidationResult<Division>();
+
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                result.AddFailedPreconditionError($"The user ({userId}) isn't the clan owner.");
             }
 
-            clan.RemoveDivision(divisionId);
-            await _clanRepository.UnitOfWork.CommitAsync();
+            if (result.IsValid)
+            {
+                var division = clan.RemoveDivision(divisionId);
 
-            return new DomainValidationResult();
+                await _clanRepository.UnitOfWork.CommitAsync();
+
+                return division;
+            }
+            
+            return result;
         }
 
-        public async Task<IDomainValidationResult> UpdateDivisionAsync(
+        public async Task<DomainValidationResult<Division>> UpdateDivisionAsync(
             Clan clan,
             UserId userId,
             DivisionId divisionId,
@@ -229,16 +269,17 @@ namespace eDoxa.Clans.Api.Application.Services
         {
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                return DomainValidationResult<Division>.Failure($"The user ({userId}) isn't the clan owner.");
             }
 
             clan.UpdateDivision(divisionId, name, description);
+
             await _clanRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<Division>();
         }
 
-        public async Task<IDomainValidationResult> AddMemberToDivisionAsync(
+        public async Task<DomainValidationResult<Member>> AddMemberToDivisionAsync(
             Clan clan,
             UserId userId,
             DivisionId divisionId,
@@ -247,16 +288,16 @@ namespace eDoxa.Clans.Api.Application.Services
         {
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                return DomainValidationResult<Member>.Failure($"The user ({userId}) isn't the clan owner.");
             }
 
             clan.AddMemberToDivision(divisionId, memberId);
             await _clanRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<Member>();
         }
 
-        public async Task<IDomainValidationResult> RemoveMemberFromDivisionAsync(
+        public async Task<DomainValidationResult<Member>> RemoveMemberFromDivisionAsync(
             Clan clan,
             UserId userId,
             DivisionId divisionId,
@@ -265,18 +306,20 @@ namespace eDoxa.Clans.Api.Application.Services
         {
             if (!clan.MemberIsOwner(userId))
             {
-                return DomainValidationResult.Failure($"The user ({userId}) isn't the clan owner.");
+                return DomainValidationResult<Member>.Failure($"The user ({userId}) isn't the clan owner.");
             }
 
             clan.RemoveMemberFromDivision(divisionId, memberId);
+
             await _clanRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<Member>();
         }
 
         private async Task DeleteClanAsync(Clan clan)
         {
             _clanRepository.Delete(clan);
+
             await _clanRepository.UnitOfWork.CommitAsync();
         }
     }

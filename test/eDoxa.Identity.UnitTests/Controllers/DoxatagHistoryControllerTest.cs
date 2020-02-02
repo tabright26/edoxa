@@ -62,7 +62,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             var mockDoxatagService = new Mock<IDoxatagService>();
 
             mockDoxatagService.Setup(doxatagService => doxatagService.ChangeDoxatagAsync(It.IsAny<User>(), It.IsAny<string>()))
-                .ReturnsAsync(DomainValidationResult.Succeeded(doxatag))
+                .ReturnsAsync(DomainValidationResult<Doxatag>.Succeeded(doxatag))
                 .Verifiable();
 
             var controller = new DoxatagHistoryController(mockUserManager.Object, mockDoxatagService.Object, TestMapper);

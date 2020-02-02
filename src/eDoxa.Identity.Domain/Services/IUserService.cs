@@ -208,13 +208,13 @@ namespace eDoxa.Identity.Domain.Services
             string tokenValue
         );
 
-        Task<IDomainValidationResult> CreateProfileAsync(
+        Task<DomainValidationResult<UserProfile>> CreateProfileAsync(
             User user,
             string firstName,
             string lastName,
             Gender gender
         );
 
-        Task<IDomainValidationResult> UpdateProfileAsync(User user, string firstName);
+        Task<DomainValidationResult<UserProfile>> UpdateProfileAsync(User user, string firstName);
     }
 }

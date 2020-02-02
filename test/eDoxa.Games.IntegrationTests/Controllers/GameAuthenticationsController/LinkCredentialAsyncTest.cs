@@ -106,7 +106,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameAuthenticationsController
                         {
                             var mockCredentialService = new Mock<IGameCredentialService>();
 
-                            var validationFailure = new DomainValidationResult();
+                            var validationFailure = new DomainValidationResult<Credential>();
                             validationFailure.AddInvalidArgumentError("test", "validation failure test");
 
                             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
@@ -114,7 +114,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameAuthenticationsController
                                 .Verifiable();
 
                             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                                .ReturnsAsync(new DomainValidationResult())
+                                .ReturnsAsync(new DomainValidationResult<object>())
                                 .Verifiable();
 
                             container.RegisterInstance(mockCredentialService.Object).As<IGameCredentialService>().SingleInstance();

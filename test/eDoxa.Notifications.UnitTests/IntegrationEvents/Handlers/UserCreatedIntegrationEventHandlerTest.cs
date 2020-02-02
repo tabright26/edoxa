@@ -10,6 +10,7 @@ using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Enums;
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents.Handlers;
+using eDoxa.Notifications.Domain.AggregateModels.UserAggregate;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Notifications.TestHelper;
 using eDoxa.Notifications.TestHelper.Fixtures;
@@ -39,7 +40,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             mockUserService.Setup(userService => userService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
             mockUserService.Setup(userService => userService.CreateUserAsync(It.IsAny<UserId>(), It.IsAny<string>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<User>())
                 .Verifiable();
 
             mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))

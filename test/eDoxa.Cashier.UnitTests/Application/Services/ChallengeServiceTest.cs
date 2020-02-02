@@ -66,7 +66,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, CurrencyType.Token));
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<IChallenge>>();
 
             mockChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
 
@@ -104,7 +104,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             var result = await service.CreateChallengeAsync(new ChallengeId(), payoutEntries, new EntryFee(5000, CurrencyType.Token));
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult>();
+            result.Should().BeOfType<DomainValidationResult<IChallenge>>();
             result.Errors.Should().NotBeEmpty();
 
             mockChallengePayoutStrategy.Verify(payout => payout.GetChallengePayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);
