@@ -7,6 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.Adapters;
+using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Repositories;
 using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Seedwork.Domain;
@@ -29,9 +30,9 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override Game Game => Game.LeagueOfLegends;
 
-        public override async Task<DomainValidationResult<object>> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
+        public override async Task<DomainValidationResult<GameAuthentication>> ValidateAuthenticationAsync(UserId userId, LeagueOfLegendsGameAuthentication gameAuthentication)
         {
-            var result = new DomainValidationResult<object>();
+            var result = new DomainValidationResult<GameAuthentication>();
 
             await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
 

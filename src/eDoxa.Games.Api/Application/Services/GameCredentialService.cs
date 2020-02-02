@@ -27,21 +27,31 @@ namespace eDoxa.Games.Api.Application.Services
             _gameAuthenticationService = gameAuthenticationService;
         }
 
-        public async Task<DomainValidationResult<object>> LinkCredentialAsync(UserId userId, Game game)
+        public async Task<DomainValidationResult<Credential>> LinkCredentialAsync(UserId userId, Game game)
         {
+            var result = new DomainValidationResult<Credential>();
+
             if (await _gameCredentialRepository.CredentialExistsAsync(userId, game))
             {
-                return DomainValidationResult<object>.Failure($"{game} credential are already linked.");
+                return result.AddFailedPreconditionError($"{game} credential are already linked.");
             }
 
             if (!await _gameAuthenticationService.AuthenticationExistsAsync(userId, game))
             {
-                return DomainValidationResult<object>.Failure($"{game} authentication process not started.");
+                return result.AddFailedPreconditionError($"{game} authentication process not started.");
             }
 
             var authFactor = await _gameAuthenticationService.FindAuthenticationAsync(userId, game);
 
-            var result = await _gameAuthenticationService.ValidateAuthenticationAsync(userId, game, authFactor);
+            var authResult = await _gameAuthenticationService.ValidateAuthenticationAsync(userId, game, authFactor);
+
+            if (!authResult.IsValid)
+            {
+                foreach (var error in authResult.Errors)
+                {
+                    result.AddFailedPreconditionError(error.ErrorMessage);
+                }
+            }
 
             if (result.IsValid)
             {
@@ -54,6 +64,8 @@ namespace eDoxa.Games.Api.Application.Services
                 _gameCredentialRepository.CreateCredential(credential);
 
                 await _gameCredentialRepository.UnitOfWork.CommitAsync();
+
+                return credential;
             }
 
             return result;

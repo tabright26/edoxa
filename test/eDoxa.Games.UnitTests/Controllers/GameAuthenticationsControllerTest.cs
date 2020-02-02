@@ -34,7 +34,6 @@ namespace eDoxa.Games.UnitTests.Controllers
         {
         }
 
-        //Todo Test other games too.
         [Fact]
         public async Task GenerateAuthenticationAsync_ShouldBeOfTypeOkObjectResult()
         {
@@ -43,20 +42,17 @@ namespace eDoxa.Games.UnitTests.Controllers
             var mockCredentialService = new Mock<IGameCredentialService>();
             var mockMapper = new Mock<IMapper>();
 
+            var gameAuthentication = new LeagueOfLegendsGameAuthentication(
+                PlayerId.Parse("playerId"),
+                new LeagueOfLegendsGameAuthenticationFactor(
+                    1,
+                    string.Empty,
+                    2,
+                    string.Empty));
+
             mockAuthFactorService
                 .Setup(authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
-                .ReturnsAsync(new DomainValidationResult<object>())
-                .Verifiable();
-
-            mockAuthFactorService.Setup(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .ReturnsAsync(
-                    new LeagueOfLegendsGameAuthentication(
-                        PlayerId.Parse("playerId"),
-                        new LeagueOfLegendsGameAuthenticationFactor(
-                            1,
-                            string.Empty,
-                            2,
-                            string.Empty)))
+                .ReturnsAsync(DomainValidationResult<GameAuthentication>.Succeeded(gameAuthentication))
                 .Verifiable();
 
             var authFactorController = new GameAuthenticationsController(mockAuthFactorService.Object, mockCredentialService.Object, mockMapper.Object);
@@ -73,8 +69,6 @@ namespace eDoxa.Games.UnitTests.Controllers
             mockAuthFactorService.Verify(
                 authFactorService => authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()),
                 Times.Once);
-
-            mockAuthFactorService.Verify(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
@@ -87,11 +81,8 @@ namespace eDoxa.Games.UnitTests.Controllers
 
             var mockMapper = new Mock<IMapper>();
 
-            var validation = new DomainValidationResult<object>();
-            validation.AddInvalidArgumentError("test", "test error");
-
             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .ReturnsAsync(validation)
+                .ReturnsAsync(DomainValidationResult<Credential>.Failure("test error"))
                 .Verifiable();
 
             var authFactorController = new GameAuthenticationsController(mockAuthenticationService.Object, mockCredentialService.Object, mockMapper.Object);
@@ -127,18 +118,16 @@ namespace eDoxa.Games.UnitTests.Controllers
                 new UtcNowDateTimeProvider());
 
             mockCredentialService.Setup(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .ReturnsAsync(new DomainValidationResult<object>())
+                .ReturnsAsync(DomainValidationResult<Credential>.Succeeded(credential))
                 .Verifiable();
 
-            mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                .ReturnsAsync(credential)
-                .Verifiable();
-
-            var authFactorController = new GameAuthenticationsController(mockAuthenticationService.Object, mockCredentialService.Object, mockMapper.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var authFactorController = new GameAuthenticationsController(mockAuthenticationService.Object, mockCredentialService.Object, mockMapper.Object)
+            {
+                ControllerContext =
+                {
+                    HttpContext = new MockHttpContextAccessor().Object.HttpContext
+                }
+            };
 
             // Act
             var result = await authFactorController.LinkCredentialAsync(Game.LeagueOfLegends);
@@ -147,8 +136,6 @@ namespace eDoxa.Games.UnitTests.Controllers
             result.Should().BeOfType<OkObjectResult>();
 
             mockCredentialService.Verify(credentialService => credentialService.LinkCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
-
-            mockCredentialService.Verify(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
     }
 }

@@ -12,16 +12,16 @@ using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Games.Domain.Adapters
 {
-    public interface IAuthenticationValidatorAdapter<TAuthentication> : IAuthenticationValidatorAdapter
+    public interface IAuthenticationValidatorAdapter<in TAuthentication> : IAuthenticationValidatorAdapter
     where TAuthentication : GameAuthentication
     {
-        Task<DomainValidationResult<object>> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
+        Task<DomainValidationResult<GameAuthentication>> ValidateAuthenticationAsync(UserId userId, TAuthentication authentication);
     }
 
     public interface IAuthenticationValidatorAdapter
     {
         Game Game { get; }
 
-        Task<DomainValidationResult<object>> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication);
+        Task<DomainValidationResult<GameAuthentication>> ValidateAuthenticationAsync(UserId userId, GameAuthentication gameAuthentication);
     }
 }

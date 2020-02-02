@@ -72,7 +72,7 @@ namespace eDoxa.Games.UnitTests.Application.Games.LeagueOfLegends.Adapter
                         string.Empty)));
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult<object>>();
+            result.Should().BeOfType<DomainValidationResult<GameAuthentication>>();
 
             mockLeagueOfLegendsService.Verify(
                 leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),
@@ -120,7 +120,7 @@ namespace eDoxa.Games.UnitTests.Application.Games.LeagueOfLegends.Adapter
                         string.Empty)));
 
             // Assert
-            result.Should().BeOfType<DomainValidationResult<object>>();
+            result.Should().BeOfType<DomainValidationResult<GameAuthentication>>();
 
             mockLeagueOfLegendsService.Verify(
                 leagueService => leagueService.Summoner.GetSummonerByAccountIdAsync(It.IsAny<Region>(), It.IsAny<string>()),

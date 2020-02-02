@@ -174,7 +174,7 @@ namespace eDoxa.Games.UnitTests.Application.Services
                         It.IsAny<UserId>(),
                         It.IsAny<Game>(),
                         It.IsAny<GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>>()))
-                .ReturnsAsync(new DomainValidationResult<object>())
+                .ReturnsAsync(new DomainValidationResult<GameAuthentication>())
                 .Verifiable();
 
             mockCredentialRepository.Setup(repository => repository.CreateCredential(It.IsAny<Credential>())).Verifiable();

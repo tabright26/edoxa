@@ -14,6 +14,7 @@ using Autofac;
 using eDoxa.Games.Api.Grpc.Services;
 using eDoxa.Games.Api.Infrastructure;
 using eDoxa.Games.Infrastructure;
+using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Grpc.Protos.Games.Options;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -43,6 +44,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
+using Moq;
 
 using static eDoxa.Seedwork.Security.ApiResources;
 
@@ -186,6 +189,8 @@ namespace eDoxa.Games.Api
             builder.RegisterMockServiceBusModule();
 
             builder.RegisterModule<GamesModule>();
+
+            builder.RegisterInstance(new Mock<ILeagueOfLegendsService>().Object).As<ILeagueOfLegendsService>().SingleInstance();
         }
 
         public void ConfigureTest(IApplicationBuilder application)

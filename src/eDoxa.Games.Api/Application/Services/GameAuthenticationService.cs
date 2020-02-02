@@ -55,7 +55,7 @@ namespace eDoxa.Games.Api.Application.Services
             return await adapter.GenerateAuthenticationAsync(userId, request);
         }
 
-        public async Task<DomainValidationResult<object>> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication)
+        public async Task<DomainValidationResult<GameAuthentication>> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication)
         {
             var adapter = _gameAuthenticationValidatorFactory.CreateInstance(game);
 

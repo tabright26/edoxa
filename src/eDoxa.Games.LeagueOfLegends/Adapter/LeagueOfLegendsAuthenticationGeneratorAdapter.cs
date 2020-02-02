@@ -16,6 +16,7 @@ using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
+using RiotSharp;
 using RiotSharp.Endpoints.SummonerEndpoint;
 using RiotSharp.Misc;
 
@@ -42,10 +43,10 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
 
         public override async Task<DomainValidationResult<object>> GenerateAuthenticationAsync(UserId userId, LeagueOfLegendsRequest request)
         {
-            var result = new DomainValidationResult<object>();
-
             try
             {
+                var result = new DomainValidationResult<object>();
+
                 var summoner = await _leagueOfLegendsService.Summoner.GetSummonerByNameAsync(Region.Na, request.SummonerName);
 
                 if (await _gameCredentialRepository.CredentialExistsAsync(PlayerId.Parse(summoner.AccountId), Game))
@@ -60,15 +61,19 @@ namespace eDoxa.Games.LeagueOfLegends.Adapter
                         await _gameAuthenticationRepository.RemoveAuthenticationAsync(userId, Game);
                     }
 
-                    await _gameAuthenticationRepository.AddAuthenticationAsync(userId, Game, await this.GenerateAuthFactor(summoner));
-                }
-            }
-            catch (Exception)
-            {
-                result.AddFailedPreconditionError("Summoner name is invalid");
-            }
+                    var gameAuthentication = await this.GenerateAuthFactor(summoner);
 
-            return result;
+                    await _gameAuthenticationRepository.AddAuthenticationAsync(userId, Game, gameAuthentication);
+
+                    return gameAuthentication.Factor;
+                }
+
+                return result;
+            }
+            catch (RiotSharpException)
+            {
+                return DomainValidationResult<object>.Failure("Summoner name is invalid");
+            }
         }
 
         private async Task<LeagueOfLegendsGameAuthentication> GenerateAuthFactor(Summoner summoner)
