@@ -9,8 +9,6 @@ using System.Collections.Generic;
 
 using eDoxa.Games.Api.Application.Factories;
 using eDoxa.Games.Domain.Adapters;
-using eDoxa.Games.Domain.Repositories;
-using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Adapter;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -18,13 +16,11 @@ using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
-using Moq;
-
 using Xunit;
 
 namespace eDoxa.Games.UnitTests.Application.Factories
 {
-    public sealed class GameAuthenticationValidatorFactoryTest : UnitTest // FRANCIS: Meme chose ici
+    public sealed class GameAuthenticationValidatorFactoryTest : UnitTest
     {
         public GameAuthenticationValidatorFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
@@ -34,11 +30,11 @@ namespace eDoxa.Games.UnitTests.Application.Factories
         public void CreateInstance_ShouldBeOfTypeGameAdapter()
         {
             // Arrange
-            var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
-            var mockAuthFactorRepository = new Mock<IGameAuthenticationRepository>();
-
             var factory = new GameGameAuthenticationValidatorFactory(
-                new[] {new LeagueOfLegendsAuthenticationValidatorAdapter(mockLeagueOfLegendsService.Object, mockAuthFactorRepository.Object)});
+                new[]
+                {
+                    new LeagueOfLegendsAuthenticationValidatorAdapter(TestMock.LeagueOfLegendsService.Object, TestMock.GameAuthenticationRepository.Object)
+                });
 
             // Act
             var result = factory.CreateInstance(Game.LeagueOfLegends);
@@ -51,26 +47,13 @@ namespace eDoxa.Games.UnitTests.Application.Factories
         public void CreateInstance_ShouldBeOfTypeInvalidOperationException()
         {
             // Arrange
-            var mockAuthFactorValidatorAdapters = new Mock<IDictionary<Game, IAuthenticationValidatorAdapter>>();
+            var authFactorValidatorFactory = new GameGameAuthenticationValidatorFactory(new List<IAuthenticationValidatorAdapter>());
 
-            var mockAuthFactorValidatorAdapter = new Mock<List<IAuthenticationValidatorAdapter>>();
+            // Act
+            var action = new Action(() => authFactorValidatorFactory.CreateInstance(Game.LeagueOfLegends));
 
-            mockAuthFactorValidatorAdapters.Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthenticationValidatorAdapter>.IsAny))
-                .Returns(false)
-                .Verifiable();
-
-            var authFactorValidatorFactory = new GameGameAuthenticationValidatorFactory(mockAuthFactorValidatorAdapter.Object);
-
-            try
-            {
-                // Act
-                authFactorValidatorFactory.CreateInstance(Game.LeagueOfLegends);
-            }
-            catch (Exception e)
-            {
-                // Assert
-                e.Should().BeOfType<InvalidOperationException>();
-            }
+            // Assert
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 }

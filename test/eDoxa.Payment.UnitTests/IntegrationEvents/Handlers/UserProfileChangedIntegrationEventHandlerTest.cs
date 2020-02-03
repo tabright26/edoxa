@@ -26,9 +26,9 @@ using Xunit;
 
 namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
 {
-    public sealed class UserInformationChangedIntegrationEventHandlerTest : UnitTest
+    public sealed class UserProfileChangedIntegrationEventHandlerTest : UnitTest
     {
-        public UserInformationChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
+        public UserProfileChangedIntegrationEventHandlerTest(TestMapperFixture testMapper) : base(testMapper)
         {
         }
 
@@ -36,19 +36,17 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserInformationChangedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockStripeService = new Mock<IStripeService>();
-            var mockAccountService = new Mock<IStripeAccountService>();
             var mockLogger = new MockLogger<UserProfileChangedIntegrationEventHandler>();
 
-            mockStripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+            TestMock.StripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
-            mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
+            TestMock.StripeAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
                 .ReturnsAsync(new DomainValidationResult<Account>())
                 .Verifiable();
 
-            var handler = new UserProfileChangedIntegrationEventHandler(mockStripeService.Object, mockAccountService.Object, mockLogger.Object);
+            var handler = new UserProfileChangedIntegrationEventHandler(TestMock.StripeService.Object, TestMock.StripeAccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserProfileChangedIntegrationEvent
             {
@@ -65,9 +63,9 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockStripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
+            TestMock.StripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
             mockLogger.Verify(Times.Once());
         }
     }

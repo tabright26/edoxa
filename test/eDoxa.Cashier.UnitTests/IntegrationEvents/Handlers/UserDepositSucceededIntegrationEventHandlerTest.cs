@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
@@ -46,15 +45,13 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             var userId = new UserId();
             var account = new Account(userId, new List<Transaction>());
 
-            var mockAccountService = new Mock<IAccountService>();
-
             var mockLogger = new MockLogger<UserDepositSucceededIntegrationEventHandler>();
 
-            mockAccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            TestMock.AccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockAccountService.Setup(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+            TestMock.AccountService.Setup(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
-            mockAccountService
+            TestMock.AccountService
                 .Setup(
                     accountService => accountService.MarkAccountTransactionAsSucceededAsync(
                         It.IsAny<IAccount>(),
@@ -63,7 +60,7 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
                 .ReturnsAsync(new DomainValidationResult<ITransaction>())
                 .Verifiable();
 
-            var handler = new UserDepositSucceededIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);
+            var handler = new UserDepositSucceededIntegrationEventHandler(TestMock.AccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserDepositSucceededIntegrationEvent
             {
@@ -87,10 +84,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockAccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.AccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.AccountService.Verify(accountRepository => accountRepository.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
-            mockAccountService.Verify(
+            TestMock.AccountService.Verify(
                 accountService =>
                     accountService.MarkAccountTransactionAsSucceededAsync(It.IsAny<IAccount>(), It.IsAny<TransactionId>(), It.IsAny<CancellationToken>()),
                 Times.Once);

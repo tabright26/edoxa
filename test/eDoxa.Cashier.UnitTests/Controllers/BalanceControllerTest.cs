@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -38,17 +37,14 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         public async Task FindUserBalanceAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            var mockAccountQuery = new Mock<IAccountQuery>();
+            TestMock.AccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()))
+                .ReturnsAsync((Balance) null);
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            mockAccountQuery.Setup(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>())).ReturnsAsync((Balance) null);
-
-            var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
+            var controller = new BalanceController(TestMock.AccountQuery.Object, TestMapper)
             {
                 ControllerContext =
                 {
-                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                    HttpContext = MockHttpContextAccessor.GetInstance()
                 }
             };
 
@@ -58,28 +54,24 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
+            TestMock.AccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
         }
 
         [Fact]
         public async Task FindUserBalanceAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockAccountQuery = new Mock<IAccountQuery>();
-
             var account = new Account(new UserId());
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            mockAccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()))
+            TestMock.AccountQuery.Setup(mediator => mediator.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()))
                 .ReturnsAsync(account.GetBalanceFor(CurrencyType.Money))
                 .Verifiable();
 
-            var controller = new BalanceController(mockAccountQuery.Object, TestMapper)
+            var controller = new BalanceController(TestMock.AccountQuery.Object, TestMapper)
             {
                 ControllerContext =
                 {
-                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                    HttpContext = MockHttpContextAccessor.GetInstance()
                 }
             };
 
@@ -89,7 +81,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockAccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
+            TestMock.AccountQuery.Verify(accountQuery => accountQuery.FindUserBalanceAsync(It.IsAny<UserId>(), It.IsAny<CurrencyType>()), Times.Once);
         }
     }
 }

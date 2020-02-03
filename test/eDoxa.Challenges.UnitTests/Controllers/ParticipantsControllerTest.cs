@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -37,11 +36,9 @@ namespace eDoxa.Challenges.UnitTests.Controllers
         public async Task FindParticipantAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
+            TestMock.ParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
 
-            mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>())).Verifiable();
-
-            var controller = new ParticipantsController(mockParticipantQuery.Object, TestMapper);
+            var controller = new ParticipantsController(TestMock.ParticipantQuery.Object, TestMapper);
 
             // Act
             var result = await controller.FindParticipantAsync(new ParticipantId());
@@ -49,7 +46,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
+            TestMock.ParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
         }
 
         [Fact]
@@ -62,13 +59,11 @@ namespace eDoxa.Challenges.UnitTests.Controllers
 
             var participants = challenge.Participants;
 
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
-
-            mockParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()))
+            TestMock.ParticipantQuery.Setup(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()))
                 .ReturnsAsync(participants.First())
                 .Verifiable();
 
-            var controller = new ParticipantsController(mockParticipantQuery.Object, TestMapper);
+            var controller = new ParticipantsController(TestMock.ParticipantQuery.Object, TestMapper);
 
             // Act
             var result = await controller.FindParticipantAsync(new ParticipantId());
@@ -76,7 +71,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
+            TestMock.ParticipantQuery.Verify(participantQuery => participantQuery.FindParticipantAsync(It.IsAny<ParticipantId>()), Times.Once);
         }
     }
 }

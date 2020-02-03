@@ -15,7 +15,6 @@ using eDoxa.Games.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Games.IntegrationEvents;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 using Moq;
 
@@ -42,19 +41,17 @@ namespace eDoxa.Games.UnitTests.Application.DomainEvents.Handlers
                     new PlayerId(),
                     new UtcNowDateTimeProvider()));
 
-            var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
-
-            mockServiceBusPublisher.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialAddedIntegrationEvent>()))
+            TestMock.ServiceBusPublisher.Setup(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialAddedIntegrationEvent>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var credentialCreatedDomainEventHandler = new CredentialCreatedDomainEventHandler(mockServiceBusPublisher.Object);
+            var credentialCreatedDomainEventHandler = new CredentialCreatedDomainEventHandler(TestMock.ServiceBusPublisher.Object);
 
             // Act
             await credentialCreatedDomainEventHandler.Handle(domainEvent, CancellationToken.None);
 
             // Assert
-            mockServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialAddedIntegrationEvent>()), Times.Once);
+            TestMock.ServiceBusPublisher.Verify(serviceBus => serviceBus.PublishAsync(It.IsAny<UserGameCredentialAddedIntegrationEvent>()), Times.Once);
         }
     }
 }

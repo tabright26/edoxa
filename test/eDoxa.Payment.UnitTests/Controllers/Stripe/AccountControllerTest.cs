@@ -7,7 +7,6 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Controllers.Stripe;
-using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -35,12 +34,9 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         public async Task FetchAccountAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeService>();
+            TestMock.StripeService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
-
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper)
+            var accountController = new AccountController(TestMock.StripeAccountService.Object, TestMock.StripeService.Object, TestMapper)
             {
                 ControllerContext =
                 {
@@ -53,23 +49,21 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
+
+            TestMock.StripeService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
         public async Task FetchAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeService>();
+            TestMock.StripeService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountAsync(It.IsAny<string>())).ReturnsAsync(new Account()).Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.GetAccountAsync(It.IsAny<string>())).ReturnsAsync(new Account()).Verifiable();
-
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper)
+            var accountController = new AccountController(TestMock.StripeAccountService.Object, TestMock.StripeService.Object, TestMapper)
             {
                 ControllerContext =
                 {
@@ -82,9 +76,9 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountAsync(It.IsAny<string>()), Times.Once);
+            TestMock.StripeService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountAsync(It.IsAny<string>()), Times.Once);
         }
     }
 }

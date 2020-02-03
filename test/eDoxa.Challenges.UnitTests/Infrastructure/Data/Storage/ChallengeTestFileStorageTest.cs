@@ -16,9 +16,9 @@ using Xunit;
 
 namespace eDoxa.Challenges.UnitTests.Infrastructure.Data.Storage
 {
-    public sealed class ArenaChallengeTestFileStorageTest : UnitTest
+    public sealed class ChallengeTestFileStorageTest : UnitTest
     {
-        public ArenaChallengeTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
+        public ChallengeTestFileStorageTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator validator) : base(
             testData,
             testMapper,
             validator)

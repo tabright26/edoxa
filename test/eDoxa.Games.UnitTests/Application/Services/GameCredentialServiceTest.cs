@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Games.Api.Application.Services;
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
-using eDoxa.Games.Domain.Repositories;
-using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
@@ -37,20 +35,17 @@ namespace eDoxa.Games.UnitTests.Application.Services
             // Arrange
             var userId = new UserId();
 
-            var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
-
-            mockCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
+            var authFactorService = new GameCredentialService(TestMock.GameCredentialRepository.Object, TestMock.GameAuthenticationService.Object);
 
             // Act
             await authFactorService.CredentialExistsAsync(userId, Game.LeagueOfLegends);
 
             // Assert
-            mockCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
@@ -58,9 +53,6 @@ namespace eDoxa.Games.UnitTests.Application.Services
         {
             // Arrange
             var userId = new UserId();
-
-            var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
 
             var credentials = new List<Credential>
             {
@@ -71,45 +63,16 @@ namespace eDoxa.Games.UnitTests.Application.Services
                     new UtcNowDateTimeProvider())
             };
 
-            mockCredentialRepository.Setup(repository => repository.FetchCredentialsAsync(It.IsAny<UserId>())).ReturnsAsync(credentials).Verifiable();
+            TestMock.GameCredentialRepository.Setup(repository => repository.FetchCredentialsAsync(It.IsAny<UserId>())).ReturnsAsync(credentials).Verifiable();
 
-            var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
+            var authFactorService = new GameCredentialService(TestMock.GameCredentialRepository.Object, TestMock.GameAuthenticationService.Object);
 
             // Act
             await authFactorService.FetchCredentialsAsync(userId);
 
             // Assert
-            mockCredentialRepository.Verify(repository => repository.FetchCredentialsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.FetchCredentialsAsync(It.IsAny<UserId>()), Times.Once);
         }
-
-        //[Fact]
-        //public async Task FetchGamesWithCredentialAsync()
-        //{
-        //    // Arrange
-        //    var userId = new UserId();
-
-        //    var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-        //    var mockAuthFactorService = new Mock<IGameAuthenticationService>();
-
-        //    var credentials = new List<Credential>
-        //    {
-        //        new Credential(
-        //            userId,
-        //            Game.LeagueOfLegends,
-        //            new PlayerId(),
-        //            new UtcNowDateTimeProvider())
-        //    };
-
-        //    mockCredentialRepository.Setup(repository => repository.FetchCredentialsAsync(It.IsAny<UserId>())).ReturnsAsync(credentials).Verifiable();
-
-        //    var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
-
-        //    // Act
-        //    await authFactorService.FetchGamesWithCredentialAsync(userId);
-
-        //    // Assert
-        //    mockCredentialRepository.Verify(repository => repository.FetchCredentialsAsync(It.IsAny<UserId>()), Times.Once);
-        //}
 
         [Fact]
         public async Task FindCredentialAsync()
@@ -117,26 +80,23 @@ namespace eDoxa.Games.UnitTests.Application.Services
             // Arrange
             var userId = new UserId();
 
-            var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
-
             var credential = new Credential(
                 userId,
                 Game.LeagueOfLegends,
                 new PlayerId(),
                 new UtcNowDateTimeProvider());
 
-            mockCredentialRepository.Setup(repository => repository.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameCredentialRepository.Setup(repository => repository.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(credential)
                 .Verifiable();
 
-            var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
+            var authFactorService = new GameCredentialService(TestMock.GameCredentialRepository.Object, TestMock.GameAuthenticationService.Object);
 
             // Act
             await authFactorService.FindCredentialAsync(userId, Game.LeagueOfLegends);
 
             // Assert
-            mockCredentialRepository.Verify(repository => repository.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
@@ -153,22 +113,19 @@ namespace eDoxa.Games.UnitTests.Application.Services
                     2,
                     string.Empty));
 
-            var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
-
-            mockCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            mockAuthFactorService.Setup(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameAuthenticationService.Setup(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(true)
                 .Verifiable();
 
-            mockAuthFactorService.Setup(authFactor => authFactor.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameAuthenticationService.Setup(authFactor => authFactor.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(userAuthFactor)
                 .Verifiable();
 
-            mockAuthFactorService
+            TestMock.GameAuthenticationService
                 .Setup(
                     authFactor => authFactor.ValidateAuthenticationAsync(
                         It.IsAny<UserId>(),
@@ -177,34 +134,36 @@ namespace eDoxa.Games.UnitTests.Application.Services
                 .ReturnsAsync(new DomainValidationResult<GameAuthentication>())
                 .Verifiable();
 
-            mockCredentialRepository.Setup(repository => repository.CreateCredential(It.IsAny<Credential>())).Verifiable();
+            TestMock.GameCredentialRepository.Setup(repository => repository.CreateCredential(It.IsAny<Credential>())).Verifiable();
 
-            mockCredentialRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            TestMock.GameCredentialRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
+            var authFactorService = new GameCredentialService(TestMock.GameCredentialRepository.Object, TestMock.GameAuthenticationService.Object);
 
             // Act
             await authFactorService.LinkCredentialAsync(userId, Game.LeagueOfLegends);
 
             // Assert
-            mockCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
 
-            mockAuthFactorService.Verify(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameAuthenticationService.Verify(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
 
-            mockAuthFactorService.Verify(authFactor => authFactor.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameAuthenticationService.Verify(authFactor => authFactor.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
 
-            mockAuthFactorService.Verify(
+            TestMock.GameAuthenticationService.Verify(
                 authFactor => authFactor.ValidateAuthenticationAsync(
                     It.IsAny<UserId>(),
                     It.IsAny<Game>(),
                     It.IsAny<GameAuthentication<LeagueOfLegendsGameAuthenticationFactor>>()),
                 Times.Once);
 
-            mockCredentialRepository.Verify(repository => repository.CreateCredential(It.IsAny<Credential>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.CreateCredential(It.IsAny<Credential>()), Times.Once);
 
-            mockCredentialRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(
+                repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+                Times.Once);
         }
 
         [Fact]
@@ -213,26 +172,23 @@ namespace eDoxa.Games.UnitTests.Application.Services
             // Arrange
             var userId = new UserId();
 
-            var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
-
-            mockCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            mockAuthFactorService.Setup(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameAuthenticationService.Setup(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(false)
                 .Verifiable();
 
-            var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
+            var authFactorService = new GameCredentialService(TestMock.GameCredentialRepository.Object, TestMock.GameAuthenticationService.Object);
 
             // Act
             await authFactorService.LinkCredentialAsync(userId, Game.LeagueOfLegends);
 
             // Assert
-            mockCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
 
-            mockAuthFactorService.Verify(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameAuthenticationService.Verify(authFactor => authFactor.AuthenticationExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
@@ -241,20 +197,17 @@ namespace eDoxa.Games.UnitTests.Application.Services
             // Arrange
             var userId = new UserId();
 
-            var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
-
-            mockCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
+            TestMock.GameCredentialRepository.Setup(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                 .ReturnsAsync(true)
                 .Verifiable();
 
-            var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
+            var authFactorService = new GameCredentialService(TestMock.GameCredentialRepository.Object, TestMock.GameAuthenticationService.Object);
 
             // Act
             await authFactorService.LinkCredentialAsync(userId, Game.LeagueOfLegends);
 
             // Assert
-            mockCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.CredentialExistsAsync(It.IsAny<UserId>(), It.IsAny<Game>()), Times.Once);
         }
 
         [Fact]
@@ -263,30 +216,29 @@ namespace eDoxa.Games.UnitTests.Application.Services
             // Arrange
             var userId = new UserId();
 
-            var mockCredentialRepository = new Mock<IGameCredentialRepository>();
-            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
-
             var credential = new Credential(
                 userId,
                 Game.LeagueOfLegends,
                 new PlayerId(),
                 new DateTimeProvider(DateTime.UtcNow.AddMonths(-2)));
 
-            mockCredentialRepository.Setup(repository => repository.DeleteCredential(It.IsAny<Credential>())).Verifiable();
+            TestMock.GameCredentialRepository.Setup(repository => repository.DeleteCredential(It.IsAny<Credential>())).Verifiable();
 
-            mockCredentialRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            TestMock.GameCredentialRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var authFactorService = new GameCredentialService(mockCredentialRepository.Object, mockAuthFactorService.Object);
+            var authFactorService = new GameCredentialService(TestMock.GameCredentialRepository.Object, TestMock.GameAuthenticationService.Object);
 
             // Act
             await authFactorService.UnlinkCredentialAsync(credential);
 
             // Assert
-            mockCredentialRepository.Verify(repository => repository.DeleteCredential(It.IsAny<Credential>()), Times.Once);
+            TestMock.GameCredentialRepository.Verify(repository => repository.DeleteCredential(It.IsAny<Credential>()), Times.Once);
 
-            mockCredentialRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+            TestMock.GameCredentialRepository.Verify(
+                repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()),
+                Times.Exactly(2));
         }
     }
 }

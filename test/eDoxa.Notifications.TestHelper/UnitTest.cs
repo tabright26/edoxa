@@ -17,8 +17,11 @@ namespace eDoxa.Notifications.TestHelper
         protected UnitTest(TestMapperFixture testMapper)
         {
             TestMapper = testMapper.Instance;
+            TestMock = new TestMockFixture();
         }
 
         protected IMapper TestMapper { get; }
+
+        protected TestMockFixture TestMock { get; }
     }
 }

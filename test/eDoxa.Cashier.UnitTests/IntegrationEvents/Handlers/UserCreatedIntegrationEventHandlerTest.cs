@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Identity.Dtos;
@@ -37,17 +36,15 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserCreatedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockAccountService = new Mock<IAccountService>();
-
             var mockLogger = new MockLogger<UserCreatedIntegrationEventHandler>();
 
-            mockAccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+            TestMock.AccountService.Setup(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockAccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()))
+            TestMock.AccountService.Setup(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()))
                 .ReturnsAsync(new DomainValidationResult<IAccount>())
                 .Verifiable();
 
-            var handler = new UserCreatedIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);
+            var handler = new UserCreatedIntegrationEventHandler(TestMock.AccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {
@@ -64,8 +61,8 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockAccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.AccountService.Verify(accountRepository => accountRepository.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.AccountService.Verify(accountRepository => accountRepository.CreateAccountAsync(It.IsAny<UserId>()), Times.Once);
         }
     }
 }

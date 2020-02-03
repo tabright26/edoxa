@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using eDoxa.Cashier.Api.Application.Services;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Repositories;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Cashier.Options;
@@ -40,35 +39,37 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task CreateAccountAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.Create(It.IsAny<Account>())).Verifiable();
 
-            var userId = new UserId();
-
-            mockAccountRepository.Setup(accountRepository => accountRepository.Create(It.IsAny<Account>())).Verifiable();
-
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
+            var userId = new UserId();
+
+            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
+
             mockOptionsSnapshot.Setup(x => x.Value).Returns(new CashierApiOptions());
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             await service.CreateAccountAsync(userId);
 
             // Assert
-            mockAccountRepository.Verify(accountRepository => accountRepository.Create(It.IsAny<Account>()), Times.Once);
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.Create(It.IsAny<Account>()), Times.Once);
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task CreateMoneyTransactionAsync_WithTypeCharge_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
 
             var account = new Account(new UserId());
@@ -77,13 +78,9 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             transaction.MarkAsSucceeded();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-
             mockOptionsSnapshot.Setup(x => x.Value).Returns(new CashierApiOptions());
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -95,19 +92,18 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task CreateMoneyTransactionAsync_WithTypeChargeWithEmptyFunds_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -118,6 +114,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult<ITransaction>>();
+
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -125,7 +122,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task CreateTokenTransactionAsync_WithTypeCharge_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
 
             var account = new Account(new UserId());
@@ -134,13 +130,13 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             transaction.MarkAsSucceeded();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
             mockOptionsSnapshot.Setup(x => x.Value).Returns(new CashierApiOptions());
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -152,21 +148,20 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task CreateTokenTransactionAsync_WithTypeChargeWithEmptyFunds_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
 
             var account = new Account(new UserId());
 
             mockOptionsSnapshot.Setup(x => x.Value).Returns(new CashierApiOptions());
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -177,6 +172,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult<ITransaction>>();
+
             result.Errors.Should().NotBeEmpty();
         }
 
@@ -184,7 +180,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task CreateTransactionAsync_WithCurrencyMoney_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
 
             mockOptionsSnapshot.Setup(x => x.Value)
@@ -199,7 +194,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -216,7 +211,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task CreateTransactionAsync_WithCurrencyToken_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
 
             mockOptionsSnapshot.Setup(x => x.Value)
@@ -231,7 +225,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var account = new Account(new UserId());
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -248,15 +242,13 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task DepositAsync_WithCurrencyMoney_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-
-            var account = new Account(new UserId());
-
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, TestValidator);
+            var account = new Account(new UserId());
+
+            var service = new AccountService(TestMock.AccountRepository.Object, TestValidator);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -268,22 +260,20 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact]
         public async Task DepositAsync_WithCurrencyMoneyWithDepositPresent_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceeded();
 
-            var service = new AccountService(mockAccountRepository.Object, TestValidator);
+            var service = new AccountService(TestMock.AccountRepository.Object, TestValidator);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -302,15 +292,13 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task DepositAsync_WithCurrencyToken_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-
             var account = new Account(new UserId());
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var accountService = new AccountService(mockAccountRepository.Object, TestValidator);
+            var accountService = new AccountService(TestMock.AccountRepository.Object, TestValidator);
 
             // Act
             var result = await accountService.CreateTransactionAsync(
@@ -322,22 +310,20 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact]
         public async Task DepositAsync_WithCurrencyTokenWithDepositPresent_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-
             var account = new Account(new UserId());
             var tokenAccount = new TokenAccountDecorator(account);
             var transaction = tokenAccount.Deposit(Token.FiftyThousand);
 
             transaction.MarkAsSucceeded();
 
-            var service = new AccountService(mockAccountRepository.Object, TestValidator);
+            var service = new AccountService(TestMock.AccountRepository.Object, TestValidator);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -356,15 +342,16 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task FindUserAccountAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
             var mockOptionsSnapshot = new Mock<IOptionsSnapshot<CashierApiOptions>>();
             mockOptionsSnapshot.Setup(x => x.Value).Returns(new CashierApiOptions());
             var userId = new UserId();
             var account = new Account(userId);
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.FindAccountOrNullAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.FindAccountOrNullAsync(It.IsAny<UserId>()))
+                .ReturnsAsync(account)
+                .Verifiable();
 
-            var service = new AccountService(mockAccountRepository.Object, mockOptionsSnapshot.Object);
+            var service = new AccountService(TestMock.AccountRepository.Object, mockOptionsSnapshot.Object);
 
             // Act
             var result = await service.FindAccountOrNullAsync(userId);
@@ -372,22 +359,20 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<Account>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.FindAccountOrNullAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.FindAccountOrNullAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
         public async Task WithdrawalAsync_WithCurrencyMoney_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-
             var account = new Account(new UserId());
             var moneyAccount = new MoneyAccountDecorator(account);
             var transaction = moneyAccount.Deposit(Money.OneHundred);
 
             transaction.MarkAsSucceeded();
 
-            mockAccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
+            TestMock.AccountRepository.Setup(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
@@ -397,7 +382,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, TestValidator);
+            var service = new AccountService(TestMock.AccountRepository.Object, TestValidator);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -410,15 +395,13 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<ITransaction>>();
 
-            mockAccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
+            TestMock.AccountRepository.Verify(accountRepository => accountRepository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact]
         public async Task WithdrawalAsync_WithEmptyAccountBalance_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-
             var account = new Account(new UserId());
 
             var metadata = new TransactionMetadata
@@ -427,7 +410,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, TestValidator);
+            var service = new AccountService(TestMock.AccountRepository.Object, TestValidator);
 
             // Act
             var result = await service.CreateTransactionAsync(
@@ -447,8 +430,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task WithdrawalAsync_WithWrongBundle_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockAccountRepository = new Mock<IAccountRepository>();
-
             var account = new Account(new UserId());
 
             var metadata = new TransactionMetadata
@@ -457,7 +438,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
                 {"Email", "gabriel@edoxa.gg"}
             };
 
-            var service = new AccountService(mockAccountRepository.Object, TestValidator);
+            var service = new AccountService(TestMock.AccountRepository.Object, TestValidator);
 
             // Act
             var result = await service.CreateTransactionAsync(

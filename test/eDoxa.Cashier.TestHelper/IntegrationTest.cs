@@ -31,7 +31,10 @@ namespace eDoxa.Cashier.TestHelper
             TestData = testData;
             TestMapper = testMapper.Instance;
             ExecuteFuncAsync = executeAsync ?? ((httpClient, linkGenerator, values) => Task.FromResult(new HttpResponseMessage()));
+            TestMock = new TestMockFixture();
         }
+
+        protected TestMockFixture TestMock { get; }
 
         protected TestHostFixture TestHost { get; }
 

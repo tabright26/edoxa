@@ -55,9 +55,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 1000,
                 new UtcNowDateTimeProvider());
 
-            var mockUserManager = new Mock<IUserService>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             var mockDoxatagService = new Mock<IDoxatagService>();
 
@@ -65,7 +63,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Doxatag>.Succeeded(doxatag))
                 .Verifiable();
 
-            var controller = new DoxatagHistoryController(mockUserManager.Object, mockDoxatagService.Object, TestMapper);
+            var controller = new DoxatagHistoryController(TestMock.UserService.Object, mockDoxatagService.Object, TestMapper);
 
             var request = new ChangeDoxatagRequest
             {
@@ -78,7 +76,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockDoxatagService.Verify(doxatagService => doxatagService.ChangeDoxatagAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
         }
@@ -89,9 +87,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Arrange
             var user = new User();
 
-            var mockUserManager = new Mock<IUserService>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.GetUserAsync(It.IsNotNull<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             var mockDoxatagService = new Mock<IDoxatagService>();
 
@@ -99,7 +95,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .ReturnsAsync(new Collection<Doxatag>())
                 .Verifiable();
 
-            var controller = new DoxatagHistoryController(mockUserManager.Object, mockDoxatagService.Object, TestMapper);
+            var controller = new DoxatagHistoryController(TestMock.UserService.Object, mockDoxatagService.Object, TestMapper);
 
             // Act
             var result = await controller.FetchDoxatagHistoryAsync();
@@ -107,7 +103,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockDoxatagService.Verify(doxatagService => doxatagService.FetchDoxatagHistoryAsync(It.IsAny<User>()), Times.Once);
         }
@@ -132,15 +128,13 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 doxatag
             };
 
-            var mockUserManager = new Mock<IUserService>();
-
-            mockUserManager.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user).Verifiable();
 
             var mockDoxatagService = new Mock<IDoxatagService>();
 
             mockDoxatagService.Setup(doxatagService => doxatagService.FetchDoxatagHistoryAsync(It.IsAny<User>())).ReturnsAsync(doxatagHistory).Verifiable();
 
-            var controller = new DoxatagHistoryController(mockUserManager.Object, mockDoxatagService.Object, TestMapper);
+            var controller = new DoxatagHistoryController(TestMock.UserService.Object, mockDoxatagService.Object, TestMapper);
 
             // Act
             var result = await controller.FetchDoxatagHistoryAsync();
@@ -150,7 +144,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             result.As<OkObjectResult>().Value.Should().BeEquivalentTo(TestMapper.Map<IEnumerable<DoxatagDto>>(doxatagHistory));
 
-            mockUserManager.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
 
             mockDoxatagService.Verify(doxatagService => doxatagService.FetchDoxatagHistoryAsync(It.IsAny<User>()), Times.Once);
         }

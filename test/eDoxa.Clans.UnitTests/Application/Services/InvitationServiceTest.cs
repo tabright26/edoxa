@@ -34,36 +34,32 @@ namespace eDoxa.Clans.UnitTests.Application.Services
         public async Task AcceptInvitationAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
             var userId = new UserId();
             var invitation = new Invitation(userId, new ClanId());
 
-            mockInvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            TestMock.InvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.AcceptInvitationAsync(invitation, userId);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult<Invitation>>();
-            mockInvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task AcceptInvitationAsync_WhenDifferentUserId_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
             var mockClanRepository = new Mock<IClanRepository>();
 
             var invitation = new Invitation(new UserId(), new ClanId());
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, mockClanRepository.Object);
 
             // Act
             var result = await service.AcceptInvitationAsync(invitation, new UserId());
@@ -77,39 +73,33 @@ namespace eDoxa.Clans.UnitTests.Application.Services
         public async Task DeclineInvitationAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
             var userId = new UserId();
             var invitation = new Invitation(userId, new ClanId());
 
-            mockInvitationRepository.Setup(repository => repository.Delete(It.IsAny<Invitation>())).Verifiable();
+            TestMock.InvitationRepository.Setup(repository => repository.Delete(It.IsAny<Invitation>())).Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            TestMock.InvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.DeclineInvitationAsync(invitation, userId);
 
             // Assert
             result.Should().BeOfType<DomainValidationResult<Invitation>>();
-            mockInvitationRepository.Verify(repository => repository.Delete(It.IsAny<Invitation>()), Times.Once);
-            mockInvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.Delete(It.IsAny<Invitation>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task DeclineInvitationAsync_WhenDifferentUserId_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
             var invitation = new Invitation(new UserId(), new ClanId());
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.DeclineInvitationAsync(invitation, new UserId());
@@ -123,12 +113,9 @@ namespace eDoxa.Clans.UnitTests.Application.Services
         public async Task DeleteInvitationsAsync_WithClanId()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
             var clanId = new ClanId();
 
-            mockInvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<ClanId>()))
+            TestMock.InvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<ClanId>()))
                 .ReturnsAsync(
                     new List<Invitation>
                     {
@@ -138,33 +125,30 @@ namespace eDoxa.Clans.UnitTests.Application.Services
                     })
                 .Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.Delete(It.IsAny<Invitation>())).Verifiable();
+            TestMock.InvitationRepository.Setup(repository => repository.Delete(It.IsAny<Invitation>())).Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            TestMock.InvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             await service.DeleteInvitationsAsync(new ClanId());
 
             // Assert
-            mockInvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<ClanId>()), Times.Once);
-            mockInvitationRepository.Verify(repository => repository.Delete(It.IsAny<Invitation>()), Times.Exactly(3));
-            mockInvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.Delete(It.IsAny<Invitation>()), Times.Exactly(3));
+            TestMock.InvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task DeleteInvitationsAsync_WithUserId()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
             var userId = new UserId();
 
-            mockInvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<UserId>()))
+            TestMock.InvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<UserId>()))
                 .ReturnsAsync(
                     new List<Invitation>
                     {
@@ -174,33 +158,30 @@ namespace eDoxa.Clans.UnitTests.Application.Services
                     })
                 .Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.Delete(It.IsAny<Invitation>())).Verifiable();
+            TestMock.InvitationRepository.Setup(repository => repository.Delete(It.IsAny<Invitation>())).Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            TestMock.InvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             await service.DeleteInvitationsAsync(new UserId());
 
             // Assert
-            mockInvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<UserId>()), Times.Once);
-            mockInvitationRepository.Verify(repository => repository.Delete(It.IsAny<Invitation>()), Times.Exactly(3));
-            mockInvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.Delete(It.IsAny<Invitation>()), Times.Exactly(3));
+            TestMock.InvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task FetchInvitationsAsync_WithClanId_ShouldBeOfTypeInvitationList()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
             var clanId = new ClanId();
 
-            mockInvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<ClanId>()))
+            TestMock.InvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<ClanId>()))
                 .ReturnsAsync(
                     new List<Invitation>
                     {
@@ -210,26 +191,24 @@ namespace eDoxa.Clans.UnitTests.Application.Services
                     })
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.FetchInvitationsAsync(new ClanId());
 
             // Assert
             result.Should().BeOfType<List<Invitation>>();
-            mockInvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<ClanId>()), Times.Once);
+
+            TestMock.InvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<ClanId>()), Times.Once);
         }
 
         [Fact]
         public async Task FetchInvitationsAsync_WithUserId_ShouldBeOfTypeInvitationList()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
             var userId = new UserId();
 
-            mockInvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<UserId>()))
+            TestMock.InvitationRepository.Setup(repository => repository.FetchAsync(It.IsAny<UserId>()))
                 .ReturnsAsync(
                     new List<Invitation>
                     {
@@ -239,84 +218,76 @@ namespace eDoxa.Clans.UnitTests.Application.Services
                     })
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.FetchInvitationsAsync(new UserId());
 
             // Assert
             result.Should().BeOfType<List<Invitation>>();
-            mockInvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<UserId>()), Times.Once);
+
+            TestMock.InvitationRepository.Verify(repository => repository.FetchAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
         public async Task FindInvitationAsync_ShouldBeOfTypeInvitation()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
-
-            mockInvitationRepository.Setup(repository => repository.FindAsync(It.IsAny<InvitationId>()))
+            TestMock.InvitationRepository.Setup(repository => repository.FindAsync(It.IsAny<InvitationId>()))
                 .ReturnsAsync(new Invitation(new UserId(), new ClanId()))
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.FindInvitationAsync(new InvitationId());
 
             // Assert
             result.Should().BeOfType<Invitation>();
-            mockInvitationRepository.Verify(repository => repository.FindAsync(It.IsAny<InvitationId>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.FindAsync(It.IsAny<InvitationId>()), Times.Once);
         }
 
         [Fact]
         public async Task SendInvitationAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
+            TestMock.ClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            TestMock.ClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+            TestMock.InvitationRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>())).ReturnsAsync(false).Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>())).ReturnsAsync(false).Verifiable();
+            TestMock.InvitationRepository.Setup(repository => repository.Create(It.IsAny<Invitation>())).Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.Create(It.IsAny<Invitation>())).Verifiable();
-
-            mockInvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
+            TestMock.InvitationRepository.Setup(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
 
             // Assert
             result.Should().BeOfType<DomainValidationResult<Invitation>>();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
-            mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
-            mockInvitationRepository.Verify(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
-            mockInvitationRepository.Verify(repository => repository.Create(It.IsAny<Invitation>()), Times.Once);
-            mockInvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.ClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+            TestMock.ClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.Create(It.IsAny<Invitation>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.UnitOfWork.CommitAsync(It.IsAny<bool>(), It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task SendInvitationAsync_WhenInvitationExist_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
+            TestMock.ClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            TestMock.ClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
+            TestMock.InvitationRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>())).ReturnsAsync(true).Verifiable();
 
-            mockInvitationRepository.Setup(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>())).ReturnsAsync(true).Verifiable();
-
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
@@ -324,23 +295,20 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<Invitation>>();
             result.Errors.Should().NotBeEmpty();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
-            mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
-            mockInvitationRepository.Verify(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
+            TestMock.ClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+            TestMock.ClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.InvitationRepository.Verify(repository => repository.ExistsAsync(It.IsAny<UserId>(), It.IsAny<ClanId>()), Times.Once);
         }
 
         [Fact]
         public async Task SendInvitationAsync_WhenIsMember_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
+            TestMock.ClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            TestMock.ClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockClanRepository.Setup(repository => repository.IsMemberAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
@@ -348,28 +316,27 @@ namespace eDoxa.Clans.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<Invitation>>();
             result.Errors.Should().NotBeEmpty();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
-            mockClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.ClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+            TestMock.ClanRepository.Verify(repository => repository.IsMemberAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
         public async Task SendInvitationAsync_WhenNotOwner_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockInvitationRepository = new Mock<IInvitationRepository>();
-            var mockClanRepository = new Mock<IClanRepository>();
+            TestMock.ClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockClanRepository.Setup(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
-
-            var service = new InvitationService(mockInvitationRepository.Object, mockClanRepository.Object);
+            var service = new InvitationService(TestMock.InvitationRepository.Object, TestMock.ClanRepository.Object);
 
             // Act
             var result = await service.SendInvitationAsync(new ClanId(), new UserId(), new UserId());
 
             // Assert
             result.Should().BeOfType<DomainValidationResult<Invitation>>();
+
             result.Errors.Should().NotBeEmpty();
-            mockClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
+
+            TestMock.ClanRepository.Verify(repository => repository.IsOwnerAsync(It.IsAny<ClanId>(), It.IsAny<UserId>()), Times.Once);
         }
     }
 }

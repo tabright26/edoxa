@@ -12,7 +12,6 @@ using eDoxa.Cashier.Api.Application.Factories;
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Challenges.IntegrationEvents;
@@ -46,19 +45,24 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
 
             var challenge = new Challenge(challengeId, payout);
 
-            var mockChallengeService = new Mock<IChallengeService>();
-
             var mockLogger = new MockLogger<ChallengeSynchronizedIntegrationEventHandler>();
 
-            mockChallengeService.Setup(challengeService => challengeService.ChallengeExistsAsync(It.IsAny<ChallengeId>())).ReturnsAsync(true).Verifiable();
+            TestMock.ChallengeService.Setup(challengeService => challengeService.ChallengeExistsAsync(It.IsAny<ChallengeId>())).ReturnsAsync(true).Verifiable();
 
-            mockChallengeService.Setup(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
+            TestMock.ChallengeService.Setup(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>()))
+                .ReturnsAsync(challenge)
+                .Verifiable();
 
-            mockChallengeService.Setup(challengeService => challengeService.CloseChallengeAsync(It.IsAny<IChallenge>(), It.IsAny<Dictionary<UserId, decimal?>>(), It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
+            TestMock.ChallengeService
+                .Setup(
+                    challengeService => challengeService.CloseChallengeAsync(
+                        It.IsAny<IChallenge>(),
+                        It.IsAny<Dictionary<UserId, decimal?>>(),
+                        It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
-            var handler = new ChallengeSynchronizedIntegrationEventHandler(
-                mockChallengeService.Object,
-                mockLogger.Object);
+            var handler = new ChallengeSynchronizedIntegrationEventHandler(TestMock.ChallengeService.Object, mockLogger.Object);
 
             var integrationEvent = new ChallengeSynchronizedIntegrationEvent
             {
@@ -69,11 +73,16 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockChallengeService.Verify(challengeService => challengeService.ChallengeExistsAsync(It.IsAny<ChallengeId>()), Times.Once);
+            TestMock.ChallengeService.Verify(challengeService => challengeService.ChallengeExistsAsync(It.IsAny<ChallengeId>()), Times.Once);
 
-            mockChallengeService.Verify(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
+            TestMock.ChallengeService.Verify(challengeService => challengeService.FindChallengeAsync(It.IsAny<ChallengeId>()), Times.Once);
 
-            mockChallengeService.Verify(challengeService => challengeService.CloseChallengeAsync(It.IsAny<IChallenge>(), It.IsAny<Dictionary<UserId, decimal?>>(), It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.ChallengeService.Verify(
+                challengeService => challengeService.CloseChallengeAsync(
+                    It.IsAny<IChallenge>(),
+                    It.IsAny<Dictionary<UserId, decimal?>>(),
+                    It.IsAny<CancellationToken>()),
+                Times.Once);
 
             mockLogger.Verify(Times.Once());
         }

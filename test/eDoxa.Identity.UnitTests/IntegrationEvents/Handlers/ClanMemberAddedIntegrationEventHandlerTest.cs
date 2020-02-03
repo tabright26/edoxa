@@ -11,7 +11,6 @@ using eDoxa.Grpc.Protos.Clans.Dtos;
 using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -40,19 +39,17 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             // Arrange
             var userId = new UserId();
             var clanId = new ClanId();
-
             var user = new User();
 
-            var mockUserService = new Mock<IUserService>();
             var mockLogger = new MockLogger<ClanMemberAddedIntegrationEventHandler>();
 
-            mockUserService.Setup(userService => userService.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
+            TestMock.UserService.Setup(userService => userService.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserService.Setup(userService => userService.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()))
+            TestMock.UserService.Setup(userService => userService.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()))
                 .ReturnsAsync(new IdentityResult())
                 .Verifiable();
 
-            var handler = new ClanMemberAddedIntegrationEventHandler(mockUserService.Object, mockLogger.Object);
+            var handler = new ClanMemberAddedIntegrationEventHandler(TestMock.UserService.Object, mockLogger.Object);
 
             var integrationEvent = new ClanMemberAddedIntegrationEvent
             {
@@ -79,8 +76,8 @@ namespace eDoxa.Identity.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockUserService.Verify(userService => userService.FindByIdAsync(It.IsAny<string>()), Times.Once);
-            mockUserService.Verify(userService => userService.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()), Times.Once);
+            TestMock.UserService.Verify(userService => userService.FindByIdAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userService => userService.AddClaimAsync(It.IsAny<User>(), It.IsAny<Claim>()), Times.Once);
             mockLogger.Verify(Times.Once());
         }
     }

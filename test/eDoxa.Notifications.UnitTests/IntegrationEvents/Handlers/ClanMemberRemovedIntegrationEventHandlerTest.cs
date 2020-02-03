@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using eDoxa.Grpc.Protos.Clans.Dtos;
 using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents.Handlers;
-using eDoxa.Notifications.Domain.Services;
 using eDoxa.Notifications.TestHelper;
 using eDoxa.Notifications.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -33,13 +32,11 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             var userId = new UserId();
             var clanId = new ClanId();
 
-            var mockUserService = new Mock<IUserService>();
-
-            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
+            TestMock.UserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new ClanMemberRemovedIntegrationEventHandler(mockUserService.Object);
+            var handler = new ClanMemberRemovedIntegrationEventHandler(TestMock.UserService.Object);
 
             var integrationEvent = new ClanMemberRemovedIntegrationEvent
             {
@@ -66,7 +63,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+            TestMock.UserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
         }
     }
 }

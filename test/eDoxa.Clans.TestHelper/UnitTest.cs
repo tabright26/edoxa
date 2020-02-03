@@ -17,7 +17,10 @@ namespace eDoxa.Clans.TestHelper
         protected UnitTest(TestMapperFixture testMapper)
         {
             TestMapper = testMapper.Instance;
+            TestMock = new TestMockFixture();
         }
+
+        protected TestMockFixture TestMock { get; }
 
         protected IMapper TestMapper { get; }
     }

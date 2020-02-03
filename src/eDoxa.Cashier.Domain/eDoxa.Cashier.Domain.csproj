@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\.editorconfig" Link=".editorconfig" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\eDoxa.Grpc\eDoxa.Grpc.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
   </ItemGroup>

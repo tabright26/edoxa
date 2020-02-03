@@ -57,8 +57,6 @@ namespace eDoxa.Cashier.UnitTests.Application.Strategies
             // Arrange
             var payoutStrategy = new DefaultChallengePayoutStrategy();
 
-            var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
-
             var buckets = new ChallengePayoutBuckets(new List<ChallengePayoutBucket>());
 
             var payoutEntries = new ChallengePayoutEntries(buckets);

@@ -12,9 +12,6 @@ using eDoxa.Cashier.Api.Application.Services;
 using eDoxa.Cashier.Api.Application.Strategies;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Cashier.Domain.Factories;
-using eDoxa.Cashier.Domain.Repositories;
-using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain;
@@ -41,16 +38,15 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
         public async Task CreateChallengeAsync_ShouldBeOfTypeValidationResult()
         {
             // Arrange
-            var mockChallengePayoutFactory = new Mock<IChallengePayoutFactory>();
-            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            TestMock.ChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(new DefaultChallengePayoutStrategy()).Verifiable();
 
-            mockChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(new DefaultChallengePayoutStrategy()).Verifiable();
+            TestMock.ChallengeRepository.Setup(repository => repository.Create(It.IsAny<Challenge>())).Verifiable();
 
-            mockChallengeRepository.Setup(repository => repository.Create(It.IsAny<Challenge>())).Verifiable();
+            TestMock.ChallengeRepository.Setup(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
-            mockChallengeRepository.Setup(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask).Verifiable();
-
-            var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
+            var service = new ChallengeService(TestMock.ChallengePayoutFactory.Object, TestMock.ChallengeRepository.Object);
 
             var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
@@ -68,27 +64,22 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Assert
             result.Should().BeOfType<DomainValidationResult<IChallenge>>();
 
-            mockChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
+            TestMock.ChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
 
-            mockChallengeRepository.Verify(repository => repository.Create(It.IsAny<Challenge>()), Times.Once);
+            TestMock.ChallengeRepository.Verify(repository => repository.Create(It.IsAny<Challenge>()), Times.Once);
 
-            mockChallengeRepository.Verify(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
+            TestMock.ChallengeRepository.Verify(repository => repository.CommitAsync(true, It.IsAny<CancellationToken>()), Times.Once);
         }
 
         [Fact]
         public async Task CreateChallengeAsync_ShouldBeOfTypeValidationResultWithErrors()
         {
             // Arrange
-            var mockChallengePayoutFactory = new Mock<IChallengePayoutFactory>();
-            var mockChallengeRepository = new Mock<IChallengeRepository>();
+            TestMock.ChallengePayoutStrategy.Setup(payout => payout.GetChallengePayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>())).Verifiable();
 
-            var mockChallengePayoutStrategy = new Mock<IChallengePayoutStrategy>();
+            TestMock.ChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(TestMock.ChallengePayoutStrategy.Object).Verifiable();
 
-            mockChallengePayoutStrategy.Setup(payout => payout.GetChallengePayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>())).Verifiable();
-
-            mockChallengePayoutFactory.Setup(payout => payout.CreateInstance()).Returns(mockChallengePayoutStrategy.Object).Verifiable();
-
-            var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
+            var service = new ChallengeService(TestMock.ChallengePayoutFactory.Object, TestMock.ChallengeRepository.Object);
 
             var bucket = new ChallengePayoutBucket(ChallengePayoutBucketPrize.Consolation, ChallengePayoutBucketSize.Individual);
 
@@ -105,10 +96,12 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             // Assert
             result.Should().BeOfType<DomainValidationResult<IChallenge>>();
+
             result.Errors.Should().NotBeEmpty();
 
-            mockChallengePayoutStrategy.Verify(payout => payout.GetChallengePayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);
-            mockChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
+            TestMock.ChallengePayoutStrategy.Verify(payout => payout.GetChallengePayout(It.IsAny<ChallengePayoutEntries>(), It.IsAny<EntryFee>()), Times.Once);
+
+            TestMock.ChallengePayoutFactory.Verify(payout => payout.CreateInstance(), Times.Once);
         }
 
         [Fact]
@@ -117,20 +110,17 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Arrange
             var challenge = TestData.FakerFactory.CreateChallengeFaker(1000).FakeChallenge();
 
-            var mockChallengePayoutFactory = new Mock<IChallengePayoutFactory>();
+            TestMock.ChallengeRepository.Setup(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
 
-            var mockChallengeRepository = new Mock<IChallengeRepository>();
-
-            mockChallengeRepository.Setup(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>())).ReturnsAsync(challenge).Verifiable();
-
-            var service = new ChallengeService(mockChallengePayoutFactory.Object, mockChallengeRepository.Object);
+            var service = new ChallengeService(TestMock.ChallengePayoutFactory.Object, TestMock.ChallengeRepository.Object);
 
             // Act
             var result = await service.FindChallengeOrNullAsync(new ChallengeId());
 
             // Assert
             result.Should().BeOfType<Challenge>();
-            mockChallengeRepository.Verify(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>()), Times.Once);
+
+            TestMock.ChallengeRepository.Verify(repository => repository.FindChallengeOrNullAsync(It.IsAny<ChallengeId>()), Times.Once);
         }
     }
 }

@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Clans.Api.Application.DomainEvents;
 using eDoxa.Clans.Domain.DomainEvents;
-using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -32,60 +31,54 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
         public async Task Handle_ShouldNotThrowException()
         {
             // Arrange
-            var mockClanService = new Mock<IClanService>();
-            var mockCandidationService = new Mock<ICandidatureService>();
-            var mockInvitationService = new Mock<IInvitationService>();
             var mockLogger = new MockLogger<ClanDeletedDomainEventHandler>();
 
-            mockClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
+            TestMock.ClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
-            mockCandidationService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
+            TestMock.CandidatureService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
-            mockInvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
+            TestMock.InvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
             var domainEventHandler = new ClanDeletedDomainEventHandler(
-                mockClanService.Object,
-                mockCandidationService.Object,
-                mockInvitationService.Object,
+                TestMock.ClanService.Object,
+                TestMock.CandidatureService.Object,
+                TestMock.InvitationService.Object,
                 mockLogger.Object);
 
             // Act
             await domainEventHandler.Handle(new ClanDeletedDomainEvent(new ClanId()), CancellationToken.None);
 
             // Assert
-            mockClanService.Verify(service => service.DeleteLogoAsync(It.IsAny<ClanId>()), Times.Once);
-            mockCandidationService.Verify(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>()), Times.Once);
-            mockInvitationService.Verify(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.ClanService.Verify(service => service.DeleteLogoAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.CandidatureService.Verify(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.InvitationService.Verify(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>()), Times.Once);
         }
 
         [Fact]
         public async Task Handle_ShouldThrowExceptions()
         {
             // Arrange
-            var mockClanService = new Mock<IClanService>();
-            var mockCandidationService = new Mock<ICandidatureService>();
-            var mockInvitationService = new Mock<IInvitationService>();
             var mockLogger = new MockLogger<ClanDeletedDomainEventHandler>();
 
-            mockClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
+            TestMock.ClanService.Setup(service => service.DeleteLogoAsync(It.IsAny<ClanId>())).Returns(Task.CompletedTask).Verifiable();
 
-            mockCandidationService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>())).ThrowsAsync(new Exception("test")).Verifiable();
+            TestMock.CandidatureService.Setup(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>())).ThrowsAsync(new Exception()).Verifiable();
 
-            mockInvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>())).ThrowsAsync(new Exception("test")).Verifiable();
+            TestMock.InvitationService.Setup(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>())).ThrowsAsync(new Exception()).Verifiable();
 
             var domainEventHandler = new ClanDeletedDomainEventHandler(
-                mockClanService.Object,
-                mockCandidationService.Object,
-                mockInvitationService.Object,
+                TestMock.ClanService.Object,
+                TestMock.CandidatureService.Object,
+                TestMock.InvitationService.Object,
                 mockLogger.Object);
 
             // Act
             await domainEventHandler.Handle(new ClanDeletedDomainEvent(new ClanId()), CancellationToken.None);
 
             // Assert
-            mockClanService.Verify(service => service.DeleteLogoAsync(It.IsAny<ClanId>()), Times.Once);
-            mockCandidationService.Verify(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>()), Times.Once);
-            mockInvitationService.Verify(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.ClanService.Verify(service => service.DeleteLogoAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.CandidatureService.Verify(service => service.DeleteCandidaturesAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.InvitationService.Verify(service => service.DeleteInvitationsAsync(It.IsAny<ClanId>()), Times.Once);
 
             mockLogger.Verify(Times.Exactly(2));
         }
