@@ -14,9 +14,9 @@ using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Games.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -55,10 +55,13 @@ namespace eDoxa.Games.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<GameAuthentication>.Succeeded(gameAuthentication))
                 .Verifiable();
 
-            var authFactorController = new GameAuthenticationsController(mockAuthFactorService.Object, mockCredentialService.Object, mockMapper.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var authFactorController = new GameAuthenticationsController(mockAuthFactorService.Object, mockCredentialService.Object, mockMapper.Object)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await authFactorController.GenerateAuthenticationAsync(Game.LeagueOfLegends, "playerId");
@@ -85,11 +88,13 @@ namespace eDoxa.Games.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Credential>.Failure("test error"))
                 .Verifiable();
 
-            var authFactorController = new GameAuthenticationsController(mockAuthenticationService.Object, mockCredentialService.Object, mockMapper.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var authFactorController = new GameAuthenticationsController(mockAuthenticationService.Object, mockCredentialService.Object, mockMapper.Object)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await authFactorController.LinkCredentialAsync(Game.LeagueOfLegends);

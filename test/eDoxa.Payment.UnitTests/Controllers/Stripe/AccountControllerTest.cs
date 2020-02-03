@@ -1,5 +1,5 @@
-﻿// Filename: StripeAccountControllerTest.cs
-// Date Created: 2019-12-26
+﻿// Filename: AccountControllerTest.cs
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -10,8 +10,8 @@ using eDoxa.Payment.Api.Controllers.Stripe;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Payment.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -40,9 +40,13 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
 
             mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper);
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            accountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await accountController.FetchAccountAsync();
@@ -65,9 +69,13 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
 
             mockAccountService.Setup(accountService => accountService.GetAccountAsync(It.IsAny<string>())).ReturnsAsync(new Account()).Verifiable();
 
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper);
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            accountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await accountController.FetchAccountAsync();

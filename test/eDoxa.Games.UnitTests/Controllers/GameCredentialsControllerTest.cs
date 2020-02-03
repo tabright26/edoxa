@@ -13,9 +13,9 @@ using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Games.Domain.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Games.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -57,11 +57,13 @@ namespace eDoxa.Games.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Credential>.Failure("test", "test error"))
                 .Verifiable();
 
-            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await authFactorController.UnlinkCredentialAsync(Game.LeagueOfLegends);
@@ -84,11 +86,13 @@ namespace eDoxa.Games.UnitTests.Controllers
 
             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>())).Verifiable();
 
-            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            authFactorController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var authFactorController = new GameCredentialsController(mockCredentialService.Object, mockMapper.Object)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await authFactorController.UnlinkCredentialAsync(Game.LeagueOfLegends);
@@ -130,7 +134,6 @@ namespace eDoxa.Games.UnitTests.Controllers
                     HttpContext = new MockHttpContextAccessor().Object.HttpContext
                 }
             };
-
 
             // Act
             var result = await authFactorController.UnlinkCredentialAsync(Game.LeagueOfLegends);

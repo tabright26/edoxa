@@ -15,6 +15,7 @@ using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Grpc.Services;
 using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
@@ -22,6 +23,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -228,9 +230,11 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
-            builder.RegisterMockServiceBusModule();
-
             builder.RegisterModule<IdentityModule>();
+
+            builder.RegisterType<IdentityDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            builder.RegisterMockServiceBusModule();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

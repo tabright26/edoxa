@@ -1,5 +1,5 @@
-﻿// Filename: StripeBankAccountControllerTest.cs
-// Date Created: 2019-12-26
+﻿// Filename: BankAccountControllerTest.cs
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -11,8 +11,8 @@ using eDoxa.Payment.Api.Controllers.Stripe;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Payment.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -46,10 +46,13 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
                 mockExternalService.Object,
                 mockAccountService.Object,
                 mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+                TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await bankAccountController.FetchBankAccountAsync();
@@ -88,10 +91,13 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
                 mockExternalService.Object,
                 mockAccountService.Object,
                 mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+                TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await bankAccountController.FetchBankAccountAsync();
@@ -121,10 +127,13 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
                 mockExternalService.Object,
                 mockAccountService.Object,
                 mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+                TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await bankAccountController.FetchBankAccountAsync();
@@ -150,10 +159,13 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
                 mockExternalService.Object,
                 mockAccountService.Object,
                 mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+                TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await bankAccountController.UpdateBankAccountAsync(
@@ -196,10 +208,13 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
                 mockExternalService.Object,
                 mockAccountService.Object,
                 mockReferenceService.Object,
-                TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            bankAccountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+                TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await bankAccountController.UpdateBankAccountAsync(

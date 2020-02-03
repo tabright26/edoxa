@@ -6,7 +6,6 @@
 
 using System.Threading.Tasks;
 
-using eDoxa.Games.Domain.AggregateModels.GameAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 

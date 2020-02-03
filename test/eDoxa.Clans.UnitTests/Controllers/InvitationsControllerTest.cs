@@ -12,10 +12,10 @@ using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Clans.TestHelper.Mocks;
 using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -47,11 +47,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Invitation>.Failure("Error"))
                 .Verifiable();
 
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await invitationController.AcceptInvitationAsync(new InvitationId());
@@ -76,11 +78,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Invitation>())
                 .Verifiable();
 
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await invitationController.AcceptInvitationAsync(new InvitationId());
@@ -107,11 +111,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Invitation>())
                 .Verifiable();
 
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await invitationController.AcceptInvitationAsync(new InvitationId());
@@ -138,11 +144,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Invitation>.Failure("Test error"))
                 .Verifiable();
 
-            var controller = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            controller.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var controller = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await controller.DeclineInvitationAsync(new InvitationId());
@@ -167,11 +175,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Invitation>())
                 .Verifiable();
 
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await invitationController.DeclineInvitationAsync(new InvitationId());
@@ -198,11 +208,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Invitation>())
                 .Verifiable();
 
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await invitationController.DeclineInvitationAsync(new InvitationId());
@@ -391,11 +403,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Invitation>.Failure("Error"))
                 .Verifiable();
 
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await invitationController.SendInvitationAsync(
@@ -423,11 +437,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Invitation>())
                 .Verifiable();
 
-            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            invitationController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var invitationController = new InvitationsController(mockInvitationService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await invitationController.SendInvitationAsync(

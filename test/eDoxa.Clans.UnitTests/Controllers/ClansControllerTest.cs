@@ -12,10 +12,10 @@ using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Clans.TestHelper.Mocks;
 using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -43,11 +43,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Clan>.Failure("Test error"))
                 .Verifiable();
 
-            var clansController = new ClansController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clansController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clansController = new ClansController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             var request = new CreateClanRequest
             {
@@ -74,11 +76,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Clan>())
                 .Verifiable();
 
-            var clansController = new ClansController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clansController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clansController = new ClansController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             var request = new CreateClanRequest
             {

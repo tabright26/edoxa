@@ -12,9 +12,9 @@ using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Clans.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -100,11 +100,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Member>.Failure("Error"))
                 .Verifiable();
 
-            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanMemberController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await clanMemberController.KickMemberFromClanAsync(new ClanId(), new MemberId());
@@ -128,11 +130,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Member>())
                 .Verifiable();
 
-            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanMemberController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await clanMemberController.KickMemberFromClanAsync(new ClanId(), new MemberId());
@@ -157,11 +161,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Member>())
                 .Verifiable();
 
-            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanMemberController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await clanMemberController.KickMemberFromClanAsync(new ClanId(), new MemberId());
@@ -186,11 +192,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Clan>.Failure("Error"))
                 .Verifiable();
 
-            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanMemberController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await clanMemberController.LeaveClanAsync(new ClanId());
@@ -215,11 +223,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Clan>())
                 .Verifiable();
 
-            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanMemberController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await clanMemberController.LeaveClanAsync(new ClanId());
@@ -244,11 +254,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Clan>())
                 .Verifiable();
 
-            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            clanMemberController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var clanMemberController = new ClanMembersController(mockClanService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await clanMemberController.LeaveClanAsync(new ClanId());

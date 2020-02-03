@@ -12,10 +12,10 @@ using eDoxa.Clans.Domain.Models;
 using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
-using eDoxa.Clans.TestHelper.Mocks;
 using eDoxa.Grpc.Protos.Clans.Requests;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -47,11 +47,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Candidature>.Failure("Error"))
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.AcceptCandidatureAsync(new CandidatureId());
@@ -78,11 +80,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.AcceptCandidatureAsync(new CandidatureId());
@@ -109,11 +113,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.AcceptCandidatureAsync(new CandidatureId());
@@ -140,11 +146,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Candidature>.Failure("Error"))
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.DeclineCandidatureAsync(new CandidatureId());
@@ -171,11 +179,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.DeclineCandidatureAsync(new CandidatureId());
@@ -202,11 +212,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.DeclineCandidatureAsync(new CandidatureId());
@@ -392,11 +404,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(DomainValidationResult<Candidature>.Failure("Error"))
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.SendCandidatureAsync(
@@ -422,11 +436,13 @@ namespace eDoxa.Clans.UnitTests.Controllers
                 .ReturnsAsync(new DomainValidationResult<Candidature>())
                 .Verifiable();
 
-            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper);
-
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            candidatureController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var candidatureController = new CandidaturesController(mockCandidatureService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await candidatureController.SendCandidatureAsync(

@@ -9,11 +9,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Application.Converters;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
+using eDoxa.Seedwork.Application.Json.Extensions;
 
 namespace eDoxa.Seedwork.TestHelper.Extensions
 {
@@ -21,19 +17,9 @@ namespace eDoxa.Seedwork.TestHelper.Extensions
     {
         public static async Task<T> ReadAsJsonAsync<T>(this HttpContent httpContent)
         {
-            var formatter = new JsonMediaTypeFormatter
-            {
-                SerializerSettings =
-                {
-                    ContractResolver = new CamelCasePropertyNamesContractResolver(),
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                }
-            };
+            var formatter = new JsonMediaTypeFormatter();
 
-            formatter.SerializerSettings.Converters.Add(new StringEnumConverter());
-            formatter.SerializerSettings.Converters.Add(new DecimalValueConverter());
-            formatter.SerializerSettings.Converters.Add(new TimestampConverter());
-            formatter.SerializerSettings.Converters.Add(new DurationConverter());
+            formatter.SerializerSettings.IncludeCustomConverters();
 
             return await httpContent.ReadAsAsync<T>(
                 new List<MediaTypeFormatter>
