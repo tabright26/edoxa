@@ -5,6 +5,11 @@ import Update from ".";
 import { configureStore } from "store";
 import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";
+import {
+  findFieldByName,
+  findSubmitButton,
+  findCancelButton
+} from "utils/test/helpers";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -32,25 +37,25 @@ describe("<UserPhoneUpdateForm />", () => {
   describe("defines phone update form fields", () => {
     it("renders number field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("number");
+      const field = findFieldByName(wrapper, "number");
 
       expect(field.prop("type")).toBe("text");
-      expect(field.prop("label")).toBe("Phone Number");
+      expect(field.prop("placeholder")).toBe("Phone Number");
       expect(field.prop("formGroup")).toBe(FormGroup);
       expect(field.prop("component")).toBe(Input.Text);
     });
 
-    it("renders save button", () => {
+    it("renders submit button", () => {
       const wrapper = createWrapper();
-      const saveButton = wrapper.findSaveButton();
+      const submitButton = findSubmitButton(wrapper);
 
-      expect(saveButton.prop("type")).toBe("submit");
-      expect(saveButton.text()).toBe("Save");
+      expect(submitButton.prop("type")).toBe("submit");
+      expect(submitButton.text()).toBe("Save");
     });
 
     it("renders cancel button", () => {
       const wrapper = createWrapper();
-      const cancelButton = wrapper.findCancelButton();
+      const cancelButton = findCancelButton(wrapper);
 
       expect(cancelButton.prop("type")).toBe("button");
       expect(cancelButton.text()).toBe("Cancel");

@@ -8,6 +8,11 @@ import {
   StaticOptionsActions,
   LOAD_CASHIER_STATIC_OPTIONS_SUCCESS
 } from "store/actions/static/types";
+import {
+  findFieldByName,
+  findSubmitButton,
+  findCancelButton
+} from "utils/test/helpers";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -43,14 +48,15 @@ const action: StaticOptionsActions = {
             deprecated: false
           }
         ]
-      }
+      },
+      promotion: {}
     }
   }
 };
 
 store.dispatch<any>(action);
 
-const createWrapper = (): ReactWrapper | any => {
+const createWrapper = (): ReactWrapper => {
   return mount(
     <Provider store={store}>
       <Deposit
@@ -79,22 +85,22 @@ describe("<UserAccountDepositForm />", () => {
   describe("defines account deposit form fields", () => {
     it("renders transactionBundleId field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("transactionBundleId");
+      const field = findFieldByName(wrapper, "bundleId");
 
       expect(field.prop("type")).toBe("radio");
     });
 
-    it("renders save button", () => {
+    it("renders submit button", () => {
       const wrapper = createWrapper();
-      const saveButton = wrapper.findSaveButton();
+      const submitButton = findSubmitButton(wrapper);
 
-      expect(saveButton.prop("type")).toBe("submit");
-      expect(saveButton.text()).toBe("Save");
+      expect(submitButton.prop("type")).toBe("submit");
+      expect(submitButton.text()).toBe("Confirm");
     });
 
     it("renders cancel button", () => {
       const wrapper = createWrapper();
-      const cancelButton = wrapper.findCancelButton();
+      const cancelButton = findCancelButton(wrapper);
 
       expect(cancelButton.prop("type")).toBe("button");
       expect(cancelButton.text()).toBe("Cancel");

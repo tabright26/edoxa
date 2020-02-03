@@ -10,6 +10,12 @@ import {
   PROFILE_LAST_NAME_REQUIRED,
   PROFILE_LAST_NAME_INVALID
 } from "utils/form/validators";
+import {
+  findFieldByName,
+  findSubmitButton,
+  findInputByName,
+  findFormFeedback
+} from "utils/test/helpers";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -40,37 +46,26 @@ describe("<UserInformationCreateForm />", () => {
       ["lastName", "Last Name"]
     ])("renders name fields", (name: string, label: string) => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName(name);
+      const field = findFieldByName(wrapper, name);
 
-      expect(field.prop("label")).toBe(label);
+      expect(field.prop("placeholder")).toBe(label);
       expect(field.prop("component")).toBe(Input.Text);
     });
 
-    test.each([["year"], ["month"], ["day"]])(
-      "renders dob fields",
-      (name: string) => {
-        const wrapper = createWrapper();
-        const field = wrapper.findFieldByName(name);
-
-        expect(field.prop("type")).toBe("select");
-        expect(field.prop("component")).toBe(Input.Select);
-      }
-    );
-
     it("renders gender field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("gender");
+      const field = findFieldByName(wrapper, "gender");
 
       expect(field.prop("type")).toBe("select");
       expect(field.prop("component")).toBe(Input.Select);
     });
 
-    it("renders save button", () => {
+    it("renders submit button", () => {
       const wrapper = createWrapper();
-      const saveButton = wrapper.findSaveButton();
+      const submitButton = findSubmitButton(wrapper);
 
-      expect(saveButton.prop("type")).toBe("submit");
-      expect(saveButton.text()).toBe("Save");
+      expect(submitButton.prop("type")).toBe("submit");
+      expect(submitButton.text()).toBe("Save");
     });
   });
 
@@ -81,10 +76,10 @@ describe("<UserInformationCreateForm />", () => {
         ["lastName", PROFILE_LAST_NAME_REQUIRED]
       ])("name fields blank validation", (name: string, message: string) => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName(name);
+        const input = findInputByName(wrapper, name);
         input.simulate("blur");
 
-        const errorPresent = wrapper.findFormFeedback(message);
+        const errorPresent = findFormFeedback(wrapper, message);
         expect(errorPresent).toBeTruthy();
       });
 
@@ -93,10 +88,10 @@ describe("<UserInformationCreateForm />", () => {
         ["lastName", PROFILE_LAST_NAME_INVALID]
       ])("name fields invalid validation", (name: string, message: string) => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName(name);
+        const input = findInputByName(wrapper, name);
         input.simulate("change", { target: { value: "_123" } });
 
-        const errorPresent = wrapper.findFormFeedback(message);
+        const errorPresent = findFormFeedback(wrapper, message);
         expect(errorPresent).toBeTruthy();
       });
     });
