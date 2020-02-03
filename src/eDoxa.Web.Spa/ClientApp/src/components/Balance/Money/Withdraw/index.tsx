@@ -16,7 +16,7 @@ const Withdraw: FunctionComponent<Props> = ({ account: { data } }) => (
     transactionType={TRANSACTION_TYPE_WITHDRAWAL}
     currency={CURRENCY_TYPE_MONEY}
     disabled={data === null ? true : !data.enabled}
-    title="WITHDRAL (MONEY)"
+    title="WITHDRAW (MONEY)"
     description="We withdraw the money from your cashier and deposit it in your bank account for your personal usage."
   >
     Withdraw
