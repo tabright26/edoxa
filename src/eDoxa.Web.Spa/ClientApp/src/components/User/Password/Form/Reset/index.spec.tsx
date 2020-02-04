@@ -4,8 +4,14 @@ import { ReactWrapper } from "enzyme";
 import Reset from ".";
 import { configureStore } from "store";
 import Input from "components/Shared/Input";
-import { EMAIL_REQUIRED, EMAIL_INVALID } from "utils/form/validators";
+import { EMAIL_REQUIRED } from "utils/form/validators";
 import { MemoryRouter } from "react-router-dom";
+import {
+  findFieldByName,
+  findSubmitButton,
+  findInputByName,
+  findFormFeedback
+} from "utils/test/helpers";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -31,34 +37,34 @@ describe("<UserPasswordResetForm />", () => {
   describe("defines password reset form fields", () => {
     it("renders email field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("email");
+      const field = findFieldByName(wrapper, "email");
 
       expect(field.prop("type")).toBe("text");
-      expect(field.prop("label")).toBe("Email");
+      expect(field.prop("placeholder")).toBe("Email");
       expect(field.prop("component")).toBe(Input.Text);
     });
 
     it("renders password field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("password");
+      const field = findFieldByName(wrapper, "password");
 
       expect(field.prop("type")).toBe("password");
-      expect(field.prop("label")).toBe("New password");
+      expect(field.prop("placeholder")).toBe("New password");
       expect(field.prop("component")).toBe(Input.Password);
     });
 
     it("renders confirmPassword field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("confirmPassword");
+      const field = findFieldByName(wrapper, "confirmPassword");
 
       expect(field.prop("type")).toBe("password");
-      expect(field.prop("label")).toBe("Confirm new password");
+      expect(field.prop("placeholder")).toBe("Confirm new password");
       expect(field.prop("component")).toBe(Input.Password);
     });
 
     it("renders submit button", () => {
       const wrapper = createWrapper();
-      const submitButton = wrapper.findSubmitButton();
+      const submitButton = findSubmitButton(wrapper);
 
       expect(submitButton.prop("type")).toBe("submit");
       expect(submitButton.text()).toBe("Reset");
@@ -69,19 +75,10 @@ describe("<UserPasswordResetForm />", () => {
     describe("email validation", () => {
       it("shows error when email is set to blank", () => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName("email");
+        const input = findInputByName(wrapper, "email");
         input.simulate("blur");
 
-        const errorPresent = wrapper.findFormFeedback(EMAIL_REQUIRED);
-        expect(errorPresent).toBeTruthy();
-      });
-
-      it("shows error when email is set to invalid", () => {
-        const wrapper = createWrapper();
-        const input = wrapper.findInputByName("email");
-        input.simulate("change", { target: { value: "invalid" } });
-
-        const errorPresent = wrapper.findFormFeedback(EMAIL_INVALID);
+        const errorPresent = findFormFeedback(wrapper, EMAIL_REQUIRED);
         expect(errorPresent).toBeTruthy();
       });
     });

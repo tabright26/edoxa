@@ -8,6 +8,13 @@ import {
   PROFILE_FIRST_NAME_REQUIRED,
   PROFILE_FIRST_NAME_INVALID
 } from "utils/form/validators";
+import {
+  findFieldByName,
+  findSubmitButton,
+  findCancelButton,
+  findInputByName,
+  findFormFeedback
+} from "utils/test/helpers";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -35,23 +42,23 @@ describe("<UserInformationUpdateForm />", () => {
   describe("defines information update form fields", () => {
     it("renders firstName field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("firstName");
+      const field = findFieldByName(wrapper, "firstName");
 
-      expect(field.prop("label")).toBe("First Name");
+      expect(field.prop("placeholder")).toBe("First Name");
       expect(field.prop("component")).toBe(Input.Text);
     });
 
-    it("renders save button", () => {
+    it("renders submit button", () => {
       const wrapper = createWrapper();
-      const saveButton = wrapper.findSaveButton();
+      const submitButton = findSubmitButton(wrapper);
 
-      expect(saveButton.prop("type")).toBe("submit");
-      expect(saveButton.text()).toBe("Save");
+      expect(submitButton.prop("type")).toBe("submit");
+      expect(submitButton.text()).toBe("Save");
     });
 
     it("renders cancel button", () => {
       const wrapper = createWrapper();
-      const cancelButton = wrapper.findCancelButton();
+      const cancelButton = findCancelButton(wrapper);
 
       expect(cancelButton.prop("type")).toBe("button");
       expect(cancelButton.text()).toBe("Cancel");
@@ -62,10 +69,11 @@ describe("<UserInformationUpdateForm />", () => {
     describe("firstName validation", () => {
       it("shows error when firstName is set to blank", () => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName("firstName");
+        const input = findInputByName(wrapper, "firstName");
         input.simulate("blur");
 
-        const errorPresent = wrapper.findFormFeedback(
+        const errorPresent = findFormFeedback(
+          wrapper,
           PROFILE_FIRST_NAME_REQUIRED
         );
         expect(errorPresent).toBeTruthy();
@@ -73,10 +81,11 @@ describe("<UserInformationUpdateForm />", () => {
 
       it("shows error when firstName is set to invalid", () => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName("firstName");
+        const input = findInputByName(wrapper, "firstName");
         input.simulate("change", { target: { value: "_123" } });
 
-        const errorPresent = wrapper.findFormFeedback(
+        const errorPresent = findFormFeedback(
+          wrapper,
           PROFILE_FIRST_NAME_INVALID
         );
         expect(errorPresent).toBeTruthy();

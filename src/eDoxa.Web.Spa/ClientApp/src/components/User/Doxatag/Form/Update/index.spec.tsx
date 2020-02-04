@@ -1,7 +1,7 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { ReactWrapper } from "enzyme";
-import Update from ".";
+import Update from "./index";
 import { configureStore } from "store";
 import { FormGroup } from "reactstrap";
 import Input from "components/Shared/Input";
@@ -11,6 +11,14 @@ import {
   DOXATAG_MIN_LENGTH_INVALID,
   DOXATAG_MAX_LENGTH_INVALID
 } from "utils/form/validators";
+
+import {
+  findFieldByName,
+  findSubmitButton,
+  findCancelButton,
+  findInputByName,
+  findFormFeedback
+} from "utils/test/helpers";
 
 const shallow = global["shallow"];
 const mount = global["mount"];
@@ -38,18 +46,17 @@ describe("<UserDoxatagUpdateForm />", () => {
   describe("defines doxatag update form fields", () => {
     it("renders name field", () => {
       const wrapper = createWrapper();
-      const field = wrapper.findFieldByName("name");
+      const field = findFieldByName(wrapper, "name");
 
       expect(field.prop("type")).toBe("text");
-      expect(field.prop("label")).toBe("DoxaTag");
+      expect(field.prop("placeholder")).toBe("Name");
       expect(field.prop("formGroup")).toBe(FormGroup);
       expect(field.prop("component")).toBe(Input.Text);
     });
 
-    it("renders save button", () => {
+    it("renders submit button", () => {
       const wrapper = createWrapper();
-      const saveButton = wrapper.find("SaveButton").first();
-      const button = saveButton.find("button").first();
+      const button = findSubmitButton(wrapper);
 
       expect(button.prop("type")).toBe("submit");
       expect(button.text()).toBe("Save");
@@ -57,8 +64,7 @@ describe("<UserDoxatagUpdateForm />", () => {
 
     it("renders cancel button", () => {
       const wrapper = createWrapper();
-      const cancelButton = wrapper.find("CancelButton").first();
-      const button = cancelButton.find("button").first();
+      const button = findCancelButton(wrapper);
 
       expect(button.prop("type")).toBe("button");
       expect(button.text()).toBe("Cancel");
@@ -69,19 +75,20 @@ describe("<UserDoxatagUpdateForm />", () => {
     describe("name validation", () => {
       it("shows error when name is set to blank", () => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName("name");
+        const input = findInputByName(wrapper, "name");
         input.simulate("blur");
 
-        const errorPresent = wrapper.findFormFeedback(DOXATAG_REQUIRED);
+        const errorPresent = findFormFeedback(wrapper, DOXATAG_REQUIRED);
         expect(errorPresent).toBeTruthy();
       });
 
       it("shows error when name is not long enough", () => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName("name");
+        const input = findInputByName(wrapper, "name");
         input.simulate("change", { target: { value: "_" } });
 
-        const errorPresent = wrapper.findFormFeedback(
+        const errorPresent = findFormFeedback(
+          wrapper,
           DOXATAG_MIN_LENGTH_INVALID
         );
         expect(errorPresent).toBeTruthy();
@@ -89,10 +96,11 @@ describe("<UserDoxatagUpdateForm />", () => {
 
       it("shows error when name is too long", () => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName("name");
+        const input = findInputByName(wrapper, "name");
         input.simulate("change", { target: { value: "_Doxatag_Test_1234" } });
 
-        const errorPresent = wrapper.findFormFeedback(
+        const errorPresent = findFormFeedback(
+          wrapper,
           DOXATAG_MAX_LENGTH_INVALID
         );
         expect(errorPresent).toBeTruthy();
@@ -100,10 +108,10 @@ describe("<UserDoxatagUpdateForm />", () => {
 
       it("shows error when name is set to invalid", () => {
         const wrapper = createWrapper();
-        const input = wrapper.findInputByName("name");
+        const input = findInputByName(wrapper, "name");
         input.simulate("change", { target: { value: "_123" } });
 
-        const errorPresent = wrapper.findFormFeedback(DOXATAG_INVALID);
+        const errorPresent = findFormFeedback(wrapper, DOXATAG_INVALID);
         expect(errorPresent).toBeTruthy();
       });
     });
