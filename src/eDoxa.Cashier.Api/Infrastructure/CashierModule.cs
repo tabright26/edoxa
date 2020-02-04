@@ -25,9 +25,6 @@ namespace eDoxa.Cashier.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // Cleaner
-            builder.RegisterType<CashierDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             // Seeder
             builder.RegisterType<CashierDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 

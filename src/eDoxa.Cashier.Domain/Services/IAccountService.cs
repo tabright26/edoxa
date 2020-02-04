@@ -25,7 +25,7 @@ namespace eDoxa.Cashier.Domain.Services
             bool includeDisabled = false
         );
 
-        Task<IDomainValidationResult> CreateAccountAsync(UserId userId);
+        Task<DomainValidationResult<IAccount>> CreateAccountAsync(UserId userId);
 
         Task<IAccount> FindAccountAsync(UserId userId);
 
@@ -33,14 +33,14 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<bool> AccountExistsAsync(UserId userId);
 
-        Task<IDomainValidationResult> CreateTransactionAsync(
+        Task<DomainValidationResult<ITransaction>> CreateTransactionAsync(
             IAccount account,
             int bundleId,
             TransactionMetadata? metadata = null,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> CreateTransactionAsync(
+        Task<DomainValidationResult<ITransaction>> CreateTransactionAsync(
             IAccount account,
             decimal amount,
             CurrencyType currencyType,
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Domain.Services
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> CreateTransactionAsync(
+        Task<DomainValidationResult<ITransaction>> CreateTransactionAsync(
             IAccount account,
             Currency currency,
             TransactionType type,
@@ -59,37 +59,37 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<ITransaction?> FindAccountTransactionAsync(IAccount account, TransactionId transactionId);
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsSucceededAsync(
+        Task<DomainValidationResult<ITransaction>> MarkAccountTransactionAsSucceededAsync(
             IAccount account,
             TransactionId transactionId,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(
+        Task<DomainValidationResult<ITransaction>> MarkAccountTransactionAsFailedAsync(
             IAccount account,
             TransactionId transactionId,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(
+        Task<DomainValidationResult<ITransaction>> MarkAccountTransactionAsCanceledAsync(
             IAccount account,
             TransactionId transactionId,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsSucceededAsync(
+        Task<DomainValidationResult<ITransaction>> MarkAccountTransactionAsSucceededAsync(
             IAccount account,
             TransactionMetadata metadata,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsFailedAsync(
+        Task<DomainValidationResult<ITransaction>> MarkAccountTransactionAsFailedAsync(
             IAccount account,
             TransactionMetadata metadata,
             CancellationToken cancellationToken = default
         );
 
-        Task<IDomainValidationResult> MarkAccountTransactionAsCanceledAsync(
+        Task<DomainValidationResult<ITransaction>> MarkAccountTransactionAsCanceledAsync(
             IAccount account,
             TransactionMetadata metadata,
             CancellationToken cancellationToken = default

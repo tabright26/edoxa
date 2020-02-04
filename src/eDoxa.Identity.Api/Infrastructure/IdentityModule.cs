@@ -19,9 +19,6 @@ namespace eDoxa.Identity.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // Cleaner
-            builder.RegisterType<IdentityDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             // Seeder
             builder.RegisterType<IdentityDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 

@@ -6,6 +6,7 @@
 
 using System.Threading.Tasks;
 
+using eDoxa.Payment.Domain.Stripe.AggregateModels.StripeAggregate;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 
@@ -13,7 +14,7 @@ namespace eDoxa.Payment.Domain.Stripe.Services
 {
     public interface IStripeService
     {
-        Task<IDomainValidationResult> CreateAsync(UserId userId, string customerId, string accountId);
+        Task<DomainValidationResult<StripeReference>> CreateAsync(UserId userId, string customerId, string accountId);
 
         Task<bool> UserExistsAsync(UserId userId);
     }

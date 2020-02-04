@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Cashier.Api.IntegrationEvents.Handlers;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Services;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Challenges.Dtos;
@@ -46,23 +45,22 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             var account = new Account(userId);
             var parcipipantId = new ParticipantId();
 
-            var mockAccountService = new Mock<IAccountService>();
             var mockLogger = new MockLogger<RegisterChallengeParticipantFailedIntegrationEventHandler>();
 
-            mockAccountService.Setup(accountService => accountService.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            TestMock.AccountService.Setup(accountService => accountService.AccountExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
+            TestMock.AccountService.Setup(accountService => accountService.FindAccountAsync(It.IsAny<UserId>())).ReturnsAsync(account).Verifiable();
 
-            mockAccountService
+            TestMock.AccountService
                 .Setup(
                     accountService => accountService.MarkAccountTransactionAsCanceledAsync(
                         It.IsAny<IAccount>(),
                         It.IsAny<TransactionMetadata>(),
                         It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DomainValidationResult())
+                .ReturnsAsync(new DomainValidationResult<ITransaction>())
                 .Verifiable();
 
-            var handler = new RegisterChallengeParticipantFailedIntegrationEventHandler(mockAccountService.Object, mockLogger.Object);
+            var handler = new RegisterChallengeParticipantFailedIntegrationEventHandler(TestMock.AccountService.Object, mockLogger.Object);
 
             var integrationEvent = new RegisterChallengeParticipantFailedIntegrationEvent
             {
@@ -96,10 +94,10 @@ namespace eDoxa.Cashier.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockAccountService.Verify(accountService => accountService.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.AccountService.Verify(accountService => accountService.AccountExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.AccountService.Verify(accountService => accountService.FindAccountAsync(It.IsAny<UserId>()), Times.Once);
 
-            mockAccountService.Verify(
+            TestMock.AccountService.Verify(
                 accountService => accountService.MarkAccountTransactionAsCanceledAsync(
                     It.IsAny<IAccount>(),
                     It.IsAny<TransactionMetadata>(),

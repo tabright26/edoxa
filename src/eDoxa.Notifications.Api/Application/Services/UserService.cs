@@ -40,9 +40,9 @@ namespace eDoxa.Notifications.Api.Application.Services
             return await _userRepository.FindUserAsync(userId);
         }
 
-        public async Task<IDomainValidationResult> CreateUserAsync(UserId userId, string email)
+        public async Task<DomainValidationResult<User>> CreateUserAsync(UserId userId, string email)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<User>();
 
             if (result.IsValid)
             {
@@ -52,15 +52,15 @@ namespace eDoxa.Notifications.Api.Application.Services
 
                 await _userRepository.UnitOfWork.CommitAsync();
 
-                result.AddEntityToMetadata(user);
+                return user;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> UpdateUserAsync(User user, string email)
+        public async Task<DomainValidationResult<User>> UpdateUserAsync(User user, string email)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<User>();
 
             if (result.IsValid)
             {
@@ -68,7 +68,7 @@ namespace eDoxa.Notifications.Api.Application.Services
 
                 await _userRepository.UnitOfWork.CommitAsync();
 
-                result.AddEntityToMetadata(user);
+                return user;
             }
 
             return result;

@@ -6,7 +6,7 @@ import Item from ".";
 import { ChallengesState } from "store/root/challenge/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const challenges: ChallengesState = {
     data: [
       {
@@ -27,8 +27,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "123",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+          prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []
         }
       },
@@ -50,8 +50,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "456",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: "token", amount: 0 },
+          prizePool: { type: "token", amount: 200000 },
           buckets: []
         }
       },
@@ -73,8 +73,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "678",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: "token", amount: 0 },
+          prizePool: { type: "token", amount: 200000 },
           buckets: []
         }
       }
@@ -97,7 +97,7 @@ it("renders without crashing", () => {
 
   const challenge = challenges.data.find(challenge => challenge.id === "123");
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -108,6 +108,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

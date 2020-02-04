@@ -12,13 +12,17 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Notifications.Api.Infrastructure;
+using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
+using eDoxa.Notifications.Domain.Services;
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -178,9 +182,13 @@ namespace eDoxa.Notifications.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule<NotificationsModule>();
+
+            builder.RegisterType<NotificationsDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
             builder.RegisterMockServiceBusModule();
 
-            builder.RegisterModule<NotificationsModule>();
+            builder.RegisterMock<IEmailService>();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

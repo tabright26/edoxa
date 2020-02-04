@@ -1,8 +1,8 @@
 ﻿// Filename: GameAuthenticationsController.cs
-// Date Created: 2019-11-20
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -50,9 +50,7 @@ namespace eDoxa.Games.Api.Controllers
 
             if (result.IsValid)
             {
-                var authentication = await _gameAuthenticationService.FindAuthenticationAsync(userId, game);
-
-                return this.Ok(authentication.Factor); // TODO: NOT STANDARD.
+                return this.Ok(result.Response);
             }
 
             result.AddToModelState(ModelState);
@@ -72,9 +70,7 @@ namespace eDoxa.Games.Api.Controllers
 
             if (result.IsValid)
             {
-                var credential = await _gameCredentialService.FindCredentialAsync(userId, game);
-
-                return this.Ok(_mapper.Map<GameCredentialDto>(credential));
+                return this.Ok(_mapper.Map<GameCredentialDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);

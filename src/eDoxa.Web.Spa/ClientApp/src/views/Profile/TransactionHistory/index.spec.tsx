@@ -12,7 +12,7 @@ import {
 } from "types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const transactionHistory: UserTransactionState = {
     data: [
       {
@@ -67,7 +67,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -76,6 +76,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

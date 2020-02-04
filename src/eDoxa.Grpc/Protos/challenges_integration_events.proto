@@ -19,6 +19,6 @@ message RegisterChallengeParticipantFailedIntegrationEvent {
   ParticipantDto participant = 1;
 }
 
-message ChallengeStartedntegrationEvent {
+message ChallengeStartedIntegrationEvent {
   ChallengeDto challenge = 1;
 }

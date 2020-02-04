@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Games.Domain.AggregateModels.GameAggregate;
@@ -15,11 +14,9 @@ namespace eDoxa.Games.Domain.Services
 {
     public interface IGameCredentialService
     {
-        Task<IDomainValidationResult> LinkCredentialAsync(UserId userId, Game game);
+        Task<DomainValidationResult<Credential>> LinkCredentialAsync(UserId userId, Game game);
 
-        Task<IDomainValidationResult> UnlinkCredentialAsync(Credential credential);
-
-        Task<IReadOnlyCollection<Credential>> FetchCredentialsAsync(UserId userId);
+        Task<DomainValidationResult<Credential>> UnlinkCredentialAsync(Credential credential);
 
         Task<Credential?> FindCredentialAsync(UserId userId, Game game);
 

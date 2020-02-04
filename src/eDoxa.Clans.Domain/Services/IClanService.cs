@@ -4,7 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -21,13 +20,13 @@ namespace eDoxa.Clans.Domain.Services
 
         Task<Clan?> FindClanAsync(ClanId clanId);
 
-        Task<IDomainValidationResult> CreateClanAsync(UserId userId, string name);
+        Task<DomainValidationResult<Clan>> CreateClanAsync(UserId userId, string name);
 
-        Task<IDomainValidationResult> UpdateClanAsync(Clan clan, UserId userId, string? summary);
+        Task<DomainValidationResult<Clan>> UpdateClanAsync(Clan clan, UserId userId, string? summary);
 
         Task<Stream> DownloadLogoAsync(Clan clan);
 
-        Task<IDomainValidationResult> UploadLogoAsync(
+        Task<DomainValidationResult<object>> UploadLogoAsync(
             Clan clan,
             UserId userId,
             Stream stream,
@@ -36,20 +35,15 @@ namespace eDoxa.Clans.Domain.Services
 
         Task DeleteLogoAsync(ClanId clanId);
 
-        /// <remarks>
-        ///     This method is called by domain event and should never fail. If something fails in the domain event handler,
-        ///     an exception must be thrown to inform the developer that something is not working properly.
-        /// </remarks>
-        /// <exception cref="InvalidOperationException"></exception>
         Task AddMemberToClanAsync(ClanId clanId, IMemberInfo memberInfo);
 
         Task<IReadOnlyCollection<Member>> FetchMembersAsync(Clan clan);
 
         Task<Member?> FindMemberAsync(Clan clan, MemberId memberId);
 
-        Task<IDomainValidationResult> KickMemberFromClanAsync(Clan clan, UserId userId, MemberId memberId);
+        Task<DomainValidationResult<Member>> KickMemberFromClanAsync(Clan clan, UserId userId, MemberId memberId);
 
-        Task<IDomainValidationResult> LeaveClanAsync(Clan clan, UserId userId);
+        Task<DomainValidationResult<Clan>> LeaveClanAsync(Clan clan, UserId userId);
 
         Task<bool> IsMemberAsync(UserId userId);
 
@@ -57,11 +51,11 @@ namespace eDoxa.Clans.Domain.Services
 
         Task<IReadOnlyCollection<Member>> FetchDivisionMembersAsync(DivisionId divisionId);
 
-        Task<IDomainValidationResult> CreateDivisionAsync(Clan clan, UserId userId, string name, string description);
+        Task<DomainValidationResult<Division>> CreateDivisionAsync(Clan clan, UserId userId, string name, string description);
 
-        Task<IDomainValidationResult> DeleteDivisionAsync(Clan clan, UserId userId, DivisionId divisionId);
+        Task<DomainValidationResult<Division>> DeleteDivisionAsync(Clan clan, UserId userId, DivisionId divisionId);
 
-        Task<IDomainValidationResult> UpdateDivisionAsync(
+        Task<DomainValidationResult<Division>> UpdateDivisionAsync(
             Clan clan,
             UserId userId,
             DivisionId divisionId,
@@ -69,8 +63,8 @@ namespace eDoxa.Clans.Domain.Services
             string description
         );
 
-        Task<IDomainValidationResult> AddMemberToDivisionAsync(Clan clan, UserId userId, DivisionId divisionId, MemberId memberId);
+        Task<DomainValidationResult<Member>> AddMemberToDivisionAsync(Clan clan, UserId userId, DivisionId divisionId, MemberId memberId);
 
-        Task<IDomainValidationResult> RemoveMemberFromDivisionAsync(Clan clan, UserId userId, DivisionId divisionId, MemberId memberId);
+        Task<DomainValidationResult<Member>> RemoveMemberFromDivisionAsync(Clan clan, UserId userId, DivisionId divisionId, MemberId memberId);
     }
 }

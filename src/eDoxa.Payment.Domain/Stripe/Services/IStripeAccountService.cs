@@ -30,7 +30,7 @@ namespace eDoxa.Payment.Domain.Stripe.Services
             int year
         );
 
-        Task<IDomainValidationResult> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
+        Task<DomainValidationResult<Account>> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
 
         Task<bool> HasAccountVerifiedAsync(string accountId);
     }

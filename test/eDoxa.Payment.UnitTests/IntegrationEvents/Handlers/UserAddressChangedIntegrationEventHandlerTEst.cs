@@ -35,19 +35,17 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenUserAddressChangedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockStripeService = new Mock<IStripeService>();
-            var mockAccountService = new Mock<IStripeAccountService>();
             var mockLogger = new MockLogger<UserAddressChangedIntegrationEventHandler>();
 
-            mockStripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
+            TestMock.StripeService.Setup(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true);
 
-            mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("ConnectAccountId").Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
-                .ReturnsAsync(new DomainValidationResult())
+            TestMock.StripeAccountService.Setup(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()))
+                .ReturnsAsync(new DomainValidationResult<Account>())
                 .Verifiable();
 
-            var handler = new UserAddressChangedIntegrationEventHandler(mockStripeService.Object, mockAccountService.Object, mockLogger.Object);
+            var handler = new UserAddressChangedIntegrationEventHandler(TestMock.StripeService.Object, TestMock.StripeAccountService.Object, mockLogger.Object);
 
             var integrationEvent = new UserAddressChangedIntegrationEvent
             {
@@ -64,9 +62,9 @@ namespace eDoxa.Payment.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockStripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
+            TestMock.StripeService.Verify(stripeService => stripeService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.UpdateIndividualAsync(It.IsAny<string>(), It.IsAny<PersonUpdateOptions>()), Times.Once);
             mockLogger.Verify(Times.Once());
         }
     }

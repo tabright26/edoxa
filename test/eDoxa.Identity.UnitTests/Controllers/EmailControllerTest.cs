@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 
@@ -37,13 +36,11 @@ namespace eDoxa.Identity.UnitTests.Controllers
         public async Task ConfirmEmailAsync_ShouldBeNotFoundObjectResult()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>())).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>())).Verifiable();
-
-            var controller = new EmailController(mockUserManager.Object, TestMapper);
+            var controller = new EmailController(TestMock.UserService.Object, TestMapper);
 
             // Act
             var result = await controller.ConfirmEmailAsync(Guid.NewGuid().ToString(), "code");
@@ -51,9 +48,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
+            TestMock.UserService.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
@@ -67,15 +64,13 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 EmailConfirmed = true
             };
 
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
+            TestMock.UserService.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            var controller = new EmailController(mockUserManager.Object, TestMapper);
+            var controller = new EmailController(TestMock.UserService.Object, TestMapper);
 
             // Act
             var result = await controller.ConfirmEmailAsync(user.Id.ToString(), "code");
@@ -83,9 +78,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -97,15 +92,13 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByIdAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
+            TestMock.UserService.Setup(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Failed())
                 .Verifiable();
 
-            var controller = new EmailController(mockUserManager.Object, TestMapper);
+            var controller = new EmailController(TestMock.UserService.Object, TestMapper);
 
             // Act
             var result = new Func<Task>(async () => await controller.ConfirmEmailAsync(Guid.NewGuid().ToString(), "code"));
@@ -113,9 +106,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().Throw<InvalidOperationException>();
 
-            mockUserManager.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.FindByIdAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.ConfirmEmailAsync(It.IsAny<User>(), It.IsAny<string>()), Times.Once);
         }
     }
 }

@@ -5,7 +5,7 @@ import Details from ".";
 import { ClansState } from "store/root/organization/clan/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const clan: ClansState = {
     data: [
       {
@@ -55,7 +55,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -68,6 +68,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

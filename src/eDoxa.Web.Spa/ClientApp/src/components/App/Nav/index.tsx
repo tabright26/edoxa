@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
-import MoneyBreadcrumb from "components/User/Balance/Money";
-import TokenBreadcrumb from "components/User/Balance/Token";
+import MoneyBreadcrumb from "components/Balance/Money";
+import TokenBreadcrumb from "components/Balance/Token";
 import { compose } from "recompose";
 import {
   withUserIsAuthenticated,

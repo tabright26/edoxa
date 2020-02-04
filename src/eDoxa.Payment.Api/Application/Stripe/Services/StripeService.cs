@@ -23,15 +23,19 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
             _stripeRepository = stripeRepository;
         }
 
-        public async Task<IDomainValidationResult> CreateAsync(UserId userId, string customerId, string accountId)
+        public async Task<DomainValidationResult<StripeReference>> CreateAsync(UserId userId, string customerId, string accountId)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<StripeReference>();
 
             if (result.IsValid)
             {
-                _stripeRepository.Create(new StripeReference(userId, customerId, accountId));
+                var reference = new StripeReference(userId, customerId, accountId);
+
+                _stripeRepository.Create(reference);
 
                 await _stripeRepository.UnitOfWork.CommitAsync();
+
+                return reference;
             }
 
             return result;

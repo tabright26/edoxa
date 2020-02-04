@@ -52,7 +52,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public static TheoryData<EnumCountryIsoCode, string> InvalidLine1Address =>
             new TheoryData<EnumCountryIsoCode, string>
             {
-                {EnumCountryIsoCode.CA, ""},
+                {EnumCountryIsoCode.CA, string.Empty},
                 {EnumCountryIsoCode.CA, "This_is_an_adress"}
             };
 
@@ -78,7 +78,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public static TheoryData<EnumCountryIsoCode, string> InvalidCities =>
             new TheoryData<EnumCountryIsoCode, string>
             {
-                {EnumCountryIsoCode.CA, ""},
+                {EnumCountryIsoCode.CA, string.Empty},
                 {EnumCountryIsoCode.CA, "123City"},
                 {EnumCountryIsoCode.CA, "OK_Test"}
             };
@@ -94,7 +94,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             new TheoryData<EnumCountryIsoCode, string>
             {
                 {EnumCountryIsoCode.CA, null},
-                {EnumCountryIsoCode.CA, ""},
+                {EnumCountryIsoCode.CA, string.Empty},
                 {EnumCountryIsoCode.CA, "123State"},
                 {EnumCountryIsoCode.CA, "OK_Test"}
             };

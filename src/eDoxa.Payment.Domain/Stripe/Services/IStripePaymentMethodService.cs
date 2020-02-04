@@ -18,7 +18,7 @@ namespace eDoxa.Payment.Domain.Stripe.Services
 
         Task<PaymentMethod> UpdatePaymentMethodAsync(string paymentMethodId, long expMonth, long expYear);
 
-        Task<IDomainValidationResult> AttachPaymentMethodAsync(string paymentMethodId, string customerId, bool defaultPaymentMethod = false);
+        Task<DomainValidationResult<PaymentMethod>> AttachPaymentMethodAsync(string paymentMethodId, string customerId, bool defaultPaymentMethod = false);
 
         Task<PaymentMethod> DetachPaymentMethodAsync(string paymentMethodId);
     }

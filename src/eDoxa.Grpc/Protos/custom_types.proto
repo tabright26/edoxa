@@ -36,3 +36,5 @@ enum FieldValidationRuleType {
   FIELD_VALIDATION_RULE_TYPE_MAX_LENGTH = 5;
   FIELD_VALIDATION_RULE_TYPE_ALL = -1;
 }
+
+message SendGridOptions {}

@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Application.Profiles;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
-using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.Domain.Services;
@@ -116,7 +115,7 @@ namespace eDoxa.Challenges.Api.Grpc.Services
             {
                 var response = new CreateChallengeResponse
                 {
-                    Challenge = ChallengeProfile.Map(result.GetEntityFromMetadata<IChallenge>())
+                    Challenge = ChallengeProfile.Map(result.Response)
                 };
 
                 return context.Ok(response);
@@ -142,7 +141,7 @@ namespace eDoxa.Challenges.Api.Grpc.Services
             {
                 var response = new SynchronizeChallengeResponse
                 {
-                    Challenge = ChallengeProfile.Map(result.GetEntityFromMetadata<IChallenge>())
+                    Challenge = ChallengeProfile.Map(result.Response)
                 };
 
                 return context.Ok(response);
@@ -180,7 +179,7 @@ namespace eDoxa.Challenges.Api.Grpc.Services
             {
                 var response = new RegisterChallengeParticipantResponse
                 {
-                    Participant = ChallengeProfile.Map(challenge, result.GetEntityFromMetadata<Participant>())
+                    Participant = ChallengeProfile.Map(challenge, result.Response)
                 };
 
                 return context.Ok(response);
@@ -225,7 +224,7 @@ namespace eDoxa.Challenges.Api.Grpc.Services
             {
                 var response = new SnapshotChallengeParticipantResponse
                 {
-                    Participant = ChallengeProfile.Map(challenge, result.GetEntityFromMetadata<Participant>())
+                    Participant = ChallengeProfile.Map(challenge, result.Response)
                 };
 
                 return context.Ok(response);

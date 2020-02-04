@@ -66,6 +66,8 @@ namespace eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate
             }
 
             Timeline = Timeline.Start(startedAt);
+
+            this.AddDomainEvent(new ChallengeStartedDomainEvent(this));
         }
 
         public void Register(Participant participant)

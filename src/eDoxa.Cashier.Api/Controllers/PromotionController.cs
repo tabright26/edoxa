@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Cashier.Domain.AggregateModels;
-using eDoxa.Cashier.Domain.AggregateModels.PromotionAggregate;
 using eDoxa.Cashier.Domain.Services;
 using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Requests;
@@ -71,7 +70,7 @@ namespace eDoxa.Cashier.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<PromotionDto>(result.GetEntityFromMetadata<Promotion>()));
+                return this.Ok(_mapper.Map<PromotionDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);
@@ -99,7 +98,7 @@ namespace eDoxa.Cashier.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<PromotionDto>(result.GetEntityFromMetadata<Promotion>()));
+                return this.Ok(_mapper.Map<PromotionDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);
@@ -125,7 +124,7 @@ namespace eDoxa.Cashier.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<PromotionDto>(result.GetEntityFromMetadata<Promotion>()));
+                return this.Ok(_mapper.Map<PromotionDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);

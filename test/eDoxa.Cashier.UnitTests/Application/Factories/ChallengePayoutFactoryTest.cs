@@ -5,13 +5,10 @@
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Cashier.Api.Application.Factories;
-using eDoxa.Cashier.Domain.Strategies;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
 
 using FluentAssertions;
-
-using Moq;
 
 using Xunit;
 
@@ -43,9 +40,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Factories
         public void CreateInstance_WithPayoutStrategy_ShouldNotBeNull()
         {
             // Arrange
-            var mockPayoutStrategy = new Mock<IChallengePayoutStrategy>();
-
-            var payoutFactory = new ChallengePayoutFactory(mockPayoutStrategy.Object);
+            var payoutFactory = new ChallengePayoutFactory(TestMock.ChallengePayoutStrategy.Object);
 
             // Act
             var payoutStrategy = payoutFactory.CreateInstance();

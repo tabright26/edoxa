@@ -7,32 +7,28 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 
 using Autofac;
 
 using eDoxa.Grpc.Protos.Identity.Options;
-using eDoxa.Identity.Api.Application.Services;
+using eDoxa.Identity.Api.Extensions;
 using eDoxa.Identity.Api.Grpc.Services;
 using eDoxa.Identity.Api.Infrastructure;
+using eDoxa.Identity.Api.Infrastructure.Data;
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
-using eDoxa.Identity.Api.Services;
-using eDoxa.Identity.Domain.AggregateModels.RoleAggregate;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.Seedwork.Security.DataProtection.Extensions;
 using eDoxa.Seedwork.Security.Hsts.Extensions;
@@ -44,10 +40,7 @@ using FluentValidation;
 
 using Hellang.Middleware.ProblemDetails;
 
-using IdentityModel;
-
 using IdentityServer4.AccessTokenValidation;
-using IdentityServer4.Services;
 
 using MediatR;
 
@@ -128,42 +121,7 @@ namespace eDoxa.Identity.Api
 
             services.AddCustomDataProtection(Configuration, AppServices.IdentityApi);
 
-            services.AddIdentity<User, Role>(
-                    options =>
-                    {
-                        options.Password.RequireDigit = true;
-                        options.Password.RequiredLength = 8;
-                        options.Password.RequiredUniqueChars = 1;
-                        options.Password.RequireLowercase = true;
-                        options.Password.RequireNonAlphanumeric = true;
-                        options.Password.RequireUppercase = true;
-                        options.Lockout.AllowedForNewUsers = false;
-                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                        options.Lockout.MaxFailedAccessAttempts = 5;
-                        options.User.RequireUniqueEmail = true;
-                        options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = CustomClaimTypes.Doxatag;
-                        options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
-                        options.SignIn.RequireConfirmedPhoneNumber = false;
-                        options.SignIn.RequireConfirmedEmail = false;
-                    })
-                .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddDefaultTokenProviders()
-                .AddUserStore<UserRepository>()
-                .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
-                .AddUserManager<UserService>()
-                .AddSignInManager<SignInService>()
-                .AddRoleManager<RoleService>();
-
-            services.AddScoped<UserRepository>();
-            services.AddScoped<CustomUserClaimsPrincipalFactory>();
-            services.AddScoped<UserService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<SignInService>();
-            services.AddScoped<ISignInService, SignInService>();
-            services.AddScoped<RoleService>();
-            services.AddScoped<IRoleService, RoleService>();
+            services.AddCustomIdentity();
 
             services.AddCustomCors();
 
@@ -179,37 +137,7 @@ namespace eDoxa.Identity.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddIdentityServer(
-                    options =>
-                    {
-                        options.IssuerUri = AppSettings.Endpoints.IdentityUrl;
-                        options.Authentication.CookieLifetime = TimeSpan.FromHours(2);
-                        options.Events.RaiseInformationEvents = true;
-                        options.Events.RaiseSuccessEvents = true;
-                        options.Events.RaiseFailureEvents = true;
-                        options.Events.RaiseErrorEvents = true;
-                        options.UserInteraction.LoginUrl = $"{AppSettings.WebSpaUrl}/account/login";
-                        options.UserInteraction.LoginReturnUrlParameter = "returnUrl";
-                        options.UserInteraction.LogoutUrl = $"{AppSettings.WebSpaUrl}/account/logout";
-                    })
-                .AddApiAuthorization<User, IdentityDbContext>(
-                    options =>
-                    {
-                        options.IdentityResources.Clear();
-                        options.IdentityResources.AddRange(IdentityServerConfig.GetIdentityResources().ToArray());
-
-                        options.ApiResources.Clear();
-                        options.ApiResources.AddRange(IdentityServerConfig.GetApiResources().ToArray());
-
-                        options.Clients.Clear();
-                        options.Clients.AddRange(IdentityServerConfig.GetClients(AppSettings).ToArray());
-                    })
-                .AddProfileService<CustomProfileService>()
-                .AddCorsPolicyService<CustomCorsPolicyService>();
-
-            services.AddTransient<IProfileService, CustomProfileService>();
-            services.AddTransient<IReturnUrlParser, CustomReturnUrlParser>();
-            services.AddSingleton<ICorsPolicyService, CustomCorsPolicyService>();
+            services.AddCustomIdentityServer(AppSettings);
 
             //services.AddAuthentication().AddIdentityServerJwt();
 
@@ -281,42 +209,7 @@ namespace eDoxa.Identity.Api
 
             services.AddCustomDbContext<IdentityDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
 
-            services.AddIdentity<User, Role>(
-                    options =>
-                    {
-                        options.Password.RequireDigit = true;
-                        options.Password.RequiredLength = 8;
-                        options.Password.RequiredUniqueChars = 1;
-                        options.Password.RequireLowercase = true;
-                        options.Password.RequireNonAlphanumeric = true;
-                        options.Password.RequireUppercase = true;
-                        options.Lockout.AllowedForNewUsers = false;
-                        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                        options.Lockout.MaxFailedAccessAttempts = 5;
-                        options.User.RequireUniqueEmail = true;
-                        options.ClaimsIdentity.UserIdClaimType = JwtClaimTypes.Subject;
-                        options.ClaimsIdentity.UserNameClaimType = CustomClaimTypes.Doxatag;
-                        options.ClaimsIdentity.RoleClaimType = JwtClaimTypes.Role;
-                        options.ClaimsIdentity.SecurityStampClaimType = CustomClaimTypes.SecurityStamp;
-                        options.SignIn.RequireConfirmedPhoneNumber = false;
-                        options.SignIn.RequireConfirmedEmail = false;
-                    })
-                .AddEntityFrameworkStores<IdentityDbContext>()
-                .AddDefaultTokenProviders()
-                .AddUserStore<UserRepository>()
-                .AddClaimsPrincipalFactory<CustomUserClaimsPrincipalFactory>()
-                .AddUserManager<UserService>()
-                .AddSignInManager<SignInService>()
-                .AddRoleManager<RoleService>();
-
-            services.AddScoped<UserRepository>();
-            services.AddScoped<CustomUserClaimsPrincipalFactory>();
-            services.AddScoped<UserService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<SignInService>();
-            services.AddScoped<ISignInService, SignInService>();
-            services.AddScoped<RoleService>();
-            services.AddScoped<IRoleService, RoleService>();
+            services.AddCustomIdentity();
 
             services.AddCustomCors();
 
@@ -337,9 +230,11 @@ namespace eDoxa.Identity.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
-            builder.RegisterMockServiceBusModule();
-
             builder.RegisterModule<IdentityModule>();
+
+            builder.RegisterType<IdentityDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            builder.RegisterMockServiceBusModule();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

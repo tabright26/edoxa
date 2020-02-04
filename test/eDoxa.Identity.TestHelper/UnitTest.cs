@@ -22,7 +22,10 @@ namespace eDoxa.Identity.TestHelper
             TestData = testData;
             TestMapper = testMapper.Instance;
             TestOptionsWrapper = testValidator.OptionsWrapper;
+            TestMock = new TestMockFixture();
         }
+
+        protected TestMockFixture TestMock { get; }
 
         protected TestDataFixture TestData { get; }
 

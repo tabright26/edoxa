@@ -11,11 +11,10 @@ using eDoxa.Cashier.Api.Controllers;
 using eDoxa.Cashier.Api.Infrastructure.Data.Fakers;
 using eDoxa.Cashier.Domain.AggregateModels;
 using eDoxa.Cashier.Domain.AggregateModels.AccountAggregate;
-using eDoxa.Cashier.Domain.Queries;
 using eDoxa.Cashier.TestHelper;
 using eDoxa.Cashier.TestHelper.Fixtures;
-using eDoxa.Cashier.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -40,9 +39,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
         public async Task FetchUserTransactionsAsync_ShouldBeOfTypeNoContentResult()
         {
             // Arrange
-            var mockTransactionQuery = new Mock<ITransactionQuery>();
-
-            mockTransactionQuery
+            TestMock.TransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                         It.IsAny<UserId>(),
@@ -52,13 +49,11 @@ namespace eDoxa.Cashier.UnitTests.Controllers
                 .ReturnsAsync(new Collection<ITransaction>())
                 .Verifiable();
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper)
+            var controller = new TransactionsController(TestMock.TransactionQuery.Object, TestMapper)
             {
                 ControllerContext =
                 {
-                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                    HttpContext = MockHttpContextAccessor.GetInstance()
                 }
             };
 
@@ -68,7 +63,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            mockTransactionQuery.Verify(
+            TestMock.TransactionQuery.Verify(
                 transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                     It.IsAny<UserId>(),
                     It.IsAny<CurrencyType>(),
@@ -83,11 +78,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Arrange
             var faker = TestData.FakerFactory.CreateTransactionFaker(null);
 
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-
-            var mockTransactionQuery = new Mock<ITransactionQuery>();
-
-            mockTransactionQuery
+            TestMock.TransactionQuery
                 .Setup(
                     transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                         It.IsAny<UserId>(),
@@ -97,11 +88,11 @@ namespace eDoxa.Cashier.UnitTests.Controllers
                 .ReturnsAsync(faker.FakeTransactions(5, TransactionFaker.PositiveTransaction))
                 .Verifiable();
 
-            var controller = new TransactionsController(mockTransactionQuery.Object, TestMapper)
+            var controller = new TransactionsController(TestMock.TransactionQuery.Object, TestMapper)
             {
                 ControllerContext =
                 {
-                    HttpContext = mockHttpContextAccessor.Object.HttpContext
+                    HttpContext = MockHttpContextAccessor.GetInstance()
                 }
             };
 
@@ -111,7 +102,7 @@ namespace eDoxa.Cashier.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockTransactionQuery.Verify(
+            TestMock.TransactionQuery.Verify(
                 transactionQuery => transactionQuery.FetchUserTransactionsAsync(
                     It.IsAny<UserId>(),
                     It.IsAny<CurrencyType>(),

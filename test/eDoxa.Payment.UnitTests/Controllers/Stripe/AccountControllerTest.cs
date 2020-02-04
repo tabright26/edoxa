@@ -1,5 +1,5 @@
-﻿// Filename: StripeAccountControllerTest.cs
-// Date Created: 2019-12-26
+﻿// Filename: AccountControllerTest.cs
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -7,11 +7,10 @@
 using System.Threading.Tasks;
 
 using eDoxa.Payment.Api.Controllers.Stripe;
-using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Payment.TestHelper.Mocks;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
 
@@ -35,48 +34,51 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         public async Task FetchAccountAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeService>();
+            TestMock.StripeService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
 
-            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
-
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper);
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            accountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var accountController = new AccountController(TestMock.StripeAccountService.Object, TestMock.StripeService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await accountController.FetchAccountAsync();
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
+
+            TestMock.StripeService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
         public async Task FetchAccountAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            var mockAccountService = new Mock<IStripeAccountService>();
-            var mockReferenceService = new Mock<IStripeService>();
+            TestMock.StripeService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
 
-            mockReferenceService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId").Verifiable();
+            TestMock.StripeAccountService.Setup(accountService => accountService.GetAccountAsync(It.IsAny<string>())).ReturnsAsync(new Account()).Verifiable();
 
-            mockAccountService.Setup(accountService => accountService.GetAccountAsync(It.IsAny<string>())).ReturnsAsync(new Account()).Verifiable();
-
-            var accountController = new AccountController(mockAccountService.Object, mockReferenceService.Object, TestMapper);
-            var mockHttpContextAccessor = new MockHttpContextAccessor();
-            accountController.ControllerContext.HttpContext = mockHttpContextAccessor.Object.HttpContext;
+            var accountController = new AccountController(TestMock.StripeAccountService.Object, TestMock.StripeService.Object, TestMapper)
+            {
+                ControllerContext =
+                {
+                    HttpContext = MockHttpContextAccessor.GetInstance()
+                }
+            };
 
             // Act
             var result = await accountController.FetchAccountAsync();
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            mockReferenceService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
-            mockAccountService.Verify(accountService => accountService.GetAccountAsync(It.IsAny<string>()), Times.Once);
+            TestMock.StripeService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountIdAsync(It.IsAny<UserId>()), Times.Once);
+            TestMock.StripeAccountService.Verify(accountService => accountService.GetAccountAsync(It.IsAny<string>()), Times.Once);
         }
     }
 }

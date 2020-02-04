@@ -21,6 +21,6 @@ namespace eDoxa.Identity.Domain.Services
 
         Task<Doxatag?> FindDoxatagAsync(User user);
 
-        Task<IDomainValidationResult> ChangeDoxatagAsync(User user, string doxatagName);
+        Task<DomainValidationResult<Doxatag>> ChangeDoxatagAsync(User user, string doxatagName);
     }
 }

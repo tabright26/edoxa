@@ -13,6 +13,7 @@ using Autofac;
 
 using eDoxa.Challenges.Api.Grpc.Services;
 using eDoxa.Challenges.Api.Infrastructure;
+using eDoxa.Challenges.Api.Infrastructure.Data;
 using eDoxa.Challenges.Api.IntegrationEvents.Extensions;
 using eDoxa.Challenges.Infrastructure;
 using eDoxa.Grpc.Protos.Challenges.Options;
@@ -21,6 +22,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -172,7 +174,7 @@ namespace eDoxa.Challenges.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(ChallengesDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -181,9 +183,11 @@ namespace eDoxa.Challenges.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
-            builder.RegisterMockServiceBusModule();
-
             builder.RegisterModule<ChallengesModule>();
+
+            builder.RegisterType<ChallengesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            builder.RegisterMockServiceBusModule();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

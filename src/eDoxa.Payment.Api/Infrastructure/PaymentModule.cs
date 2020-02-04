@@ -19,9 +19,6 @@ namespace eDoxa.Payment.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // Cleaner
-            builder.RegisterType<PaymentDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             // Seeder
             builder.RegisterType<PaymentDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 

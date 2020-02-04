@@ -44,7 +44,7 @@ namespace eDoxa.Cashier.Api.Application.Services
             return await _challengeRepository.ChallengeExistsAsync(challengeId);
         }
 
-        public async Task<IDomainValidationResult> CreateChallengeAsync(
+        public async Task<DomainValidationResult<IChallenge>> CreateChallengeAsync(
             ChallengeId challengeId,
             ChallengePayoutEntries payoutEntries,
             EntryFee entryFee,
@@ -55,7 +55,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
             var payout = strategy.GetChallengePayout(payoutEntries, entryFee);
 
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<IChallenge>();
 
             if (payout == null)
             {
@@ -70,7 +70,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                result.AddEntityToMetadata(challenge);
+                return challenge;
             }
 
             return result;

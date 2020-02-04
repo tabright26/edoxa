@@ -36,14 +36,14 @@ namespace eDoxa.Cashier.Api.Application.Services
             return await _promotionRepository.FindPromotionOrNullAsync(code);
         }
 
-        public async Task<IDomainValidationResult> CreatePromotionAsync(
+        public async Task<DomainValidationResult<Promotion>> CreatePromotionAsync(
             string promotionalCode,
             Currency currency,
             TimeSpan duration,
             DateTime expiredAt
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Promotion>();
 
             if (!await _promotionRepository.IsPromotionalCodeAvailableAsync(promotionalCode))
             {
@@ -62,15 +62,15 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 await _promotionRepository.CommitAsync();
 
-                result.AddEntityToMetadata(promotion);
+                return promotion;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> RedeemPromotionAsync(Promotion promotion, UserId userId, IDateTimeProvider redeemedAt)
+        public async Task<DomainValidationResult<Promotion>> RedeemPromotionAsync(Promotion promotion, UserId userId, IDateTimeProvider redeemedAt)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Promotion>();
 
             var user = new User(userId);
 
@@ -97,15 +97,15 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 await _promotionRepository.CommitAsync();
 
-                result.AddEntityToMetadata(promotion);
+                return promotion;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> CancelPromotionAsync(Promotion promotion, IDateTimeProvider canceledAt)
+        public async Task<DomainValidationResult<Promotion>> CancelPromotionAsync(Promotion promotion, IDateTimeProvider canceledAt)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Promotion>();
 
             if (promotion.IsCanceled())
             {
@@ -123,7 +123,7 @@ namespace eDoxa.Cashier.Api.Application.Services
 
                 await _promotionRepository.CommitAsync();
 
-                result.AddEntityToMetadata(promotion);
+                return promotion;
             }
 
             return result;

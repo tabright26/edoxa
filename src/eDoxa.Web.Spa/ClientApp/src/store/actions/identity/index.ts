@@ -82,7 +82,7 @@ import {
   AXIOS_PAYLOAD_CLIENT_AUTHORITY
 } from "utils/axios/types";
 import { Dispatch } from "react";
-import { RegisterUserAccountFormData } from "components/User/Account/Form/Register";
+import { RegisterUserAccountFormData } from "components/Account/Form/Register";
 
 export function loadUserAddressBook(): LoadUserAddressBookActionCreator {
   return {

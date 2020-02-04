@@ -15,7 +15,7 @@ using eDoxa.ServiceBus.Abstractions;
 
 namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 {
-    public sealed class ChallengeStartedntegrationEventHandler : IIntegrationEventHandler<ChallengeStartedntegrationEvent>
+    public sealed class ChallengeStartedntegrationEventHandler : IIntegrationEventHandler<ChallengeStartedIntegrationEvent>
     {
         private readonly IUserService _userService;
 
@@ -24,7 +24,7 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
             _userService = userService;
         }
 
-        public async Task HandleAsync(ChallengeStartedntegrationEvent integrationEvent)
+        public async Task HandleAsync(ChallengeStartedIntegrationEvent integrationEvent)
         {
             foreach (var participant in integrationEvent.Challenge.Participants)
             {

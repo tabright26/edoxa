@@ -13,12 +13,14 @@ using Autofac;
 
 using eDoxa.Clans.Api.Grpc.Services;
 using eDoxa.Clans.Api.Infrastructure;
+using eDoxa.Clans.Api.Infrastructure.Data;
 using eDoxa.Clans.Infrastructure;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
@@ -177,9 +179,11 @@ namespace eDoxa.Clans.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
-            builder.RegisterMockServiceBusModule();
-
             builder.RegisterModule<ClansModule>();
+
+            builder.RegisterType<ClansDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
+            builder.RegisterMockServiceBusModule();
         }
 
         public void ConfigureTest(IApplicationBuilder application)

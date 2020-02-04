@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 using eDoxa.Challenges.Api.Controllers;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
-using eDoxa.Challenges.Domain.Queries;
 using eDoxa.Challenges.TestHelper;
 using eDoxa.Challenges.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -37,13 +36,11 @@ namespace eDoxa.Challenges.UnitTests.Controllers
         public async Task FetchChallengeParticipantsAsync_ShouldBeNoContentResult()
         {
             // Arrange
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
-
-            mockParticipantQuery.Setup(queries => queries.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
+            TestMock.ParticipantQuery.Setup(queries => queries.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(Array.Empty<Participant>())
                 .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, TestMapper);
+            var controller = new ChallengeParticipantsController(TestMock.ParticipantQuery.Object, TestMapper);
 
             // Act
             var result = await controller.FetchChallengeParticipantsAsync(new ChallengeId());
@@ -51,7 +48,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<NoContentResult>();
 
-            mockParticipantQuery.Verify(participantQuery => participantQuery.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()), Times.Once);
+            TestMock.ParticipantQuery.Verify(participantQuery => participantQuery.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()), Times.Once);
         }
 
         [Fact]
@@ -62,13 +59,11 @@ namespace eDoxa.Challenges.UnitTests.Controllers
 
             var challenge = challengeFaker.FakeChallenge();
 
-            var mockParticipantQuery = new Mock<IParticipantQuery>();
-
-            mockParticipantQuery.Setup(participantQuery => participantQuery.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
+            TestMock.ParticipantQuery.Setup(participantQuery => participantQuery.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()))
                 .ReturnsAsync(challenge.Participants)
                 .Verifiable();
 
-            var controller = new ChallengeParticipantsController(mockParticipantQuery.Object, TestMapper);
+            var controller = new ChallengeParticipantsController(TestMock.ParticipantQuery.Object, TestMapper);
 
             // Act
             var result = await controller.FetchChallengeParticipantsAsync(new ChallengeId());
@@ -76,7 +71,7 @@ namespace eDoxa.Challenges.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkObjectResult>();
 
-            mockParticipantQuery.Verify(participantQuery => participantQuery.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()), Times.Once);
+            TestMock.ParticipantQuery.Verify(participantQuery => participantQuery.FetchChallengeParticipantsAsync(It.IsAny<ChallengeId>()), Times.Once);
         }
     }
 }

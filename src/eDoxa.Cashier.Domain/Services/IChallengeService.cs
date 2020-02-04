@@ -19,7 +19,7 @@ namespace eDoxa.Cashier.Domain.Services
     {
         Task<IChallenge?> FindChallengeOrNullAsync(ChallengeId challengeId);
 
-        Task<IDomainValidationResult> CreateChallengeAsync(
+        Task<DomainValidationResult<IChallenge>> CreateChallengeAsync(
             ChallengeId challengeId,
             ChallengePayoutEntries payoutEntries,
             EntryFee entryFee,

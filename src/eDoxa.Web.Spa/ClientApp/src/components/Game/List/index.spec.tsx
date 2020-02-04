@@ -6,7 +6,7 @@
 // import { GameOption, Game, GameServiceName } from "types";
 
 it("renders without crashing", () => {
-  // //Arrange
+  // // Arrange
   // var data = new Map<Game, GameOption>();
   // const option: GameOption = {
   //   name: "LeagueOfLegends",
@@ -37,7 +37,7 @@ it("renders without crashing", () => {
   //   subscribe: () => {}
   // };
 
-  // //Act
+  // // Act
   // const tree = renderer
   //   .create(
   //     <Provider store={store}>
@@ -46,6 +46,6 @@ it("renders without crashing", () => {
   //   )
   //   .toJSON();
 
-  // //Assert
+  // // Assert
   // expect(tree).toMatchSnapshot();
 });

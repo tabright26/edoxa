@@ -54,7 +54,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using var factory = new InMemoryDbContextFactory<ChallengesDbContext>();
 
-            using (var context = factory.CreateContext())
+            await using (var context = factory.CreateContext())
             {
                 var challengeRepository = new ChallengeRepository(context);
 
@@ -63,7 +63,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
                 await challengeRepository.CommitAsync();
             }
 
-            using (var context = factory.CreateContext())
+            await using (var context = factory.CreateContext())
             {
                 var matchQuery = new MatchQuery(context);
 
@@ -89,7 +89,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
 
             using var factory = new InMemoryDbContextFactory<ChallengesDbContext>();
 
-            using (var context = factory.CreateContext())
+            await using (var context = factory.CreateContext())
             {
                 var challengeRepository = new ChallengeRepository(context);
 
@@ -98,7 +98,7 @@ namespace eDoxa.Challenges.UnitTests.Infrastructure.Queries
                 await challengeRepository.CommitAsync();
             }
 
-            using (var context = factory.CreateContext())
+            await using (var context = factory.CreateContext())
             {
                 var matchQuery = new MatchQuery(context);
 

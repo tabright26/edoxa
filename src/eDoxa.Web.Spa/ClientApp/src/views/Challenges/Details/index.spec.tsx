@@ -4,9 +4,10 @@ import { Provider } from "react-redux";
 import Details from ".";
 import { ChallengesState } from "store/root/challenge/types";
 import { MemoryRouter } from "react-router-dom";
+import { CURRENCY_TYPE_TOKEN } from "types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const challenge: ChallengesState = {
     data: [
       {
@@ -27,8 +28,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "123",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+          prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []
         }
       },
@@ -50,8 +51,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "456",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+          prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []
         }
       },
@@ -73,8 +74,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "678",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+          prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []
         }
       }
@@ -95,7 +96,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -106,6 +107,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

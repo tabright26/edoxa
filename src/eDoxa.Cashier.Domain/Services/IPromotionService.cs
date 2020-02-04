@@ -21,15 +21,15 @@ namespace eDoxa.Cashier.Domain.Services
 
         Task<Promotion?> FindPromotionOrNullAsync(string promotionalCode);
 
-        Task<IDomainValidationResult> CreatePromotionAsync(
+        Task<DomainValidationResult<Promotion>> CreatePromotionAsync(
             string promotionalCode,
             Currency currency,
             TimeSpan duration,
             DateTime expiredAt
         );
 
-        Task<IDomainValidationResult> RedeemPromotionAsync(Promotion promotion, UserId userId, IDateTimeProvider redeemedAt);
+        Task<DomainValidationResult<Promotion>> RedeemPromotionAsync(Promotion promotion, UserId userId, IDateTimeProvider redeemedAt);
 
-        Task<IDomainValidationResult> CancelPromotionAsync(Promotion promotion, IDateTimeProvider canceledAt);
+        Task<DomainValidationResult<Promotion>> CancelPromotionAsync(Promotion promotion, IDateTimeProvider canceledAt);
     }
 }

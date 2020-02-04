@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
-import UserPasswordForm from "components/User/Password/Form";
+import PasswordForm from "components/Password/Form";
 
-const ForgotUserPassword: FunctionComponent = () => (
+const Forgot: FunctionComponent = () => (
   <Card className="mx-4">
     <CardBody className="p-4">
       <h1>Forgot password</h1>
@@ -10,9 +10,9 @@ const ForgotUserPassword: FunctionComponent = () => (
         Enter your email address. You will receive a link to reset your
         password.
       </p>
-      <UserPasswordForm.Forgot />
+      <PasswordForm.Forgot />
     </CardBody>
   </Card>
 );
 
-export default ForgotUserPassword;
+export default Forgot;

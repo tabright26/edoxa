@@ -5,14 +5,14 @@ import { Provider } from "react-redux";
 import Footer from ".";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const store: any = {
     getState: () => {},
     dispatch: action => {},
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -23,6 +23,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

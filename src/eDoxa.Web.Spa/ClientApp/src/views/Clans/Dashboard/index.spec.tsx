@@ -5,13 +5,14 @@ import Dashboard from ".";
 import { ClansState } from "store/root/organization/clan/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const clans: ClansState = {
     data: [
       {
         name: "Clan 1",
-        clanId: "1",
-        members: [{ userId: "123123123" }]
+        id: "1",
+        ownerId: "",
+        members: []
       },
       {
         name: "Clan 2",
@@ -49,7 +50,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -62,6 +63,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

@@ -1,8 +1,10 @@
 ﻿// Filename: ServiceCollectionExtensions.cs
-// Date Created: 2019-10-26
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
+
+using System;
 
 using eDoxa.Seedwork.Infrastructure.Extensions;
 
@@ -21,17 +23,39 @@ namespace eDoxa.Seedwork.Infrastructure.Redis.Extensions
     {
         public static void AddCustomRedis(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton(
-                new RedisConfiguration
-                {
-                    Hosts = new[]
+            var connectionString = configuration.GetRedisConnectionString();
+
+            var split = connectionString.Split(':', StringSplitOptions.RemoveEmptyEntries);
+
+            if (split.Length == 2)
+            {
+                services.AddSingleton(
+                    new RedisConfiguration
                     {
-                        new RedisHost
+                        Hosts = new[]
                         {
-                            Host = configuration.GetRedisConnectionString()
+                            new RedisHost
+                            {
+                                Host = split[0],
+                                Port = Convert.ToInt32(split[1])
+                            }
                         }
-                    }
-                });
+                    });
+            }
+            else
+            {
+                services.AddSingleton(
+                    new RedisConfiguration
+                    {
+                        Hosts = new[]
+                        {
+                            new RedisHost
+                            {
+                                Host = split[0]
+                            }
+                        }
+                    });
+            }
 
             services.AddSingleton<IRedisCacheClient, RedisCacheClient>();
             services.AddSingleton<IRedisCacheConnectionPoolManager, RedisCacheConnectionPoolManager>();

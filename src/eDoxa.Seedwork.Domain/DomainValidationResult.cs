@@ -12,33 +12,40 @@ using Newtonsoft.Json;
 
 namespace eDoxa.Seedwork.Domain
 {
-    public sealed class DomainValidationResult : IDomainValidationResult
+    public sealed class DomainValidationResult<TResponse>
+    where TResponse : class
     {
         private readonly HashSet<DomainValidationError> _errors = new HashSet<DomainValidationError>();
-        private readonly DomainValidationMetadata _metadata = new DomainValidationMetadata();
+        private TResponse? _response;
 
         public bool IsValid => !_errors.Any();
 
+        public TResponse Response
+        {
+            get
+            {
+                if (IsValid)
+                {
+                    return _response ?? throw new InvalidOperationException("The validation result response isn't set.");
+                }
+
+                throw new InvalidOperationException("The validation result must be valid to return a response.");
+            }
+        }
+
         public IReadOnlyCollection<DomainValidationError> Errors => _errors;
 
-        public TEntity GetEntityFromMetadata<TEntity>()
-        where TEntity : class
+        public static implicit operator DomainValidationResult<TResponse>(TResponse response)
         {
-            if (IsValid)
-            {
-                return _metadata.GetEntity<TEntity>();
-            }
-
-            throw new InvalidOperationException("The validation result must be valid to return the response from the metadata.");
+            return Succeeded(response);
         }
 
-        public void AddEntityToMetadata<TEntity>(TEntity entity)
-        where TEntity : class
+        private void AddResponse(TResponse response)
         {
-            _metadata.AddEntity(entity);
+            _response = response;
         }
 
-        public IDomainValidationResult AddInvalidArgumentError(string propertyName, string errorMessage)
+        public DomainValidationResult<TResponse> AddInvalidArgumentError(string propertyName, string errorMessage)
         {
             if (propertyName == DomainValidationError.FailedPreconditionPropertyName)
             {
@@ -53,12 +60,12 @@ namespace eDoxa.Seedwork.Domain
             return this.AddError(propertyName, errorMessage);
         }
 
-        public IDomainValidationResult AddFailedPreconditionError(string errorMessage)
+        public DomainValidationResult<TResponse> AddFailedPreconditionError(string errorMessage)
         {
             return this.AddError(DomainValidationError.FailedPreconditionPropertyName, errorMessage);
         }
 
-        public IDomainValidationResult AddDebugError(string errorMessage)
+        public DomainValidationResult<TResponse> AddDebugError(string errorMessage)
         {
             return this.AddError(DomainValidationError.DebugPropertyName, errorMessage);
         }
@@ -72,27 +79,26 @@ namespace eDoxa.Seedwork.Domain
                 Formatting.None);
         }
 
-        public static IDomainValidationResult Succeeded<TEntity>(TEntity entity)
-        where TEntity : class
+        public static DomainValidationResult<TResponse> Succeeded(TResponse response)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<TResponse>();
 
-            result.AddEntityToMetadata(entity);
+            result.AddResponse(response);
 
             return result;
         }
 
-        public static IDomainValidationResult Failure(string propertyName, string errorMessage)
+        public static DomainValidationResult<TResponse> Failure(string propertyName, string errorMessage)
         {
-            return new DomainValidationResult().AddInvalidArgumentError(propertyName, errorMessage);
+            return new DomainValidationResult<TResponse>().AddInvalidArgumentError(propertyName, errorMessage);
         }
 
-        public static IDomainValidationResult Failure(string errorMessage)
+        public static DomainValidationResult<TResponse> Failure(string errorMessage)
         {
-            return new DomainValidationResult().AddFailedPreconditionError(errorMessage);
+            return new DomainValidationResult<TResponse>().AddFailedPreconditionError(errorMessage);
         }
 
-        private IDomainValidationResult AddError(string propertyName, string errorMessage)
+        private DomainValidationResult<TResponse> AddError(string propertyName, string errorMessage)
         {
             if (string.IsNullOrWhiteSpace(propertyName) || string.IsNullOrWhiteSpace(errorMessage))
             {

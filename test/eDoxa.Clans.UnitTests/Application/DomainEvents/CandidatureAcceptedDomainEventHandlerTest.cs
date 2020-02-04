@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Application.DomainEvents;
 using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.Domain.Models;
-using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -31,13 +30,11 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
         public async Task Handle()
         {
             // Arrange
-            var mockClanService = new Mock<IClanService>();
-
-            mockClanService.Setup(service => service.AddMemberToClanAsync(It.IsAny<ClanId>(), It.IsAny<IMemberInfo>()))
+            TestMock.ClanService.Setup(service => service.AddMemberToClanAsync(It.IsAny<ClanId>(), It.IsAny<IMemberInfo>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var domainEventHandler = new CandidatureAcceptedDomainEventHandler(mockClanService.Object);
+            var domainEventHandler = new CandidatureAcceptedDomainEventHandler(TestMock.ClanService.Object);
 
             var candidature = new Candidature(new UserId(), new ClanId());
 
@@ -45,7 +42,7 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
             await domainEventHandler.Handle(new CandidatureAcceptedDomainEvent(candidature), CancellationToken.None);
 
             // Assert
-            mockClanService.Verify(service => service.AddMemberToClanAsync(It.IsAny<ClanId>(), It.IsAny<IMemberInfo>()), Times.Once);
+            TestMock.ClanService.Verify(service => service.AddMemberToClanAsync(It.IsAny<ClanId>(), It.IsAny<IMemberInfo>()), Times.Once);
         }
     }
 }
