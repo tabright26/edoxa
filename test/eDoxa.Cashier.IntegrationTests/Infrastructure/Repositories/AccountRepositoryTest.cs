@@ -59,7 +59,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     account?.Transactions.Should().NotContain(transaction => transaction.Status == TransactionStatus.Pending);
                 });
 
-            ITransaction moneyDepositTransaction = null;
+            ITransaction? moneyDepositTransaction = null;
 
             await testServer.UsingScopeAsync(
                 async scope =>
@@ -68,7 +68,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     var account = await accountRepository.FindAccountOrNullAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
-                    var moneyAccount = new MoneyAccountDecorator(account);
+                    var moneyAccount = new MoneyAccountDecorator(account!);
                     moneyDepositTransaction = moneyAccount.Deposit(Money.Fifty);
                     await accountRepository.CommitAsync();
                 });
@@ -81,7 +81,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
                     account?.Transactions.Should().HaveCount(userAccount.Transactions.Count + 1);
-                    account?.Transactions.Should().Contain(moneyDepositTransaction);
+                    account?.Transactions.Should().Contain(moneyDepositTransaction!);
                     account?.Transactions.Should().ContainSingle(transaction => transaction.Status == TransactionStatus.Pending);
                 });
 
@@ -92,7 +92,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     var account = await accountRepository.FindAccountOrNullAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
-                    var transaction = account?.Transactions.Single(accountTransaction => accountTransaction.Id == moneyDepositTransaction.Id);
+                    var transaction = account?.Transactions.Single(accountTransaction => accountTransaction.Id == moneyDepositTransaction!.Id);
                     transaction.Should().NotBeNull();
                     transaction?.MarkAsSucceeded();
                     await accountRepository.CommitAsync();
@@ -105,7 +105,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     var account = await accountRepository.FindAccountOrNullAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
-                    var transaction = account?.Transactions.Single(accountTransaction => accountTransaction.Id == moneyDepositTransaction.Id);
+                    var transaction = account?.Transactions.Single(accountTransaction => accountTransaction.Id == moneyDepositTransaction!.Id);
                     transaction.Should().NotBeNull();
                     var action = new Action(() => transaction?.MarkAsFailed());
                     action.Should().Throw<InvalidOperationException>();
@@ -118,7 +118,7 @@ namespace eDoxa.Cashier.IntegrationTests.Infrastructure.Repositories
                     var account = await accountRepository.FindAccountOrNullAsync(userAccount.Id);
                     account.Should().NotBeNull();
                     account.Should().Be(userAccount);
-                    account?.Transactions.Should().Contain(moneyDepositTransaction);
+                    account?.Transactions.Should().Contain(moneyDepositTransaction!);
                     account?.Transactions.Should().ContainSingle(transaction => transaction.Status == TransactionStatus.Succeeded);
                 });
         }

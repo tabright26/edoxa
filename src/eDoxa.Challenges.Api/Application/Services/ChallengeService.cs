@@ -14,6 +14,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Application.Services
@@ -134,7 +135,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                return challenge as Challenge;
+                return challenge.Cast<Challenge>();
             }
 
             return result;
@@ -159,7 +160,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                return challenge as Challenge; ;
+                return challenge.Cast<Challenge>();
             }
 
             return result;
@@ -180,7 +181,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                return challenge as Challenge;
+                return challenge.Cast<Challenge>();
             }
 
             return result;

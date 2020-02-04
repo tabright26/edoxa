@@ -181,6 +181,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Grpc", "src\eDoxa.Grp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Storage", "src\eDoxa.Storage\eDoxa.Storage.csproj", "{D785CA55-10E4-46AC-8118-55F9CE9B540B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Paypal", "src\eDoxa.Paypal\eDoxa.Paypal.csproj", "{2363D4D7-B030-4D22-985C-77680B13B7BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -423,6 +425,10 @@ Global
 		{D785CA55-10E4-46AC-8118-55F9CE9B540B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D785CA55-10E4-46AC-8118-55F9CE9B540B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D785CA55-10E4-46AC-8118-55F9CE9B540B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2363D4D7-B030-4D22-985C-77680B13B7BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2363D4D7-B030-4D22-985C-77680B13B7BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2363D4D7-B030-4D22-985C-77680B13B7BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2363D4D7-B030-4D22-985C-77680B13B7BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -502,6 +508,7 @@ Global
 		{2ECF65D6-4C8D-4065-912F-9C24A7964CA0} = {EEA9BD6B-DDFF-4580-99D3-0FBBC644FC4D}
 		{7853D7EF-7CF3-4C6C-8851-B938C1E55CFE} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
 		{D785CA55-10E4-46AC-8118-55F9CE9B540B} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
+		{2363D4D7-B030-4D22-985C-77680B13B7BB} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

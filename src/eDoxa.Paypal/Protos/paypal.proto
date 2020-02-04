@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Paypal";
+
+package edoxa.paypal;
+
+message PaypalOptions {
+  string mode = 1;
+  string clientId = 2;
+  string clientSecret = 3;
+}

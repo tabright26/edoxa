@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Api.CommonProtos" Version="1.7.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.11.2" />
+    <PackageReference Include="Google.Protobuf" Version="3.11.3" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.26.0" />
     <PackageReference Include="Grpc.AspNetCore.Server" Version="2.26.0" />
     <PackageReference Include="Grpc.Tools" Version="2.26.0">
@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eDoxa.Payment.Infrastructure\eDoxa.Payment.Infrastructure.csproj" />
+    <ProjectReference Include="..\eDoxa.Paypal\eDoxa.Paypal.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Application\eDoxa.Seedwork.Application.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Monitoring\eDoxa.Seedwork.Monitoring.csproj" />
   </ItemGroup>

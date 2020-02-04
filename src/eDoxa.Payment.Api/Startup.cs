@@ -19,6 +19,7 @@ using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Payment.Infrastructure;
+using eDoxa.Paypal.Extensions;
 using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -84,6 +85,8 @@ namespace eDoxa.Payment.Api
             services.AddAppSettings<PaymentAppSettings>(Configuration);
 
             services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
+
+            services.AddPaypal(Configuration);
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
