@@ -1,6 +1,6 @@
 ﻿// Filename: AccountController.cs
 // Date Created: 2020-01-28
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -76,6 +76,7 @@ namespace eDoxa.Identity.Api.Controllers
                         return this.Ok(request.ReturnUrl);
                     }
 
+                    //Francis: A refactor et a transformer en constante de class pour que je puisse l<utiliser dans les tests??????
                     const string errorMessage = "Invalid email or password";
 
                     await _eventService.RaiseAsync(new UserLoginFailureEvent(user.UserName, errorMessage));
@@ -96,6 +97,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             await _interactionService.RevokeTokensForCurrentSessionAsync();
 
+            //Francis: C'est quoi ce User la ??? Lui  de la session ??
             if (User?.Identity.IsAuthenticated ?? false)
             {
                 await _signInService.SignOutAsync();
