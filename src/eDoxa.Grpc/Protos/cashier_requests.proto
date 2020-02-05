@@ -4,10 +4,10 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Cashier.Requests";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/duration.proto";
+import "google/protobuf/wrappers.proto";
 
 import "cashier_dtos.proto";
 import "cashier_enums.proto";
-import "custom_types.proto";
 
 package edoxa.services.cashier;
 
@@ -38,6 +38,7 @@ message CreateTransactionRequest {
 
 message CreateTransactionAggregatorRequest {
   int32 bundle = 1;
+  google.protobuf.StringValue email = 2;
 }
 
 message CreatePromotionRequest {

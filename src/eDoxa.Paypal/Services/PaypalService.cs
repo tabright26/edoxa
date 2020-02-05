@@ -28,10 +28,11 @@ namespace eDoxa.Paypal.Services
 
         private PaypalOptions Options => _options.Value;
 
-        public async Task WithdrawAsync(
+        public async Task<PayoutBatch> WithdrawAsync(
             string transactionId,
             string email,
             int amount,
+            string description = null,
             string correlationId = null
         )
         {
@@ -53,13 +54,13 @@ namespace eDoxa.Paypal.Services
                             value = amount.ToString()
                         },
                         receiver = email,
-                        note = Options.Payout.Email.Note,
+                        note = description ?? Options.Payout.Email.Note,
                         sender_item_id = transactionId
                     }
                 }
             };
 
-            await Task.FromResult(Payout.Create(Options.GetApiContext(), payout));
+            return await Task.FromResult(Payout.Create(Options.GetApiContext(), payout));
         }
     }
 }

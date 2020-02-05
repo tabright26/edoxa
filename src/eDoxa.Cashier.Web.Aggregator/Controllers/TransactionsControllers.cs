@@ -66,7 +66,8 @@ namespace eDoxa.Cashier.Web.Aggregator.Controllers
             {
                 var withdrawalRequest = new WithdrawalRequest
                 {
-                    Transaction = transaction
+                    Transaction = transaction,
+                    Email = request.Email
                 };
 
                 await _paymentServiceClient.WithdrawalAsync(withdrawalRequest);
