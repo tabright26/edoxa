@@ -12,12 +12,11 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Grpc.Protos.Payment.Options;
-using eDoxa.Payment.Api.Application.Stripe.Extensions;
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Payment.Api.Grpc.Services;
 using eDoxa.Payment.Api.Infrastructure;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Paypal.Extensions;
+using eDoxa.Paypal.Services.Abstractions;
 using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
@@ -33,6 +32,8 @@ using eDoxa.Seedwork.Security.Cors.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.TestHelper.Extensions;
+using eDoxa.Stripe.Extensions;
+using eDoxa.Stripe.Services.Abstractions;
 
 using FluentValidation;
 
@@ -82,20 +83,26 @@ namespace eDoxa.Payment.Api
 
             services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
 
+            services.AddStripe(Configuration);
+
             services.AddPaypal(Configuration);
 
             services.AddHealthChecks()
                 .AddCustomSelfCheck()
                 .AddCustomIdentityServer(AppSettings)
                 .AddCustomAzureKeyVault(Configuration)
-                .AddCustomSqlServer(Configuration)
                 .AddCustomAzureServiceBusTopic(Configuration);
 
             services.AddCustomCors();
 
             services.AddCustomGrpc();
 
-            services.AddCustomProblemDetails(options => options.MapStripeException());
+            services.AddCustomProblemDetails(
+                options =>
+                {
+                    options.MapStripeException();
+                    options.MapPaypalException();
+                });
 
             services.AddCustomControllers<Startup>();
 
@@ -121,8 +128,6 @@ namespace eDoxa.Payment.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterAzureServiceBusModule<Startup>(AppServices.PaymentApi);
-
-            builder.RegisterModule<PaymentModule>();
         }
 
         public void Configure(IApplicationBuilder application, IServiceBusSubscriber subscriber)
@@ -149,8 +154,6 @@ namespace eDoxa.Payment.Api
 
             application.UseSwagger(AppSettings);
 
-            application.UseStripe(Configuration);
-
             subscriber.UseIntegrationEventSubscriptions();
         }
     }
@@ -162,11 +165,17 @@ namespace eDoxa.Payment.Api
             services.AddAppSettings<PaymentAppSettings>(Configuration);
 
             services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
+
             services.AddCustomCors();
 
             services.AddCustomGrpc();
 
-            services.AddCustomProblemDetails(options => options.MapStripeException());
+            services.AddCustomProblemDetails(
+                options =>
+                {
+                    options.MapStripeException();
+                    options.MapPaypalException();
+                });
 
             services.AddCustomControllers<Startup>();
 
@@ -181,8 +190,6 @@ namespace eDoxa.Payment.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule<PaymentModule>();
-
             builder.RegisterMockServiceBusModule();
 
             builder.RegisterMock<IStripeCustomerService>();
@@ -192,6 +199,8 @@ namespace eDoxa.Payment.Api
             builder.RegisterMock<IStripeInvoiceService>();
 
             builder.RegisterMock<IStripePaymentMethodService>();
+
+            builder.RegisterMock<IPaypalPayoutService>();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

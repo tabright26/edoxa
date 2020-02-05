@@ -10,7 +10,7 @@ using eDoxa.Grpc.Protos.Payment.Dtos;
 
 using Stripe;
 
-namespace eDoxa.Payment.Api.Application.Stripe.Profiles
+namespace eDoxa.Payment.Api.Profiles
 {
     internal sealed class StripeProfile : Profile
     {

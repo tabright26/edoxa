@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Grpc.Protos.Payment.Dtos;
-using eDoxa.Payment.Api.Application.Stripe.Extensions;
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
-
+using eDoxa.Seedwork.Application.Extensions;
+using eDoxa.Stripe.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

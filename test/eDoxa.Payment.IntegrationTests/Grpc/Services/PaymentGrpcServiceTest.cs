@@ -16,12 +16,12 @@ using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Abstractions;
+using eDoxa.Stripe.Services.Abstractions;
 
 using FluentAssertions;
 

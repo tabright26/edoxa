@@ -8,7 +8,7 @@ using Hellang.Middleware.ProblemDetails;
 
 using Stripe;
 
-namespace eDoxa.Payment.Api.Application.Stripe.Extensions
+namespace eDoxa.Stripe.Extensions
 {
     public static class ProblemDetailsOptionsExtensions
     {

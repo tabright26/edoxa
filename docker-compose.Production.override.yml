@@ -130,7 +130,6 @@ services:
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
-      - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq

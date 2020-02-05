@@ -1,20 +1,18 @@
-﻿// Filename: ICustomerService.cs
-// Date Created: 2019-10-07
+﻿// Filename: IStripeCustomerService.cs
+// Date Created: 2020-02-05
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Domain.Misc;
-
 using Stripe;
 
-namespace eDoxa.Payment.Api.Application.Stripe.Services.Abstractions
+namespace eDoxa.Stripe.Services.Abstractions
 {
     public interface IStripeCustomerService
     {
-        Task<string> CreateCustomerAsync(UserId userId, string email);
+        Task<string> CreateCustomerAsync(string userId, string email);
 
         Task<bool> HasDefaultPaymentMethodAsync(string customerId);
 

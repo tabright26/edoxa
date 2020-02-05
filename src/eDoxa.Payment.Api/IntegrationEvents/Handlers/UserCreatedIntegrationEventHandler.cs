@@ -7,11 +7,11 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
+using eDoxa.Stripe.Services.Abstractions;
 
 using Microsoft.Extensions.Logging;
 

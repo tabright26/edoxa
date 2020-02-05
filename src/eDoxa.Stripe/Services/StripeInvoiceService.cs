@@ -1,18 +1,17 @@
 ﻿// Filename: StripeInvoiceService.cs
-// Date Created: 2019-12-15
+// Date Created: 2020-02-05
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
-using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Stripe.Services.Abstractions;
 
 using Stripe;
 
-namespace eDoxa.Payment.Api.Application.Stripe.Services
+namespace eDoxa.Stripe.Services
 {
     public sealed class StripeInvoiceService : InvoiceService, IStripeInvoiceService
     {
@@ -24,8 +23,8 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
         }
 
         public async Task<Invoice> CreateInvoiceAsync(
-            string customerId,
-            TransactionId transactionId,
+            string customer,
+            string transactionId,
             long amount,
             string description
         )
@@ -33,22 +32,22 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
             await _stripeInvoiceItemService.CreateInvoiceItemAsync(
                 transactionId,
                 description,
-                customerId,
+                customer,
                 amount);
 
-            return await this.CreateInvoiceAsync(transactionId, customerId);
+            return await this.CreateInvoiceAsync(transactionId, customer);
         }
 
-        private async Task<Invoice> CreateInvoiceAsync(TransactionId transactionId, string customerId)
+        private async Task<Invoice> CreateInvoiceAsync(string transactionId, string customer)
         {
             return await this.CreateAsync(
                 new InvoiceCreateOptions
                 {
-                    Customer = customerId,
+                    Customer = customer,
                     AutoAdvance = true,
                     Metadata = new Dictionary<string, string>
                     {
-                        [nameof(transactionId)] = transactionId.ToString()
+                        [nameof(transactionId)] = transactionId
                     }
                 });
         }

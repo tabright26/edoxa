@@ -11,14 +11,13 @@ using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
-using eDoxa.Payment.Api.Application.Stripe.Extensions;
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
 using eDoxa.Paypal.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
+using eDoxa.Stripe.Services.Abstractions;
 
 using Grpc.Core;
 
@@ -36,21 +35,21 @@ namespace eDoxa.Payment.Api.Grpc.Services
         private readonly IServiceBusPublisher _serviceBusPublisher;
         private readonly IStripeInvoiceService _stripeInvoiceService;
         private readonly IStripeCustomerService _stripeCustomerService;
-        private readonly IPaypalService _paypalService;
+        private readonly IPaypalPayoutService _paypalPayoutService;
 
         public PaymentGrpcService(
             ILogger<PaymentGrpcService> logger,
             IServiceBusPublisher serviceBusPublisher,
             IStripeInvoiceService stripeInvoiceService,
             IStripeCustomerService stripeCustomerService,
-            IPaypalService paypalService
+            IPaypalPayoutService paypalPayoutService
         )
         {
             _logger = logger;
             _serviceBusPublisher = serviceBusPublisher;
             _stripeInvoiceService = stripeInvoiceService;
             _stripeCustomerService = stripeCustomerService;
-            _paypalService = paypalService;
+            _paypalPayoutService = paypalPayoutService;
         }
 
         public override async Task<DepositResponse> Deposit(DepositRequest request, ServerCallContext context)
@@ -106,7 +105,7 @@ namespace eDoxa.Payment.Api.Grpc.Services
 
             try
             {
-                var payoutBatch = await _paypalService.WithdrawAsync(
+                var payoutBatch = await _paypalPayoutService.CreateAsync(
                     request.Transaction.Id.ParseEntityId<TransactionId>(),
                     request.Email,
                     Convert.ToInt32(-request.Transaction.Currency.Amount.ToDecimal()),

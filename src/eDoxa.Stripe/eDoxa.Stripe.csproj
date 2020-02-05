@@ -16,7 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="3.1.1" />
-    <PackageReference Include="PayPal.SDK.NETCore" Version="1.9.1.2" />
+    <PackageReference Include="Stripe.net" Version="34.19.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\paypal.proto" GrpcServices="None" />
+    <Protobuf Include="Protos\stripe.proto" GrpcServices="None" />
   </ItemGroup>
 
 </Project>

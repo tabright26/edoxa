@@ -17,7 +17,7 @@ namespace eDoxa.Paypal.Extensions
         public static void AddPaypal(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<PaypalOptions>(configuration.GetSection("Paypal"));
-            services.AddSingleton<IPaypalService, PaypalService>();
+            services.AddTransient<IPaypalPayoutService, PaypalPayoutService>();
         }
     }
 }

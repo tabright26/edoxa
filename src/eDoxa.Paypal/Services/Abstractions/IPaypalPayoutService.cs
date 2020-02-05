@@ -1,4 +1,4 @@
-﻿// Filename: IPaypalService.cs
+﻿// Filename: IPaypalPayoutService.cs
 // Date Created: 2020-02-04
 // 
 // ================================================
@@ -10,9 +10,9 @@ using PayPal.Api;
 
 namespace eDoxa.Paypal.Services.Abstractions
 {
-    public interface IPaypalService
+    public interface IPaypalPayoutService
     {
-        Task<PayoutBatch> WithdrawAsync(
+        Task<PayoutBatch> CreateAsync(
             string transactionId,
             string email,
             int amount,

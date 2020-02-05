@@ -4,8 +4,8 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.ServiceBus.Abstractions;
+using eDoxa.Stripe.Services.Abstractions;
 
 using Moq;
 

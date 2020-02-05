@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 using Autofac;
 
 using eDoxa.Grpc.Protos.Payment.Requests;
-using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
+using eDoxa.Stripe.Services.Abstractions;
 
 using FluentAssertions;
 

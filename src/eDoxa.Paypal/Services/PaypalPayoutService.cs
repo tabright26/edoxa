@@ -1,4 +1,4 @@
-﻿// Filename: PaypalService.cs
+﻿// Filename: PaypalPayoutService.cs
 // Date Created: 2020-02-04
 // 
 // ================================================
@@ -17,18 +17,18 @@ using PayPal.Api;
 
 namespace eDoxa.Paypal.Services
 {
-    public sealed class PaypalService : IPaypalService
+    public sealed class PaypalPayoutService : IPaypalPayoutService
     {
         private readonly IOptions<PaypalOptions> _options;
 
-        public PaypalService(IOptionsSnapshot<PaypalOptions> options)
+        public PaypalPayoutService(IOptionsSnapshot<PaypalOptions> options)
         {
             _options = options;
         }
 
         private PaypalOptions Options => _options.Value;
 
-        public async Task<PayoutBatch> WithdrawAsync(
+        public async Task<PayoutBatch> CreateAsync(
             string transactionId,
             string email,
             int amount,

@@ -1,21 +1,19 @@
 ﻿// Filename: IStripeInvoiceItemService.cs
-// Date Created: 2019-10-10
+// Date Created: 2020-02-05
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Domain.Misc;
-
-namespace eDoxa.Payment.Api.Application.Stripe.Services.Abstractions
+namespace eDoxa.Stripe.Services.Abstractions
 {
     public interface IStripeInvoiceItemService
     {
         Task CreateInvoiceItemAsync(
-            TransactionId transactionId,
+            string transactionId,
             string description,
-            string customerId,
+            string customer,
             long amount
         );
     }
