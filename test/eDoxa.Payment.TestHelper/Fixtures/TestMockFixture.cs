@@ -18,25 +18,25 @@ namespace eDoxa.Payment.TestHelper.Fixtures
         {
             ServiceBusPublisher = new Mock<IServiceBusPublisher>();
             StripeRepository = new Mock<IStripeRepository>();
-            StripeAccountService = new Mock<IStripeAccountService>();
+            //StripeAccountService = new Mock<IStripeAccountService>();
             StripeCustomerService = new Mock<IStripeCustomerService>();
-            StripeExternalAccountService = new Mock<IStripeExternalAccountService>();
+            //StripeExternalAccountService = new Mock<IStripeExternalAccountService>();
             StripeInvoiceItemService = new Mock<IStripeInvoiceItemService>();
             StripeInvoiceService = new Mock<IStripeInvoiceService>();
             StripePaymentMethodService = new Mock<IStripePaymentMethodService>();
             StripeService = new Mock<IStripeService>();
-            StripeTransferService = new Mock<IStripeTransferService>();
+            //StripeTransferService = new Mock<IStripeTransferService>();
         }
 
         public Mock<IServiceBusPublisher> ServiceBusPublisher { get; }
 
         public Mock<IStripeRepository> StripeRepository { get; }
         
-        public Mock<IStripeAccountService> StripeAccountService { get; }
+        //public Mock<IStripeAccountService> StripeAccountService { get; }
 
         public Mock<IStripeCustomerService> StripeCustomerService { get; }
 
-        public Mock<IStripeExternalAccountService> StripeExternalAccountService { get; }
+        //public Mock<IStripeExternalAccountService> StripeExternalAccountService { get; }
 
         public Mock<IStripeInvoiceItemService> StripeInvoiceItemService { get; }
 
@@ -46,6 +46,6 @@ namespace eDoxa.Payment.TestHelper.Fixtures
 
         public Mock<IStripeService> StripeService { get; }
 
-        public Mock<IStripeTransferService> StripeTransferService { get; }
+        //public Mock<IStripeTransferService> StripeTransferService { get; }
     }
 }

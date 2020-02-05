@@ -1,37 +1,37 @@
-﻿// Filename: IStripeAccountService.cs
-// Date Created: 2019-10-10
-// 
-// ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+﻿//// Filename: IStripeAccountService.cs
+//// Date Created: 2019-10-10
+//// 
+//// ================================================
+//// Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 
-using eDoxa.Seedwork.Domain;
-using eDoxa.Seedwork.Domain.Misc;
+//using eDoxa.Seedwork.Domain;
+//using eDoxa.Seedwork.Domain.Misc;
 
-using Stripe;
+//using Stripe;
 
-namespace eDoxa.Payment.Domain.Stripe.Services
-{
-    public interface IStripeAccountService
-    {
-        Task<string> GetAccountIdAsync(UserId userId);
+//namespace eDoxa.Payment.Domain.Stripe.Services
+//{
+//    public interface IStripeAccountService
+//    {
+//        Task<string> GetAccountIdAsync(UserId userId);
 
-        Task<Account> GetAccountAsync(string accountId);
+//        Task<Account> GetAccountAsync(string accountId);
 
-        Task<string> CreateAccountAsync(
-            UserId userId,
-            string email,
-            Country country,
-            string ip,
-            string customerId,
-            int day,
-            int month,
-            int year
-        );
+//        Task<string> CreateAccountAsync(
+//            UserId userId,
+//            string email,
+//            Country country,
+//            string ip,
+//            string customerId,
+//            int day,
+//            int month,
+//            int year
+//        );
 
-        Task<DomainValidationResult<Account>> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
+//        Task<DomainValidationResult<Account>> UpdateIndividualAsync(string accountId, PersonUpdateOptions individual);
 
-        Task<bool> HasAccountVerifiedAsync(string accountId);
-    }
-}
+//        Task<bool> HasAccountVerifiedAsync(string accountId);
+//    }
+//}

@@ -21,51 +21,53 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {
     public sealed class UserProfileChangedIntegrationEventHandler : IIntegrationEventHandler<UserProfileChangedIntegrationEvent>
     {
-        private readonly IStripeService _stripeService;
-        private readonly IStripeAccountService _stripeAccountService;
-        private readonly ILogger _logger;
+        //private readonly IStripeService _stripeService;
+        //private readonly IStripeAccountService _stripeAccountService;
+        //private readonly ILogger _logger;
 
-        public UserProfileChangedIntegrationEventHandler(
-            IStripeService stripeService,
-            IStripeAccountService stripeAccountService,
-            ILogger<UserProfileChangedIntegrationEventHandler> logger
-        )
-        {
-            _stripeService = stripeService;
-            _stripeAccountService = stripeAccountService;
-            _logger = logger;
-        }
+        //public UserProfileChangedIntegrationEventHandler(
+        //    IStripeService stripeService,
+        //    IStripeAccountService stripeAccountService,
+        //    ILogger<UserProfileChangedIntegrationEventHandler> logger
+        //)
+        //{
+        //    _stripeService = stripeService;
+        //    _stripeAccountService = stripeAccountService;
+        //    _logger = logger;
+        //}
 
         public async Task HandleAsync(UserProfileChangedIntegrationEvent integrationEvent)
         {
-            var userId = integrationEvent.UserId.ParseEntityId<UserId>();
+            await Task.CompletedTask;
 
-            if (await _stripeService.UserExistsAsync(userId))
-            {
-                var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
+            //var userId = integrationEvent.UserId.ParseEntityId<UserId>();
 
-                var result = await _stripeAccountService.UpdateIndividualAsync(
-                    accountId,
-                    new PersonUpdateOptions
-                    {
-                        FirstName = integrationEvent.Profile.FirstName,
-                        LastName = integrationEvent.Profile.LastName,
-                        Gender = integrationEvent.Profile.Gender.ToEnumerationOrNull<Gender>()?.ToStripe()
-                    });
+            //if (await _stripeService.UserExistsAsync(userId))
+            //{
+            //    var accountId = await _stripeAccountService.GetAccountIdAsync(userId);
 
-                if (result.IsValid)
-                {
-                    _logger.LogInformation(""); // FRANCIS: TODO.
-                }
-                else
-                {
-                    _logger.LogCritical(""); // FRANCIS: TODO.
-                }
-            }
-            else
-            {
-                _logger.LogCritical(""); // FRANCIS: TODO.
-            }
+            //    var result = await _stripeAccountService.UpdateIndividualAsync(
+            //        accountId,
+            //        new PersonUpdateOptions
+            //        {
+            //            FirstName = integrationEvent.Profile.FirstName,
+            //            LastName = integrationEvent.Profile.LastName,
+            //            Gender = integrationEvent.Profile.Gender.ToEnumerationOrNull<Gender>()?.ToStripe()
+            //        });
+
+            //    if (result.IsValid)
+            //    {
+            //        _logger.LogInformation(""); // FRANCIS: TODO.
+            //    }
+            //    else
+            //    {
+            //        _logger.LogCritical(""); // FRANCIS: TODO.
+            //    }
+            //}
+            //else
+            //{
+            //    _logger.LogCritical(""); // FRANCIS: TODO.
+            //}
         }
     }
 }

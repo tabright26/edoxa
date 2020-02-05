@@ -196,11 +196,11 @@ namespace eDoxa.Payment.Api
 
             builder.RegisterMockServiceBusModule();
 
-            builder.RegisterMock<IStripeAccountService>();
+            //builder.RegisterMock<IStripeAccountService>();
 
             builder.RegisterMock<IStripeCustomerService>();
 
-            builder.RegisterMock<IStripeExternalAccountService>();
+            //builder.RegisterMock<IStripeExternalAccountService>();
 
             builder.RegisterMock<IStripeInvoiceItemService>();
 
@@ -208,7 +208,7 @@ namespace eDoxa.Payment.Api
 
             builder.RegisterMock<IStripePaymentMethodService>();
 
-            builder.RegisterMock<IStripeTransferService>();
+            //builder.RegisterMock<IStripeTransferService>();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

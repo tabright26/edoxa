@@ -258,76 +258,76 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
         //    await paypal.WithdrawAsync(new TransactionId(), "francis@edoxa.gg", 100);
         //}
 
-        [Fact]
-        public async Task Withdrawal_ShouldBeOfTypeWithdrawalResponse()
-        {
-            // Arrange
-            var userId = new UserId();
-            const string email = "test@edoxa.gg";
+        //[Fact]
+        //public async Task Withdrawal_ShouldBeOfTypeWithdrawalResponse()
+        //{
+        //    // Arrange
+        //    var userId = new UserId();
+        //    const string email = "test@edoxa.gg";
 
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email))
-                .WithWebHostBuilder(
-                    builder =>
-                    {
-                        builder.ConfigureTestContainer<ContainerBuilder>(
-                            container =>
-                            {
-                                var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
+        //    var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email))
+        //        .WithWebHostBuilder(
+        //            builder =>
+        //            {
+        //                builder.ConfigureTestContainer<ContainerBuilder>(
+        //                    container =>
+        //                    {
+        //                        var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-                                mockServiceBusPublisher.Setup(x => x.PublishAsync(It.IsAny<UserWithdrawalSucceededIntegrationEvent>()))
-                                    .Returns(Task.CompletedTask);
+        //                        mockServiceBusPublisher.Setup(x => x.PublishAsync(It.IsAny<UserWithdrawalSucceededIntegrationEvent>()))
+        //                            .Returns(Task.CompletedTask);
 
-                                container.RegisterInstance(mockServiceBusPublisher.Object).As<IServiceBusPublisher>();
+        //                        container.RegisterInstance(mockServiceBusPublisher.Object).As<IServiceBusPublisher>();
 
-                                var mockStripeTransferService = new Mock<IStripeTransferService>();
+        //                        var mockStripeTransferService = new Mock<IStripeTransferService>();
 
-                                mockStripeTransferService.Setup(
-                                        x => x.CreateTransferAsync(
-                                            It.IsAny<string>(),
-                                            It.IsAny<TransactionId>(),
-                                            It.IsAny<long>(),
-                                            It.IsAny<string>()))
-                                    .ReturnsAsync(new Transfer());
+        //                        mockStripeTransferService.Setup(
+        //                                x => x.CreateTransferAsync(
+        //                                    It.IsAny<string>(),
+        //                                    It.IsAny<TransactionId>(),
+        //                                    It.IsAny<long>(),
+        //                                    It.IsAny<string>()))
+        //                            .ReturnsAsync(new Transfer());
 
-                                container.RegisterInstance(mockStripeTransferService.Object).As<IStripeTransferService>();
+        //                        container.RegisterInstance(mockStripeTransferService.Object).As<IStripeTransferService>();
 
-                                var mockStripeAccountService = new Mock<IStripeAccountService>();
+        //                        var mockStripeAccountService = new Mock<IStripeAccountService>();
 
-                                mockStripeAccountService.Setup(x => x.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId");
+        //                        mockStripeAccountService.Setup(x => x.GetAccountIdAsync(It.IsAny<UserId>())).ReturnsAsync("accountId");
 
-                                mockStripeAccountService.Setup(x => x.HasAccountVerifiedAsync(It.IsAny<string>())).ReturnsAsync(true);
+        //                        mockStripeAccountService.Setup(x => x.HasAccountVerifiedAsync(It.IsAny<string>())).ReturnsAsync(true);
 
-                                container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>();
-                            });
-                    });
+        //                        container.RegisterInstance(mockStripeAccountService.Object).As<IStripeAccountService>();
+        //                    });
+        //            });
 
-            host.Server.CleanupDbContext();
+        //    host.Server.CleanupDbContext();
 
-            var request = new WithdrawalRequest
-            {
-                Transaction = new TransactionDto
-                {
-                    Currency = new CurrencyDto
-                    {
-                        Type = EnumCurrencyType.Money,
-                        Amount = 20
-                    },
-                    Description = "test",
-                    Id = new TransactionId(),
-                    Status = EnumTransactionStatus.Pending,
-                    Timestamp = DateTime.UtcNow.ToTimestamp(),
-                    Type = EnumTransactionType.Withdrawal
-                }
-            };
+        //    var request = new WithdrawalRequest
+        //    {
+        //        Transaction = new TransactionDto
+        //        {
+        //            Currency = new CurrencyDto
+        //            {
+        //                Type = EnumCurrencyType.Money,
+        //                Amount = 20
+        //            },
+        //            Description = "test",
+        //            Id = new TransactionId(),
+        //            Status = EnumTransactionStatus.Pending,
+        //            Timestamp = DateTime.UtcNow.ToTimestamp(),
+        //            Type = EnumTransactionType.Withdrawal
+        //        }
+        //    };
 
-            var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
+        //    var client = new PaymentService.PaymentServiceClient(host.CreateChannel());
 
-            // Act
-            var response = await client.WithdrawalAsync(request);
+        //    // Act
+        //    var response = await client.WithdrawalAsync(request);
 
-            //Assert
-            response.Should().BeOfType<WithdrawalResponse>();
-        }
+        //    //Assert
+        //    response.Should().BeOfType<WithdrawalResponse>();
+        //}
 
         [Fact]
         public void Withdrawal_ShouldThrowRpcExceptionAccountVerificationNeeded()
