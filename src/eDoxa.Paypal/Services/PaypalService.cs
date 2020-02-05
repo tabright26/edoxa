@@ -4,6 +4,8 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using eDoxa.Paypal.Extensions;
@@ -26,8 +28,37 @@ namespace eDoxa.Paypal.Services
 
         private PaypalOptions Options => _options.Value;
 
-        public async Task CreatePayoutAsync(Payout payout)
+        public async Task WithdrawAsync(
+            string transactionId,
+            string email,
+            int amount,
+            string correlationId = null
+        )
         {
+            var payout = new Payout
+            {
+                sender_batch_header = new PayoutSenderBatchHeader
+                {
+                    email_subject = Options.Payout.Email.Subject,
+                    sender_batch_id = correlationId ?? Guid.NewGuid().ToString(),
+                    recipient_type = PayoutRecipientType.EMAIL
+                },
+                items = new List<PayoutItem>
+                {
+                    new PayoutItem
+                    {
+                        amount = new Currency
+                        {
+                            currency = Options.Payout.Currency,
+                            value = amount.ToString()
+                        },
+                        receiver = email,
+                        note = Options.Payout.Email.Note,
+                        sender_item_id = transactionId
+                    }
+                }
+            };
+
             await Task.FromResult(Payout.Create(Options.GetApiContext(), payout));
         }
     }

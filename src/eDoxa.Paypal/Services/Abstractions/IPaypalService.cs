@@ -6,12 +6,15 @@
 
 using System.Threading.Tasks;
 
-using PayPal.Api;
-
 namespace eDoxa.Paypal.Services.Abstractions
 {
     public interface IPaypalService
     {
-        Task CreatePayoutAsync(Payout payout);
+        Task WithdrawAsync(
+            string transactionId,
+            string email,
+            int amount,
+            string correlationId = null
+        );
     }
 }

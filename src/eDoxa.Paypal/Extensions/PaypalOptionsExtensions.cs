@@ -15,8 +15,8 @@ namespace eDoxa.Paypal.Extensions
         public static APIContext GetApiContext(this PaypalOptions options)
         {
             var credential = new OAuthTokenCredential(
-                options.ClientId,
-                options.ClientSecret,
+                options.Client.Id,
+                options.Client.Secret,
                 new Dictionary<string, string>
                 {
                     ["mode"] = options.Mode

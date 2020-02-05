@@ -6,6 +6,21 @@ package edoxa.paypal;
 
 message PaypalOptions {
   string mode = 1;
-  string clientId = 2;
-  string clientSecret = 3;
+  ClientOptions client = 2;
+  PayoutOptions payout = 3;
+
+  message ClientOptions {
+    string id = 1;
+    string secret = 2;
+  }
+
+  message PayoutOptions {
+    string currency = 1;
+    EmailOptions email = 2;
+
+    message EmailOptions {
+      string subject = 1;
+      string note = 2;
+    }
+  }
 }

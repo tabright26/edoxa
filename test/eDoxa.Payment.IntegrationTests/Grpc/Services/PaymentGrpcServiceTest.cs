@@ -227,6 +227,37 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             func.Should().Throw<RpcException>();
         }
 
+        //[Fact]
+        //public async Task Test()
+        //{
+        //    var options = new Mock<IOptionsSnapshot<PaypalOptions>>();
+
+        //    options.Setup(x => x.Value)
+        //        .Returns(
+        //            new PaypalOptions
+        //            {
+        //                Mode = "sandbox",
+        //                Client = new ClientOptions
+        //                {
+        //                    Id = "Ad47gB8d_jzNAIzntNOcrXcCW0EmKpenE0ODvwjte8Dx_ElbGQw6hWuVviBU54eMoDnlSv8ma7yTygJF",
+        //                    Secret = "EGaT1DzxAHAdibUwSEPNoNGxpy8Q03b_R-uJT7xlozLnLHIPNHp2VGNOmP4boiisUt2a6x3-lNMTRaSi"
+        //                },
+        //                Payout = new PayoutOptions
+        //                {
+        //                    Currency = "USD",
+        //                    Email = new EmailOptions
+        //                    {
+        //                        Subject = "eDoxa - Withdrawal",
+        //                        Note = "eDoxa - Withdrawal"
+        //                    }
+        //                }
+        //            });
+
+        //    var paypal = new PaypalService(options.Object);
+
+        //    await paypal.WithdrawAsync(new TransactionId(), "francis@edoxa.gg", 100);
+        //}
+
         [Fact]
         public async Task Withdrawal_ShouldBeOfTypeWithdrawalResponse()
         {
