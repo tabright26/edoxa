@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using eDoxa.Payment.Api.Controllers.Stripe;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Mocks;
 
 using FluentAssertions;
@@ -34,9 +33,7 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         public async Task FetchCustomerAsync_ShouldBeOfTypeNotFoundObjectResult()
         {
             // Arrange
-            TestMock.StripeService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(false).Verifiable();
-
-            var customerController = new CustomerController(TestMock.StripeCustomerService.Object, TestMock.StripeService.Object, TestMapper)
+            var customerController = new CustomerController(TestMock.StripeCustomerService.Object, TestMapper)
             {
                 ControllerContext =
                 {
@@ -49,20 +46,12 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
-
-            TestMock.StripeService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
         }
 
         [Fact]
         public async Task FetchCustomerAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
-            TestMock.StripeService.Setup(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>())).ReturnsAsync(true).Verifiable();
-
-            TestMock.StripeCustomerService.Setup(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()))
-                .ReturnsAsync("customerID")
-                .Verifiable();
-
             TestMock.StripeCustomerService.Setup(customerService => customerService.FindCustomerAsync(It.IsAny<string>()))
                 .ReturnsAsync(
                     new Customer
@@ -74,7 +63,7 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
                     })
                 .Verifiable();
 
-            var customerController = new CustomerController(TestMock.StripeCustomerService.Object, TestMock.StripeService.Object, TestMapper)
+            var customerController = new CustomerController(TestMock.StripeCustomerService.Object, TestMapper)
             {
                 ControllerContext =
                 {
@@ -87,8 +76,6 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
 
             // Assert
             result.Should().BeOfType<OkObjectResult>();
-            TestMock.StripeService.Verify(referenceService => referenceService.UserExistsAsync(It.IsAny<UserId>()), Times.Once);
-            TestMock.StripeCustomerService.Verify(customerService => customerService.GetCustomerIdAsync(It.IsAny<UserId>()), Times.Once);
             TestMock.StripeCustomerService.Verify(customerService => customerService.FindCustomerAsync(It.IsAny<string>()), Times.Once);
         }
     }

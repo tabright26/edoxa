@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Stripe;

@@ -10,7 +10,7 @@ using eDoxa.Seedwork.Domain.Misc;
 
 using Stripe;
 
-namespace eDoxa.Payment.Domain.Stripe.Services
+namespace eDoxa.Payment.Api.Application.Stripe.Services.Abstractions
 {
     public interface IStripeInvoiceService
     {

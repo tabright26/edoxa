@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2019, eDoxa. All rights reserved.
 
-using System.Linq;
-
 using AutoMapper;
 
 using eDoxa.Grpc.Protos.Payment.Dtos;
@@ -18,17 +16,6 @@ namespace eDoxa.Payment.Api.Application.Stripe.Profiles
     {
         public StripeProfile()
         {
-            //this.CreateMap<Account, StripeAccountDto>()
-            //    .ForMember(account => account.Enabled, config => config.MapFrom(account => !account.Requirements.CurrentlyDue.Any()));
-
-            //this.CreateMap<BankAccount, StripeBankAccountDto>()
-            //    .ForMember(bankAccount => bankAccount.BankName, config => config.MapFrom(bankAccount => bankAccount.BankName))
-            //    .ForMember(bankAccount => bankAccount.Country, config => config.MapFrom(bankAccount => bankAccount.Country))
-            //    .ForMember(bankAccount => bankAccount.Currency, config => config.MapFrom(bankAccount => bankAccount.Currency))
-            //    .ForMember(bankAccount => bankAccount.Last4, config => config.MapFrom(bankAccount => bankAccount.Last4))
-            //    .ForMember(bankAccount => bankAccount.Status, config => config.MapFrom(bankAccount => bankAccount.Status))
-            //    .ForMember(bankAccount => bankAccount.DefaultForCurrency, config => config.MapFrom(bankAccount => bankAccount.DefaultForCurrency));
-
             this.CreateMap<Customer, StripeCustomerDto>()
                 .ForMember(customer => customer.DefaultPaymentMethodId, config => config.MapFrom(customer => customer.InvoiceSettings.DefaultPaymentMethodId));
 

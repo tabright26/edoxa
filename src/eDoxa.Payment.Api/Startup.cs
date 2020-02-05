@@ -13,12 +13,10 @@ using Autofac;
 
 using eDoxa.Grpc.Protos.Payment.Options;
 using eDoxa.Payment.Api.Application.Stripe.Extensions;
+using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Payment.Api.Grpc.Services;
 using eDoxa.Payment.Api.Infrastructure;
-using eDoxa.Payment.Api.Infrastructure.Data;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
-using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Payment.Infrastructure;
 using eDoxa.Paypal.Extensions;
 using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
@@ -26,9 +24,7 @@ using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
-using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
-using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
@@ -95,8 +91,6 @@ namespace eDoxa.Payment.Api
                 .AddCustomSqlServer(Configuration)
                 .AddCustomAzureServiceBusTopic(Configuration);
 
-            services.AddCustomDbContext<PaymentDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
-
             services.AddCustomCors();
 
             services.AddCustomGrpc();
@@ -107,7 +101,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(PaymentDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -168,9 +162,6 @@ namespace eDoxa.Payment.Api
             services.AddAppSettings<PaymentAppSettings>(Configuration);
 
             services.Configure<PaymentApiOptions>(Configuration.GetSection("Api"));
-
-            services.AddCustomDbContext<PaymentDbContext>(Configuration, Assembly.GetAssembly(typeof(Startup)));
-
             services.AddCustomCors();
 
             services.AddCustomGrpc();
@@ -181,7 +172,7 @@ namespace eDoxa.Payment.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(PaymentDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -192,23 +183,15 @@ namespace eDoxa.Payment.Api
         {
             builder.RegisterModule<PaymentModule>();
 
-            builder.RegisterType<PaymentDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             builder.RegisterMockServiceBusModule();
 
-            //builder.RegisterMock<IStripeAccountService>();
-
             builder.RegisterMock<IStripeCustomerService>();
-
-            //builder.RegisterMock<IStripeExternalAccountService>();
 
             builder.RegisterMock<IStripeInvoiceItemService>();
 
             builder.RegisterMock<IStripeInvoiceService>();
 
             builder.RegisterMock<IStripePaymentMethodService>();
-
-            //builder.RegisterMock<IStripeTransferService>();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

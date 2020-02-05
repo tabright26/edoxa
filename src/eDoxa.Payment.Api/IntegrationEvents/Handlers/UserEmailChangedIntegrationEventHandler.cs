@@ -7,14 +7,7 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Payment.Domain.Stripe.Services;
-using eDoxa.Seedwork.Domain.Extensions;
-using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.ServiceBus.Abstractions;
-
-using Microsoft.Extensions.Logging;
-
-using Stripe;
 
 namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 {

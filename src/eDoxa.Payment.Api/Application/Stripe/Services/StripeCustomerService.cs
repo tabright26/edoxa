@@ -7,8 +7,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Payment.Domain.Stripe.Repositories;
-using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Seedwork.Domain.Misc;
 
 using Stripe;
@@ -17,20 +16,6 @@ namespace eDoxa.Payment.Api.Application.Stripe.Services
 {
     public sealed class StripeCustomerService : CustomerService, IStripeCustomerService
     {
-        private readonly IStripeRepository _stripeRepository;
-
-        public StripeCustomerService(IStripeRepository stripeRepository)
-        {
-            _stripeRepository = stripeRepository;
-        }
-
-        public async Task<string> GetCustomerIdAsync(UserId userId)
-        {
-            var reference = await _stripeRepository.GetReferenceAsync(userId);
-
-            return reference.CustomerId;
-        }
-
         public async Task<string> CreateCustomerAsync(UserId userId, string email)
         {
             var customer = await this.CreateAsync(

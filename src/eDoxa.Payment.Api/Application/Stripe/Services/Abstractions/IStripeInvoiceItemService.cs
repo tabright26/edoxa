@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 using eDoxa.Seedwork.Domain.Misc;
 
-namespace eDoxa.Payment.Domain.Stripe.Services
+namespace eDoxa.Payment.Api.Application.Stripe.Services.Abstractions
 {
     public interface IStripeInvoiceItemService
     {

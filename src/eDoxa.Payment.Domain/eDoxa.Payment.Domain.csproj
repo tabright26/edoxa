@@ -9,8 +9,4 @@
     <PackageReference Include="Stripe.net" Version="34.19.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Seedwork.Domain\eDoxa.Seedwork.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

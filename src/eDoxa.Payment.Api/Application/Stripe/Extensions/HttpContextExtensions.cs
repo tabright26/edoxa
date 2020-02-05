@@ -13,11 +13,6 @@ namespace eDoxa.Payment.Api.Application.Stripe.Extensions
 {
     public static class HttpContextExtensions
     {
-        //public static string GetStripeAccountId(this HttpContext context)
-        //{
-        //    return context.GetClaim(CustomClaimTypes.StripeAccount);
-        //}
-
         public static string GetStripeCustomertId(this HttpContext context)
         {
             return context.GetClaim(CustomClaimTypes.StripeCustomer);

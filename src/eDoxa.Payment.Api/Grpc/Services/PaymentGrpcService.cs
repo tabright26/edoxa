@@ -11,8 +11,9 @@ using eDoxa.Grpc.Extensions;
 using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Grpc.Protos.Payment.Responses;
 using eDoxa.Grpc.Protos.Payment.Services;
+using eDoxa.Payment.Api.Application.Stripe.Extensions;
+using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Payment.Api.IntegrationEvents.Extensions;
-using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Paypal.Services.Abstractions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -60,10 +61,10 @@ namespace eDoxa.Payment.Api.Grpc.Services
 
             var email = httpContext.GetEmail();
 
+            var customerId = httpContext.GetStripeCustomertId();
+
             try
             {
-                var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
-
                 if (!await _stripeCustomerService.HasDefaultPaymentMethodAsync(customerId))
                 {
                     const string detail = "The user's Stripe Customer has no default payment method. The user's cannot process a deposit transaction.";

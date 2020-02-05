@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Payment.Options;
-using eDoxa.Payment.Domain.Stripe.Services;
+using eDoxa.Payment.Api.Application.Stripe.Services.Abstractions;
 using eDoxa.Seedwork.Domain;
 
 using Microsoft.Extensions.Options;
