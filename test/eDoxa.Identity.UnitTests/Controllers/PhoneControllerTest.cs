@@ -26,7 +26,7 @@ using Xunit;
 
 namespace eDoxa.Identity.UnitTests.Controllers
 {
-    public sealed class PhoneControllerTest : UnitTest // GABRIEL: UNIT TESTS
+    public sealed class PhoneControllerTest : UnitTest
     {
         public PhoneControllerTest(TestDataFixture testData, TestMapperFixture testMapper, TestValidator testValidator) : base(
             testData,
