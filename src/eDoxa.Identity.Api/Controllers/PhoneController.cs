@@ -1,6 +1,6 @@
 ﻿// Filename: PhoneController.cs
 // Date Created: 2020-01-25
-// 
+//
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
@@ -68,6 +68,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.Succeeded)
             {
+                //Francis: Si je comprends bien, le user ici est modifier parce que la fonction UpdatePhone effectue loperation directement sur le laggregate de user?
                 return this.Ok(_mapper.Map<PhoneDto>(user));
             }
 
