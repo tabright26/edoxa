@@ -7,11 +7,13 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Sendgrid;
 using eDoxa.ServiceBus.Abstractions;
+
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 {
@@ -20,12 +22,20 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
     {
         private readonly IUserService _userService;
         private readonly IRedirectService _redirectService;
+        private readonly IOptions<SendgridOptions> _options;
 
-        public UserEmailConfirmationTokenGeneratedIntegrationEventHandler(IUserService userService, IRedirectService redirectService)
+        public UserEmailConfirmationTokenGeneratedIntegrationEventHandler(
+            IUserService userService,
+            IRedirectService redirectService,
+            IOptionsSnapshot<SendgridOptions> options
+        )
         {
             _userService = userService;
             _redirectService = redirectService;
+            _options = options;
         }
+
+        private SendgridOptions Options => _options.Value;
 
         public async Task HandleAsync(UserEmailConfirmationTokenGeneratedIntegrationEvent integrationEvent)
         {
@@ -33,7 +43,7 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
             await _userService.SendEmailAsync(
                 integrationEvent.UserId.ParseEntityId<UserId>(),
-                SendGridTemplates.UserEmailConfirmationTokenGenerated,
+                Options.Templates.UserEmailConfirmationTokenGenerated,
                 new
                 {
                     tokenUrl

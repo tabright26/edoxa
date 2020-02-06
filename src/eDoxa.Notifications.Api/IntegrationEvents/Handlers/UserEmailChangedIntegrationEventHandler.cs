@@ -7,13 +7,14 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
-using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Sendgrid;
 using eDoxa.ServiceBus.Abstractions;
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 {
@@ -21,12 +22,20 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
     {
         private readonly IUserService _userService;
         private readonly ILogger _logger;
+        private readonly IOptions<SendgridOptions> _options;
 
-        public UserEmailChangedIntegrationEventHandler(IUserService userService, ILogger<UserEmailChangedIntegrationEventHandler> logger)
+        public UserEmailChangedIntegrationEventHandler(
+            IUserService userService,
+            ILogger<UserEmailChangedIntegrationEventHandler> logger,
+            IOptionsSnapshot<SendgridOptions> options
+        )
         {
             _userService = userService;
             _logger = logger;
+            _options = options;
         }
+
+        private SendgridOptions Options => _options.Value;
 
         public async Task HandleAsync(UserEmailChangedIntegrationEvent integrationEvent)
         {
@@ -40,10 +49,7 @@ namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 
                 if (result.IsValid)
                 {
-                    await _userService.SendEmailAsync(
-                        integrationEvent.UserId.ParseEntityId<UserId>(),
-                        SendGridTemplates.UserEmailChanged,
-                        integrationEvent);
+                    await _userService.SendEmailAsync(integrationEvent.UserId.ParseEntityId<UserId>(), Options.Templates.UserEmailChanged, integrationEvent);
                 }
                 else
                 {

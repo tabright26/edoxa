@@ -45,7 +45,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new UserCreatedIntegrationEventHandler(TestMock.UserService.Object, mockLogger.Object);
+            var handler = new UserCreatedIntegrationEventHandler(TestMock.UserService.Object, mockLogger.Object, TestMock.SendgridOptions.Object);
 
             var integrationEvent = new UserCreatedIntegrationEvent
             {

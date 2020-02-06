@@ -6,9 +6,9 @@
 
 using System.Threading.Tasks;
 
-namespace eDoxa.Notifications.Domain.Services
+namespace eDoxa.Sendgrid.Services.Abstractions
 {
-    public interface IEmailService
+    public interface ISendgridService
     {
         Task SendEmailAsync(string email, string templateId, object templateData);
     }

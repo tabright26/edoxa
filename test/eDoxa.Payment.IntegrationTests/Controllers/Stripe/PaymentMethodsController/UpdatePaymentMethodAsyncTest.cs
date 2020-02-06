@@ -15,7 +15,6 @@ using eDoxa.Grpc.Protos.Payment.Requests;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.Stripe.Services.Abstractions;
 

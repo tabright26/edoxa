@@ -177,9 +177,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Storage", "src\eDoxa.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Paypal", "src\eDoxa.Paypal\eDoxa.Paypal.csproj", "{2363D4D7-B030-4D22-985C-77680B13B7BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eDoxa.Stripe", "src\eDoxa.Stripe\eDoxa.Stripe.csproj", "{3746A479-B87B-43D8-8CE5-9C2B4A317A49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Stripe", "src\eDoxa.Stripe\eDoxa.Stripe.csproj", "{3746A479-B87B-43D8-8CE5-9C2B4A317A49}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Workers", "src\eDoxa.Challenges.Workers\eDoxa.Challenges.Workers.csproj", "{2ADC21F3-F8B8-494A-B6B7-9AF5A008F2E4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Sendgrid", "src\eDoxa.Sendgrid\eDoxa.Sendgrid.csproj", "{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -423,6 +425,10 @@ Global
 		{2ADC21F3-F8B8-494A-B6B7-9AF5A008F2E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ADC21F3-F8B8-494A-B6B7-9AF5A008F2E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ADC21F3-F8B8-494A-B6B7-9AF5A008F2E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -502,6 +508,7 @@ Global
 		{2363D4D7-B030-4D22-985C-77680B13B7BB} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
 		{3746A479-B87B-43D8-8CE5-9C2B4A317A49} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
 		{2ADC21F3-F8B8-494A-B6B7-9AF5A008F2E4} = {9E68E467-F75C-4443-A9AD-762FF8B17F10}
+		{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}

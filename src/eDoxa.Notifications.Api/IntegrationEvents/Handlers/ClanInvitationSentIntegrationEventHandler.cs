@@ -7,29 +7,32 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
-using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Sendgrid;
 using eDoxa.ServiceBus.Abstractions;
+
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 {
     public sealed class ClanInvitationSentIntegrationEventHandler : IIntegrationEventHandler<ClanInvitationSentIntegrationEvent>
     {
         private readonly IUserService _userService;
+        private readonly IOptions<SendgridOptions> _options;
 
-        public ClanInvitationSentIntegrationEventHandler(IUserService userService)
+        public ClanInvitationSentIntegrationEventHandler(IUserService userService, IOptionsSnapshot<SendgridOptions> options)
         {
             _userService = userService;
+            _options = options;
         }
+
+        private SendgridOptions Options => _options.Value;
 
         public async Task HandleAsync(ClanInvitationSentIntegrationEvent integrationEvent)
         {
-            await _userService.SendEmailAsync(
-                integrationEvent.UserId.ParseEntityId<UserId>(),
-                SendGridTemplates.ClanInvitationSent,
-                integrationEvent);
+            await _userService.SendEmailAsync(integrationEvent.UserId.ParseEntityId<UserId>(), Options.Templates.ClanInvitationSent, integrationEvent);
 
             //$@"The clan '{integrationEvent.Clan.Name}' sent you an invitation to became a member.";
         }
