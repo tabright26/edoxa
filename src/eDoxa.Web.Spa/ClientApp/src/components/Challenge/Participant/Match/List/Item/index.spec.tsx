@@ -11,7 +11,7 @@ import {
 } from "types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const challenges: ChallengesState = {
     data: [
       {
@@ -301,7 +301,7 @@ it("renders without crashing", () => {
   );
   const match = participant.matches.find(match => match.id === "3");
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -312,6 +312,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

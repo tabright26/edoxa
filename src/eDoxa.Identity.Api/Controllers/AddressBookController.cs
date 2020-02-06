@@ -12,7 +12,6 @@ using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Domain.AggregateModels.AddressAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -82,7 +81,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<AddressDto>(result.GetEntityFromMetadata<Address>()));
+                return this.Ok(_mapper.Map<AddressDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);
@@ -116,7 +115,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<AddressDto>(result.GetEntityFromMetadata<Address>()));
+                return this.Ok(_mapper.Map<AddressDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);
@@ -144,7 +143,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<AddressDto>(result.GetEntityFromMetadata<Address>()));
+                return this.Ok(_mapper.Map<AddressDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);

@@ -11,7 +11,6 @@ using eDoxa.Grpc.Protos.Identity.IntegrationEvents;
 using eDoxa.Grpc.Protos.Identity.Requests;
 using eDoxa.Identity.Api.Controllers;
 using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
-using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.TestHelper;
 using eDoxa.Identity.TestHelper.Fixtures;
 using eDoxa.ServiceBus.Abstractions;
@@ -40,13 +39,11 @@ namespace eDoxa.Identity.UnitTests.Controllers
         public async Task ForgotPasswordAsync_ShouldBeBadRequestObjectResult()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>())).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>())).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.GeneratePasswordResetTokenAsync(It.IsAny<User>())).Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.GeneratePasswordResetTokenAsync(It.IsAny<User>())).Verifiable();
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
@@ -54,7 +51,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var controller = new PasswordController(mockUserManager.Object, mockServiceBusPublisher.Object);
+            var controller = new PasswordController(TestMock.UserService.Object, mockServiceBusPublisher.Object);
 
             controller.ModelState.AddModelError("error", "error");
 
@@ -68,11 +65,11 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Never);
+            TestMock.UserService.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Never);
 
-            mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
+            TestMock.UserService.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
 
-            mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
+            TestMock.UserService.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Never);
 
             mockServiceBusPublisher.Verify(
                 serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()),
@@ -88,13 +85,11 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>())).ReturnsAsync(true).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>())).ReturnsAsync(true).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.GeneratePasswordResetTokenAsync(It.IsAny<User>())).ReturnsAsync("code").Verifiable();
+            TestMock.UserService.Setup(userManager => userManager.GeneratePasswordResetTokenAsync(It.IsAny<User>())).ReturnsAsync("code").Verifiable();
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
@@ -102,7 +97,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var controller = new PasswordController(mockUserManager.Object, mockServiceBusPublisher.Object);
+            var controller = new PasswordController(TestMock.UserService.Object, mockServiceBusPublisher.Object);
 
             // Act
             var result = await controller.ForgotPasswordAsync(
@@ -114,11 +109,11 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.IsEmailConfirmedAsync(It.IsAny<User>()), Times.Once);
 
             mockServiceBusPublisher.Verify(
                 serviceBusPublisher => serviceBusPublisher.PublishAsync(It.IsAny<UserPasswordResetTokenGeneratedIntegrationEvent>()),
@@ -134,11 +129,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
+            TestMock.UserService.Setup(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(
                     IdentityResult.Failed(
                         new IdentityError
@@ -150,7 +143,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            var controller = new PasswordController(mockUserManager.Object, mockServiceBusPublisher.Object);
+            var controller = new PasswordController(TestMock.UserService.Object, mockServiceBusPublisher.Object);
 
             // Act
             var result = await controller.ResetPasswordAsync(
@@ -164,9 +157,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
@@ -178,17 +171,15 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 Id = Guid.NewGuid()
             };
 
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).ReturnsAsync(user).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
+            TestMock.UserService.Setup(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            var controller = new PasswordController(mockUserManager.Object, mockServiceBusPublisher.Object);
+            var controller = new PasswordController(TestMock.UserService.Object, mockServiceBusPublisher.Object);
 
             // Act
             var result = await controller.ResetPasswordAsync(
@@ -202,20 +193,18 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
         public async Task ResetPasswordAsync_WhenUserNotFound_ShouldBeOkResult()
         {
             // Arrange
-            var mockUserManager = new Mock<IUserService>();
+            TestMock.UserService.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).Verifiable();
 
-            mockUserManager.Setup(userManager => userManager.FindByEmailAsync(It.IsAny<string>())).Verifiable();
-
-            mockUserManager.Setup(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
+            TestMock.UserService.Setup(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(
                     IdentityResult.Failed(
                         new IdentityError
@@ -227,7 +216,7 @@ namespace eDoxa.Identity.UnitTests.Controllers
 
             var mockServiceBusPublisher = new Mock<IServiceBusPublisher>();
 
-            var controller = new PasswordController(mockUserManager.Object, mockServiceBusPublisher.Object);
+            var controller = new PasswordController(TestMock.UserService.Object, mockServiceBusPublisher.Object);
 
             // Act
             var result = await controller.ResetPasswordAsync(
@@ -241,9 +230,9 @@ namespace eDoxa.Identity.UnitTests.Controllers
             // Assert
             result.Should().BeOfType<OkResult>();
 
-            mockUserManager.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
+            TestMock.UserService.Verify(userManager => userManager.FindByEmailAsync(It.IsAny<string>()), Times.Once);
 
-            mockUserManager.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
+            TestMock.UserService.Verify(userManager => userManager.ResetPasswordAsync(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
     }
 }

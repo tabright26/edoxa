@@ -1,5 +1,5 @@
-﻿// Filename: GameAuthenticationsControllerPostAsyncTest.cs
-// Date Created: 2019-12-26
+﻿// Filename: GenerateAuthenticationAsyncTest.cs
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -11,12 +11,11 @@ using System.Threading.Tasks;
 
 using Autofac;
 
-using eDoxa.Games.Domain.Services;
 using eDoxa.Games.LeagueOfLegends;
+using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Games.LeagueOfLegends.Requests;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.TestHelper.Extensions;
 
@@ -27,6 +26,10 @@ using IdentityModel;
 using Microsoft.AspNetCore.TestHost;
 
 using Moq;
+
+using RiotSharp;
+using RiotSharp.Endpoints.SummonerEndpoint;
+using RiotSharp.Misc;
 
 using Xunit;
 
@@ -59,22 +62,20 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameAuthenticationsController
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
                         {
-                            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
+                            var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
 
-                            var validationFailure = new DomainValidationResult();
-                            validationFailure.AddInvalidArgumentError("test", "validation failure test");
-
-                            mockAuthFactorService
+                            mockLeagueOfLegendsService
                                 .Setup(
-                                    authFactorService =>
-                                        authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
-                                .ReturnsAsync(validationFailure)
-                                .Verifiable();
+                                    leagueOfLegendsService =>
+                                        leagueOfLegendsService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), It.IsAny<string>()))
+                                .ThrowsAsync(new RiotSharpException("Summoner's name not found", HttpStatusCode.BadRequest));
 
-                            container.RegisterInstance(mockAuthFactorService.Object).As<IGameAuthenticationService>().SingleInstance();
+                            container.RegisterInstance(mockLeagueOfLegendsService.Object).As<ILeagueOfLegendsService>().SingleInstance();
                         }));
 
             _httpClient = factory.CreateClient();
+
+            factory.Server.CleanupDbContext();
 
             // Act
             using var response = await this.ExecuteAsync(Game.LeagueOfLegends, new LeagueOfLegendsRequest("SwagYoloMlg"));
@@ -88,43 +89,49 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameAuthenticationsController
         {
             // Arrange
             var userId = new UserId();
+            var playerId = new PlayerId();
 
-            var authFactor = new LeagueOfLegendsGameAuthentication(
-                new PlayerId(),
+            var authentication = new LeagueOfLegendsGameAuthentication(
+                playerId,
                 new LeagueOfLegendsGameAuthenticationFactor(
                     1,
                     string.Empty,
                     2,
                     string.Empty));
 
+            var summoner = new Summoner
+            {
+                AccountId = playerId,
+                ProfileIconId = authentication.Factor.CurrentSummonerProfileIconId
+            };
+
+            var request = new LeagueOfLegendsRequest("SwagYoloMlg");
+
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>
                         {
-                            var mockAuthFactorService = new Mock<IGameAuthenticationService>();
+                            var mockLeagueOfLegendsService = new Mock<ILeagueOfLegendsService>();
 
-                            mockAuthFactorService
-                                .Setup(
-                                    authFactorService =>
-                                        authFactorService.GenerateAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>(), It.IsAny<object>()))
-                                .ReturnsAsync(new DomainValidationResult())
+                            mockLeagueOfLegendsService
+                                .Setup(leagueOfLegendsService => leagueOfLegendsService.Summoner.GetSummonerByNameAsync(It.IsAny<Region>(), request.SummonerName))
+                                .ReturnsAsync(summoner)
                                 .Verifiable();
 
-                            mockAuthFactorService.Setup(authFactorService => authFactorService.FindAuthenticationAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
-                                .ReturnsAsync(authFactor)
-                                .Verifiable();
-
-                            container.RegisterInstance(mockAuthFactorService.Object).As<IGameAuthenticationService>().SingleInstance();
+                            container.RegisterInstance(mockLeagueOfLegendsService.Object).As<ILeagueOfLegendsService>().SingleInstance();
                         }));
 
             _httpClient = factory.CreateClient();
 
+            factory.Server.CleanupDbContext();
+
             // Act
-            using var response = await this.ExecuteAsync(Game.LeagueOfLegends, new LeagueOfLegendsRequest("SwagYoloMlg"));
+            using var response = await this.ExecuteAsync(Game.LeagueOfLegends, request);
 
             // Assert
             response.EnsureSuccessStatusCode();
+
             response.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }

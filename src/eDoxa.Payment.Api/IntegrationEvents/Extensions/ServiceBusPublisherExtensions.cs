@@ -2,7 +2,7 @@
 // Date Created: 2019-11-25
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -15,6 +15,17 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Extensions
 {
     public static class ServiceBusPublisherExtensions
     {
+        public static async Task PublishUserStripeCustomerCreatedIntegrationEventAsync(this IServiceBusPublisher publisher, UserId userId, string customer)
+        {
+            var integrationEvent = new UserStripeCustomerCreatedIntegrationEvent
+            {
+                UserId = userId,
+                Customer = customer
+            };
+
+            await publisher.PublishAsync(integrationEvent);
+        }
+
         public static async Task PublishUserDepositSucceededIntegrationEventAsync(
             this IServiceBusPublisher publisher,
             UserId userId,

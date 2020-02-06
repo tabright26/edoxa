@@ -16,6 +16,7 @@ import navConfig from "utils/coreui/_nav";
 // routes config
 import Routes from "utils/router/components/Routes";
 import { Loading } from "components/Shared/Loading";
+import { Social } from "components/App/Social";
 
 const Aside = React.lazy(() => import("components/App/Aside"));
 const Footer = React.lazy(() => import("components/App/Footer"));
@@ -54,6 +55,7 @@ export const Default: FunctionComponent = () => {
       </div>
       <AppFooter className="mt-4">
         <Suspense fallback={<Loading />}>
+          <Social className="mr-auto" />
           <Footer className="ml-auto" />
         </Suspense>
       </AppFooter>

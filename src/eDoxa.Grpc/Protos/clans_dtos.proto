@@ -31,7 +31,7 @@ message DivisionDto {
   string id = 1;
   string clanId = 2;
   string name = 3;
-  string description = 4;
+  google.protobuf.StringValue description = 4;
   repeated MemberDto members = 5;
 }
 

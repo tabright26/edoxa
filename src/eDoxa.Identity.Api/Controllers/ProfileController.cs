@@ -10,7 +10,6 @@ using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Domain.AggregateModels.UserAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Domain.Extensions;
@@ -76,7 +75,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<ProfileDto>(result.GetEntityFromMetadata<UserProfile>()));
+                return this.Ok(_mapper.Map<ProfileDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);
@@ -97,7 +96,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<ProfileDto>(result.GetEntityFromMetadata<UserProfile>()));
+                return this.Ok(_mapper.Map<ProfileDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);

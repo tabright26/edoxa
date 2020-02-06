@@ -13,13 +13,17 @@ using Autofac;
 
 using eDoxa.Games.Api.Grpc.Services;
 using eDoxa.Games.Api.Infrastructure;
+using eDoxa.Games.Api.Infrastructure.Data;
 using eDoxa.Games.Infrastructure;
+using eDoxa.Games.LeagueOfLegends.Abstactions;
 using eDoxa.Grpc.Protos.Games.Options;
+using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Infrastructure.Redis.Extensions;
@@ -183,9 +187,13 @@ namespace eDoxa.Games.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule<GamesModule>();
+
+            builder.RegisterType<GamesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
             builder.RegisterMockServiceBusModule();
 
-            builder.RegisterModule<GamesModule>();
+            builder.RegisterMock<ILeagueOfLegendsService>();
         }
 
         public void ConfigureTest(IApplicationBuilder application)

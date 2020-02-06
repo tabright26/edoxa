@@ -20,7 +20,7 @@ namespace eDoxa.Challenges.Api.IntegrationEvents.Extensions
     {
         public static async Task PublishChallengeStartedIntegrationEventAsync(this IServiceBusPublisher publisher, IChallenge challenge)
         {
-            var integrationEvent = new ChallengeStartedntegrationEvent
+            var integrationEvent = new ChallengeStartedIntegrationEvent
             {
                 Challenge = ChallengeProfile.Map(challenge)
             };

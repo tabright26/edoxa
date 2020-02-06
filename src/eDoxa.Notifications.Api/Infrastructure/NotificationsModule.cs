@@ -19,9 +19,6 @@ namespace eDoxa.Notifications.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // Cleaner
-            builder.RegisterType<NotificationsDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             // Seeder
             builder.RegisterType<NotificationsDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 
@@ -30,7 +27,6 @@ namespace eDoxa.Notifications.Api.Infrastructure
 
             // Services
             builder.RegisterType<UserService>().As<IUserService>().InstancePerLifetimeScope();
-            builder.RegisterType<EmailService>().As<IEmailService>().SingleInstance();
             builder.RegisterType<RedirectService>().As<IRedirectService>().SingleInstance();
         }
     }

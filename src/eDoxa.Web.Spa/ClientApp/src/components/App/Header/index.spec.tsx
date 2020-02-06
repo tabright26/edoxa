@@ -5,12 +5,12 @@ import { Provider } from "react-redux";
 import Header from ".";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const store: any = {
     getState: () => {
       return {
         oidc: {
-          user: { profile: { email: "" } }
+          user: { profile: { email: null } }
         }
       };
     },
@@ -18,7 +18,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -29,6 +29,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

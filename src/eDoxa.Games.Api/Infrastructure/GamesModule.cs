@@ -22,9 +22,6 @@ namespace eDoxa.Games.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // Cleaner
-            builder.RegisterType<GamesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             // Seeder
             builder.RegisterType<GamesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 

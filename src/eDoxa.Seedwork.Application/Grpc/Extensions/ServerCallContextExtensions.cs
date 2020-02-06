@@ -17,7 +17,8 @@ namespace eDoxa.Seedwork.Application.Grpc.Extensions
 
         private const string Detail = "Please refer to the errors property for additional details.";
 
-        public static RpcException InvalidArgumentRpcException(this ServerCallContext context, IDomainValidationResult result)
+        public static RpcException InvalidArgumentRpcException<TResponse>(this ServerCallContext context, DomainValidationResult<TResponse> result)
+        where TResponse : class
         {
             var status = new Status(StatusCode.InvalidArgument, Detail);
 
@@ -29,7 +30,8 @@ namespace eDoxa.Seedwork.Application.Grpc.Extensions
             return context.RpcException(status, trailers);
         }
 
-        public static RpcException FailedPreconditionRpcException(this ServerCallContext context, IDomainValidationResult result)
+        public static RpcException FailedPreconditionRpcException<TResponse>(this ServerCallContext context, DomainValidationResult<TResponse> result)
+        where TResponse : class
         {
             var status = new Status(StatusCode.FailedPrecondition, Detail);
 

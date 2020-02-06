@@ -19,7 +19,10 @@ namespace eDoxa.Games.TestHelper
             TestHost = testHost;
             TestData = testData;
             TestMapper = testMapper.Instance;
+            TestMock = new TestMockFixture();
         }
+
+        protected TestMockFixture TestMock { get; }
 
         protected TestHostFixture TestHost { get; }
 

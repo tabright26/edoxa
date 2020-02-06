@@ -15,7 +15,7 @@ using Autofac;
 using eDoxa.Challenges.Domain.AggregateModels;
 using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
-using eDoxa.Challenges.Worker.Application.RecurringJobs;
+using eDoxa.Challenges.Workers.Application.RecurringJobs;
 using eDoxa.FunctionalTests.TestHelper.Services.Challenges;
 using eDoxa.FunctionalTests.TestHelper.Services.Games;
 using eDoxa.Games.Api.Grpc.Services;

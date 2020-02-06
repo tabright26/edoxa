@@ -10,12 +10,10 @@ using System.Threading.Tasks;
 using eDoxa.Clans.Api.Application.DomainEvents;
 using eDoxa.Clans.Domain.DomainEvents;
 using eDoxa.Clans.Domain.Models;
-using eDoxa.Clans.Domain.Services;
 using eDoxa.Clans.TestHelper;
 using eDoxa.Clans.TestHelper.Fixtures;
 using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
 using eDoxa.Seedwork.Domain.Misc;
-using eDoxa.ServiceBus.Abstractions;
 
 using Moq;
 
@@ -33,23 +31,23 @@ namespace eDoxa.Clans.UnitTests.Application.DomainEvents
         public async Task Handle()
         {
             // Arrange
-            var mockClanService = new Mock<IClanService>();
+            TestMock.ClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()))
+                .ReturnsAsync(new Clan("ClanName", new UserId()))
+                .Verifiable();
 
-            mockClanService.Setup(clanService => clanService.FindClanAsync(It.IsAny<ClanId>())).ReturnsAsync(new Clan("ClanName", new UserId())).Verifiable();
+            TestMock.ServiceBusPublisher.Setup(service => service.PublishAsync(It.IsAny<ClanMemberRemovedIntegrationEvent>()))
+                .Returns(Task.CompletedTask)
+                .Verifiable();
 
-            var mockServiceBus = new Mock<IServiceBusPublisher>();
-
-            mockServiceBus.Setup(service => service.PublishAsync(It.IsAny<ClanMemberRemovedIntegrationEvent>())).Returns(Task.CompletedTask).Verifiable();
-
-            var domainEventHandler = new ClanMemberRemovedDomainEventHandler(mockClanService.Object, mockServiceBus.Object);
+            var domainEventHandler = new ClanMemberRemovedDomainEventHandler(TestMock.ClanService.Object, TestMock.ServiceBusPublisher.Object);
 
             // Act
             await domainEventHandler.Handle(new ClanMemberRemovedDomainEvent(new UserId(), new ClanId()), CancellationToken.None);
 
             // Assert
-            mockClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
+            TestMock.ClanService.Verify(clanService => clanService.FindClanAsync(It.IsAny<ClanId>()), Times.Once);
 
-            mockServiceBus.Verify(service => service.PublishAsync(It.IsAny<ClanMemberRemovedIntegrationEvent>()), Times.Once);
+            TestMock.ServiceBusPublisher.Verify(service => service.PublishAsync(It.IsAny<ClanMemberRemovedIntegrationEvent>()), Times.Once);
         }
     }
 }

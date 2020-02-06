@@ -5,7 +5,7 @@ import Cards from ".";
 import { StripePaymentMethodsState } from "store/root/payment/stripe/paymentMethod/types";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const paymentMethods: StripePaymentMethodsState = {
     data: [
       {
@@ -39,7 +39,7 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
@@ -48,6 +48,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

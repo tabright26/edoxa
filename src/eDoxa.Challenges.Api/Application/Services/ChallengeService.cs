@@ -14,6 +14,7 @@ using eDoxa.Challenges.Domain.AggregateModels.ChallengeAggregate;
 using eDoxa.Challenges.Domain.Repositories;
 using eDoxa.Challenges.Domain.Services;
 using eDoxa.Seedwork.Domain;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 
 namespace eDoxa.Challenges.Api.Application.Services
@@ -37,7 +38,7 @@ namespace eDoxa.Challenges.Api.Application.Services
             return await _challengeRepository.ChallengeExistsAsync(challengeId);
         }
 
-        public async Task<IDomainValidationResult> CreateChallengeAsync(
+        public async Task<DomainValidationResult<IChallenge>> CreateChallengeAsync(
             ChallengeName name,
             Game game,
             BestOf bestOf,
@@ -48,7 +49,7 @@ namespace eDoxa.Challenges.Api.Application.Services
             CancellationToken cancellationToken = default
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<IChallenge>();
 
             if (result.IsValid)
             {
@@ -65,13 +66,13 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                result.AddEntityToMetadata(challenge);
+                return challenge;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> RegisterChallengeParticipantAsync(
+        public async Task<DomainValidationResult<Participant>> RegisterChallengeParticipantAsync(
             IChallenge challenge,
             UserId userId,
             ParticipantId participantId,
@@ -80,7 +81,7 @@ namespace eDoxa.Challenges.Api.Application.Services
             CancellationToken cancellationToken = default
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Participant>();
 
             if (challenge.SoldOut)
             {
@@ -109,19 +110,19 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                result.AddEntityToMetadata(participant);
+                return participant;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> SynchronizeChallengeAsync(
+        public async Task<DomainValidationResult<IChallenge>> SynchronizeChallengeAsync(
             IChallenge challenge,
             IDateTimeProvider synchronizedAt,
             CancellationToken cancellationToken = default
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<IChallenge>();
 
             if (!challenge.CanSynchronize())
             {
@@ -134,19 +135,19 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                result.AddEntityToMetadata(challenge);
+                return challenge.Cast<Challenge>();
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> CloseChallengeAsync(
+        public async Task<DomainValidationResult<IChallenge>> CloseChallengeAsync(
             IChallenge challenge,
             IDateTimeProvider provider,
             CancellationToken cancellationToken = default
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<IChallenge>();
 
             if (!challenge.CanClose())
             {
@@ -159,15 +160,15 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                result.AddEntityToMetadata(challenge);
+                return challenge.Cast<Challenge>();
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
+        public async Task<DomainValidationResult<IChallenge>> DeleteChallengeAsync(IChallenge challenge, CancellationToken cancellationToken = default)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<IChallenge>();
 
             if (!challenge.CanDelete())
             {
@@ -180,13 +181,13 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                result.AddEntityToMetadata(challenge);
+                return challenge.Cast<Challenge>();
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> SnapshotChallengeParticipantAsync(
+        public async Task<DomainValidationResult<Participant>> SnapshotChallengeParticipantAsync(
             IChallenge challenge,
             PlayerId gamePlayerId,
             IDateTimeProvider synchronizedAt,
@@ -194,7 +195,7 @@ namespace eDoxa.Challenges.Api.Application.Services
             CancellationToken cancellationToken = default
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Participant>();
 
             if (!challenge.ParticipantExists(gamePlayerId))
             {
@@ -211,7 +212,7 @@ namespace eDoxa.Challenges.Api.Application.Services
 
                 await _challengeRepository.CommitAsync(true, cancellationToken);
 
-                result.AddEntityToMetadata(participant);
+                return participant;
             }
 
             return result;

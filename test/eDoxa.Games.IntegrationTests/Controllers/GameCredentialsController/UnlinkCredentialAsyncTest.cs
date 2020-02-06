@@ -1,5 +1,5 @@
-﻿// Filename: GameCredentialsControllerDeleteAsyncTest.cs
-// Date Created: 2019-12-26
+﻿// Filename: UnlinkCredentialAsyncTest.cs
+// Date Created: 2020-01-28
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -69,15 +69,12 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameCredentialsController
                         {
                             var mockCredentialService = new Mock<IGameCredentialService>();
 
-                            var validationFailure = new DomainValidationResult();
-                            validationFailure.AddInvalidArgumentError("test", "validation failure test");
-
                             mockCredentialService.Setup(credentialService => credentialService.FindCredentialAsync(It.IsAny<UserId>(), It.IsAny<Game>()))
                                 .ReturnsAsync(credential)
                                 .Verifiable();
 
                             mockCredentialService.Setup(credentialService => credentialService.UnlinkCredentialAsync(It.IsAny<Credential>()))
-                                .ReturnsAsync(validationFailure)
+                                .ReturnsAsync(DomainValidationResult<Credential>.Failure("test", "validation failure test"))
                                 .Verifiable();
 
                             container.RegisterInstance(mockCredentialService.Object).As<IGameCredentialService>().SingleInstance();
@@ -123,7 +120,7 @@ namespace eDoxa.Games.IntegrationTests.Controllers.GameCredentialsController
                 userId,
                 Game.LeagueOfLegends,
                 new PlayerId(),
-                new DateTimeProvider(DateTime.Now));
+                new DateTimeProvider(DateTime.UtcNow.AddMonths(-2)));
 
             var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
 

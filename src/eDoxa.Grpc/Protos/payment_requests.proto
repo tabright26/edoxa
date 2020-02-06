@@ -2,15 +2,18 @@
 
 option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Requests";
 
+import "google/protobuf/wrappers.proto";
+
 import "cashier_dtos.proto";
 
 package edoxa.services.payment;
 
 message DepositRequest {
-  cashier.TransactionDto transaction = 2;
+  cashier.TransactionDto transaction = 1;
 }
 
 message WithdrawalRequest {
+  google.protobuf.StringValue email = 1;
   cashier.TransactionDto transaction = 2;
 }
 

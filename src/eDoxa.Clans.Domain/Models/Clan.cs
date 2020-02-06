@@ -88,24 +88,28 @@ namespace eDoxa.Clans.Domain.Models
             }
         }
 
-        public void CreateDivision(string name, string description)
+        public void CreateDivision(Division division)
         {
-            if (this.HasDivision(name))
+            if (this.HasDivision(division.Name))
             {
                 throw new InvalidOperationException();
             }
 
-            Divisions.Add(new Division(Id, name, description));
+            Divisions.Add(division);
         }
 
-        public void RemoveDivision(DivisionId divisionId)
+        public Division RemoveDivision(DivisionId divisionId)
         {
             if (!this.HasDivision(divisionId))
             {
                 throw new InvalidOperationException();
             }
 
-            Divisions.Remove(Divisions.SingleOrDefault(division => division.Id == divisionId));
+            var division = Divisions.SingleOrDefault(x => x.Id == divisionId);
+
+            Divisions.Remove(division);
+
+            return division;
         }
 
         public void AddMember(IMemberInfo memberInfo)

@@ -12,19 +12,24 @@ using System.Reflection;
 using Autofac;
 
 using eDoxa.Notifications.Api.Infrastructure;
+using eDoxa.Notifications.Api.Infrastructure.Data;
 using eDoxa.Notifications.Api.IntegrationEvents.Extensions;
 using eDoxa.Notifications.Infrastructure;
+using eDoxa.Seedwork.Application.Autofac.Extensions;
 using eDoxa.Seedwork.Application.AutoMapper.Extensions;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Application.FluentValidation;
 using eDoxa.Seedwork.Application.Grpc.Extensions;
 using eDoxa.Seedwork.Application.ProblemDetails.Extensions;
+using eDoxa.Seedwork.Application.SqlServer.Abstractions;
 using eDoxa.Seedwork.Application.Swagger;
 using eDoxa.Seedwork.Infrastructure.Extensions;
 using eDoxa.Seedwork.Monitoring;
 using eDoxa.Seedwork.Monitoring.Extensions;
 using eDoxa.Seedwork.Monitoring.HealthChecks.Extensions;
 using eDoxa.Seedwork.Security.Cors.Extensions;
+using eDoxa.Sendgrid.Extensions;
+using eDoxa.Sendgrid.Services.Abstractions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.ServiceBus.Azure.Extensions;
 using eDoxa.ServiceBus.TestHelper.Extensions;
@@ -75,6 +80,8 @@ namespace eDoxa.Notifications.Api
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSendgrid(Configuration);
+
             services.AddAppSettings<NotificationsAppSettings>(Configuration);
 
             services.AddHealthChecks()
@@ -99,7 +106,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -169,7 +176,7 @@ namespace eDoxa.Notifications.Api
 
             services.AddCustomApiVersioning(new ApiVersion(1, 0));
 
-            services.AddCustomAutoMapper(typeof(Startup), typeof(NotificationsDbContext));
+            services.AddCustomAutoMapper(typeof(Startup));
 
             services.AddMediatR(typeof(Startup));
 
@@ -178,9 +185,13 @@ namespace eDoxa.Notifications.Api
 
         public void ConfigureTestContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule<NotificationsModule>();
+
+            builder.RegisterType<NotificationsDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
+
             builder.RegisterMockServiceBusModule();
 
-            builder.RegisterModule<NotificationsModule>();
+            builder.RegisterMock<ISendgridService>();
         }
 
         public void ConfigureTest(IApplicationBuilder application, IServiceBusSubscriber subscriber)

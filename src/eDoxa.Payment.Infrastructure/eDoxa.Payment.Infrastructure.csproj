@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eDoxa.Payment.Domain\eDoxa.Payment.Domain.csproj" />
     <ProjectReference Include="..\eDoxa.Seedwork.Infrastructure\eDoxa.Seedwork.Infrastructure.csproj" />
   </ItemGroup>
 

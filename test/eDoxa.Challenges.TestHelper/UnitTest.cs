@@ -19,11 +19,14 @@ namespace eDoxa.Challenges.TestHelper
             TestData = testData;
             TestValidator = testValidator;
             TestMapper = testMapper.Instance;
+            TestMock = new TestMockFixture();
         }
+
+        protected TestMockFixture TestMock { get; }
 
         protected TestDataFixture TestData { get; }
 
-        public TestValidator TestValidator { get; }
+        protected TestValidator TestValidator { get; }
 
         protected IMapper TestMapper { get; }
     }

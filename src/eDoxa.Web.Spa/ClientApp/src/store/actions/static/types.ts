@@ -1,7 +1,6 @@
 import { AxiosActionCreator, AxiosAction } from "utils/axios/types";
 import {
   IdentityStaticOptions,
-  PaymentStaticOptions,
   CashierStaticOptions,
   ChallengesStaticOptions,
   GamesStaticOptions
@@ -25,26 +24,6 @@ export type LoadIdentityStaticOptionsActionCreator = AxiosActionCreator<
 export type LoadIdentityStaticOptionsAction = AxiosAction<
   LoadIdentityStaticOptionsType,
   IdentityStaticOptions
->;
-
-export const LOAD_PAYMENT_STATIC_OPTIONS = "LOAD_PAYMENT_STATIC_OPTIONS";
-export const LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS =
-  "LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS";
-export const LOAD_PAYMENT_STATIC_OPTIONS_FAIL =
-  "LOAD_PAYMENT_STATIC_OPTIONS_FAIL";
-
-export type LoadPaymentStaticOptionsType =
-  | typeof LOAD_PAYMENT_STATIC_OPTIONS
-  | typeof LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS
-  | typeof LOAD_PAYMENT_STATIC_OPTIONS_FAIL;
-
-export type LoadPaymentStaticOptionsActionCreator = AxiosActionCreator<
-  LoadPaymentStaticOptionsType
->;
-
-export type LoadPaymentStaticOptionsAction = AxiosAction<
-  LoadPaymentStaticOptionsType,
-  PaymentStaticOptions
 >;
 
 export const LOAD_CASHIER_STATIC_OPTIONS = "LOAD_CASHIER_STATIC_OPTIONS";
@@ -104,12 +83,10 @@ export type StaticOptionsActionCreators =
   | LoadGamesStaticOptionsActionCreator
   | LoadChallengesStaticOptionsActionCreator
   | LoadIdentityStaticOptionsActionCreator
-  | LoadPaymentStaticOptionsActionCreator
   | LoadCashierStaticOptionsActionCreator;
 
 export type StaticOptionsActions =
   | LoadGamesStaticOptionsAction
   | LoadChallengesStaticOptionsAction
   | LoadIdentityStaticOptionsAction
-  | LoadPaymentStaticOptionsAction
   | LoadCashierStaticOptionsAction;

@@ -5,10 +5,8 @@
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using eDoxa.Games.LeagueOfLegends.Abstactions;
-using eDoxa.Grpc.Protos.Games.Options;
-using eDoxa.Seedwork.Domain.Misc;
 
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 using RiotSharp;
 using RiotSharp.Endpoints.Interfaces;
@@ -17,9 +15,9 @@ namespace eDoxa.Games.LeagueOfLegends.Services
 {
     public sealed class LeagueOfLegendsService : ILeagueOfLegendsService
     {
-        public LeagueOfLegendsService(IOptionsSnapshot<GamesApiOptions> optionsSnapshot)
+        public LeagueOfLegendsService(IConfiguration configuration)
         {
-            RiotApi = RiotApi.GetInstance(optionsSnapshot.Value.Configuration.ApiKeys[Game.LeagueOfLegends.Name], 500, 30000);
+            RiotApi = RiotApi.GetInstance(configuration["LeagueOfLegends:ApiKey"], 500, 30000);
         }
 
         private RiotApi RiotApi { get; }

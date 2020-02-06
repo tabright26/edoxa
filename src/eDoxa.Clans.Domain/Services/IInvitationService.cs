@@ -25,11 +25,11 @@ namespace eDoxa.Clans.Domain.Services
 
         Task<Invitation?> FindInvitationAsync(InvitationId invitationId);
 
-        Task<IDomainValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId);
+        Task<DomainValidationResult<Invitation>> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId);
 
-        Task<IDomainValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId);
+        Task<DomainValidationResult<Invitation>> AcceptInvitationAsync(Invitation invitation, UserId userId);
 
-        Task<IDomainValidationResult> DeclineInvitationAsync(Invitation invitation, UserId userId);
+        Task<DomainValidationResult<Invitation>> DeclineInvitationAsync(Invitation invitation, UserId userId);
 
         Task DeleteInvitationsAsync(ClanId clanId);
 

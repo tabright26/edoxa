@@ -73,7 +73,7 @@ namespace eDoxa.Cashier.Api.Grpc.Services
             {
                 var response = new CreateTransactionResponse
                 {
-                    Transaction = _mapper.Map<TransactionDto>(result.GetEntityFromMetadata<ITransaction>())
+                    Transaction = _mapper.Map<TransactionDto>(result.Response)
                 };
 
                 return context.Ok(response);
@@ -81,7 +81,7 @@ namespace eDoxa.Cashier.Api.Grpc.Services
 
             throw context.FailedPreconditionRpcException(result);
 
-            async Task<IDomainValidationResult> CreateTransactionByOneofCaseAsync()
+            async Task<DomainValidationResult<ITransaction>> CreateTransactionByOneofCaseAsync()
             {
                 switch (request.TransactionCase)
                 {
@@ -155,7 +155,7 @@ namespace eDoxa.Cashier.Api.Grpc.Services
             {
                 var response = new CreateChallengePayoutResponse
                 {
-                    Payout = _mapper.Map<ChallengePayoutDto>(result.GetEntityFromMetadata<IChallenge>())
+                    Payout = _mapper.Map<ChallengePayoutDto>(result.Response)
                 };
 
                 return context.Ok(response);

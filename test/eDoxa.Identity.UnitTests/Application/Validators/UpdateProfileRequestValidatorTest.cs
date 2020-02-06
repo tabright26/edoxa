@@ -29,7 +29,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
         public static TheoryData<string, string> InvalidFirstNames =>
             new TheoryData<string, string>
             {
-                {"", "First name is required"},
+                {string.Empty, "First name is required"},
                 {"G", "First name must be between 2 and 16 characters long"},
                 {"Gabriel-Roy-Gab-R", "First name must be between 2 and 16 characters long"},
                 {"Gab123", "First name invalid. Only letters and hyphens allowed"},
@@ -56,6 +56,7 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
 
             // Act - Assert
             var failures = validator.ShouldHaveValidationErrorFor(request => request.FirstName, firstName);
+
             failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
         }
     }

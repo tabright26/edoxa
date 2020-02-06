@@ -20,7 +20,7 @@ namespace eDoxa.Identity.Domain.Services
 
         Task<IReadOnlyCollection<Address>> FetchAddressBookAsync(User user);
 
-        Task<IDomainValidationResult> AddAddressAsync(
+        Task<DomainValidationResult<Address>> AddAddressAsync(
             UserId userId,
             Country country,
             string line1,
@@ -30,7 +30,7 @@ namespace eDoxa.Identity.Domain.Services
             string? postalCode
         );
 
-        Task<IDomainValidationResult> UpdateAddressAsync(
+        Task<DomainValidationResult<Address>> UpdateAddressAsync(
             Address address,
             string line1,
             string? line2,
@@ -39,6 +39,6 @@ namespace eDoxa.Identity.Domain.Services
             string? postalCode
         );
 
-        Task<IDomainValidationResult> RemoveAddressAsync(Address address);
+        Task<DomainValidationResult<Address>> RemoveAddressAsync(Address address);
     }
 }

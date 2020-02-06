@@ -27,7 +27,6 @@ services:
   identity-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
@@ -52,8 +51,7 @@ services:
 
   cashier-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ASPNETCORE_ENVIRONMENT=Production 
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
@@ -67,7 +65,6 @@ services:
   challenges-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
@@ -81,7 +78,6 @@ services:
   clans-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
@@ -96,7 +92,6 @@ services:
   games-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
@@ -104,6 +99,7 @@ services:
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
+      - LeagueOfLegends__ApiKey=RGAPI-c3c1a198-90ab-4cb7-ac78-dc5a6671355a
     ports:
       - "5005:80"
       - "9005:81"
@@ -111,7 +107,6 @@ services:
   notifications-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
@@ -120,6 +115,7 @@ services:
       - WebSpaUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
+      - Sendgrid__ApiKey=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
     ports:
       - "5011:80"
       - "9011:81"
@@ -127,22 +123,23 @@ services:
   payment-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
-      - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
+      - Stripe__ApiKey=sk_test_xRMH8A7bagp2Auj7YPqNihlY
+      - Paypal__Client__Id=Ad47gB8d_jzNAIzntNOcrXcCW0EmKpenE0ODvwjte8Dx_ElbGQw6hWuVviBU54eMoDnlSv8ma7yTygJF
+      - Paypal__Client__Secret=EGaT1DzxAHAdibUwSEPNoNGxpy8Q03b_R-uJT7xlozLnLHIPNHp2VGNOmP4boiisUt2a6x3-lNMTRaSi
+      - Paypal__Mode=sandbox    
     ports:
       - "5001:80"
       - "9001:81"
 
-  challenges-worker:
+  challenges-workers:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${WORKERS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - Endpoints__ChallengesUrl=http://challenges-api
@@ -154,7 +151,6 @@ services:
   cashier-web-aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
@@ -167,7 +163,6 @@ services:
   challenges-web-aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
@@ -180,14 +175,14 @@ services:
 
   cashier-web-gateway:
     volumes:
-      - ./src/eDoxa.Gateways/cashier.web.gateway.yaml:/etc/envoy/envoy.yaml
+      - ./src/eDoxa.Gateways/Cashier.Web.Gateway/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
       - "5202:10000"
       - "15202:9901"
 
   challenges-web-gateway:
     volumes:
-      - ./src/eDoxa.Gateways/challenges.web.gateway.yaml:/etc/envoy/envoy.yaml
+      - ./src/eDoxa.Gateways/Challenges.Web.Gateway/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
       - "5203:10000"
       - "15203:9901"
@@ -195,14 +190,18 @@ services:
   web-spa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
       - REACT_APP_CASHIER_WEB_GATEWAY_URL=http://${HOST:-localhost}:5202
       - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
       - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
       - REACT_APP_GA_TRACKING_CODE=UA-156686275-1
+      - REACT_APP_FACEBOOK_URL=https://www.facebook.com/edoxa.gg/
       - REACT_APP_FACEBOOK_MCC_PAGE_ID=110212507186001
       - REACT_APP_FACEBOOK_MCC_APP_ID=506480953387650
+      - REACT_APP_TWITTER_URL=https://twitter.com/edoxa_gg
+      - REACT_APP_DISCORD_URL=https://discord.gg/SvBUH5Y
+      - REACT_APP_LINKEDIN_URL=https://www.linkedin.com/company/edoxa
+      - REACT_APP_INSTAGRAM_URL=https://www.instagram.com/edoxagg/
       - REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY=pk_test_2iUjQQxve1uP7BJOxs5SwQvj
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
@@ -217,7 +216,6 @@ services:
   web-status:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - Serilog__Sink__Seq=http://seq
       - HealthChecks__Endpoints__0__Name=Identity API
       - HealthChecks__Endpoints__0__Uri=http://identity-api/health
@@ -237,8 +235,8 @@ services:
       - HealthChecks__Endpoints__7__Uri=http://challenges-api/health
       - HealthChecks__Endpoints__8__Name=Challenges Web Aggregator
       - HealthChecks__Endpoints__8__Uri=http://challenges-web-aggregator/health
-      - HealthChecks__Endpoints__9__Name=Challenges Worker
-      - HealthChecks__Endpoints__9__Uri=http://challenges-worker/health
+      - HealthChecks__Endpoints__9__Name=Challenges Workers
+      - HealthChecks__Endpoints__9__Uri=http://challenges-workers/health
       - HealthChecks__Endpoints__10__Name=Web Spa
       - HealthChecks__Endpoints__10__Uri=http://web-spa/health
       - HealthChecks__EvaluationTimeInSeconds=60

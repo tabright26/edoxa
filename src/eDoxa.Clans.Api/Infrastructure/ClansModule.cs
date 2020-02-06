@@ -19,9 +19,6 @@ namespace eDoxa.Clans.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // Cleaner
-            builder.RegisterType<ClansDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             // Seeder
             builder.RegisterType<ClansDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 

@@ -1,0 +1,23 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Stripe";
+
+package edoxa.stripe;
+
+message StripeOptions {
+  InvoiceOptions invoice = 1;
+  PaymentMethodOptions paymentMethod = 2;
+  
+  message InvoiceOptions {
+    string currency = 1;
+    repeated string taxRates = 2;
+  }
+
+  message PaymentMethodOptions {
+    CardOptions card = 1;
+    
+    message CardOptions {
+      int32 limit = 1;
+    }
+  }
+}

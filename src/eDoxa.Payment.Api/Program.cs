@@ -6,7 +6,6 @@
 
 using System;
 
-using eDoxa.Payment.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
@@ -31,10 +30,6 @@ namespace eDoxa.Payment.Api
                 Log.Information("Building {AssemblyName} host...");
 
                 var host = builder.Build();
-
-                Log.Information("Applying {AssemblyName} context migrations...");
-
-                host.MigrateDbContextWithRetryPolicy<PaymentDbContext>();
 
                 Log.Information("Starting {AssemblyName} host...");
 

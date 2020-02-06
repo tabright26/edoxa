@@ -41,9 +41,9 @@ namespace eDoxa.Clans.Api.Application.Services
             return await _invitationRepository.FindAsync(invitationId);
         }
 
-        public async Task<IDomainValidationResult> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
+        public async Task<DomainValidationResult<Invitation>> SendInvitationAsync(ClanId clanId, UserId userId, UserId ownerId)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Invitation>();
 
             if (!await _clanRepository.IsOwnerAsync(clanId, ownerId))
             {
@@ -68,38 +68,38 @@ namespace eDoxa.Clans.Api.Application.Services
 
                 await _invitationRepository.UnitOfWork.CommitAsync();
 
-                result.AddEntityToMetadata(invitation);
+                return invitation;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> AcceptInvitationAsync(Invitation invitation, UserId userId)
+        public async Task<DomainValidationResult<Invitation>> AcceptInvitationAsync(Invitation invitation, UserId userId)
         {
             if (invitation.UserId != userId)
             {
-                return DomainValidationResult.Failure($"The user {userId} can not accept someone else invitation.");
+                return DomainValidationResult<Invitation>.Failure($"The user {userId} can not accept someone else invitation.");
             }
 
             invitation.Accept();
 
             await _invitationRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<Invitation>();
         }
 
-        public async Task<IDomainValidationResult> DeclineInvitationAsync(Invitation invitation, UserId userId)
+        public async Task<DomainValidationResult<Invitation>> DeclineInvitationAsync(Invitation invitation, UserId userId)
         {
             if (invitation.UserId != userId)
             {
-                return DomainValidationResult.Failure($"The user {userId} can not decline someone else invitation.");
+                return DomainValidationResult<Invitation>.Failure($"The user {userId} can not decline someone else invitation.");
             }
 
             _invitationRepository.Delete(invitation);
 
             await _invitationRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<Invitation>();
         }
 
         public async Task DeleteInvitationsAsync(ClanId clanId)

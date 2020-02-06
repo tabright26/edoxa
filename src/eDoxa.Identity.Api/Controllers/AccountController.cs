@@ -22,7 +22,10 @@ using IdentityServer4.Events;
 using IdentityServer4.Extensions;
 using IdentityServer4.Services;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace eDoxa.Identity.Api.Controllers
 {
@@ -53,6 +56,10 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpPost("login")]
+        [SwaggerOperation("Login to an account.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [SwaggerResponse(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> LoginAccountAsync([FromBody] LoginAccountRequest request)
         {
             var context = await _interactionService.GetAuthorizationContextAsync(request.ReturnUrl);
@@ -90,6 +97,8 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpGet("logout")]
+        [SwaggerOperation("Logout from an account.")]
+        [SwaggerResponse(StatusCodes.Status200OK, Type = typeof(LogoutTokenDto))]
         public async Task<IActionResult> LogoutAccountAsync([FromQuery] string? logoutId = null)
         {
             var context = await _interactionService.GetLogoutContextAsync(logoutId);
@@ -117,6 +126,9 @@ namespace eDoxa.Identity.Api.Controllers
         }
 
         [HttpPost("register")]
+        [SwaggerOperation("Register an account.")]
+        [SwaggerResponse(StatusCodes.Status200OK)]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         public async Task<IActionResult> RegisterAccountAsync([FromBody] RegisterAccountRequest request)
         {
             var result = await _userService.CreateAsync(
@@ -124,7 +136,6 @@ namespace eDoxa.Identity.Api.Controllers
                 {
                     Id = new UserId(),
                     Email = request.Email,
-                    UserName = request.Email,
                     Country = request.Country.ToEnumeration<Country>(),
                     Dob = new UserDob(DateTime.Parse(request.Dob))
                 },

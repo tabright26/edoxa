@@ -27,23 +27,11 @@ namespace eDoxa.Clans.UnitTests.Application.Validators
                 new UserId()
             };
 
-        //public static TheoryData<UserId, string> InvalidUserIds =>
-        //    new TheoryData<UserId, string>
-        //    {
-        //        {UserId.Empty, InvitationErrorDescriber.UserIdRequired()}
-        //    };
-
         public static TheoryData<ClanId> ValidClanId =>
             new TheoryData<ClanId>
             {
                 new ClanId()
             };
-
-        //public static TheoryData<ClanId, string> InvalidClanIds =>
-        //    new TheoryData<ClanId, string>
-        //    {
-        //        {ClanId.Empty, InvitationErrorDescriber.ClanIdRequired()}
-        //    };
 
         [Theory]
         [MemberData(nameof(ValidUserId))]
@@ -56,18 +44,6 @@ namespace eDoxa.Clans.UnitTests.Application.Validators
             validator.ShouldNotHaveValidationErrorFor(request => request.UserId, userId.ToString());
         }
 
-        //[Theory]
-        //[MemberData(nameof(InvalidUserIds))]
-        //public void Validate_WhenUserIdIsInvalid_ShouldHaveValidationErrorFor(UserId userId, string errorMessage)
-        //{
-        //    // Arrange
-        //    var validator = new InvitationPostRequestValidator();
-
-        //    // Act - Assert
-        //    var failures = validator.ShouldHaveValidationErrorFor(request => request.UserId, userId.ToString());
-        //    failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        //}
-
         [Theory]
         [MemberData(nameof(ValidClanId))]
         public void Validate_WhenClanIdIsValid_ShouldNotHaveValidationErrorFor(ClanId clanId)
@@ -78,17 +54,5 @@ namespace eDoxa.Clans.UnitTests.Application.Validators
             // Act - Assert
             validator.ShouldNotHaveValidationErrorFor(request => request.ClanId, clanId.ToString());
         }
-
-        //[Theory]
-        //[MemberData(nameof(InvalidClanIds))]
-        //public void Validate_WhenClanIdIsInvalid_ShouldHaveValidationErrorFor(ClanId clanId, string errorMessage)
-        //{
-        //    // Arrange
-        //    var validator = new InvitationPostRequestValidator();
-
-        //    // Act - Assert
-        //    var failures = validator.ShouldHaveValidationErrorFor(request => request.ClanId, clanId.ToString());
-        //    failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
-        //}
     }
 }

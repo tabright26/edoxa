@@ -15,13 +15,11 @@ using eDoxa.Seedwork.Domain.Misc;
 
 using FluentAssertions;
 
-using Moq;
-
 using Xunit;
 
 namespace eDoxa.Games.UnitTests.Application.Factories
 {
-    public sealed class GameAuthenticationGeneratorFactoryTest : UnitTest // FRANCIS: comment je peux test si le mock change de type dans le constructeur.
+    public sealed class GameAuthenticationGeneratorFactoryTest : UnitTest
     {
         public GameAuthenticationGeneratorFactoryTest(TestDataFixture testData, TestMapperFixture testMapper) : base(testData, testMapper)
         {
@@ -33,32 +31,22 @@ namespace eDoxa.Games.UnitTests.Application.Factories
             // Arrange
             var game = Game.LeagueOfLegends;
 
-            var mockAuthenticationGeneratorAdapter = new Mock<IAuthenticationGeneratorAdapter>();
+            TestMock.AuthenticationGeneratorAdapter.SetupGet(authenticationGeneratorAdapter => authenticationGeneratorAdapter.Game).Returns(game);
 
-            mockAuthenticationGeneratorAdapter.SetupGet(authenticationGeneratorAdapter => authenticationGeneratorAdapter.Game).Returns(game);
-
-            var authenticationGeneratorFactory = new GameGameAuthenticationGeneratorFactory(new[] {mockAuthenticationGeneratorAdapter.Object});
+            var authenticationGeneratorFactory = new GameGameAuthenticationGeneratorFactory(new[] {TestMock.AuthenticationGeneratorAdapter.Object});
 
             // Act
             var adapter = authenticationGeneratorFactory.CreateInstance(game);
 
             // Assert
-            adapter.Should().BeOfType(mockAuthenticationGeneratorAdapter.Object.GetType());
+            adapter.Should().BeOfType(TestMock.AuthenticationGeneratorAdapter.Object.GetType());
         }
 
         [Fact]
         public void CreateInstance_ShouldBeOfTypeInvalidOperationException()
         {
             // Arrange
-            var mockAuthFactorGeneratorAdapters = new Mock<IDictionary<Game, IAuthenticationGeneratorAdapter>>();
-
-            var mockAuthFactorGeneratorAdapter = new Mock<List<IAuthenticationGeneratorAdapter>>();
-
-            mockAuthFactorGeneratorAdapters.Setup(adapters => adapters.TryGetValue(It.IsAny<Game>(), out It.Ref<IAuthenticationGeneratorAdapter>.IsAny))
-                .Returns(false)
-                .Verifiable();
-
-            var authFactorGeneratorFactory = new GameGameAuthenticationGeneratorFactory(mockAuthFactorGeneratorAdapter.Object);
+            var authFactorGeneratorFactory = new GameGameAuthenticationGeneratorFactory(new List<IAuthenticationGeneratorAdapter>());
 
             // Act
             var action = new Action(() => authFactorGeneratorFactory.CreateInstance(Game.LeagueOfLegends));

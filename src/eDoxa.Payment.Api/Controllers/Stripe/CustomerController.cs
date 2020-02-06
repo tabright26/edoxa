@@ -9,9 +9,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using eDoxa.Grpc.Protos.Payment.Dtos;
-using eDoxa.Payment.Domain.Stripe.Services;
 using eDoxa.Seedwork.Application.Extensions;
-
+using eDoxa.Stripe.Services.Abstractions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,13 +26,11 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
     public sealed class CustomerController : ControllerBase
     {
         private readonly IStripeCustomerService _stripeCustomerService;
-        private readonly IStripeService _stripeService;
         private readonly IMapper _mapper;
 
-        public CustomerController(IStripeCustomerService stripeCustomerService, IStripeService stripeService, IMapper mapper)
+        public CustomerController(IStripeCustomerService stripeCustomerService, IMapper mapper)
         {
             _stripeCustomerService = stripeCustomerService;
-            _stripeService = stripeService;
             _mapper = mapper;
         }
 
@@ -44,14 +41,7 @@ namespace eDoxa.Payment.Api.Controllers.Stripe
         [SwaggerResponse(StatusCodes.Status404NotFound, Type = typeof(string))]
         public async Task<IActionResult> FetchCustomerAsync()
         {
-            var userId = HttpContext.GetUserId();
-
-            if (!await _stripeService.UserExistsAsync(userId))
-            {
-                return this.NotFound("Stripe reference not found.");
-            }
-
-            var customerId = await _stripeCustomerService.GetCustomerIdAsync(userId);
+            var customerId = HttpContext.GetStripeCustomertId();
 
             var customer = await _stripeCustomerService.FindCustomerAsync(customerId);
 

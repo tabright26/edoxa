@@ -18,7 +18,10 @@ namespace eDoxa.Notifications.TestHelper
         {
             TestHost = testHost;
             TestMapper = testMapper.Instance;
+            TestMock = new TestMockFixture();
         }
+
+        protected TestMockFixture TestMock { get; }
 
         protected TestHostFixture TestHost { get; }
 

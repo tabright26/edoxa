@@ -166,7 +166,6 @@ namespace eDoxa.Identity.Api.Infrastructure.Data.Storage
                             record => new User
                             {
                                 Id = record.Id,
-                                UserName = record.Email,
                                 Country = Country.FromName(record.Country),
                                 Dob = new UserDob(DateTimeOffset.FromUnixTimeSeconds(record.BirthDate).Date),
                                 Email = record.Email,

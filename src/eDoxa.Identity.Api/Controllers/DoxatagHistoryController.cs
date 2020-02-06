@@ -12,7 +12,6 @@ using AutoMapper;
 
 using eDoxa.Grpc.Protos.Identity.Dtos;
 using eDoxa.Grpc.Protos.Identity.Requests;
-using eDoxa.Identity.Domain.AggregateModels.DoxatagAggregate;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Seedwork.Application.Extensions;
 
@@ -73,7 +72,7 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.IsValid)
             {
-                return this.Ok(_mapper.Map<DoxatagDto>(result.GetEntityFromMetadata<Doxatag>()));
+                return this.Ok(_mapper.Map<DoxatagDto>(result.Response));
             }
 
             result.AddToModelState(ModelState);

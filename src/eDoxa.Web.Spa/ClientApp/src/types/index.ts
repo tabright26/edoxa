@@ -54,7 +54,13 @@ export type TransactionStatus =
   | typeof TRANSACTION_STATUS_SUCCEEDED
   | typeof TRANSACTION_STATUS_FAILED;
 
-export type CountryIsoCode = string;
+export const COUNTRY_ISO_CODE_CA = "CA";
+export const COUNTRY_ISO_CODE_US = "US";
+
+export type CountryIsoCode =
+  | typeof COUNTRY_ISO_CODE_CA
+  | typeof COUNTRY_ISO_CODE_US;
+
 export type AddressId = string;
 export type CandidatureId = string;
 export type ChallengeId = string;
@@ -136,10 +142,6 @@ export interface FieldValidationRule {
   readonly value: any;
   readonly enabled: boolean;
   readonly order: number;
-}
-
-export interface PaymentStaticOptions {
-  readonly stripe: StripeOptions;
 }
 
 export interface StripeOptions {

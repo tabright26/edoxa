@@ -40,9 +40,9 @@ namespace eDoxa.Identity.Api.Application.Services
             return await _doxatagRepository.FetchDoxatagHistoryAsync(UserId.FromGuid(user.Id));
         }
 
-        public async Task<IDomainValidationResult> ChangeDoxatagAsync(User user, string doxatagName)
+        public async Task<DomainValidationResult<Doxatag>> ChangeDoxatagAsync(User user, string doxatagName)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Doxatag>();
 
             if (result.IsValid)
             {
@@ -60,11 +60,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _doxatagRepository.UnitOfWork.CommitAsync();
 
-                result.AddEntityToMetadata(doxatag);
-
-                //await this.UpdateSecurityStampAsync(user);
-
-                //await this.UpdateUserAsync(user);
+                return doxatag;
             }
 
             return result;

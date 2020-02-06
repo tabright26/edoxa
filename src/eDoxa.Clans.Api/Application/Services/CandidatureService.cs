@@ -41,9 +41,9 @@ namespace eDoxa.Clans.Api.Application.Services
             return await _candidatureRepository.FindAsync(candidatureId);
         }
 
-        public async Task<IDomainValidationResult> SendCandidatureAsync(UserId userId, ClanId clanId)
+        public async Task<DomainValidationResult<Candidature>> SendCandidatureAsync(UserId userId, ClanId clanId)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<Candidature>();
 
             if (await _clanRepository.IsMemberAsync(userId))
             {
@@ -63,38 +63,38 @@ namespace eDoxa.Clans.Api.Application.Services
 
                 await _candidatureRepository.UnitOfWork.CommitAsync();
 
-                result.AddEntityToMetadata(candidature);
+                return candidature;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> AcceptCandidatureAsync(Candidature candidature, UserId ownerId)
+        public async Task<DomainValidationResult<Candidature>> AcceptCandidatureAsync(Candidature candidature, UserId ownerId)
         {
             if (!await _clanRepository.IsOwnerAsync(candidature.ClanId, ownerId))
             {
-                return DomainValidationResult.Failure("Permission required.");
+                return DomainValidationResult<Candidature>.Failure("Permission required.");
             }
 
             candidature.Accept();
 
             await _candidatureRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<Candidature>();
         }
 
-        public async Task<IDomainValidationResult> DeclineCandidatureAsync(Candidature candidature, UserId userId)
+        public async Task<DomainValidationResult<Candidature>> DeclineCandidatureAsync(Candidature candidature, UserId userId)
         {
             if (!await _clanRepository.IsOwnerAsync(candidature.ClanId, userId))
             {
-                return DomainValidationResult.Failure("Permission required.");
+                return DomainValidationResult<Candidature>.Failure("Permission required.");
             }
 
             _candidatureRepository.Delete(candidature);
 
             await _candidatureRepository.UnitOfWork.CommitAsync();
 
-            return new DomainValidationResult();
+            return new DomainValidationResult<Candidature>();
         }
 
         public async Task DeleteCandidaturesAsync(ClanId clanId)

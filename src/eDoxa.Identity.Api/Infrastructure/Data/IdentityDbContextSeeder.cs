@@ -75,7 +75,14 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             {
                 foreach (var testUser in Users)
                 {
-                    await _userService.CreateAsync(testUser, "Pass@word1");
+                    if (testUser.Id == AppAdmin.Id)
+                    {
+                        await _userService.CreateAsync(testUser, "Pass@word1");
+                    }
+                    else
+                    {
+                        await _userService.CreateAsync(testUser);
+                    }
 
                     foreach (var testUserClaim in UserClaims.Where(userClaimModel => userClaimModel.UserId == testUser.Id))
                     {

@@ -3,9 +3,11 @@ import renderer from "react-test-renderer";
 import { Provider } from "react-redux";
 import Challenges from ".";
 import { ChallengesState } from "store/root/challenge/types";
+import { CURRENCY_TYPE_TOKEN } from "types";
+import { MemoryRouter } from "react-router-dom";
 
 it("renders without crashing", () => {
-  //Arrange
+  // Arrange
   const challenge: ChallengesState = {
     data: [
       {
@@ -26,8 +28,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "123",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+          prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []
         }
       },
@@ -38,9 +40,9 @@ it("renders without crashing", () => {
         bestOf: 3,
         entries: 10,
         game: "LeagueOfLegends",
-        payoutEntries: 5,
         participants: [],
         timeline: {
+          duration: 84000,
           createdAt: 123123123,
           startedAt: null,
           endedAt: null,
@@ -49,8 +51,9 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "456",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entries: 10,
+          entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+          prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []
         }
       },
@@ -72,8 +75,8 @@ it("renders without crashing", () => {
         scoring: new Map<string, string>(),
         payout: {
           challengeId: "678",
-          entryFee: { currency: "token", amount: 0 },
-          prizePool: { currency: "token", amount: 200000 },
+          entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
+          prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []
         }
       }
@@ -94,15 +97,17 @@ it("renders without crashing", () => {
     subscribe: () => {}
   };
 
-  //Act
+  // Act
   const tree = renderer
     .create(
       <Provider store={store}>
-        <Challenges />
+        <MemoryRouter>
+          <Challenges />
+        </MemoryRouter>
       </Provider>
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

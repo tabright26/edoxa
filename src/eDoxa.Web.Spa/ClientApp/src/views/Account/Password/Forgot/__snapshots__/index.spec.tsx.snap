@@ -23,6 +23,7 @@ exports[`renders correctly 1`] = `
         className="form-group"
       >
         <input
+          autoComplete="email"
           className="form-control-sm form-control"
           name="email"
           onBlur={[Function]}
@@ -52,7 +53,7 @@ exports[`renders correctly 1`] = `
         </button>
         <button
           aria-label={null}
-          className="ml-auto my-auto btn btn-link btn-sm"
+          className="p-0 ml-auto my-auto btn btn-link btn-lg"
           disabled={null}
           onClick={[Function]}
           type="button"

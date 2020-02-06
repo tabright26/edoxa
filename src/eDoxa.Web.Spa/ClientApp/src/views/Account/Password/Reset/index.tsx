@@ -1,8 +1,8 @@
 import React, { FunctionComponent } from "react";
 import { Card, CardBody } from "reactstrap";
-import PasswordForm from "components/User/Password/Form";
+import PasswordForm from "components/Password/Form";
 
-const ResetPassword: FunctionComponent = () => (
+const Reset: FunctionComponent = () => (
   <Card className="mx-4">
     <CardBody className="p-4">
       <h1 className="mb-3">Reset password</h1>
@@ -11,4 +11,4 @@ const ResetPassword: FunctionComponent = () => (
   </Card>
 );
 
-export default ResetPassword;
+export default Reset;

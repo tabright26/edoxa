@@ -1,8 +1,8 @@
-﻿// Filename: IAuthFactorGeneratorAdapter.cs
-// Date Created: 2019-11-01
+﻿// Filename: IAuthenticationGeneratorAdapter.cs
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System.Threading.Tasks;
 
@@ -14,13 +14,13 @@ namespace eDoxa.Games.Domain.Adapters
     public interface IAuthenticationGeneratorAdapter<in TRequest> : IAuthenticationGeneratorAdapter
     where TRequest : class
     {
-        Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, TRequest request);
+        Task<DomainValidationResult<object>> GenerateAuthenticationAsync(UserId userId, TRequest request);
     }
 
     public interface IAuthenticationGeneratorAdapter
     {
         Game Game { get; }
 
-        Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, object request);
+        Task<DomainValidationResult<object>> GenerateAuthenticationAsync(UserId userId, object request);
     }
 }

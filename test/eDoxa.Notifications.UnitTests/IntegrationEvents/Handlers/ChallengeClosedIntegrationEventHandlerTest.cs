@@ -10,7 +10,6 @@ using eDoxa.Grpc.Protos.Cashier.Dtos;
 using eDoxa.Grpc.Protos.Cashier.Enums;
 using eDoxa.Grpc.Protos.Cashier.IntegrationEvents;
 using eDoxa.Notifications.Api.IntegrationEvents.Handlers;
-using eDoxa.Notifications.Domain.Services;
 using eDoxa.Notifications.TestHelper;
 using eDoxa.Notifications.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
@@ -31,13 +30,11 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
         public async Task HandleAsync_WhenChallengeClosedIntegrationEventIsValid_ShouldBeCompletedTask()
         {
             // Arrange
-            var mockUserService = new Mock<IUserService>();
-
-            mockUserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
+            TestMock.UserService.Setup(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new ChallengeClosedIntegrationEventHandler(mockUserService.Object);
+            var handler = new ChallengeClosedIntegrationEventHandler(TestMock.UserService.Object, TestMock.SendgridOptions.Object);
 
             var integrationEvent = new ChallengeClosedIntegrationEvent
             {
@@ -58,7 +55,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
             await handler.HandleAsync(integrationEvent);
 
             // Assert
-            mockUserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
+            TestMock.UserService.Verify(userService => userService.SendEmailAsync(It.IsAny<UserId>(), It.IsAny<string>(), It.IsAny<object>()), Times.Once);
         }
     }
 }

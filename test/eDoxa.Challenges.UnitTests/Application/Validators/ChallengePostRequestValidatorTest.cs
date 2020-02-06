@@ -37,7 +37,7 @@ namespace eDoxa.Challenges.UnitTests.Application.Validators
         public static TheoryData<string, string> InvalidChallengesName =>
             new TheoryData<string, string>
             {
-                {"", ChallengeErrorDescriber.NameInvalid()}
+                {string.Empty, ChallengeErrorDescriber.NameInvalid()}
             };
 
         [Theory]

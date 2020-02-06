@@ -16,13 +16,10 @@ namespace eDoxa.Games.Domain.Services
     {
         Task<GameAuthentication> FindAuthenticationAsync(UserId userId, Game game);
 
-        Task<GameAuthentication<TAuthenticationFactor>> FindAuthenticationAsync<TAuthenticationFactor>(UserId userId, Game game)
-        where TAuthenticationFactor :class, IGameAuthenticationFactor;
-
         Task<bool> AuthenticationExistsAsync(UserId userId, Game game);
 
-        Task<IDomainValidationResult> GenerateAuthenticationAsync(UserId userId, Game game, object request);
+        Task<DomainValidationResult<object>> GenerateAuthenticationAsync(UserId userId, Game game, object request);
 
-        Task<IDomainValidationResult> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication);
+        Task<DomainValidationResult<GameAuthentication>> ValidateAuthenticationAsync(UserId userId, Game game, GameAuthentication gameAuthentication);
     }
 }

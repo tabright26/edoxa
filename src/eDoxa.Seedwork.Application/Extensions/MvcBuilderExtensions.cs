@@ -1,18 +1,14 @@
 ﻿// Filename: MvcBuilderExtensions.cs
-// Date Created: 2019-11-30
+// Date Created: 2019-12-18
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Seedwork.Application.Converters;
+using eDoxa.Seedwork.Application.Json.Extensions;
 
 using FluentValidation.AspNetCore;
 
 using Microsoft.Extensions.DependencyInjection;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 
 namespace eDoxa.Seedwork.Application.Extensions
 {
@@ -20,16 +16,7 @@ namespace eDoxa.Seedwork.Application.Extensions
     {
         public static IMvcBuilder AddCustomNewtonsoftJson(this IMvcBuilder builder)
         {
-            return builder.AddNewtonsoftJson(
-                options =>
-                {
-                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                    options.SerializerSettings.Converters.Add(new StringEnumConverter());
-                    options.SerializerSettings.Converters.Add(new DecimalValueConverter());
-                    options.SerializerSettings.Converters.Add(new TimestampConverter());
-                    options.SerializerSettings.Converters.Add(new DurationConverter());
-                });
+            return builder.AddNewtonsoftJson(options => options.SerializerSettings.IncludeCustomConverters());
         }
 
         public static IMvcBuilder AddCustomFluentValidation<TStartup>(this IMvcBuilder builder)

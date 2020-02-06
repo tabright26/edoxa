@@ -65,8 +65,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -106,8 +106,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -160,8 +160,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -355,7 +355,7 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
 
                     result.Succeeded.Should().BeTrue();
 
-                    await userService.AddClaimAsync(user, new Claim(CustomClaimTypes.StripeAccount, "accountId"));
+                    await userService.AddClaimAsync(user, new Claim(CustomClaimTypes.StripeCustomer, "customerId"));
                 });
 
             var request = new RemoveUserClaimRequest
@@ -363,8 +363,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -404,8 +404,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -435,8 +435,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -624,7 +624,7 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
 
                     var result = await userService.AddClaimAsync(
                         await userService.FindByIdAsync(user.Id.ToString()),
-                        new Claim(CustomClaimTypes.StripeAccount, "accountId"));
+                        new Claim(CustomClaimTypes.StripeCustomer, "customerId"));
 
                     result.Succeeded.Should().BeTrue();
                 });
@@ -634,8 +634,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = user.Id.ToString(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "stripeAccountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -665,8 +665,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -696,8 +696,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 
@@ -725,8 +725,8 @@ namespace eDoxa.Identity.IntegrationTests.Grpc.Services
                 UserId = new UserId(),
                 Claim = new UserClaimDto
                 {
-                    Type = CustomClaimTypes.StripeAccount,
-                    Value = "accountId"
+                    Type = CustomClaimTypes.StripeCustomer,
+                    Value = "customerId"
                 }
             };
 

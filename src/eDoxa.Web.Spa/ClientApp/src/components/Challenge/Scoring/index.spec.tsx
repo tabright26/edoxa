@@ -5,7 +5,7 @@ import Scoring from ".";
 import { MemoryRouter } from "react-router-dom";
 
 it("renders without crashing", () => {
-  //Act
+  // Act
   const tree = renderer
     .create(
       <MemoryRouter>
@@ -14,6 +14,6 @@ it("renders without crashing", () => {
     )
     .toJSON();
 
-  //Assert
+  // Assert
   expect(tree).toMatchSnapshot();
 });

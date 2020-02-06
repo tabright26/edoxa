@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import PromotionPanel from "components/Cashier/Promotion/Panel";
+import PromotionPanel from "components/Promotion/Panel";
 
 const PromotionalCode: FunctionComponent = () => (
   <>

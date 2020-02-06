@@ -6,7 +6,7 @@
 // import { ChallengesState } from "store/root/challenge/types";
 
 it("renders without crashing", () => {
-  // //Arrange
+  // // Arrange
   // const challenges: ChallengesState = {
   //   data: [
   //     { id: "123", timestamp: 1231212313, timeline: { createdAt: 1231231231 }, participants: [{ id: "id1", matches: [] }, { id: "id2", matches: [] }, { id: "id3", matches: [] }] },
@@ -25,7 +25,7 @@ it("renders without crashing", () => {
 
   // const challenge = challenges.data.find(challenge => challenge.id === "123");
 
-  // //Act
+  // // Act
   // const tree = renderer
   //   .create(
   //     <Provider store={store}>
@@ -36,6 +36,6 @@ it("renders without crashing", () => {
   //   )
   //   .toJSON();
 
-  // //Assert
+  // // Assert
   // expect(tree).toMatchSnapshot();
 });

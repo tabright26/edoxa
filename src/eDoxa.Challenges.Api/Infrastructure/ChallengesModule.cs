@@ -21,9 +21,6 @@ namespace eDoxa.Challenges.Api.Infrastructure
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // Cleaner
-            builder.RegisterType<ChallengesDbContextCleaner>().As<IDbContextCleaner>().InstancePerLifetimeScope();
-
             // Seeder
             builder.RegisterType<ChallengesDbContextSeeder>().As<IDbContextSeeder>().InstancePerLifetimeScope();
 

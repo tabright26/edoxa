@@ -1,11 +1,12 @@
 ﻿// Filename: UserService.cs
-// Date Created: 2019-12-08
+// Date Created: 2019-12-26
 // 
 // ================================================
-// Copyright © 2019, eDoxa. All rights reserved.
+// Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 using eDoxa.Identity.Api.IntegrationEvents.Extensions;
@@ -29,8 +30,8 @@ namespace eDoxa.Identity.Api.Application.Services
             UserRepository repository,
             IOptionsSnapshot<IdentityOptions> optionsAccessor,
             IPasswordHasher<User> passwordHasher,
-            IEnumerable<IUserValidator<User>> userValidators,
             IEnumerable<IPasswordValidator<User>> passwordValidators,
+            IUserValidator<User> userValidator,
             ILookupNormalizer keyNormalizer,
             IdentityErrorDescriber errors,
             IServiceProvider services,
@@ -40,7 +41,10 @@ namespace eDoxa.Identity.Api.Application.Services
             repository,
             optionsAccessor,
             passwordHasher,
-            userValidators,
+            new List<IUserValidator<User>>
+            {
+                userValidator
+            },
             passwordValidators,
             keyNormalizer,
             errors,
@@ -54,28 +58,62 @@ namespace eDoxa.Identity.Api.Application.Services
 
         public UserRepository Repository { get; }
 
-        public async Task<IdentityResult> UpdateEmailAsync(User user, string email)
+        public override Task<User> FindByNameAsync(string userName)
         {
-            var result = await this.SetEmailAsync(user, email);
+            throw new NotImplementedException();
+        }
 
-            if (result.Succeeded)
+        public override Task<IdentityResult> SetUserNameAsync(User user, string userName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override string GetUserName(ClaimsPrincipal principal)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task<string> GetUserNameAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override Task UpdateNormalizedUserNameAsync(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override async Task<IdentityResult> CreateAsync(User user)
+        {
+            this.ThrowIfDisposed();
+
+            await this.UpdateSecurityStampInternal(user);
+
+            var identityResult = await this.ValidateUserAsync(user);
+
+            if (!identityResult.Succeeded)
             {
-                await _publisher.PublishUserEmailChangedIntegrationEventAsync(user);
+                return identityResult;
             }
 
-            return result;
+            if (Options.Lockout.AllowedForNewUsers && SupportsUserLockout)
+            {
+                await Repository.SetLockoutEnabledAsync(user, true, CancellationToken);
+            }
+
+            await this.UpdateNormalizedEmailAsync(user);
+
+            return await Repository.CreateAsync(user, CancellationToken);
+        }
+
+        public async Task<IdentityResult> UpdateEmailAsync(User user, string email)
+        {
+            return await this.SetEmailAsync(user, email);
         }
 
         public async Task<IdentityResult> UpdatePhoneNumberAsync(User user, string phoneNumber)
         {
-            var result = await this.SetPhoneNumberAsync(user, phoneNumber);
-
-            if (result.Succeeded)
-            {
-                await _publisher.PublishUserPhoneChangedIntegrationEventAsync(user);
-            }
-
-            return result;
+            return await this.SetPhoneNumberAsync(user, phoneNumber);
         }
 
         public async Task<UserProfile?> GetProfileAsync(User user)
@@ -83,14 +121,14 @@ namespace eDoxa.Identity.Api.Application.Services
             return await Repository.GetProfileAsync(user, CancellationToken);
         }
 
-        public async Task<IDomainValidationResult> CreateProfileAsync(
+        public async Task<DomainValidationResult<UserProfile>> CreateProfileAsync(
             User user,
             string firstName,
             string lastName,
             Gender gender
         )
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<UserProfile>();
 
             if (user.Profile != null)
             {
@@ -99,10 +137,7 @@ namespace eDoxa.Identity.Api.Application.Services
 
             if (result.IsValid)
             {
-                var profile = new UserProfile(
-                    firstName,
-                    lastName,
-                    gender);
+                var profile = new UserProfile(firstName, lastName, gender);
 
                 user.Create(profile);
 
@@ -112,15 +147,15 @@ namespace eDoxa.Identity.Api.Application.Services
 
                 await _publisher.PublishUserProfileChangedIntegrationEventAsync(UserId.FromGuid(user.Id), profile);
 
-                result.AddEntityToMetadata(profile);
+                return profile;
             }
 
             return result;
         }
 
-        public async Task<IDomainValidationResult> UpdateProfileAsync(User user, string firstName)
+        public async Task<DomainValidationResult<UserProfile>> UpdateProfileAsync(User user, string firstName)
         {
-            var result = new DomainValidationResult();
+            var result = new DomainValidationResult<UserProfile>();
 
             if (user.Profile == null)
             {
@@ -131,13 +166,13 @@ namespace eDoxa.Identity.Api.Application.Services
             {
                 user.Update(firstName);
 
-                //await this.UpdateSecurityStampAsync(user);
+                await this.UpdateSecurityStampAsync(user);
 
                 await this.UpdateUserAsync(user);
 
                 await _publisher.PublishUserProfileChangedIntegrationEventAsync(UserId.FromGuid(user.Id), user.Profile!);
 
-                result.AddEntityToMetadata(user.Profile!);
+                return user.Profile!;
             }
 
             return result;
@@ -166,6 +201,54 @@ namespace eDoxa.Identity.Api.Application.Services
         public async Task<Country> GetCountryAsync(User user)
         {
             return await Repository.GetCountryAsync(user, CancellationToken);
+        }
+
+        protected override async Task<IdentityResult> UpdateUserAsync(User user)
+        {
+            var identityResult = await this.ValidateUserAsync(user);
+
+            if (!identityResult.Succeeded)
+            {
+                return identityResult;
+            }
+
+            await this.UpdateNormalizedEmailAsync(user);
+
+            return await Repository.UpdateAsync(user, CancellationToken);
+        }
+
+        public override async Task<IdentityResult> SetEmailAsync(User user, string email)
+        {
+            var result = await base.SetEmailAsync(user, email);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserEmailChangedIntegrationEventAsync(user);
+            }
+
+            return result;
+        }
+
+        public override async Task<IdentityResult> SetPhoneNumberAsync(User user, string phoneNumber)
+        {
+            var result = await base.SetPhoneNumberAsync(user, phoneNumber);
+
+            if (result.Succeeded)
+            {
+                await _publisher.PublishUserPhoneChangedIntegrationEventAsync(user);
+            }
+
+            return result;
+        }
+
+        private async Task UpdateSecurityStampInternal(User user)
+        {
+            if (!SupportsUserSecurityStamp)
+            {
+                return;
+            }
+
+            await Repository.SetSecurityStampAsync(user, Guid.NewGuid().ToString("N"), CancellationToken);
         }
     }
 }

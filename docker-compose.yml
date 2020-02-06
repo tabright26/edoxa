@@ -86,11 +86,11 @@ services:
       - mssql
       - identity-api
 
-  challenges-worker:
-    image: ${ACR_REGISTRY:-edoxa}/dev/challenges-worker:${ACR_TAG:-latest}
+  challenges-workers:
+    image: ${ACR_REGISTRY:-edoxa}/dev/challenges-workers:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Challenges.Worker/Dockerfile
+      dockerfile: src/eDoxa.Challenges.Workers/Dockerfile
     depends_on:
       - seq
       - challenges-api

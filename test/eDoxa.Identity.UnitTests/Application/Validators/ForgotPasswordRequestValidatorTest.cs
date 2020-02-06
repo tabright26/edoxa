@@ -4,10 +4,7 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Identity.Api.Application.ErrorDescribers;
 using eDoxa.Identity.Api.Application.Validators;
-
-using FluentAssertions;
 
 using FluentValidation.TestHelper;
 
@@ -21,15 +18,15 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
             new TheoryData<string>
             {
                 "gabriel@edoxa.gg",
-                "francis.love.skyrim123@edoxa.gg"
+                "francis.love.skyrim123@edoxa.gg",
+                "!gab_riel/$@edoxa.gg"
             };
 
-        public static TheoryData<string, string> InvalidEmails =>
-            new TheoryData<string, string>
+        public static TheoryData<string> InvalidEmails =>
+            new TheoryData<string>
             {
-                {"", PasswordForgotErrorDescriber.EmailRequired()},
-                {"gabrieledoxa.gg", PasswordForgotErrorDescriber.EmailInvalid()},
-                {"!gab_riel/$@edoxa.gg", PasswordForgotErrorDescriber.EmailInvalid()}
+                "",
+                "gabrieledoxa.gg",
             };
 
         [Theory]
@@ -45,15 +42,13 @@ namespace eDoxa.Identity.UnitTests.Application.Validators
 
         [Theory]
         [MemberData(nameof(InvalidEmails))]
-        public void Validate_WhenEmailIsInvalid_ShouldNotHaveValidationErrorFor(string email, string errorMessage)
+        public void Validate_WhenEmailIsInvalid_ShouldNotHaveValidationErrorFor(string email)
         {
             // Arrange
             var validator = new ForgotPasswordRequestValidator();
 
             // Act - Assert
-            var failures = validator.ShouldHaveValidationErrorFor(request => request.Email, email);
-
-            failures.Should().Contain(failure => failure.ErrorMessage == errorMessage);
+            validator.ShouldHaveValidationErrorFor(request => request.Email, email);
         }
     }
 }

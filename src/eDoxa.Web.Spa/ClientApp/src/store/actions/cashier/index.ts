@@ -36,6 +36,7 @@ import {
 
 export function createUserTransaction(
   bundleId: TransactionBundleId,
+  email: string = null,
   meta: AxiosActionCreatorMeta
 ): CreateUserTransactionActionCreator {
   return {
@@ -50,7 +51,8 @@ export function createUserTransaction(
         method: "POST",
         url: "/api/transactions",
         data: {
-          bundle: bundleId
+          bundle: bundleId,
+          email
         }
       }
     },

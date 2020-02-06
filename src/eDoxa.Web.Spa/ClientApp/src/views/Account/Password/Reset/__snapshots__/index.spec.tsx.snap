@@ -44,6 +44,7 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <input
+          autoComplete="email"
           className="form-control-sm form-control"
           name="email"
           onBlur={[Function]}
@@ -74,6 +75,7 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <input
+          autoComplete="password"
           className="form-control-sm form-control"
           disabled={false}
           name="password"
@@ -85,6 +87,9 @@ exports[`renders correctly 1`] = `
           placeholder="New password"
           type="password"
           value=""
+        />
+        <div
+          className="invalid-feedback"
         />
       </div>
       <div
@@ -102,17 +107,21 @@ exports[`renders correctly 1`] = `
           </span>
         </div>
         <input
+          autoComplete="new-password"
           className="form-control-sm form-control"
           disabled={false}
-          name="confirmPassword"
+          name="newPassword"
           onBlur={[Function]}
           onChange={[Function]}
           onDragStart={[Function]}
           onDrop={[Function]}
           onFocus={[Function]}
-          placeholder="Confirm new password"
+          placeholder="Repeat new password"
           type="password"
           value=""
+        />
+        <div
+          className="invalid-feedback"
         />
       </div>
       <div
