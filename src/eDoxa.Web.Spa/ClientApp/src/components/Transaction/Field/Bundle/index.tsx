@@ -28,10 +28,7 @@ type InnerProps = StateProps;
 
 type Props = InnerProps & OutterProps;
 
-const FormFieldTransactionBundle: FunctionComponent<Props> = ({
-  name,
-  bundles
-}) => {
+const Bundle: FunctionComponent<Props> = ({ name, bundles }) => {
   const [bundleId, setBundleId] = useState<TransactionBundleId>(null);
   return (
     <Field
@@ -44,9 +41,9 @@ const FormFieldTransactionBundle: FunctionComponent<Props> = ({
           {bundles.map(({ id, currency }: TransactionBundle, index) => {
             const checked = id === input.value;
             return (
-              <Col key={index} xs="2">
+              <Col key={index} xs="4">
                 <Label
-                  className={`btn btn-dark btn-block rounded py-3 px-4 m-0 ${checked &&
+                  className={`btn btn-dark btn-block rounded py-3 px-4 mb-3 ${checked &&
                     "active"}`}
                 >
                   <Input
@@ -86,4 +83,4 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
 
 const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps));
 
-export default enhance(FormFieldTransactionBundle);
+export default enhance(Bundle);

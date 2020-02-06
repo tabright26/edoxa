@@ -4,6 +4,12 @@ option csharp_namespace = "eDoxa.Grpc.Protos.Payment.Options";
 
 package edoxa.services.payment;
 
+message PayPalOptions {
+  string mode = 1;
+  string clientId = 2;
+  string clientSecret = 3;
+}
+
 message PaymentApiOptions {
   StaticOptions static = 1;
   DefaultOptions default = 2;

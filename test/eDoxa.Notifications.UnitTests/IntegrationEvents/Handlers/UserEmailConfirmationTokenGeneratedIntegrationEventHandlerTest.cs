@@ -34,7 +34,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
 
             TestMock.RedirectService.Setup(redirectService => redirectService.RedirectToWebSpa(It.IsAny<string>())).Returns("testUrl").Verifiable();
 
-            var handler = new UserEmailConfirmationTokenGeneratedIntegrationEventHandler(TestMock.UserService.Object, TestMock.RedirectService.Object);
+            var handler = new UserEmailConfirmationTokenGeneratedIntegrationEventHandler(TestMock.UserService.Object, TestMock.RedirectService.Object, TestMock.SendgridOptions.Object);
 
             var integrationEvent = new UserEmailConfirmationTokenGeneratedIntegrationEvent
             {

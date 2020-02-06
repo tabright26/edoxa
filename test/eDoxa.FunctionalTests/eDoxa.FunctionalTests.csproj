@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.console" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>
@@ -25,7 +25,7 @@
     <ProjectReference Include="..\..\src\eDoxa.Cashier.Web.Aggregator\eDoxa.Cashier.Web.Aggregator.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Api\eDoxa.Challenges.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Challenges.Web.Aggregator\eDoxa.Challenges.Web.Aggregator.csproj" />
-    <ProjectReference Include="..\..\src\eDoxa.Challenges.Worker\eDoxa.Challenges.Worker.csproj" />
+    <ProjectReference Include="..\..\src\eDoxa.Challenges.Workers\eDoxa.Challenges.Workers.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Clans.Api\eDoxa.Clans.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Games.Api\eDoxa.Games.Api.csproj" />
     <ProjectReference Include="..\..\src\eDoxa.Identity.Api\eDoxa.Identity.Api.csproj" />
@@ -49,8 +49,8 @@
     <None Include="..\..\src\eDoxa.Notifications.Api\appsettings.Test.json" Link="TestHelper\Services\Notifications\appsettings.Test.json" CopyToOutputDirectory="Always" />
     <None Include="..\..\src\eDoxa.Payment.Api\appsettings.json" Link="TestHelper\Services\Payment\appsettings.json" CopyToOutputDirectory="Always" />
     <None Include="..\..\src\eDoxa.Payment.Api\appsettings.Test.json" Link="TestHelper\Services\Payment\appsettings.Test.json" CopyToOutputDirectory="Always" />
-    <None Include="..\..\src\eDoxa.Challenges.Worker\appsettings.json" Link="TestHelper\Workers\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
-    <None Include="..\..\src\eDoxa.Challenges.Worker\appsettings.Test.json" Link="TestHelper\Workers\Challenges\appsettings.Test.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Challenges.Workers\appsettings.json" Link="TestHelper\Workers\Challenges\appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="..\..\src\eDoxa.Challenges.Workers\appsettings.Test.json" Link="TestHelper\Workers\Challenges\appsettings.Test.json" CopyToOutputDirectory="Always" />
     <None Include="..\..\src\eDoxa.Cashier.Web.Aggregator\appsettings.json" Link="TestHelper\Aggregators\Web\Cashier\appsettings.json" CopyToOutputDirectory="Always" />
     <None Include="..\..\src\eDoxa.Cashier.Web.Aggregator\appsettings.Test.json" Link="TestHelper\Aggregators\Web\Cashier\appsettings.Test.json" CopyToOutputDirectory="Always" />
     <None Include="..\..\src\eDoxa.Challenges.Web.Aggregator\appsettings.json" Link="TestHelper\Aggregators\Web\Challenges\appsettings.json" CopyToOutputDirectory="Always" />

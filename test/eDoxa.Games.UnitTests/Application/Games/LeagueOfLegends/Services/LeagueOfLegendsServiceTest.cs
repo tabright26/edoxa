@@ -26,29 +26,29 @@ namespace eDoxa.Games.UnitTests.Application.Games.LeagueOfLegends.Services
         {
         }
 
-        [Fact]
-        public void Constructor()
-        {
-            //Arrange
-            var mockOptionsSnapshot = new Mock<IOptionsSnapshot<GamesApiOptions>>();
+        //[Fact]
+        //public void Constructor()
+        //{
+        //    //Arrange
+        //    var mockOptionsSnapshot = new Mock<IOptionsSnapshot<GamesApiOptions>>();
 
-            mockOptionsSnapshot.Setup(optionsSnapshot => optionsSnapshot.Value)
-                .Returns(
-                    new GamesApiOptions
-                    {
-                        Configuration = new GamesApiOptions.Types.ConfigurationOptions
-                        {
-                            ApiKeys =
-                            {
-                                {Game.LeagueOfLegends.Name, "ApiKey"}
-                            }
-                        }
-                    });
+        //    mockOptionsSnapshot.Setup(optionsSnapshot => optionsSnapshot.Value)
+        //        .Returns(
+        //            new GamesApiOptions
+        //            {
+        //                Configuration = new GamesApiOptions.Types.ConfigurationOptions
+        //                {
+        //                    ApiKeys =
+        //                    {
+        //                        {Game.LeagueOfLegends.Name, "ApiKey"}
+        //                    }
+        //                }
+        //            });
 
-            var leagueService = new LeagueOfLegendsService(mockOptionsSnapshot.Object);
+        //    var leagueService = new LeagueOfLegendsService(mockOptionsSnapshot.Object);
 
-            //Assert
-            leagueService.Should().BeOfType<LeagueOfLegendsService>();
-        }
+        //    //Assert
+        //    leagueService.Should().BeOfType<LeagueOfLegendsService>();
+        //}
     }
 }

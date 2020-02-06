@@ -6,6 +6,7 @@
 
 using eDoxa.Grpc.Protos.Clans.IntegrationEvents;
 using eDoxa.Grpc.Protos.Games.IntegrationEvents;
+using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
 using eDoxa.Identity.Api.IntegrationEvents.Handlers;
 using eDoxa.ServiceBus.Abstractions;
 
@@ -19,6 +20,7 @@ namespace eDoxa.Identity.Api.IntegrationEvents.Extensions
             subscriber.Subscribe<ClanMemberRemovedIntegrationEvent, ClanMemberRemovedIntegrationEventHandler>();
             subscriber.Subscribe<UserGameCredentialAddedIntegrationEvent, UserGameCredentialAddedIntegrationEventHandler>();
             subscriber.Subscribe<UserGameCredentialRemovedIntegrationEvent, UserGameCredentialRemovedIntegrationEventHandler>();
+            subscriber.Subscribe<UserStripeCustomerCreatedIntegrationEvent, UserStripeCustomerCreatedIntegrationEventHandler>();
         }
     }
 }

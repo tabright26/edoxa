@@ -57,8 +57,8 @@ services:
       - seq
       - mssql
 
-  challenges-worker:
-    image: edoxa.azurecr.io/edoxa/prod/challenges-worker:0.3.3-beta
+  challenges-workers:
+    image: edoxa.azurecr.io/edoxa/prod/challenges-workers:0.3.3-beta
     depends_on:
       - seq
 

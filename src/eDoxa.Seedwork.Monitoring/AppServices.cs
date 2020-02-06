@@ -17,7 +17,7 @@ namespace eDoxa.Seedwork.Monitoring
         public const string GamesApi = "games-api";
         public const string ClansApi = "clans-api";
         public const string ChallengesApi = "challenges-api";
-        public const string ChallengesWorker = "challenges-worker";
+        public const string ChallengesWorkers = "challenges-workers";
         public const string ChallengesWebAggregator = "challenges-web-aggregator";
         public const string ChallengesWebGateway = "challenges-web-gateway";
         public const string WebSpa = "web-spa";

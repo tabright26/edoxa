@@ -14,7 +14,6 @@ import {
   UPDATE_STRIPE_PAYMENTMETHOD_MODAL,
   DELETE_STRIPE_PAYMENTMETHOD_MODAL
 } from "utils/modal/constants";
-import { RootState } from "store/types";
 import Button from "components/Shared/Button";
 
 interface OwnProps {}
@@ -127,9 +126,9 @@ const Panel: FunctionComponent<any> = ({
   </Card>
 );
 
-const mapStateToProps = (state: RootState) => {
+const mapStateToProps = () => {
   return {
-    limit: state.static.payment.stripe.paymentMethod.card.limit
+    limit: 1
   };
 };
 

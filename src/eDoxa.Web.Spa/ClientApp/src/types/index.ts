@@ -144,10 +144,6 @@ export interface FieldValidationRule {
   readonly order: number;
 }
 
-export interface PaymentStaticOptions {
-  readonly stripe: StripeOptions;
-}
-
 export interface StripeOptions {
   readonly currencies: CurrenciesOptions;
   readonly paymentMethod: PaymentMethodOptions;

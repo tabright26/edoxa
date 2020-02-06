@@ -3,7 +3,6 @@ import produce, { Draft } from "immer";
 import {
   StaticOptionsActions,
   LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS,
-  LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS,
   LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
   LOAD_GAMES_STATIC_OPTIONS_SUCCESS,
   LOAD_CHALLENGES_STATIC_OPTIONS_SUCCESS
@@ -12,7 +11,6 @@ import { StaticOptionsState } from "./types";
 
 const initialState: StaticOptionsState = {
   identity: null,
-  payment: null,
   cashier: null,
   challenges: null,
   games: null
@@ -26,10 +24,6 @@ export const reducer: Reducer<
     switch (action.type) {
       case LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS: {
         draft.identity = action.payload.data;
-        break;
-      }
-      case LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS: {
-        draft.payment = action.payload.data;
         break;
       }
       case LOAD_CASHIER_STATIC_OPTIONS_SUCCESS: {

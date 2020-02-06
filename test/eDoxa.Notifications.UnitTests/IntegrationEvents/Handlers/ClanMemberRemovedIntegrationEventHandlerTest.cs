@@ -36,7 +36,7 @@ namespace eDoxa.Notifications.UnitTests.IntegrationEvents.Handlers
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
-            var handler = new ClanMemberRemovedIntegrationEventHandler(TestMock.UserService.Object);
+            var handler = new ClanMemberRemovedIntegrationEventHandler(TestMock.UserService.Object, TestMock.SendgridOptions.Object);
 
             var integrationEvent = new ClanMemberRemovedIntegrationEvent
             {

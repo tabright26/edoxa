@@ -9,6 +9,7 @@ using System.Linq;
 
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
@@ -18,6 +19,11 @@ namespace eDoxa.Seedwork.Application.Extensions
 {
     public static class HttpContextExtensions
     {
+        public static string GetStripeCustomertId(this HttpContext context)
+        {
+            return context.GetClaim(CustomClaimTypes.StripeCustomer);
+        }
+
         public static string? GetClaimOrNull(this HttpContext httpContext, string claimType)
         {
             return httpContext.User?.Claims?.SingleOrDefault(claim => claim.Type == claimType)?.Value;

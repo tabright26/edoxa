@@ -12,6 +12,7 @@ using eDoxa.Notifications.Domain.Repositories;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Sendgrid.Services.Abstractions;
 
 using Microsoft.Extensions.Logging;
 
@@ -20,13 +21,13 @@ namespace eDoxa.Notifications.Api.Application.Services
     public sealed class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IEmailService _emailService;
+        private readonly ISendgridService _sendgridService;
         private readonly ILogger _logger;
 
-        public UserService(IUserRepository userRepository, IEmailService emailService, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, ISendgridService sendgridService, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
-            _emailService = emailService;
+            _sendgridService = sendgridService;
             _logger = logger;
         }
 
@@ -82,7 +83,7 @@ namespace eDoxa.Notifications.Api.Application.Services
                 {
                     var user = await _userRepository.FindUserAsync(userId);
 
-                    await _emailService.SendEmailAsync(user.Email, templateId, templateData);
+                    await _sendgridService.SendEmailAsync(user.Email, templateId, templateData);
                 }
                 else
                 {

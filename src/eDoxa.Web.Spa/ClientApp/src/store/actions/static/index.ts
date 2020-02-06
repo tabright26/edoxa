@@ -2,9 +2,6 @@ import {
   LOAD_IDENTITY_STATIC_OPTIONS,
   LOAD_IDENTITY_STATIC_OPTIONS_SUCCESS,
   LOAD_IDENTITY_STATIC_OPTIONS_FAIL,
-  LOAD_PAYMENT_STATIC_OPTIONS,
-  LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS,
-  LOAD_PAYMENT_STATIC_OPTIONS_FAIL,
   StaticOptionsActionCreators,
   LOAD_CASHIER_STATIC_OPTIONS,
   LOAD_CASHIER_STATIC_OPTIONS_SUCCESS,
@@ -34,23 +31,6 @@ export function loadIdentityStaticOptions(): StaticOptionsActionCreators {
       request: {
         method: "GET",
         url: `identity/api/static/options`
-      }
-    }
-  };
-}
-
-export function loadPaymentStaticOptions(): StaticOptionsActionCreators {
-  return {
-    types: [
-      LOAD_PAYMENT_STATIC_OPTIONS,
-      LOAD_PAYMENT_STATIC_OPTIONS_SUCCESS,
-      LOAD_PAYMENT_STATIC_OPTIONS_FAIL
-    ],
-    payload: {
-      client: AXIOS_PAYLOAD_CLIENT_CASHIER,
-      request: {
-        method: "GET",
-        url: "payment/api/static/options"
       }
     }
   };

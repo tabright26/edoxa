@@ -27,13 +27,7 @@ const Create: FunctionComponent<Props> = ({
   description
 }) => {
   return (
-    <Modal
-      backdrop="static"
-      size="lg"
-      centered
-      isOpen={show}
-      toggle={handleHide}
-    >
+    <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
       <ModalHeader toggle={handleHide} className="my-auto bg-gray-900">
         <span className="d-block text-uppercase">{title}</span>
         {description && <ModalSubtitle>{description}</ModalSubtitle>}

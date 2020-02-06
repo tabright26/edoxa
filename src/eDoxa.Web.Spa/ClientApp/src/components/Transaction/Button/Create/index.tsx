@@ -20,7 +20,7 @@ interface OwnProps {
 type InnerProps = DispatchProps;
 
 type OutterProps = OwnProps & {
-  disabled: boolean;
+  disabled?: boolean;
 };
 
 type Props = InnerProps & OutterProps;

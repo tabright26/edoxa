@@ -1,0 +1,39 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "eDoxa.Sendgrid";
+
+package edoxa.sendgrid;
+
+message SendgridOptions {
+  MessageOptions message = 1;
+  TemplatesOptions templates = 2;
+
+  message MessageOptions {
+    FromOptions from = 1;
+
+    message FromOptions {
+      string email = 1;
+      string name = 2;
+    }
+  }
+
+  message TemplatesOptions {
+    string challengeClosed = 1;
+    string challengeParticipantRegistered = 2;
+    string challengeStarted = 3;
+    string clanCandidatureSent = 4;
+    string clanInvitationSent = 5;
+    string clanMemberAdded = 6;
+    string clanMemberRemoved = 7;
+    string userCreated = 8;
+    string userEmailChanged = 9;
+    string userEmailConfirmationTokenGenerated = 10;
+    string userGameCredentialAdded = 11;
+    string userGameCredentialRemoved = 12;
+    string userDepositFailed = 13;
+    string userDepositSucceeded = 14;
+    string userPasswordResetTokenGenerated = 15;
+    string userWithdrawalFailed = 16;
+    string userWithdrawalSucceeded = 17;
+  }
+}

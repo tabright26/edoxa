@@ -9,8 +9,7 @@ package edoxa.services.games;
 
 message GamesApiOptions {
   StaticOptions static = 1;
-  ConfigurationOptions configuration = 2;
-  
+
   message StaticOptions {
     repeated GameOptions games = 1;
 
@@ -27,9 +26,5 @@ message GamesApiOptions {
         string instructions = 3;
       }
 	}
-  }
-
-  message ConfigurationOptions {
-    map<string, string> apiKeys = 1;
   }
 }

@@ -1,6 +1,5 @@
 import {
   IdentityStaticOptions,
-  PaymentStaticOptions,
   CashierStaticOptions,
   ChallengesStaticOptions,
   GamesStaticOptions
@@ -10,6 +9,5 @@ export interface StaticOptionsState {
   readonly challenges: ChallengesStaticOptions;
   readonly games: GamesStaticOptions;
   readonly identity: IdentityStaticOptions;
-  readonly payment: PaymentStaticOptions;
   readonly cashier: CashierStaticOptions;
 }

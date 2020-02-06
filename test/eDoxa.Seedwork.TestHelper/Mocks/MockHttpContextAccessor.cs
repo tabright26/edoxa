@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Security;
 
 using IdentityModel;
 
@@ -27,7 +28,8 @@ namespace eDoxa.Seedwork.TestHelper.Mocks
                     {
                         new Claim(JwtClaimTypes.Subject, "5C43502B-FCE8-4235-8557-C22D2A638AD7"),
                         new Claim(JwtClaimTypes.Email, "noreply@edoxa.gg"),
-                        new Claim($"games/{Game.LeagueOfLegends.CamelCaseName}", PlayerId.Parse("qwe213rq2131eqw"))
+                        new Claim($"games/{Game.LeagueOfLegends.CamelCaseName}", PlayerId.Parse("qwe213rq2131eqw")),
+                        new Claim(CustomClaimTypes.StripeCustomer, "customerId")
                     })
                 .Verifiable();
         }

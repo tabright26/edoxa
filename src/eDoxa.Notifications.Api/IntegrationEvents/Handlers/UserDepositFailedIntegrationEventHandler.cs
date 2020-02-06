@@ -7,29 +7,32 @@
 using System.Threading.Tasks;
 
 using eDoxa.Grpc.Protos.Payment.IntegrationEvents;
-using eDoxa.Notifications.Api.Application;
 using eDoxa.Notifications.Domain.Services;
 using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Sendgrid;
 using eDoxa.ServiceBus.Abstractions;
+
+using Microsoft.Extensions.Options;
 
 namespace eDoxa.Notifications.Api.IntegrationEvents.Handlers
 {
     public sealed class UserDepositFailedIntegrationEventHandler : IIntegrationEventHandler<UserDepositFailedIntegrationEvent>
     {
         private readonly IUserService _userService;
+        private readonly IOptions<SendgridOptions> _options;
 
-        public UserDepositFailedIntegrationEventHandler(IUserService userService)
+        public UserDepositFailedIntegrationEventHandler(IUserService userService, IOptionsSnapshot<SendgridOptions> options)
         {
             _userService = userService;
+            _options = options;
         }
+
+        private SendgridOptions Options => _options.Value;
 
         public async Task HandleAsync(UserDepositFailedIntegrationEvent integrationEvent)
         {
-            await _userService.SendEmailAsync(
-                integrationEvent.UserId.ParseEntityId<UserId>(),
-                SendGridTemplates.UserDepositFailed,
-                integrationEvent);
+            await _userService.SendEmailAsync(integrationEvent.UserId.ParseEntityId<UserId>(), Options.Templates.UserDepositFailed, integrationEvent);
         }
     }
 }

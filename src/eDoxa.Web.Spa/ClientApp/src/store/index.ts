@@ -16,7 +16,6 @@ import { loadUser } from "redux-oidc";
 import { userManager } from "utils/oidc/UserManager";
 import {
   loadIdentityStaticOptions,
-  loadPaymentStaticOptions,
   loadCashierStaticOptions,
   loadChallengesStaticOptions,
   loadGamesStaticOptions
@@ -71,7 +70,6 @@ export const configureStore = (initialState: RootState | any = {}) => {
     default: {
       loadUser(store, userManager);
       store.dispatch<any>(loadIdentityStaticOptions());
-      store.dispatch<any>(loadPaymentStaticOptions());
       store.dispatch<any>(loadCashierStaticOptions());
       store.dispatch<any>(loadChallengesStaticOptions());
       store.dispatch<any>(loadGamesStaticOptions());

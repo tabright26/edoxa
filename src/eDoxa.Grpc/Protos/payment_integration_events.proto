@@ -6,6 +6,11 @@ import "cashier_dtos.proto";
 
 package edoxa.services.payment;
 
+message UserStripeCustomerCreatedIntegrationEvent {
+  string userId = 1;
+  string customer = 2;
+}
+
 message UserDepositSucceededIntegrationEvent {
   string userId = 1;
   cashier.TransactionDto transaction = 2;

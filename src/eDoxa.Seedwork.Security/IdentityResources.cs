@@ -27,8 +27,7 @@ namespace eDoxa.Seedwork.Security
                 "Stripe.js",
                 new HashSet<string>
                 {
-                    CustomClaimTypes.StripeCustomer,
-                    CustomClaimTypes.StripeAccount
+                    CustomClaimTypes.StripeCustomer
                 })
             {
             }

@@ -20,7 +20,6 @@ namespace eDoxa.Seedwork.Security
         public static readonly string Clan = "clan";
 
         // Payment
-        public static readonly string StripeAccount = "stripe:account";
         public static readonly string StripeCustomer = "stripe:customer";
 
         // Games
