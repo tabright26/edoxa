@@ -27,7 +27,6 @@ services:
   identity-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
@@ -52,8 +51,7 @@ services:
 
   cashier-api:
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
+      - ASPNETCORE_ENVIRONMENT=Production 
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
@@ -67,7 +65,6 @@ services:
   challenges-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
@@ -81,7 +78,6 @@ services:
   clans-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
@@ -96,7 +92,6 @@ services:
   games-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
@@ -111,7 +106,6 @@ services:
   notifications-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
@@ -127,7 +121,6 @@ services:
   payment-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
@@ -144,7 +137,6 @@ services:
   challenges-workers:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__SqlServer=${WORKERS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
@@ -157,7 +149,6 @@ services:
   cashier-web-aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
@@ -170,7 +161,6 @@ services:
   challenges-web-aggregator:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
@@ -198,7 +188,6 @@ services:
   web-spa:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
       - REACT_APP_CASHIER_WEB_GATEWAY_URL=http://${HOST:-localhost}:5202
       - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
@@ -225,7 +214,6 @@ services:
   web-status:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
       - Serilog__Sink__Seq=http://seq
       - HealthChecks__Endpoints__0__Name=Identity API
       - HealthChecks__Endpoints__0__Uri=http://identity-api/health
