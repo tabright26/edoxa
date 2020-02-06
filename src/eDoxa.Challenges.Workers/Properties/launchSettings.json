@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "eDoxa.Challenges.Worker": {
+    "eDoxa.Challenges.Workers": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

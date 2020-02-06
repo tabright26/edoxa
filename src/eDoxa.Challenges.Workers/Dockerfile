@@ -8,7 +8,7 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 WORKDIR /tmp
 COPY . .
-WORKDIR /tmp/src/eDoxa.Challenges.Worker
+WORKDIR /tmp/src/eDoxa.Challenges.Workers
 RUN dotnet publish -c Release -o /app
 
 FROM build AS publish
@@ -16,4 +16,4 @@ FROM build AS publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "eDoxa.Challenges.Worker.dll"]
+ENTRYPOINT ["dotnet", "eDoxa.Challenges.Workers.dll"]

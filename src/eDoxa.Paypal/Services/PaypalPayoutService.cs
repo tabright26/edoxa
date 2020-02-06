@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using eDoxa.Paypal.Extensions;
 using eDoxa.Paypal.Services.Abstractions;
 
 using Microsoft.Extensions.Options;
@@ -19,14 +18,18 @@ namespace eDoxa.Paypal.Services
 {
     public sealed class PaypalPayoutService : IPaypalPayoutService
     {
+        private readonly OAuthTokenCredential _credential;
         private readonly IOptions<PaypalOptions> _options;
 
-        public PaypalPayoutService(IOptionsSnapshot<PaypalOptions> options)
+        public PaypalPayoutService(OAuthTokenCredential credential, IOptionsSnapshot<PaypalOptions> options)
         {
+            _credential = credential;
             _options = options;
         }
 
         private PaypalOptions Options => _options.Value;
+
+        private APIContext Context => new APIContext(_credential.GetAccessToken());
 
         public async Task<PayoutBatch> CreateAsync(
             string transactionId,
@@ -60,7 +63,7 @@ namespace eDoxa.Paypal.Services
                 }
             };
 
-            return await Task.FromResult(Payout.Create(Options.GetApiContext(), payout));
+            return await Task.FromResult(Payout.Create(Context, payout));
         }
     }
 }

@@ -5,9 +5,8 @@ option csharp_namespace = "eDoxa.Stripe";
 package edoxa.stripe;
 
 message StripeOptions {
-  string apiKey = 1;
-  InvoiceOptions invoice = 2;
-  PaymentMethodOptions paymentMethod = 3;
+  InvoiceOptions invoice = 1;
+  PaymentMethodOptions paymentMethod = 2;
   
   message InvoiceOptions {
     string currency = 1;

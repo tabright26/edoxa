@@ -6,7 +6,7 @@
 
 using Hangfire.Dashboard;
 
-namespace eDoxa.Challenges.Worker.Application.Filters
+namespace eDoxa.Challenges.Workers.Application.Filters
 {
     internal sealed class AllowAnonymousDashboardAuthorizationFilter : IDashboardAuthorizationFilter
     {

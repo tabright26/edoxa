@@ -19,6 +19,7 @@ using eDoxa.Grpc.Protos.Payment.Services;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.ServiceBus.Abstractions;
 using eDoxa.Stripe.Services.Abstractions;
@@ -54,7 +55,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
             var userId = new UserId();
             const string email = "test@edoxa.gg";
 
-            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email))
+            var host = TestHost.WithClaimsFromBearerAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(JwtClaimTypes.Email, email), new Claim(CustomClaimTypes.StripeCustomer, "customerId"))
                 .WithWebHostBuilder(
                     builder =>
                     {
@@ -73,7 +74,7 @@ namespace eDoxa.Payment.IntegrationTests.Grpc.Services
                                 TestMock.StripeInvoiceService.Setup(
                                         x => x.CreateInvoiceAsync(
                                             It.IsAny<string>(),
-                                            It.IsAny<TransactionId>(),
+                                            It.IsAny<string>(),
                                             It.IsAny<long>(),
                                             It.IsAny<string>()))
                                     .ReturnsAsync(new Invoice());

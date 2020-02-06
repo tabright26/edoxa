@@ -6,7 +6,7 @@
 
 using System;
 
-using eDoxa.Challenges.Worker.Infrastructure;
+using eDoxa.Challenges.Workers.Infrastructure;
 using eDoxa.Seedwork.Application.Extensions;
 using eDoxa.Seedwork.Monitoring.ApplicationInsights.Extensions;
 using eDoxa.Seedwork.Monitoring.Serilog.Extensions;
@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Serilog;
 
-namespace eDoxa.Challenges.Worker
+namespace eDoxa.Challenges.Workers
 {
     public sealed class Program
     {

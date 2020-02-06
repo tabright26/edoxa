@@ -6,14 +6,14 @@
 
 using System;
 
-using eDoxa.Challenges.Worker.Application.Filters;
+using eDoxa.Challenges.Workers.Application.Filters;
 
 using Hangfire;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Challenges.Worker.Application.Extensions
+namespace eDoxa.Challenges.Workers.Application.Extensions
 {
     public static class ApplicationBuilderExtensions
     {

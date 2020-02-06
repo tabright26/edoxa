@@ -30,25 +30,6 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         }
 
         [Fact]
-        public async Task FetchCustomerAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var customerController = new CustomerController(TestMock.StripeCustomerService.Object, TestMapper)
-            {
-                ControllerContext =
-                {
-                    HttpContext = MockHttpContextAccessor.GetInstance()
-                }
-            };
-
-            // Act
-            var result = await customerController.FetchCustomerAsync();
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-        }
-
-        [Fact]
         public async Task FetchCustomerAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange

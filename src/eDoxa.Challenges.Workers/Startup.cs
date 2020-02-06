@@ -8,9 +8,9 @@ using System;
 
 using Autofac;
 
-using eDoxa.Challenges.Worker.Application.Extensions;
-using eDoxa.Challenges.Worker.Application.RecurringJobs;
-using eDoxa.Challenges.Worker.Infrastructure;
+using eDoxa.Challenges.Workers.Application.Extensions;
+using eDoxa.Challenges.Workers.Application.RecurringJobs;
+using eDoxa.Challenges.Workers.Infrastructure;
 using eDoxa.Grpc.Protos.Challenges.Services;
 using eDoxa.Grpc.Protos.Games.Enums;
 using eDoxa.Grpc.Protos.Games.Services;
@@ -32,7 +32,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eDoxa.Challenges.Worker
+namespace eDoxa.Challenges.Workers
 {
     public partial class Startup
     {
@@ -45,12 +45,12 @@ namespace eDoxa.Challenges.Worker
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            AppSettings = configuration.GetAppSettings<ChallengesWorkerAppSettings>();
+            AppSettings = configuration.GetAppSettings<ChallengesWorkersAppSettings>();
         }
 
         public IConfiguration Configuration { get; }
 
-        private ChallengesWorkerAppSettings AppSettings { get; }
+        private ChallengesWorkersAppSettings AppSettings { get; }
     }
 
     public partial class Startup
@@ -70,7 +70,7 @@ namespace eDoxa.Challenges.Worker
                     Configuration.GetSqlServerConnectionString(),
                     options => options.EnableRetryOnFailure(10, TimeSpan.FromSeconds(30), null)));
 
-            services.AddCustomDataProtection(Configuration, AppServices.ChallengesWorker);
+            services.AddCustomDataProtection(Configuration, AppServices.ChallengesWorkers);
 
             services.AddHangfire(
                 configuration => configuration.SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -80,6 +80,7 @@ namespace eDoxa.Challenges.Worker
                         Configuration.GetSqlServerConnectionString(),
                         new SqlServerStorageOptions
                         {
+                            SchemaName = "challenges",
                             CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
                             SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
                             QueuePollInterval = TimeSpan.Zero,

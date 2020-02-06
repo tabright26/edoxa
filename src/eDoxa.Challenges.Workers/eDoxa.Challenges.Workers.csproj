@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>eDoxa.Challenges.Worker</AssemblyName>
-    <RootNamespace>eDoxa.Challenges.Worker</RootNamespace>
+    <AssemblyName>eDoxa.Challenges.Workers</AssemblyName>
+    <RootNamespace>eDoxa.Challenges.Workers</RootNamespace>
     <Nullable>Enable</Nullable>
   </PropertyGroup>
 

@@ -133,15 +133,19 @@ services:
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
+      - Stripe__ApiKey=sk_test_xRMH8A7bagp2Auj7YPqNihlY
+      - Paypal__Mode=sandbox
+      - Paypal__Client__Id=Ad47gB8d_jzNAIzntNOcrXcCW0EmKpenE0ODvwjte8Dx_ElbGQw6hWuVviBU54eMoDnlSv8ma7yTygJF
+      - Paypal__Client__Secret=EGaT1DzxAHAdibUwSEPNoNGxpy8Q03b_R-uJT7xlozLnLHIPNHp2VGNOmP4boiisUt2a6x3-lNMTRaSi
     ports:
       - "5001:80"
       - "9001:81"
 
-  challenges-worker:
+  challenges-workers:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - APPINSIGHTS_INSTRUMENTATIONKEY=${APPINSIGHTS_INSTRUMENTATIONKEY}
-      - ConnectionStrings__SqlServer=${CHALLENGES_WEB_JOBS_SQLSERVER_CONNECTIONSTRING}
+      - ConnectionStrings__SqlServer=${WORKERS_SQLSERVER_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - Endpoints__ChallengesUrl=http://challenges-api
@@ -241,8 +245,8 @@ services:
       - HealthChecks__Endpoints__7__Uri=http://challenges-api/health
       - HealthChecks__Endpoints__8__Name=Challenges Web Aggregator
       - HealthChecks__Endpoints__8__Uri=http://challenges-web-aggregator/health
-      - HealthChecks__Endpoints__9__Name=Challenges Worker
-      - HealthChecks__Endpoints__9__Uri=http://challenges-worker/health
+      - HealthChecks__Endpoints__9__Name=Challenges Workers
+      - HealthChecks__Endpoints__9__Uri=http://challenges-workers/health
       - HealthChecks__Endpoints__10__Name=Web Spa
       - HealthChecks__Endpoints__10__Uri=http://web-spa/health
       - HealthChecks__EvaluationTimeInSeconds=60

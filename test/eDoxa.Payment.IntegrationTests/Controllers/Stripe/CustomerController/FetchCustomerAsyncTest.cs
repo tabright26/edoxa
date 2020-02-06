@@ -14,6 +14,7 @@ using Autofac;
 using eDoxa.Payment.TestHelper;
 using eDoxa.Payment.TestHelper.Fixtures;
 using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Security;
 using eDoxa.Seedwork.TestHelper.Extensions;
 using eDoxa.Stripe.Services.Abstractions;
 
@@ -45,46 +46,12 @@ namespace eDoxa.Payment.IntegrationTests.Controllers.Stripe.CustomerController
         }
 
         [Fact]
-        public async Task ShouldBeHttpStatusCodeBadRequest()
-        {
-            // Arrange
-            var userId = new UserId();
-
-            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
-
-            _httpClient = factory.CreateClient();
-
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        }
-
-        [Fact]
-        public async Task ShouldBeHttpStatusCodeNotFound()
-        {
-            // Arrange
-            var userId = new UserId();
-
-            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()));
-
-            _httpClient = factory.CreateClient();
-
-            // Act
-            using var response = await this.ExecuteAsync();
-
-            // Assert
-            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        }
-
-        [Fact]
         public async Task ShouldBeHttpStatusCodeOk()
         {
             // Arrange
             var userId = new UserId();
 
-            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()))
+            var factory = TestHost.WithClaimsFromDefaultAuthentication(new Claim(JwtClaimTypes.Subject, userId.ToString()), new Claim(CustomClaimTypes.StripeCustomer, "customerId"))
                 .WithWebHostBuilder(
                     builder => builder.ConfigureTestContainer<ContainerBuilder>(
                         container =>

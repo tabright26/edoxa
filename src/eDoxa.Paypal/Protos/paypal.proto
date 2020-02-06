@@ -5,14 +5,7 @@ option csharp_namespace = "eDoxa.Paypal";
 package edoxa.paypal;
 
 message PaypalOptions {
-  string mode = 1;
-  ClientOptions client = 2;
-  PayoutOptions payout = 3;
-
-  message ClientOptions {
-    string id = 1;
-    string secret = 2;
-  }
+  PayoutOptions payout = 1;
 
   message PayoutOptions {
     string currency = 1;

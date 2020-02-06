@@ -6,7 +6,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace eDoxa.Challenges.Worker.Infrastructure
+namespace eDoxa.Challenges.Workers.Infrastructure
 {
     public sealed class HangfireDbContext : DbContext
     {

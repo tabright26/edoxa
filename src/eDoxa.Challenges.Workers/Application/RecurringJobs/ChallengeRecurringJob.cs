@@ -17,7 +17,7 @@ using eDoxa.Grpc.Protos.Games.Services;
 
 using Grpc.Core;
 
-namespace eDoxa.Challenges.Worker.Application.RecurringJobs
+namespace eDoxa.Challenges.Workers.Application.RecurringJobs
 {
     public sealed class ChallengeRecurringJob
     {

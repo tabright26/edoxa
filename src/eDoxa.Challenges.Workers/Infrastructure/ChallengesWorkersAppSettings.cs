@@ -8,9 +8,9 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace eDoxa.Challenges.Worker.Infrastructure
+namespace eDoxa.Challenges.Workers.Infrastructure
 {
-    public class ChallengesWorkerAppSettings
+    public class ChallengesWorkersAppSettings
     {
         [Required]
         public EndpointsOptions Endpoints { get; set; }

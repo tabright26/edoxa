@@ -33,28 +33,6 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         }
 
         [Fact]
-        public async Task AttachPaymentMethodAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var paymentMethodAttachController = new PaymentMethodsController(
-                TestMock.StripePaymentMethodService.Object,
-                TestMock.StripeCustomerService.Object,
-                TestMapper)
-            {
-                ControllerContext =
-                {
-                    HttpContext = MockHttpContextAccessor.GetInstance()
-                }
-            };
-
-            // Act
-            var result = await paymentMethodAttachController.AttachPaymentMethodAsync("PaymentMethod", new AttachStripePaymentMethodRequest());
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-        }
-
-        [Fact]
         public async Task AttachPaymentMethodAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
@@ -97,28 +75,6 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
             TestMock.StripePaymentMethodService.Verify(
                 paymentMethodService => paymentMethodService.AttachPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()),
                 Times.Once);
-        }
-
-        [Fact]
-        public async Task DetachPaymentMethodAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var paymentMethodDetachController = new PaymentMethodsController(
-                TestMock.StripePaymentMethodService.Object,
-                TestMock.StripeCustomerService.Object,
-                TestMapper)
-            {
-                ControllerContext =
-                {
-                    HttpContext = MockHttpContextAccessor.GetInstance()
-                }
-            };
-
-            // Act
-            var result = await paymentMethodDetachController.DetachPaymentMethodAsync("PaymentMethod");
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
         }
 
         [Fact]
@@ -193,28 +149,6 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         }
 
         [Fact]
-        public async Task FetchPaymentMethodsAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var paymentMethodController = new PaymentMethodsController(
-                TestMock.StripePaymentMethodService.Object,
-                TestMock.StripeCustomerService.Object,
-                TestMapper)
-            {
-                ControllerContext =
-                {
-                    HttpContext = MockHttpContextAccessor.GetInstance()
-                }
-            };
-
-            // Act
-            var result = await paymentMethodController.FetchPaymentMethodsAsync();
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-        }
-
-        [Fact]
         public async Task FetchPaymentMethodsAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
@@ -262,28 +196,6 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
         }
 
         [Fact]
-        public async Task SetDefaultPaymentMethodAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var customerPaymentDefaultController = new PaymentMethodsController(
-                TestMock.StripePaymentMethodService.Object,
-                TestMock.StripeCustomerService.Object,
-                TestMapper)
-            {
-                ControllerContext =
-                {
-                    HttpContext = MockHttpContextAccessor.GetInstance()
-                }
-            };
-
-            // Act
-            var result = await customerPaymentDefaultController.SetDefaultPaymentMethodAsync("testValue");
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
-        }
-
-        [Fact]
         public async Task SetDefaultPaymentMethodAsync_ShouldBeOfTypeOkObjectResult()
         {
             // Arrange
@@ -318,34 +230,6 @@ namespace eDoxa.Payment.UnitTests.Controllers.Stripe
             TestMock.StripeCustomerService.Verify(
                 customerService => customerService.SetDefaultPaymentMethodAsync(It.IsAny<string>(), It.IsAny<string>()),
                 Times.Once);
-        }
-
-        [Fact]
-        public async Task UpdatePaymentMethodAsync_ShouldBeOfTypeNotFoundObjectResult()
-        {
-            // Arrange
-            var paymentMethodController = new PaymentMethodsController(
-                TestMock.StripePaymentMethodService.Object,
-                TestMock.StripeCustomerService.Object,
-                TestMapper)
-            {
-                ControllerContext =
-                {
-                    HttpContext = MockHttpContextAccessor.GetInstance()
-                }
-            };
-
-            // Act
-            var result = await paymentMethodController.UpdatePaymentMethodAsync(
-                "type",
-                new UpdateStripePaymentMethodRequest
-                {
-                    ExpYear = 22,
-                    ExpMonth = 11
-                });
-
-            // Assert
-            result.Should().BeOfType<NotFoundObjectResult>();
         }
 
         [Fact]
