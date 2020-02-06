@@ -99,6 +99,7 @@ services:
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
+      - LeagueOfLegends__ApiKey=RGAPI-c3c1a198-90ab-4cb7-ac78-dc5a6671355a
     ports:
       - "5005:80"
       - "9005:81"
@@ -114,6 +115,7 @@ services:
       - WebSpaUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity-api    
       - Serilog__Sink__Seq=http://seq
+      - Sendgrid__ApiKey=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
     ports:
       - "5011:80"
       - "9011:81"
@@ -123,13 +125,13 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
-      - Stripe__ApiKey=sk_test_xRMH8A7bagp2Auj7YPqNihlY
-      - Paypal__Mode=sandbox
-      - Paypal__Client__Id=Ad47gB8d_jzNAIzntNOcrXcCW0EmKpenE0ODvwjte8Dx_ElbGQw6hWuVviBU54eMoDnlSv8ma7yTygJF
-      - Paypal__Client__Secret=EGaT1DzxAHAdibUwSEPNoNGxpy8Q03b_R-uJT7xlozLnLHIPNHp2VGNOmP4boiisUt2a6x3-lNMTRaSi
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
+      - Stripe__ApiKey=sk_test_xRMH8A7bagp2Auj7YPqNihlY
+      - Paypal__Client__Id=Ad47gB8d_jzNAIzntNOcrXcCW0EmKpenE0ODvwjte8Dx_ElbGQw6hWuVviBU54eMoDnlSv8ma7yTygJF
+      - Paypal__Client__Secret=EGaT1DzxAHAdibUwSEPNoNGxpy8Q03b_R-uJT7xlozLnLHIPNHp2VGNOmP4boiisUt2a6x3-lNMTRaSi
+      - Paypal__Mode=sandbox
     ports:
       - "5001:80"
       - "9001:81"
@@ -173,14 +175,14 @@ services:
 
   cashier-web-gateway:
     volumes:
-      - ./src/eDoxa.Gateways/cashier.web.gateway.yaml:/etc/envoy/envoy.yaml
+      - ./src/eDoxa.Gateways/Cashier.Web.Gateway/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
       - "5202:10000"
       - "15202:9901"
 
   challenges-web-gateway:
     volumes:
-      - ./src/eDoxa.Gateways/challenges.web.gateway.yaml:/etc/envoy/envoy.yaml
+      - ./src/eDoxa.Gateways/Challenges.Web.Gateway/envoy.yaml:/etc/envoy/envoy.yaml
     ports:
       - "5203:10000"
       - "15203:9901"

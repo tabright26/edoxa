@@ -152,10 +152,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Games.UnitTests", "test\eDoxa.Games.UnitTests\eDoxa.Games.UnitTests.csproj", "{755982BA-536E-4C99-BA90-F65D79197D2F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Gateways", "Gateways", "{3AF27914-53B7-4357-A4C3-2F2483B0E960}"
-	ProjectSection(SolutionItems) = preProject
-		src\eDoxa.Gateways\cashier.web.gateway.yaml = src\eDoxa.Gateways\cashier.web.gateway.yaml
-		src\eDoxa.Gateways\challenges.web.gateway.yaml = src\eDoxa.Gateways\challenges.web.gateway.yaml
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Web.Aggregator", "src\eDoxa.Challenges.Web.Aggregator\eDoxa.Challenges.Web.Aggregator.csproj", "{B2C7E145-6751-4C8A-82F1-82D22E5A1BF9}"
 EndProject
@@ -182,6 +178,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Challenges.Workers", "src\eDoxa.Challenges.Workers\eDoxa.Challenges.Workers.csproj", "{2ADC21F3-F8B8-494A-B6B7-9AF5A008F2E4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eDoxa.Sendgrid", "src\eDoxa.Sendgrid\eDoxa.Sendgrid.csproj", "{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cashier.Web.Gateway", "Cashier.Web.Gateway", "{475E0584-59B3-44F8-AB4E-B0820D1E0F6B}"
+	ProjectSection(SolutionItems) = preProject
+		src\eDoxa.Gateways\Cashier.Web.Gateway\envoy.yaml = src\eDoxa.Gateways\Cashier.Web.Gateway\envoy.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Challenges.Web.Gateway", "Challenges.Web.Gateway", "{51029E33-94C9-486D-B73B-AAEC994BD1F1}"
+	ProjectSection(SolutionItems) = preProject
+		src\eDoxa.Gateways\Challenges.Web.Gateway\envoy.yaml = src\eDoxa.Gateways\Challenges.Web.Gateway\envoy.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -509,6 +515,8 @@ Global
 		{3746A479-B87B-43D8-8CE5-9C2B4A317A49} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
 		{2ADC21F3-F8B8-494A-B6B7-9AF5A008F2E4} = {9E68E467-F75C-4443-A9AD-762FF8B17F10}
 		{05CA4417-58F5-4FFA-BF9B-D1537FFB0A1C} = {2ECF65D6-4C8D-4065-912F-9C24A7964CA0}
+		{475E0584-59B3-44F8-AB4E-B0820D1E0F6B} = {3AF27914-53B7-4357-A4C3-2F2483B0E960}
+		{51029E33-94C9-486D-B73B-AAEC994BD1F1} = {3AF27914-53B7-4357-A4C3-2F2483B0E960}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8BB3B9BB-6C76-478F-982F-E2E084DBDFAC}
