@@ -68,7 +68,6 @@ namespace eDoxa.Identity.Api.Controllers
 
             if (result.Succeeded)
             {
-                //Francis: Si je comprends bien, le user ici est modifier parce que la fonction UpdatePhone effectue loperation directement sur le laggregate de user?
                 return this.Ok(_mapper.Map<PhoneDto>(user));
             }
 

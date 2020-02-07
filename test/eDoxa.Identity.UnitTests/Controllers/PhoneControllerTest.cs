@@ -81,8 +81,6 @@ namespace eDoxa.Identity.UnitTests.Controllers
                 .ReturnsAsync(IdentityResult.Success)
                 .Verifiable();
 
-            //Francis: Est-ce que je dois Mock et verify le Mapper ??
-
             var controller = new PhoneController(TestMock.UserService.Object, TestMapper);
 
             var request = new ChangePhoneRequest
