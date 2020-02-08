@@ -94,8 +94,6 @@ namespace eDoxa.Identity.Api
 
             services.Configure<IdentityApiOptions>(Configuration.GetSection("Api"));
 
-            services.Configure<AdminOptions>(Configuration.GetSection("Admin"));
-
             services.Configure<CookiePolicyOptions>(
                 options =>
                 {

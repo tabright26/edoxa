@@ -7,6 +7,10 @@ import "identity_enums.proto";
 
 package edoxa.services.identity;
 
+message AdministratorOptions {
+  string password = 1;
+}
+
 message IdentityApiOptions {
   StaticOptions static = 1;
   DefaultOptions default = 2;

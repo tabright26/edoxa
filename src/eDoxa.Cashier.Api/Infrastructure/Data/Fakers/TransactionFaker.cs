@@ -45,12 +45,12 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Fakers
             Money.OneHundred,
             Money.TwoHundred,
             Money.FiveHundred,
-            Token.FiftyThousand,
-            Token.OneHundredThousand,
-            Token.TwoHundredFiftyThousand,
-            Token.FiveHundredThousand,
-            Token.OneMillion,
-            Token.FiveMillions
+            Token.FiveHundred,
+            Token.OneThousand,
+            Token.TwoThousandFiveHundred,
+            Token.FiveThousand,
+            Token.TenThousand,
+            Token.FiftyThousand
         };
 
         public TransactionFaker()

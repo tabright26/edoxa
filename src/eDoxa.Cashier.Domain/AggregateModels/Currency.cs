@@ -14,6 +14,8 @@ namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public abstract partial class Currency : ValueObject
     {
+        protected const int ConvertionRatio = 100;
+
         protected Currency(decimal amount, CurrencyType type)
         {
             Amount = amount;

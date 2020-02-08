@@ -46,7 +46,7 @@ namespace eDoxa.Cashier.Infrastructure
             builder.ApplyConfiguration(new PromotionModelConfiguration());
             builder.ApplyConfiguration(new AccountModelConfiguration());
             builder.ApplyConfiguration(new TransactionModelConfiguration());
-            builder.ApplyConfiguration(new ChallengePayoutModelConfiguration());
+            builder.ApplyConfiguration(new ChallengeModelConfiguration());
         }
     }
 }

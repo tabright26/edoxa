@@ -4,19 +4,8 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using eDoxa.Games.LeagueOfLegends.Services;
 using eDoxa.Games.TestHelper;
 using eDoxa.Games.TestHelper.Fixtures;
-using eDoxa.Grpc.Protos.Games.Options;
-using eDoxa.Seedwork.Domain.Misc;
-
-using FluentAssertions;
-
-using Microsoft.Extensions.Options;
-
-using Moq;
-
-using Xunit;
 
 namespace eDoxa.Games.UnitTests.Application.Games.LeagueOfLegends.Services
 {

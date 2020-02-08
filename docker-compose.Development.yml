@@ -5,19 +5,19 @@ services:
     image: ${ACR_REGISTRY:-edoxa}/web-spa:${ACR_TAG:-latest}
     build:
       context: .
-      dockerfile: src/eDoxa.Web.Spa/Dockerfile.Production
+      dockerfile: src/eDoxa.Web.Spa/Dockerfile
     depends_on:
       - seq
       - redis
+      - identity-api
+      - cashier-web-gateway
+      - challenges-web-gateway
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-      - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
-      - REACT_APP_CASHIER_WEB_GATEWAY_URL=http://${HOST:-localhost}:5202
-      - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
-      - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
+      - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
+      - WebSpaClientUrl=http://${HOST:-localhost}:3000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
     ports:

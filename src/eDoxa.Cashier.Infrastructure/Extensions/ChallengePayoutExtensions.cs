@@ -13,14 +13,14 @@ namespace eDoxa.Cashier.Infrastructure.Extensions
 {
     public static class ChallengePayoutExtensions
     {
-        public static ChallengePayoutModel ToModel(this IChallenge model)
+        public static ChallengeModel ToModel(this IChallenge model)
         {
-            return new ChallengePayoutModel
+            return new ChallengeModel
             {
-                ChallengeId = model.Id,
+                Id = model.Id,
                 EntryFeeCurrency = model.Payout.EntryFee.Type.Value,
                 EntryFeeAmount = model.Payout.EntryFee.Amount,
-                Buckets = model.Payout.Buckets.Select(bucket => bucket.ToModel()).ToList()
+                PayoutBuckets = model.Payout.Buckets.Select(bucket => bucket.ToModel()).ToList()
             };
         }
     }

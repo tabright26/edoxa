@@ -15,8 +15,6 @@ COPY /src/eDoxa.Web.Spa/ClientApp/env.sh /app/env.sh
 COPY /src/eDoxa.Web.Spa/ClientApp/.env /app/.env
 RUN npm install npm -g --silent
 RUN npm install react-scripts -g --silent
-RUN npm install typesync -g --silent
-RUN typesync
 RUN npm install --silent
 RUN apt update
 RUN apt install dos2unix

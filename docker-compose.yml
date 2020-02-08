@@ -14,7 +14,7 @@ services:
     image: datalust/seq:latest
 
   identity-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/identity-api:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/identity-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Identity.Api/Dockerfile
@@ -24,7 +24,7 @@ services:
       - redis
 
   cashier-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/cashier-api:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/cashier-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Api/Dockerfile
@@ -34,7 +34,7 @@ services:
       - identity-api
 
   challenges-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/challenges-api:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/challenges-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Api/Dockerfile
@@ -46,7 +46,7 @@ services:
       - games-api
 
   clans-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/clans-api:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/clans-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Clans.Api/Dockerfile
@@ -56,7 +56,7 @@ services:
       - identity-api
 
   games-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/games-api:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/games-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Games.Api/Dockerfile
@@ -67,7 +67,7 @@ services:
       - identity-api
 
   notifications-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/notifications-api:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/notifications-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Notifications.Api/Dockerfile
@@ -77,7 +77,7 @@ services:
       - identity-api
 
   payment-api:
-    image: ${ACR_REGISTRY:-edoxa}/dev/payment-api:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/payment-api:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Payment.Api/Dockerfile
@@ -87,7 +87,7 @@ services:
       - identity-api
 
   challenges-workers:
-    image: ${ACR_REGISTRY:-edoxa}/dev/challenges-workers:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/challenges-workers:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Workers/Dockerfile
@@ -97,7 +97,7 @@ services:
       - games-api
 
   cashier-web-aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/dev/cashier-web-aggregator:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/cashier-web-aggregator:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Cashier.Web.Aggregator/Dockerfile
@@ -108,7 +108,7 @@ services:
       - cashier-api
 
   challenges-web-aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/dev/challenges-web-aggregator:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/challenges-web-aggregator:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
@@ -125,20 +125,8 @@ services:
   challenges-web-gateway:
     image: envoyproxy/envoy:v1.11.1
 
-  web-spa:
-    image: ${ACR_REGISTRY:-edoxa}/dev/web-spa:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Web.Spa/Dockerfile
-    depends_on:
-      - seq
-      - redis
-      - identity-api
-      - cashier-web-gateway
-      - challenges-web-gateway
-
   web-status:
-    image: ${ACR_REGISTRY:-edoxa}/dev/web-status:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/web-status:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Status/Dockerfile

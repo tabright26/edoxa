@@ -25,12 +25,12 @@ namespace eDoxa.Cashier.Infrastructure.Queries
     {
         public ChallengeQuery(CashierDbContext context)
         {
-            Challenges = context.Set<ChallengePayoutModel>().AsNoTracking();
+            Challenges = context.Set<ChallengeModel>().AsNoTracking();
         }
 
-        private IQueryable<ChallengePayoutModel> Challenges { get; }
+        private IQueryable<ChallengeModel> Challenges { get; }
 
-        private async Task<IReadOnlyCollection<ChallengePayoutModel>> FetchChallengeModelsAsync()
+        private async Task<IReadOnlyCollection<ChallengeModel>> FetchChallengeModelsAsync()
         {
             var challenges = from challenge in Challenges.AsExpandable()
                              select challenge;
@@ -38,10 +38,10 @@ namespace eDoxa.Cashier.Infrastructure.Queries
             return await challenges.ToListAsync();
         }
 
-        private async Task<ChallengePayoutModel?> FindChallengeModelAsync(Guid challengeId)
+        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
         {
             var challenges = from challenge in Challenges.AsExpandable()
-                             where challenge.ChallengeId == challengeId
+                             where challenge.Id == challengeId
                              select challenge;
 
             return await challenges.SingleOrDefaultAsync();
