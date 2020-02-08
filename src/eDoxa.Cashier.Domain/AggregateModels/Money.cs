@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
-
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public class Money : Currency

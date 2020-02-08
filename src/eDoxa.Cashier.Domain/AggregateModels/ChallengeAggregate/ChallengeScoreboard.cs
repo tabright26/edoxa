@@ -17,8 +17,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
         {
             Buckets = payout.Buckets;
             PayoutCurrencyType = payout.PrizePool.Type;
-            Winners = new Queue<UserId>(scoreboard.OrderByDescending(item => item.Value).Select(item => item.Key).Take(payout.Entries));
-            Losers = new List<UserId>(scoreboard.OrderByDescending(item => item.Value).Select(item => item.Key).Skip(payout.Entries));
+            var participants = scoreboard.Where(x => x.Value != null).OrderByDescending(item => item.Value).Select(item => item.Key).ToList();
+            Winners = new Queue<UserId>(participants.Take(payout.Entries));
+            Losers = new List<UserId>(participants.Skip(payout.Entries));
         }
 
         public IChallengePayoutBuckets Buckets { get; }

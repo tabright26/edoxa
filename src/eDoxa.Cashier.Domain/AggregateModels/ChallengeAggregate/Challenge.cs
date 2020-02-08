@@ -5,6 +5,7 @@
 // Copyright © 2020, eDoxa. All rights reserved.
 
 using System;
+using System.Linq;
 
 using eDoxa.Cashier.Domain.DomainEvents;
 using eDoxa.Seedwork.Domain;
@@ -30,27 +31,24 @@ namespace eDoxa.Cashier.Domain.AggregateModels.ChallengeAggregate
             {
                 for (var index = 0; index < bucket.Size; index++)
                 {
+                    if (!scoreboard.Winners.Any())
+                    {
+                        break;
+                    }
+
                     var userId = scoreboard.Winners.Dequeue();
 
-                    var score = scoreboard[userId];
+                    this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, bucket.Prize));
 
-                    var currency = score == null ? scoreboard.PayoutCurrencyType.ToCurrency(0) : bucket.Prize;
-
-                    this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, currency));
-
-                    payouts.Add(userId, new ChallengePayoutBucketPrize(currency));
+                    payouts.Add(userId, new ChallengePayoutBucketPrize(bucket.Prize));
                 }
             }
 
             foreach (var userId in scoreboard.Losers)
             {
-                var score = scoreboard[userId];
+                this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, ChallengePayoutBucketPrize.Consolation));
 
-                var currency = score == null ? scoreboard.PayoutCurrencyType.ToCurrency(0) : ChallengePayoutBucketPrize.Consolation;
-
-                this.AddDomainEvent(new ChallengeParticipantPayoutDomainEvent(userId, currency));
-
-                payouts.Add(userId, new ChallengePayoutBucketPrize(currency));
+                payouts.Add(userId, new ChallengePayoutBucketPrize(ChallengePayoutBucketPrize.Consolation));
             }
 
             this.AddDomainEvent(new ChallengeClosedDomainEvent(Id, payouts));
