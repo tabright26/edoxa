@@ -41,26 +41,27 @@ const CustomForm: FunctionComponent<Props> = ({
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
     <dl className="row mb-0">
-      <dd className="col-sm-3 mb-0 text-muted">Name</dd>
-      <dd className="col-sm-9 mb-0">
-        <dl className="row">
-          <dd className="col-sm-4 mb-0">
-            <Field
-              name="firstName"
-              placeholder="First Name"
-              component={Input.Text}
-            />
-          </dd>
-          <dd className="col-sm-4 mb-0">
-            <Field
-              name="lastName"
-              placeholder="Last Name"
-              component={Input.Text}
-              disabled
-            />
-          </dd>
-        </dl>
+      <dd className="col-sm-3 mb-0 text-muted">First name</dd>
+      <dd className="col-sm-6 mb-0">
+        <Field
+          name="firstName"
+          placeholder="First name"
+          component={Input.Text}
+          formGroup={FormGroup}
+        />
       </dd>
+      <dd className="col-sm-3"></dd>
+      <dd className="col-sm-3 mb-0 text-muted">Last name</dd>
+      <dd className="col-sm-6 mb-0">
+        <Field
+          name="lastName"
+          placeholder="Last name"
+          component={Input.Text}
+          formGroup={FormGroup}
+          disabled
+        />
+      </dd>
+      <dd className="col-sm-3"></dd>
       <dd className="col-sm-3 mb-0 text-muted">Gender</dd>
       <dd className="col-sm-6 mb-0">
         <FormGroup>

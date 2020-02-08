@@ -3,6 +3,10 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 
+ENV ASPNETCORE_URLS=
+
+EXPOSE 80
+
 FROM node:12.2.0-alpine as react-build
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
@@ -10,8 +14,6 @@ COPY /src/eDoxa.Web.Spa/ClientApp/package.json /app/package.json
 COPY /src/eDoxa.Web.Spa/ClientApp/package-lock.json /app/package-lock.json
 RUN npm install npm -g --silent
 RUN npm install react-scripts -g --silent
-RUN npm install typesync -g --silent
-RUN typesync
 RUN npm install --silent
 COPY /src/eDoxa.Web.Spa/ClientApp /app
 RUN npm run build
@@ -35,5 +37,3 @@ RUN apt install dos2unix
 RUN dos2unix /app/.env
 RUN chmod +x /app/env.sh
 ENTRYPOINT ["/bin/bash", "-c", "/app/env.sh && mv /app/env-config.js /app/ClientApp/build && dotnet /app/eDoxa.Web.Spa.dll"]
-
-EXPOSE 80

@@ -25,6 +25,67 @@ namespace eDoxa.Cashier.Domain.AggregateModels.AccountAggregate
 
         public IReadOnlyCollection<ITransaction> Transactions => _transactions;
 
+        public static IAccount CreateTestAdministrator(UserId userId)
+        {
+            var administratorAccount = new Account(userId);
+
+            var moneyAccount = new MoneyAccountDecorator(administratorAccount);
+
+            moneyAccount.Deposit(Money.FiveHundred).MarkAsSucceeded(); // 500
+
+            moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 490
+
+            moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 480
+
+            moneyAccount.Charge(Money.Five).MarkAsSucceeded(); // 475
+
+            moneyAccount.Charge(Money.Fifty).MarkAsSucceeded(); // 425
+
+            moneyAccount.Payout(Money.Twenty).MarkAsSucceeded(); // 445
+
+            moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 435
+
+            moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 425
+
+            moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 415
+
+            moneyAccount.Payout(Money.Twenty).MarkAsSucceeded(); // 435
+
+            moneyAccount.Withdrawal(Money.OneHundred).MarkAsSucceeded(); // 335
+
+            moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 325
+
+            moneyAccount.Charge(Money.Five).MarkAsSucceeded(); // 320
+
+            moneyAccount.Charge(Money.Fifty).MarkAsSucceeded(); // 270
+
+            moneyAccount.Charge(Money.Ten).MarkAsSucceeded(); // 260
+
+            var tokenAccount = new TokenAccountDecorator(administratorAccount);
+
+            tokenAccount.Deposit(Token.TenThousand).MarkAsSucceeded(); // 10000
+
+            tokenAccount.Reward(Token.FiveHundred).MarkAsSucceeded(); // 10500
+
+            tokenAccount.Charge(Token.FiveHundred).MarkAsSucceeded(); // 10000
+
+            tokenAccount.Charge(Token.FiveHundred).MarkAsSucceeded(); // 9500
+
+            tokenAccount.Charge(Token.TwoThousandFiveHundred).MarkAsSucceeded(); // 7000
+
+            tokenAccount.Charge(Token.FiveThousand).MarkAsSucceeded(); // 2000
+
+            tokenAccount.Charge(Token.FiveHundred).MarkAsSucceeded(); // 1500
+
+            tokenAccount.Payout(Token.OneThousand).MarkAsSucceeded(); // 2500
+
+            tokenAccount.Reward(Token.FiveHundred).MarkAsSucceeded(); // 3000
+
+            tokenAccount.Charge(Token.OneThousand).MarkAsSucceeded(); // 2000
+
+            return administratorAccount;
+        }
+
         public Balance GetBalanceFor(CurrencyType currencyType)
         {
             if (currencyType == CurrencyType.Money)

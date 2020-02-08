@@ -4,13 +4,14 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System.Linq;
 using System.Threading.Tasks;
 
 using eDoxa.Notifications.Api.Infrastructure.Data.Storage;
 using eDoxa.Notifications.Domain.AggregateModels.UserAggregate;
 using eDoxa.Notifications.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
+using eDoxa.Seedwork.Domain.Misc;
+using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -33,7 +34,22 @@ namespace eDoxa.Notifications.Api.Infrastructure.Data
 
         protected override async Task SeedDevelopmentAsync()
         {
-            if (!Users.Any())
+            await this.SeedUsersAsync();
+        }
+
+        protected override async Task SeedStagingAsync()
+        {
+            await this.SeedAdministratorAsync();
+        }
+
+        protected override async Task SeedProductionAsync()
+        {
+            await this.SeedAdministratorAsync();
+        }
+
+        private async Task SeedUsersAsync()
+        {
+            if (!await Users.AnyAsync())
             {
                 Users.AddRange(FileStorage.Users);
 
@@ -44,6 +60,24 @@ namespace eDoxa.Notifications.Api.Infrastructure.Data
             else
             {
                 Logger.LogInformation("The users already populated.");
+            }
+        }
+
+        private async Task SeedAdministratorAsync()
+        {
+            if (!await Users.AnyAsync(user => user.Id == AppAdministrator.Id))
+            {
+                var user = new User(UserId.FromGuid(AppAdministrator.Id), "admin@edoxa.gg");
+
+                Users.Add(user);
+
+                await this.CommitAsync();
+
+                Logger.LogInformation("The administrator being populated.");
+            }
+            else
+            {
+                Logger.LogInformation("The administrator already populated.");
             }
         }
     }

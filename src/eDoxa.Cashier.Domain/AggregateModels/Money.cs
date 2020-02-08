@@ -4,8 +4,6 @@
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
 
-using System;
-
 namespace eDoxa.Cashier.Domain.AggregateModels
 {
     public class Money : Currency
@@ -30,9 +28,9 @@ namespace eDoxa.Cashier.Domain.AggregateModels
             return new Money(-money.Amount);
         }
 
-        public long ToCents()
+        public Token ToToken()
         {
-            return Convert.ToInt64(Amount * 100);
+            return new Token(Amount * ConvertionRatio);
         }
     }
 }

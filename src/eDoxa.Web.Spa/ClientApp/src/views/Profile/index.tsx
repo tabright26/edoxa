@@ -48,9 +48,11 @@ const Profile: FunctionComponent = () => (
           <LinkContainer to={getProfileDetailsPath()}>
             <ListGroupItem>Details</ListGroupItem>
           </LinkContainer>
-          <LinkContainer to={getProfileSecurityPath()}>
-            <ListGroupItem>Security</ListGroupItem>
-          </LinkContainer>
+          {process.env.NODE_ENV !== "production" && (
+            <LinkContainer to={getProfileSecurityPath()}>
+              <ListGroupItem>Security</ListGroupItem>
+            </LinkContainer>
+          )}
         </ListGroup>
       </Card>
       <Card>
@@ -105,12 +107,14 @@ const Profile: FunctionComponent = () => (
             name="Profile Details"
             component={ProfileDetails}
           />
-          <Route<RouteProps>
-            path={getProfileSecurityPath()}
-            exact
-            name="Security"
-            component={ProfileSecurity}
-          />
+          {process.env.NODE_ENV !== "production" && (
+            <Route<RouteProps>
+              path={getProfileSecurityPath()}
+              exact
+              name="Security"
+              component={ProfileSecurity}
+            />
+          )}
           <Route<RouteProps>
             path={getProfileGamesPath()}
             exact

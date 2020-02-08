@@ -126,7 +126,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
 
             var account = new Account(new UserId());
             var tokenAccount = new TokenAccountDecorator(account);
-            var transaction = tokenAccount.Deposit(Token.TwoHundredFiftyThousand);
+            var transaction = tokenAccount.Deposit(Token.TwoThousandFiveHundred);
 
             transaction.MarkAsSucceeded();
 
@@ -141,7 +141,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Act
             var result = await service.CreateTransactionAsync(
                 tokenAccount,
-                Token.FiftyThousand.Amount,
+                Token.FiveHundred.Amount,
                 CurrencyType.Token,
                 TransactionType.Charge);
 
@@ -166,7 +166,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Act
             var result = await service.CreateTransactionAsync(
                 account,
-                Token.FiftyThousand.Amount,
+                Token.FiveHundred.Amount,
                 CurrencyType.Token,
                 TransactionType.Charge);
 
@@ -303,7 +303,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Act
             var result = await accountService.CreateTransactionAsync(
                 account,
-                Token.OneMillion.Amount,
+                Token.TenThousand.Amount,
                 CurrencyType.Token,
                 TransactionType.Deposit);
 
@@ -319,7 +319,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Arrange
             var account = new Account(new UserId());
             var tokenAccount = new TokenAccountDecorator(account);
-            var transaction = tokenAccount.Deposit(Token.FiftyThousand);
+            var transaction = tokenAccount.Deposit(Token.FiveHundred);
 
             transaction.MarkAsSucceeded();
 
@@ -328,7 +328,7 @@ namespace eDoxa.Cashier.UnitTests.Application.Services
             // Act
             var result = await service.CreateTransactionAsync(
                 tokenAccount,
-                Token.FiftyThousand.Amount,
+                Token.FiveHundred.Amount,
                 CurrencyType.Token,
                 TransactionType.Deposit);
 

@@ -22,13 +22,13 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
             logger)
         {
             Accounts = context.Set<AccountModel>();
-            ChallengePayouts = context.Set<ChallengePayoutModel>();
+            Challenges = context.Set<ChallengeModel>();
             Promotions = context.Set<PromotionModel>();
         }
 
         private DbSet<AccountModel> Accounts { get; }
 
-        private DbSet<ChallengePayoutModel> ChallengePayouts { get; }
+        private DbSet<ChallengeModel> Challenges { get; }
 
         private DbSet<PromotionModel> Promotions { get; }
 
@@ -36,7 +36,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data
         {
             Accounts.RemoveRange(Accounts);
 
-            ChallengePayouts.RemoveRange(ChallengePayouts);
+            Challenges.RemoveRange(Challenges);
 
             Promotions.RemoveRange(Promotions);
         }

@@ -50,7 +50,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
       - Serilog__Sink__Seq=http://seq
@@ -80,7 +79,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
       - Serilog__Sink__Seq=http://seq
     volumes:
@@ -109,7 +107,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
       - Serilog__Sink__Seq=http://seq
@@ -138,9 +135,7 @@ services:
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Clans.IntegrationTests.trx"
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
-      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
       - Serilog__Sink__Seq=http://seq
     volumes:
@@ -169,7 +164,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
       - Serilog__Sink__Seq=http://seq
@@ -198,9 +192,7 @@ services:
     entrypoint: dotnet test --configuration Release --logger "trx;LogFileName=/var/tmp/eDoxa.Notifications.IntegrationTests.trx"
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
-      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
       - Serilog__Sink__Seq=http://seq
     volumes:
@@ -229,7 +221,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Test
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${PAYMENT_SQLSERVER_CONNECTIONSTRING}
       - Serilog__Sink__Seq=http://seq
     volumes:

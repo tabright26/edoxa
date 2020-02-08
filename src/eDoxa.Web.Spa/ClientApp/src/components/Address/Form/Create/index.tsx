@@ -28,9 +28,9 @@ import {
   CountryIsoCode
 } from "types";
 import {
-  withUserProfileCountry,
-  HocUserProfileCountryStateProps
+  withUserProfileCountry
 } from "utils/oidc/containers";
+import { HocUserProfileCountryStateProps } from "utils/oidc/containers/types";
 
 type OwnProps = HocUserProfileCountryStateProps;
 

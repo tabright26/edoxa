@@ -1,126 +1,24 @@
 version: '3.7'
 
 services:
-  mssql:
-    image: mcr.microsoft.com/mssql/server:2017-CU14-ubuntu
-
-  redis:
-    image: redis:5.0.5
-
-  rabbitmq:
-    image: rabbitmq:3-management-alpine
-
-  seq:
-    image: datalust/seq:latest
-
-  identity-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/identity-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Identity.Api/Dockerfile
-    depends_on:
-      - seq
-      - mssql
-      - redis
-
-  cashier-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/cashier-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Cashier.Api/Dockerfile
-    depends_on:
-      - seq
-      - mssql
-
-  challenges-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.Api/Dockerfile
-    depends_on:
-      - seq   
-      - mssql
-
-  clans-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/clans-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Clans.Api/Dockerfile
-    depends_on:
-      - seq
-      - mssql
-
-  games-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/games-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Games.Api/Dockerfile
-    depends_on:
-      - seq
-      - mssql
-      - redis
-
-  notifications-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/notifications-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Notifications.Api/Dockerfile
-    depends_on:
-      - seq      
-      - mssql
-
-  payment-api:
-    image: ${ACR_REGISTRY:-edoxa}/prod/payment-api:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Payment.Api/Dockerfile
-    depends_on:
-      - seq
-      - mssql
-
-  challenges-workers:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-workers:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.Workers/Dockerfile
-    depends_on:
-      - seq
-
-  cashier-web-aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/prod/cashier-web-aggregator:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Cashier.Web.Aggregator/Dockerfile
-    depends_on:
-      - seq
-
-  challenges-web-aggregator:
-    image: ${ACR_REGISTRY:-edoxa}/prod/challenges-web-aggregator:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Challenges.Web.Aggregator/Dockerfile
-    depends_on:
-      - seq
-
-  cashier-web-gateway:
-    image: envoyproxy/envoy:v1.11.1
-
-  challenges-web-gateway:
-    image: envoyproxy/envoy:v1.11.1
-
   web-spa:
-    image: ${ACR_REGISTRY:-edoxa}/prod/web-spa:${ACR_TAG:-latest}
+    image: ${ACR_REGISTRY:-edoxa}/web-spa:${ACR_TAG:-latest}
     build:
       context: .
       dockerfile: src/eDoxa.Web.Spa/Dockerfile.Production
     depends_on:
       - seq
       - redis
-
-  web-status:
-    image: ${ACR_REGISTRY:-edoxa}/prod/web-status:${ACR_TAG:-latest}
-    build:
-      context: .
-      dockerfile: src/eDoxa.Web.Status/Dockerfile
-    depends_on:
-      - seq
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - REACT_APP_AUTHORITY=http://${HOST:-localhost}:5000
+      - REACT_APP_CASHIER_WEB_GATEWAY_URL=http://${HOST:-localhost}:5202
+      - REACT_APP_CHALLENGES_WEB_GATEWAY_URL=http://${HOST:-localhost}:5203
+      - REACT_APP_WEB_SPA=http://${HOST:-localhost}:5300
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - Endpoints__IdentityUrl=http://identity-api
+      - Serilog__Sink__Seq=http://seq
+    ports:
+      - "5300:80"

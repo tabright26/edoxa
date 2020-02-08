@@ -16,8 +16,8 @@ namespace eDoxa.Paypal.Services.Abstractions
             string transactionId,
             string email,
             int amount,
-            string description = null,
-            string correlationId = null
+            string? description = null,
+            string? correlationId = null
         );
     }
 }

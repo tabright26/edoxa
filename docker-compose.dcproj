@@ -7,16 +7,19 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://192.168.0.105:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>web-spa</DockerServiceName>
+    <AdditionalComposeFilePaths>docker-compose.Development.yml</AdditionalComposeFilePaths>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.nobuild.yml" />
-    <None Include="docker-compose.Production.override.yml">
-      <DependentUpon>docker-compose.Production.yml</DependentUpon>
-    </None>
     <None Include="docker-compose.override.yml">
       <DependentUpon>docker-compose.yml</DependentUpon>
     </None>
-    <None Include="docker-compose.Production.yml" />
+    <None Include="docker-compose.Production.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
+    <None Include="docker-compose.Development.yml">
+      <DependentUpon>docker-compose.yml</DependentUpon>
+    </None>
     <None Include="docker-compose.Test.yml" />
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />

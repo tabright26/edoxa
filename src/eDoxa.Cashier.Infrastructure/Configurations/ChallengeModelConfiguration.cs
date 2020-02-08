@@ -1,5 +1,5 @@
-﻿// Filename: ChallengePayoutModelConfiguration.cs
-// Date Created: 2019-11-25
+﻿// Filename: ChallengeModelConfiguration.cs
+// Date Created: 2020-01-22
 // 
 // ================================================
 // Copyright © 2020, eDoxa. All rights reserved.
@@ -11,22 +11,22 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace eDoxa.Cashier.Infrastructure.Configurations
 {
-    internal sealed class ChallengePayoutModelConfiguration : IEntityTypeConfiguration<ChallengePayoutModel>
+    internal sealed class ChallengeModelConfiguration : IEntityTypeConfiguration<ChallengeModel>
     {
-        public void Configure(EntityTypeBuilder<ChallengePayoutModel> builder)
+        public void Configure(EntityTypeBuilder<ChallengeModel> builder)
         {
-            builder.ToTable("ChallengePayout");
+            builder.ToTable("Challenge");
 
-            builder.Ignore(challengePayout => challengePayout.DomainEvents);
+            builder.Ignore(challenge => challenge.DomainEvents);
 
-            builder.Property(challengePayout => challengePayout.ChallengeId).HasColumnName("ChallengeId").IsRequired().ValueGeneratedNever();
+            builder.Property(challenge => challenge.Id).IsRequired().ValueGeneratedNever();
 
-            builder.Property(challengePayout => challengePayout.EntryFeeAmount).IsRequired().HasColumnType("decimal(11, 2)");
+            builder.Property(challenge => challenge.EntryFeeAmount).IsRequired().HasColumnType("decimal(11, 2)");
 
-            builder.Property(challengePayout => challengePayout.EntryFeeCurrency).IsRequired();
+            builder.Property(challenge => challenge.EntryFeeCurrency).IsRequired();
 
             builder.OwnsMany(
-                challengePayout => challengePayout.Buckets,
+                challenge => challenge.PayoutBuckets,
                 challengePayoutBuckets =>
                 {
                     challengePayoutBuckets.ToTable("ChallengePayoutBucket");
@@ -49,7 +49,7 @@ namespace eDoxa.Cashier.Infrastructure.Configurations
                         });
                 });
 
-            builder.HasKey(challengePayout => challengePayout.ChallengeId);
+            builder.HasKey(challenge => challenge.Id);
         }
     }
 }

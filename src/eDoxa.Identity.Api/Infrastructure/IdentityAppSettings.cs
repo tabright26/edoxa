@@ -8,6 +8,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
+using eDoxa.Grpc.Protos.Identity.Options;
 using eDoxa.Seedwork.Monitoring.AppSettings;
 using eDoxa.Seedwork.Monitoring.AppSettings.Options;
 
@@ -31,6 +32,9 @@ namespace eDoxa.Identity.Api.Infrastructure
 
         [Required]
         public SwaggerOptions Swagger { get; set; }
+
+        [Required]
+        public AdministratorOptions Administrator { get; set; }
     }
 
     public sealed class SwaggerOptions

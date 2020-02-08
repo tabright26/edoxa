@@ -6,11 +6,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-import {
-  REACT_APP_FACEBOOK_MCC_APP_ID,
-  REACT_APP_FACEBOOK_MCC_PAGE_ID,
-  REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY
-} from "keys";
 import { Provider } from "react-redux";
 import { configureStore } from "./store";
 import ReduxToastr from "react-redux-toastr";
@@ -27,17 +22,22 @@ ReactDOM.render(
   <Provider store={store}>
     <OidcProvider store={store} userManager={userManager}>
       <LocalizeProvider store={store} initialize={initialize}>
-        <StripeProvider apiKey={REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}>
+        <StripeProvider
+          apiKey={process.env.REACT_APP_STRIPE_APIKEYS_PUBLISHABLEKEY}
+        >
           <App />
         </StripeProvider>
       </LocalizeProvider>
     </OidcProvider>
-    <MessengerCustomerChat
-      pageId={REACT_APP_FACEBOOK_MCC_PAGE_ID}
-      appId={REACT_APP_FACEBOOK_MCC_APP_ID}
-      version="5.0"
-      xfbml
-    />
+    {process.env.NODE_ENV === "production" && (
+      <MessengerCustomerChat
+        pageId={process.env.REACT_APP_FACEBOOK_MCC_PAGE_ID}
+        appId={process.env.REACT_APP_FACEBOOK_MCC_APP_ID}
+        version="5.0"
+        xfbml
+        themeColor="#ff6f00"
+      />
+    )}
     <ReduxToastr
       timeOut={7500}
       newestOnTop={false}

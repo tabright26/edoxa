@@ -10,14 +10,14 @@ using eDoxa.Cashier.Infrastructure;
 namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(CashierDbContext))]
-    [Migration("20200121212953_PromotionModel")]
-    partial class PromotionModel
+    [Migration("20200208004825_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -68,6 +68,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PromotionalCode")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -111,7 +112,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
                 {
-                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.BucketModel", "Buckets", b1 =>
+                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutBucketModel", "PayoutBuckets", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId")
                                 .HasColumnType("uniqueidentifier");
@@ -131,7 +132,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 
                             b1.HasKey("ChallengeId", "Id");
 
-                            b1.ToTable("Bucket");
+                            b1.ToTable("ChallengePayoutBucket");
 
                             b1.WithOwner()
                                 .HasForeignKey("ChallengeId");
@@ -178,9 +179,11 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Key")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Value")
+                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("TransactionId", "Id");

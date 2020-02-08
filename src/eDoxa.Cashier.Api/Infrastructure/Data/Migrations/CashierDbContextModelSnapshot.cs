@@ -15,7 +15,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.0")
+                .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -29,10 +29,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutModel", b =>
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnName("ChallengeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("EntryFeeAmount")
@@ -43,7 +42,7 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChallengePayout");
+                    b.ToTable("Challenge");
                 });
 
             modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.PromotionModel", b =>
@@ -109,9 +108,9 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                     b.ToTable("Transaction");
                 });
 
-            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutModel", b =>
+            modelBuilder.Entity("eDoxa.Cashier.Infrastructure.Models.ChallengeModel", b =>
                 {
-                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutBucketModel", "Buckets", b1 =>
+                    b.OwnsMany("eDoxa.Cashier.Infrastructure.Models.ChallengePayoutBucketModel", "PayoutBuckets", b1 =>
                         {
                             b1.Property<Guid>("ChallengeId")
                                 .HasColumnType("uniqueidentifier");
