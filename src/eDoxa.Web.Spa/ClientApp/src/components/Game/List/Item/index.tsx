@@ -8,11 +8,9 @@ import {
 } from "utils/modal/constants";
 import { show } from "redux-modal";
 import { compose } from "recompose";
-import {
-  withUserProfileGameIsAuthenticated,
-  HocUserProfileGameIsAuthenticatedStateProps
-} from "utils/oidc/containers";
+import { withUserProfileGameIsAuthenticated } from "utils/oidc/containers";
 import { RootState } from "store/types";
+import { HocUserProfileGameIsAuthenticatedStateProps } from "utils/oidc/containers/types";
 
 const style: React.CSSProperties = {
   filter: "brightness(50%)",

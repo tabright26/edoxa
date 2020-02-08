@@ -32,6 +32,23 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Promotion",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    PromotionalCode = table.Column<string>(nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(10, 2)", nullable: false),
+                    Currency = table.Column<int>(nullable: false),
+                    Duration = table.Column<long>(nullable: false),
+                    ExpiredAt = table.Column<DateTime>(nullable: false),
+                    CanceledAt = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Promotion", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Transaction",
                 columns: table => new
                 {
@@ -56,22 +73,41 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bucket",
+                name: "ChallengePayoutBucket",
                 columns: table => new
                 {
-                    ChallengeId = table.Column<Guid>(nullable: false),
                     Id = table.Column<Guid>(nullable: false),
+                    ChallengeId = table.Column<Guid>(nullable: false),
                     Size = table.Column<int>(nullable: false),
                     PrizeCurrency = table.Column<int>(nullable: false),
                     PrizeAmount = table.Column<decimal>(type: "decimal(11, 2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bucket", x => new { x.ChallengeId, x.Id });
+                    table.PrimaryKey("PK_ChallengePayoutBucket", x => new { x.ChallengeId, x.Id });
                     table.ForeignKey(
-                        name: "FK_Bucket_Challenge_ChallengeId",
+                        name: "FK_ChallengePayoutBucket_Challenge_ChallengeId",
                         column: x => x.ChallengeId,
                         principalTable: "Challenge",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PromotionRecipient",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(nullable: false),
+                    PromotionId = table.Column<Guid>(nullable: false),
+                    RedeemedAt = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PromotionRecipient", x => new { x.PromotionId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_PromotionRecipient_Promotion_PromotionId",
+                        column: x => x.PromotionId,
+                        principalTable: "Promotion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -80,10 +116,10 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
                 name: "TransactionMetadata",
                 columns: table => new
                 {
-                    TransactionId = table.Column<Guid>(nullable: false),
                     Id = table.Column<Guid>(nullable: false),
-                    Key = table.Column<string>(nullable: true),
-                    Value = table.Column<string>(nullable: true)
+                    TransactionId = table.Column<Guid>(nullable: false),
+                    Key = table.Column<string>(nullable: false),
+                    Value = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,13 +141,19 @@ namespace eDoxa.Cashier.Api.Infrastructure.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Bucket");
+                name: "ChallengePayoutBucket");
+
+            migrationBuilder.DropTable(
+                name: "PromotionRecipient");
 
             migrationBuilder.DropTable(
                 name: "TransactionMetadata");
 
             migrationBuilder.DropTable(
                 name: "Challenge");
+
+            migrationBuilder.DropTable(
+                name: "Promotion");
 
             migrationBuilder.DropTable(
                 name: "Transaction");

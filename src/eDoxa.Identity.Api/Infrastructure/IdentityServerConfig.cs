@@ -107,10 +107,8 @@ namespace eDoxa.Identity.Api.Infrastructure
                     "http://localhost:5300/authentication/login-callback",
                     "http://127.0.0.1:5300/authentication/login-callback"
                 },
-                AccessTokenType = AccessTokenType.Reference,
                 RequireConsent = false,
                 AllowAccessTokensViaBrowser = true,
-                UpdateAccessTokenClaimsOnRefresh = true,
                 AccessTokenLifetime = 3600,
                 AllowedGrantTypes = GrantTypes.Implicit,
                 AllowedScopes = new HashSet<string>

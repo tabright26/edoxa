@@ -3,10 +3,8 @@ import { compose } from "recompose";
 import { connect, MapDispatchToProps } from "react-redux";
 import { loadChallengeHistory } from "store/actions/challenge";
 import ChallengeList from "components/Challenge/List";
-import {
-  withUserProfileUserId,
-  HocUserProfileUserIdStateProps
-} from "utils/oidc/containers";
+import { withUserProfileUserId } from "utils/oidc/containers";
+import { HocUserProfileUserIdStateProps } from "utils/oidc/containers/types";
 
 type OwnProps = HocUserProfileUserIdStateProps;
 

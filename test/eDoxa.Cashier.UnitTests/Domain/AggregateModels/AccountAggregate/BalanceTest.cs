@@ -32,12 +32,12 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Money.Fifty).Build());
             yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Payout, Money.OneHundred).Build());
             yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Withdrawal, Money.Fifty).Build());
-            yield return MarkAsFailed(new TransactionBuilder(TransactionType.Charge, Token.FiveHundredThousand).Build());
-            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Deposit, Token.OneHundredThousand).Build());
-            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Payout, Token.TwoHundredFiftyThousand).Build());
-            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Token.OneHundredThousand).Build());
-            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Token.TwoHundredFiftyThousand).Build());
-            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Reward, Token.FiftyThousand).Build());
+            yield return MarkAsFailed(new TransactionBuilder(TransactionType.Charge, Token.FiveThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Deposit, Token.OneThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Payout, Token.TwoThousandFiveHundred).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Token.OneThousand).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Charge, Token.TwoThousandFiveHundred).Build());
+            yield return MarkAsSucceeded(new TransactionBuilder(TransactionType.Reward, Token.FiveHundred).Build());
         }
 
         private static ITransaction MarkAsSucceeded(ITransaction transaction)
@@ -79,7 +79,7 @@ namespace eDoxa.Cashier.UnitTests.Domain.AggregateModels.AccountAggregate
             var balance = new Balance(transactions, CurrencyType.Token);
 
             // Assert
-            balance.Available.Should().Be(Token.FiftyThousand);
+            balance.Available.Should().Be(Token.FiveHundred);
             balance.CurrencyType.Should().Be(CurrencyType.Token);
             balance.Pending.Should().Be(decimal.Zero);
         }

@@ -11,12 +11,16 @@ using eDoxa.Identity.Api.Application.Services;
 using eDoxa.Identity.Domain.Services;
 using eDoxa.Identity.Infrastructure;
 using eDoxa.Seedwork.Application.SqlServer.Abstractions;
+using eDoxa.Seedwork.Domain.Extensions;
 using eDoxa.Seedwork.Domain.Misc;
 using eDoxa.Seedwork.Security;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
+using Newtonsoft.Json;
 
 using static eDoxa.Identity.Api.Infrastructure.Data.Storage.FileStorage;
 
@@ -27,7 +31,7 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
         private readonly IDoxatagService _doxatagService;
         private readonly IUserService _userService;
         private readonly RoleService _roleService;
-        private readonly IOptions<AdminOptions> _optionsSnapshot;
+        private readonly IOptions<IdentityAppSettings> _options;
 
         public IdentityDbContextSeeder(
             IDoxatagService doxatagService,
@@ -35,21 +39,43 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             RoleService roleService,
             IdentityDbContext context,
             IWebHostEnvironment environment,
-            IOptionsSnapshot<AdminOptions> optionsSnapshot,
+            IOptionsSnapshot<IdentityAppSettings> options,
             ILogger<IdentityDbContextSeeder> logger
         ) : base(context, environment, logger)
         {
             _doxatagService = doxatagService;
             _userService = userService;
             _roleService = roleService;
-            _optionsSnapshot = optionsSnapshot;
+            _options = options;
         }
 
-        private AdminOptions Options => _optionsSnapshot.Value;
+        private IdentityAppSettings Options => _options.Value;
 
         protected override async Task SeedAsync()
         {
-            if (!_roleService.Roles.Any())
+            await this.SeedRolesAsync();
+        }
+
+        protected override async Task SeedDevelopmentAsync()
+        {
+            await this.SeedTestUsersAsync();
+
+            await this.SeedAdministratorAsync();
+        }
+
+        protected override async Task SeedStagingAsync()
+        {
+            await this.SeedAdministratorAsync();
+        }
+
+        protected override async Task SeedProductionAsync()
+        {
+            await this.SeedAdministratorAsync();
+        }
+
+        private async Task SeedRolesAsync()
+        {
+            if (!await _roleService.Roles.AnyAsync())
             {
                 foreach (var role in Roles)
                 {
@@ -62,6 +88,8 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
                 }
 
                 Logger.LogInformation("The roles being populated:");
+
+                Logger.LogInformation(JsonConvert.SerializeObject(await _roleService.Roles.ToListAsync(), Formatting.Indented));
             }
             else
             {
@@ -69,34 +97,30 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             }
         }
 
-        protected override async Task SeedDevelopmentAsync()
+        private async Task SeedTestUsersAsync()
         {
-            if (!_userService.Users.Any())
+            if (!await _userService.Users.AnyAsync())
             {
                 foreach (var testUser in Users)
                 {
-                    if (testUser.Id == AppAdmin.Id)
-                    {
-                        await _userService.CreateAsync(testUser, "Pass@word1");
-                    }
-                    else
+                    if (testUser.Id != AppAdministrator.Id)
                     {
                         await _userService.CreateAsync(testUser);
+
+                        foreach (var testUserClaim in UserClaims.Where(userClaim => userClaim.UserId == testUser.Id))
+                        {
+                            await _userService.AddClaimAsync(testUser, testUserClaim.ToClaim());
+                        }
+
+                        foreach (var testUserRole in UserRoles.Where(userRole => userRole.UserId == testUser.Id))
+                        {
+                            await _userService.AddToRoleAsync(testUser, Roles.Single(role => role.Id == testUserRole.RoleId).Name);
+                        }
+
+                        var user = await _userService.FindByIdAsync(testUser.Id.ToString());
+
+                        await _doxatagService.ChangeDoxatagAsync(user, Doxatags.Single(doxatag => doxatag.UserId == user.Id.ConvertTo<UserId>()).Name);
                     }
-
-                    foreach (var testUserClaim in UserClaims.Where(userClaimModel => userClaimModel.UserId == testUser.Id))
-                    {
-                        await _userService.AddClaimAsync(testUser, testUserClaim.ToClaim());
-                    }
-
-                    foreach (var testUserRole in UserRoles.Where(userRoleModel => userRoleModel.UserId == testUser.Id))
-                    {
-                        await _userService.AddToRoleAsync(testUser, Roles.Single(roleModel => roleModel.Id == testUserRole.RoleId).Name);
-                    }
-
-                    var user = await _userService.FindByIdAsync(testUser.Id.ToString());
-
-                    await _doxatagService.ChangeDoxatagAsync(user, Doxatags.Single(doxatag => doxatag.UserId == UserId.FromGuid(user.Id)).Name);
                 }
 
                 Logger.LogInformation("The users being populated...");
@@ -107,29 +131,38 @@ namespace eDoxa.Identity.Api.Infrastructure.Data
             }
         }
 
-        protected override async Task SeedProductionAsync()
+        private async Task SeedAdministratorAsync()
         {
-            if (!_userService.Users.Any(user => user.Id == AppAdmin.Id))
+            if (!await _userService.Users.AnyAsync(user => user.Id == AppAdministrator.Id))
             {
-                var admin = Users.Single(x => x.Id == AppAdmin.Id);
+                var administrator = Users.Single(user => user.Id == AppAdministrator.Id);
 
-                await _userService.CreateAsync(admin, Options.Password);
+                await _userService.CreateAsync(administrator, Options.Administrator.Password);
 
-                foreach (var claim in UserClaims.Where(userClaim => userClaim.UserId == admin.Id))
+                foreach (var claim in UserClaims.Where(userClaim => userClaim.UserId == administrator.Id))
                 {
-                    await _userService.AddClaimAsync(admin, claim.ToClaim());
+                    await _userService.AddClaimAsync(administrator, claim.ToClaim());
                 }
 
-                foreach (var role in UserRoles.Where(userRole => userRole.UserId == admin.Id))
+                foreach (var role in UserRoles.Where(userRole => userRole.UserId == administrator.Id))
                 {
-                    await _userService.AddToRoleAsync(admin, Roles.Single(roleModel => roleModel.Id == role.RoleId).Name);
+                    await _userService.AddToRoleAsync(administrator, Roles.Single(roleModel => roleModel.Id == role.RoleId).Name);
                 }
 
-                Logger.LogInformation("The admin being populated...");
+                Logger.LogInformation("The administrator as been created.");
             }
             else
             {
-                Logger.LogInformation("The admin already populated.");
+                var administrator = await _userService.FindByIdAsync(AppAdministrator.Id.ToString());
+
+                if (!await _userService.CheckPasswordAsync(administrator, Options.Administrator.Password))
+                {
+                    await _userService.RemovePasswordAsync(administrator);
+
+                    await _userService.AddPasswordAsync(administrator, Options.Administrator.Password);
+
+                    Logger.LogInformation("The administrator password as been updated.");
+                }
             }
         }
     }

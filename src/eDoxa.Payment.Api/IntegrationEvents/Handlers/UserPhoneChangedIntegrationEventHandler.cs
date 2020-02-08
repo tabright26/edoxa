@@ -30,6 +30,8 @@ namespace eDoxa.Payment.Api.IntegrationEvents.Handlers
 
         public async Task HandleAsync(UserPhoneChangedIntegrationEvent integrationEvent)
         {
+            await Task.CompletedTask;
+
             //var userId = integrationEvent.UserId.ParseEntityId<UserId>();
 
             //if (await _stripeService.UserExistsAsync(userId))

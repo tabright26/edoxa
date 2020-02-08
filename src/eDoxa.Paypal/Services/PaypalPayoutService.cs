@@ -35,8 +35,8 @@ namespace eDoxa.Paypal.Services
             string transactionId,
             string email,
             int amount,
-            string description = null,
-            string correlationId = null
+            string? description = null,
+            string? correlationId = null
         )
         {
             var payout = new Payout

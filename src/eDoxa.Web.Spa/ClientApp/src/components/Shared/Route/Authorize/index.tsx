@@ -46,6 +46,7 @@ class ComponentEnhancer extends Component<any, any> {
           {...rest}
           render={() =>
             authenticated &&
+            user &&
             parseInt((Date.now() / 1000).toString()) < user.expires_at ? (
               <Component />
             ) : (

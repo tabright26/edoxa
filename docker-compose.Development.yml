@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  web-spa:
+    image: ${ACR_REGISTRY:-edoxa}/web-spa:${ACR_TAG:-latest}
+    build:
+      context: .
+      dockerfile: src/eDoxa.Web.Spa/Dockerfile
+    depends_on:
+      - seq
+      - redis
+      - identity-api
+      - cashier-web-gateway
+      - challenges-web-gateway
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
+      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
+      - Authority=http://${HOST:-localhost}:5000
+      - WebSpaClientUrl=http://${HOST:-localhost}:3000
+      - Endpoints__IdentityUrl=http://identity-api
+      - Serilog__Sink__Seq=http://seq
+    ports:
+      - "5300:80"

@@ -28,7 +28,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${IDENTITY_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
@@ -53,7 +52,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CASHIER_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
@@ -66,7 +64,6 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CHALLENGES_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
@@ -78,9 +75,7 @@ services:
   clans-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${CLANS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
@@ -93,13 +88,12 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${GAMES_SQLSERVER_CONNECTIONSTRING}    
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
-      - LeagueOfLegends__ApiKey=RGAPI-c3c1a198-90ab-4cb7-ac78-dc5a6671355a
+      - LeagueOfLegends__ApiKey=RGAPI-3a1a5252-01c3-4942-be2d-b41336a2e52e
     ports:
       - "5005:80"
       - "9005:81"
@@ -107,15 +101,12 @@ services:
   notifications-api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__AzureBlobStorage=${ABS_CONNECTIONSTRING}
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - ConnectionStrings__SqlServer=${NOTIFICATIONS_SQLSERVER_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - WebSpaUrl=http://${HOST:-localhost}:5300
       - Endpoints__IdentityUrl=http://identity-api    
       - Serilog__Sink__Seq=http://seq
-      - Sendgrid__ApiKey=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
     ports:
       - "5011:80"
       - "9011:81"
@@ -124,14 +115,9 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - ConnectionStrings__AzureServiceBus=${ASB_CONNECTIONSTRING}
       - Authority=http://${HOST:-localhost}:5000
       - Endpoints__IdentityUrl=http://identity-api
       - Serilog__Sink__Seq=http://seq
-      - Stripe__ApiKey=sk_test_xRMH8A7bagp2Auj7YPqNihlY
-      - Paypal__Client__Id=Ad47gB8d_jzNAIzntNOcrXcCW0EmKpenE0ODvwjte8Dx_ElbGQw6hWuVviBU54eMoDnlSv8ma7yTygJF
-      - Paypal__Client__Secret=EGaT1DzxAHAdibUwSEPNoNGxpy8Q03b_R-uJT7xlozLnLHIPNHp2VGNOmP4boiisUt2a6x3-lNMTRaSi
-      - Paypal__Mode=sandbox
     ports:
       - "5001:80"
       - "9001:81"
@@ -186,18 +172,6 @@ services:
     ports:
       - "5203:10000"
       - "15203:9901"
-
-  web-spa:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__Redis=${REDIS_CONNECTIONSTRING}
-      - ConnectionStrings__AzureKeyVault=${AKV_CONNECTIONSTRING}
-      - Authority=http://${HOST:-localhost}:5000
-      - WebSpaClientUrl=http://${HOST:-localhost}:3000
-      - Endpoints__IdentityUrl=http://identity-api
-      - Serilog__Sink__Seq=http://seq
-    ports:
-      - "5300:80"
 
   web-status:
     environment:

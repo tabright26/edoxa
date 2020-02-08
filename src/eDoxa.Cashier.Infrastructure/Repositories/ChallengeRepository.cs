@@ -24,22 +24,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eDoxa.Cashier.Infrastructure.Repositories
 {
-    public sealed partial class ChallengeRepository : Repository<IChallenge, ChallengePayoutModel>
+    public sealed partial class ChallengeRepository : Repository<IChallenge, ChallengeModel>
     {
         public ChallengeRepository(CashierDbContext context)
         {
             UnitOfWork = context;
-            ChallengePayouts = context.Set<ChallengePayoutModel>();
+            Challenges = context.Set<ChallengeModel>();
         }
 
         private IUnitOfWork UnitOfWork { get; }
 
-        private DbSet<ChallengePayoutModel> ChallengePayouts { get; }
+        private DbSet<ChallengeModel> Challenges { get; }
 
-        private async Task<ChallengePayoutModel?> FindChallengeModelAsync(Guid challengeId)
+        private async Task<ChallengeModel?> FindChallengeModelAsync(Guid challengeId)
         {
-            var challenges = from challenge in ChallengePayouts.AsExpandable()
-                             where challenge.ChallengeId == challengeId
+            var challenges = from challenge in Challenges.AsExpandable()
+                             where challenge.Id == challengeId
                              select challenge;
 
             return await challenges.SingleOrDefaultAsync();
@@ -47,7 +47,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
         private async Task<bool> ChallengeModelExistsAsync(Guid challengeId)
         {
-            return await ChallengePayouts.AsExpandable().AnyAsync(challenge => challenge.ChallengeId == challengeId);
+            return await Challenges.AsExpandable().AnyAsync(challenge => challenge.Id == challengeId);
         }
     }
 
@@ -65,7 +65,7 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
         {
             var challengeModel = challenge.ToModel();
 
-            ChallengePayouts.Add(challengeModel);
+            Challenges.Add(challengeModel);
 
             Mappings[challenge] = challengeModel;
         }
@@ -119,10 +119,10 @@ namespace eDoxa.Cashier.Infrastructure.Repositories
 
             Mappings.Remove(challenge);
 
-            ChallengePayouts.Remove(challengeModel);
+            Challenges.Remove(challengeModel);
         }
 
-        private static void CopyChanges(IChallenge promotion, ChallengePayoutModel promotionModel)
+        private static void CopyChanges(IChallenge promotion, ChallengeModel promotionModel)
         {
             promotionModel.DomainEvents = promotion.DomainEvents.ToList();
 

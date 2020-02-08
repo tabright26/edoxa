@@ -8,7 +8,7 @@ using System;
 
 namespace eDoxa.Seedwork.Security
 {
-    public static class AppAdmin
+    public static class AppAdministrator
     {
         public static readonly Guid Id = Guid.Parse("e4655fe0-affd-4323-b022-bdb2ebde6091");
     }

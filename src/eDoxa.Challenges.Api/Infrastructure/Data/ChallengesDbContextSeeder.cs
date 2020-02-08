@@ -39,6 +39,16 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
 
         protected override async Task SeedDevelopmentAsync()
         {
+            await this.SeedTestChallengesAsync();
+        }
+        
+        protected override async Task SeedStagingAsync()
+        {
+            await this.SeedChallengesAsync();
+        }
+
+        private async Task SeedTestChallengesAsync()
+        {
             if (!await Challenges.AnyAsync())
             {
                 Challenges.AddRange(FileStorage.Challenges.Select(challenge => challenge.ToModel()));
@@ -47,7 +57,7 @@ namespace eDoxa.Challenges.Api.Infrastructure.Data
             }
         }
 
-        protected override async Task SeedProductionAsync()
+        private async Task SeedChallengesAsync()
         {
             var scoring = new Scoring(
                 new Dictionary<string, float>
