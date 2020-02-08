@@ -2,10 +2,8 @@ import React, { FunctionComponent } from "react";
 import MoneyBreadcrumb from "components/Balance/Money";
 import TokenBreadcrumb from "components/Balance/Token";
 import { compose } from "recompose";
-import {
-  withUserIsAuthenticated,
-  HocUserIsAuthenticatedStateProps
-} from "utils/oidc/containers";
+import { withUserIsAuthenticated } from "utils/oidc/containers";
+import { HocUserIsAuthenticatedStateProps } from "utils/oidc/containers/types";
 
 type InnerProps = HocUserIsAuthenticatedStateProps;
 

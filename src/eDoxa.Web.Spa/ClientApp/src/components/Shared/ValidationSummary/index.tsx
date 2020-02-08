@@ -15,8 +15,8 @@ export const ValidationSummary: FunctionComponent<Props> = ({
       return (
         <Alert color="primary">
           <ul className="mb-0">
-            {error.map(message => (
-              <li>{message}</li>
+            {error.map((message, index) => (
+              <li key={index}>{message}</li>
             ))}
           </ul>
         </Alert>

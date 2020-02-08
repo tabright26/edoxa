@@ -2,10 +2,8 @@ import React, { FunctionComponent } from "react";
 import { Button } from "reactstrap";
 import ChallengeForm from "components/Challenge/Form";
 import {
-  HocUserProfileUserIdStateProps,
   withUserProfileUserId,
-  withUserProfileGameIsAuthenticated,
-  HocUserProfileGameIsAuthenticatedStateProps
+  withUserProfileGameIsAuthenticated
 } from "utils/oidc/containers";
 import { compose } from "recompose";
 import {
@@ -19,6 +17,10 @@ import { MapStateToProps, connect, DispatchProp } from "react-redux";
 import { RootState } from "store/types";
 import { show } from "redux-modal";
 import { LINK_GAME_CREDENTIAL_MODAL } from "utils/modal/constants";
+import {
+  HocUserProfileUserIdStateProps,
+  HocUserProfileGameIsAuthenticatedStateProps
+} from "utils/oidc/containers/types";
 
 type Params = {
   readonly challengeId?: ChallengeId;

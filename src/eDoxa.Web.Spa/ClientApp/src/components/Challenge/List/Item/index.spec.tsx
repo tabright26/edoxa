@@ -4,6 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import Item from ".";
 import { ChallengesState } from "store/root/challenge/types";
+import { CURRENCY_TYPE_TOKEN } from "types";
 
 it("renders without crashing", () => {
   // Arrange
@@ -26,7 +27,6 @@ it("renders without crashing", () => {
         },
         scoring: new Map<string, string>(),
         payout: {
-          challengeId: "123",
           entryFee: { type: CURRENCY_TYPE_TOKEN, amount: 0 },
           prizePool: { type: CURRENCY_TYPE_TOKEN, amount: 200000 },
           buckets: []

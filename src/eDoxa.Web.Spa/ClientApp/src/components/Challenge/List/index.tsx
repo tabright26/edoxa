@@ -7,7 +7,7 @@ import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
 import { Challenge, UserId } from "types";
 import produce, { Draft } from "immer";
-import { HocUserProfileUserIdStateProps } from "utils/oidc/containers";
+import { HocUserProfileUserIdStateProps } from "utils/oidc/containers/types";
 
 type OwnProps = HocUserProfileUserIdStateProps & { history?: boolean };
 
