@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from "react";
 import Moment from "react-moment";
-import { Button } from "reactstrap";
 
 type Props = {
   readonly currentState: string;

@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { Row, Col, CardDeck, Card, CardBody } from "reactstrap";
+import { Row, Col, Card, CardBody } from "reactstrap";
 import Logo from "components/Challenge/Logo";
 import Summary from "components/Challenge/Summary";
 import Scoreboard from "components/Challenge/Scoreboard";

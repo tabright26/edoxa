@@ -28,9 +28,7 @@ const Delete: FunctionComponent<Props> = ({
 }) => (
   <Form onSubmit={handleSubmit}>
     <ValidationSummary anyTouched={anyTouched} error={error} />
-    <Label className="mb-3">
-      Are you sure you want to delete this payment method?
-    </Label>
+    <Label className="mb-3">Do you want to delete your payment method?</Label>
     <FormGroup className="mb-0">
       <Button type="submit" size="sm" color="primary" className="mr-2">
         Yes

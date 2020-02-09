@@ -5,7 +5,6 @@ import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ChallengeId, ChallengeTimeline } from "types";
 import { compose } from "recompose";
-import { Card, Button } from "reactstrap";
 
 type Params = {
   readonly challengeId: ChallengeId;
