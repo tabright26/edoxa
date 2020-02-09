@@ -64,7 +64,7 @@ const enhance = compose<InnerProps, OutterProps>(
       _submitError,
       { setAuthenticationFactor }
     ) => {
-      toastr.error("Error", "Validating game authentication failed.");
+      toastr.error("Error", "Summoner name validation failed.");
       setAuthenticationFactor(null);
     }
   })
