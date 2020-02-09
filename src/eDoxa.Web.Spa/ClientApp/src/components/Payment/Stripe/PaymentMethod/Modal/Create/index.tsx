@@ -16,7 +16,7 @@ type Props = InnerProps & OutterProps;
 const Create: FunctionComponent<Props> = ({ show, handleHide }) => (
   <Modal backdrop="static" centered isOpen={show} toggle={handleHide}>
     <ModalHeader className="my-auto bg-gray-900" toggle={handleHide}>
-      <span className="d-block text-uppercase">ADD NEW PAYMENT METHOD</span>
+      <span className="d-block text-uppercase">ADD NEW CREDIT CARD</span>
       <ModalSubtitle>We accept all credit card</ModalSubtitle>
     </ModalHeader>
     {show && (

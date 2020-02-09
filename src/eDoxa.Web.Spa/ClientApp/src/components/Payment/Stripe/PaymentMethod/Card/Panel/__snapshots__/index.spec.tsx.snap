@@ -10,7 +10,7 @@ exports[`renders without crashing 1`] = `
     <strong
       className="text-uppercase my-auto"
     >
-      CARDS
+      CREDIT CARDS
     </strong>
     <small
       className="ml-2 my-auto text-muted"
@@ -49,7 +49,7 @@ exports[`renders without crashing 1`] = `
           />
         </svg>
          
-        ADD A NEW CARD
+        ADD A NEW CREDIT CARD
       </small>
     </button>
   </div>

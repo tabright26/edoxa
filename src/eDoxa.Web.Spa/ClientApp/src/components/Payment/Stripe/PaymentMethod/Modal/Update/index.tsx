@@ -24,7 +24,7 @@ const Update: FunctionComponent<Props> = ({
       className="text-uppercase my-auto bg-gray-900"
       toggle={handleHide}
     >
-      UPDATE PAYMENT METHOD
+      UPDATE CREDIT CARD
     </ModalHeader>
     <ModalBody>
       {show && (
