@@ -45,25 +45,31 @@ const Details: FunctionComponent<Props> = ({ challenge, loadChallenge }) => {
       <GameCredentialModal.Unlink />
       <Row>
         <Col xs={{ size: 8, order: 1 }}>
-          <CardDeck className="mt-4">
-            <Logo className="col-2 bg-gray-900" />
-            <Card className="col-10">
-              <CardBody className="d-flex">
-                <Timeline />
-                <Summary />
-              </CardBody>
-            </Card>
-          </CardDeck>
+          <Card className="my-4">
+            <CardBody className="d-flex">
+              <Row>
+                <Col md="3">
+                  <Logo
+                    className="h-100 bg-gray-900"
+                    height={150}
+                    width={150}
+                  />
+                </Col>
+                <Col md="7">
+                  <Summary challengeId={challenge.id} />
+                </Col>
+                <Col md="2">
+                  <Timeline />
+                </Col>
+              </Row>
+            </CardBody>
+          </Card>
+          <Scoreboard />
         </Col>
         <Col xs={{ size: 4, order: 2 }}>
-          <Scoring className="mt-4" />
-        </Col>
-        <Col xs={{ size: 4, order: 4 }}>
-          <Payout />
           <Rules />
-        </Col>
-        <Col xs={{ size: 8, order: 3 }}>
-          <Scoreboard />
+          <Payout />
+          <Scoring className="mb-0" />
         </Col>
       </Row>
     </>

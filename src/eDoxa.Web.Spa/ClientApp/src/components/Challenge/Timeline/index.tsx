@@ -5,6 +5,7 @@ import { RootState } from "store/types";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import { ChallengeId, ChallengeTimeline } from "types";
 import { compose } from "recompose";
+import { Card, Button } from "reactstrap";
 
 type Params = {
   readonly challengeId: ChallengeId;
@@ -24,17 +25,9 @@ type OutterProps = {};
 type Props = InnerProps & OutterProps;
 
 const Timeline: FunctionComponent<Props> = ({ state, timeline }) => (
-  <div
-    className="d-flex flex-column position-relative"
-    style={{
-      right: "50px"
-    }}
-  >
-    <span
-      className="btn bg-gray-900 mt-2 btn-sm rounded-0"
-      style={{ width: "150px" }}
-    >
-      <strong className="text-uppercase">Timeline</strong>
+  <>
+    <span className="text-uppercase btn btn-block text-light bg-dark">
+      Timeline
     </span>
     <Item
       currentState={state}
@@ -56,7 +49,7 @@ const Timeline: FunctionComponent<Props> = ({ state, timeline }) => (
       state="Closed"
       unixTimeSeconds={timeline.closedAt}
     />
-  </div>
+  </>
 );
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, RootState> = (
