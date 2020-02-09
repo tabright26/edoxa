@@ -43,9 +43,13 @@ const Login: FunctionComponent = () => (
                 <div>
                   <h2>Sign up</h2>
                   <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                    sed do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    eDoxa wants to help unlock your potential so that you can be
+                    proud to live your eSport dream.
+                  </p>
+                  <p>
+                    Participate to Challenges for the opportunity of making
+                    money and change the perception of eSport a dollar at a
+                    time!
                   </p>
                   <LinkContainer to={getAccountRegisterPath()}>
                     <Button
