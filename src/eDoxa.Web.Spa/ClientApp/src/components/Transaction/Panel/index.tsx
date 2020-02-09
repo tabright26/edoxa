@@ -4,20 +4,20 @@ import List from "components/Transaction/List";
 import { Paginate } from "components/Shared/Paginate";
 import { compose } from "recompose";
 import { UserTransactionState } from "store/root/user/transactionHistory/types";
-import { CurrencyType, TransactionType, TransactionStatus } from "types";
+import {
+  CurrencyType,
+  TransactionType,
+  TransactionStatus,
+  UserTransaction
+} from "types";
 import { Loading } from "components/Shared/Loading";
-import { connect, MapStateToProps, MapDispatchToProps } from "react-redux";
+import { connect, MapStateToProps } from "react-redux";
 import { RootState } from "store/types";
-import { loadUserTransactionHistory } from "store/actions/cashier";
 
 const pageSize = 10;
 
 interface StateProps {
   transactionHistory: UserTransactionState;
-}
-
-interface DispatchProps {
-  loadUserTransactionHistory: () => void;
 }
 
 interface OwnProps {
@@ -26,23 +26,16 @@ interface OwnProps {
   status?: TransactionStatus | null;
 }
 
-type InnerProps = StateProps & DispatchProps;
+type InnerProps = StateProps;
 
 type OutterProps = OwnProps;
 
 type Props = InnerProps & OutterProps;
 
 const Panel: FunctionComponent<Props> = ({
-  transactionHistory: { data, loading },
-  loadUserTransactionHistory
+  transactionHistory: { data, loading }
 }) => {
-  useEffect((): void => {
-    if (data.length === 0) {
-      loadUserTransactionHistory();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<UserTransaction[]>([]);
   useEffect(() => {
     setTransactions(data.slice(0, pageSize));
   }, [data]);
@@ -74,24 +67,6 @@ const mapStateToProps: MapStateToProps<
   };
 };
 
-const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (
-  dispatch: any,
-  ownProps
-) => {
-  return {
-    loadUserTransactionHistory: () =>
-      dispatch(
-        loadUserTransactionHistory(
-          ownProps.currency,
-          ownProps.type,
-          ownProps.status
-        )
-      )
-  };
-};
-
-const enhance = compose<InnerProps, OutterProps>(
-  connect(mapStateToProps, mapDispatchToProps)
-);
+const enhance = compose<InnerProps, OutterProps>(connect(mapStateToProps));
 
 export default enhance(Panel);

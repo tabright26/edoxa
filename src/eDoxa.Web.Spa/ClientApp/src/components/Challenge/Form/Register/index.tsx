@@ -8,6 +8,8 @@ import { registerChallengeParticipant } from "store/actions/challenge";
 import { toastr } from "react-redux-toastr";
 import { withRouter, RouteComponentProps } from "react-router-dom";
 import { ChallengeId, UserId } from "types";
+import { AxiosActionCreatorMeta } from "utils/axios/types";
+import { throwSubmissionError } from "utils/form/types";
 
 type FormData = {};
 
@@ -27,11 +29,7 @@ const Register: FunctionComponent<Props> = ({
   className
 }) => (
   <Form onSubmit={handleSubmit} className="h-100">
-    <Button.Submit
-      color="primary"
-      className={className}
-      loading={submitting}
-    >
+    <Button.Submit color="primary" className={className} loading={submitting}>
       REGISTER
     </Button.Submit>
   </Form>
@@ -41,8 +39,17 @@ const enhance = compose<InnerProps, OutterProps>(
   withRouter,
   reduxForm<FormData, Props>({
     form: REGISTER_CHALLENGE_PARTICIPANT_FROM,
-    onSubmit: (_values, dispatch, { match }) => {
-      dispatch(registerChallengeParticipant(match.params.challengeId));
+    onSubmit: async (_values, dispatch, { match }) => {
+      try {
+        return await new Promise((resolve, reject) => {
+          const meta: AxiosActionCreatorMeta = { resolve, reject };
+          dispatch(
+            registerChallengeParticipant(match.params.challengeId, meta)
+          );
+        });
+      } catch (error) {
+        throwSubmissionError(error);
+      }
     },
     onSubmitFail: () => {
       toastr.error(

@@ -2,7 +2,11 @@ import React, { FunctionComponent, useState } from "react";
 import { Badge, Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import Balance from "components/Balance";
 import BuyToken from "./Buy";
-import { CURRENCY_TYPE_TOKEN } from "types";
+import {
+  CURRENCY_TYPE_TOKEN,
+  TRANSACTION_STATUS_SUCCEEDED,
+  TRANSACTION_STATUS_PENDING
+} from "types";
 
 const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
   const [open, setOpen] = useState(false);
@@ -13,7 +17,10 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
         className="bg-gray-900"
         style={{ width: "100px" }}
       >
-        <Balance type={CURRENCY_TYPE_TOKEN} attribute="available" />
+        <Balance
+          currencyType={CURRENCY_TYPE_TOKEN}
+          transactionStatus={TRANSACTION_STATUS_SUCCEEDED}
+        />
       </Badge>
       <Popover
         style={{
@@ -32,16 +39,16 @@ const TokenBreadcrumb: FunctionComponent<any> = ({ className }) => {
             <dt className="col-6">Available</dt>
             <dd className="col-6">
               <Balance
-                type={CURRENCY_TYPE_TOKEN}
-                attribute="available"
+                currencyType={CURRENCY_TYPE_TOKEN}
+                transactionStatus={TRANSACTION_STATUS_SUCCEEDED}
                 alignment="right"
               />
             </dd>
             <dt className="col-6">Pending</dt>
             <dd className="col-6">
               <Balance
-                type={CURRENCY_TYPE_TOKEN}
-                attribute="pending"
+                currencyType={CURRENCY_TYPE_TOKEN}
+                transactionStatus={TRANSACTION_STATUS_PENDING}
                 alignment="right"
               />
             </dd>

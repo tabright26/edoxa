@@ -16,7 +16,10 @@ import {
   LoadChallengeHistoryActionCreator,
   RegisterChallengeParticipantActionCreator
 } from "./types";
-import { AXIOS_PAYLOAD_CLIENT_CHALLENGES } from "utils/axios/types";
+import {
+  AXIOS_PAYLOAD_CLIENT_CHALLENGES,
+  AxiosActionCreatorMeta
+} from "utils/axios/types";
 import { ChallengeId, Game, ChallengeState } from "types";
 
 export function loadChallenges(
@@ -79,7 +82,8 @@ export function loadChallengeHistory(
 }
 
 export function registerChallengeParticipant(
-  challengeId: ChallengeId
+  challengeId: ChallengeId,
+  meta: AxiosActionCreatorMeta
 ): RegisterChallengeParticipantActionCreator {
   return {
     types: [
@@ -93,6 +97,7 @@ export function registerChallengeParticipant(
         method: "POST",
         url: `/api/challenges/${challengeId}/participants`
       }
-    }
+    },
+    meta
   };
 }

@@ -7,16 +7,31 @@ import ReactDOM from "react-dom";
 import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
-import { configureStore } from "./store";
+import store from "./store";
 import ReduxToastr from "react-redux-toastr";
 import { StripeProvider } from "react-stripe-elements";
 import { LocalizeProvider } from "react-localize-redux";
 import { initialize } from "utils/localize/initialize";
-import { OidcProvider } from "redux-oidc";
+import { OidcProvider, loadUser } from "redux-oidc";
 import { userManager } from "utils/oidc/UserManager";
 import MessengerCustomerChat from "react-messenger-customer-chat";
+import { loadUserTransactionHistory } from "store/actions/cashier";
+import {
+  loadIdentityStaticOptions,
+  loadCashierStaticOptions,
+  loadChallengesStaticOptions,
+  loadGamesStaticOptions
+} from "store/actions/static";
 
-const store = configureStore();
+loadUser(store, userManager).then(user => {
+  if (user) {
+    store.dispatch<any>(loadUserTransactionHistory());
+  }
+});
+store.dispatch<any>(loadIdentityStaticOptions());
+store.dispatch<any>(loadCashierStaticOptions());
+store.dispatch<any>(loadChallengesStaticOptions());
+store.dispatch<any>(loadGamesStaticOptions());
 
 ReactDOM.render(
   <Provider store={store}>
