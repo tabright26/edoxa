@@ -135,7 +135,7 @@ const enhance = compose<InnerProps, OutterProps>(
       if (!values.password) {
         errors.password = PASSWORD_REQUIRED;
       } else if (values.password !== values.newPassword) {
-        errors._error = "Repeat password doesn't match password";
+        errors._error = "Confirm password doesn't match password";
       }
       return errors;
     }
